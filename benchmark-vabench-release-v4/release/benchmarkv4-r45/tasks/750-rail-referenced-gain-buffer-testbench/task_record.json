@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "250-rail-referenced-gain-buffer",
+  "checker_task_id": "v4_250_rail_referenced_gain_buffer",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "2c9b1621fdb2b8097c998d29d84bc53fd7533c0d0b93179a923a855cc8037183",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "0a6aabe0a76c484ff76847aa8a630653dcdf67403e976d61630741c549d64920",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "250",
+  "family_spec_sha256": "63d418ccb6185e398c22c408af30b27392d5b44adbdf72c6da282bb130082805",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4deee7c393e776c729f80d1eb4d65eb209dd5a57929bdbd80b2dee3c4a7d7cc0",
+  "public_contract": "tasks/750-rail-referenced-gain-buffer-testbench/public_contract.json",
+  "public_contract_sha256": "3469718f1d274dba5c5d69dfa67fa2674822d9609355e6198988ccf9e7c0917b",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/750-rail-referenced-gain-buffer-testbench",
+  "task_id": "v4-750"
+}

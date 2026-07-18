@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "adpll_ratio_hop_ref.va"
+  ],
+  "canonical_dut_source_slug": "081-adpll-ratio-hop-timer",
+  "checker_task_id": "v4_081_adpll_ratio_hop_timer",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "a08d8b93fea5de9c74b0f9ffd2d884203a230488cb1ef840ec816acd41db1e50",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "456eb317a8f0f19d7d9d81f7e8fe3ed745bb073dba76fdcb76a2f06c505d34fb",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "9f76375ffd3a1cacaf2a57c624d246d290df74b2c0013d4f2eddbd79da146e4f",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "081",
+  "family_spec_sha256": "d07fa8463ddeece6bc4c013e0c2b99f84de80476d922533781f8c48ca72c0df0",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9094d3b37872abc7253d7ef4526d4f04aa597b7e06019a8561e196ccbdfce330",
+  "public_contract": "tasks/081-adpll-ratio-hop-timer/public_contract.json",
+  "public_contract_sha256": "c8beb311c1f1cbf0d21227532b283e4fbbafeb6b046b817b1d3416d75f53363a",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/081-adpll-ratio-hop-timer",
+  "task_id": "v4-081"
+}

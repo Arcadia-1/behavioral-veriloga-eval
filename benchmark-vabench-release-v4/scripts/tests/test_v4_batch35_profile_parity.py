@@ -159,9 +159,9 @@ def test_batch35_evas_evidence_requires_explicit_rust_engine(monkeypatch: pytest
 @pytest.mark.parametrize(
     ("log_text", "valid", "version", "backend"),
     [
-        ("Version 0.8.2 -- Jul 2026\n    evas_engine = evas-rust\n", True, "0.8.2", "evas-rust"),
-        ("Version 0.8.2 -- Jul 2026\n    evas_engine = python\n", False, "0.8.2", "python"),
-        ("Version 0.8.1 -- Jun 2026\n    evas_engine = evas-rust\n", False, "0.8.1", "evas-rust"),
+        ("Version 0.8.3 -- Jul 2026\n    evas_engine = evas-rust\n", True, "0.8.3", "evas-rust"),
+        ("Version 0.8.3 -- Jul 2026\n    evas_engine = python\n", False, "0.8.3", "python"),
+        ("Version 0.8.2 -- Jul 2026\n    evas_engine = evas-rust\n", False, "0.8.2", "evas-rust"),
     ],
 )
 def test_batch35_case_evidence_reads_actual_runtime(

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "165-va-lx-dac-ideal-4b",
+  "checker_task_id": "v4_165_va_lx_dac_ideal_4b",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "fe74c13432c3b2e1428fa8fcd2ca14a3eb728dc44177560b5babac54f0db6ac8",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "a26afdd2b924c5e678caa4c002ebc3337a5f54e349fd4a3a65b34c87f550c4f3",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "165",
+  "family_spec_sha256": "c005d52faa757bedea50347e8e7399bb2e095a41945e54ee85b8a2a536bea841",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2aa4882674e42e5699bca669abf124be0116b8b3cd59d14a8b82142a5b648503",
+  "public_contract": "tasks/665-va-lx-dac-ideal-4b-testbench/public_contract.json",
+  "public_contract_sha256": "1c3146d2f9d928c34c43267f8659bb643c5e06de7818d990e35bf8cb734058d2",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/665-va-lx-dac-ideal-4b-testbench",
+  "task_id": "v4-665"
+}

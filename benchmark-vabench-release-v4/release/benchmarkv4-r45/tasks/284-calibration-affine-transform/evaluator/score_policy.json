@@ -1,0 +1,13 @@
+{
+  "candidate_artifacts": [
+    "calibration_affine_transform.va"
+  ],
+  "certification_evaluator": "rust_evas2",
+  "checker_profile_sha256": "8300090ab2d1b1f4f0a472a0d23d963ae1b9ec3238416fed9a9112fcb590f203",
+  "full_contract_pass_required": true,
+  "gold_dut_certification_sha256": "cf5ba3c1e9812e974f82651c390d4947f2f3744b0f3f1139e2beb7e67a7b755f",
+  "gold_solution_tree_sha256": "a2fa0342d50f5509ccfa2b828b0ac1d4d6e13657561c7530614aa9f4b8fe6f11",
+  "materialized_checker_profile": "evaluator/checker_profile.json",
+  "schema_version": "v4-dut-score-policy-v1",
+  "task_id": "v4-284"
+}

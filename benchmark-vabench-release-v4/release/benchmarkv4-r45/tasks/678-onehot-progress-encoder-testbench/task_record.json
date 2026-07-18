@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "178-onehot-progress-encoder",
+  "checker_task_id": "v4_178_onehot_progress_encoder",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "4a635effb96e568506a2fbce412402a18909eb20c0cf917be1bdde459f3dcbf1",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "f7b52c994cb7ca39d710bd992cd0b0f4f7842e36b0e16eef5213df15fe4fc442",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "178",
+  "family_spec_sha256": "c57b742d9992a441851d56586747d7510dd350236300531a3664d9db215b0ac0",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "51178cb75852b990819c44e7e6be7868fef4bd9309891f7858631be1376bb730",
+  "public_contract": "tasks/678-onehot-progress-encoder-testbench/public_contract.json",
+  "public_contract_sha256": "32792f166a7b7236ff99f8d3de4a58455a7c3aac5d4ec54f6f9086d9ad4b16f5",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/678-onehot-progress-encoder-testbench",
+  "task_id": "v4-678"
+}

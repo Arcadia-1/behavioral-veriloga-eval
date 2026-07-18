@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "026-digital-phase-accumulator-with-modulo-wrap",
+  "checker_task_id": "v4_026_digital_phase_accumulator_with_modulo_wrap",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "56a5c6cb9eb17f5f0bc7d8d3bb7c7efaebd65536a8b11771d8d090b4d074faf6",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "fbd0b768ed792a4b55c505cce02a6a230471e2465fea693a513ee6331ac88fef",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "026",
+  "family_spec_sha256": "b54b06ca961bd9587b8c4c6e3065284f39f15070e09f122f904ea3da4988a075",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2c40a5842b3efd30aaf1d4d7c917169b68bfa9851d7b2b9956b169cfe4151b1b",
+  "public_contract": "tasks/526-digital-phase-accumulator-with-modulo-wrap-testbench/public_contract.json",
+  "public_contract_sha256": "f9894f8c42173471b5b847b56b328926a5274f40e69a08d66d7e5e77550177fa",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/526-digital-phase-accumulator-with-modulo-wrap-testbench",
+  "task_id": "v4-526"
+}

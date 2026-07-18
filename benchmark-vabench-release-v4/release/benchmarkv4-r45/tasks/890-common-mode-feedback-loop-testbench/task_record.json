@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "390-common-mode-feedback-loop",
+  "checker_task_id": "v4_390_common_mode_feedback_loop",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "f33efbe3ab983cebdc08925bc783d1f45ca1e73008def52967d1ce25fb8f2bec",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "d9ce23044351968ca6d6ee9e70f24859ba94d1607535bb0f7d165c7ffed94410",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "390",
+  "family_spec_sha256": "c467a254a77ddb0ebd9323d315f208093b56506323acd6dad4088526c3ed0334",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f715f7bb54ec1838c964b629e9d21de37a7a31ad1bd9b541bcc902f3d20f4b59",
+  "public_contract": "tasks/890-common-mode-feedback-loop-testbench/public_contract.json",
+  "public_contract_sha256": "567576a687c14496f4b4e82e5a891b360078fa8515901ed875ecde2b74688491",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/890-common-mode-feedback-loop-testbench",
+  "task_id": "v4-890"
+}

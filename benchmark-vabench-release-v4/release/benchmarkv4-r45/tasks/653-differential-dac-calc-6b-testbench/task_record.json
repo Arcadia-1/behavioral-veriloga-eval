@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "153-differential-dac-calc-6b",
+  "checker_task_id": "v4_153_differential_dac_calc_6b",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "4c5119bebf74d350f74b6c609828a44ea2724937812cedc3b242c212b3488c0f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "fd50bc7764a108bbe41cc8b96552537d79d62415956f99de22200f5c255b50b5",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "153",
+  "family_spec_sha256": "667cea62c6c5ee9d9a78e00c8538f1c9203261298d32d417cd15aeec9127770d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7f299a87e97c866ee9ee9c5b9202d5d02c2c5b53b1114cd0e7a2dd2b48ac7733",
+  "public_contract": "tasks/653-differential-dac-calc-6b-testbench/public_contract.json",
+  "public_contract_sha256": "2f00411d5ecab66b3920f1fcab821599d684ff8e10ceda8d677dec12f206b017",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/653-differential-dac-calc-6b-testbench",
+  "task_id": "v4-653"
+}

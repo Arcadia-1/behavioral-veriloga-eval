@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "341-buck-soft-start-ramp-controller",
+  "checker_task_id": "v4_341_buck_soft_start_ramp_controller",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "79eab594c4ab2ff9b43bc8a4146899d9a41bb52342918a86033819b2ed63c5c1",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "fd4c17071b322345516c23f160edf7257135a1003a423d8f4f7666de20eabc49",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "341",
+  "family_spec_sha256": "812b7ac824fe8845bd81da0cf18dfbdb0f25a90a495885d21ae20ca354ba125b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "85a95c0ce0964796b94a1e6e3758decb1087186a647e6c9b17486089c4079181",
+  "public_contract": "tasks/841-buck-soft-start-ramp-controller-testbench/public_contract.json",
+  "public_contract_sha256": "cc852fa8dc219a8b5fe0a9da2ad809805f93de92e472133f7ac643d8de12346e",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/841-buck-soft-start-ramp-controller-testbench",
+  "task_id": "v4-841"
+}

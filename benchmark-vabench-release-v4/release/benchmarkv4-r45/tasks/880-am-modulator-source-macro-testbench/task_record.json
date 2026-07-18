@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "380-am-modulator-source-macro",
+  "checker_task_id": "v4_380_am_modulator_source_macro",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "fbed84ea8064e8c96a1c7cce06355153bc131d3cc75664622bab48961f1cb68d",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "2c26d2402e27f43e214ea399cefe84ad069328a265c49c4abbb16394f3345b70",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "380",
+  "family_spec_sha256": "d3df8ed55d2b716d17c828be1d262407b16c97360980e37f6fd55e71f9b701b0",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f56ba11ad8d6178be51006f62eff1dd160c5243d55d5a1e4423be7b9c7ded41f",
+  "public_contract": "tasks/880-am-modulator-source-macro-testbench/public_contract.json",
+  "public_contract_sha256": "d8ba556c95cb804f1421cae9da60ba625faa1c6a12953f85af3f4e9eb37dabc5",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/880-am-modulator-source-macro-testbench",
+  "task_id": "v4-880"
+}

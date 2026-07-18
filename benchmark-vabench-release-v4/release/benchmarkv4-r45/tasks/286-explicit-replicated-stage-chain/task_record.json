@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "explicit_replicated_stage_chain.va"
+  ],
+  "canonical_dut_source_slug": "286-explicit-replicated-stage-chain",
+  "checker_task_id": "v4_286_explicit_replicated_stage_chain",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "a9d41a521b2c620b122e89aa9e4b3855ae7af6c876f4d6a222084733cca1cb99",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "d8bd550e7bdde1509b4a63159ea04357fe05c4ae95c13f5a5fad40f09909250b",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "82c9fdfdaf31abb6be053e0ebc4c4f5e607e9e60f6c072ed01b39631dfdf24d4",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "286",
+  "family_spec_sha256": "7ba09ad201f7962dd53e846301bffeeffb50c92d81498b895914b16e537958b6",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3a8cc8b420bc75d4fd82e992ed7e4d5c152ab00f8c6a671f324728ef4a1d55e4",
+  "public_contract": "tasks/286-explicit-replicated-stage-chain/public_contract.json",
+  "public_contract_sha256": "8830ef6fe5e661d355c0eb01a0ee4e2292f18cb61847725d60fc8f166cd82f11",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/286-explicit-replicated-stage-chain",
+  "task_id": "v4-286"
+}

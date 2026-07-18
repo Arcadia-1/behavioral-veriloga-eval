@@ -145,7 +145,7 @@ def test_evas2_evidence_requires_explicit_engine_and_rust_log(
     require_evas2_environment()
     log = tmp_path / "evas.log"
     log.write_text(
-        "Version 0.8.2 -- Jul 2026\n    evas_engine = evas-rust\n",
+        "Version 0.8.3 -- Jul 2026\n    evas_engine = evas-rust\n",
         encoding="utf-8",
     )
     evidence = engine_evidence_from_log(log, "")
@@ -164,7 +164,7 @@ def test_evas2_evidence_rejects_python_engine(
         require_evas2_environment()
     log = tmp_path / "evas.log"
     log.write_text(
-        "Version 0.8.2 -- Jul 2026\n    evas_engine = python\n",
+        "Version 0.8.3 -- Jul 2026\n    evas_engine = python\n",
         encoding="utf-8",
     )
     evidence = engine_evidence_from_log(log, "")

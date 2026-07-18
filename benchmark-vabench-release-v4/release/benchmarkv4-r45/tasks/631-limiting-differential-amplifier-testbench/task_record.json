@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "131-limiting-differential-amplifier",
+  "checker_task_id": "v4_131_limiting_differential_amplifier",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "70b5242ae4c8db7274bea364fbe74e2cf064da6154d5ddf6a660f2f19e7f341f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "e8262f469f235835725214fee3db55632d27ea8f9037f1aad7f3cdeafef8cccf",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "131",
+  "family_spec_sha256": "7778d86a3b5570b927e001e0c32b2ab0a3eb0ca8410f6f03afb3d2f131afc8b0",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3b2d8213be873058c1629281347fab518d0d72dc17a2c5f1f26914c7c41922e6",
+  "public_contract": "tasks/631-limiting-differential-amplifier-testbench/public_contract.json",
+  "public_contract_sha256": "a23d46b994b2fb10382e527383ff595d47bccbe80fcec79e8311a9cbdf54bd31",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/631-limiting-differential-amplifier-testbench",
+  "task_id": "v4-631"
+}

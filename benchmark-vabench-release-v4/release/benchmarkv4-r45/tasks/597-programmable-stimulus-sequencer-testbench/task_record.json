@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "097-programmable-stimulus-sequencer",
+  "checker_task_id": "v4_097_programmable_stimulus_sequencer",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "104580688a207b51e447d46d65c19de481688bc9e34e1dae3c4b4d046e8b65e4",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "b6ad1b441067fde7a829244ae11c41e7f67a221224348362de78c0fdf5a4a8fa",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "097",
+  "family_spec_sha256": "2e592752afa20eb01640e0d6ee203ea98c79ca48b216a406dd9cfece42b51d8e",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1c985f262c11450e124aada5e102c418762c934c2cf3d47390d654a2b3db826d",
+  "public_contract": "tasks/597-programmable-stimulus-sequencer-testbench/public_contract.json",
+  "public_contract_sha256": "6588c050e01c6037aeee307824c52dc9f211f22090a48e3e78d4a511af6d8d7d",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/597-programmable-stimulus-sequencer-testbench",
+  "task_id": "v4-597"
+}

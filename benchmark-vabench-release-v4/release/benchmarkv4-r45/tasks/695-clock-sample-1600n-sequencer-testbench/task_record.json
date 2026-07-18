@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "195-clock-sample-1600n-sequencer",
+  "checker_task_id": "v4_195_clock_sample_1600n_sequencer",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "d0e3c843dda98b807699e6ca796d39d823f598c14d03bd21a83bc785ffaf9e5f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "e9c86b6a41e47e0a90adc011f6502f3026ca10a265e8c9938d557a1a266fbbc0",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "195",
+  "family_spec_sha256": "359da5fac124d0879ff84034919283b75973d5ab10d1698ec71b6b8a7ddb62b9",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "19e2940c017c90b53b17cd1691de0c5bb2e6314196ad4c867884d37c9e0cb957",
+  "public_contract": "tasks/695-clock-sample-1600n-sequencer-testbench/public_contract.json",
+  "public_contract_sha256": "bfda8d72e755fbf76af8f04a8f1c9b0a3809c275600afd5b669fada265afddb7",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/695-clock-sample-1600n-sequencer-testbench",
+  "task_id": "v4-695"
+}

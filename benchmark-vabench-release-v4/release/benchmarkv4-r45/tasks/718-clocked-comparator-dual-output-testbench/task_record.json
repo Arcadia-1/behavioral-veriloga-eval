@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "218-clocked-comparator-dual-output",
+  "checker_task_id": "v4_218_clocked_comparator_dual_output",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "31b85a959af17a4e5bb65ccf97aaa96e35e1e2592b694e7f1258a160139b0a12",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "ada8810384b2f489dde9884678a23f49173accc12c4f267fd31b63684ca388e0",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "218",
+  "family_spec_sha256": "d10c523bd6e93e0d75df47dc7baf5c130a020023027a5a531fcb99bab206683b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4b438ce785c36920d3104f9a32917266d9d51b983872104e805860ff5a7c088c",
+  "public_contract": "tasks/718-clocked-comparator-dual-output-testbench/public_contract.json",
+  "public_contract_sha256": "295b75e8cfab31cd3b0a7e2ddfa52cda9b254ca309da51f7b0e11d27733682c1",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/718-clocked-comparator-dual-output-testbench",
+  "task_id": "v4-718"
+}

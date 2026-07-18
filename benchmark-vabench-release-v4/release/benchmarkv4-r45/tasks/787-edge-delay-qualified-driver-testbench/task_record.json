@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "287-edge-delay-qualified-driver",
+  "checker_task_id": "v4_287_edge_delay_qualified_driver",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "cf5c55065eabcc249272e533ed0e18324ffef9b0ede421f4bbfed00afdc03d2e",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "d8ff06b1c6756d7f1512f00985690107aa2dcdecbd9b6a34712cc563d9b4bd4d",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "287",
+  "family_spec_sha256": "3156ac634deab707ad6c67e7bb2195977d8242d87bcf4ee2b39eb68a2b4fc438",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f0c26ca2e46693577a2947189584404b9f05b2b87b0dc9558ee08e5c72e50c85",
+  "public_contract": "tasks/787-edge-delay-qualified-driver-testbench/public_contract.json",
+  "public_contract_sha256": "9e5418ef2be29856fa2d6003a9b8f0e13b5231720f0aece4ec3d9bf0335892b5",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/787-edge-delay-qualified-driver-testbench",
+  "task_id": "v4-787"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "rail_referenced_gain_buffer.va"
+  ],
+  "canonical_dut_source_slug": "250-rail-referenced-gain-buffer",
+  "checker_task_id": "v4_250_rail_referenced_gain_buffer",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "de5ca13acaf7e7227f07b31e9ceaafafddc0065fb53aba277b17e4b7806ff454",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "9d6e07b219f712e26840b12b78bd1709bbbedda4d85650227740f9e5d5cdcde1",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "aaa1d86034d80d8ae953e6d99ebb8b9bfeb3555d8ae0c0fcbcd4fe3260f7b30a",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "250",
+  "family_spec_sha256": "63d418ccb6185e398c22c408af30b27392d5b44adbdf72c6da282bb130082805",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "236dd252a1ad15bdf8ae7507d1d72c8de79d50214eefac2420f5f5b74c8678bd",
+  "public_contract": "tasks/1250-rail-referenced-gain-buffer-bugfix/public_contract.json",
+  "public_contract_sha256": "bc185608ee952e1046a0262a3d1754090b8d23057e201a6141d98aaa55ba78ff",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1250-rail-referenced-gain-buffer-bugfix",
+  "task_id": "v4-1250"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "261-falling-edge-calibration-sampler",
+  "checker_task_id": "v4_261_falling_edge_calibration_sampler",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "d501ee0368a81bb1c25b5d464f81792e4fb4ed3e417f5b085d882dc124cc9b5d",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "cbdfb009c28d0bf4558e84fa189f261affc50cfbf5c38310b4b0293ec4317d1e",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "261",
+  "family_spec_sha256": "34aa516da1909285419024f44e1e770392a98f04a6035001d1111efdc9a5b24e",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a4f02809c873fe80abcdcfe3e35a8bfdd4081e8d41845cbae3f8dcd7656fb75f",
+  "public_contract": "tasks/761-falling-edge-calibration-sampler-testbench/public_contract.json",
+  "public_contract_sha256": "29f6ab310ee1e2a61774d1617e18bc435e6f648eb78fd396605504aca9121bf5",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/761-falling-edge-calibration-sampler-testbench",
+  "task_id": "v4-761"
+}

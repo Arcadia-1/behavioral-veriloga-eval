@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "310-bootstrapped-sampler-charge-metric",
+  "checker_task_id": "v4_310_bootstrapped_sampler_charge_metric",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "59a808e8436dfa1fb85c9837209442393a087c1e5e8e3c1cb9eb67708f09c465",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "28fcb0eaa7732c7e28bf482fef43d6099b4ac293c0a87c85946cba867e343a64",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "310",
+  "family_spec_sha256": "acb324de5f0aeb56637d48711dcf330e13583cad4d6d5cdce4f7bbd0cd0410df",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6baee783ad96f8f2c6f7c489dc755fe8ff8c0264756245299199d90fed98ad62",
+  "public_contract": "tasks/810-bootstrapped-sampler-charge-metric-testbench/public_contract.json",
+  "public_contract_sha256": "5de83372638b756399e80d71fe30aeb6a25fd2e56fbab522438963f1d4ae078c",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/810-bootstrapped-sampler-charge-metric-testbench",
+  "task_id": "v4-810"
+}

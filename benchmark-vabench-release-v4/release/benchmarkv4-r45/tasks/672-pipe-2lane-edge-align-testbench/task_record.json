@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "172-pipe-2lane-edge-align",
+  "checker_task_id": "v4_172_pipe_2lane_edge_align",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "da58c6b22a5cfcca0fe6afafe22294dcb34a4b23e99b6a21f6308dd8404a9bc7",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "60a73533b67985a3fd9303a9b92a6dd55ee1664f57a52d4bb47a9caa6f9a9cda",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "172",
+  "family_spec_sha256": "57a91f3fd7462ed95ec0b93d7a2fa517518d26882b8db959927fb032fc741698",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ea9645820235443eb8a782cec3754f96c770463f375fa6d2f07df5fcbfcabb78",
+  "public_contract": "tasks/672-pipe-2lane-edge-align-testbench/public_contract.json",
+  "public_contract_sha256": "9693c9addede3a2052389c825e4945af5e71ebe4908ff3a7ce59d8c0f6428eda",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/672-pipe-2lane-edge-align-testbench",
+  "task_id": "v4-672"
+}

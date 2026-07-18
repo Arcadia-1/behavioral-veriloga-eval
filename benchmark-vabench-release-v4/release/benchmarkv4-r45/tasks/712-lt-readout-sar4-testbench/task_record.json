@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "212-lt-readout-sar4",
+  "checker_task_id": "v4_212_lt_readout_sar4",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "5b11c01e2192166dd4e2196f6d8c0210033d6a25f2f714aff10f2831e7e05ac9",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "42e5baa2053a0cdc0af0bd008546be2ea9df15e401cad7a58e0647368fb31f71",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "212",
+  "family_spec_sha256": "1d064f0a025dc787271e8ae437f54a43f29ede6069422921a4e7d86042b10816",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0c628300c42e6d3803d381c6fc3bd459324d0873dd805e0b5f2a37408b28dd58",
+  "public_contract": "tasks/712-lt-readout-sar4-testbench/public_contract.json",
+  "public_contract_sha256": "7b32f1fe6cc02fd3619fc86b2cc91bc78a8521d4031024a172b123f37f47d7c4",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/712-lt-readout-sar4-testbench",
+  "task_id": "v4-712"
+}

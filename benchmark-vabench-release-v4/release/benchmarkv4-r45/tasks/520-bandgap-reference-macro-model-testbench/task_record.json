@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "020-bandgap-reference-macro-model",
+  "checker_task_id": "v4_020_bandgap_reference_macro_model",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "afa827a6fdc403f877c056d77530f106109d08aa4e2b4f627af7662433352572",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "51752fdf872df6a7d8a8efb8fc7faa525e4e76be972d1d33e2513c5fb26e28be",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "020",
+  "family_spec_sha256": "5452f74c4342f32713a964bb90607b97e1e921fdcdd9e2cf51d340ce6c59d41b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "70873e7182b8ba512e38ccc6d5cb931ed5b030f379d06de7662ed84b43d22c7a",
+  "public_contract": "tasks/520-bandgap-reference-macro-model-testbench/public_contract.json",
+  "public_contract_sha256": "64cca0f7792a7cb829a985a8eedc331ecdecfb2b5513435f333baf8fecadc96b",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/520-bandgap-reference-macro-model-testbench",
+  "task_id": "v4-520"
+}

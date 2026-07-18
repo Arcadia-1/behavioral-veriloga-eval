@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "360-digitally-controlled-delay-cell",
+  "checker_task_id": "v4_360_digitally_controlled_delay_cell",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "a5421cca36fabb1a58522d21389a8314311ba3190818274702f72ca11e00dc99",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "faf8c8f8938adb32fef883dd0e02edb363c8b5d02035e05efb6173ff8cebfc3d",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "360",
+  "family_spec_sha256": "ca78744f78268e2a317e0fc7ebf3682ad76cf4e1d9ff877861291bb369d113d7",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a6eb8efb636cd695c62851ac9c3c690f940f9fce6ba129136f0929a717d82b06",
+  "public_contract": "tasks/860-digitally-controlled-delay-cell-testbench/public_contract.json",
+  "public_contract_sha256": "1a157e5f66fbda0506d79c46377f703e23412c6efd84fd5a400ecf1fa49c8b19",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/860-digitally-controlled-delay-cell-testbench",
+  "task_id": "v4-860"
+}

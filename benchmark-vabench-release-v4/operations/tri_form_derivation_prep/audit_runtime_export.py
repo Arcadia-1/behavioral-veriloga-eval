@@ -104,7 +104,9 @@ def main() -> int:
             problems.append("private evaluator bundle missing profiles/")
         form = str(attempt.get("form") or "")
         if form in {"dut", "bugfix"}:
-            if not (run / "public" / "task" / "visible_test.scs").is_file():
+            if mode not in {"G0", "G1"} and not (
+                run / "public" / "task" / "visible_test.scs"
+            ).is_file():
                 problems.append("agentic DUT/bugfix mode lacks task-local visible_test.scs")
             if not (evaluator / "solution").is_dir():
                 problems.append("private evaluator bundle missing solution/")

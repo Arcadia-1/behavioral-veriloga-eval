@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "377-bidirectional-hybrid-macro",
+  "checker_task_id": "v4_377_bidirectional_hybrid_macro",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "92359f56af9b2db2d9313ab64a507b344a950c19e664903ef67f7e90e1b3556c",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "153dfcf0cd1078e805cdfb4d79ae2b236afbeab16dc25c057f3538e833ae8106",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "377",
+  "family_spec_sha256": "18e9f7a0611e5a9aad274760c88246ef4b2b79997928f97f410c3854e73096a6",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "81af486df034fbc1fe4ae9ded5d719e3278e433b4e8ee48429a21a0bc2ad234a",
+  "public_contract": "tasks/877-bidirectional-hybrid-macro-testbench/public_contract.json",
+  "public_contract_sha256": "a496736af8b4d1d5e531913ace2e3b964b2638a96d88194a43e0e1cdfd95c503",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/877-bidirectional-hybrid-macro-testbench",
+  "task_id": "v4-877"
+}

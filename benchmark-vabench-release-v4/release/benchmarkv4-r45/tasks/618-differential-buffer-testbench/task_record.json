@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "118-differential-buffer",
+  "checker_task_id": "v4_118_differential_buffer",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "e2d04d57c129e6122f46a139d68b76b2e8d7674e0a384e0713ddc93b04f6b430",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "6a3c55b1c0a81fe64d22dbdce9f35c106dc9a49b25f9e32d778be6e4e2b369e9",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "118",
+  "family_spec_sha256": "aac140e52ffe85b525a5fbf347156073cff5a37e80b7472b51fff95c2485ea5c",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "15c527d6858f1319d8ba50d516a3a12b15102d7b4e7ec4ff9cf67efccd4da7c0",
+  "public_contract": "tasks/618-differential-buffer-testbench/public_contract.json",
+  "public_contract_sha256": "62811364151cdb1c7a6501713b2ac5cb2916582297721a4bd24a6a7db9cf1558",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/618-differential-buffer-testbench",
+  "task_id": "v4-618"
+}

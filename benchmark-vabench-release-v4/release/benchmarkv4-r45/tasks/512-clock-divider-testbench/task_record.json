@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "012-clock-divider",
+  "checker_task_id": "v4_012_clock_divider",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "4119e53126313a2b37a578dce0edbd4c7adf90ac86b8c2f354e29d88dd6acf1e",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "487608a2bd1461b9bded39a7da75451470d9fe85c69171baea5d88dd3ba811c1",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "012",
+  "family_spec_sha256": "416e0322e499209d81dc0291a3034763fafa26b128a4fb688227b53d5aac0833",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "702b20a538e6cf84ee1d7ec909c70ea52efeab0f4cb201720491828c1cae0d3e",
+  "public_contract": "tasks/512-clock-divider-testbench/public_contract.json",
+  "public_contract_sha256": "c70ef7a29d2445fc3ed742400149aea543f1ccb6c748bda3b667773035824b18",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/512-clock-divider-testbench",
+  "task_id": "v4-512"
+}

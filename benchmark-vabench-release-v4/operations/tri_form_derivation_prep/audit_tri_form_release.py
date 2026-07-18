@@ -241,7 +241,11 @@ def build_release_seal(
         "simulation_claim": (
             "none; one or more source certifications require Rust EVAS2 refresh"
             if refresh_required
-            else "canonical DUT gold and exact-five negative Rust EVAS2 certifications reused by hash"
+            else (
+                "fresh full400 Rust EVAS2 evidence with hash-bound source inputs"
+                if release_revision == "r45"
+                else "canonical DUT gold and exact-five negative Rust EVAS2 certifications reused by hash"
+            )
         ),
     }
     if refresh_required:

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "sine_vco_idtmod_bound_step.va"
+  ],
+  "canonical_dut_source_slug": "299-sine-vco-idtmod-bound-step",
+  "checker_task_id": "v4_299_sine_vco_idtmod_bound_step",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "8f7570b051b7439a242c605c08358e236c1159a5bd487441b8aa9589f60a50fc",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "1545ee41af33bfc5812efe72a7e2ed948f95e464b6f120627e391845569b22e4",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "ca738103bf840684fdd32edcc825fd7a02d5bc1bc91acbb972ccc511d2a69b06",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "299",
+  "family_spec_sha256": "01a7ce64347fb4eded3b5d85a92f31d288af51081f54910bfecd4ec8fb0171ef",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "bae4d0f21d01f0d8448abcfc3c0e4928836becdfd0fd7635be633fe5fc4f10e4",
+  "public_contract": "tasks/299-sine-vco-idtmod-bound-step/public_contract.json",
+  "public_contract_sha256": "6af8701de9039b4989b8a1407d03a065746e16f6df37740e58a17f42c24a2991",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/299-sine-vco-idtmod-bound-step",
+  "task_id": "v4-299"
+}

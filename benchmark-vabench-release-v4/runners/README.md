@@ -1,15 +1,16 @@
 # benchmarkv4 runners
 
 This directory contains public runtime tooling for
-`benchmark-vabench-release-v4/release/benchmarkv4`.
+`benchmark-vabench-release-v4/release/benchmarkv4-r45`.
 
 Implemented:
 
 - `run_benchmarkv4_campaign.py` is the unified experiment entry point for
-  `release/benchmarkv4`: it builds a random or preselected campaign, then runs
-  `G0`/`G1` through direct one-shot artifact extraction and `G2`-`G5` through
-  the real agentic filesystem plus restricted visible-EVAS loop. Both paths enter the
-  same strict declared-artifact gate before they become score-eligible.
+  `release/benchmarkv4-r45`: it builds a random or preselected campaign, then
+  runs `G0`/`G1` through direct one-shot artifact extraction and `G2`-`G5`
+  through the real agentic filesystem plus restricted visible-EVAS loop. Both
+  paths enter the same strict declared-artifact gate before they become
+  score-eligible.
 
 Boundary:
 

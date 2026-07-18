@@ -618,6 +618,36 @@ def test_g5_testbench_runtime_exports_direct_evas_visible_suite(
     ]
 
 
+def test_g1_dut_runtime_audit_does_not_require_agentic_visible_mount(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    source_task, row, _ = sample_source_task(tmp_path, independent_reference=True)
+    release = tmp_path / "release"
+    task_record = build_dut_view(
+        release, source_task, row, sample_spec(), "a" * 64
+    )
+    install_prompt_assets(release)
+    (release / "TASK_INDEX.json").write_text(
+        json.dumps({"tasks": [task_record]}) + "\n", encoding="utf-8"
+    )
+    runtime = tmp_path / "runtime"
+    monkeypatch.setattr(sys, "argv", [
+        "export_tri_form_runtime.py",
+        "--release", str(release),
+        "--task", "v4-001",
+        "--mode", "G1",
+        "--output", str(runtime),
+        "--working-token-budget", "4096",
+    ])
+    assert export_runtime() == 0
+    assert not (runtime / "public" / "task" / "visible_test.scs").exists()
+    monkeypatch.setattr(sys, "argv", [
+        "audit_runtime_export.py", "--run", str(runtime),
+    ])
+    assert audit_runtime_export() == 0
+
+
 def test_runtime_evidence_rejects_handwritten_pass_report(tmp_path: Path) -> None:
     evidence = tmp_path / "evidence"
     evidence.mkdir()

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "355-pam4-tx-driver",
+  "checker_task_id": "v4_355_pam4_tx_driver",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "85277428802f508ae43b23d9f79b40db5a0dd29d8eb085410edc1691b9880517",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "da20264c2bfd10551ea5d17ff6fe246a9f77a24135d8230b37f8600b971e1abb",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "355",
+  "family_spec_sha256": "0da82fac2756b44f8b1036107a4a06ddae152fb592cccecf812805f291f61af3",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f3d6e7572635968b3ed248b7c9141c7d013a2d1f69a71896bf542e1d0f4b207a",
+  "public_contract": "tasks/855-pam4-tx-driver-testbench/public_contract.json",
+  "public_contract_sha256": "45ec74a9e00c8ea72694126dcce2373c7c34a3a88ad53223b4d96ffa32088e2d",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/855-pam4-tx-driver-testbench",
+  "task_id": "v4-855"
+}

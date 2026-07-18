@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "382-programmable-frequency-divider",
+  "checker_task_id": "v4_382_programmable_frequency_divider",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "bb241f845671e2bc479edd855aab6a0af8e81998bf585ffb00bb5a68d1b2f76a",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "9ee8aa6e093ed5e701c74fbc6066ea45caee11e9304eb5216c5292e5e870efcf",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "382",
+  "family_spec_sha256": "3a29be845c02b9735c93f9bd12a33fdacd5bbb22b16de20136125da9d6bb2298",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "73a367f0c0eaed64f4ed626ed4b0e3d32c1afe6f56cfbf9a735eda31a8aa08d3",
+  "public_contract": "tasks/882-programmable-frequency-divider-testbench/public_contract.json",
+  "public_contract_sha256": "4c8ad53e950aac34687fdf9fa0e230db454dbf26e1c00ab3bb06f40790883144",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/882-programmable-frequency-divider-testbench",
+  "task_id": "v4-882"
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Replace legacy dual-simulator V4 certificates with fresh Rust EVAS2 evidence."""
+"""Build revision-scoped Rust EVAS2 evidence from a full checker report."""
 from __future__ import annotations
 
 import argparse
@@ -15,7 +15,6 @@ from score_denominator_registry import (
 from source_certification_binding import _task_input_hashes, file_sha, tree_sha_by_file_hash
 
 
-SCHEMA_VERSION = "v4-r44-rust-evas2-certification-report-v1"
 GOLD_SCHEMA_VERSION = "v4-task-certification-rust-evas2-v1"
 NEGATIVE_SCHEMA_VERSION = "v4-negative-certification-rust-evas2-v1"
 POLICY = "rust_evas2_only"
@@ -104,6 +103,7 @@ def gold_certificate(
     cases: dict[str, dict[str, Any]],
     runtime: dict[str, str],
     evidence_ref: dict[str, str],
+    campaign: str,
 ) -> dict[str, Any]:
     certificate_inputs, component_inputs = _task_input_hashes(task)
     gold = cases["gold"]
@@ -133,7 +133,7 @@ def gold_certificate(
         },
         "evidence": {
             **evidence_ref,
-            "campaign": "r44-full400",
+            "campaign": campaign,
             "checker_id": gold.get("checker_id"),
             "trace_row_count": gold.get("trace_row_count"),
         },
@@ -147,6 +147,7 @@ def negative_certificate(
     case: dict[str, Any],
     runtime: dict[str, str],
     evidence_ref: dict[str, str],
+    campaign: str,
 ) -> dict[str, Any]:
     evaluator = task / "evaluator"
     mutation = catalog_mutation(task, mutation_id)
@@ -190,7 +191,7 @@ def negative_certificate(
         },
         "evidence": {
             **evidence_ref,
-            "campaign": "r44-full400",
+            "campaign": campaign,
             "checker_id": case.get("checker_id"),
             "trace_row_count": case.get("trace_row_count"),
         },
@@ -236,9 +237,25 @@ def main() -> int:
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--report", type=Path, action="append", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--release-revision",
+        choices=("r44", "r45"),
+        required=True,
+        help="labels the evidence; revisions never share a certification report",
+    )
+    parser.add_argument(
+        "--update-source-certifications",
+        action="store_true",
+        help=(
+            "rewrite per-family source certificates and registry hashes; omit for "
+            "evidence-only certification of an immutable source release"
+        ),
+    )
     args = parser.parse_args()
     source = args.source.expanduser().resolve()
     report_paths = [path.expanduser().resolve() for path in args.report]
+    release_revision = str(args.release_revision)
+    campaign = f"{release_revision}-full400"
     family_cases, runtime = report_cases(report_paths)
     rows = {str(row["canonical_dut_id"]): row for row in load_family_rows(source)}
     if set(rows) != {f"{value:03d}" for value in range(1, 401)}:
@@ -276,9 +293,9 @@ def main() -> int:
 
     output = args.output.expanduser().resolve()
     payload = {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": f"v4-{release_revision}-rust-evas2-certification-report-v1",
         "status": "pass",
-        "release_candidate": "r44",
+        "release_candidate": release_revision,
         "certification_policy": POLICY,
         "runtime": runtime,
         "summary": {
@@ -306,8 +323,13 @@ def main() -> int:
             for path in report_paths
         ],
         "cases": compact_cases,
+        "source_certifications_updated": bool(args.update_source_certifications),
     }
     write_json(output, payload)
+    if not args.update_source_certifications:
+        print(json.dumps({"status": "pass", **payload["summary"]}, indent=2, sort_keys=True))
+        return 0
+
     package_root = Path(__file__).resolve().parents[2]
     try:
         evidence_path = output.relative_to(package_root).as_posix()
@@ -325,7 +347,7 @@ def main() -> int:
         mutation_ids = validate_family_cases(family, row, cases)
         write_json(
             task / "evaluator" / "certification.json",
-            gold_certificate(family, task, cases, runtime, evidence_ref),
+            gold_certificate(family, task, cases, runtime, evidence_ref, campaign),
         )
         for mutation_id in mutation_ids:
             mutation = next(
@@ -335,7 +357,13 @@ def main() -> int:
             write_json(
                 cert_path,
                 negative_certificate(
-                    family, mutation_id, task, cases[mutation_id], runtime, evidence_ref
+                    family,
+                    mutation_id,
+                    task,
+                    cases[mutation_id],
+                    runtime,
+                    evidence_ref,
+                    campaign,
                 ),
             )
         refresh_task_record(task)

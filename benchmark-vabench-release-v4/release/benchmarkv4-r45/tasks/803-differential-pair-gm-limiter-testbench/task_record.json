@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "303-differential-pair-gm-limiter",
+  "checker_task_id": "v4_303_differential_pair_gm_limiter",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "512cc64e42f66de3779d05a020f66950344e901779e72f96808d605a04d0a908",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "39f782afae616daf38c5b2a3acec9982748be2c62e2d8a93dd57db02e38d3913",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "303",
+  "family_spec_sha256": "e2f379c40a3a85cc21c0a0ec169c193799a178f536acb8da23c7084fcf4eae86",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "06a8f6c50861df0227d28fed77b8268e3bce485662bd5d83d1a7b59410fe0508",
+  "public_contract": "tasks/803-differential-pair-gm-limiter-testbench/public_contract.json",
+  "public_contract_sha256": "18ff77b7f174eb38442a184e63472ed4b53d0553553d7fe16d0634a76867ed41",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/803-differential-pair-gm-limiter-testbench",
+  "task_id": "v4-803"
+}

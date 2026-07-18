@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "094-iq-downconversion-chain",
+  "checker_task_id": "v4_094_iq_downconversion_chain",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "7d86536f224deef3fb32e5920035832cafe9c13323dcb70c4d4b88608dcd5c7e",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "7dd4de6d63a218dc926fead9dffa150c8ceda8acc55ee475b5d8803f30190078",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "094",
+  "family_spec_sha256": "841e97dcb331a20eb0b027b13bccfe0bbcf1fc41677c868946d4a30e6e9e6231",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5120f5ac3d67873f085679e1430e853dc6244c042daddf21ea5526cc31e8acdc",
+  "public_contract": "tasks/594-iq-downconversion-chain-testbench/public_contract.json",
+  "public_contract_sha256": "b37ac8899b2ea7b642cc46e5506d4f032fc60e1f778aacf06c25af9f3303e6c0",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/594-iq-downconversion-chain-testbench",
+  "task_id": "v4-594"
+}

@@ -1,0 +1,49 @@
+{
+  "composition_order": [
+    "canonical_instruction_and_inline_artifacts",
+    "form_skill",
+    "evas_guide",
+    "mode_wrapper_response_protocol"
+  ],
+  "modes": {
+    "G0": {
+      "evas_cli": false,
+      "evas_guide": false,
+      "form_skill": false,
+      "process": "direct_one_shot"
+    },
+    "G1": {
+      "evas_cli": false,
+      "evas_guide": false,
+      "form_skill": true,
+      "process": "direct_one_shot"
+    },
+    "G2": {
+      "evas_cli": true,
+      "evas_guide": false,
+      "form_skill": false,
+      "process": "agentic"
+    },
+    "G3": {
+      "evas_cli": true,
+      "evas_guide": false,
+      "form_skill": true,
+      "process": "agentic"
+    },
+    "G4": {
+      "evas_cli": true,
+      "evas_guide": true,
+      "form_skill": false,
+      "process": "agentic"
+    },
+    "G5": {
+      "evas_cli": true,
+      "evas_guide": true,
+      "form_skill": true,
+      "process": "agentic"
+    }
+  },
+  "schema_version": "v4-prompt-mode-registry-v1",
+  "wall_time_policy": "safety_limit_not_ability_budget",
+  "working_token_budget": "runner_supplied_same_ceiling_within_comparison_stratum"
+}

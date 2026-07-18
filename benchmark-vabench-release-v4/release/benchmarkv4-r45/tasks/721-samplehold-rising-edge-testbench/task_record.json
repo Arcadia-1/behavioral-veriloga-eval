@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "221-samplehold-rising-edge",
+  "checker_task_id": "v4_221_samplehold_rising_edge",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "3c10589ad02242cebe90302752dafb04753c491ed3afcef8fc822aeb2f5530d4",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "23c6f7a0e58a34ebb62c6cd7609cb97329dd8d6749022fe77c15297c16bd704c",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "221",
+  "family_spec_sha256": "8660b9f985608938587abf577f379090040340531320f5a96e64f7a4d260e61d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "363d08ed99052fa27a6fb2b61e4c7d6ff7e2ff5166655bde647588ed10bdc8d9",
+  "public_contract": "tasks/721-samplehold-rising-edge-testbench/public_contract.json",
+  "public_contract_sha256": "e68aaf0a51772999574bb52fd72186480facf7c7ca030c1e584bc559e7308a63",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/721-samplehold-rising-edge-testbench",
+  "task_id": "v4-721"
+}
