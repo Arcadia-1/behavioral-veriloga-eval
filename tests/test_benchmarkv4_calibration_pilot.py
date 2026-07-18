@@ -270,6 +270,18 @@ def test_run_evas_testbench_uses_candidate_and_public_case_only(tmp_path: Path) 
     else:
         raise AssertionError("run_evas accepted a case outside the public suite")
 
+    (submission / "testbench.scs").write_text(
+        'ahdl_include "/etc/passwd"\n', encoding="utf-8"
+    )
+    try:
+        runner.run_public_evas(
+            runtime, {"case": "reference"}, 30, fake_evas_command(tmp_path)
+        )
+    except ValueError as exc:
+        assert "escapes the public DUT fixture" in str(exc)
+    else:
+        raise AssertionError("run_evas accepted an absolute candidate include")
+
 
 def test_build_campaign_samples_complete_benchmarkv4_families_without_prompt_records() -> None:
     builder = load_build_campaign()

@@ -73,6 +73,13 @@ PROMPT_EMBEDDED_TASK_FILES = {
     "task/solver_contract.json",
     "task/public_contract.json",
 }
+PUBLIC_INCLUDE_RE = re.compile(
+    r"\b(?:ahdl_include|include)\s+[\"']([^\"']+)[\"']", re.IGNORECASE
+)
+PUBLIC_ESCAPE_RE = re.compile(
+    r"\b(?:shell|system|exec|spawn|unix|socket|tcp|udp|https?|ftp|curl|wget|ocean|skill|ipcBeginProcess)\b",
+    re.IGNORECASE,
+)
 
 
 class AgentTimeoutError(TimeoutError):
@@ -592,6 +599,25 @@ def confined_path(root: Path, relative: str) -> Path:
     return path
 
 
+def validate_public_testbench(candidate: Path) -> None:
+    if candidate.is_symlink() or candidate.stat().st_size > 1_000_000:
+        raise ValueError("candidate testbench must be a regular file no larger than 1 MB")
+    text = candidate.read_text(encoding="utf-8")
+    uncommented = re.sub(r"/\*.*?\*/", "", text, flags=re.DOTALL)
+    uncommented = "\n".join(line.split("//", 1)[0] for line in uncommented.splitlines())
+    if PUBLIC_ESCAPE_RE.search(uncommented):
+        raise ValueError("candidate testbench contains a forbidden process or network escape")
+    includes = PUBLIC_INCLUDE_RE.findall(uncommented)
+    if not includes:
+        raise ValueError("candidate testbench must include its public DUT fixture")
+    for raw in includes:
+        include = Path(raw.replace("\\", "/"))
+        if include.is_absolute() or ".." in include.parts:
+            raise ValueError("candidate testbench include escapes the public DUT fixture")
+        if not include.parts or include.parts[0] != "dut":
+            raise ValueError("candidate testbench includes must remain below ./dut")
+
+
 def run_public_evas(
     runtime: Path,
     arguments: dict[str, Any],
@@ -657,6 +683,7 @@ def run_public_evas(
     candidate = confined_path(submission, "testbench.scs")
     if not candidate.is_file():
         raise FileNotFoundError("submission/testbench.scs is missing")
+    validate_public_testbench(candidate)
     fixture = confined_path(task, cases[case])
     fixture.resolve().relative_to((task / "visible_fixtures").resolve())
     if not fixture.is_dir():
