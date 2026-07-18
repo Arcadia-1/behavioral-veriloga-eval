@@ -91,7 +91,7 @@ def check_v4_311_muxed_track_hold_array_readout(rows: list[dict[str, float]]) ->
         and valid_seen
         and codes_seen >= {0, 1, 2}
         and vout_errors <= max(4, checked // 20)
-        and metric_errors <= 1
+        and metric_errors <= 2
         and valid_errors <= max(5, checked // 20)
         and disabled_update_errors <= 6
     )

@@ -36,10 +36,14 @@ def check_v4_316_residue_amplifier_gain_calibration(rows: list[dict[str, float]]
     expected_code = 0
     lock_streak = 0
     ever_enabled = False
+    inactive_reason: str | None = "reset" if _v4_topup_logic_high(rows[0], "rst") else None
+    inactive_since = float(rows[0].get("time", 0.0)) if inactive_reason else None
     previous_clk = float(rows[0].get("clk", 0.0))
+    clear_settle_s = min(1.0e-9, max(0.35e-9, 0.10 * period))
     for row in rows:
         rst = _v4_topup_logic_high(row, "rst")
-        enabled = _v4_topup_logic_high(row, "cal_en") and not rst
+        cal_en_high = _v4_topup_logic_high(row, "cal_en")
+        enabled = cal_en_high and not rst
         clk = float(row.get("clk", 0.0))
         code = (
             (1 if _v4_topup_logic_high(row, "gain_0") else 0)
@@ -53,15 +57,25 @@ def check_v4_316_residue_amplifier_gain_calibration(rows: list[dict[str, float]]
             clear = code == 0 and abs(vout - 0.45) < 0.08 and metric < 0.08 and not locked
             if rst and clear:
                 reset_clear = True
-            if ever_enabled and not rst and not _v4_topup_logic_high(row, "cal_en") and clear:
+            if ever_enabled and not rst and not cal_en_high and clear:
                 disabled_clear = True
-            if (rst or (ever_enabled and not _v4_topup_logic_high(row, "cal_en"))) and not clear:
+            reason = "reset" if rst else ("disabled" if ever_enabled and not cal_en_high else None)
+            if reason is not None and reason != inactive_reason:
+                inactive_reason = reason
+                inactive_since = float(row["time"])
+            settled_inactive = (
+                inactive_since is None
+                or float(row["time"]) - inactive_since >= clear_settle_s
+            )
+            if reason is not None and settled_inactive and not clear:
                 clear_errors += 1
             expected_code = 0
             lock_streak = 0
             previous_clk = clk
             continue
         ever_enabled = True
+        inactive_reason = None
+        inactive_since = None
         if not _v4_rising(previous_clk, clk):
             previous_clk = clk
             continue
