@@ -72,8 +72,6 @@ def main() -> int:
             problems.append("agentic mode does not expose only the EVAS executable")
         if not (run / "public" / "evas_manifest.json").is_file():
             problems.append("agentic mode lacks the direct EVAS manifest")
-        if not (run / "public" / "task" / "visible_test.scs").is_file():
-            problems.append("agentic mode lacks task-local visible_test.scs")
         if not (run / "public" / "task" / "evas_runtime.json").is_file():
             problems.append("agentic mode lacks the transparent EVAS runtime contract")
         if not (run / "agent_prompt.txt").is_file():
@@ -106,8 +104,12 @@ def main() -> int:
             problems.append("private evaluator bundle missing profiles/")
         form = str(attempt.get("form") or "")
         if form in {"dut", "bugfix"}:
+            if not (run / "public" / "task" / "visible_test.scs").is_file():
+                problems.append("agentic DUT/bugfix mode lacks task-local visible_test.scs")
             if not (evaluator / "solution").is_dir():
                 problems.append("private evaluator bundle missing solution/")
+            if not (evaluator / "canonical_test_profile.json").is_file():
+                problems.append("private evaluator bundle missing canonical_test_profile.json")
             if not (evaluator / "trusted_replay_test.scs").is_file():
                 problems.append("private evaluator bundle missing trusted replay deck")
         if form == "testbench":
@@ -116,10 +118,12 @@ def main() -> int:
                     problems.append(f"private testbench evaluator bundle missing {required}/")
             for required in (
                 "mutation_catalog.json", "reference_tb.scs", "testbench_security_policy.json",
-                "trusted_replay_test.scs", "trusted_replay_suite.json",
+                "trusted_replay_suite.json",
             ):
                 if not (evaluator / required).is_file():
                     problems.append(f"private testbench evaluator bundle missing {required}")
+            if not (evaluator / "trusted_replay_fixtures").is_dir():
+                problems.append("private testbench evaluator bundle missing trusted_replay_fixtures/")
         visible = run / "public" / "task" / "visible_test.scs"
         trusted = evaluator / "trusted_replay_test.scs"
         if mode not in {"G0", "G1"} and visible.is_file() and trusted.is_file():
@@ -134,6 +138,15 @@ def main() -> int:
                 "mutation_01", "mutation_02", "mutation_03", "mutation_04", "mutation_05", "reference",
             ]:
                 problems.append("public testbench runtime does not expose one reference and five mutation fixtures")
+            public_suite = run / "public" / "task" / "evas_runtime.json"
+            trusted_suite = evaluator / "trusted_replay_suite.json"
+            trusted_fixtures = evaluator / "trusted_replay_fixtures"
+            if public_suite.is_file() and trusted_suite.is_file() and public_suite.read_bytes() != trusted_suite.read_bytes():
+                problems.append("public and trusted testbench suite manifests differ")
+            if fixtures.is_dir() and trusted_fixtures.is_dir() and tree_sha(fixtures) != tree_sha(trusted_fixtures):
+                problems.append("public and trusted testbench fixture trees differ")
+            if (run / "public" / "task" / "visible_test.scs").exists():
+                problems.append("testbench runtime exposes a gold-derived visible_test.scs")
         if attempt.get("evaluator_bundle_sha256") != tree_sha(evaluator):
             problems.append("evaluator bundle hash does not match the prepared workspace")
     for path in (run / "public").rglob("*"):

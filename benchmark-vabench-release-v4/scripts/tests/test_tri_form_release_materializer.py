@@ -4,6 +4,8 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 
 PREP = Path(__file__).resolve().parents[2] / "operations" / "tri_form_derivation_prep"
 if str(PREP) not in sys.path:
@@ -13,6 +15,7 @@ from materialize_tri_form_release import (  # noqa: E402
     COMPONENT_METADATA,
     MODES,
     REFERENCE_TOKENIZER,
+    build_dut_view,
     build_testbench_view,
     canonical_required_behavior,
     install_prompt_assets,
@@ -32,6 +35,7 @@ from export_tri_form_runtime import (  # noqa: E402
     main as export_runtime,
     ordered_prompt_components,
     render_prompt,
+    task_record as load_task_record,
 )
 from audit_runtime_export import main as audit_runtime_export  # noqa: E402
 from record_runtime_ingestion_evidence import verified_audit  # noqa: E402
@@ -81,7 +85,33 @@ def sample_source_task(tmp_path: Path, *, independent_reference: bool) -> tuple[
     (evaluator / "checker_profile.json").write_text(
         '{"checker_task_id":"v4_001_sample"}\n', encoding="utf-8"
     )
-    (evaluator / "harness_spec.json").write_text("{}\n", encoding="utf-8")
+    harness = {
+        "schema_version": "v4-harness-spec-v1",
+        "family_id": "001",
+        "task_id": "v4-001",
+        "generator": {"name": "render_v4_harness.py", "version": "test"},
+        "candidate": {"source_root": "./dut", "artifact_paths": ["dut.va"]},
+        "deck": {
+            "header": ["simulator lang=spectre", "global 0"],
+            "include_templates": ["ahdl_include \"{candidate_source_root}/{artifact_path}\""],
+            "body_lines": ["Vstim (vin 0) vsource dc=0.45", "XDUT (vin) dut"],
+            "analyses": ["tran tran stop=10n maxstep=100p"],
+            "save_signals": ["vin"],
+        },
+        "property_ids": ["P_HOLD"],
+        "profile_defaults": {
+            "feedback": {
+                "parameters": {}, "corners": ["nominal"], "deterministic_seed": 7,
+                "simulatorOptions": {"evas_profile": "balanced", "strict": True},
+                "deck_overrides": {},
+            },
+            "score": {
+                "parameters": {}, "corners": ["nominal"], "deterministic_seed": 7,
+                "simulatorOptions": {"strict": True}, "deck_overrides": {},
+            },
+        },
+    }
+    (evaluator / "harness_spec.json").write_text(json.dumps(harness) + "\n", encoding="utf-8")
     (evaluator / "solution" / "dut.va").write_text("module dut; endmodule\n", encoding="utf-8")
     (evaluator / "score_tb.scs").write_text(
         'ahdl_include "./dut/dut.va"\n', encoding="utf-8"
@@ -102,7 +132,10 @@ def sample_source_task(tmp_path: Path, *, independent_reference: bool) -> tuple[
     row = {
         "canonical_dut_id": "001",
         "active_mutations": [{"mutation_id": mutation_id} for mutation_id in mutation_ids],
-        "hashes": {"mutation_catalog_sha256": file_sha(evaluator / "mutation_catalog.json")},
+        "hashes": {
+            "mutation_catalog_sha256": file_sha(evaluator / "mutation_catalog.json"),
+            "task_certification_sha256": "b" * 64,
+        },
     }
     seed_review = {"mutation_id": mutation_ids[0]}
     return source_task, row, seed_review
@@ -124,6 +157,48 @@ def test_reference_tb_prefers_explicit_independent_asset(tmp_path: Path) -> None
     assert source_kind == "independent_reference_tb"
 
 
+def test_dut_builder_binds_canonical_profile_to_identical_runtime_decks(
+    tmp_path: Path,
+) -> None:
+    source_task, row, _ = sample_source_task(tmp_path, independent_reference=True)
+    output = tmp_path / "release"
+    record = build_dut_view(
+        output, source_task, row, sample_spec(), file_sha(source_task / "evaluator" / "family_spec.json")
+    )
+    task = output / record["task_dir"]
+    task_record = json.loads((task / "task_record.json").read_text(encoding="utf-8"))
+    profile = json.loads(
+        (task / "evaluator" / "canonical_test_profile.json").read_text(encoding="utf-8")
+    )
+    visible = task / "public" / "visible_test.scs"
+    trusted = task / "evaluator" / "trusted_replay_test.scs"
+
+    assert visible.read_bytes() == trusted.read_bytes()
+    assert profile["test_deck_sha256"] == file_sha(visible)
+    assert task_record["release_revision"] == "r45"
+    assert task_record["evaluation_binding"]["profile_sha256"] == file_sha(
+        task / "evaluator" / "canonical_test_profile.json"
+    )
+
+
+def test_runtime_export_rejects_tampered_canonical_deck(tmp_path: Path) -> None:
+    source_task, row, _ = sample_source_task(tmp_path, independent_reference=True)
+    release = tmp_path / "release"
+    record = build_dut_view(
+        release, source_task, row, sample_spec(), file_sha(source_task / "evaluator" / "family_spec.json")
+    )
+    (release / "TASK_INDEX.json").write_text(
+        json.dumps({"tasks": [record]}) + "\n", encoding="utf-8"
+    )
+    task = release / record["task_dir"]
+    (task / "evaluator" / "trusted_replay_test.scs").write_text(
+        "tampered\n", encoding="utf-8"
+    )
+
+    with pytest.raises(SystemExit, match="decks differ"):
+        load_task_record(release, "v4-001")
+
+
 def test_reference_tb_legacy_fallback_is_explicit(tmp_path: Path) -> None:
     source_task, _, _ = sample_source_task(tmp_path, independent_reference=False)
     path, source_kind = resolve_testbench_reference(source_task)
@@ -141,9 +216,14 @@ def test_testbench_builder_records_reference_hash_and_source_kind(tmp_path: Path
     assert score["reference_tb_sha256"] == file_sha(source_task / "evaluator" / "reference_tb.scs")
     assert score["reference_tb_source_kind"] == "independent_reference_tb"
     task = output / "tasks" / "501-sample-testbench"
-    assert (task / "public" / "visible_test.scs").read_bytes() == (
-        task / "evaluator" / "trusted_replay_test.scs"
+    assert not (task / "public" / "visible_test.scs").exists()
+    assert not (task / "evaluator" / "trusted_replay_test.scs").exists()
+    assert (task / "public" / "evas_runtime.json").read_bytes() == (
+        task / "evaluator" / "trusted_replay_suite.json"
     ).read_bytes()
+    assert file_sha(task / "public" / "evas_runtime.json") == json.loads(
+        (task / "task_record.json").read_text(encoding="utf-8")
+    )["evaluation_binding"]["public_suite_sha256"]
     assert sorted(
         path.name for path in (task / "public" / "visible_fixtures").iterdir()
     ) == ["mutation_01", "mutation_02", "mutation_03", "mutation_04", "mutation_05", "reference"]
@@ -522,8 +602,9 @@ def test_g5_testbench_runtime_exports_direct_evas_visible_suite(
         "audit_runtime_export.py", "--run", str(runtime),
     ])
     assert audit_runtime_export() == 0
-    assert (runtime / "public" / "task" / "visible_test.scs").read_bytes() == (
-        runtime / "evaluator" / "trusted_replay_test.scs"
+    assert not (runtime / "public" / "task" / "visible_test.scs").exists()
+    assert (runtime / "public" / "task" / "evas_runtime.json").read_bytes() == (
+        runtime / "evaluator" / "trusted_replay_suite.json"
     ).read_bytes()
     suite = json.loads(
         (runtime / "public" / "task" / "evas_runtime.json").read_text(encoding="utf-8")

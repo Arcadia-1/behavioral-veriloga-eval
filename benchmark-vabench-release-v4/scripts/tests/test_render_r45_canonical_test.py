@@ -84,6 +84,17 @@ def test_deck_is_deterministic() -> None:
     assert first_deck == second_deck
 
 
+def test_deployment_binding_updates_only_the_deck_hash() -> None:
+    profile, _ = renderer.build_canonical_test(_spec(), "e" * 64)
+    deployed = 'ahdl_include "../submission/dut.va"\n'
+
+    bound = renderer.bind_deployed_test_deck(profile, deployed)
+
+    assert bound["test_deck_sha256"] == hashlib.sha256(deployed.encode()).hexdigest()
+    assert bound["canonical_semantics_sha256"] == profile["canonical_semantics_sha256"]
+    assert profile["test_deck_sha256"] != bound["test_deck_sha256"]
+
+
 def test_schema_validation_has_no_jsonschema_runtime_requirement(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

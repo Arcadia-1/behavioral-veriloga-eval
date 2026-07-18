@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 import sys
@@ -119,6 +120,22 @@ def build_canonical_test(
     }
     validate_profile(profile)
     return profile, deck
+
+
+def bind_deployed_test_deck(
+    profile: dict[str, Any], deck: str
+) -> dict[str, Any]:
+    """Bind canonical semantics to the exact deck bytes used at runtime.
+
+    Materializers may rewrite only deployment paths (for example ``./dut`` to
+    the writable submission mount).  The semantic profile stays unchanged,
+    while its deck hash must describe the bytes copied to both public and
+    trusted replay surfaces.
+    """
+    bound = copy.deepcopy(profile)
+    bound["test_deck_sha256"] = hashlib.sha256(deck.encode("utf-8")).hexdigest()
+    validate_profile(bound)
+    return bound
 
 
 def load_and_build(spec_path: Path) -> tuple[dict[str, Any], str]:

@@ -52,6 +52,71 @@ def tree_sha(path: Path) -> str:
     return digest.hexdigest()
 
 
+def validate_evaluation_binding(record: dict[str, Any], task_dir: Path) -> None:
+    binding = record.get("evaluation_binding") or {}
+    if not binding:
+        raise SystemExit(
+            "legacy r44 task records are unsupported by the direct-EVAS exporter; "
+            "materialize an r45 release first"
+        )
+    form = str(record.get("form") or "")
+    if form in {"dut", "bugfix"}:
+        if binding.get("kind") != "canonical_test_deck":
+            raise SystemExit("task lacks canonical test deck binding")
+        profile = task_dir / str(binding.get("profile") or "")
+        visible = task_dir / str(binding.get("public_test") or "")
+        trusted = task_dir / str(binding.get("trusted_replay_test") or "")
+        if not all(path.is_file() for path in (profile, visible, trusted)):
+            raise SystemExit("canonical test binding references missing files")
+        profile_payload = read_json(profile)
+        deck_sha = file_sha(visible)
+        if binding.get("profile_sha256") != file_sha(profile):
+            raise SystemExit("canonical test profile hash mismatch")
+        if (
+            profile_payload.get("schema_version") != "r45-canonical-test-profile-v1"
+            or profile_payload.get("profile_name") != "canonical_test"
+        ):
+            raise SystemExit("canonical test profile identity mismatch")
+        if binding.get("canonical_semantics_sha256") != profile_payload.get(
+            "canonical_semantics_sha256"
+        ):
+            raise SystemExit("canonical test semantic hash mismatch")
+        if binding.get("test_deck_sha256") != deck_sha:
+            raise SystemExit("canonical test deck hash mismatch")
+        if profile_payload.get("test_deck_sha256") != deck_sha:
+            raise SystemExit("canonical profile does not bind the deployed deck")
+        if profile_payload.get("reuse_policy") != binding.get("reuse_policy"):
+            raise SystemExit("canonical test reuse policy mismatch")
+        if visible.read_bytes() != trusted.read_bytes():
+            raise SystemExit("public and trusted canonical test decks differ")
+        return
+
+    if form != "testbench" or binding.get("kind") != "public_testbench_suite":
+        raise SystemExit("task lacks public testbench suite binding")
+    if binding.get("reuse_policy") != "public_and_trusted_replay_suite_same_bytes":
+        raise SystemExit("testbench suite reuse policy mismatch")
+    public_suite = task_dir / str(binding.get("public_suite") or "")
+    trusted_suite = task_dir / str(binding.get("trusted_replay_suite") or "")
+    public_fixtures = task_dir / str(binding.get("public_fixture_tree") or "")
+    trusted_fixtures = task_dir / str(binding.get("trusted_replay_fixture_tree") or "")
+    if not public_suite.is_file() or not trusted_suite.is_file():
+        raise SystemExit("testbench suite binding references missing manifests")
+    if not public_fixtures.is_dir() or not trusted_fixtures.is_dir():
+        raise SystemExit("testbench suite binding references missing fixtures")
+    suite_sha = file_sha(public_suite)
+    fixture_sha = tree_sha(public_fixtures)
+    if binding.get("public_suite_sha256") != suite_sha:
+        raise SystemExit("public testbench suite hash mismatch")
+    if binding.get("public_fixture_tree_sha256") != fixture_sha:
+        raise SystemExit("public testbench fixture tree hash mismatch")
+    if read_json(public_suite).get("fixture_tree_sha256") != fixture_sha:
+        raise SystemExit("testbench suite manifest does not bind its fixture tree")
+    if public_suite.read_bytes() != trusted_suite.read_bytes():
+        raise SystemExit("public and trusted testbench suite manifests differ")
+    if tree_sha(trusted_fixtures) != fixture_sha:
+        raise SystemExit("public and trusted testbench fixture trees differ")
+
+
 def copy_tree(source: Path, target: Path) -> None:
     if source.is_dir():
         shutil.copytree(source, target, dirs_exist_ok=True)
@@ -102,6 +167,7 @@ def task_record(release: Path, task_id: str) -> tuple[dict[str, Any], Path]:
         raise SystemExit(f"task record public contract hash mismatch: {task_id}")
     if record.get("public_bundle_sha256") != tree_sha(task_dir / "public"):
         raise SystemExit(f"task record public bundle hash mismatch: {task_id}")
+    validate_evaluation_binding(record, task_dir)
     return record, task_dir
 
 
@@ -282,15 +348,20 @@ def install_public(task_dir: Path, public_root: Path, form: str, mode: str) -> N
         shutil.copy2(source, destination)
     if mode in AGENTIC:
         for name in ("visible_test.scs", "evas_runtime.json"):
-            shutil.copy2(source_public / name, target / name)
+            if (source_public / name).is_file():
+                shutil.copy2(source_public / name, target / name)
         copy_tree(source_public / "visible_fixtures", target / "visible_fixtures")
+        commands = ["evas --help"]
+        if form in {"dut", "bugfix"}:
+            commands.append(
+                "evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict"
+            )
+        else:
+            commands.append("use candidate_command_template from public/task/evas_runtime.json")
         write_json(public_root / "evas_manifest.json", {
             "schema_version": "r45-public-evas-manifest-v1",
             "executable": "evas",
-            "commands": [
-                "evas --help",
-                "evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict",
-            ],
+            "commands": commands,
             "runtime_contract": "public/task/evas_runtime.json",
             "direct_simulator": True,
             "private_score_available": False,
@@ -308,6 +379,7 @@ def install_evaluator(task_dir: Path, evaluator_root: Path, record: dict[str, An
     shutil.copy2(task_eval / "score_policy.json", evaluator_root / "score_policy.json")
     if form in {"dut", "bugfix"}:
         copy_tree(task_eval / "solution", evaluator_root / "solution")
+        shutil.copy2(task_eval / "canonical_test_profile.json", evaluator_root / "canonical_test_profile.json")
         shutil.copy2(task_eval / "trusted_replay_test.scs", evaluator_root / "trusted_replay_test.scs")
     if form == "testbench":
         copy_tree(task_eval / "solution", evaluator_root / "trusted_solution")
@@ -315,8 +387,8 @@ def install_evaluator(task_dir: Path, evaluator_root: Path, record: dict[str, An
         shutil.copy2(task_eval / "mutation_catalog.json", evaluator_root / "mutation_catalog.json")
         for name in ("reference_tb.scs", "testbench_security_policy.json"):
             shutil.copy2(task_eval / name, evaluator_root / name)
-        for name in ("trusted_replay_test.scs", "trusted_replay_suite.json"):
-            shutil.copy2(task_eval / name, evaluator_root / name)
+        shutil.copy2(task_eval / "trusted_replay_suite.json", evaluator_root / "trusted_replay_suite.json")
+        copy_tree(task_eval / "trusted_replay_fixtures", evaluator_root / "trusted_replay_fixtures")
 
 
 def main() -> int:

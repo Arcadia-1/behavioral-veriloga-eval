@@ -14,6 +14,7 @@ import hashlib
 import json
 import re
 import shutil
+import sys
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -27,6 +28,15 @@ from score_denominator_registry import (
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 PREP_ROOT = Path(__file__).resolve().parent
+SCRIPTS_ROOT = PACKAGE_ROOT / "scripts"
+if str(SCRIPTS_ROOT) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_ROOT))
+
+from render_r45_canonical_test import (  # noqa: E402
+    REUSE_POLICY as CANONICAL_TEST_REUSE_POLICY,
+    bind_deployed_test_deck,
+    build_canonical_test,
+)
 DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 DEFAULT_OUTPUT = PACKAGE_ROOT / "release" / "benchmarkv4"
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
@@ -554,9 +564,11 @@ def common_task_record(
     *, task_id: str, form: str, family_id: str, directory: str, spec_sha: str,
     source_task_slug: str, checker_task_id: str, candidate_artifacts: list[str],
     public_contract: str, public_contract_sha: str, public_bundle_sha: str,
+    evaluation_binding: dict[str, Any],
 ) -> dict[str, Any]:
     return {
-        "schema_version": "v4-benchmarkv4-task-record-v1",
+        "schema_version": "r45-benchmarkv4-task-record-v1",
+        "release_revision": "r45",
         "task_id": task_id,
         "form": form,
         "family_id": family_id,
@@ -568,6 +580,7 @@ def common_task_record(
         "canonical_dut_source_slug": source_task_slug,
         "checker_task_id": checker_task_id,
         "public_bundle_sha256": public_bundle_sha,
+        "evaluation_binding": evaluation_binding,
         "scored": True,
         "modes": list(MODES),
     }
@@ -621,20 +634,32 @@ def materialize_standalone_evaluator(source_task: Path, evaluator: Path, *, incl
         )
 
 
-def render_visible_dut_test(score_tb: Path) -> str:
+def render_visible_dut_test(canonical_deck: str) -> str:
     """Bind the canonical deck to the agent's writable submission directory."""
-    text = score_tb.read_text(encoding="utf-8")
+    text = canonical_deck
     text = text.replace('ahdl_include "./dut/', 'ahdl_include "../submission/')
     text = text.replace('ahdl_include "./support/', 'ahdl_include "./public_support/')
     return text
 
 
-def install_visible_dut_runtime(task_dir: Path) -> None:
+def canonical_profile_for_task(source_task: Path) -> tuple[dict[str, Any], str]:
+    spec_path = source_task / "evaluator" / "harness_spec.json"
+    return build_canonical_test(read_json(spec_path), file_sha(spec_path))
+
+
+def install_visible_dut_runtime(
+    task_dir: Path, source_task: Path
+) -> dict[str, Any]:
     public = task_dir / "public"
     evaluator = task_dir / "evaluator"
+    profile, canonical_deck = canonical_profile_for_task(source_task)
     visible = public / "visible_test.scs"
-    write_text(visible, render_visible_dut_test(evaluator / "score_tb.scs"))
+    visible_text = render_visible_dut_test(canonical_deck)
+    write_text(visible, visible_text)
     shutil.copy2(visible, evaluator / "trusted_replay_test.scs")
+    profile = bind_deployed_test_deck(profile, visible_text)
+    profile_path = evaluator / "canonical_test_profile.json"
+    write_json(profile_path, profile)
     write_json(public / "evas_runtime.json", {
         "schema_version": "r45-direct-evas-runtime-v1",
         "command": "evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict",
@@ -644,6 +669,16 @@ def install_visible_dut_runtime(task_dir: Path) -> None:
         "trusted_replay": "byte_identical_visible_test",
         "visible_test_sha256": file_sha(visible),
     })
+    return {
+        "kind": "canonical_test_deck",
+        "profile": "evaluator/canonical_test_profile.json",
+        "profile_sha256": file_sha(profile_path),
+        "canonical_semantics_sha256": profile["canonical_semantics_sha256"],
+        "public_test": "public/visible_test.scs",
+        "trusted_replay_test": "evaluator/trusted_replay_test.scs",
+        "test_deck_sha256": file_sha(visible),
+        "reuse_policy": CANONICAL_TEST_REUSE_POLICY,
+    }
 
 
 def install_visible_testbench_runtime(
@@ -651,7 +686,7 @@ def install_visible_testbench_runtime(
     source_task: Path,
     spec: dict[str, Any],
     mutation_ids: list[str],
-) -> None:
+) -> dict[str, Any]:
     public = task_dir / "public"
     evaluator = task_dir / "evaluator"
     fixtures = public / "visible_fixtures"
@@ -668,14 +703,6 @@ def install_visible_testbench_runtime(
         overlay_mutation(source_task, mutation_id, dut_root, artifact_paths)
         cases.append({"case": case, "dut_root": f"visible_fixtures/{case}/dut"})
 
-    reference = evaluator / "reference_tb.scs"
-    visible_text = reference.read_text(encoding="utf-8").replace(
-        'ahdl_include "./dut/',
-        'ahdl_include "./visible_fixtures/reference/dut/',
-    )
-    visible = public / "visible_test.scs"
-    write_text(visible, visible_text)
-    shutil.copy2(visible, evaluator / "trusted_replay_test.scs")
     suite = {
         "schema_version": "r45-direct-evas-testbench-suite-v1",
         "candidate": "public/submission/testbench.scs",
@@ -683,7 +710,6 @@ def install_visible_testbench_runtime(
         "cases": cases,
         "fixture_policy": "read_only_and_identical_for_visible_and_final_replay",
         "working_directory": "runtime_package_root",
-        "reference_command": "evas simulate public/task/visible_test.scs -o public/submission/evas-output/reference --spectre-strict",
         "candidate_command_template": (
             "mkdir -p public/submission/runs/{case} && "
             "cp public/submission/testbench.scs public/submission/runs/{case}/testbench.scs && "
@@ -691,10 +717,21 @@ def install_visible_testbench_runtime(
             "evas simulate public/submission/runs/{case}/testbench.scs "
             "-o public/submission/evas-output/{case} --spectre-strict"
         ),
-        "visible_test_sha256": file_sha(visible),
+        "fixture_tree_sha256": tree_sha(fixtures),
     }
     write_json(public / "evas_runtime.json", suite)
     shutil.copy2(public / "evas_runtime.json", evaluator / "trusted_replay_suite.json")
+    copy_tree(fixtures, evaluator / "trusted_replay_fixtures")
+    return {
+        "kind": "public_testbench_suite",
+        "public_suite": "public/evas_runtime.json",
+        "public_suite_sha256": file_sha(public / "evas_runtime.json"),
+        "public_fixture_tree": "public/visible_fixtures",
+        "public_fixture_tree_sha256": tree_sha(fixtures),
+        "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+        "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+        "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    }
 
 
 def evaluator_checker_task_id(evaluator: Path) -> str:
@@ -748,7 +785,7 @@ def build_dut_view(
         "gold_solution_tree_sha256": tree_sha(evaluator / "solution"),
         "gold_dut_certification_sha256": row["hashes"]["task_certification_sha256"],
     })
-    install_visible_dut_runtime(task_dir)
+    evaluation_binding = install_visible_dut_runtime(task_dir, source_task)
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
         task_id=f"v4-{family}", form="dut", family_id=family,
@@ -758,6 +795,7 @@ def build_dut_view(
         candidate_artifacts=contract["target_artifacts"], public_contract=public_contract,
         public_contract_sha=public_contract_sha,
         public_bundle_sha=bundle_sha,
+        evaluation_binding=evaluation_binding,
     ))
     return {
         "task_id": f"v4-{family}",
@@ -809,7 +847,7 @@ def build_testbench_view(
         },
         "evas": {
             "available_in_modes": ["G2", "G3", "G4", "G5"],
-            "reference_command": "evas simulate public/task/visible_test.scs -o public/submission/evas-output/reference --spectre-strict",
+            "runtime_contract": "public/task/evas_runtime.json",
             "visible_and_final_suite": "identical_reference_plus_five_mutations",
         },
         "security_summary": [
@@ -860,7 +898,9 @@ def build_testbench_view(
         ],
         "require": ["declared_dut_binding", "transient_analysis", "all_required_public_traces"],
     })
-    install_visible_testbench_runtime(task_dir, source_task, spec, suite)
+    evaluation_binding = install_visible_testbench_runtime(
+        task_dir, source_task, spec, suite
+    )
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
         task_id=f"v4-{task_num:03d}", form="testbench", family_id=family,
@@ -871,6 +911,7 @@ def build_testbench_view(
         public_contract=public_contract,
         public_contract_sha=public_contract_sha,
         public_bundle_sha=bundle_sha,
+        evaluation_binding=evaluation_binding,
     ))
     return {
         "task_id": f"v4-{task_num:03d}",
@@ -944,7 +985,7 @@ def build_bugfix_view(
         "changed_artifacts": changed,
         "gold_dut_certification_sha256": row["hashes"]["task_certification_sha256"],
     })
-    install_visible_dut_runtime(task_dir)
+    evaluation_binding = install_visible_dut_runtime(task_dir, source_task)
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
         task_id=f"v4-{task_num}", form="bugfix", family_id=family,
@@ -955,6 +996,7 @@ def build_bugfix_view(
         public_contract=public_contract,
         public_contract_sha=public_contract_sha,
         public_bundle_sha=bundle_sha,
+        evaluation_binding=evaluation_binding,
     ))
     return {
         "task_id": f"v4-{task_num}",
@@ -1074,16 +1116,16 @@ def main() -> int:
 
     task_rows.sort(key=lambda item: int(str(item["task_id"]).split("-", 1)[1]))
     install_prompt_assets(output)
-    write_json(output / "TASK_INDEX.json", {"schema_version": "v4-benchmarkv4-task-index-v1", "tasks": task_rows})
+    write_json(output / "TASK_INDEX.json", {"schema_version": "r45-benchmarkv4-task-index-v1", "tasks": task_rows})
     counts = {form: sum(item["form"] == form for item in task_rows) for form in ("dut", "testbench", "bugfix")}
     rerun_required = bool(certification_reuse["simulation_rerun_required_for_materialization"])
     manifest = {
-        "schema_version": "v4-benchmarkv4-release-manifest-v1",
-        "release_revision": "r44",
+        "schema_version": "r45-benchmarkv4-release-manifest-v1",
+        "release_revision": "r45",
         "release_status": (
             "materialized_certification_refresh_required"
             if rerun_required
-            else "r44_materialized_rust_evas2_audit_pending"
+            else "r45_materialized_rust_evas2_audit_pending"
         ),
         "family_count": 400,
         "task_count": len(task_rows),

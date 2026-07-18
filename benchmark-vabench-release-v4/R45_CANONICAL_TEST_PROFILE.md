@@ -5,10 +5,16 @@ r45 replaces the duplicated r44 `feedback` and `score` profiles with one
 selection, public visibility, and trusted evaluator placement are deployment
 concerns and are not alternate test profiles.
 
-The public visible test and final trusted replay must use byte-identical decks.
-The generated profile records the deck SHA-256 and declares the reuse policy
-`public_visible_and_final_trusted_replay_same_bytes`. A runtime exporter should
-copy the same rendered deck to both surfaces and reject a hash mismatch.
+For DUT and bugfix forms, the public visible test and final trusted replay must
+use byte-identical decks. The generated profile records the deployed deck
+SHA-256 and declares the reuse policy
+`public_visible_and_final_trusted_replay_same_bytes`. The runtime exporter
+copies the same rendered deck to both surfaces and rejects a hash mismatch.
+
+The testbench form does not publish `reference_tb.scs`, because that file is
+the gold candidate. Instead it binds the public reference-plus-five-mutation
+fixture tree and suite manifest by hash, and the trusted replay reuses those
+exact bytes with the model-authored testbench submitted at runtime.
 
 ## Migration
 

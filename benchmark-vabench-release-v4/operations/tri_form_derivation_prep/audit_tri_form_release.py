@@ -205,14 +205,16 @@ def build_release_seal(
     refresh_required = bool(
         certification_reuse.get("simulation_rerun_required_for_materialization")
     )
+    manifest = read_json(release / "MANIFEST.json")
+    release_revision = str(manifest.get("release_revision") or "r44")
     seal = {
         "schema_version": "v4-benchmarkv4-release-seal-v1",
-        "release_revision": "r44",
+        "release_revision": release_revision,
         "immutable": not refresh_required,
         "release_status": (
             "materialized_certification_refresh_required"
             if refresh_required
-            else "r44_immutable_rust_evas2_certified"
+            else f"{release_revision}_immutable_rust_evas2_certified"
         ),
         "source_score_denominator_registry_sha256": source_registry_sha256,
         "artifact_sha256": artifact_hashes,
@@ -397,10 +399,16 @@ def audit_task(
         return
     if len(task_dir_parts) != 2 or task_dir_parts[0] != "tasks":
         problems.append(f"{prefix} task directory is not flat under tasks/")
-    for required in (
-        "task_record.json", "public/instruction.md", "public/visible_test.scs",
-        "public/evas_runtime.json", "public_contract.json", "evaluator",
-    ):
+    required_paths = [
+        "task_record.json", "public/instruction.md", "public/evas_runtime.json",
+        "public_contract.json", "evaluator",
+    ]
+    record_path = task_dir / "task_record.json"
+    record_preview = read_json(record_path) if record_path.is_file() else {}
+    is_r45 = record_preview.get("release_revision") == "r45"
+    if form in {"dut", "bugfix"} or not is_r45:
+        required_paths.append("public/visible_test.scs")
+    for required in required_paths:
         if not (task_dir / required).exists():
             problems.append(f"{prefix} missing {required}")
     if (task_dir / "provenance").exists():
@@ -453,12 +461,59 @@ def audit_task(
     evaluator = audit_standalone_evaluator(task_dir, source_task, form, prefix, problems)
     if evaluator is None:
         return
-    visible = task_dir / "public" / "visible_test.scs"
-    trusted = evaluator / "trusted_replay_test.scs"
-    if not trusted.is_file():
-        problems.append(f"{prefix} evaluator missing trusted_replay_test.scs")
-    elif visible.is_file() and visible.read_bytes() != trusted.read_bytes():
-        problems.append(f"{prefix} visible test and trusted replay deck differ")
+    binding = record.get("evaluation_binding") or {}
+    if not binding:
+        visible = task_dir / "public" / "visible_test.scs"
+        trusted = evaluator / "trusted_replay_test.scs"
+        if not trusted.is_file():
+            problems.append(f"{prefix} evaluator missing trusted_replay_test.scs")
+        elif visible.is_file() and visible.read_bytes() != trusted.read_bytes():
+            problems.append(f"{prefix} visible test and trusted replay deck differ")
+    elif form in {"dut", "bugfix"}:
+        visible = task_dir / "public" / "visible_test.scs"
+        trusted = evaluator / "trusted_replay_test.scs"
+        profile_path = evaluator / "canonical_test_profile.json"
+        if binding.get("kind") != "canonical_test_deck":
+            problems.append(f"{prefix} task record lacks canonical test binding")
+        if not trusted.is_file():
+            problems.append(f"{prefix} evaluator missing trusted_replay_test.scs")
+        elif visible.is_file() and visible.read_bytes() != trusted.read_bytes():
+            problems.append(f"{prefix} visible test and trusted replay deck differ")
+        if not profile_path.is_file():
+            problems.append(f"{prefix} evaluator missing canonical_test_profile.json")
+        elif visible.is_file():
+            profile = read_json(profile_path)
+            if profile.get("test_deck_sha256") != file_sha(visible):
+                problems.append(f"{prefix} canonical profile deck hash mismatch")
+            if binding.get("profile_sha256") != file_sha(profile_path):
+                problems.append(f"{prefix} canonical profile binding hash mismatch")
+            if binding.get("test_deck_sha256") != file_sha(visible):
+                problems.append(f"{prefix} canonical deck binding hash mismatch")
+    else:
+        public_suite = task_dir / "public" / "evas_runtime.json"
+        trusted_suite = evaluator / "trusted_replay_suite.json"
+        public_fixtures = task_dir / "public" / "visible_fixtures"
+        trusted_fixtures = evaluator / "trusted_replay_fixtures"
+        if binding.get("kind") != "public_testbench_suite":
+            problems.append(f"{prefix} task record lacks public testbench suite binding")
+        if (task_dir / "public" / "visible_test.scs").exists():
+            problems.append(f"{prefix} testbench view exposes gold-derived visible_test.scs")
+        if (
+            not public_suite.is_file()
+            or not trusted_suite.is_file()
+            or public_suite.read_bytes() != trusted_suite.read_bytes()
+        ):
+            problems.append(f"{prefix} public and trusted suite manifests differ")
+        if (
+            not public_fixtures.is_dir()
+            or not trusted_fixtures.is_dir()
+            or tree_sha(public_fixtures) != tree_sha(trusted_fixtures)
+        ):
+            problems.append(f"{prefix} public and trusted fixture trees differ")
+        if public_suite.is_file() and binding.get("public_suite_sha256") != file_sha(public_suite):
+            problems.append(f"{prefix} public suite binding hash mismatch")
+        if public_fixtures.is_dir() and binding.get("public_fixture_tree_sha256") != tree_sha(public_fixtures):
+            problems.append(f"{prefix} public fixture binding hash mismatch")
     checker_profile = read_json(evaluator / "checker_profile.json")
     if record.get("checker_task_id") != checker_profile.get("checker_task_id"):
         problems.append(f"{prefix} task record checker_task_id does not match checker_profile.json")
@@ -621,7 +676,7 @@ def audit_prompt_components(release: Path, tasks: list[dict[str, Any]], problems
             policy = mode_records.get(mode) or {}
             expected_cli = mode in AGENTIC_MODES
             if bool(policy.get("evas_cli")) is not expected_cli:
-                problems.append(f"{task_id}/{mode}: EVAS availability mismatch")
+                problems.append(f"{task_id}/{mode}: evaluator CLI availability mismatch")
             public_inputs = iter_prompt_public_inputs(task_dir, form)
             for item in public_inputs:
                 if not item.is_file():
@@ -667,6 +722,27 @@ def main() -> int:
     source = args.source.expanduser().resolve()
     manifest = read_json(release / "MANIFEST.json")
     tasks = read_json(release / "TASK_INDEX.json").get("tasks") or []
+    release_revision = str(manifest.get("release_revision") or "r44")
+    if release_revision == "r44":
+        report = {
+            "schema_version": "r45-benchmarkv4-release-audit-v1",
+            "release_revision": release_revision,
+            "status": "unsupported",
+            "problems": [
+                "tracked r44 uses the legacy feedback-broker protocol; "
+                "materialize r45 before running the direct-EVAS release audit"
+            ],
+        }
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(
+                json.dumps(report, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+        if args.seal_output:
+            raise SystemExit("cannot seal legacy r44 with the r45 direct-EVAS audit")
+        print(json.dumps(report, indent=2, sort_keys=True))
+        return 2
     problems: list[str] = []
     if (release / "private_evaluator").exists():
         problems.append("top-level private_evaluator/ should not exist in standalone benchmarkv4")
@@ -737,10 +813,15 @@ def main() -> int:
     prompt_count = audit_prompt_components(release, tasks, problems)
     if prompt_count != 7200:
         problems.append(f"prompt record count is {prompt_count}, expected 7200")
-    evidence_hashes = audit_r44_evidence(problems)
+    evidence_hashes = {}
+    evidence_input = {}
+    problems.append(
+        f"{release_revision} certification evidence is not staged; "
+        "do not reuse or relabel r44 evidence"
+    )
     report = {
-        "schema_version": "v4-benchmarkv4-release-audit-v1",
-        "release_revision": "r44",
+        "schema_version": "r45-benchmarkv4-release-audit-v1",
+        "release_revision": release_revision,
         "status": "pass" if not problems else "fail",
         "family_count": len(family_forms),
         "task_count": len(tasks),
@@ -748,17 +829,13 @@ def main() -> int:
         "prompt_record_count": prompt_count,
         "testbench_reference_source_counts": dict(sorted(reference_tb_source_counts.items())),
         "certification_reuse": certification_reuse,
-        "certification_status": (
-            "refresh_required"
-            if certification_reuse.get("simulation_rerun_required_for_materialization")
-            else "rust_evas2_certified"
-        ),
+        "certification_status": "r45_evidence_pending",
         "certification_problems": certification_problems,
         "input_hashes": {
             "source_score_denominator_registry_sha256": source_registry_sha,
             "manifest_sha256": file_sha(release / "MANIFEST.json"),
             **expected_materialized_hashes,
-            "r44_evidence_sha256": evidence_hashes,
+            **evidence_input,
         },
         "problems": problems,
     }
