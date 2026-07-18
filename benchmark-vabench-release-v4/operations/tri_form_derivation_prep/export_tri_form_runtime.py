@@ -18,12 +18,12 @@ FORM_SKILLS = {
     "testbench": "testbench_verification.md",
     "bugfix": "bugfix_diagnosis.md",
 }
-FEEDBACK_GUIDES = {
-    "dut": "feedback_dut.md",
-    "testbench": "feedback_testbench.md",
-    "bugfix": "feedback_bugfix.md",
+EVAS_GUIDES = {
+    "dut": "evas_dut.md",
+    "testbench": "evas_testbench.md",
+    "bugfix": "evas_bugfix.md",
 }
-FEEDBACK_CORE = "feedback_core.md"
+EVAS_CORE = "evas_core.md"
 WRAPPERS_BY_PROCESS = {
     "direct_one_shot": "direct_wrapper.md",
     "agentic": "agentic_wrapper.md",
@@ -158,8 +158,8 @@ def prompt_component_path(release: Path, component_id: str) -> Path:
         subdir = "wrappers"
     elif component_id in set(FORM_SKILLS.values()):
         subdir = "form_skills"
-    elif component_id == FEEDBACK_CORE or component_id in set(FEEDBACK_GUIDES.values()):
-        subdir = "feedback_guides"
+    elif component_id == EVAS_CORE or component_id in set(EVAS_GUIDES.values()):
+        subdir = "evas_guides"
     else:
         raise SystemExit(f"unknown prompt component: {component_id}")
     return release / "prompt_modes" / subdir / component_id
@@ -174,7 +174,7 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
     component_records = manifest.get("components") or {
         **(manifest.get("wrappers") or {}),
         **(manifest.get("form_skills") or {}),
-        **(manifest.get("feedback_guides") or {}),
+        **(manifest.get("evas_guides") or {}),
     }
     public_input_paths = [task_dir / "public" / "instruction.md"]
     public_inputs = ["instruction"]
@@ -185,6 +185,11 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
         public_input_paths.extend(sorted((task_dir / "public" / "buggy_bundle").rglob("*.va")))
     support_paths = [path for _, path in public_support_files(task_dir)]
     public_input_paths.extend(support_paths)
+    if mode in AGENTIC:
+        public_input_paths.extend(
+            path for path in sorted((task_dir / "public").rglob("*"))
+            if path.is_file() and path not in public_input_paths
+        )
     for path in public_input_paths[1:]:
         if path.is_relative_to(task_dir / "public"):
             relative = path.relative_to(task_dir / "public").as_posix()
@@ -194,8 +199,8 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
     guide_components: list[str] = []
     if policy.get("form_skill"):
         guide_components.append(FORM_SKILLS[form])
-    if policy.get("feedback_guide"):
-        guide_components.extend([FEEDBACK_CORE, FEEDBACK_GUIDES[form]])
+    if policy.get("evas_guide"):
+        guide_components.extend([EVAS_CORE, EVAS_GUIDES[form]])
     wrapper = WRAPPERS_BY_PROCESS[str(policy.get("process") or "")]
     prompt_components = [*guide_components, wrapper]
     missing = [name for name in prompt_components if name not in component_records]
@@ -214,7 +219,7 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
         "form": form,
         "mode": mode,
         "process": policy["process"],
-        "feedback_cli_available": bool(policy.get("feedback_cli")),
+        "evas_cli_available": bool(policy.get("evas_cli")),
         "canonical_instruction_sha256": file_sha(public_input_paths[0]),
         "public_contract_sha256": public_contract_sha,
         "public_input_hashes": {
@@ -276,10 +281,18 @@ def install_public(task_dir: Path, public_root: Path, form: str, mode: str) -> N
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
     if mode in AGENTIC:
-        write_json(public_root / "tool_manifest.json", {
-            "schema_version": "v4-public-tool-manifest-v1",
-            "commands": ["vabench feedback capabilities", "vabench feedback run"],
-            "available_channels": ["ahdl", "sim-log", "trace", "metrics", "properties"],
+        for name in ("visible_test.scs", "evas_runtime.json"):
+            shutil.copy2(source_public / name, target / name)
+        copy_tree(source_public / "visible_fixtures", target / "visible_fixtures")
+        write_json(public_root / "evas_manifest.json", {
+            "schema_version": "r45-public-evas-manifest-v1",
+            "executable": "evas",
+            "commands": [
+                "evas --help",
+                "evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict",
+            ],
+            "runtime_contract": "public/task/evas_runtime.json",
+            "direct_simulator": True,
             "private_score_available": False,
         })
 
@@ -295,12 +308,14 @@ def install_evaluator(task_dir: Path, evaluator_root: Path, record: dict[str, An
     shutil.copy2(task_eval / "score_policy.json", evaluator_root / "score_policy.json")
     if form in {"dut", "bugfix"}:
         copy_tree(task_eval / "solution", evaluator_root / "solution")
-        shutil.copy2(task_eval / "score_tb.scs", evaluator_root / "trusted_feedback_tb.scs")
+        shutil.copy2(task_eval / "trusted_replay_test.scs", evaluator_root / "trusted_replay_test.scs")
     if form == "testbench":
         copy_tree(task_eval / "solution", evaluator_root / "trusted_solution")
         copy_tree(task_eval / "mutation_bundles", evaluator_root / "mutation_bundles")
         shutil.copy2(task_eval / "mutation_catalog.json", evaluator_root / "mutation_catalog.json")
         for name in ("reference_tb.scs", "testbench_security_policy.json"):
+            shutil.copy2(task_eval / name, evaluator_root / name)
+        for name in ("trusted_replay_test.scs", "trusted_replay_suite.json"):
             shutil.copy2(task_eval / name, evaluator_root / name)
 
 
@@ -337,14 +352,15 @@ def main() -> int:
     (output / prompt_name).write_text(prompt, encoding="utf-8")
     model_mounts = [] if args.mode not in AGENTIC else ["public/task:ro", "public/submission:rw"]
     write_json(output / "MODEL_ACCESS_POLICY.json", {
-        "schema_version": "v4-model-access-policy-v1",
+        "schema_version": "r45-model-access-policy-v1",
         "mode": args.mode,
         "mounts": model_mounts,
+        "executables": [] if args.mode not in AGENTIC else ["evas"],
         "network": False,
         "evaluator_mounted": False,
     })
     write_json(output / "evidence" / "attempt_record.json", {
-        "schema_version": "v4-attempt-record-v1",
+        "schema_version": "r45-attempt-record-v1",
         "task_id": args.task,
         "family_id": record["family_id"],
         "form": record["form"],
@@ -362,7 +378,7 @@ def main() -> int:
             "working_tokens": None,
             "provider_tokens": None,
             "model_turns": None,
-            "feedback_calls": None,
+            "evas_calls": None,
             "simulator_calls": None,
             "wall_time_s": None,
         },

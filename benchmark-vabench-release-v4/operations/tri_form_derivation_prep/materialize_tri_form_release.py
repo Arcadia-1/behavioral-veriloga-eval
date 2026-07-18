@@ -31,24 +31,24 @@ DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-boun
 DEFAULT_OUTPUT = PACKAGE_ROOT / "release" / "benchmarkv4"
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
 MODES = {
-    "G0": {"process": "direct_one_shot", "form_skill": False, "feedback_guide": False, "feedback_cli": False},
-    "G1": {"process": "direct_one_shot", "form_skill": True, "feedback_guide": False, "feedback_cli": False},
-    "G2": {"process": "agentic", "form_skill": False, "feedback_guide": False, "feedback_cli": True},
-    "G3": {"process": "agentic", "form_skill": True, "feedback_guide": False, "feedback_cli": True},
-    "G4": {"process": "agentic", "form_skill": False, "feedback_guide": True, "feedback_cli": True},
-    "G5": {"process": "agentic", "form_skill": True, "feedback_guide": True, "feedback_cli": True},
+    "G0": {"process": "direct_one_shot", "form_skill": False, "evas_guide": False, "evas_cli": False},
+    "G1": {"process": "direct_one_shot", "form_skill": True, "evas_guide": False, "evas_cli": False},
+    "G2": {"process": "agentic", "form_skill": False, "evas_guide": False, "evas_cli": True},
+    "G3": {"process": "agentic", "form_skill": True, "evas_guide": False, "evas_cli": True},
+    "G4": {"process": "agentic", "form_skill": False, "evas_guide": True, "evas_cli": True},
+    "G5": {"process": "agentic", "form_skill": True, "evas_guide": True, "evas_cli": True},
 }
 FORM_SKILLS = {
     "dut": "dut_modeling.md",
     "testbench": "testbench_verification.md",
     "bugfix": "bugfix_diagnosis.md",
 }
-FEEDBACK_GUIDES = {
-    "dut": "feedback_dut.md",
-    "testbench": "feedback_testbench.md",
-    "bugfix": "feedback_bugfix.md",
+EVAS_GUIDES = {
+    "dut": "evas_dut.md",
+    "testbench": "evas_testbench.md",
+    "bugfix": "evas_bugfix.md",
 }
-FEEDBACK_CORE = "feedback_core.md"
+EVAS_CORE = "evas_core.md"
 MATERIALIZED_ARTIFACTS = (
     "TASK_INDEX.json",
     "prompt_modes/modes.json",
@@ -70,15 +70,15 @@ COMPONENT_METADATA = {
     "dut_modeling.md": {"stable_id": "component.form.dut", "kind": "form_skill", "applicable_forms": ["dut"]},
     "testbench_verification.md": {"stable_id": "component.form.testbench", "kind": "form_skill", "applicable_forms": ["testbench"]},
     "bugfix_diagnosis.md": {"stable_id": "component.form.bugfix", "kind": "form_skill", "applicable_forms": ["bugfix"]},
-    "feedback_core.md": {"stable_id": "component.feedback.core", "kind": "feedback_guide", "applicable_forms": ["dut", "testbench", "bugfix"]},
-    "feedback_dut.md": {"stable_id": "component.feedback.dut", "kind": "feedback_guide", "applicable_forms": ["dut"]},
-    "feedback_testbench.md": {"stable_id": "component.feedback.testbench", "kind": "feedback_guide", "applicable_forms": ["testbench"]},
-    "feedback_bugfix.md": {"stable_id": "component.feedback.bugfix", "kind": "feedback_guide", "applicable_forms": ["bugfix"]},
+    "evas_core.md": {"stable_id": "component.evas.core", "kind": "evas_guide", "applicable_forms": ["dut", "testbench", "bugfix"]},
+    "evas_dut.md": {"stable_id": "component.evas.dut", "kind": "evas_guide", "applicable_forms": ["dut"]},
+    "evas_testbench.md": {"stable_id": "component.evas.testbench", "kind": "evas_guide", "applicable_forms": ["testbench"]},
+    "evas_bugfix.md": {"stable_id": "component.evas.bugfix", "kind": "evas_guide", "applicable_forms": ["bugfix"]},
 }
 COMPONENT_SUBDIR_BY_KIND = {
     "wrapper": "wrappers",
     "form_skill": "form_skills",
-    "feedback_guide": "feedback_guides",
+    "evas_guide": "evas_guides",
 }
 STANDALONE_EVALUATOR_COMMON = (
     "family_spec.json",
@@ -621,6 +621,82 @@ def materialize_standalone_evaluator(source_task: Path, evaluator: Path, *, incl
         )
 
 
+def render_visible_dut_test(score_tb: Path) -> str:
+    """Bind the canonical deck to the agent's writable submission directory."""
+    text = score_tb.read_text(encoding="utf-8")
+    text = text.replace('ahdl_include "./dut/', 'ahdl_include "../submission/')
+    text = text.replace('ahdl_include "./support/', 'ahdl_include "./public_support/')
+    return text
+
+
+def install_visible_dut_runtime(task_dir: Path) -> None:
+    public = task_dir / "public"
+    evaluator = task_dir / "evaluator"
+    visible = public / "visible_test.scs"
+    write_text(visible, render_visible_dut_test(evaluator / "score_tb.scs"))
+    shutil.copy2(visible, evaluator / "trusted_replay_test.scs")
+    write_json(public / "evas_runtime.json", {
+        "schema_version": "r45-direct-evas-runtime-v1",
+        "command": "evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict",
+        "working_directory": "runtime_package_root",
+        "candidate_root": "public/submission",
+        "test": "visible_test.scs",
+        "trusted_replay": "byte_identical_visible_test",
+        "visible_test_sha256": file_sha(visible),
+    })
+
+
+def install_visible_testbench_runtime(
+    task_dir: Path,
+    source_task: Path,
+    spec: dict[str, Any],
+    mutation_ids: list[str],
+) -> None:
+    public = task_dir / "public"
+    evaluator = task_dir / "evaluator"
+    fixtures = public / "visible_fixtures"
+    reference_dut = fixtures / "reference" / "dut"
+    copy_solution(source_task, reference_dut, spec)
+    copy_public_support(source_task, reference_dut)
+
+    cases = [{"case": "reference", "dut_root": "visible_fixtures/reference/dut"}]
+    for index, mutation_id in enumerate(mutation_ids, start=1):
+        case = f"mutation_{index:02d}"
+        dut_root = fixtures / case / "dut"
+        artifact_paths = copy_solution(source_task, dut_root, spec)
+        copy_public_support(source_task, dut_root)
+        overlay_mutation(source_task, mutation_id, dut_root, artifact_paths)
+        cases.append({"case": case, "dut_root": f"visible_fixtures/{case}/dut"})
+
+    reference = evaluator / "reference_tb.scs"
+    visible_text = reference.read_text(encoding="utf-8").replace(
+        'ahdl_include "./dut/',
+        'ahdl_include "./visible_fixtures/reference/dut/',
+    )
+    visible = public / "visible_test.scs"
+    write_text(visible, visible_text)
+    shutil.copy2(visible, evaluator / "trusted_replay_test.scs")
+    suite = {
+        "schema_version": "r45-direct-evas-testbench-suite-v1",
+        "candidate": "public/submission/testbench.scs",
+        "candidate_dut_binding": "./dut",
+        "cases": cases,
+        "fixture_policy": "read_only_and_identical_for_visible_and_final_replay",
+        "working_directory": "runtime_package_root",
+        "reference_command": "evas simulate public/task/visible_test.scs -o public/submission/evas-output/reference --spectre-strict",
+        "candidate_command_template": (
+            "mkdir -p public/submission/runs/{case} && "
+            "cp public/submission/testbench.scs public/submission/runs/{case}/testbench.scs && "
+            "ln -sfn ../../../task/{dut_root} public/submission/runs/{case}/dut && "
+            "evas simulate public/submission/runs/{case}/testbench.scs "
+            "-o public/submission/evas-output/{case} --spectre-strict"
+        ),
+        "visible_test_sha256": file_sha(visible),
+    }
+    write_json(public / "evas_runtime.json", suite)
+    shutil.copy2(public / "evas_runtime.json", evaluator / "trusted_replay_suite.json")
+
+
 def evaluator_checker_task_id(evaluator: Path) -> str:
     checker_profile = read_json(evaluator / "checker_profile.json")
     return str(checker_profile.get("checker_task_id") or "")
@@ -651,7 +727,11 @@ def build_dut_view(
         "task_id": f"v4-{family}",
         "form": "dut",
         "target_artifacts": [str(item["path"]) for item in spec["artifact_contract"]["files"]],
-        "feedback": {"available_in_modes": ["G2", "G3", "G4", "G5"], "command": "vabench feedback run"},
+        "evas": {
+            "available_in_modes": ["G2", "G3", "G4", "G5"],
+            "command": "evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict",
+            "visible_and_final_test": "identical",
+        },
     })
     public_contract = write_public_contract(output, task_dir, contract)
     public_contract_sha = file_sha(output / public_contract)
@@ -668,6 +748,7 @@ def build_dut_view(
         "gold_solution_tree_sha256": tree_sha(evaluator / "solution"),
         "gold_dut_certification_sha256": row["hashes"]["task_certification_sha256"],
     })
+    install_visible_dut_runtime(task_dir)
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
         task_id=f"v4-{family}", form="dut", family_id=family,
@@ -726,7 +807,11 @@ def build_testbench_view(
             "anonymous_negative_cases": 5,
             "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
         },
-        "feedback": {"available_in_modes": ["G2", "G3", "G4", "G5"], "command": "vabench feedback run"},
+        "evas": {
+            "available_in_modes": ["G2", "G3", "G4", "G5"],
+            "reference_command": "evas simulate public/task/visible_test.scs -o public/submission/evas-output/reference --spectre-strict",
+            "visible_and_final_suite": "identical_reference_plus_five_mutations",
+        },
         "security_summary": [
             "only declared ./dut source bindings are allowed",
             "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected",
@@ -775,6 +860,7 @@ def build_testbench_view(
         ],
         "require": ["declared_dut_binding", "transient_analysis", "all_required_public_traces"],
     })
+    install_visible_testbench_runtime(task_dir, source_task, spec, suite)
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
         task_id=f"v4-{task_num:03d}", form="testbench", family_id=family,
@@ -830,7 +916,11 @@ def build_bugfix_view(
         "buggy_input_artifacts": [f"buggy_bundle/{path}" for path in artifacts],
         "editable_scope": "complete_declared_verilog_a_bundle",
         "problem_statement": "the supplied system violates the public contract",
-        "feedback": {"available_in_modes": ["G2", "G3", "G4", "G5"], "command": "vabench feedback run"},
+        "evas": {
+            "available_in_modes": ["G2", "G3", "G4", "G5"],
+            "command": "evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict",
+            "visible_and_final_test": "identical",
+        },
     })
     public_contract = write_public_contract(output, task_dir, contract)
     public_contract_sha = file_sha(output / public_contract)
@@ -854,6 +944,7 @@ def build_bugfix_view(
         "changed_artifacts": changed,
         "gold_dut_certification_sha256": row["hashes"]["task_certification_sha256"],
     })
+    install_visible_dut_runtime(task_dir)
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
         task_id=f"v4-{task_num}", form="bugfix", family_id=family,
@@ -884,7 +975,7 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
     records: dict[str, dict[str, Any]] = {}
     wrappers: dict[str, dict[str, Any]] = {}
     form_skills: dict[str, dict[str, Any]] = {}
-    feedback_guides: dict[str, dict[str, Any]] = {}
+    evas_guides: dict[str, dict[str, Any]] = {}
     for source in sorted(PROMPT_ASSETS.rglob("*.md")):
         if source.name not in COMPONENT_METADATA:
             raise SystemExit(f"prompt component lacks metadata: {source.name}")
@@ -908,8 +999,8 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
             wrappers[source.name] = record
         elif metadata["kind"] == "form_skill":
             form_skills[source.name] = record
-        elif metadata["kind"] == "feedback_guide":
-            feedback_guides[source.name] = record
+        elif metadata["kind"] == "evas_guide":
+            evas_guides[source.name] = record
         else:
             raise SystemExit(f"unknown prompt component kind: {metadata['kind']}")
     write_json(output / "prompt_modes" / "manifest.json", {
@@ -918,7 +1009,7 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
         "components": records,
         "wrappers": wrappers,
         "form_skills": form_skills,
-        "feedback_guides": feedback_guides,
+        "evas_guides": evas_guides,
     })
     write_json(output / "prompt_modes" / "modes.json", {
         "schema_version": "v4-prompt-mode-registry-v1",
@@ -926,7 +1017,7 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
         "composition_order": [
             "canonical_instruction_and_inline_artifacts",
             "form_skill",
-            "feedback_guide",
+            "evas_guide",
             "mode_wrapper_response_protocol",
         ],
         "working_token_budget": "runner_supplied_same_ceiling_within_comparison_stratum",

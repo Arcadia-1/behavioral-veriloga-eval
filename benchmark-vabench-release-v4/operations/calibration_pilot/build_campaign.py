@@ -48,7 +48,7 @@ def mode_prompt_record(release: Path, task_id: str, mode: str) -> dict[str, Any]
         "task_id": task_id,
         "mode": mode,
         "process": process,
-        "feedback_cli_available": bool(spec.get("feedback_cli")),
+        "evas_cli_available": bool(spec.get("evas_cli")),
         "response_protocol": MODE_RESPONSE_PROTOCOL[process],
         "prompt_mode_spec": spec,
     }
@@ -167,7 +167,7 @@ def build_campaign(
                     "prompt_record_sha256": hashlib.sha256(
                         json.dumps(prompt, sort_keys=True, separators=(",", ":")).encode("utf-8")
                     ).hexdigest(),
-                    "feedback_cli_available": bool(prompt["feedback_cli_available"]),
+                    "evas_cli_available": bool(prompt["evas_cli_available"]),
                     "response_protocol": str(prompt["response_protocol"]),
                 })
     return {

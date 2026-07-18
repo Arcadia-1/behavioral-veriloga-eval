@@ -38,12 +38,12 @@ FORM_SKILLS = {
     "testbench": "testbench_verification.md",
     "bugfix": "bugfix_diagnosis.md",
 }
-FEEDBACK_GUIDES = {
-    "dut": "feedback_dut.md",
-    "testbench": "feedback_testbench.md",
-    "bugfix": "feedback_bugfix.md",
+EVAS_GUIDES = {
+    "dut": "evas_dut.md",
+    "testbench": "evas_testbench.md",
+    "bugfix": "evas_bugfix.md",
 }
-FEEDBACK_CORE = "feedback_core.md"
+EVAS_CORE = "evas_core.md"
 MATERIALIZED_ARTIFACTS = (
     "TASK_INDEX.json",
     "prompt_modes/modes.json",
@@ -181,8 +181,8 @@ def prompt_component_path(release: Path, component_id: str) -> Path:
         subdir = "wrappers"
     elif component_id in set(FORM_SKILLS.values()):
         subdir = "form_skills"
-    elif component_id == FEEDBACK_CORE or component_id in set(FEEDBACK_GUIDES.values()):
-        subdir = "feedback_guides"
+    elif component_id == EVAS_CORE or component_id in set(EVAS_GUIDES.values()):
+        subdir = "evas_guides"
     else:
         raise SystemExit(f"unknown prompt component: {component_id}")
     return release / "prompt_modes" / subdir / component_id
@@ -397,7 +397,10 @@ def audit_task(
         return
     if len(task_dir_parts) != 2 or task_dir_parts[0] != "tasks":
         problems.append(f"{prefix} task directory is not flat under tasks/")
-    for required in ("task_record.json", "public/instruction.md", "public_contract.json", "evaluator"):
+    for required in (
+        "task_record.json", "public/instruction.md", "public/visible_test.scs",
+        "public/evas_runtime.json", "public_contract.json", "evaluator",
+    ):
         if not (task_dir / required).exists():
             problems.append(f"{prefix} missing {required}")
     if (task_dir / "provenance").exists():
@@ -406,6 +409,10 @@ def audit_task(
         return
     record = read_json(task_dir / "task_record.json")
     contract = read_json(task_dir / "public_contract.json")
+    if "feedback" in contract:
+        problems.append(f"{prefix} public contract retains feedback broker entry")
+    if not isinstance(contract.get("evas"), dict):
+        problems.append(f"{prefix} public contract lacks direct EVAS entry")
     expected_contract = rel(task_dir / "public_contract.json", release)
     if row.get("public_contract") != expected_contract or record.get("public_contract") != expected_contract:
         problems.append(f"{prefix} public contract path is not task-local")
@@ -446,6 +453,12 @@ def audit_task(
     evaluator = audit_standalone_evaluator(task_dir, source_task, form, prefix, problems)
     if evaluator is None:
         return
+    visible = task_dir / "public" / "visible_test.scs"
+    trusted = evaluator / "trusted_replay_test.scs"
+    if not trusted.is_file():
+        problems.append(f"{prefix} evaluator missing trusted_replay_test.scs")
+    elif visible.is_file() and visible.read_bytes() != trusted.read_bytes():
+        problems.append(f"{prefix} visible test and trusted replay deck differ")
     checker_profile = read_json(evaluator / "checker_profile.json")
     if record.get("checker_task_id") != checker_profile.get("checker_task_id"):
         problems.append(f"{prefix} task record checker_task_id does not match checker_profile.json")
@@ -481,6 +494,14 @@ def audit_task(
         supplied = task_dir / "public" / "supplied_dut"
         if tree_file_hashes(supplied) != expected_solution_file_hashes(source_task):
             problems.append(f"{prefix} supplied DUT differs from canonical gold")
+        fixture_names = sorted(
+            path.name for path in (task_dir / "public" / "visible_fixtures").iterdir()
+            if path.is_dir()
+        ) if (task_dir / "public" / "visible_fixtures").is_dir() else []
+        if fixture_names != [
+            "mutation_01", "mutation_02", "mutation_03", "mutation_04", "mutation_05", "reference",
+        ]:
+            problems.append(f"{prefix} visible suite is not one reference plus five mutations")
         reference_tb_source_kind = audit_testbench_reference(
             evaluator, source_task, score, prefix, problems
         )
@@ -555,24 +576,24 @@ def audit_prompt_components(release: Path, tasks: list[dict[str, Any]], problems
     mode_manifest = read_json(release / "prompt_modes" / "modes.json")
     wrapper_records = component_manifest.get("wrappers") or {}
     form_skill_records = component_manifest.get("form_skills") or {}
-    feedback_guide_records = component_manifest.get("feedback_guides") or {}
+    evas_guide_records = component_manifest.get("evas_guides") or {}
     component_records = component_manifest.get("components") or {
         **wrapper_records,
         **form_skill_records,
-        **feedback_guide_records,
+        **evas_guide_records,
     }
     tokenizer = component_manifest.get("reference_tokenizer") or {}
     tokenizer_key = f"{tokenizer.get('id')}@{tokenizer.get('version')}"
     required_wrappers = set(WRAPPERS_BY_MODE.values())
     required_form_skills = set(FORM_SKILLS.values())
-    required_feedback_guides = {FEEDBACK_CORE, *FEEDBACK_GUIDES.values()}
+    required_evas_guides = {EVAS_CORE, *EVAS_GUIDES.values()}
     if set(wrapper_records) != required_wrappers:
         problems.append("component manifest wrapper set mismatch")
     if set(form_skill_records) != required_form_skills:
         problems.append("component manifest form-skill set mismatch")
-    if set(feedback_guide_records) != required_feedback_guides:
-        problems.append("component manifest feedback-guide set mismatch")
-    if set(component_records) != required_wrappers | required_form_skills | required_feedback_guides:
+    if set(evas_guide_records) != required_evas_guides:
+        problems.append("component manifest EVAS-guide set mismatch")
+    if set(component_records) != required_wrappers | required_form_skills | required_evas_guides:
         problems.append("component manifest component set mismatch")
     if (release / "prompt_modes" / "skills").exists():
         problems.append("legacy prompt_modes/skills/ directory should not be present")
@@ -599,8 +620,8 @@ def audit_prompt_components(release: Path, tasks: list[dict[str, Any]], problems
             count += 1
             policy = mode_records.get(mode) or {}
             expected_cli = mode in AGENTIC_MODES
-            if bool(policy.get("feedback_cli")) is not expected_cli:
-                problems.append(f"{task_id}/{mode}: feedback availability mismatch")
+            if bool(policy.get("evas_cli")) is not expected_cli:
+                problems.append(f"{task_id}/{mode}: EVAS availability mismatch")
             public_inputs = iter_prompt_public_inputs(task_dir, form)
             for item in public_inputs:
                 if not item.is_file():
@@ -609,7 +630,7 @@ def audit_prompt_components(release: Path, tasks: list[dict[str, Any]], problems
             if mode in {"G1", "G3", "G5"}:
                 expected_components.append(FORM_SKILLS.get(form, ""))
             if mode in {"G4", "G5"}:
-                expected_components.extend([FEEDBACK_CORE, FEEDBACK_GUIDES.get(form, "")])
+                expected_components.extend([EVAS_CORE, EVAS_GUIDES.get(form, "")])
             expected_components.append(WRAPPERS_BY_MODE.get(mode, ""))
             for name in expected_components:
                 component = component_records.get(name) or {}
