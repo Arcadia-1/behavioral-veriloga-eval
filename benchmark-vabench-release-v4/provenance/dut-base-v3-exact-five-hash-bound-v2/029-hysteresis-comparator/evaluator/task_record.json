@@ -3,10 +3,10 @@
   "checker_task_id": "v4_029_hysteresis_comparator",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "a3eee7735802a88ad44651551f8d225977a979a0f95c21d2d94224a9b0dd65ee",
+    "certification.json": "eaf1944acdd5a674086947382a5793cfc46e5ff50682f3e49f799e3a448cc2e3",
     "checker_profile.json": "e86ac44c33d3d2c5a369bc3e7b01ec090d4196c6a0f3037c4b7c7f0e6396860b",
     "derivation_manifest.json": "52dca15a779b292f67382e10cac7df6b7a28b2e81ff464cf64bf43ea86598c40",
-    "family_spec.json": "796ef71d3155a4a57c71dd4f2dba96d18424fabd3436132ec80b4a926d62c4a1",
+    "family_spec.json": "60f87f0d13d172df40ef8ebd07ef219e1de9632b6652706c47736ea5bdf16871",
     "harness_spec.json": "ce44ce68d3e3920e92a3be3ba9fc5c5c108318ac8b4d2943e78ef02da1bd5819",
     "mutation_catalog.json": "1f98d419fa875ebe6d554e38a376ab409e432d9dd1adadb530146f4d8c311c43",
     "profiles/feedback.json": "3b8a2a6fc82d4fdc222e1870a05dde6544eeaa831422cb4fc69798b65a47b2a0",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "a3eee7735802a88ad44651551f8d225977a979a0f95c21d2d94224a9b0dd65ee"
+    "sha256": "eaf1944acdd5a674086947382a5793cfc46e5ff50682f3e49f799e3a448cc2e3"
   },
   "release_dir": "029-hysteresis-comparator",
   "schema_version": "v4-canonical-dut-release-task-v1",

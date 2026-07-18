@@ -14,17 +14,11 @@ if str(PREP) not in sys.path:
 
 from score_denominator_registry import (  # noqa: E402
     RegistryError,
-    load_score_denominator_registry,
-    migrate_legacy_manifest,
-    rendered_manifest_bytes,
+    load_family_rows,
+    load_registry_metadata,
+    score_denominator_registry_sha256,
     write_family_row,
 )
-
-
-def test_canonical_source_has_only_family_shards() -> None:
-    assert not (SOURCE / "score_denominator_manifest.json").exists()
-    manifest = load_score_denominator_registry(SOURCE)
-    assert len(manifest["tasks"]) == 400
 
 
 def write_json(path: Path, payload: dict[str, object]) -> None:
@@ -42,27 +36,13 @@ def row(family: str) -> dict[str, object]:
     }
 
 
-def test_legacy_migration_is_byte_exact(tmp_path: Path) -> None:
-    source = tmp_path / "source"
-    legacy = tmp_path / "score_denominator_manifest.json"
-    manifest = {
-        "schema_version": "sample-v1",
-        "canonical_range": ["001", "002"],
-        "counted_task_count": 2,
-        "tasks": [row("001"), row("002")],
-    }
-    from score_denominator_registry import canonical_manifest_sha  # noqa: PLC0415
-
-    manifest["content_sha256"] = canonical_manifest_sha(manifest)
-    write_json(legacy, manifest)
-
-    migrate_legacy_manifest(source, legacy)
-
-    assert rendered_manifest_bytes(source) == legacy.read_bytes()
-    assert [item["canonical_dut_id"] for item in load_score_denominator_registry(source)["tasks"]] == [
-        "001",
-        "002",
-    ]
+def test_canonical_source_has_only_family_shards() -> None:
+    assert not (SOURCE / "score_denominator_manifest.json").exists()
+    assert not (SOURCE / "selection_inputs" / "ACTIVE_MUTATION_SUITE_INDEX.json").exists()
+    assert len(load_family_rows(SOURCE)) == 400
+    metadata = load_registry_metadata(SOURCE)
+    assert "tasks" not in metadata
+    assert "content_sha256" not in metadata
 
 
 def test_registry_rejects_missing_family_shard(tmp_path: Path) -> None:
@@ -74,7 +54,7 @@ def test_registry_rejects_missing_family_shard(tmp_path: Path) -> None:
     write_family_row(source, "001", row("001"))
 
     with pytest.raises(RegistryError, match="coverage mismatch"):
-        load_score_denominator_registry(source)
+        load_family_rows(source)
 
 
 def test_updating_one_family_does_not_touch_other_shards(tmp_path: Path) -> None:
@@ -86,10 +66,12 @@ def test_updating_one_family_does_not_touch_other_shards(tmp_path: Path) -> None
     write_family_row(source, "001", row("001"))
     write_family_row(source, "002", row("002"))
     untouched = (source / "score_denominator_registry" / "002.json").read_bytes()
+    original_hash = score_denominator_registry_sha256(source)
 
     changed = row("001")
     changed["bugfix_seed"] = "neg_001"
     write_family_row(source, "001", changed)
 
     assert (source / "score_denominator_registry" / "002.json").read_bytes() == untouched
-    assert load_score_denominator_registry(source)["tasks"][0]["bugfix_seed"] == "neg_001"
+    assert load_family_rows(source)[0]["bugfix_seed"] == "neg_001"
+    assert score_denominator_registry_sha256(source) != original_hash

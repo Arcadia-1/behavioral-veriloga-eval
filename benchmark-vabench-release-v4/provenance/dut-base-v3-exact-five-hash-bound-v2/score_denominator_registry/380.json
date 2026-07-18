@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_envelope_dbg_stuck/certification.json",
-        "certification_sha256": "f2dfc565339b27d5aa1b06ca6864ff9eb49eca00e4170d164679f36c6be3311e",
+        "certification_sha256": "8f64f02423d53d21bc90a166e8e03b2cf29948e4db5e67d43fbeb30bb2519aaf",
         "fault_class": "envelope_dbg_stuck",
-        "mutation_bundle_sha256": "06748893978c8c8796d32426edc35515800fdb094dc7d9587a20ef6989f5b0f8",
+        "mutation_bundle_sha256": "90a23af66b22ff25e762fa42f9f9c02af158a873be183b629784fe56b6cbf86f",
         "mutation_id": "neg_002_envelope_dbg_stuck",
         "source_catalog_certification_path": "negative_variants/neg_002_envelope_dbg_stuck/certification.json",
         "trigger_condition": "envelope_dbg_stuck",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_no_modulation/certification.json",
-        "certification_sha256": "4f25ba0244ffd0868f82183917481afdb184c23101943f2ce2ae3ff3f9f01639",
+        "certification_sha256": "c13c26e0d5d8d7e58cfda3cd714d557b79760dec7d2fb7f901a72c9884073be5",
         "fault_class": "no_modulation",
-        "mutation_bundle_sha256": "66e64880f7a16e33f8253b992cc9ea96167b1031f1b86f8cc889f08b7935b171",
+        "mutation_bundle_sha256": "c6a8ef2bdee3302e2cc13dfeb040b75d730f6ed58a9c057320242e0901632917",
         "mutation_id": "neg_001_no_modulation",
         "source_catalog_certification_path": "negative_variants/neg_001_no_modulation/certification.json",
         "trigger_condition": "no_modulation",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_carrier_inverted/certification.json",
-        "certification_sha256": "3c4e8946f1695d14595e15a8f9eb0f5e94bc5f39510d79f96ba800da96535e1a",
+        "certification_sha256": "f451a3eead4c994d54b33db062f4cc6eb54437d12d4b4ca12ca8469740868252",
         "fault_class": "carrier_inverted",
-        "mutation_bundle_sha256": "cdefae88e754bb8af10fe73935f34ee917e8e5de127206cee20ded881360876d",
+        "mutation_bundle_sha256": "2975d2f5dc1f9f4eb345b419b4589c76551b8dfad67a6af851a6e8d4769b2814",
         "mutation_id": "neg_005_carrier_inverted",
         "source_catalog_certification_path": "negative_variants/neg_005_carrier_inverted/certification.json",
         "trigger_condition": "carrier_inverted",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_missing_clear/certification.json",
-        "certification_sha256": "26c792d5f76d7dfea58d1a2a84602210454bf46ec7e2d629a0b42b2808269457",
+        "certification_sha256": "abe5a75edcafe8b58aef7d4168a5b3e4d6a0e67197e678020fbb09bc3ea2c061",
         "fault_class": "missing_clear",
-        "mutation_bundle_sha256": "acb4eca3eb0247712c5a2e768f02668e6c56d6451f878d0649a92497e9f8fbe6",
+        "mutation_bundle_sha256": "608c48a9cdb85d05d4424e37a3902972c74a3f3cc4a918adf7d2bbc5287a55fe",
         "mutation_id": "neg_004_missing_clear",
         "source_catalog_certification_path": "negative_variants/neg_004_missing_clear/certification.json",
         "trigger_condition": "missing_clear",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_output_not_clamped/certification.json",
-        "certification_sha256": "0e4db878551588cf542f08344935423d7ad878c7905d09cecef6c93166c2555a",
+        "certification_sha256": "f25c37482834ff4ca52c02cdfe592393c753cf8b1584a09389bdc730cacd5af8",
         "fault_class": "output_clamp_removed",
-        "mutation_bundle_sha256": "32a8cfe0670ad93d364d961c061b9c4ec9737f34dbef8c4bdc8d856a27c0067e",
+        "mutation_bundle_sha256": "99284fd124f6a71bbabdc916e26fcd65c70b4cd81ba16e2f95313cba7142d6ec",
         "mutation_id": "neg_006_output_not_clamped",
         "source_catalog_certification_path": "negative_variants/neg_006_output_not_clamped/certification.json",
         "trigger_condition": "carrier and modulation demand an output beyond a supply rail",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "812424970eab0c34f518008d3d2599651651c4e845d6f4c950630c2ae7017cbb",
       "score_deck_sha256": "7bb617d43191bc0ddaa5a8683b05d72f80443f06580ef12284879242a84aeeff",
-      "task_certification_sha256": "3390e340c7d3d6189c76d94e8e9e8e8207142f22342383a4c682c4900dd8d13d",
-      "task_record_sha256": "432f0e3f700c67b0ce5449d982f44b8025df933a41a0cabe09666196bbff6aa8"
+      "task_certification_sha256": "d9b1afa1ffe19c81f7a1e4f60283f61490be44cacd7e9853519109fbb51c1346",
+      "task_record_sha256": "ba079f3a69d640d1c5c7e4605f56e1e03ccc7bf7cab37be9ddae6d5aac42d071"
     },
     "release_dir": "380-am-modulator-source-macro"
   }

@@ -3,10 +3,10 @@
   "checker_task_id": "v4_021_calibration_deadband_controller",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "60a0476d6bffb27d4f0b355dbafe98133d353da0dd01b882e231bcca1bf57535",
+    "certification.json": "2fa1a11820ce5b31022cbe7bad4dbba103fa487eeea809afc0454fe14b590f68",
     "checker_profile.json": "ecd992a74aac810f6e5ecf29360301c343b7592bcb33ca2f18fb7edd5c736756",
     "derivation_manifest.json": "1576ad4433a8e0edf383305d8c73d0f1394ce31f191cc6efb02a591433914152",
-    "family_spec.json": "c8596920d250967035f35c3c2117a5d4954e9ddb10dda684a531f2429d820b38",
+    "family_spec.json": "0b1188e866020a83eef502f77fe0075617537fc5ab5a237d75236ee54cccb3ce",
     "harness_spec.json": "f2a567c787317396f3fadc6e254ad503019a3f2aeac69cd1b10f936630e9cc4c",
     "mutation_catalog.json": "fd2d19c1265cd49b1a8d12ef7dd33526bad324856f3d60cf73e1a10d0fde5c91",
     "profiles/feedback.json": "17a15daa196806656174a56b24c1b3f33d6db7077be632ec4ac671b83d4a993c",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "60a0476d6bffb27d4f0b355dbafe98133d353da0dd01b882e231bcca1bf57535"
+    "sha256": "2fa1a11820ce5b31022cbe7bad4dbba103fa487eeea809afc0454fe14b590f68"
   },
   "release_dir": "021-calibration-deadband-controller",
   "schema_version": "v4-canonical-dut-release-task-v1",

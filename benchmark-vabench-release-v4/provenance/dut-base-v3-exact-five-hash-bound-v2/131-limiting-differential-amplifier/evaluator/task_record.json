@@ -3,10 +3,10 @@
   "checker_task_id": "v4_131_limiting_differential_amplifier",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "60de45af7e754e99b959659e67bf539b9bd1551645bd46add775d6f6f016b90b",
+    "certification.json": "cc23fbe40e12c9a612be9203493b1902c90ab9238eae5882f224162af6e19298",
     "checker_profile.json": "f8eb61b67f4966dd6e053a8882cbdae17ae402d6a795c9acb076d52eefddad45",
     "derivation_manifest.json": "9413b24b2efa58ab3f618e340f8de3677c67eddb5c974868fb9ac69b48ad9389",
-    "family_spec.json": "61d07a32aecfd8c66c4b5f8a221a9cff5082d2c825f9e1fe094da53ef8656277",
+    "family_spec.json": "7778d86a3b5570b927e001e0c32b2ab0a3eb0ca8410f6f03afb3d2f131afc8b0",
     "harness_spec.json": "3860e939afbdb78b0066191eab4f2538751d6ca1309731ec9224513c400331c7",
     "mutation_catalog.json": "f718d394a0ae8ce962db958d0bb7676dc81893ab90eb6e1193e03f1da8c3bd62",
     "profiles/feedback.json": "9112d470061b95ea7b79c002d3e42dbbdecc5a1f3526a3781aa7357fa55caf49",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "60de45af7e754e99b959659e67bf539b9bd1551645bd46add775d6f6f016b90b"
+    "sha256": "cc23fbe40e12c9a612be9203493b1902c90ab9238eae5882f224162af6e19298"
   },
   "release_dir": "131-limiting-differential-amplifier",
   "schema_version": "v4-canonical-dut-release-task-v1",

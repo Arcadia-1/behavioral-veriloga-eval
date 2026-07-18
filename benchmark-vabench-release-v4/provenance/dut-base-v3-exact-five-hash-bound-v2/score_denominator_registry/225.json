@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_swapped_edges/certification.json",
-        "certification_sha256": "3a0aa6f1a9325cb17a0b6f8d1df6220c5bd52ecbad5078c8169a4ac4e0bc2123",
+        "certification_sha256": "69519eb75ee0d8f805ac64cce877b334999fe66212c2bff684aa36827032018f",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "538197ee91bb016fa4ff5e2d889009149fc14d674c12c970faafd717bfa0b191",
+        "mutation_bundle_sha256": "25d66000d08df75377b4bd4d6b1dfd131851b63f67d23a214e6c5d52fd595673",
         "mutation_id": "neg_002_swapped_edges",
         "source_catalog_certification_path": "negative_variants/neg_002_swapped_edges/certification.json",
         "trigger_condition": "Swaps REF/FB effects, so REF clears and FB sets the latch.",
@@ -20,9 +20,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "f766e09583a9d2cc791b692027872627233f3cc33f435b38450f9dddf6eab068",
+        "certification_sha256": "e3030715c6acfdd9d11a08ac8cd13ab65866c05993da1cefd59b86bfff2898bb",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "a584d74e592c8606e6a939acd4f64e42db443017ccf79bbe6b6f01e274bf6cef",
+        "mutation_bundle_sha256": "686ead55934ffaa132e8c2cb28d28e5532a6b74217ef1bca44d97a6ca282f960",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -34,9 +34,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_down_not_complement/certification.json",
-        "certification_sha256": "50fb6cb3b905716d4959221932a9eb75246a00e0f5372dd05265abd52703d296",
+        "certification_sha256": "4f287b4be7eb7755297f926cb9f82bf0db193383a90968ea78def7796282def6",
         "fault_class": "down_not_complement",
-        "mutation_bundle_sha256": "842e55c803cde6159a85e63e18b9043f7d92d08ee72ddeaa2b9bd8fec2529f08",
+        "mutation_bundle_sha256": "db6c8222ad452ae7099fd7531ceb5f10c29dbe6dd121a0b72d6a94f7399f1729",
         "mutation_id": "neg_003_down_not_complement",
         "source_catalog_certification_path": "negative_variants/neg_003_down_not_complement/certification.json",
         "trigger_condition": "Drives DOWN equal to UP instead of the complementary latch state.",
@@ -48,9 +48,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "e885f2d9fd364e2111ae6ea7d4fc5c2ac69ab2e9e8c8755b635b48dca7336de1",
+        "certification_sha256": "f396a033baef7a5ef07d512612a66137cd68ac1f310cc399bc926f93129083bb",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "10d9039564b4ce52a6e873d84051bb3bf1e06edc665ed1e5a7c1bdf4d1cc6119",
+        "mutation_bundle_sha256": "ca3b51538585943b2b8666ba4d85ce1eb2e8ed94fc3b8b5c77d1bf9e834e2d08",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "RS Phase Detector: scales the metric output, preserving the main path while failing measurement checks.",
@@ -60,9 +60,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_ignore_fb_reset/certification.json",
-        "certification_sha256": "5051ebf41cd9d6e7fc878daecf3f86536b191dfc39675593be6d9cd6f6435df6",
+        "certification_sha256": "901a091ca7c6a73453c4a918ec132c39c0bc5c1e0c00b3fbfdaaf999994906fa",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "f3968af2c904780ff127d8f1443fdc01d83474c5a746545e1ecbe31760969757",
+        "mutation_bundle_sha256": "8372af67576ceff013790a8ceda85e00c16165638c2957bb2fa1b7887731717d",
         "mutation_id": "neg_004_ignore_fb_reset",
         "source_catalog_certification_path": "negative_variants/neg_004_ignore_fb_reset/certification.json",
         "trigger_condition": "Ignores FB rising edges, so UP stays asserted after REF.",
@@ -78,8 +78,8 @@
     "hashes": {
       "mutation_catalog_sha256": "2e2d384a6d5a3ad541fd775ef802e972a5bd8aba12282b533b90c69fce9df793",
       "score_deck_sha256": "9c10d118ac3ce17d4439917329b0b1d933c8a8a98148c68474354b4ee9363455",
-      "task_certification_sha256": "151e37aebf7b51bde44864df1467f4e9859157437242c408ce755f8005040c07",
-      "task_record_sha256": "628467ac2c003b3957aefa2a2441d88a8e277b4c8c5c6fb41d55b5c0538aee51"
+      "task_certification_sha256": "438b370378a8729da50c00d568c07c46fca8a8b217cc7b844d8b274a22d58c27",
+      "task_record_sha256": "92fcb207f4e93b77a20a2572b8515ac9fbe769c970ccf0d5abb503a800daa857"
     },
     "release_dir": "225-rs-phase-detector"
   }

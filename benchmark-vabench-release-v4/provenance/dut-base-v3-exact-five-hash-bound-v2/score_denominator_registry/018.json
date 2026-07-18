@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_boundary/certification.json",
-        "certification_sha256": "002fa679a09a40b55e1d66ca5f8873f57ae19365f7883940c3ddc279c7f2d75c",
+        "certification_sha256": "6642dc043bc3c1c70da5932b69e5f4d398e3ec3bc29eb842be8d36c663840418",
         "fault_class": "boundary_semantic_error",
-        "mutation_bundle_sha256": "cefcb83fccc29c5c86f029542d09164f1e6359751c8a57add2a049758ec6fa44",
+        "mutation_bundle_sha256": "9f4eca226d0b10e48e88e8fb5e87c9c0e60e2878719fb03f5539a725a227b340",
         "mutation_id": "neg_001_boundary",
         "source_catalog_certification_path": "negative_variants/neg_001_boundary/certification.json",
         "trigger_condition": "a public endpoint, threshold, saturation, or settling boundary is exercised",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_polarity_direction/certification.json",
-        "certification_sha256": "1f2d577d4714c3fa130b4c4bafc78b580f457561d0e7c5294052c5666ec930a0",
+        "certification_sha256": "5a2e258afd1881caf12b0653f9108ef9d5100c07ddcbb8c43a1cc0a9fb2832a5",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "4cd446a20f84c8012cfdbc9caf0352d9b618846849404e96b3fd011335769183",
+        "mutation_bundle_sha256": "ebfdec3b8e9e4f4cba25de6fd4e2ef3fce15cb52cb4a9e6757783880e685df4c",
         "mutation_id": "neg_003_polarity_direction",
         "source_catalog_certification_path": "negative_variants/neg_003_polarity_direction/certification.json",
         "trigger_condition": "positive/negative path, feedback direction, I/Q polarity, or trim direction is exercised",
@@ -33,9 +33,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_state_reset/certification.json",
-        "certification_sha256": "621da36d0e85bc8f2a7f19c114a486a5f3977b9d8fc23a044dfe91c06af798b7",
+        "certification_sha256": "190d16b2c99d7bb4614dce4872cadec9c3c9909c1f22ef82bd12bb483b55cece",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "1ea389d5100c7886afaa9bc8ac7dbf9cb42f6fedd350e65f77f855793747c5e9",
+        "mutation_bundle_sha256": "02609ef69511e516c0b55d7f6778b9f4c03140ec6ed3bee20a17f918d68e0b79",
         "mutation_id": "neg_004_state_reset",
         "source_catalog_certification_path": "negative_variants/neg_004_state_reset/certification.json",
         "trigger_condition": "reset, enable, initial-condition, done, or ready behavior is exercised",
@@ -47,9 +47,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_writeout/certification.json",
-        "certification_sha256": "e7876b2475d2d1f142afb88c6e79b7e2693547679c4404f64de9aa47d9e69e31",
+        "certification_sha256": "90b0c8c456244096cab8073b2455f0c4cc7e8b41fd07bcd378f9456c646e00bb",
         "fault_class": "metric_or_measurement_error",
-        "mutation_bundle_sha256": "88d4266f9fa1293a785711af0d1534a9e98eacd749d78d65e8b00f4f2581c9c6",
+        "mutation_bundle_sha256": "4dac3c25651395f8551cadc98e6240a1dbf5839467dc9dbc47daca69ac2d99ed",
         "mutation_id": "neg_005_metric_writeout",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_writeout/certification.json",
         "trigger_condition": "a public metric, latency, count, or measurement output is observed",
@@ -60,9 +60,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_timing_window/certification.json",
-        "certification_sha256": "63e5183ca280a9b53baf03043b6b5390e034a83d5270f44b6671dfd0f6f30b18",
+        "certification_sha256": "6621de9489b66a765243552db043cc1aaebdf48480ad39ebff45841fed7e482e",
         "fault_class": "timing_window_error",
-        "mutation_bundle_sha256": "5688e1261773d0d48acb57b384e0b5adae0d74c43d30d51733f14e12c164e5cc",
+        "mutation_bundle_sha256": "3a399bee43d62b77a3a394dc22da650bf7f13c14fa07ed7ec3515d914431cdba",
         "mutation_id": "neg_002_timing_window",
         "source_catalog_certification_path": "negative_variants/neg_002_timing_window/certification.json",
         "trigger_condition": "a public edge, timer, sample, lock, or reacquire window is exercised",
@@ -76,8 +76,8 @@
     "hashes": {
       "mutation_catalog_sha256": "250920aa2ded217c1af3ecaf42b29ba706feba278999f5951aefc3426573cb1a",
       "score_deck_sha256": "54a909bffdf299f5c115431d437f33cccdfec870059aaa39d0db86058d7e4af2",
-      "task_certification_sha256": "619a6dc638e89bdf27870256476f070c7a83ea11f32dbcb767b24c89b62439b0",
-      "task_record_sha256": "97804d5cf4c4803e35452c1640249c9985b1a17e5c1f434a4fe93e8df97d8f88"
+      "task_certification_sha256": "404f5427986722aa85db55d7d96e477a8dc55724ebe4c3b86ae5a84ecdb7e0ff",
+      "task_record_sha256": "de5309e36b52c3814b93b565c343aa9f268fc5afa229022c50091dcb5f869241"
     },
     "release_dir": "018-unit-element-thermometer-dac"
   }

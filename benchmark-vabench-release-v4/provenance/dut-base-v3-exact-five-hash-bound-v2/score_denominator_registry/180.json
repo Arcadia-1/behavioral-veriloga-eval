@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_droop_error/certification.json",
-        "certification_sha256": "b93871e739ee7020e2e362c765b15f3ae9b221d22af8b47b6cfca12ba26e087e",
+        "certification_sha256": "d73451be86c709b5ea5ff89c3364f98dbe03c55b4ad5317c7a7ba1fbf2c8e04d",
         "fault_class": "droop_error",
-        "mutation_bundle_sha256": "47b502cb0017f8d08e07dc1c7d9b6ab3c6b486cf1e78abaec22af36d006cb286",
+        "mutation_bundle_sha256": "2384b082bf8e78fd1aea68be03ebb54c3195736006db85eb823f40ecdc728a10",
         "mutation_id": "neg_002_droop_error",
         "source_catalog_certification_path": "negative_variants/neg_002_droop_error/certification.json",
         "trigger_condition": "droop_error",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_valid_state_error/certification.json",
-        "certification_sha256": "0521eb4ba600dd19b0ea81b462c3c77fd6e177aca65c3e5243c871e1c8530aae",
+        "certification_sha256": "83d5b8d92ec0c95ade621ad72c83667f8ac91c001dddabe30bca25251dbd010a",
         "fault_class": "valid_state_error",
-        "mutation_bundle_sha256": "a338e1ec76cd73f4a7e5a9f2f6a7a5837606f50079290d7851ce8ca86f7ca630",
+        "mutation_bundle_sha256": "e56f90c5dcf973d931fcdbe231259eedc91cf0ea94dada9baa85fce79ae6714a",
         "mutation_id": "neg_004_valid_state_error",
         "source_catalog_certification_path": "negative_variants/neg_004_valid_state_error/certification.json",
         "trigger_condition": "valid_state_error",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_reset_or_enable_error/certification.json",
-        "certification_sha256": "e4e4469ccdbc137e879b47038924ddbaa4258fdc2a911fcc29a3706394635cb9",
+        "certification_sha256": "2e224a77f10512314716aacc2bf8ddc1c32225dda34e2334e87d8bf86d03188b",
         "fault_class": "reset_or_enable_error",
-        "mutation_bundle_sha256": "2583531b7a190d396a62536955f061f4a14e2a84e23ee0298a7c7ab5bf6c918e",
+        "mutation_bundle_sha256": "dc1d80b3c068aa52d536c99b2aaec483596c513afc3e832a3797b7f37b4663a5",
         "mutation_id": "neg_005_reset_or_enable_error",
         "source_catalog_certification_path": "negative_variants/neg_005_reset_or_enable_error/certification.json",
         "trigger_condition": "reset_or_enable_error",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_aperture_metric_error/certification.json",
-        "certification_sha256": "f56f124192214d8c5515b7db3d489e0c3f575176f39a32895584d9a28a6b8857",
+        "certification_sha256": "a418ca847115ad44263c1cd1b7ad1bf89062979a1e1603297b5a8c5ddca1ae7f",
         "fault_class": "aperture_metric_error",
-        "mutation_bundle_sha256": "4e31ad2653695da12291ca5106875506a9c51e689d93934dc4e9a42408ce48dd",
+        "mutation_bundle_sha256": "1c165a2e156befa034bbbe7e10f6a38691b2dc49a73fb4f84d184d2e06c51a04",
         "mutation_id": "neg_003_aperture_metric_error",
         "source_catalog_certification_path": "negative_variants/neg_003_aperture_metric_error/certification.json",
         "trigger_condition": "aperture_metric_error",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_sample_edge_error/certification.json",
-        "certification_sha256": "7bae9e27fe09792753ab1e69db60608bcccb1404be7b8e5858364f683f86ddb8",
+        "certification_sha256": "4bd4bc94f7f16985444c018329c9c2c55ae0d4624922dc096f1283d567f8d526",
         "fault_class": "sample_edge_error",
-        "mutation_bundle_sha256": "e21ea3a1abb734717f2485c4b19a8f46c2bbc5fb6a6008f6658184f9e1d77dde",
+        "mutation_bundle_sha256": "820d1e9362ef7f61832d8e1138bbbed37665b8356a614b68952c92a72e4e3a92",
         "mutation_id": "neg_001_sample_edge_error",
         "source_catalog_certification_path": "negative_variants/neg_001_sample_edge_error/certification.json",
         "trigger_condition": "sample_edge_error",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "d85c2f01be24ec5ccb2a508ea7a98ab22fe82b4bd7e015d5ddc9e7ad37115ede",
       "score_deck_sha256": "7b689e33a0fa06cc0823a9c8db6feae941f2892f8a150fea74b38d60db9b1dca",
-      "task_certification_sha256": "b8101b523d255da0fb79fbe0463056840951aef923e532c9ed960b63e0cd1930",
-      "task_record_sha256": "c5afd1a0a102dcd14e098ae51b4f2bba74cd7791a975d5eb2fa4c2861ae9095f"
+      "task_certification_sha256": "5389aa376688c34b3afe677e1d2a3d85ea0ee255ae9d7aa28da2e6774e047ea9",
+      "task_record_sha256": "57f938abddaa748f4df7ef2e0da65d58397011a577446794fa1dd7101747eef0"
     },
     "release_dir": "180-track-hold-with-droop-and-aperture"
   }

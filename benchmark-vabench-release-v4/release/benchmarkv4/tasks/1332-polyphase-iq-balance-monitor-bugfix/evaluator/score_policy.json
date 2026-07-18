@@ -9,6 +9,7 @@
     "iq_normalizer.va",
     "balance_metric_core.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "changed_artifacts": [
     "balance_metric_core.va",
     "iq_normalizer.va",
@@ -16,11 +17,10 @@
   ],
   "checker_profile_sha256": "dbf603efe8ee82080f1f8e8e94cb3dfbbbedce40c11a0d0c74e19585dcd9395c",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "446b0ed9c824c7c313a9faa21d4fadc48ac7c1b4e5bbefb4e06a2f3eb064ff43",
+  "gold_dut_certification_sha256": "5ac0828ce936256af40341b5d7ec6d41f934c9b352595d4ed18dcba941df315e",
   "gold_solution_tree_sha256": "30a9ba5b5fdf609cefa96405de888b20aa1c4f39a735f690d3596512b2a739cd",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "mutation_catalog_sha256": "d416eb704586f786f2a3a66531782702f415b9a6795119debed1d2bd646a4938",
   "schema_version": "v4-bugfix-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-1332"
 }

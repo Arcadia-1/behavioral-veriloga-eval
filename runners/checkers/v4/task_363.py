@@ -91,6 +91,12 @@ def _latest_before(values: list[float], target: float) -> float | None:
 def _active(row: dict[str, float], *, enable: str | None = None, reset: str = "rst") -> bool:
     return not _high(row, reset) and (enable is None or _high(row, enable))
 
+def _period_scale(edges: list[float], nominal_period: float) -> float:
+    periods = [b - a for a, b in zip(edges, edges[1:]) if b > a]
+    if not periods:
+        return 1.0
+    return sorted(periods)[len(periods) // 2] / nominal_period
+
 def _control_clear_samples(
     rows: list[dict[str, float]], *, enable: str | None, settle: float
 ) -> list[dict[str, float]]:
@@ -107,7 +113,11 @@ def check_v4_363_fractional_n_synthesizer_mini_loop(rows: list[dict[str, float]]
     missing = _missing(rows, required, pids)
     if missing:
         return missing
-    clear_samples = _control_clear_samples(rows, enable="enable", settle=0.8e-9)
+    dco_rises = _rising_times(rows, "dco_clk")
+    time_scale = _period_scale(dco_rises, 600e-12)
+    clear_samples = _control_clear_samples(
+        rows, enable="enable", settle=0.8e-9 * time_scale
+    )
     clear_bad = 0
     clear_gap = clear_time = 0.0
     for row in clear_samples:
@@ -117,7 +127,6 @@ def check_v4_363_fractional_n_synthesizer_mini_loop(rows: list[dict[str, float]]
             if gap > clear_gap:
                 clear_gap, clear_time = gap, float(row["time"])
 
-    dco_rises = _rising_times(rows, "dco_clk")
     div_edges = sorted(_rising_times(rows, "div_clk") + _falling_times(rows, "div_clk"))
     control_resets = sorted(_rising_times(rows, "rst") + _falling_times(rows, "enable"))
     derive_bad = selection_bad = 0
@@ -127,9 +136,11 @@ def check_v4_363_fractional_n_synthesizer_mini_loop(rows: list[dict[str, float]]
     for a, b in zip(div_edges, div_edges[1:]):
         if any(a < reset_time <= b for reset_time in control_resets):
             continue
-        if not _active(_sample_at(rows, a + 0.25e-9), enable="enable"):
+        if not _active(
+            _sample_at(rows, a + 0.25e-9 * time_scale), enable="enable"
+        ):
             continue
-        row = _sample_at(rows, b + 0.25e-9)
+        row = _sample_at(rows, b + 0.25e-9 * time_scale)
         if not _active(row, enable="enable"):
             continue
         count = sum(a < edge <= b for edge in dco_rises)
@@ -154,7 +165,9 @@ def check_v4_363_fractional_n_synthesizer_mini_loop(rows: list[dict[str, float]]
         probe_edges = [edge for edge in div_edges if edge >= enable_time][:5]
         if len(probe_edges) < 5:
             continue
-        probe_rows = [_sample_at(rows, edge + 0.25e-9) for edge in probe_edges]
+        probe_rows = [
+            _sample_at(rows, edge + 0.25e-9 * time_scale) for edge in probe_edges
+        ]
         if any(_code(row, [f"frac_{i}" for i in range(4)]) != 15 for row in probe_rows):
             continue
         observed = [1 if _high(row, "div_sel") else 0 for row in probe_rows]
@@ -173,11 +186,11 @@ def check_v4_363_fractional_n_synthesizer_mini_loop(rows: list[dict[str, float]]
     code_metrics: dict[int, list[float]] = {}
     code_changes = sorted(set(_rising_times(rows, "frac_0") + _falling_times(rows, "frac_0") + _rising_times(rows, "frac_1") + _falling_times(rows, "frac_1") + _rising_times(rows, "frac_2") + _falling_times(rows, "frac_2") + _rising_times(rows, "frac_3") + _falling_times(rows, "frac_3")))
     for t in valid_rises:
-        row = _sample_at(rows, t + 0.3e-9)
+        row = _sample_at(rows, t + 0.3e-9 * time_scale)
         if not _active(row, enable="enable"):
             continue
         last_change = _latest_before(code_changes, t)
-        if last_change is not None and t - last_change < 70e-9:
+        if last_change is not None and t - last_change < 70e-9 * time_scale:
             continue
         code = _code(row, [f"frac_{i}" for i in range(4)])
         observed = float(row["avg_ratio_metric"])

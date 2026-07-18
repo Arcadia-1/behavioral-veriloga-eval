@@ -1,143 +1,42 @@
 {
-  "allow_python_fallback": false,
-  "component_fingerprints": {
-    "assembly": {
-      "policy_sha256": "91f4e21b94263e796c846aedef282c79d4abeb7ccc415a0e6f1311f8816b33a4",
-      "release_snapshot_sha256": "ec25ff4e82bd73ef23394b05e71b73298f84f12139028d337e881ddcfddcd8f4"
-    },
-    "backend": {
-      "ahdl_like_sha256": "91ce239e5f278a6d5dfcde85ca2d820c5133d8f8a3de26dc6477164e703342f3",
-      "evas_sha256": "e48df10fee21fa1613eb87e8febd0226895e2482f2e91355645d2e93e71e04d7"
-    },
-    "oracle": {
-      "checker_binding_sha256": "e4b4646ec393a124dbbdc56d290bfd4d70a208653e838919c358142071c314ac",
-      "checker_implementation_sha256": "f2008ae6f5ca8c948d26ab4f5dd654f0d04a4b733cabf41139c50e0b38b9a4bb",
-      "checker_profile_sha256": "0f6d3b26029e8978b709f326a610281905593dce5bb722d06587883c41489a06",
-      "diagnostic_policy_sha256": "69b217a349cb0e8a3eab574e7e6d1af03f069fea668b15b37868ef3d2e7deea3",
-      "oracle_runner_sha256": "daf6eeded735edd148687b998344d32a4943e8824bac2828f28e9107a7950567",
-      "property_activation_policy_sha256": "06cac43918899876c03472501c1152a789a98875634dfa54b6f1a6232e8fc19c"
-    },
-    "policy_id": "v4-dependency-scoped-evidence-v2",
-    "schema_version": "v4-evidence-components-v2",
-    "state": "carried_forward",
-    "task_inputs": {
-      "candidate_bundle_sha256": "66abb0ccb21a7e5176308373d55d18b402e878b3ac52a210d18dd49aa27f3eb2",
-      "checker_profile_sha256": "644d0f82648b0d832bc27ca4a1912b1f65226d0d0ca48a9ad34bb1ea2d45a381",
-      "deck_sha256": "05563860279a9e78a860e6acce6419aeb35a633d2c590ca70776650c8481481a",
-      "gold_bundle_sha256": "334476504d6b510a96575e3a0c7263a415274447364117752e5aa556d3c23c10",
-      "harness_spec_sha256": "b227a58ee1ded51fc047e600ea0d04674c19dc2d26e2a2832500a6b7f42d1be3",
-      "mutation_bundle_sha256": "66abb0ccb21a7e5176308373d55d18b402e878b3ac52a210d18dd49aa27f3eb2",
-      "profile_sha256": "1f4bc6ef578571a42136f61b8f5d1f107b71d3ebc10c6619ce6e41567e166a75",
-      "property_contract_sha256": "ec0ea02739f5be31ba9166f65b64c2b12372a6245d27c9ffad66625e7cfb453c",
-      "public_support_bundle_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "trace_contract_sha256": "959f580d8d8ca9174d9e70426c6852cef21a0e25b163afb168b2f643f0665968"
-    }
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
   },
   "diagnostics": {
-    "expected": "trigger=Asserts Y for A regardless of B instead of only A&B&VALID.; violated_properties=P_DRIVE_Y_HIGH_WHEN_VALID_IS",
+    "expected": "properties P_DRIVE_Y_HIGH_WHEN_VALID_IS satisfy the public contract; fault class y_for_a_only is rejected",
     "observed": "EVAS: y@3.270ns=0.900 expected=0.000 y@3.300ns=0.900 expected=0.000 y@3.330ns=0.900 expected=0.000 y@3.360ns=0.900 expected=0.000 y@3.390ns=0.900 expected=0.000 y@3.420ns=0.900 expected=0.000",
     "violated_property_ids": [
       "P_DRIVE_Y_HIGH_WHEN_VALID_IS"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
   },
-  "evas_engine_used": "evas2",
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_231_decision_router_logic",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 761
+  },
   "family_id": "231",
   "inputs": {
     "checker_profile_sha256": "644d0f82648b0d832bc27ca4a1912b1f65226d0d0ca48a9ad34bb1ea2d45a381",
     "harness_spec_sha256": "b227a58ee1ded51fc047e600ea0d04674c19dc2d26e2a2832500a6b7f42d1be3",
-    "mutation_bundle_sha256": "66abb0ccb21a7e5176308373d55d18b402e878b3ac52a210d18dd49aa27f3eb2",
     "profile_sha256": "1f4bc6ef578571a42136f61b8f5d1f107b71d3ebc10c6619ce6e41567e166a75"
   },
   "mutation_id": "neg_004_y_for_a_only",
   "outcome": "killed_behaviorally",
-  "release_snapshot_sha256": "ec25ff4e82bd73ef23394b05e71b73298f84f12139028d337e881ddcfddcd8f4",
-  "repair_issue_301": {
-    "affine_validation": {
-      "category": "behavior_mismatch",
-      "evas_engine_used": "evas2",
-      "expected": "fail",
-      "log_sha256": "73d7767511e81e29482b86253510842ef11a07c1be07e17c708aa7ea04f90f61",
-      "ok": true,
-      "runtime": {
-        "evas_backend": "evas-rust",
-        "evas_runtime_valid": true,
-        "evas_version": "0.8.2",
-        "log_sha256": "73d7767511e81e29482b86253510842ef11a07c1be07e17c708aa7ea04f90f61",
-        "log_source": "output/evas.log",
-        "no_python_fallback_marker": true,
-        "runtime_notes": []
-      },
-      "scores": {
-        "dut_compile": 1.0,
-        "sim_correct": 0.0,
-        "tb_compile": 1.0,
-        "weighted_total": 0.6667
-      },
-      "status": "FAIL_SIM_CORRECTNESS",
-      "structured_redacted_diagnostics": {
-        "notes": [
-          "returncode=0",
-          "evas_engine=evas2",
-          "evas_version=0.8.2",
-          "evas_backend=evas-rust",
-          "y@6.460ns=0.900 expected=0.000 y@6.514ns=0.900 expected=0.000 y@6.569ns=0.900 expected=0.000 y@6.624ns=0.900 expected=0.000 y@6.679ns=0.900 expected=0.000 y@6.734ns=0.900 expected=0.000"
-        ],
-        "redacted": true
-      }
-    },
-    "candidate_artifact": "decision_router_logic.va",
-    "classification": "B",
-    "classification_reason": "mechanical canonical feedback/score profile migration",
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_source": {
-      "commit": "a72fff338bc81b2ebc144b7da97a82a663c776e2",
-      "version": "v0.8.2"
-    },
-    "no_python_fallback_evidence_claimed": true,
-    "profile_name": "score",
-    "runtime_gate": {
-      "required_backend": "evas-rust",
-      "required_engine": "evas2",
-      "required_version": "0.8.2"
-    },
-    "validation": {
-      "category": "behavior_mismatch",
-      "evas_engine_used": "evas2",
-      "expected": "fail",
-      "log_sha256": "f8f04f221ff8aede89e6c1f1811a889a64a1d554a34259d1c8be850f52f05bd2",
-      "ok": true,
-      "runtime": {
-        "evas_backend": "evas-rust",
-        "evas_runtime_valid": true,
-        "evas_version": "0.8.2",
-        "log_sha256": "f8f04f221ff8aede89e6c1f1811a889a64a1d554a34259d1c8be850f52f05bd2",
-        "log_source": "output/evas.log",
-        "no_python_fallback_marker": true,
-        "runtime_notes": []
-      },
-      "scores": {
-        "dut_compile": 1.0,
-        "sim_correct": 0.0,
-        "tb_compile": 1.0,
-        "weighted_total": 0.6667
-      },
-      "status": "FAIL_SIM_CORRECTNESS",
-      "structured_redacted_diagnostics": {
-        "notes": [
-          "returncode=0",
-          "evas_engine=evas2",
-          "evas_version=0.8.2",
-          "evas_backend=evas-rust",
-          "y@3.270ns=0.900 expected=0.000 y@3.300ns=0.900 expected=0.000 y@3.330ns=0.900 expected=0.000 y@3.360ns=0.900 expected=0.000 y@3.390ns=0.900 expected=0.000 y@3.420ns=0.900 expected=0.000"
-        ],
-        "redacted": true
-      }
-    }
+    "evas_version": "0.8.2"
   },
-  "schema_version": "v4-negative-certification-v2",
-  "toolchain_lock_sha256": "ec25ff4e82bd73ef23394b05e71b73298f84f12139028d337e881ddcfddcd8f4"
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

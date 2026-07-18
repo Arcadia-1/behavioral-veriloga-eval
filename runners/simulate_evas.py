@@ -697,7 +697,7 @@ def run_evas(
         env["EVAS_REQUIRED_TRACE_SIGNALS"] = required_trace_value
     else:
         env.pop("EVAS_REQUIRED_TRACE_SIGNALS", None)
-    return subprocess.run(
+    proc = subprocess.run(
         cmd,
         cwd=run_dir,
         capture_output=True,
@@ -705,6 +705,12 @@ def run_evas(
         timeout=timeout_s,
         env=env,
     )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir / "evas.log").write_text(
+        (proc.stdout or "") + "\n" + (proc.stderr or ""),
+        encoding="utf-8",
+    )
+    return proc
 
 
 def _veriloga_code_without_comments(text: str) -> str:
@@ -1098,7 +1104,13 @@ def load_csv(csv_path: Path) -> list[dict[str, float]]:
     with csv_path.open(newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            rows.append({k: float(v) for k, v in row.items()})
+            parsed = {k: float(v) for k, v in row.items()}
+            # EVAS2 preserves netlist node spelling while most checkers use
+            # canonical lowercase signal names. Keep both views so legacy
+            # checkers that intentionally request uppercase nodes still work.
+            for key, value in list(parsed.items()):
+                parsed.setdefault(key.lower(), value)
+            rows.append(parsed)
     return rows
 
 

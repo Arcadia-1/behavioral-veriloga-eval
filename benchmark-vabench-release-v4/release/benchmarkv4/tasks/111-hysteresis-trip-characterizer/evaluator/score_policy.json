@@ -2,12 +2,12 @@
   "candidate_artifacts": [
     "hysteresis_trip_characterizer.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "checker_profile_sha256": "1c08f2a74f575720c4df9106e93c0d86cb53ebb0ef72c9c2ba5825d577f01f8f",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "c48781e5c5c58dffc048efcd7125cce743617605d9ccacb20d5596fbdc3d1cee",
+  "gold_dut_certification_sha256": "c1a4bb8b48a11d71c817c541d2f23f326483e61e81441303c7c479cc3d494ded",
   "gold_solution_tree_sha256": "6fa3bc4954b6e4f7ffbd59ed0403b54c971a46169c6e3d0643ea117c1d068a4d",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "schema_version": "v4-dut-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-111"
 }

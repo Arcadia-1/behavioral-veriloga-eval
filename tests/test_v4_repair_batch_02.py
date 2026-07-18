@@ -18,7 +18,7 @@ PREP = ROOT / "benchmark-vabench-release-v4" / "operations" / "tri_form_derivati
 if str(PREP) not in sys.path:
     sys.path.insert(0, str(PREP))
 
-from score_denominator_registry import load_score_denominator_registry  # noqa: E402
+from score_denominator_registry import load_family_rows  # noqa: E402
 
 
 def _family(family: str) -> Path:
@@ -109,8 +109,7 @@ def test_batch_02_trace_contracts_match_public_observables() -> None:
 
 
 def test_batch_02_source_rows_bind_exact_five_and_current_hashes() -> None:
-    manifest = load_score_denominator_registry(SOURCE)
-    rows = {str(row["canonical_dut_id"]): row for row in manifest["tasks"]}
+    rows = {str(row["canonical_dut_id"]): row for row in load_family_rows(SOURCE)}
     for family in FAMILIES:
         task = _family(family)
         record = json.loads((task / "evaluator" / "task_record.json").read_text())

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_wrong_output_level/certification.json",
-        "certification_sha256": "7cb9c873f3a2d6642ba05751de856e5e63ca8dfd85d3a64f20e080ddf41d4e6c",
+        "certification_sha256": "ec29963e6f16b7741d69ef7a074756007a32476536697c000352c778a2ac4e51",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "cf92ac6b00187cbe8ff9104733ff6fc0de5ccb20896a438f50dbdc8daa7a3c3c",
+        "mutation_bundle_sha256": "99c9ab64003a6686263c2c243f976e64d2e22ac1ef7567a88c63b4eab2984057",
         "mutation_id": "neg_005_wrong_output_level",
         "source_catalog_certification_path": "negative_variants/neg_005_wrong_output_level/certification.json",
         "trigger_condition": "Uses the right state transitions but drives the wrong high output rail.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_hysteresis/certification.json",
-        "certification_sha256": "86fa82c41ed7faba051195e4d1097f802f14f3354ba2c86007739e87c60eb2ca",
+        "certification_sha256": "2a2ddfea162eb9f144a70dd3de03d0614d33c0250000d99809613f008028c58f",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "cdeecb8a31cc14bfad560fa1c64fce6f8a93a57f8657300cc10c6becb9ddcc7c",
+        "mutation_bundle_sha256": "0a71b54e13234c3fdca6471048929f9eb5ba369bc7aa6072ed57ddf9cc0d67f8",
         "mutation_id": "neg_002_no_hysteresis",
         "source_catalog_certification_path": "negative_variants/neg_002_no_hysteresis/certification.json",
         "trigger_condition": "Uses a single offset threshold instead of separate upper and lower hysteresis thresholds.",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_polarity/certification.json",
-        "certification_sha256": "3c8f8f734e111148cc71c9b4f95b158927cf3cb0010c5d2a724adf06000a68de",
+        "certification_sha256": "1f05555855df873daabb634b625063e39581e11c06b0886fa93bde9a423b220d",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "2a08e9ae8db6ac1ce6144a744523f626e6983e739660663a7cafc73369bff548",
+        "mutation_bundle_sha256": "38493399167d6067cba93fa6a1cb3b10bd3271a89b22a4d200f4584ebb2bd4a7",
         "mutation_id": "neg_004_wrong_polarity",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_polarity/certification.json",
         "trigger_condition": "Swaps the high and low receiver states.",
@@ -45,9 +45,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_delay/certification.json",
-        "certification_sha256": "bbed14a8cfd93328be244a087b2947adb868ac608f64950899f824d599b9addd",
+        "certification_sha256": "3351ebac9df85108c645f98f0a43c1ba116988ff57f9b242845c9f5108f7a533",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "8d573dffc055397fcd19e896eb56111f292dcf736f51924e36d05f516b5dfaa7",
+        "mutation_bundle_sha256": "00fabf76db714f7a7e288ea5748222885caca0e186c39c5cecd12f6d688dde35",
         "mutation_id": "neg_003_no_delay",
         "source_catalog_certification_path": "negative_variants/neg_003_no_delay/certification.json",
         "trigger_condition": "Implements the hysteresis thresholds but ignores the required propagation delay.",
@@ -58,9 +58,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_stuck_low/certification.json",
-        "certification_sha256": "ebc48fda056b4e37382e38cda1adda4351e4d2d8c2b3b1569ba30e797160ffba",
+        "certification_sha256": "7e0e4d5f5b1e947c39b417e971f51a31419e115fd2e93a04eaa1fabe1a29284b",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "81fe543a2ffd4c0091243073cab67af594f245a2783b5b941918a038ab1fba8a",
+        "mutation_bundle_sha256": "4f0cfc2782d2b320abddf99c4219dbaa4e00891d6354200e0ba566fcab9aeb40",
         "mutation_id": "neg_001_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_001_stuck_low/certification.json",
         "trigger_condition": "Never updates the receiver state, so high-threshold crossings do not drive the output high.",
@@ -75,8 +75,8 @@
     "hashes": {
       "mutation_catalog_sha256": "af41090023c813bd3bbbce78efb73cc43fb1359da799631ff1f6291e0c63f909",
       "score_deck_sha256": "3be1dad12cf3bf88f0af6abffe204251141ca6ab1fa31cf22fcc55424cc7afa6",
-      "task_certification_sha256": "5ccacfe80eb57739a6b7cba1df32c1b4bfe5cd36cf8c2edb2b8cb1624b9cfe5c",
-      "task_record_sha256": "f420dc32bff269632aff1bdf757bf2d16bd580d263bbc98d91dfb4da6dbbbf50"
+      "task_certification_sha256": "dac1ab371e39da883b7b3727d6cbc361c200a01df06285e5dbe31831aa85ad08",
+      "task_record_sha256": "ef7c4a951c3d1c43afd36c59d296aa8a715a780adbcf24a1b255b384047f9950"
     },
     "release_dir": "241-hysteretic-comparator-receiver"
   }

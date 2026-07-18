@@ -13,8 +13,8 @@ from typing import Any
 from materialize_tri_form_release import materialized_testbench_reference, resolve_testbench_reference
 from source_certification_binding import inspect_source_certification_reuse
 from score_denominator_registry import (
-    load_score_denominator_registry,
-    score_denominator_manifest_sha256,
+    load_family_rows,
+    score_denominator_registry_sha256,
 )
 
 
@@ -52,6 +52,13 @@ MATERIALIZED_ARTIFACTS = (
 RELEASE_SEAL_ARTIFACTS = (
     "MANIFEST.json",
     *MATERIALIZED_ARTIFACTS,
+    "AUDIT_REPORT.json",
+    "RUNTIME_INGESTION_EVIDENCE.json",
+)
+R44_EVIDENCE_ARTIFACTS = (
+    "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "evidence/r44/STIMULUS_METAMORPHIC.json",
+    "evidence/r44/PROFILE_PARITY.json",
 )
 STANDALONE_EVALUATOR_COMMON = (
     "family_spec.json",
@@ -183,9 +190,10 @@ def prompt_component_path(release: Path, component_id: str) -> Path:
 
 def build_release_seal(
     release: Path,
-    source_manifest_sha256: str,
+    source_registry_sha256: str,
     certification_reuse: dict[str, Any],
     certification_problems: list[str] | None = None,
+    evidence_hashes: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     artifact_hashes = {}
     for relative in RELEASE_SEAL_ARTIFACTS:
@@ -199,24 +207,84 @@ def build_release_seal(
     )
     seal = {
         "schema_version": "v4-benchmarkv4-release-seal-v1",
+        "release_revision": "r44",
+        "immutable": not refresh_required,
         "release_status": (
             "materialized_certification_refresh_required"
             if refresh_required
-            else "gate3_hash_bound_certification_reused"
+            else "r44_immutable_rust_evas2_certified"
         ),
-        "source_score_denominator_manifest_sha256": source_manifest_sha256,
+        "source_score_denominator_registry_sha256": source_registry_sha256,
         "artifact_sha256": artifact_hashes,
+        "evidence_sha256": evidence_hashes or {},
         "certification_reuse": certification_reuse,
         "simulation_claim": (
-            "none; one or more source certifications require EVAS/Spectre refresh"
+            "none; one or more source certifications require Rust EVAS2 refresh"
             if refresh_required
-            else "canonical DUT gold and exact-five negative EVAS/Spectre certifications reused by hash"
+            else "canonical DUT gold and exact-five negative Rust EVAS2 certifications reused by hash"
         ),
     }
     if refresh_required:
         seal["certification_problem_count"] = len(certification_problems)
         seal["certification_problems"] = certification_problems
     return seal
+
+
+def audit_r44_evidence(problems: list[str]) -> dict[str, str]:
+    payloads: dict[str, dict[str, Any]] = {}
+    hashes: dict[str, str] = {}
+    for relative in R44_EVIDENCE_ARTIFACTS:
+        path = PACKAGE_ROOT / relative
+        if not path.is_file():
+            problems.append(f"missing r44 evidence artifact: {relative}")
+            continue
+        payloads[relative] = read_json(path)
+        hashes[relative] = file_sha(path)
+
+    rust = payloads.get(R44_EVIDENCE_ARTIFACTS[0]) or {}
+    rust_summary = rust.get("summary") or {}
+    if not (
+        rust.get("status") == "pass"
+        and rust.get("certification_policy") == "rust_evas2_only"
+        and rust_summary.get("family_count") == 400
+        and rust_summary.get("gold_pass_count") == 400
+        and rust_summary.get("negative_case_count") == 2000
+        and rust_summary.get("mutation_kill_count") == 2000
+        and (
+            int(rust_summary.get("insufficient_excitation_rejection_count") or 0)
+            + int(rust_summary.get("insufficient_excitation_not_applicable_count") or 0)
+            == 400
+        )
+    ):
+        problems.append("r44 Rust EVAS2 certification summary is incomplete")
+
+    metamorphic = payloads.get(R44_EVIDENCE_ARTIFACTS[1]) or {}
+    metamorphic_summary = metamorphic.get("summary") or {}
+    if not (
+        metamorphic.get("status") == "pass"
+        and metamorphic.get("certification_policy") == "rust_evas2_only"
+        and metamorphic_summary.get("task_count") == 400
+        and metamorphic_summary.get("affine_gold_pass_count") == 400
+        and metamorphic_summary.get("affine_mutation_kill_count") == 2000
+        and metamorphic_summary.get("affine_infrastructure_error_count") == 0
+        and (
+            int(metamorphic_summary.get("insufficient_excitation_rejection_count") or 0)
+            + int(metamorphic_summary.get("insufficient_excitation_not_applicable_count") or 0)
+            == 400
+        )
+    ):
+        problems.append("r44 stimulus metamorphic summary is incomplete")
+
+    parity = payloads.get(R44_EVIDENCE_ARTIFACTS[2]) or {}
+    if not (
+        parity.get("status") == "pass"
+        and parity.get("evas_engine") == "evas2"
+        and parity.get("task_count") == 1200
+        and parity.get("pass_count") == 1200
+        and parity.get("fail_count") == 0
+    ):
+        problems.append("r44 profile parity summary is incomplete")
+    return hashes
 
 
 def expected_task_id(form: str, family: str) -> str:
@@ -586,11 +654,11 @@ def main() -> int:
     for legacy_form_dir in FORMS:
         if (release / "tasks" / legacy_form_dir).exists():
             problems.append(f"legacy form directory should not exist under tasks/: {legacy_form_dir}")
-    source_manifest = load_score_denominator_registry(source)
-    source_manifest_sha = score_denominator_manifest_sha256(source)
+    source_rows_list = load_family_rows(source)
+    source_registry_sha = score_denominator_registry_sha256(source)
     source_rows = {
         str(item.get("canonical_dut_id") or ""): item
-        for item in source_manifest.get("tasks") or []
+        for item in source_rows_list
     }
     expected_materialized_hashes = {
         relative: file_sha(release / relative)
@@ -605,7 +673,7 @@ def main() -> int:
         problems.append("manifest keeps legacy external source/private evaluator path")
     if manifest.get("source_release_label") != source.name:
         problems.append("manifest source release label mismatch")
-    if manifest.get("source_score_denominator_manifest_sha256") != source_manifest_sha:
+    if manifest.get("source_score_denominator_registry_sha256") != source_registry_sha:
         problems.append("manifest source denominator hash mismatch")
     certification_reuse, certification_problems = audit_source_certifications(
         source, source_rows
@@ -648,8 +716,10 @@ def main() -> int:
     prompt_count = audit_prompt_components(release, tasks, problems)
     if prompt_count != 7200:
         problems.append(f"prompt record count is {prompt_count}, expected 7200")
+    evidence_hashes = audit_r44_evidence(problems)
     report = {
         "schema_version": "v4-benchmarkv4-release-audit-v1",
+        "release_revision": "r44",
         "status": "pass" if not problems else "fail",
         "family_count": len(family_forms),
         "task_count": len(tasks),
@@ -660,13 +730,14 @@ def main() -> int:
         "certification_status": (
             "refresh_required"
             if certification_reuse.get("simulation_rerun_required_for_materialization")
-            else "reused"
+            else "rust_evas2_certified"
         ),
         "certification_problems": certification_problems,
         "input_hashes": {
-            "source_score_denominator_manifest_sha256": source_manifest_sha,
+            "source_score_denominator_registry_sha256": source_registry_sha,
             "manifest_sha256": file_sha(release / "MANIFEST.json"),
             **expected_materialized_hashes,
+            "r44_evidence_sha256": evidence_hashes,
         },
         "problems": problems,
     }
@@ -680,9 +751,10 @@ def main() -> int:
             raise SystemExit("--seal-output requires --output so the audit report can be hash-bound")
         seal = build_release_seal(
             release,
-            source_manifest_sha,
+            source_registry_sha,
             certification_reuse,
             certification_problems,
+            evidence_hashes,
         )
         args.seal_output.parent.mkdir(parents=True, exist_ok=True)
         args.seal_output.write_text(json.dumps(seal, indent=2, sort_keys=True) + "\n", encoding="utf-8")

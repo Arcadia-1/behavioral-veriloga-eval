@@ -10,6 +10,7 @@
     "feedback_filter.va",
     "decision_latch.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "changed_artifacts": [
     "decision_latch.va",
     "dfe_rx_top.va",
@@ -18,11 +19,10 @@
   ],
   "checker_profile_sha256": "cb173e6f5044bc0e6dc376da0c1a45b7dba07e44a20a75241fbc8754297ffc7d",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "6ef670b3fedc912d68f30cf497d9c0e28eef06e4a84caa6aa29d814164ab3ea6",
+  "gold_dut_certification_sha256": "98c1e0e53c564ef343203a2ca8c40508b48b94e2d52cf559c5c108b75be75d51",
   "gold_solution_tree_sha256": "c580de02e2dde0b037a1f7c16a85687edec99afabce8252f76a31ab85e13eb93",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "mutation_catalog_sha256": "21b06b1d9786f5e8e292d02c98ebbeb81af6f9b6d28d68d323bd3996926e44a6",
   "schema_version": "v4-bugfix-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-1354"
 }

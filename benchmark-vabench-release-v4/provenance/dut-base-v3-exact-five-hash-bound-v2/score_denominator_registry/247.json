@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "34098535e471d517b665f281370d8e76b60f8aa2d53a62525f7326eb204a0c6a",
+        "certification_sha256": "a77a914773d687b80ae39c449cd0f976b574a9b2500ec79e2d1c9af64dacbad8",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "ca8503e1a1e126245a5e0aaab544e304cc1100c39341b5d6afe4642dfc421554",
+        "mutation_bundle_sha256": "7ec4228678c77326dcc57c8cb53b71a24b24abb75d75e597a739c948bac0ce8f",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales the rail-coded match output by the wrong output gain.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_signed_comparator/certification.json",
-        "certification_sha256": "a7ff54ad5d09c8696e853c275bd7d5057012bb7cabac2de67add40eb2143c989",
+        "certification_sha256": "20c8497b920eb2c44f32aad7546fac754098829b9ac1f8821c3159f2efbfff0f",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "70871190f166571dddfef19c0822fab5516cbc3555ba22c8a5a9bcd82e6db1a3",
+        "mutation_bundle_sha256": "e87f5aef4b5aa8624071685c6fa37bbc0f9d1c9d1b86cd2900c760a6cba7f32f",
         "mutation_id": "neg_003_signed_comparator",
         "source_catalog_certification_path": "negative_variants/neg_003_signed_comparator/certification.json",
         "trigger_condition": "Uses a signed greater-than comparator instead of an absolute voltage-difference window.",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "98efcab8f176c21fec6988ba9cc323e5ce05f3922460674017dc9c74a06ab091",
+        "certification_sha256": "e4c5bf26b3625fd17ec091e84d4996dde518dadcee871602638d0ca089717240",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "8314850e7da8e131125c072429c3ef795e943bebbe5548ca86324bd61802c446",
+        "mutation_bundle_sha256": "72ad7424934ed094b09cd2cfd2f19f50c603f32f62198ce69fad6c017879681c",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -45,9 +45,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_xnor/certification.json",
-        "certification_sha256": "7439880dee52470f05c2dc429bc274915c3dfe9f68d22ef18c73f99ff0946734",
+        "certification_sha256": "bfe9c4f52bd747027e6fd19b5325bf5d0088b1ffe3170e88103708f40074289b",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "e7d428940fcd39b538892d093673de9d58fa24894e6b223bf50cb18027438688",
+        "mutation_bundle_sha256": "50172bd743e00cbeb0259eaeb4aebf69531da01b1c88d8634ef97b4196ebaee4",
         "mutation_id": "neg_002_threshold_xnor",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_xnor/certification.json",
         "trigger_condition": "Uses an overly tight analog match_tol so near-match inputs fail while still passing digital-threshold cases.",
@@ -58,9 +58,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_tolerance/certification.json",
-        "certification_sha256": "02cf95cd509edd2ba86b585f6a35b625127f63e45bbbef0987a89d2a6edd35c5",
+        "certification_sha256": "cef0875da5ceabde8af1b3f7e3350d3a56847acf432427a7f62f0d4228cfeb43",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "dc372b7b4c2df95c34578b31de7e057fcae0d53987c62a6f7aa67483e6c20063",
+        "mutation_bundle_sha256": "829cd480e09c20baaff1b7a0172f9757399e067f333e434a60bbb402c7c32551",
         "mutation_id": "neg_004_wrong_tolerance",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_tolerance/certification.json",
         "trigger_condition": "Uses a much wider match window than the public tolerance contract.",
@@ -75,8 +75,8 @@
     "hashes": {
       "mutation_catalog_sha256": "b72fc829810591eecef043c2ced43b9fb7c30ea100fbaaab2c112d415b0c5d83",
       "score_deck_sha256": "c8853aafcbcd7e828ea134aefdb390394682baeb81b6f47e2163ebaa7a5c36a7",
-      "task_certification_sha256": "f246edab83a94dd3309ff34f6c8d2b7e392891d78b2cd6387bf43f253f8b8922",
-      "task_record_sha256": "2e7ca70963b9083054d8a27de4c3533810ca7a9fa0f91b2e95ff83482e7975ac"
+      "task_certification_sha256": "c936c5fc001ff9cd2ced85e9b28a3de2a0fcbf14baa08a8837e756074cdbb3d7",
+      "task_record_sha256": "cbb3c98ea052eb41f73edb5535e973fe2c39ff3144c1054c8cd12e924858e86f"
     },
     "release_dir": "247-voltage-match-window"
   }

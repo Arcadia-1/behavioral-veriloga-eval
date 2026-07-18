@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001/certification.json",
-        "certification_sha256": "87a6d579789ee4d5642b7674c9569cf27bceaeb5534288853370e6348910dfa9",
+        "certification_sha256": "2157b545162f55f3e3dbea32a7da31a6e6331e4f0762122941599a90a93302f4",
         "fault_class": "configured_delay_omitted",
-        "mutation_bundle_sha256": "2c802fad141810cd3ccf1f5c8707b91e5f06ae6c6ac8d8a8f10f33f2ba90f632",
+        "mutation_bundle_sha256": "e362f9ef790bbb475cd10a4f9f029349f1246775ccce0ad0435f320a86949a4c",
         "mutation_id": "neg_001",
         "source_catalog_certification_path": "negative_variants/neg_001/certification.json",
         "trigger_condition": "a stable qualified input edge is accepted while delay_ticks is nonzero",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005/certification.json",
-        "certification_sha256": "0da6a6e5b550a9094fb8c3caf47dcd10fffa6b0686ee94fe05c82512117e7eb0",
+        "certification_sha256": "08d894d161926b5fb186474aebd562546723d466d704c7db3f5b8a0a2762a5d1",
         "fault_class": "reset_disable_clear_and_high_level_error",
-        "mutation_bundle_sha256": "9382d9799fd97fed72a0756f55da1108a5b9090bce77cbe9ec61eecd3955d404",
+        "mutation_bundle_sha256": "bca32a842ec57827a4e33716cd411003a0aa0047a62d3a17c0ad9ea9b7df8f45",
         "mutation_id": "neg_005",
         "source_catalog_certification_path": "negative_variants/neg_005/certification.json",
         "trigger_condition": "reset or disable is asserted after vout has gone high, and a later qualified edge exercises the high output level",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003/certification.json",
-        "certification_sha256": "65718a6560a392684a30d7f207bd3510a28ddd8e877b1bfd50e88527d7a1b4f5",
+        "certification_sha256": "e3e459f83b0728815ddca526b12b4b06703d3690edbf8077ff6b87bc263107e8",
         "fault_class": "glitch_cancellation_omitted",
-        "mutation_bundle_sha256": "33691a517c1f307cb51a078a428155fdf51884b6688aec7dc34fbf9a2f30416a",
+        "mutation_bundle_sha256": "0f1d288ebe097dd9a00de865cae47cac61be0e5d2cf581f96502f54286a42a97",
         "mutation_id": "neg_003",
         "source_catalog_certification_path": "negative_variants/neg_003/certification.json",
         "trigger_condition": "vin returns to its prior state before qualification and delay expire",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004/certification.json",
-        "certification_sha256": "8b9c319f820b9716a6b50fa9c9e559e82d1b7f787723caf837c7a91cfd1f86b0",
+        "certification_sha256": "73b2707a9b95268afd7d97fece59d8e75c90d8131c467631228d1104dab1dc12",
         "fault_class": "valid_emission_pulse_omitted",
-        "mutation_bundle_sha256": "df617b39c3fa6af3a03643c8e957f65cae98fab9a5766bc3ef4b83410405b334",
+        "mutation_bundle_sha256": "764a8017f6b04f043bdff9641d345a4c6ea42576883a7f078957f48cab68a8e7",
         "mutation_id": "neg_004",
         "source_catalog_certification_path": "negative_variants/neg_004/certification.json",
         "trigger_condition": "a stable qualified edge is emitted at vout",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002/certification.json",
-        "certification_sha256": "66df552731bec4ef6fb471c6924249c7ca05aea97bb691c209472d6378532bf7",
+        "certification_sha256": "58ae77869dd1a968939d4303b8cb244583fd8cf4bbd06df519691f272a405d86",
         "fault_class": "stable_edge_qualification_omitted",
-        "mutation_bundle_sha256": "6a7c6abe64e64d1f4a0f51ec9bbcf1b6fbecf7fe360dde787f016c79241720a0",
+        "mutation_bundle_sha256": "e334feeb177b3216e1f2aa974938a08737cf3478f624f36656c61fbcafe450e7",
         "mutation_id": "neg_002",
         "source_catalog_certification_path": "negative_variants/neg_002/certification.json",
         "trigger_condition": "an input pulse is shorter than min_width_ticks but long enough to create threshold crossings",
@@ -71,9 +71,9 @@
     "canonical_dut_id": "064",
     "hashes": {
       "mutation_catalog_sha256": "2cb75644e3e1be1cf0f2cb0172dd0c72c8037d80baee52e00b99b4360d90e165",
-      "score_deck_sha256": "a4edd5df49af1a00115f5e4ae26b478306d00bc2261a4328606cd18ed3450ac4",
-      "task_certification_sha256": "382a85377eddfab4a4c4ce211f1cbeae0b604214170b50e28e298f5907e9c687",
-      "task_record_sha256": "7a4cc246a6bf7c24b6f28242c0575d440629d694204ff4adff6a69f253db3f0d"
+      "score_deck_sha256": "95dddc488167ca87765073b3be49999e761dd93629235d1ba0c161cf7cace292",
+      "task_certification_sha256": "8136c98bc43cb209e9e5c36c6e712c06300733a81bf10dca0456e8442530049a",
+      "task_record_sha256": "9a5443246ef7d08cd6ab094f22c913b33dbc4e2d1bc82404d6c0fda09ece680a"
     },
     "release_dir": "064-edge-delay-line-with-deglitch"
   }

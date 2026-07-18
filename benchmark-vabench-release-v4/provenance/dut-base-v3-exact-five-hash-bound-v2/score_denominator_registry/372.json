@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_missing_reset_clear/certification.json",
-        "certification_sha256": "00d11c9f51c4cb0aea56f045abd65fd3bfe87f9b83b8008c6289045348f4f078",
+        "certification_sha256": "c72aeef5899a494d3906da07e18a5aae0a0a349b1420b0a3140755ee143a2dd9",
         "fault_class": "missing_reset",
-        "mutation_bundle_sha256": "d67bdb0a272225bd33a6e0c0c695de701b29f8e8ac3a7acff973b0c34dc6385c",
+        "mutation_bundle_sha256": "14b1c6ff879385b9d3b40400e3c693eecf32beb1dc265a4274af32f150a31088",
         "mutation_id": "neg_001_missing_reset_clear",
         "source_catalog_certification_path": "negative_variants/neg_001_missing_reset_clear/certification.json",
         "trigger_condition": "reset is asserted while enable remains high",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_double_soft_step/certification.json",
-        "certification_sha256": "ac1fa8eb01ff16b157339e7e89df2fb4853d24d61ea36c8d606f366c4a5ea5fe",
+        "certification_sha256": "c3c64ce03dfd2d02cf58fdb95868dab76d161b4150e6f6c1e5c9850b28fe1803",
         "fault_class": "wrong_gain",
-        "mutation_bundle_sha256": "ad2f5569abe44ecbfe0382409f05941810734a04628209dfd4ea73f6dc0a655f",
+        "mutation_bundle_sha256": "21aa945f253dacc7c3faa350038545c9d49e321117f774c06d02bf594a314d0b",
         "mutation_id": "neg_003_double_soft_step",
         "source_catalog_certification_path": "negative_variants/neg_003_double_soft_step/certification.json",
         "trigger_condition": "soft_ref is below vref during enabled clock updates",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_pgood_asserts_early/certification.json",
-        "certification_sha256": "3390a7d1d378c6464c8e1d4ce0d9f595ecaa63e8c0a9fd95d9c0fdc5f7dfd9e7",
+        "certification_sha256": "79c63995badc77376ad2db096c4963d30b2209c94590a46c00dbcd846156477a",
         "fault_class": "qualification_count_error",
-        "mutation_bundle_sha256": "030d65815bd1b5974872ebc1acf1a3af7a56205d0011f87b2125c6182d9a4415",
+        "mutation_bundle_sha256": "e8cf154aaa98265fd650d9b4d061f8702b7e986b2bb6446097fe0a0dd41730ec",
         "mutation_id": "neg_004_pgood_asserts_early",
         "source_catalog_certification_path": "negative_variants/neg_004_pgood_asserts_early/certification.json",
         "trigger_condition": "the first in-tolerance clock update occurs",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_weak_pwm_high/certification.json",
-        "certification_sha256": "1de2abd6d36e06c63dff3c6f1b5ec34ab7ea4b3310b8f096a4f7faa86b740057",
+        "certification_sha256": "7f8113de9bdaff28723a15b92c08a4603612633dbf6ef2c9835a35e13e2fc1ff",
         "fault_class": "weak_rail",
-        "mutation_bundle_sha256": "69c421335736c7f6eafb4560aefc84a771ae1a959beacfc9914a6a1740c415f8",
+        "mutation_bundle_sha256": "7e7fcfc581391f9d5ccaa03d4c86a92416a5ea9378c4e26de30890920abc19bc",
         "mutation_id": "neg_005_weak_pwm_high",
         "source_catalog_certification_path": "negative_variants/neg_005_weak_pwm_high/certification.json",
         "trigger_condition": "the PWM state requests a high output",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_reversed_duty_direction/certification.json",
-        "certification_sha256": "e70aa8952da79d7014152d4cd7794274670a319311c731918af801bdbb04936c",
+        "certification_sha256": "5d05a93d9f0818044baeaf24ec22f290193f5a1516d7661f8063847ab6bc361b",
         "fault_class": "wrong_polarity",
-        "mutation_bundle_sha256": "41329b7210b63d6ae70689f47302e15a8af388115079735eb40c82240dc43a4a",
+        "mutation_bundle_sha256": "92b284711f80860aa9c6a5856526d07f5bbaf95534b1ea95d895b6fd35ddf69b",
         "mutation_id": "neg_002_reversed_duty_direction",
         "source_catalog_certification_path": "negative_variants/neg_002_reversed_duty_direction/certification.json",
         "trigger_condition": "vfb is below soft_ref",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "31e9e4dd96b39198749c6c824a95130dff94185cc4566e4d618e98818f01e175",
       "score_deck_sha256": "679be3dfc1b83ccc0a84f877105c85fc7ddfeaff24e5a526efca86609bc84527",
-      "task_certification_sha256": "cd5aa50bf76ff66f5e2b20ae0b20237c9f9385535c53e298d3f791ca5d9a96ca",
-      "task_record_sha256": "664a7891765a39bb7f431f76220407a0cc8874c807e2ffb26a9f62fe0709adce"
+      "task_certification_sha256": "9aeba89728839aeacdf3ce67c3440fc983ec640536904c7c53333e34cd046318",
+      "task_record_sha256": "49dc17810079d455efe70c8191128de6323d766f064301c8ab9d39ff40b28ecc"
     },
     "release_dir": "372-buck-converter-controller-macro"
   }

@@ -9,6 +9,7 @@
     "track_hold_cell.va",
     "readout_mux.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "changed_artifacts": [
     "muxed_track_hold_array_top.va",
     "readout_mux.va",
@@ -16,11 +17,10 @@
   ],
   "checker_profile_sha256": "cd4b0d3796a295967e40549afde9d4760ea309dca1ea7969a8009247f2d8c203",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "3bcdfbb077746c08c6567c97bcf430ca1d705b4e6a9c2911feefa449951219ce",
+  "gold_dut_certification_sha256": "4c3de51c800aaea2cd8d3cf36ec7f2943b73cbaca22c29ba87b0eb9f1f10b7c6",
   "gold_solution_tree_sha256": "8183afaad99b6090cb0c7e52e5f069a30071d5c10632ffbc8a6a03d7b68da797",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "mutation_catalog_sha256": "c254061bd4a1c28fef3fbb9e64a70a9dc276d034ee2b9d7bf06f14356b9d634e",
   "schema_version": "v4-bugfix-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-1311"
 }

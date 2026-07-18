@@ -89,6 +89,11 @@ def _first_after(values: list[float], target: float, limit: float | None = None)
 def _active(row: dict[str, float], *, enable: str | None = None, reset: str = "rst") -> bool:
     return not _high(row, reset) and (enable is None or _high(row, enable))
 
+def _control_time_scale(enable_rises: list[float]) -> float:
+    if len(enable_rises) < 2:
+        return 1.0
+    return (enable_rises[1] - enable_rises[0]) / 128e-9
+
 def _control_clear_samples(
     rows: list[dict[str, float]], *, enable: str | None, settle: float
 ) -> list[dict[str, float]]:
@@ -105,7 +110,11 @@ def check_v4_362_frequency_word_dco_divider_monitor(rows: list[dict[str, float]]
     missing = _missing(rows, required, pids)
     if missing:
         return missing
-    clear_samples = _control_clear_samples(rows, enable="enable", settle=0.8e-9)
+    enable_rises = _rising_times(rows, "enable")
+    time_scale = _control_time_scale(enable_rises)
+    clear_samples = _control_clear_samples(
+        rows, enable="enable", settle=0.8e-9 * time_scale
+    )
     clear_bad = clear_gap = clear_time = 0
     for row in clear_samples:
         gap = max(abs(float(row["dco_clk"])), abs(float(row["div_clk"])), abs(float(row["freq_metric"])))
@@ -125,7 +134,10 @@ def check_v4_362_frequency_word_dco_divider_monitor(rows: list[dict[str, float]]
     for row in rows[:: max(1, len(rows) // 500)]:
         if not _active(row, enable="enable"):
             continue
-        if any(abs(float(row["time"]) - edge) < 0.6e-9 for edge in control_edges):
+        if any(
+            abs(float(row["time"]) - edge) < 0.6e-9 * time_scale
+            for edge in control_edges
+        ):
             continue
         code = _code(row, [f"fcw_{i}" for i in range(6)])
         target = min(250e6, 80e6 + 2e6 * code)
@@ -150,7 +162,10 @@ def check_v4_362_frequency_word_dco_divider_monitor(rows: list[dict[str, float]]
     div_edges = sorted(
         edge
         for edge in (_rising_times(rows, "div_clk") + _falling_times(rows, "div_clk"))
-        if not any(abs(edge - control_edge) < 0.6e-9 for control_edge in divider_control_edges)
+        if not any(
+            abs(edge - control_edge) < 0.6e-9 * time_scale
+            for control_edge in divider_control_edges
+        )
     )
     divider_bad = 0
     divider_checks = 0
@@ -172,10 +187,9 @@ def check_v4_362_frequency_word_dco_divider_monitor(rows: list[dict[str, float]]
     restart_bad = 0
     restart_checks = 0
     restart_gap = restart_time = 0.0
-    enable_rises = _rising_times(rows, "enable")
     rates: list[tuple[int, float]] = []
     for start in enable_rises:
-        row = _sample_at(rows, start + 1e-12)
+        row = _sample_at(rows, start + 1e-12 * time_scale)
         if _high(row, "rst"):
             continue
         code = _code(row, [f"fcw_{i}" for i in range(6)])
@@ -183,8 +197,8 @@ def check_v4_362_frequency_word_dco_divider_monitor(rows: list[dict[str, float]]
         first = _first_after(dco_rises, start)
         if first is not None:
             restart_checks += 1
-            gap = abs((first - start) - 0.5 / target)
-            if gap > 0.55e-9:
+            gap = abs((first - start) - 0.5 / target * time_scale)
+            if gap > 0.55e-9 * time_scale:
                 restart_bad += 1
                 restart_gap, restart_time = gap, start
     # Stable-code period checks also enforce monotonic frequency behavior.

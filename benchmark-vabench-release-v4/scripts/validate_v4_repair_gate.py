@@ -16,7 +16,7 @@ PREP = ROOT / "operations" / "tri_form_derivation_prep"
 if str(PREP) not in sys.path:
     sys.path.insert(0, str(PREP))
 
-from score_denominator_registry import load_score_denominator_registry  # noqa: E402
+from score_denominator_registry import load_family_rows  # noqa: E402
 
 DEFAULT_SOURCE = ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 FORBIDDEN_DIAGNOSTIC_MARKERS = (
@@ -308,11 +308,7 @@ def validate_hashes(
                 "public hash is stale",
                 {"path": str(path.relative_to(source)), "recorded": expected, "actual": file_sha(path)},
             )
-    rows = [
-        row
-        for row in manifest.get("tasks") or []
-        if str(row.get("canonical_dut_id") or "") == family
-    ]
+    rows = [manifest[family]] if family in manifest else []
     if len(rows) != 1:
         add_failure(
             failures,
@@ -364,7 +360,10 @@ def validate_family(
 
 def audit(source: Path, families: list[str]) -> dict[str, Any]:
     failures: list[dict[str, Any]] = []
-    manifest = load_score_denominator_registry(source)
+    manifest = {
+        str(row["canonical_dut_id"]): row
+        for row in load_family_rows(source)
+    }
     for family in families:
         validate_family(failures, source, family, manifest)
     return {

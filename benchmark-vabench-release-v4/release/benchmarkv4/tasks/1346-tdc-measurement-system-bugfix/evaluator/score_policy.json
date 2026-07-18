@@ -11,6 +11,7 @@
     "binary_encoder.va",
     "valid_latch.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "changed_artifacts": [
     "binary_encoder.va",
     "edge_detector.va",
@@ -20,11 +21,10 @@
   ],
   "checker_profile_sha256": "a5639753afe0fc7cc5df3f3bc090467f0eb83dca13f1f1fc8f0202c1473c0763",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "44b4517ff4774d1ec2a22e97b36400023496bd8d719669bb7f12e1bcd5c40283",
+  "gold_dut_certification_sha256": "64c976d16ccc800389e2754744ff3fac8688b28c7089ab90b742e7185f6ec0bc",
   "gold_solution_tree_sha256": "b0d0f931607cc6c619e2fa9b654a50c7360884bf60bf528253993545e6f72086",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "mutation_catalog_sha256": "c70b29c78048b9cac038b3d8d2c1c9e20a5a3c7761c461de90fa6ff9a1a20832",
   "schema_version": "v4-bugfix-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-1346"
 }

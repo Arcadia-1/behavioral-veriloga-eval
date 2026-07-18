@@ -3,10 +3,10 @@
   "checker_task_id": "v4_128_safe_voltage_divider",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "78086620b776b19abd55bea51303f6ef1512a3db9f03747b42e8d850057ab47d",
+    "certification.json": "a7edebbafaa68bd524d60948d3959fc9689f33cc3932c3e4ec88d53a0ade8184",
     "checker_profile.json": "eb56a3364e90be68a514be82be370de9ccb124c8124100e76fa7bb41dd974814",
     "derivation_manifest.json": "7b0718335d922721ecfb9787ed032efb2ba0068952a92bf7d958f5afc800d793",
-    "family_spec.json": "066a40660236e3c63263ab6839f41e2a22eeb4073f614cc736d2eb6e75f5f197",
+    "family_spec.json": "c28e9e11be6fdf475be0082d5b1f9f795bcd3ddc1c4420636bf4ac57403b9d13",
     "harness_spec.json": "1b5a5bdc517d543034cc95e2327423ae2ff953d366609218a8aeeebff84d2092",
     "mutation_catalog.json": "eebe31de2d50ed3f5e5db7f2fdc13dae764abefb08922664bc9d6823465c4a68",
     "profiles/feedback.json": "e07a5dbaf24aeea03dfedc230aa32ce852c1a6328f878246f07a98cf2bdfcde8",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "78086620b776b19abd55bea51303f6ef1512a3db9f03747b42e8d850057ab47d"
+    "sha256": "a7edebbafaa68bd524d60948d3959fc9689f33cc3932c3e4ec88d53a0ade8184"
   },
   "release_dir": "128-safe-voltage-divider",
   "schema_version": "v4-canonical-dut-release-task-v1",

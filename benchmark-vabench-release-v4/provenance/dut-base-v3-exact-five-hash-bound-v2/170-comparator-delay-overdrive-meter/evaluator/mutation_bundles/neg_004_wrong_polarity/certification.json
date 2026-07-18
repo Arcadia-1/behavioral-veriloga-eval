@@ -1,59 +1,42 @@
 {
-  "component_fingerprints": {
-    "assembly": {
-      "policy_sha256": "91f4e21b94263e796c846aedef282c79d4abeb7ccc415a0e6f1311f8816b33a4",
-      "release_snapshot_sha256": "08fc2affa39bbc41c6603edfb923c773838e5c5bdbe630ac3ace53988714398b"
-    },
-    "backend": {
-      "ahdl_like_sha256": "91ce239e5f278a6d5dfcde85ca2d820c5133d8f8a3de26dc6477164e703342f3",
-      "evas_sha256": "03d62b0ed9b8bab38c068a8fc49e6d16d3ea7cbd7c7a0144feaf924f112a7a63",
-      "spectre_sha256": "ac4c1cf785d5eab74058944d52bf40869e83c94e19202ab72c8e8a250c4dc51b"
-    },
-    "oracle": {
-      "checker_binding_sha256": "d24022f2ba8a88c8ddf8a77d284a0bebeb2dcbf77f06d8745ae1663e43580902",
-      "checker_implementation_sha256": "48947c59a043d4a80caa3fe07f6b96e0df40b7db5847e380ce00d1a8a6e7e268",
-      "checker_profile_sha256": "801c3c66b5c3585697e0aa2ef812426ca720a8072b39369324803c017f9f901a",
-      "diagnostic_policy_sha256": "69b217a349cb0e8a3eab574e7e6d1af03f069fea668b15b37868ef3d2e7deea3",
-      "oracle_runner_sha256": "daf6eeded735edd148687b998344d32a4943e8824bac2828f28e9107a7950567",
-      "property_activation_policy_sha256": "34d655de19b9ce0f1f487ec53b0d7571663ada6c42ed040a86446209e1407c45"
-    },
-    "policy_id": "v4-dependency-scoped-evidence-v2",
-    "schema_version": "v4-evidence-components-v2",
-    "state": "carried_forward",
-    "task_inputs": {
-      "candidate_bundle_sha256": "47bd08b63fb9fc1e7edc76c17bf2364f37333fdc360fc9d7b5a837d7f28286cb",
-      "deck_sha256": "94957b5f3dd6ea874c2fb50af725771867a76d25308240edb402f06b8543bbb3",
-      "gold_bundle_sha256": "aa5b03a8220b1dc55f3ca28ae5f9197765786c9fb046eae82384a37d79bc0855",
-      "harness_spec_sha256": "a15f1efcb824a21d7098b5d2339b74290fd8d1ac18f1c8fc57f34698d84b5b0b",
-      "mutation_bundle_sha256": "47bd08b63fb9fc1e7edc76c17bf2364f37333fdc360fc9d7b5a837d7f28286cb",
-      "profile_sha256": "999bc45f004ad54ee59095950b0ac253f5f1d7cd27b9387c273da27814c19c53",
-      "property_contract_sha256": "79a06ba708b49a1aa9d400fcdf8d93d3c0a768ac6df7a844d1ff00b2f7b059ba",
-      "public_support_bundle_sha256": "8077e3de3dcc9248ff650320d134362930214bb06e3fcb5eb79dc67e2ed2a34d",
-      "trace_contract_sha256": "e0243dad9f3f62b6a7595db7554a98456491dae160ec67b8d47934442de74cb8"
-    }
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
   },
   "diagnostics": {
-    "expected": "trigger=Flips the reported decision polarity.; violated_properties=P_POLARITY_AND_VALID_FLAG",
-    "observed": "EVAS: delay@1.160ns=49567580000000.000 expected=49.568 overdrive@1.160ns=40000.000 expected=40.000 flags@1.160ns polarity=0.000/0.900 valid=0.900 delay@7.163ns=53033310000000.000 expected=53.033 overdrive@7.163ns=20000.000 expected=20.000 flags@7.163ns polarity=0.900/0.000 valid=0.900; Spectre: delay@1.160ns=49567576546051.781 expected=49.583 overdrive@1.160ns=40000.000 expected=40.000 flags@1.160ns polarity=0.000/0.900 valid=0.900 delay@7.163ns=53038312459962.531 expected=53.048 overdrive@7.163ns=20000.000 expected=20.000 flags@7.163ns polarity=0.900/0.000 valid=0.900",
+    "expected": "properties P_POLARITY_AND_VALID_FLAG satisfy the public contract; fault class polarity_or_direction_error is rejected",
+    "observed": "EVAS: property_id=P_DECISION_DELAY_CAPTURE category=value_mismatch expected=delay_ps=49.568 observed=delay_ps=49567576546029.219 event=outp[0]@1.079568e-09s; property_id=P_ABSOLUTE_OVERDRIVE_METRIC category=value_mismatch expected=overdrive_mv=40.000 observed=overdrive_mv=40000.000 event=outp[0]@1.079568e-09s; property_id=P_POLARITY_AND_VALID_FLAG category=value_mismatch expected=polarity=0.900,valid>=0.630 observed=polarity=0.000,valid=0.900 event=outp[0]@1.079568e-09s; checked_property_ids=P_CLOCK_ARMED_MEASUREMENT,P_DECISION_DELAY_CAPTURE,P_ABSOLUTE_OVERDRIVE_METRIC,P_POLARITY_AND_VALID_FLAG",
     "violated_property_ids": [
       "P_POLARITY_AND_VALID_FLAG"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_170_comparator_delay_overdrive_meter",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 5864
   },
   "family_id": "170",
   "inputs": {
     "checker_profile_sha256": "59fcd24b407f6bc09c7e62e223f6318e0e0c0884a7a006b84fa31ac3af994ef5",
-    "harness_spec_sha256": "a15f1efcb824a21d7098b5d2339b74290fd8d1ac18f1c8fc57f34698d84b5b0b",
-    "mutation_bundle_sha256": "47bd08b63fb9fc1e7edc76c17bf2364f37333fdc360fc9d7b5a837d7f28286cb",
-    "profile_sha256": "999bc45f004ad54ee59095950b0ac253f5f1d7cd27b9387c273da27814c19c53"
+    "harness_spec_sha256": "92202bf9f4d68f4f396fe3acffea2eaae49072d429af23d42eab53bcb061c316",
+    "profile_sha256": "f136e667b19c780a690569a46ec2094f48713e79c5c23c3865e8b7b171b5c47a"
   },
   "mutation_id": "neg_004_wrong_polarity",
   "outcome": "killed_behaviorally",
-  "release_snapshot_sha256": "08fc2affa39bbc41c6603edfb923c773838e5c5bdbe630ac3ace53988714398b",
-  "schema_version": "v4-negative-certification-v2",
-  "toolchain_lock_sha256": "08fc2affa39bbc41c6603edfb923c773838e5c5bdbe630ac3ace53988714398b"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

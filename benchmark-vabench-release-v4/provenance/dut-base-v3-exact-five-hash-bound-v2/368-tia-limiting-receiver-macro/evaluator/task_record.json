@@ -3,15 +3,15 @@
   "checker_task_id": "v4_368_tia_limiting_receiver_macro",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "cd795cce46af98188bd2d28e5c11eb467697b2e039f85b74a011b151a726807f",
+    "certification.json": "a527268ddd48c9e2e184749f76c3c49e34780adce75295945c70b91cf6d57b84",
     "checker_profile.json": "cf6f568a26f39117dac840cd102e1a0b34f20de4f6b7b964930d3d1cc6c2f457",
     "derivation_manifest.json": "df7e1a9c73e3fbec78398902b16f0ae084c15e6d5b8d1e6be7a7773fe66c4611",
     "family_spec.json": "97c1ecf0ab03d524f7b23e532445ab25deae794dc56ee991df30577ea51f60b8",
-    "harness_spec.json": "5dd7c175534f4292dd2873d4e2a6045ca72897c9bfa92d4ac5390329e6d9111c",
+    "harness_spec.json": "2b4e10f6cdae1ba028bda7f96611e8b3b861df5220aff50a0668454f76823480",
     "mutation_catalog.json": "c4db4f1a681cddfba6e098c6dfb4b140605704fcba9877b37c08a7546d51eae4",
-    "profiles/feedback.json": "5ed770581dd97a0d20c226b50edfacf92d7b460109add641c28830b6225310f5",
-    "profiles/score.json": "7f9812cb724aa5aac49b1fd0e96d6aa52bd1b27efe7b1620bcb91238f65f5801",
-    "score_tb.scs": "cea81b5dfe6373c9aef5e02d449c29c46c716ea9719f8c845e6ca4dc6b701ff3",
+    "profiles/feedback.json": "eb8c9e3bd3e70ecea104ee4d6e64661bdd1e55735ce8a82c0cf5d7bdd70af519",
+    "profiles/score.json": "a5ee1d44ec5559047575f1406ecbe79da5baf8a4285c3bc18f4c2ec479c3460c",
+    "score_tb.scs": "16c616c0743709df30ab2bc098d6b0ba49c9bd6b98f01ba08036ef13a37a3021",
     "solution_tree": "a3a3d6679eacbe7c9626b1663ca7e6f506714985761d2f3005f09962ce3fa2b6",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "cd795cce46af98188bd2d28e5c11eb467697b2e039f85b74a011b151a726807f"
+    "sha256": "a527268ddd48c9e2e184749f76c3c49e34780adce75295945c70b91cf6d57b84"
   },
   "release_dir": "368-tia-limiting-receiver-macro",
   "schema_version": "v4-canonical-dut-release-task-v1",

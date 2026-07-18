@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_boundary/certification.json",
-        "certification_sha256": "aac898015088faa612bf12cc8a9481fbbfbf727fa6daebffda39ce0e09aefa4f",
+        "certification_sha256": "28443bdb77170231e3d7b46c9b7bd86678652460ec5f6ecaf328a0f380db7767",
         "fault_class": "boundary_semantic_error",
-        "mutation_bundle_sha256": "81429e09c1898c8212da73e702130b46587b2e286215f0ad6869c18849b13a23",
+        "mutation_bundle_sha256": "84d9c24e5fa2a250e901c8aca1cde9e50b96d111e57510e642ce2448c5976690",
         "mutation_id": "neg_001_boundary",
         "source_catalog_certification_path": "negative_variants/neg_001_boundary/certification.json",
         "trigger_condition": "a public endpoint, threshold, saturation, or settling boundary is exercised",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_polarity_direction/certification.json",
-        "certification_sha256": "226969cea67f489efe86f44a7ae3aed2ae48ee5540325569fc3304cd5f20d7a6",
+        "certification_sha256": "c979fee07ad6ba5d7c206efee63a3860959c7973d17d5a2d7b56130bbe22d512",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "7cfbd567f61e34e9e714a81db90870ba7024dcf6e8f25b8d532d0dfb9bfea3de",
+        "mutation_bundle_sha256": "30050965946a6100aec9cbd514c8a76f5ffd4844d3450212c6f61b65b1f76229",
         "mutation_id": "neg_003_polarity_direction",
         "source_catalog_certification_path": "negative_variants/neg_003_polarity_direction/certification.json",
         "trigger_condition": "positive/negative path, feedback direction, I/Q polarity, or trim direction is exercised",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_state_reset/certification.json",
-        "certification_sha256": "2d99f8f43fbf3cac3ef9bdf44249826fa34c57659220a60c47da91a7ec6c84f4",
+        "certification_sha256": "6a4dcf1e41736a48ba5a8efbccce77baf3848aea42ba85bc1b89d9f6b12705f4",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "a48bcc5968ba957fabe8b00ea076bd947732f7271f80df8db762524084a9a61c",
+        "mutation_bundle_sha256": "f669ffb20e7d88c10e473e06588dd79005b78d953caa8d952b73c2925aef4936",
         "mutation_id": "neg_004_state_reset",
         "source_catalog_certification_path": "negative_variants/neg_004_state_reset/certification.json",
         "trigger_condition": "reset, enable, initial-condition, done, or ready behavior is exercised",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_writeout/certification.json",
-        "certification_sha256": "d7017d5b31cec75794c262525bb1e517a8b149ba917a3b453c7437f376ebf9f0",
+        "certification_sha256": "5c09ed1fec6a6bab5732fa1a42be2cda4e440e0d1ba4c319c4a7488a7be240f4",
         "fault_class": "metric_or_measurement_error",
-        "mutation_bundle_sha256": "d936fb0e93fc7f7f2012bbb1977ba3c262a7a9d35cb410943ea1e97a73dea6a5",
+        "mutation_bundle_sha256": "7b0f091cc041e19431e8ef022fd07abdc058af6f63e63612c40374892d9ddabd",
         "mutation_id": "neg_005_metric_writeout",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_writeout/certification.json",
         "trigger_condition": "a public metric, latency, count, or measurement output is observed",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_timing_window/certification.json",
-        "certification_sha256": "8f28f82b2c340c08156d294c8fac11736f694cd2987750adc6be5ffd3a94c6f1",
+        "certification_sha256": "ee680c113c04402f37602c6b56265ab0befd81d576f9d70c056f7807c53da66c",
         "fault_class": "timing_window_error",
-        "mutation_bundle_sha256": "fb610c2fba6d917f0a385b113e8d9176617adb02eec24b28b2f87d93baacf8e0",
+        "mutation_bundle_sha256": "a2c2303b389722c5b1fe67e31f4bca12776d1a81fe7ccd71121620884f8bfd57",
         "mutation_id": "neg_002_timing_window",
         "source_catalog_certification_path": "negative_variants/neg_002_timing_window/certification.json",
         "trigger_condition": "a public edge, timer, sample, lock, or reacquire window is exercised",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "4c3557798dacee31eb27072f8d0455acd2cd277fc0f306657f899abfdc20c0b2",
       "score_deck_sha256": "09fd0f4aa23ea1aa4932f36b0ffc30eedcc56ee8d8944dd581af4b4e75e48e80",
-      "task_certification_sha256": "649553cbb23640a0b175956692f063ba905fa867ee968e0252c21b79e125b50c",
-      "task_record_sha256": "1e16701dfe8298089ed3472ebe328a0bf6ee59f0ff0c4b2352616734c7aeeb8d"
+      "task_certification_sha256": "f8fd831428a89c63dd6a5c38e9cb3ae8b9e1c90973c6f37ebf5759cfeb28605a",
+      "task_record_sha256": "28fc8a58112a7b22a156637c29144203b5e2d3a1ef5c02b550702a8aab6b3e84"
     },
     "release_dir": "026-digital-phase-accumulator-with-modulo-wrap"
   }

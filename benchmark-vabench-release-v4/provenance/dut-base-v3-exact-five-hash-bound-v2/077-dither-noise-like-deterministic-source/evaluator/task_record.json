@@ -3,10 +3,10 @@
   "checker_task_id": "v4_077_dither_noise_like_deterministic_source",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "eda20a24fb3775cfb7b70ce51df745e61434f8c04a37f7ec270d0bc56521c1c7",
+    "certification.json": "2dfad39141d3ffab1b668c07e9a639d3ff47ed1e978113a9a483c198685c4aa5",
     "checker_profile.json": "e1d5aae1f685d6eb083c6cd7eabe7d2694b003995b37c8708c94c7f3ba6a1a4c",
     "derivation_manifest.json": "389aab997c193296db3e9962ad5f7ab67dfb58b03a87fd7ba6c49bf3c65f56ae",
-    "family_spec.json": "d9424817d87ea5af6eb71dc5fb735c7ca572c06b6ddb737a16da79bb3518b18f",
+    "family_spec.json": "5e50fbaad6fb906f8523500f90e4ddeca0860ca09405e73ed9cdb0359974534c",
     "harness_spec.json": "8378cbc64fcd2bfc97d910ed6a9e126ab9df02640d496a84fa742ee3503683b8",
     "mutation_catalog.json": "dd2f0aca151b249dffbf81a6d7ddad1b48c92f683331aa632c32ba3b8a10be1d",
     "profiles/feedback.json": "39d3de98ab453c92401ae079f7e57ccf5a76bde25c19422a9fb3cb31df3ecc6a",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "eda20a24fb3775cfb7b70ce51df745e61434f8c04a37f7ec270d0bc56521c1c7"
+    "sha256": "2dfad39141d3ffab1b668c07e9a639d3ff47ed1e978113a9a483c198685c4aa5"
   },
   "release_dir": "077-dither-noise-like-deterministic-source",
   "schema_version": "v4-canonical-dut-release-task-v1",

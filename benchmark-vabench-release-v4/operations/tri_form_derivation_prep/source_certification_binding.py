@@ -88,6 +88,24 @@ def _task_input_hashes(source_task: Path) -> tuple[dict[str, str], dict[str, str
     return certificate_inputs, component_inputs
 
 
+def _check_evidence_report(
+    *, source: Path, family: str, certification: dict[str, Any], problems: list[str]
+) -> bool:
+    evidence = certification.get("evidence") or {}
+    relative = Path(str(evidence.get("report_path") or ""))
+    if relative.is_absolute() or ".." in relative.parts or not relative.parts:
+        problems.append(f"{family}: source certification evidence path is unsafe")
+        return False
+    report = source.parents[1] / relative
+    return _check_hash(
+        family=family,
+        label="certification evidence report hash",
+        path=report,
+        expected=evidence.get("report_sha256"),
+        problems=problems,
+    )
+
+
 def inspect_source_certification_reuse(
     source: Path,
     source_rows: dict[str, dict[str, Any]],
@@ -180,10 +198,19 @@ def inspect_source_certification_reuse(
             if certification.get("status") != "gate2_pass":
                 problems.append(f"{family}: source gold certification is not gate2_pass")
                 gold_valid = False
-            for evaluator_name in ("evas", "spectre"):
-                if (evaluators.get(evaluator_name) or {}).get("status") != "pass":
-                    problems.append(f"{family}: source gold lacks {evaluator_name} PASS")
-                    gold_valid = False
+            if certification.get("certification_policy") != "rust_evas2_only":
+                problems.append(f"{family}: source gold does not use Rust EVAS2-only policy")
+                gold_valid = False
+            if (evaluators.get("evas2") or {}).get("status") != "pass":
+                problems.append(f"{family}: source gold lacks Rust EVAS2 PASS")
+                gold_valid = False
+            if not _check_evidence_report(
+                source=source,
+                family=family,
+                certification=certification,
+                problems=problems,
+            ):
+                gold_valid = False
             try:
                 certificate_inputs, component_inputs = _task_input_hashes(source_task)
             except FileNotFoundError as exc:
@@ -250,12 +277,23 @@ def inspect_source_certification_reuse(
                 if negative_certification.get("outcome") != "killed_behaviorally":
                     problems.append(f"{family}: source negative {mutation_id} was not killed behaviorally")
                     negative_valid = False
-                for evaluator_name in ("evas", "spectre"):
-                    if negative_evaluators.get(evaluator_name) != "compile_pass_behavior_fail":
-                        problems.append(
-                            f"{family}: source negative {mutation_id} lacks {evaluator_name} behavioral kill"
-                        )
-                        negative_valid = False
+                if negative_certification.get("certification_policy") != "rust_evas2_only":
+                    problems.append(
+                        f"{family}: source negative {mutation_id} does not use Rust EVAS2-only policy"
+                    )
+                    negative_valid = False
+                if negative_evaluators.get("evas2") != "compile_pass_behavior_fail":
+                    problems.append(
+                        f"{family}: source negative {mutation_id} lacks Rust EVAS2 behavioral kill"
+                    )
+                    negative_valid = False
+                if not _check_evidence_report(
+                    source=source,
+                    family=f"{family}/{mutation_id}",
+                    certification=negative_certification,
+                    problems=problems,
+                ):
+                    negative_valid = False
                 try:
                     negative_inputs = {
                         "checker_profile_sha256": file_sha(evaluator / "checker_profile.json"),
@@ -301,7 +339,7 @@ def inspect_source_certification_reuse(
         "source_dut_gold_certification_count": reusable_gold,
         "source_negative_certification_total": negative_total,
         "source_negative_certification_count": reusable_negatives,
-        "evaluators": ["evas", "spectre"],
+        "evaluators": ["rust_evas2"],
         "simulation_rerun_required_for_materialization": rerun_required,
         "stale_certification_family_ids": sorted(stale_families),
         "stale_gold_family_ids": invalid_gold,

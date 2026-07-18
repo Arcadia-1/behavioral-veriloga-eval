@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=the first four post-reset clock edges occur; violated_properties=P_PERMUTATION",
-    "observed": "EVAS: active_sequence=1,2,3,0,1,2,1,2,3,0 expected=2,0,3,1,2,0,2,0,3,1 failures=20ns_active=[1]_expected=2 40ns_active=[2]_expected=0 80ns_active=[0]_expected=1 100ns_active=[1]_expected=2 120ns_active=[2]_expected=0 160ns_active=[1]_expected=2 180ns_active=[2]_expected=0 220ns_active=[0]_expected=1 strict_rail_samples=10 rail_failures=16 rail_detail=20ns_out1_low=0.900>0.090;20ns_out2_high=0.000<0.810;40ns_out0_high=0.000<0.810;40ns_out2_low=0.900>0.090;80ns_out0_low=0.900>0.090;80ns_out1_high=0.000<0.810; Spectre: active_sequence=1,2,3,0,1,2,1,2,3,0 expected=2,0,3,1,2,0,2,0,3,1 failures=20ns_active=[1]_expected=2 40ns_active=[2]_expected=0 80ns_active=[0]_expected=1 100ns_active=[1]_expected=2 120ns_active=[2]_expected=0 160ns_active=[1]_expected=2 180ns_active=[2]_expected=0 220ns_active=[0]_expected=1 strict_rail_samples=10 rail_failures=16 rail_detail=20ns_out1_low=0.900>0.090;20ns_out2_high=0.000<0.810;40ns_out0_high=0.000<0.810;40ns_out2_low=0.900>0.090;80ns_out0_low=0.900>0.090;80ns_out1_high=0.000<0.810",
+    "expected": "properties P_PERMUTATION satisfy the public contract; fault class permutation_mapping_error is rejected",
+    "observed": "EVAS: active_clocks=11 reset_samples=1 active_sequence=1,2,3,0,1,2,3,0,1,2,3,0 failures=18 failure_detail=clock@10.175ns_out1_low=0.900>0.090;clock@10.175ns_out2_high=0.000<0.810;clock@30.100ns_out0_high=0.000<0.810;clock@30.100ns_out2_low=0.900>0.090;clock@70.100ns_out0_low=0.900>0.090;clock@70.100ns_out1_high=0.000<0.810",
     "violated_property_ids": [
       "P_PERMUTATION"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_006_element_shuffler",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 1191
   },
   "family_id": "006",
   "inputs": {
     "checker_profile_sha256": "eefd50a30acacc9613b08381af9911d6f72a1f9881def1cdbfe830ceddda8b27",
-    "harness_spec_sha256": "3005a6aa07bb21af643efd9395fcfa1430e73506eccdaf4b5f39717b523424c1",
-    "mutation_bundle_sha256": "d44c11dcebffb8863448a281e99df675a3b455da4dbb7728fefeb8a2254b1dd9",
-    "profile_sha256": "94bc0c63747445fba083eb92892196ab7899242cad6ad621e4c8bda1a0fbe277"
+    "harness_spec_sha256": "92a4f6e090f855ac1e05db316c139fd7bb0d8c46761cad94e0378001f503788e",
+    "profile_sha256": "a502d2fd88a72b1dbca687ff0a80898b1b92d730a513ee6013b2820b0ff5a3f5"
   },
   "mutation_id": "neg_003_monotonic_output_order",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

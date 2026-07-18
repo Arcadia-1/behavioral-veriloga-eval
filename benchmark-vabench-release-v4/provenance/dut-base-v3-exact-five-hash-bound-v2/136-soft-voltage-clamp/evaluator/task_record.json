@@ -3,10 +3,10 @@
   "checker_task_id": "v4_136_soft_voltage_clamp",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "101fc1ec39a34cc975bcd7019bc0c323690ef281821c22428a947906d9f0acf8",
+    "certification.json": "7bb837541cf646fc139602089734ac412b3cf0eb60234ffdf7048caa326e98c4",
     "checker_profile.json": "498290dd8d65c1b54201e5d93959ffb966ff8407c88e7aac7de8ff815edc463e",
     "derivation_manifest.json": "0fb486cf3545d40b1d2a5df9016f8b7e317221cbccfbf32c137ef18fac53b8aa",
-    "family_spec.json": "7ac8efe6d6ce658ff193410cda91c06de8f2ef0329fc49ff60f482e578a81e6f",
+    "family_spec.json": "18b6b25e8003f6cf90102b35c724b2b7da8a088e267099364001d84da64ccf2b",
     "harness_spec.json": "92d5cc4ef365702c16106d7c2f2807c07d2cb9f99552a6bc89291bd3e632e785",
     "mutation_catalog.json": "d397942fa61081e36c6c2e3cb2ee2a8dbf1a8cc4ba174109cdc81e4333bbf9b5",
     "profiles/feedback.json": "e39a0152f1d95b6aa785552b35c7d629e26bab946d33032224a80c5000428a09",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "101fc1ec39a34cc975bcd7019bc0c323690ef281821c22428a947906d9f0acf8"
+    "sha256": "7bb837541cf646fc139602089734ac412b3cf0eb60234ffdf7048caa326e98c4"
   },
   "release_dir": "136-soft-voltage-clamp",
   "schema_version": "v4-canonical-dut-release-task-v1",

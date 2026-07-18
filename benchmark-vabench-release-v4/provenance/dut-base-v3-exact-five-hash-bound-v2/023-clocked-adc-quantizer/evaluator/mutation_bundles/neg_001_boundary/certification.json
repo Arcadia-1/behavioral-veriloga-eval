@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=a public endpoint, threshold, saturation, or settling boundary is exercised; violated_properties=P_RISING_EDGE_QUANTIZATION",
-    "observed": "EVAS: only_7_codes (need 8); Spectre: only_7_codes (need 8)",
+    "expected": "properties P_RISING_EDGE_QUANTIZATION satisfy the public contract; fault class boundary_semantic_error is rejected",
+    "observed": "EVAS: v4_023_clocked_adc_quantizer checked=141 mismatch_count=8 coverage=rising_edges=23 expected_bins=8 settle_s=1.2e-09; P_RISING_EDGE_QUANTIZATION checked=24 mismatch_count=3 expected=code=7 observed=code=6 sample_time=2.014e-07 metric_gap=1; P_CODE_CLAMP checked=4 mismatch_count=2 expected=endpoint_code=7 observed=code=6 sample_time=2.114e-07 metric_gap=1; P_BINARY_RAIL_ENCODING checked=69 mismatch_count=3 expected=dout0=0.9+/-0.04 observed=dout0=0 sample_time=2.014e-07 metric_gap=0.9; P_CODE_MONOTONICITY checked=22 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0; P_SAMPLE_HOLD checked=22 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0",
     "violated_property_ids": [
       "P_RISING_EDGE_QUANTIZATION"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_023_clocked_adc_quantizer",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 1313
   },
   "family_id": "023",
   "inputs": {
-    "checker_profile_sha256": "7b4350b360d411a3ec2c8a21e49494778f4caa4a8671c0b5284a899d5d99aa92",
-    "harness_spec_sha256": "fdf7b333b2e932f5b9176592e584f14c08e1174097a491594df7c6b4a233b1e5",
-    "mutation_bundle_sha256": "ad40640e3d2e4bf7c199ed6f9b3897f8d76b7a533f6406fe0a387c2d9adddcdd",
-    "profile_sha256": "ada00b5d0359d16ac42fd93bbfac9c7cd5b3fe4072c80ea15d6fc9daa61d7b5f"
+    "checker_profile_sha256": "2e3a0b366d65ec7f3e876580ac1e773a26a87d304a7bf8ef8f9c9ace91053934",
+    "harness_spec_sha256": "2503fdd79032cc691a48eb6e25384483233cb87125c1bd1d287d5f267ceba5e7",
+    "profile_sha256": "7a6e31f41dd7a7abd6be1572463be73d2cf4481c2cf0675d7d1bd688db5e82b3"
   },
   "mutation_id": "neg_001_boundary",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

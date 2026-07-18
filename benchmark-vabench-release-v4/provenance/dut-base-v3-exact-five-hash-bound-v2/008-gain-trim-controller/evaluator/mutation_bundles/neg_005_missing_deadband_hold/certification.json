@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=the measurement error lies inside the deadband; violated_properties=P_DEADBAND_HOLD",
-    "observed": "EVAS: clock_edges=33 initial=0.3 edge_mismatches=17 hold_intervals=32 hold_violations=0 range=(0.050,0.850) coverage={'reset': 1, 'increase': 12, 'decrease': 18, 'deadband': 2, 'upper_clamp': 2, 'lower_clamp': 3} mismatch_detail=clk@270.100ns_meas=0.460_target=0.450_observed=0.800_expected=0.850;clk@290.100ns_meas=0.460_target=0.450_observed=0.750_expected=0.850;clk@310.100ns_meas=0.700_target=0.450_observed=0.700_expected=0.800;clk@330.100ns_meas=0.700_target=0.450_observed=0.650_expected=0.750;clk@350.100ns_meas=0.700_target=0.450_observed=0.600_expected=0.700; Spectre: clock_edges=33 initial=0.3 edge_mismatches=17 hold_intervals=32 hold_violations=0 range=(0.050,0.850) coverage={'reset': 1, 'increase': 12, 'decrease': 18, 'deadband': 2, 'upper_clamp': 2, 'lower_clamp': 3} mismatch_detail=clk@270.100ns_meas=0.460_target=0.450_observed=0.800_expected=0.850;clk@290.100ns_meas=0.460_target=0.450_observed=0.750_expected=0.850;clk@310.100ns_meas=0.700_target=0.450_observed=0.700_expected=0.800;clk@330.100ns_meas=0.700_target=0.450_observed=0.650_expected=0.750;clk@350.100ns_meas=0.700_target=0.450_observed=0.600_expected=0.700",
+    "expected": "properties P_DEADBAND_HOLD satisfy the public contract; fault class deadband_hold_omission is rejected",
+    "observed": "EVAS: clock_edges=33 initial=0.3 edge_mismatches=17 hold_intervals=32 hold_violations=0 range=(0.050,0.850) coverage={'reset': 1, 'increase': 12, 'decrease': 18, 'deadband': 2, 'upper_clamp': 2, 'lower_clamp': 3} mismatch_detail=clk@267.100ns_meas=0.460_target=0.450_observed=0.800_expected=0.850;clk@287.050ns_meas=0.460_target=0.450_observed=0.750_expected=0.850;clk@307.100ns_meas=0.700_target=0.450_observed=0.700_expected=0.800;clk@327.050ns_meas=0.700_target=0.450_observed=0.650_expected=0.750;clk@347.050ns_meas=0.700_target=0.450_observed=0.600_expected=0.700",
     "violated_property_ids": [
       "P_DEADBAND_HOLD"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_008_gain_trim_controller",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 3541
   },
   "family_id": "008",
   "inputs": {
     "checker_profile_sha256": "ecc79398baa8ef43d99e5fdee3f157f9fefde66705dd82b4404ebfdfb410a210",
-    "harness_spec_sha256": "07aa5ab5a180c52ada6ef3e657e8032fba77b6e032cd32131706ddbd3bde74a2",
-    "mutation_bundle_sha256": "63b62f77ee6d8aa7ab6d24e481caeacc81f94d91a327a99e8138e9f6aa8a4914",
-    "profile_sha256": "a856812286b7454c3079a6fbf533ad761e78ddcd4f1c15a22126bc5deb597a54"
+    "harness_spec_sha256": "3f6590f008346889b65b400eda14de393a37533a235a70ed0d38522588b7fccc",
+    "profile_sha256": "6e2c896b40615753dcca8ecc967f7ed57c6af9cb93c03eea0044a5daa35504f8"
   },
   "mutation_id": "neg_005_missing_deadband_hold",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

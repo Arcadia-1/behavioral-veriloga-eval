@@ -2,12 +2,12 @@
   "candidate_artifacts": [
     "lc_vco_behavioral_source.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "checker_profile_sha256": "cf790e01ccae72f567b5b3c82db8f8f7e2b17b8f3b3079450971905bc452e728",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "07d2c11baa661e997d680cf34995cb3fc06a9be1432948061c767327f60218b9",
+  "gold_dut_certification_sha256": "5ddede8795be19899b8582ca226c9c7ff48d726dab464f701022a7bf01a38d77",
   "gold_solution_tree_sha256": "a2289d30cef94886be1e8025fd3187f4cd059bca0e0e2f3789f41814c4703ddf",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "schema_version": "v4-dut-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-391"
 }

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero_delay_line/certification.json",
-        "certification_sha256": "1248dee32a9725a0a47c9b16047825877c94676776ddca6934a8c7c321bbcff6",
+        "certification_sha256": "be2b876687fc25f0c5f88683a2d21c2620df180d172e46f2460b1bd5e8f07c1f",
         "fault_class": "delay_mapping_error",
-        "mutation_bundle_sha256": "d5e41d0eb3077748c55e4903fdefad0ff6d1d07729b51aaa1d13f29cbd624852",
+        "mutation_bundle_sha256": "6038fda0b29ca00f922ccb2e4170da2bc2236f42e08b3d8d35d78e230b2cf30a",
         "mutation_id": "neg_001_zero_delay_line",
         "source_catalog_certification_path": "negative_variants/neg_001_zero_delay_line/certification.json",
         "trigger_condition": "The reset delay_center code is active while enabled.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_lock_after_one/certification.json",
-        "certification_sha256": "abe89cae759af10c46ce16fa047392561286f4f0eac623aa102e9e14ff5489dd",
+        "certification_sha256": "08f59d2b94955cd7a31031cce4d48dabd9f00cb981ed502a4f90e9c21164409e",
         "fault_class": "lock_qualification_error",
-        "mutation_bundle_sha256": "c35194d36cd91e75fc77a17f829be085100a997dafea05efa112b4c7635e1e96",
+        "mutation_bundle_sha256": "0a537c40feab992f9c9c2b0b24cad036864fd9bb7de4e6ff4ba043dbea960672",
         "mutation_id": "neg_003_lock_after_one",
         "source_catalog_certification_path": "negative_variants/neg_003_lock_after_one/certification.json",
         "trigger_condition": "The first in-window comparison completes.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_code_zero/certification.json",
-        "certification_sha256": "f0b54f1cbb2db5a5dac61d5b750b01b7ff06bc756fbe4c908183b52019cfe0b2",
+        "certification_sha256": "0047995a10c375a2dc3e81ea42ccd5f1b58992fffcf2ea5f6df28288e70c0ec4",
         "fault_class": "reset_state_error",
-        "mutation_bundle_sha256": "cfe7d6310e72a438b58f2c2e2da6d67bb58b6427de2432385e0698a689c6c785",
+        "mutation_bundle_sha256": "80769a72c5876d11d2979bf6e585dde128d060263e16ce374e831830133d0003",
         "mutation_id": "neg_004_reset_code_zero",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_code_zero/certification.json",
         "trigger_condition": "Reset or disabled operation is observed.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_delayed_clock_stuck_low/certification.json",
-        "certification_sha256": "3de298e31265647e48177434051b11b605c68cc90e45790bab50009560c3f7e4",
+        "certification_sha256": "bbc56e520e8fe2d17cad92b1061926b2682e238eeb4f90df920db96b455586d3",
         "fault_class": "clock_output_stuck",
-        "mutation_bundle_sha256": "1d6d2dc0ff8d8c861e31c4a9aada7222381a368cca609c02eef10fcf305f72e1",
+        "mutation_bundle_sha256": "c8e4029f8e842fcb11540049878a398360c4dc955f321a601d42a594419663a8",
         "mutation_id": "neg_005_delayed_clock_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_005_delayed_clock_stuck_low/certification.json",
         "trigger_condition": "Enabled input-clock rising edges occur.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_phase_direction_swapped/certification.json",
-        "certification_sha256": "acbafcd495707815b14bc6dedee67b5df16ee028eb33db362d5813b57a6a2d14",
+        "certification_sha256": "73d1b687464f40e86097d2cebdab480b8eb2091c764692c1e586bc1e1e702c29",
         "fault_class": "correction_polarity_error",
-        "mutation_bundle_sha256": "c6ae6396f519916408d9b89e5e59ad0dd3e075485252073075492dc16b6291d9",
+        "mutation_bundle_sha256": "14aa72a5ad3ed119c21d1eb7dcdee64d45f5d8513ada33ee85cadb96f6fe76f5",
         "mutation_id": "neg_002_phase_direction_swapped",
         "source_catalog_certification_path": "negative_variants/neg_002_phase_direction_swapped/certification.json",
         "trigger_condition": "The delayed edge and reference edge are separated beyond the coincidence band.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "0996c5989cc0f868b493efb2f364de5961bb07ae9c5d6a9588a000fe5ade8333",
       "score_deck_sha256": "250b265b3d6bf909b03744b30720988eafc3dcf839037cdd4f5d408cf85e5040",
-      "task_certification_sha256": "bfaf2b325d36ad44e4721e1fdb63b4fd02e397e4f31c00c3cebae0f519527311",
-      "task_record_sha256": "0dd624b424635700e4d580f8665fed67da98bf905baaaef7c9fe6cbfe4d92a91"
+      "task_certification_sha256": "abf289e46564dfe70f581ac4c7fdd5565a4942775483ef9454936d3bcd79ac47",
+      "task_record_sha256": "cc5bd3bb948ce9b3e826863032ad16c23368e79bf65d53c9134ed20e18a4672b"
     },
     "release_dir": "361-dll-delay-line-lock"
   }

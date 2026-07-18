@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=an extreme sampled input drives the unclamped limiting expression outside the allowed output rails; violated_properties=P_OUTPUT_CLAMP",
-    "observed": "EVAS: limiter_output_clamp observed=range:-1.850..2.650 expected=0.040..0.860_with_tolerance window=full_trace; Spectre: limiter_output_clamp observed=range:-1.850..2.650 expected=0.040..0.860_with_tolerance window=full_trace",
+    "expected": "properties P_OUTPUT_CLAMP satisfy the public contract; fault class final_output_clamp_omission is rejected",
+    "observed": "EVAS: property_id=P_POSITIVE_LIMITING category=behavior_mismatch expected=out:0.8380,metric:0.850 observed=out:1.2100,metric:0.850,vin:0.7800 event=clk_rise[11]@2.202500e-08s",
     "violated_property_ids": [
       "P_OUTPUT_CLAMP"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_031_limiting_amplifier",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 394
   },
   "family_id": "031",
   "inputs": {
     "checker_profile_sha256": "34a64ecaf0cef6c544f3abc8c394a4af78cf444e1267b2e64e24b6a06caf310b",
-    "harness_spec_sha256": "f35afa7f5f1b906355c45d19b3459022372d4f7c778fe4f81314c747def827a0",
-    "mutation_bundle_sha256": "d1cc2e7b62bf526b59eef32f1589b1f236899a126db103935da351c682788eb6",
-    "profile_sha256": "1f1e82ed57d6a82b06af311ba363f89f10192d88e5d8229326761920816541e6"
+    "harness_spec_sha256": "728c6d4962d3564050cfc60a0aa4a29af683ef2f9b69a65fe8982b6c4322b287",
+    "profile_sha256": "becbdab19501b612077fb65cbfa35755e330f8cf871fb20da9127ce18339d371"
   },
   "mutation_id": "neg_007_output_clamp_missing",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "100283c771275c76271623172481be8547a27f240af6cd90e1171b6f623431b5"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

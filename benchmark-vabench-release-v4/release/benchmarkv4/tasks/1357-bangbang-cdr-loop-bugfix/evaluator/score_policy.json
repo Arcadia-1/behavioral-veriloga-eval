@@ -10,6 +10,7 @@
     "loop_filter_code.va",
     "phase_rotator.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "changed_artifacts": [
     "bbpd.va",
     "cdr_top.va",
@@ -18,11 +19,10 @@
   ],
   "checker_profile_sha256": "05863136d0464f4bc7424c93aca1bbc9c62a224d0e98557e9f4adcfb7b16a053",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "32c50c8136761ceaa7f9d1ce768f2a3086082b528f511c9dd904a8775aa8f62b",
+  "gold_dut_certification_sha256": "02aaf01744b7177338d3e3602234c95bf7684888e70e6e8b356604b66f17ce49",
   "gold_solution_tree_sha256": "f0019c5e97b8602a7fa0f947c0fc03fd8068777996be4b3390b290d4a3228e63",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "mutation_catalog_sha256": "25ebfa33e8c7e6e251ae41d5e72785e740b9fd5038561bbbf47164aef639852d",
   "schema_version": "v4-bugfix-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-1357"
 }

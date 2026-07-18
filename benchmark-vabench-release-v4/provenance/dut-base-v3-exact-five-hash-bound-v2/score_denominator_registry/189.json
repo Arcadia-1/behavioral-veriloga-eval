@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_floor_without_round/certification.json",
-        "certification_sha256": "79e974231f046619466238cfe307a1088f5a0d74d536b36247928df3c6ee47c2",
+        "certification_sha256": "d78f53c5c63c201147017f97910806562ca19a15da79750a8e8e78634b0fe360",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "2f1cef564c74cd4216650f70c5be9b5de1fcab90995a53d3425733c37df6e91b",
+        "mutation_bundle_sha256": "b0e6a1dfafacc70af898406b45b55fb5e61423c98b3897a188ab9dee4bb08b7c",
         "mutation_id": "neg_002_floor_without_round",
         "source_catalog_certification_path": "negative_variants/neg_002_floor_without_round/certification.json",
         "trigger_condition": "Inverts output bit dout1 of the rounded trim code.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "6f718bf1d19a31cbf0318533a9775993216c55f9b9a0706b850f78f21579726c",
+        "certification_sha256": "7ff979fa1e093686451aff5633c44c377329072a9ed7f0e2a6a9f6e6b12a8024",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "fa8a945fe15ec7f12887eede520dc94134a2c996a025f45a42bfcb2815277e45",
+        "mutation_bundle_sha256": "c03f7172dff39cccbed037b7edc5dd65169d506f83c6ce2e9512763fd78c26dc",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "bede9be76ecf4e8d5a1aa48bf5b4557c8939860430bc1a6a96fbc8fe4e3ff769",
+        "certification_sha256": "86ae6020a391499ded297750e7d8d62463dea55035d660ad528f066f96e4ce42",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "ea7124ea399b056d701524cb1542f817eed3c7255727922c1d309343653815eb",
+        "mutation_bundle_sha256": "6580b5f10cb99e8cbede263ab51817ec0bcf1cc12f2463b5ee89501864a3bc76",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Trim Ctrl 4bit: scales the metric output, preserving the main path while failing measurement checks.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_output_level/certification.json",
-        "certification_sha256": "6402c9eb64610bdd02cf1ce44d97b2a5b6f1fe266d58df61fe4d435d2cd890f5",
+        "certification_sha256": "ef8c49a4d874562e21f089aa0dfce2cf4dbd8bc10be73c3955c4cfc324874f9e",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "d59fa9a509c6e4fee4ad04499b8dbbd92638fbdf6d7570995a2a68d50c04efbb",
+        "mutation_bundle_sha256": "764abc04c70f2ff9be91d661b98a6c61ef41b4cda94bfeca052d9e9ab9bd4c0f",
         "mutation_id": "neg_004_half_output_level",
         "source_catalog_certification_path": "negative_variants/neg_004_half_output_level/certification.json",
         "trigger_condition": "Drives dout0 high at half logic level.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_invert_msb/certification.json",
-        "certification_sha256": "59d0ada5241223364c6e8d79c6784be43e0194e4e24af786e3e3b74181324bdd",
+        "certification_sha256": "33334c1dd818b8e16866c55ce92ed32276e2efd7651ea9f7fc00d8c06382f822",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "f42f987998b3113e94ae5a12a91ff12fcf39867d8c7ed8b7dd9e38ab8a8d2528",
+        "mutation_bundle_sha256": "511ff739450107adcfc7d2a11e5994b6454737866cffe3ba3e5a1946c934ad77",
         "mutation_id": "neg_003_invert_msb",
         "source_catalog_certification_path": "negative_variants/neg_003_invert_msb/certification.json",
         "trigger_condition": "Inverts the MSB output bit.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "5473eadb49abb29f8fc40ddfa6e4f21f1f130b5f6f7c8879a00c3bc74157332a",
       "score_deck_sha256": "35b5dee159931c9afd134c11e9b8b2903d13226c3c751efbe2414c603fcb7931",
-      "task_certification_sha256": "62966c7bc128de49f267cfeace442a2bd13e1919eff5ddba98b7a22db291a5ff",
-      "task_record_sha256": "a0051ffc4ce7a96147c8078c9db55914b1cee9e51e54d7135d963b7c76818c9d"
+      "task_certification_sha256": "88e66349cae25af6a6437eb6a91fdfbb76e0d0b0b818888183255778ebde3eed",
+      "task_record_sha256": "a425d4e9171e47abd4ec40e321abf963f434b19c1442721d366c9ea28b858215"
     },
     "release_dir": "189-trim-ctrl-4bit"
   }

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "0b7dcaf06aa9d55212de705f92ef1acf83eb7f3c3c63bf03eb038c1605dc8d82",
+        "certification_sha256": "a78dc0d7490ea7288b2d6be2670a8c94b9c735a7b58072212747e55cd7687104",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "888e424afca3a814ad73c96c5ac7fadddaaa8b17b91c203918fe2c6cbe61950d",
+        "mutation_bundle_sha256": "0960b7f69c5c165dae477da4f0967333df1129216d4fb1575d8000d4760002b8",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Existing concrete negative.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_falling_edge_sample/certification.json",
-        "certification_sha256": "8fe59bc61347be07496e3c708895ba1629f1d31e7066b1597d032128319d5dcf",
+        "certification_sha256": "c8775e636c98f2480a89db6d600e7294d2cbc7d048ed5d12c3b279998c6752e4",
         "fault_class": "fault_003_falling_edge_sample",
-        "mutation_bundle_sha256": "e546f345551312cf9ef79ced5404972d02d9771efe7c39d428d1d5e12bb4dd07",
+        "mutation_bundle_sha256": "1c668a3219167c54faeea763850636db34e8e7213d9555769dff078ba32268e1",
         "mutation_id": "neg_003_falling_edge_sample",
         "source_catalog_certification_path": "negative_variants/neg_003_falling_edge_sample/certification.json",
         "trigger_condition": "Samples on the falling clock edge.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_gain_hold/certification.json",
-        "certification_sha256": "f98e6dfecba08db12ed23b867caadaaead2bdd2311ef17a76fdde085f6b7674c",
+        "certification_sha256": "3bfd45b29cd0b9a3c490c3d1e0ea5ba6f59408035ede36bf0537c0d0bd256d86",
         "fault_class": "fault_004_half_gain_hold",
-        "mutation_bundle_sha256": "f035339b35010483a04620247d93ee3c9f386f11673a67c01dc464adbf0c38f4",
+        "mutation_bundle_sha256": "eb0d6e1c79a94f74f53373ce42e402837e1d0bd543ad23efd1bd713ff41680a0",
         "mutation_id": "neg_004_half_gain_hold",
         "source_catalog_certification_path": "negative_variants/neg_004_half_gain_hold/certification.json",
         "trigger_condition": "Samples the right edge but stores half the input voltage.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "11410c2273bccb1a92804862f61ab9f90e1d3ae8950c05c041ca4322a3adbc66",
+        "certification_sha256": "921fb8f4c21f145f9179b65e9e3047b0cc0149bec41d1ef7d06647efc603e066",
         "fault_class": "fault_005_metric_scale_low",
-        "mutation_bundle_sha256": "91f772fb05bb85d13920d3b5725a9feeba5283b28dcf65be333de670653761eb",
+        "mutation_bundle_sha256": "b53937bed69d8b6df624c9eac2e884422cd5fad3e812f425bd69cba6a1defa80",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Ideal Sample And Hold: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_transparent_track/certification.json",
-        "certification_sha256": "31a188efd67b75efede71baf97f0882c7c82b0bf820a62b25870c422987b93f1",
+        "certification_sha256": "ce990f8a6f7ac07d8ad1d0a6a90fafc52e137a410541ba51f3df2d825edbb6b0",
         "fault_class": "fault_002_transparent_track",
-        "mutation_bundle_sha256": "c987a7f7c373ada674a6d93abf5f5f464c43bad5f7b01778a810b38551067fc0",
+        "mutation_bundle_sha256": "81336db0ebf384fb095253357d7deece88accf2518eda5f3e34aa7219fe30173",
         "mutation_id": "neg_002_transparent_track",
         "source_catalog_certification_path": "negative_variants/neg_002_transparent_track/certification.json",
         "trigger_condition": "Tracks input continuously instead of holding sampled values.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "2eaf56e24fd132eb0261d2560f4a1c83a6424d10b0851ce74c93fbcbc2d15769",
       "score_deck_sha256": "0ec6ff394b132042b3f7e1b12fccc86a1faa176dea185b7a82ccce0d418d32de",
-      "task_certification_sha256": "1392ad605a167a9199cfa30cc3793c5f3e283294e47944369af497ead4442da6",
-      "task_record_sha256": "bddcdc231c3e258463ed94ea80c90615cc490da862604b42779011fab5795a9f"
+      "task_certification_sha256": "fb1df1a40ba56c1a4c20d2d673bfd4d20e1784761463e5c8d8b68f4066b844fe",
+      "task_record_sha256": "1197e719b9d15b9047d822816470f149cbcae2dd35048129cadd09a81500f128"
     },
     "release_dir": "104-sample-and-hold-ideal"
   }

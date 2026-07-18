@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Load and maintain the family-sharded V4 score denominator registry."""
+"""Validate and read the family-sharded V4 score denominator registry."""
 from __future__ import annotations
 
 import argparse
@@ -73,7 +73,7 @@ def write_family_row(source: Path, family: str, row: dict[str, Any]) -> None:
     )
 
 
-def load_score_denominator_registry(source: Path) -> dict[str, Any]:
+def load_registry_metadata(source: Path) -> dict[str, Any]:
     directory = registry_dir(source)
     meta_path = directory / META_FILENAME
     if not meta_path.is_file():
@@ -87,69 +87,40 @@ def load_score_denominator_registry(source: Path) -> dict[str, Any]:
         missing = sorted(set(expected) - set(actual))
         extra = sorted(set(actual) - set(expected))
         raise RegistryError(f"registry family coverage mismatch: missing={missing} extra={extra}")
-    manifest = dict(meta)
-    manifest["tasks"] = [load_family_row(source, family) for family in expected]
-    manifest["content_sha256"] = canonical_manifest_sha(manifest)
-    if int(manifest.get("counted_task_count") or -1) != len(expected):
+    if int(meta.get("counted_task_count") or -1) != len(expected):
         raise RegistryError("registry counted_task_count does not match family coverage")
-    return manifest
+    return meta
 
 
-def canonical_manifest_sha(manifest: dict[str, Any]) -> str:
-    value = dict(manifest)
-    value.pop("content_sha256", None)
-    encoded = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
-    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+def load_family_rows(source: Path) -> list[dict[str, Any]]:
+    meta = load_registry_metadata(source)
+    return [load_family_row(source, family) for family in expected_family_ids(meta)]
 
 
-def rendered_manifest_bytes(source: Path) -> bytes:
-    manifest = load_score_denominator_registry(source)
-    return (json.dumps(manifest, indent=2, sort_keys=True) + "\n").encode("utf-8")
-
-
-def score_denominator_manifest_sha256(source: Path) -> str:
-    return hashlib.sha256(rendered_manifest_bytes(source)).hexdigest()
-
-
-def migrate_legacy_manifest(source: Path, legacy_manifest: Path) -> None:
-    manifest = read_json(legacy_manifest)
-    rows = manifest.pop("tasks", None)
-    recorded_content_sha = manifest.pop("content_sha256", None)
-    if not isinstance(rows, list) or not rows:
-        raise RegistryError("legacy manifest has no task rows")
-    directory = registry_dir(source)
-    if directory.exists() and any(directory.iterdir()):
-        raise RegistryError(f"registry directory is not empty: {directory}")
-    write_json(directory / META_FILENAME, manifest)
-    for row in rows:
-        family = str(row.get("canonical_dut_id") or "")
-        write_family_row(source, family, row)
-    generated = load_score_denominator_registry(source)
-    if recorded_content_sha and generated["content_sha256"] != recorded_content_sha:
-        raise RegistryError("sharded registry changed the legacy manifest semantic hash")
-    if rendered_manifest_bytes(source) != legacy_manifest.read_bytes():
-        raise RegistryError("sharded registry does not reproduce the legacy manifest byte-for-byte")
+def score_denominator_registry_sha256(source: Path) -> str:
+    """Hash metadata and shard bytes without constructing an aggregate table."""
+    meta = load_registry_metadata(source)
+    paths = [registry_dir(source) / META_FILENAME]
+    paths.extend(family_path(source, family) for family in expected_family_ids(meta))
+    digest = hashlib.sha256()
+    for path in paths:
+        digest.update(path.name.encode("ascii"))
+        digest.update(b"\0")
+        digest.update(hashlib.sha256(path.read_bytes()).hexdigest().encode("ascii"))
+        digest.update(b"\0")
+    return digest.hexdigest()
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, required=True)
-    parser.add_argument("--migrate-legacy", type=Path)
-    parser.add_argument("--render")
     args = parser.parse_args()
     source = args.source.expanduser().resolve()
-    if args.migrate_legacy:
-        migrate_legacy_manifest(source, args.migrate_legacy.expanduser().resolve())
-    manifest = load_score_denominator_registry(source)
-    if args.render:
-        output = Path(args.render).expanduser().resolve()
-        output.parent.mkdir(parents=True, exist_ok=True)
-        output.write_bytes(rendered_manifest_bytes(source))
+    rows = load_family_rows(source)
     print(json.dumps({
         "status": "PASS",
-        "family_count": len(manifest["tasks"]),
-        "content_sha256": manifest["content_sha256"],
-        "rendered_sha256": score_denominator_manifest_sha256(source),
+        "family_count": len(rows),
+        "registry_sha256": score_denominator_registry_sha256(source),
     }, indent=2, sort_keys=True))
     return 0
 

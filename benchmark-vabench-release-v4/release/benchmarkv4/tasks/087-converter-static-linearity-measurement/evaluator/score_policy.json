@@ -2,12 +2,12 @@
   "candidate_artifacts": [
     "converter_static_linearity_measurement_flow.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "checker_profile_sha256": "8a14938be31b7020c9c5cdd9db3512da04044e35b756392794ba4520d7f4083f",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "9e7722127efe069a33d106272e033fec079ba2fc612d47a0c4b5cfeffba4d14e",
+  "gold_dut_certification_sha256": "78d6fdf0c28015f7d79937f63c602d1144857f1e16a8c45f574753910c43ad88",
   "gold_solution_tree_sha256": "849d6553f0d22ac5258c8bc915697474936110f966a1c972bc4d10c6946aaf59",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "schema_version": "v4-dut-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-087"
 }

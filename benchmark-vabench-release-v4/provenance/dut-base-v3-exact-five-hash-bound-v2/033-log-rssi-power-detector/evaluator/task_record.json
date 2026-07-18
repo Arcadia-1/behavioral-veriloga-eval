@@ -3,10 +3,10 @@
   "checker_task_id": "v4_033_log_rssi_power_detector",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "74c660205df9aac8a834688a68851cb786fe2e3f436e93c7bae5db08b69e9182",
+    "certification.json": "646eda07648df21bcd4010e636a4cc1a50f2445cd0360922038e5cc014e9f8ca",
     "checker_profile.json": "ad36f7707f8089d2022ef70b9d71a3bbd51a66010c42cdf109d10a12f4240de7",
     "derivation_manifest.json": "3887697c1b45ae20bd45cb14a17c4f2f2bc8823ed6f652302d0608aa7e3976c7",
-    "family_spec.json": "d6dc54624302bcea323ff8f7137949c2d6ea9c87783a4ba6464ca6b6f18e3edf",
+    "family_spec.json": "4cd51398b1ea98c37db1667f0da7fa63d4e4f6d0de513dbaecedc774227756ba",
     "harness_spec.json": "8f3275b281f02ac47e3596a60fa8e1d8502ff6cb33468411313a889cdd99d064",
     "mutation_catalog.json": "b073cee6c15bf4ecfd54dc9cfb2e6d5213765336ccbe413b0e4c231002ef21a3",
     "profiles/feedback.json": "18f8f48668d2373db4d826cd67b3dac07afdf605e2cd0274451b7d25f7845c12",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "74c660205df9aac8a834688a68851cb786fe2e3f436e93c7bae5db08b69e9182"
+    "sha256": "646eda07648df21bcd4010e636a4cc1a50f2445cd0360922038e5cc014e9f8ca"
   },
   "release_dir": "033-log-rssi-power-detector",
   "schema_version": "v4-canonical-dut-release-task-v1",

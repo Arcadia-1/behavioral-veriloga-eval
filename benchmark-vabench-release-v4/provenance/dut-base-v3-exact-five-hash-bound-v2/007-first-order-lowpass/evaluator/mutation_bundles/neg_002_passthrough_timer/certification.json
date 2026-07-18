@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=periodic update follows a VIN step; violated_properties=P_LOW_PASS_RESPONSE",
-    "observed": "EVAS: lowpass_samples=0.800,0.800,0.800,0.800 input_step=True monotonic=False response_fast_enough=True not_instant=False bounded=True initial_samples=[0.0, 0.0] initial_ok=True schedule_checks=32 schedule_failures=12 max_schedule_error=0.6211 schedule_detail=25.000ns_observed=0.800_error=0.6211;30.000ns_observed=0.800_error=0.4822;35.000ns_observed=0.800_error=0.3743;40.000ns_observed=0.800_error=0.2906;45.000ns_observed=0.800_error=0.2256; Spectre: lowpass_samples=0.800,0.800,0.800,0.800 input_step=True monotonic=False response_fast_enough=True not_instant=False bounded=True initial_samples=[0.0, 0.0] initial_ok=True schedule_checks=32 schedule_failures=12 max_schedule_error=0.6211 schedule_detail=25.000ns_observed=0.800_error=0.6211;30.000ns_observed=0.800_error=0.4822;35.000ns_observed=0.800_error=0.3743;40.000ns_observed=0.800_error=0.2906;45.000ns_observed=0.800_error=0.2256",
+    "expected": "properties P_LOW_PASS_RESPONSE satisfy the public contract; fault class missing_filter_state is rejected",
+    "observed": "EVAS: lowpass_samples=0.800,0.800,0.800,0.800 normalized_samples=1.000,1.000,1.000,1.000 step_amplitude=0.8 input_step=True monotonic=False response_fast_enough=True not_instant=False bounded=True input_ceiling=0.8 max_vout=0.8; first_mismatch=P_LOW_PASS_RESPONSE signal=vout expected=normalized_sample0<0.5625 observed=1 tolerance=0 initial_samples=[0.0, 0.0] initial_ok=True",
     "violated_property_ids": [
       "P_LOW_PASS_RESPONSE"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_007_first_order_lowpass",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 326
   },
   "family_id": "007",
   "inputs": {
     "checker_profile_sha256": "949b47d36d74112869dcf4d5309f0fef8940f8e782b39105961d85c95517d672",
-    "harness_spec_sha256": "02d46fe9ee9a81352b81c71cfbf766c77c4fdee14abca74e9b3044e21607aba6",
-    "mutation_bundle_sha256": "b6d89c97cdf9cfa35599bd366a39badef7a083774f427040be6514b1faffc2f6",
-    "profile_sha256": "e5a7c18c680029109a39d048c809ec9c56662cafce5f9944eca6dd92bfc82bfb"
+    "harness_spec_sha256": "d424aca8a9738ebdb8e81b94b35d13458835f8c4217db49ad50eb447cf99af6f",
+    "profile_sha256": "5f6526b6a39bc559a7834596248f5e80dbffd90cc46e28934c0dd5ab4179fe66"
   },
   "mutation_id": "neg_002_passthrough_timer",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

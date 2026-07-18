@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_count_plus_one/certification.json",
-        "certification_sha256": "be54ee732e3d6653555d5582fdfde8b7c5891b1976dd79ecefea6cf05dff71cf",
+        "certification_sha256": "b611c885e2b44fbc9e53f8cae75f3a8c645c69d401323c2cfe3877006a7b344e",
         "fault_class": "count_plus_one",
-        "mutation_bundle_sha256": "47f767cb9c758e00a8ba82adede6f5083049aa496a3325090873e6b4b8b39c25",
+        "mutation_bundle_sha256": "26365c093674054da352c74a07166a7c4e1652e82a6fc3e0a22b9aee14bc89a4",
         "mutation_id": "neg_001_count_plus_one",
         "source_catalog_certification_path": "negative_variants/neg_001_count_plus_one/certification.json",
         "trigger_condition": "count plus one",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_valid_always_high/certification.json",
-        "certification_sha256": "c3219fa972ab09d95f4dd881c1f99020ae18e9eb014aa5108a052689768a60b2",
+        "certification_sha256": "2ad4fff4424800367837ace07e4ffe70e0fb633b3a59311ccc0ffd77be97aa16",
         "fault_class": "valid_always_high",
-        "mutation_bundle_sha256": "1bd13565caf6dbe471dac2bc627e5e21b3d955daf4b5ac082ea33bd67b82721a",
+        "mutation_bundle_sha256": "3a8e9c6aa1387c40b7283aab86854da8e82ef9d9531cb052e4461ecced52fc6a",
         "mutation_id": "neg_002_valid_always_high",
         "source_catalog_certification_path": "negative_variants/neg_002_valid_always_high/certification.json",
         "trigger_condition": "valid always high",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_valid_always_low/certification.json",
-        "certification_sha256": "d16ec9eef59ecb20358192cc8b92cf1503debd67c178e2e746330cff957d2729",
+        "certification_sha256": "b189ae83d1fa80efccb9514ae9e05441d7545e6b405ae8d7383fb3cc2fbcd662",
         "fault_class": "valid_always_low",
-        "mutation_bundle_sha256": "6b012a37dab1039bc2e5a7e9e8043ac8e35aea02e5a0a7faaaaee85a22f337f6",
+        "mutation_bundle_sha256": "4bc59162440528463ac4772d85cc0a87b9240b7e9e5594e04153584cdec12020",
         "mutation_id": "neg_004_valid_always_low",
         "source_catalog_certification_path": "negative_variants/neg_004_valid_always_low/certification.json",
         "trigger_condition": "valid always low",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_bit_order_reversed/certification.json",
-        "certification_sha256": "55798ef414b5212a7fe0d8c0ba537cdf7be28f4f54ac6def6fc94f1bfed0ba91",
+        "certification_sha256": "29e58325500da40b67547f7e59d94c26ecf8bd2b2e3ba0b001c62c7569858579",
         "fault_class": "bit_order_reversed",
-        "mutation_bundle_sha256": "a1442daa64eba9f44ae3321031a11b1dfdeb5eef0522d0394cc306edfa15f8a1",
+        "mutation_bundle_sha256": "f2253862681f1ec2890afe203d9b025a4945bfeb20c7cd924822b1e82911ed7c",
         "mutation_id": "neg_005_bit_order_reversed",
         "source_catalog_certification_path": "negative_variants/neg_005_bit_order_reversed/certification.json",
         "trigger_condition": "binary output bit order reversed",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_reversed_direction/certification.json",
-        "certification_sha256": "187d56e90e63ebf6eb6a38be16e2892d8049e92588476b91f7eafb9c106fc88f",
+        "certification_sha256": "f93a64ae5161c330c629704400020431204b4d1b348356f25a01a2083bd023ae",
         "fault_class": "reversed_direction",
-        "mutation_bundle_sha256": "93bff9b8679e08b8eb5bd893838b1c9a7a1e07b2f45824ab2ff013336c74a653",
+        "mutation_bundle_sha256": "260f40a177fc057a7c0d8f2b2671a4d93209419528aa1d1461e82d50e49c1c91",
         "mutation_id": "neg_003_reversed_direction",
         "source_catalog_certification_path": "negative_variants/neg_003_reversed_direction/certification.json",
         "trigger_condition": "expects high side cumulative",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "3f4478ab1a6ba7e93d251bba9eefd83b5a278ad7fca4abb1306f56608c9fd9f4",
       "score_deck_sha256": "d4a9028130149e8a7d0774e808dd8ec80c53dbbbb35502147247410cbc4895a4",
-      "task_certification_sha256": "29e03839dbfe7eb9b7030728cd92862d56895f2e6f984ae3a664aad57b0e8344",
-      "task_record_sha256": "0d0a2226225e714e4a7852de7930840d65ea3480b5d197b88e256b234530748a"
+      "task_certification_sha256": "34e8b8ab616cb7500b8581c2299af620e4fca67198eaaf7b961de7a93e6fa762",
+      "task_record_sha256": "96d96c9de82146fa51bb2ec99f070339a4a27a394b2b72656c51de17648874ca"
     },
     "release_dir": "049-thermometer-to-binary-encoder-8b"
   }

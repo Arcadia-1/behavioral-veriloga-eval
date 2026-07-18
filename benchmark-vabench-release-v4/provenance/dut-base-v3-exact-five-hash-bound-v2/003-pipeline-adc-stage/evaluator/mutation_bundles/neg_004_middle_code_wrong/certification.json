@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=sampled VIN is in the middle region; violated_properties=P_SUBADC_REGIONS",
-    "observed": "EVAS: paired_samples=4 sampled_vs_live_cases=4 clamp_cases=1 regions=upper:2,middle:1,lower:1 mismatches=1 max_residue_error=0.0000 mismatch_detail=phi2@15.100ns_region=middle_vin_sampled=0.450_vin_live=0.720_vres=0.450/0.450_d=0.000,0.000/0.000,0.900; Spectre: paired_samples=4 sampled_vs_live_cases=4 clamp_cases=1 regions=upper:2,middle:1,lower:1 mismatches=1 max_residue_error=0.0000 mismatch_detail=phi2@15.100ns_region=middle_vin_sampled=0.450_vin_live=0.720_vres=0.450/0.450_d=0.000,0.000/0.000,0.900",
+    "expected": "properties P_SUBADC_REGIONS satisfy the public contract; fault class middle_code_lsb_stuck_low is rejected",
+    "observed": "EVAS: paired_samples=4 sampled_vs_live_cases=4 clamp_cases=1 regions=upper:2,middle:1,lower:1 mismatches=1 max_residue_error=0.0000 mismatch_detail=phi2@15.100ns_region=middle_vin_sampled=0.450_vin_live=0.720_vres=0.450/0.450_d=0.000,0.000/0.000,0.900",
     "violated_property_ids": [
       "P_SUBADC_REGIONS"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_003_pipeline_adc_stage",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 294
   },
   "family_id": "003",
   "inputs": {
     "checker_profile_sha256": "f86b39c64d987e7bcd5cf35850ac17088fc726ae4fc21fd252adc580e9697666",
-    "harness_spec_sha256": "c921b59c4327c7940897a1aa49aa104bd917968fe1e6bec654d2cbefaddee8ab",
-    "mutation_bundle_sha256": "55f55d2275691dd9706839fba65782317cd722c2d0a890c9e44536fb54ff077b",
-    "profile_sha256": "b7747b53ba8889839b66d760a62398f710de4762be7df12640a796d2d0d8d277"
+    "harness_spec_sha256": "e56433435f3c9061445b5c5741af4842197b427e774ac4f287385ef3eee43275",
+    "profile_sha256": "fbd7cb33271f5a516e75dd77c73ace396e5cc04f657fa4f8e02b8b34a9a0a1aa"
   },
   "mutation_id": "neg_004_middle_code_wrong",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

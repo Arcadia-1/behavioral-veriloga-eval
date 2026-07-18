@@ -89,6 +89,12 @@ def _first_after(values: list[float], target: float, limit: float | None = None)
 def _active(row: dict[str, float], *, enable: str | None = None, reset: str = "rst") -> bool:
     return not _high(row, reset) and (enable is None or _high(row, enable))
 
+def _period_scale(edges: list[float], nominal_period: float) -> float:
+    periods = [b - a for a, b in zip(edges, edges[1:]) if b > a]
+    if not periods:
+        return 1.0
+    return sorted(periods)[len(periods) // 2] / nominal_period
+
 def _control_clear_samples(
     rows: list[dict[str, float]], *, enable: str | None, settle: float
 ) -> list[dict[str, float]]:
@@ -106,7 +112,11 @@ def check_v4_361_dll_delay_line_lock(rows: list[dict[str, float]]) -> tuple[bool
     if missing:
         return missing
 
-    clear_samples = _control_clear_samples(rows, enable="enable", settle=0.7e-9)
+    in_edges = _rising_times(rows, "in_clk")
+    time_scale = _period_scale(in_edges, 10e-9)
+    clear_samples = _control_clear_samples(
+        rows, enable="enable", settle=0.7e-9 * time_scale
+    )
     clear_bad = 0
     clear_gap = clear_time = 0.0
     for row in clear_samples:
@@ -117,7 +127,6 @@ def check_v4_361_dll_delay_line_lock(rows: list[dict[str, float]]) -> tuple[bool
             if gap > clear_gap:
                 clear_gap, clear_time = gap, float(row["time"])
 
-    in_edges = _rising_times(rows, "in_clk")
     delayed_edges = _rising_times(rows, "delayed_clk")
     delay_bad = 0
     delay_checks = 0
@@ -127,14 +136,15 @@ def check_v4_361_dll_delay_line_lock(rows: list[dict[str, float]]) -> tuple[bool
         if not _active(row, enable="enable"):
             continue
         code = _code(row, [f"delay_{i}" for i in range(5)])
-        observed = _first_after(delayed_edges, t, t + 1e-9)
+        observed = _first_after(delayed_edges, t, t + 1e-9 * time_scale)
         delay_checks += 1
         if observed is None:
             delay_bad += 1
-            delay_gap, delay_time = 1e-9, t
+            delay_gap, delay_time = 1e-9 * time_scale, t
             continue
         actual = observed - t
-        low, high = code * 5e-12 + 18e-12, code * 5e-12 + 85e-12
+        low = (code * 5e-12 + 18e-12) * time_scale
+        high = (code * 5e-12 + 85e-12) * time_scale
         gap = max(low - actual, actual - high, 0.0)
         if gap > 0:
             delay_bad += 1
@@ -154,17 +164,18 @@ def check_v4_361_dll_delay_line_lock(rows: list[dict[str, float]]) -> tuple[bool
             good_streak = 0
             continue
         delayed_t = min(delayed_edges, key=lambda value: abs(value - ref_t), default=None)
-        if delayed_t is None or abs(delayed_t - ref_t) > 2e-9:
+        if delayed_t is None or abs(delayed_t - ref_t) > 2e-9 * time_scale:
             continue
-        sample = _sample_at(rows, max(ref_t, delayed_t) + 0.45e-9)
+        sample = _sample_at(rows, max(ref_t, delayed_t) + 0.45e-9 * time_scale)
         dt = ref_t - delayed_t
-        expected = "up" if dt > 1.25e-12 else "down" if dt < -1.25e-12 else "none"
+        phase_threshold = 1.25e-12 * time_scale
+        expected = "up" if dt > phase_threshold else "down" if dt < -phase_threshold else "none"
         observed = "both" if _high(sample, "up") and _high(sample, "down") else "up" if _high(sample, "up") else "down" if _high(sample, "down") else "none"
         phase_checks += 1
         if observed != expected:
             phase_bad += 1
             phase_gap, phase_time = abs(dt), float(sample["time"])
-        if abs(dt) <= 5e-12:
+        if abs(dt) <= 5e-12 * time_scale:
             good_streak += 1
         else:
             good_streak = 0

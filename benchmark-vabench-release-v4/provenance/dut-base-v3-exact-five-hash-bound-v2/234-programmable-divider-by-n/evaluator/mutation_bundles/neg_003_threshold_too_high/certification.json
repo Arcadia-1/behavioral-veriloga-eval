@@ -1,143 +1,42 @@
 {
-  "allow_python_fallback": false,
-  "component_fingerprints": {
-    "assembly": {
-      "policy_sha256": "91f4e21b94263e796c846aedef282c79d4abeb7ccc415a0e6f1311f8816b33a4",
-      "release_snapshot_sha256": "ec25ff4e82bd73ef23394b05e71b73298f84f12139028d337e881ddcfddcd8f4"
-    },
-    "backend": {
-      "ahdl_like_sha256": "91ce239e5f278a6d5dfcde85ca2d820c5133d8f8a3de26dc6477164e703342f3",
-      "evas_sha256": "e48df10fee21fa1613eb87e8febd0226895e2482f2e91355645d2e93e71e04d7"
-    },
-    "oracle": {
-      "checker_binding_sha256": "b803c78da998f4c23b8573ca70aec31c5e21c6b35bd260745c7960147f8655c4",
-      "checker_implementation_sha256": "05aa09a127c2f624213ed80c49508664bf356ed9dcca95b46f1d952a00ef06a5",
-      "checker_profile_sha256": "98cb3b2831bd9efb9325d26d4cdd026122ba5b9c652eb0b84770d3785e14c357",
-      "diagnostic_policy_sha256": "69b217a349cb0e8a3eab574e7e6d1af03f069fea668b15b37868ef3d2e7deea3",
-      "oracle_runner_sha256": "daf6eeded735edd148687b998344d32a4943e8824bac2828f28e9107a7950567",
-      "property_activation_policy_sha256": "dea5990bf8a7c903ac42040132a40145080c9a5dee23d652f1afcc83b775e5d0"
-    },
-    "policy_id": "v4-dependency-scoped-evidence-v2",
-    "schema_version": "v4-evidence-components-v2",
-    "state": "carried_forward",
-    "task_inputs": {
-      "candidate_bundle_sha256": "37600feb6a0a042512f25a8403f6888e1804112287f6f872ad10d70165fefd61",
-      "checker_profile_sha256": "b7edfd19839cabb66cf3c834db091452da9f3701ffd269b70c719267203804c2",
-      "deck_sha256": "5539a9ebdf8da8a1ed7168770352f8f1edaff82ae1d70c0534690e83fe042d90",
-      "gold_bundle_sha256": "4157ddc509c4597540e878837b090b8b29dee2ef2809090c3bcb55298398ab0a",
-      "harness_spec_sha256": "edaee3f0c20ee1703f802fbfe852ef669cfddd17f1d0ecfa2316f2ca4fe5063a",
-      "mutation_bundle_sha256": "37600feb6a0a042512f25a8403f6888e1804112287f6f872ad10d70165fefd61",
-      "profile_sha256": "c08089d62744cfe177664a960b9c248d7305f59618bf83c81c66a66718a39d33",
-      "property_contract_sha256": "7b48bb10365ed566d497e6e3d392c0cce1e56c31726dcfda97e8afaed2d4b885",
-      "public_support_bundle_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "trace_contract_sha256": "2225a39a55194c5a3a41fa5fb5ae54bc390285fb52b1becc0a39b46762abfa67"
-    }
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
   },
   "diagnostics": {
-    "expected": "trigger=Uses a clock threshold above the high level, so the divider never counts edges.; violated_properties=P_CLOCK_THRESHOLD_OBSERVABILITY",
+    "expected": "properties P_CLOCK_THRESHOLD_OBSERVABILITY satisfy the public contract; fault class threshold_or_boundary_fault is rejected",
     "observed": "EVAS: divider_max_err=0.9000 edges=7",
     "violated_property_ids": [
       "P_CLOCK_THRESHOLD_OBSERVABILITY"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
   },
-  "evas_engine_used": "evas2",
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_234_programmable_divider_by_n",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 961
+  },
   "family_id": "234",
   "inputs": {
     "checker_profile_sha256": "b7edfd19839cabb66cf3c834db091452da9f3701ffd269b70c719267203804c2",
     "harness_spec_sha256": "edaee3f0c20ee1703f802fbfe852ef669cfddd17f1d0ecfa2316f2ca4fe5063a",
-    "mutation_bundle_sha256": "37600feb6a0a042512f25a8403f6888e1804112287f6f872ad10d70165fefd61",
     "profile_sha256": "c08089d62744cfe177664a960b9c248d7305f59618bf83c81c66a66718a39d33"
   },
   "mutation_id": "neg_003_threshold_too_high",
   "outcome": "killed_behaviorally",
-  "release_snapshot_sha256": "ec25ff4e82bd73ef23394b05e71b73298f84f12139028d337e881ddcfddcd8f4",
-  "repair_issue_301": {
-    "affine_validation": {
-      "category": "behavior_mismatch",
-      "evas_engine_used": "evas2",
-      "expected": "fail",
-      "log_sha256": "e3f662937da1304011d6f2f7612fc8678db7030d560cc48f4b19ab8d3f3fd75a",
-      "ok": true,
-      "runtime": {
-        "evas_backend": "evas-rust",
-        "evas_runtime_valid": true,
-        "evas_version": "0.8.2",
-        "log_sha256": "e3f662937da1304011d6f2f7612fc8678db7030d560cc48f4b19ab8d3f3fd75a",
-        "log_source": "output/evas.log",
-        "no_python_fallback_marker": true,
-        "runtime_notes": []
-      },
-      "scores": {
-        "dut_compile": 1.0,
-        "sim_correct": 0.0,
-        "tb_compile": 1.0,
-        "weighted_total": 0.6667
-      },
-      "status": "FAIL_SIM_CORRECTNESS",
-      "structured_redacted_diagnostics": {
-        "notes": [
-          "returncode=0",
-          "evas_engine=evas2",
-          "evas_version=0.8.2",
-          "evas_backend=evas-rust",
-          "divider_max_err=0.9000 edges=7"
-        ],
-        "redacted": true
-      }
-    },
-    "candidate_artifact": "programmable_divider_by_n.va",
-    "classification": "B",
-    "classification_reason": "mechanical canonical feedback/score profile migration",
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_source": {
-      "commit": "a72fff338bc81b2ebc144b7da97a82a663c776e2",
-      "version": "v0.8.2"
-    },
-    "no_python_fallback_evidence_claimed": true,
-    "profile_name": "feedback",
-    "runtime_gate": {
-      "required_backend": "evas-rust",
-      "required_engine": "evas2",
-      "required_version": "0.8.2"
-    },
-    "validation": {
-      "category": "behavior_mismatch",
-      "evas_engine_used": "evas2",
-      "expected": "fail",
-      "log_sha256": "55fed5b364494a35420ef8bbaeb8aa30ddbb7454475ed7b434bc1ccc307ffc7d",
-      "ok": true,
-      "runtime": {
-        "evas_backend": "evas-rust",
-        "evas_runtime_valid": true,
-        "evas_version": "0.8.2",
-        "log_sha256": "55fed5b364494a35420ef8bbaeb8aa30ddbb7454475ed7b434bc1ccc307ffc7d",
-        "log_source": "output/evas.log",
-        "no_python_fallback_marker": true,
-        "runtime_notes": []
-      },
-      "scores": {
-        "dut_compile": 1.0,
-        "sim_correct": 0.0,
-        "tb_compile": 1.0,
-        "weighted_total": 0.6667
-      },
-      "status": "FAIL_SIM_CORRECTNESS",
-      "structured_redacted_diagnostics": {
-        "notes": [
-          "returncode=0",
-          "evas_engine=evas2",
-          "evas_version=0.8.2",
-          "evas_backend=evas-rust",
-          "divider_max_err=0.9000 edges=7"
-        ],
-        "redacted": true
-      }
-    }
+    "evas_version": "0.8.2"
   },
-  "schema_version": "v4-negative-certification-v2",
-  "toolchain_lock_sha256": "ec25ff4e82bd73ef23394b05e71b73298f84f12139028d337e881ddcfddcd8f4"
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

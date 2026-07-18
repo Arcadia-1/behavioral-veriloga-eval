@@ -10,6 +10,7 @@
     "multi_modulus_divider.va",
     "ratio_monitor.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "changed_artifacts": [
     "accumulator.va",
     "fracn_synth_top.va",
@@ -18,11 +19,10 @@
   ],
   "checker_profile_sha256": "bef0800a63117bbad7356bf347979073f8e2afb0a5d27a88f05dd010ad299ec2",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "2a9b2a656881be045008be40d58c3bfb590df932fa152581ebc7733c785f1668",
+  "gold_dut_certification_sha256": "d548db3075237d586b34490c111bf4fbc33db65294c574a8e9a21369326c338e",
   "gold_solution_tree_sha256": "fdfca3fc6711e1430c420ce99aa11bbc5bf637a33a55fd2f951bd9d4e5fd45b9",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "mutation_catalog_sha256": "60570bcc175c1064839a9551dfde654e4bd949c725e3274afb5e413e7bc8e111",
   "schema_version": "v4-bugfix-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-1363"
 }

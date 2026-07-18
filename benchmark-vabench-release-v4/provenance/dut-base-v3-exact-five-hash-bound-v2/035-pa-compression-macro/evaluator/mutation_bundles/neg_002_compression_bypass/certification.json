@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=a rising clock samples a vin that makes the unconstrained target exceed either compression boundary; violated_properties=P_SYMMETRIC_COMPRESSION",
-    "observed": "EVAS: pa_limit_metric_low=0.100; Spectre: pa_limit_metric_low=0.100",
+    "expected": "properties P_SYMMETRIC_COMPRESSION satisfy the public contract; fault class compression_transfer_omission is rejected",
+    "observed": "EVAS: property_id=P_SYMMETRIC_COMPRESSION category=behavior_mismatch expected=out:0.8800,metric:0.850 observed=out:0.8800,metric:0.100,vin:0.8500 event=clk_rise[16]@2.722000e-08s",
     "violated_property_ids": [
       "P_SYMMETRIC_COMPRESSION"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_035_pa_compression",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 470
   },
   "family_id": "035",
   "inputs": {
     "checker_profile_sha256": "db6dd533ecbacffda5f1a6272a5cff53d2b11b4793ca06dd3659ef0ab33f3171",
-    "harness_spec_sha256": "5df61be9853c307e63f190fd7617d0676429b6ebe3e3f309fd9710279b8e4f2b",
-    "mutation_bundle_sha256": "1a65f634a84a497fbda7aa366a1463452f1e4d772b5b590fdfc923407f3b0165",
-    "profile_sha256": "734b3b534db4ba59884cbfba70e2c6d0a0a9ed0599c275d259524dc3b6c5c82c"
+    "harness_spec_sha256": "e6ff61a11e5710d8b25c4dea39759a80a31f22891b4c586c1908ae37e4ec3b70",
+    "profile_sha256": "eb77441bd9263dc66bcde0a5ea05175baf9167837c4b86a10d1580c8f9aae6b4"
   },
   "mutation_id": "neg_002_compression_bypass",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

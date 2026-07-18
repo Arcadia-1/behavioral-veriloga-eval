@@ -19,8 +19,9 @@ from typing import Any, Iterable
 
 from source_certification_binding import inspect_source_certification_reuse
 from score_denominator_registry import (
-    load_score_denominator_registry,
-    score_denominator_manifest_sha256,
+    load_family_rows,
+    load_registry_metadata,
+    score_denominator_registry_sha256,
 )
 
 
@@ -661,7 +662,7 @@ def build_dut_view(
         "task_id": f"v4-{family}",
         "candidate_artifacts": contract["target_artifacts"],
         "full_contract_pass_required": True,
-        "spectre_final_judge": True,
+        "certification_evaluator": "rust_evas2",
         "materialized_checker_profile": "evaluator/checker_profile.json",
         "checker_profile_sha256": file_sha(evaluator / "checker_profile.json"),
         "gold_solution_tree_sha256": tree_sha(evaluator / "solution"),
@@ -751,7 +752,7 @@ def build_testbench_view(
         "negative_outcomes": ["killed_behaviorally", "survived", "invalid_run"],
         "full_credit": "reference_gate and five_of_five_killed_behaviorally",
         "kill_ratio_denominator": 5,
-        "spectre_final_judge": True,
+        "certification_evaluator": "rust_evas2",
         "materialized_checker_profile": "evaluator/checker_profile.json",
         "checker_profile_sha256": file_sha(evaluator / "checker_profile.json"),
         "reference_tb_sha256": file_sha(reference_target),
@@ -841,7 +842,7 @@ def build_bugfix_view(
         "candidate_artifacts": artifacts,
         "artifact_mode": spec["artifact_contract"]["mode"],
         "full_contract_pass_required": True,
-        "spectre_final_judge": True,
+        "certification_evaluator": "rust_evas2",
         "materialized_checker_profile": "evaluator/checker_profile.json",
         "checker_profile_sha256": file_sha(evaluator / "checker_profile.json"),
         "gold_solution_tree_sha256": tree_sha(evaluator / "solution"),
@@ -957,13 +958,13 @@ def main() -> int:
         shutil.rmtree(output)
     output.mkdir(parents=True)
 
-    denominator = load_score_denominator_registry(source)
-    rows = denominator.get("tasks") or []
+    denominator_metadata = load_registry_metadata(source)
+    rows = load_family_rows(source)
     if len(rows) != 400:
         raise SystemExit("source release must contain exactly 400 canonical DUT rows")
     source_rows = {str(row["canonical_dut_id"]): row for row in rows}
     certification_reuse, _ = inspect_source_certification_reuse(source, source_rows)
-    source_manifest_sha = score_denominator_manifest_sha256(source)
+    source_registry_sha = score_denominator_registry_sha256(source)
     task_rows: list[dict[str, Any]] = []
     for row in rows:
         family = str(row["canonical_dut_id"])
@@ -987,19 +988,20 @@ def main() -> int:
     rerun_required = bool(certification_reuse["simulation_rerun_required_for_materialization"])
     manifest = {
         "schema_version": "v4-benchmarkv4-release-manifest-v1",
+        "release_revision": "r44",
         "release_status": (
             "materialized_certification_refresh_required"
             if rerun_required
-            else "materialized_hash_bound_certification_reuse_audit_pending"
+            else "r44_materialized_rust_evas2_audit_pending"
         ),
         "family_count": 400,
         "task_count": len(task_rows),
         "task_counts": counts,
         "source_release_label": source.name,
-        "source_score_denominator_manifest_sha256": source_manifest_sha,
-        "source_active_mutation_count": denominator.get("active_mutation_count"),
-        "active_mutations_per_family": denominator.get("active_mutations_per_family"),
-        "spectre_final_judge": True,
+        "source_score_denominator_registry_sha256": source_registry_sha,
+        "source_active_mutation_count": denominator_metadata.get("active_mutation_count"),
+        "active_mutations_per_family": denominator_metadata.get("active_mutations_per_family"),
+        "certification_evaluator": "rust_evas2",
         "simulation_rerun_count_for_materialization": 0,
         "simulation_rerun_required_for_materialization": rerun_required,
         "certification_reuse": certification_reuse,

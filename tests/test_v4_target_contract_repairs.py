@@ -1012,7 +1012,7 @@ def test_v4_batch_certifier_uses_the_active_suite_not_the_full_catalog() -> None
         / "validate_v4_checker_batch.py"
     ).read_text()
 
-    assert "ACTIVE_MUTATION_SUITE_INDEX.json" in certifier
+    assert "load_family_rows" in certifier
     assert "selected_mutation_ids(task, active_suites)" in certifier
     assert 'if str(row["id"]) in mutation_ids' in certifier
     assert 'field in note for field in ("category=", "expected=", "observed=", "event=")' in certifier

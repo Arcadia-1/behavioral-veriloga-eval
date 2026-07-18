@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_gain_code_decode_missing/certification.json",
-        "certification_sha256": "b6e35f41ed1ee4329ceed79b0298772e275276ce0c473c118e5f7ec154e77437",
+        "certification_sha256": "7d1da482f2ae2050e6bfc14d73c22aa303ea504a4af5c50b394ddcfc5e382ffc",
         "fault_class": "gain_code_decode_missing",
-        "mutation_bundle_sha256": "055bedd3e6118b6a2657d6597e46cff271064e4718a16a0d60644eba1713213e",
+        "mutation_bundle_sha256": "cddb0d3129bd988a040414fa9eb97f2b8d41c8e83b1ade9cb71be2cf84867019",
         "mutation_id": "neg_002_gain_code_decode_missing",
         "source_catalog_certification_path": "negative_variants/neg_002_gain_code_decode_missing/certification.json",
         "trigger_condition": "gain_code_decode_missing",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_settled_flag_missing/certification.json",
-        "certification_sha256": "b6e0f75169ba72df91fb8ee8458d5c444406b95f2f6fc37c4b9818f0abd648a2",
+        "certification_sha256": "8e35b80917006afb19b8c40bbb143d540f0bab08930805d08eac2f76541cd223",
         "fault_class": "settled_flag_missing",
-        "mutation_bundle_sha256": "6cd80ed0710d3d900c9195c29d08a5947e978b18c6bf92f36efbac8c8bf794ba",
+        "mutation_bundle_sha256": "6cdbffc1cda713cde335660d6c996be36b1958a243a3a94d2e09c97bcf85b9ba",
         "mutation_id": "neg_003_settled_flag_missing",
         "source_catalog_certification_path": "negative_variants/neg_003_settled_flag_missing/certification.json",
         "trigger_condition": "settled_flag_missing",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_enable_clear_ignored/certification.json",
-        "certification_sha256": "ab5d29694a19ed8b64e664e8e8db5d3b72dc89a88075a300ad5031c2f443fcd5",
+        "certification_sha256": "21e9cf7fe059be42dcad964f4a54ce8cd238d2ab5d239f465c58f4f83b1642e2",
         "fault_class": "reset_enable_clear_ignored",
-        "mutation_bundle_sha256": "66c5bca6cdcae482504999b77d4d91dca697e8353f9a7ea92c77133bf368ccdf",
+        "mutation_bundle_sha256": "3e7359723fd83132db878f0329457fb344a38eae87e6369dd2943b4df2f59c27",
         "mutation_id": "neg_004_reset_enable_clear_ignored",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_enable_clear_ignored/certification.json",
         "trigger_condition": "reset_enable_clear_ignored",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_outputs_stuck_common_mode/certification.json",
-        "certification_sha256": "35a779e3d825028823e34aa04a6d7052fe6e107f74dac08c3b6b951be20f4f74",
+        "certification_sha256": "0aba95be42e3571d72e068fc9e3bdc29797a875047686343ab24dbf5e2421646",
         "fault_class": "outputs_stuck_common_mode",
-        "mutation_bundle_sha256": "9c58b0b56248bc559ba7969f0a4ea05eb420799214b59cacd4250bce4a42aabd",
+        "mutation_bundle_sha256": "b6be5cac42d0073ad83053e8e02304e1945b2ecd583071973da9aedcd96c9e4b",
         "mutation_id": "neg_005_outputs_stuck_common_mode",
         "source_catalog_certification_path": "negative_variants/neg_005_outputs_stuck_common_mode/certification.json",
         "trigger_condition": "outputs_stuck_common_mode",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_sampled_gain_polarity_inverted/certification.json",
-        "certification_sha256": "20e44944810d4a0f4a3945ef74ab9109a17108b9e800029a9201fc42e2c0a60e",
+        "certification_sha256": "31547911fe708c9c366e77fc71622a0a9acaa4ce4426acd2e25ad08f90125176",
         "fault_class": "sampled_gain_polarity_inverted",
-        "mutation_bundle_sha256": "8f2adad3fd3d9778caf01df62afb47246511bc9c9b87e45548559e661a894b92",
+        "mutation_bundle_sha256": "c1cfae30c8b4bed71e08a3eac5840f07df0eafdafce7410b5b3cd780d2dbcd94",
         "mutation_id": "neg_001_sampled_gain_polarity_inverted",
         "source_catalog_certification_path": "negative_variants/neg_001_sampled_gain_polarity_inverted/certification.json",
         "trigger_condition": "sampled_gain_polarity_inverted",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "e0e89bbc0d9fb831d42e3d235644e155e6580720e4021a81f30ce45229fba51c",
       "score_deck_sha256": "62eb98afc2e09c6f9b562f9c8a0a23547056294af3011b7a033275396a237372",
-      "task_certification_sha256": "ed7aa6618b94d5d66b5c7359c87740a5789f8d1167cc412674bd3782b07832fd",
-      "task_record_sha256": "be256366e801b0dac081a5d107d447fb2b994f3d91b08f4a9c78b58ef3b2bc97"
+      "task_certification_sha256": "e4734e1653cee18f7f381a55767bfe89708f4aeec6757e5bfa08c6fa7a00620b",
+      "task_record_sha256": "f5a07af25729873c038b69b3ed002ec9db5a06574910b10d014f2bff4e93898f"
     },
     "release_dir": "305-capacitive-feedback-amplifier-macro"
   }

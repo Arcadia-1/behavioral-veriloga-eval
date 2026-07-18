@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_gain_low/certification.json",
-        "certification_sha256": "cc06d4aa8afec62807560e3dee7d97b08da8b5592b4bb0cbe886317de1260b90",
+        "certification_sha256": "bec962ffff84ce2726d27be551816863257c868ec78637c8f1b59712307391f3",
         "fault_class": "integration_gain_error",
-        "mutation_bundle_sha256": "e53ebad2c658a6069ec84b83c22f2d0dfdf11e9805c6fe37c46919ed23da307a",
+        "mutation_bundle_sha256": "b3b50d95de38cb81b7cb74fe03472d7afea87cda39fd9f9a8fc81de660e4710b",
         "mutation_id": "neg_001_gain_low",
         "source_catalog_certification_path": "negative_variants/neg_001_gain_low/certification.json",
         "trigger_condition": "a positive VIN is integrated through multiple timer events",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_integral_sign_reversed/certification.json",
-        "certification_sha256": "d0a344dd1fccd5b39db54fa2654da85dc3e757094e6bf00bc249ca6062da85ee",
+        "certification_sha256": "6224a5d4f06716cd33403afdadb4cc37bb7074a65de30a25dd63e3d770c8f274",
         "fault_class": "integration_polarity_error",
-        "mutation_bundle_sha256": "d469055c2b1bad342118745a0be126b14f181836f04057feeb4a2d70d05c1521",
+        "mutation_bundle_sha256": "a7f352a30901064f9c6c083f8882eec84dec99809a7f428b6863efb7a88cbbf1",
         "mutation_id": "neg_003_integral_sign_reversed",
         "source_catalog_certification_path": "negative_variants/neg_003_integral_sign_reversed/certification.json",
         "trigger_condition": "a positive VIN is integrated while reset is low",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_ignored/certification.json",
-        "certification_sha256": "fe388ee1751a66239923ee29a135adb84c1f6aebfaf204645caa8c1fc22c8751",
+        "certification_sha256": "46de76702e6d130317eef35ac92c6de39693ea0b633647325ea61c18ffe75135",
         "fault_class": "active_high_reset_omission",
-        "mutation_bundle_sha256": "610f4f00883280d574db2c2c6bb68b0f83d5995e1e5751462f60bba6bb3fd3a0",
+        "mutation_bundle_sha256": "a21e7cdcbb6c7ebd4b435656dd6787a284ad6092523fe75f17ae602a3230f17d",
         "mutation_id": "neg_004_reset_ignored",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_ignored/certification.json",
         "trigger_condition": "rst is driven above the reset threshold after integration",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_timer_too_slow/certification.json",
-        "certification_sha256": "4177133016953d96b0d3092efbef35ea491317d70bb8444a8156df933528a30a",
+        "certification_sha256": "cfcd9a3a6801d5b6b4d1b46452f1bca2a402d4959767d2b50ac1d1bf9a7bbe2d",
         "fault_class": "timer_cadence_error",
-        "mutation_bundle_sha256": "4c49b305b2e232170e743b118a256aad65efbadf9ef2d5fc0f3205163535c899",
+        "mutation_bundle_sha256": "745759ded70e70ffd9176e353d944e3fd747770d3522880933781f2f669a8843",
         "mutation_id": "neg_002_timer_too_slow",
         "source_catalog_certification_path": "negative_variants/neg_002_timer_too_slow/certification.json",
         "trigger_condition": "VIN remains positive across successive dt periods",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_nonzero_output_baseline/certification.json",
-        "certification_sha256": "78401c89d2b98f76daa0936d569e96660c120090c908ab7f0fba4b47d27eaeaf",
+        "certification_sha256": "4b9d04f5d55ef82cb43c9284b41022aa485dcbb5f08cd36041909e9268a01124",
         "fault_class": "nonzero_output_baseline",
-        "mutation_bundle_sha256": "325b579e37d375c5d8f5e12ed9cfcfd6c0669239e86a4bfc51abfa00c64eaabc",
+        "mutation_bundle_sha256": "ba9a33dd48fcb43db2c4be87e2917d4db8bb6ea7f6de2fe3d1000788a60d38d1",
         "mutation_id": "neg_006_nonzero_output_baseline",
         "source_catalog_certification_path": "negative_variants/neg_006_nonzero_output_baseline/certification.json",
         "trigger_condition": "the output is observed while reset holds the accumulator at zero",
@@ -71,9 +71,9 @@
     "canonical_dut_id": "013",
     "hashes": {
       "mutation_catalog_sha256": "b08606c840d7610383f55516f06e78efe2bddfce540a7531b5f139b8dfc376c8",
-      "score_deck_sha256": "5d43d941cc51842c4275885a3093e4a4ff17bd4892fe127afeb019c2a861b021",
-      "task_certification_sha256": "17c2920533f4ffb8acde801ed1d47948aa0282195773aa9ee2aba68af02206e6",
-      "task_record_sha256": "c2e4972315052dca8b49f1907f6ba36603788a19632314591bb375519977702f"
+      "score_deck_sha256": "510f85b415f6e270932d5f74dcaa6e107bd324cb9b383e2a2dc2623303b8f2ed",
+      "task_certification_sha256": "a63316efa7403697ebf3b6e1c20b91a47f5fd6fa7d5bb4dcc006556466eb9915",
+      "task_record_sha256": "46754a6b6cd007e4ac60f72081cb17446e177fdf0d88cfc1dfdc9caed168fb71"
     },
     "release_dir": "013-resettable-integrator"
   }

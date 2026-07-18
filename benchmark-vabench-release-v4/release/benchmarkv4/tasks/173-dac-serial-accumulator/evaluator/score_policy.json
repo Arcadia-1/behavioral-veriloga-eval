@@ -2,12 +2,12 @@
   "candidate_artifacts": [
     "dac_serial_accumulator.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "checker_profile_sha256": "355f24520f1b945346a6a4236a0c2a6d845f9e68da424260c7cb2aa141d01f3b",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "2e8aefc0944cfd9a86b78e0512cb07a4362732b7257834484bbf4e966d8d0743",
+  "gold_dut_certification_sha256": "09da98f07f5730a20a5f8edb17ef59c79ebb0547ff58b5d0d13653da39484cba",
   "gold_solution_tree_sha256": "69c6be63b8c171a1df2ddb59db41c96d6a02712177376eb4cb21de2ddbaaa44d",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "schema_version": "v4-dut-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-173"
 }

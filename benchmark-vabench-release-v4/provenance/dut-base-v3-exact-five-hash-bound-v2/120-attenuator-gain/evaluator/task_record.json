@@ -3,10 +3,10 @@
   "checker_task_id": "v4_120_attenuator_gain",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "869e4d04dca2ff94df3ecf65468462067acb5bfd08a0af531999661f65f078c7",
+    "certification.json": "7279f1b2ec6e7a010f69b02570562a37fb82c63f3fa0c280bfdc08a0fcbf1ac0",
     "checker_profile.json": "306feef3e17db99922683565b1bb49b0d5d5ecb1efd065775902e681b12b1480",
     "derivation_manifest.json": "b16c262866a9a5de2ff69e695b897e68ee8de249ea7b2069eafb0b21f6cd35a8",
-    "family_spec.json": "055aff6498bd1f10bab701189a5581ac55bef3526a02c98474a3a842e7270fdf",
+    "family_spec.json": "95cabf12db0068326ee69b5590f008000091d18cbd286012d821d2d04339a8c3",
     "harness_spec.json": "035325aa9fe9dc180fdcb1e2c1a96b92e4bd11a3b3b9ce213da5295bf06d6254",
     "mutation_catalog.json": "425883de5ef59255b2765a71a7fcf28d51ea7c41994fc6e4321e8870e14feb01",
     "profiles/feedback.json": "f220f659e39eec8b1b6c47c340886448b2af038965539849427762b05e7ce8f7",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "869e4d04dca2ff94df3ecf65468462067acb5bfd08a0af531999661f65f078c7"
+    "sha256": "7279f1b2ec6e7a010f69b02570562a37fb82c63f3fa0c280bfdc08a0fcbf1ac0"
   },
   "release_dir": "120-attenuator-gain",
   "schema_version": "v4-canonical-dut-release-task-v1",

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_fullrange/certification.json",
-        "certification_sha256": "b649961af70c7021b4f0f80e185ce42a01d17e8357ba6a14103a61be39245488",
+        "certification_sha256": "b910931c23c950d43dbd154c3aba5c2b5cff9d671c23fbc4a93ebd7ac65fe018",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "7096b8ec1648d71d9ab264d8c77c284ac309bcc666d877b1955e9258a13049d4",
+        "mutation_bundle_sha256": "e7baab260ccfc3baa507c78003240075f4d6c7d4bbef3cc10ced5a3240a05e2d",
         "mutation_id": "neg_003_wrong_fullrange",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_fullrange/certification.json",
         "trigger_condition": "Uses a 50 ps full range instead of 100 ps.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "f234455790498f8de7569d92384ff6c0d149805fa50afe228854a1026ad29c5f",
+        "certification_sha256": "606e72178452de936654577eab66fafe685a73a9d014003ddf3d1d13b10bcc81",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "f666ffcb581d0f9268ed5285926af77911a2121c2c8dd0919cf3d44c077ca25a",
+        "mutation_bundle_sha256": "68d1eae1b4e4a4cf42e915233d07581575d4c0b1ff243ae895904e0be8014c09",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_sample_reset/certification.json",
-        "certification_sha256": "41619f24407c76a90d5c4e8997fcb2de0270e25d3092b53c6d28a8cb9a5e4775",
+        "certification_sha256": "490dc5c01f3ce00fd9666af1cf8381845e2f33eb97590e073dbd79b92613d9e1",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "151fd71c0da19f3ac3962440998b6822a0bcce1111ec7eec7dc97f1a1cdbd301",
+        "mutation_bundle_sha256": "0769e7331c4e4260d4de6cd5267190e5ec68a2197486edb8797b4a1045e5965e",
         "mutation_id": "neg_004_no_sample_reset",
         "source_catalog_certification_path": "negative_variants/neg_004_no_sample_reset/certification.json",
         "trigger_condition": "Drives the measured TDC delta at half scale.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "8ef01c4e459dc8369edfe7eba8bf8bdc65a3f666cc8ee44cf695985e755d5acf",
+        "certification_sha256": "8938bbc07d96abd55485b47a6483cd7381adc0fa51b7ae84174e7e9e6ed81267",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "f92cdf2d2a98223a499840dd976b169b6986b2601cc99f1169a3a64acf4fde92",
+        "mutation_bundle_sha256": "c1de97c5dc31aa3a4f7db981d118f4f3ee0ef23ccab67057be913d11b8dccc52",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "TDC Ideal Edge Delta: scales the metric output, preserving the main path while failing measurement checks.",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_inverted_delta/certification.json",
-        "certification_sha256": "42a9cd3af36dbd2d94fb11ebe1d4e85b95d9f4649ada4afbf07a7217ff82d570",
+        "certification_sha256": "21812482c26245265595b50c1f322af78111edff726d85a76cab3546a671858b",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "7b26f70c6b29e49f2cb7e59cba6a322a0995b5e5447c2f5c0610cbc0a7759d9e",
+        "mutation_bundle_sha256": "bbac86da906a50dd88007288fb5b85ac48471969c853c527feec3daf25966597",
         "mutation_id": "neg_002_inverted_delta",
         "source_catalog_certification_path": "negative_variants/neg_002_inverted_delta/certification.json",
         "trigger_condition": "Computes inn-inp timing instead of inp-inn timing.",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "14e6cd02f65bbdad59f3a2b73fe27cd45697507f26deadd35d08cd446976dafe",
       "score_deck_sha256": "5a2fea9d4a0a4bfdad474afc0f184f1921e6942275ae838f6c9468264c3bf30d",
-      "task_certification_sha256": "6523bfadfdaed636ce737106e37778f2ca310359d64bd5c52d2a27c8225203e5",
-      "task_record_sha256": "917b872c1fbcbf887afc6e61cd9dccfa6b31a10761c6ee5ff85b4c76d596df31"
+      "task_certification_sha256": "66d3b4c7ea662f7afb52fb0245f168541a3ffe4c68c2ec34fbac1be5fa056967",
+      "task_record_sha256": "0bfdcef393022f0e685f7c0d705bf311b7c9959fbdafdae2acb024112ade3904"
     },
     "release_dir": "179-tdc-ideal-edge-delta"
   }

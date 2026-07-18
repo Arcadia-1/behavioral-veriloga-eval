@@ -7,16 +7,16 @@
   "candidate_artifacts": [
     "rf_envelope_detector_attack_release.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "changed_artifacts": [
     "rf_envelope_detector_attack_release.va"
   ],
   "checker_profile_sha256": "c50c3f86114203fe47beaea45e9b96c7639ea425415add3d7c3952806a33033d",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "d75331bd8831426f36aaffd329ccd83f9d3020cceb636796652cb7deb194586a",
+  "gold_dut_certification_sha256": "0ba6d846cb886f60faf38d0b45dc68a1a8583e03714c5c22afdd0fb8d3ad7464",
   "gold_solution_tree_sha256": "74ec117610ab69a241f41c123321fb1332c68e670846315b9a08f5f2b00b5a2e",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "mutation_catalog_sha256": "1372e30c22c2cb5e366e69c503f7913637c871ab3ca18d55a62dde6540b3c130",
   "schema_version": "v4-bugfix-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-1336"
 }

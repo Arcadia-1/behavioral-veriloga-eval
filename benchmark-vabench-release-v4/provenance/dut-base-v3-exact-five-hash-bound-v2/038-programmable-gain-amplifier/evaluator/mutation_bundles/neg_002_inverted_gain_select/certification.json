@@ -1,26 +1,43 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=gain_sel changes state before an active rising clock edge; violated_properties=P_SAMPLED_GAIN_SELECT,P_COMMON_MODE_GAIN",
-    "observed": "EVAS: pga_high_gain_not_railed high=0.682 late=0.762; Spectre: pga_high_gain_not_railed high=0.682 late=0.762",
+    "expected": "properties P_COMMON_MODE_GAIN, P_SAMPLED_GAIN_SELECT satisfy the public contract; fault class gain_select_polarity_error is rejected",
+    "observed": "EVAS: property_id=P_COMMON_MODE_GAIN category=behavior_mismatch expected=out:0.5591,sampled_gain:0.8 observed=out:0.7774,vin:0.5864,gain_sel:0.000 event=clk_interval_probe_0[2]@2.060000e-08s",
     "violated_property_ids": [
       "P_COMMON_MODE_GAIN",
       "P_SAMPLED_GAIN_SELECT"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_038_programmable_gain_amplifier",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 402
   },
   "family_id": "038",
   "inputs": {
     "checker_profile_sha256": "01dcebec1d4a5e0faac61f49d2e8e683d16f30b1f599ee69c8c7e9c61a9cb1a4",
-    "harness_spec_sha256": "ef13d65bd9dd737b241916096e15b29a316b55c1c5531c841cb059722bd12906",
-    "mutation_bundle_sha256": "e1a0a4cc849c57f54ae11358317dd06e4e865e4c19f4274793e30e97fa5351a9",
-    "profile_sha256": "bbed750b3b6f442f7ba06c3fe03f07be5e2d885a1760ceb1e80a520471feee0f"
+    "harness_spec_sha256": "50727760219c8f6c760f26345010bc0c2d89d95009d1b2b43625e5d721e8bf1b",
+    "profile_sha256": "304580f2e552d97384855125eacec6df85c9c87dea40d45e3051f56f18c086f8"
   },
   "mutation_id": "neg_002_inverted_gain_select",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

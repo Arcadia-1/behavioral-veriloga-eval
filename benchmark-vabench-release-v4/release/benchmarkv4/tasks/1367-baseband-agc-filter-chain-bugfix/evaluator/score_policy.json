@@ -11,6 +11,7 @@
     "vga_stage.va",
     "filter_stage.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "changed_artifacts": [
     "agc_chain_top.va",
     "filter_stage.va",
@@ -20,11 +21,10 @@
   ],
   "checker_profile_sha256": "cbb1a0427b389406bb6141de81fd9f0d710931ca0f70146b3cf6b2f9777235c2",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "679f6fee35a6e92bdd6f7ad4f87eba7b366a7afadea5b220f43131f326ad5a57",
+  "gold_dut_certification_sha256": "09541d646a82819ce121222629dc125e621326019dc05782b7e48a792f0a647d",
   "gold_solution_tree_sha256": "bf24378e96d3b53df8086ec4aa7980ab9fdc1767b9a72096ce676b29b89869df",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "mutation_catalog_sha256": "d9272f52533abd2ef0f50eb1552d28fea8d71cc12197b90d5250c0b1676473fa",
   "schema_version": "v4-bugfix-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-1367"
 }

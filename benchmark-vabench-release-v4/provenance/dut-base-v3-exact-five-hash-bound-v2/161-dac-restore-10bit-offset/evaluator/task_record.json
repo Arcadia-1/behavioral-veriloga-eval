@@ -3,10 +3,10 @@
   "checker_task_id": "v4_161_dac_restore_10bit_offset",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "26a8f0715c62103d1a3f2b4ec7305c94a8c13fd66931dcd085ccb3bab673b76c",
+    "certification.json": "233696db3500d3543b4c41f3ce2392a63fe7690a38b7a7b6acc836aae9f327be",
     "checker_profile.json": "24e4c299b79458d0a1afdaceb1ae03a059753531744289f50b5e9f6e9c3ecf91",
     "derivation_manifest.json": "675fe3e23e43ad4b05ba83e4f673e3b7964075eb3a117f9f7d28aadef95b1a35",
-    "family_spec.json": "cb7b49944376084ebf9860b009c7f1c05bc778a881c63bf8193be5da20203b92",
+    "family_spec.json": "6ca0061e4ba76f5cc3e2cd154dd4c514debcd81e61e5d258cc90e9a59c2b4ed1",
     "harness_spec.json": "e7991617d22aa5b6e76c6de7d92048950fbbe26b09a991c894443b0aee88a8b6",
     "mutation_catalog.json": "4f61e355d9b1d49fd68b8e623cc1ba9088fc16ea4df9210a17123168a5c19457",
     "profiles/feedback.json": "a24d803d4ac4e2318b72bbf134846e3b98cc66c9d2c698677b3c25680f9f4aab",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "26a8f0715c62103d1a3f2b4ec7305c94a8c13fd66931dcd085ccb3bab673b76c"
+    "sha256": "233696db3500d3543b4c41f3ce2392a63fe7690a38b7a7b6acc836aae9f327be"
   },
   "release_dir": "161-dac-restore-10bit-offset",
   "schema_version": "v4-canonical-dut-release-task-v1",

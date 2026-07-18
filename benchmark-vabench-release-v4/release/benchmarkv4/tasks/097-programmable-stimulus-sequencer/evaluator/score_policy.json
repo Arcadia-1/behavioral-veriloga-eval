@@ -2,12 +2,12 @@
   "candidate_artifacts": [
     "programmable_stimulus_sequencer.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "checker_profile_sha256": "43a8d8e92989029fe8864d6aca3dce6e071c339a5d682a3f81e949c9da8b167c",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "928c36bf5bacd0dd6cddd2f72f84bed99ea874f6c2a96032d66c764b51e8cf4e",
+  "gold_dut_certification_sha256": "c520acb65e822663050a8b46cc5d1aa212afee6d936335bddf40958de0a60cad",
   "gold_solution_tree_sha256": "223e15d877100e1942f730378d6bb586c2758bee2d1f9b2dc2f9e8c203d5f5c7",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "schema_version": "v4-dut-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-097"
 }

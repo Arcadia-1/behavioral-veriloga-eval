@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=positive/negative path, feedback direction, I/Q polarity, or trim direction is exercised; violated_properties=P_NEGATIVE_ERROR_STEP",
-    "observed": "EVAS: deadband_hold_mismatches=9/10; Spectre: deadband_hold_mismatches=8/9",
+    "expected": "properties P_NEGATIVE_ERROR_STEP satisfy the public contract; fault class polarity_or_direction_error is rejected",
+    "observed": "EVAS: v4_021_calibration_deadband_controller checked=179 mismatch_count=34 coverage=rising_edges=45 settle_s=1.92e-10; P_INITIAL_AND_RESET_TARGET checked=6 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0; P_POSITIVE_ERROR_STEP checked=28 mismatch_count=11 expected=out=0.51+/-0.018 observed=out=0.75 sample_time=1.47e-08 metric_gap=0.24; P_NEGATIVE_ERROR_STEP checked=16 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0; P_DEADBAND_HOLD checked=40 mismatch_count=23 expected=out=0.45+/-0.018 observed=out=0.51 sample_time=8.4e-09 metric_gap=0.06; P_OUTPUT_CLAMP checked=45 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0; P_BETWEEN_EDGE_HOLD checked=44 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0",
     "violated_property_ids": [
       "P_NEGATIVE_ERROR_STEP"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_021_calibration_deadband_controller",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 618
   },
   "family_id": "021",
   "inputs": {
-    "checker_profile_sha256": "45b92f1f2d02a7740b776fb40e0a13f4da5b917297afc0c2838ce79828c1fbbc",
-    "harness_spec_sha256": "6b05d076633cc47a61bde4893ade26ac8078aaa9296e1ba16b9773b6adaf2609",
-    "mutation_bundle_sha256": "e0cb67a05d9f6d19fe54bed64c275195d2f1da293400bc50b2a4c20f2e095ae6",
-    "profile_sha256": "6069ccef6674466655535d435b459eb6d15b81dd46cf8ce18fbf0514ed1a3b31"
+    "checker_profile_sha256": "ecd992a74aac810f6e5ecf29360301c343b7592bcb33ca2f18fb7edd5c736756",
+    "harness_spec_sha256": "f2a567c787317396f3fadc6e254ad503019a3f2aeac69cd1b10f936630e9cc4c",
+    "profile_sha256": "9d16cd33ec132614843fa2bc84d95522cafcf77634b31ce75171fd4377138045"
   },
   "mutation_id": "neg_003_polarity_direction",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

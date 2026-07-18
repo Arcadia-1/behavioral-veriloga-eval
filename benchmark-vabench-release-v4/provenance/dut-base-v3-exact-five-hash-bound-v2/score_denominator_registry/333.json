@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_falling_edge_input_sampling/certification.json",
-        "certification_sha256": "ae94c23df0e6b3821f3cec6a7633bb124d42f2c502b5c03cfe3dbaf155d69005",
+        "certification_sha256": "7bb27ac5113badb724e45d5e5bd948ab6b169a3cae8591d8ec6f8d1614d75628",
         "fault_class": "mixer_inputs_sampled_on_falling_edge_with_one_cycle_delay",
-        "mutation_bundle_sha256": "af558759829f97591a3986ee3d52be9be90fd80428e66c782a4244e83c35ada7",
+        "mutation_bundle_sha256": "01634aed3402aa259b2d541bd9d2aa25e397280b5468440052bfae40d95d561d",
         "mutation_id": "neg_002_falling_edge_input_sampling",
         "source_catalog_certification_path": "negative_variants/neg_002_falling_edge_input_sampling/certification.json",
         "trigger_condition": "enabled RF and LO inputs change before a rising clock edge",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_i_mixer_polarity_inverted/certification.json",
-        "certification_sha256": "6b750e06bcc223c021df366b6ecd4995211c8c88ab0f62d5d786ce93abc5244a",
+        "certification_sha256": "34886d31b5b96daffb7209adb10a595a4ca34a04ead5507dc638504625d3cd89",
         "fault_class": "i_mixer_polarity_inverted_to_opposite_rail",
-        "mutation_bundle_sha256": "342e53ca50f16a13641548f2739bf9612e3f11f18b80809a1d755bf6db4dcc69",
+        "mutation_bundle_sha256": "d43e9d6e4052feebad909ec91b02a096dad9a003736ed6ec29bd27e0c2cfcb2a",
         "mutation_id": "neg_003_i_mixer_polarity_inverted",
         "source_catalog_certification_path": "negative_variants/neg_003_i_mixer_polarity_inverted/certification.json",
         "trigger_condition": "enabled RF input is mixed with an asserted or deasserted quadrature LO",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_correction_direction_reversed/certification.json",
-        "certification_sha256": "870df37dc73118a82be9947b059e0e01d924ae38b2c021c5ae4f2f3baf48bd3b",
+        "certification_sha256": "4e74f42cf3abe6cf9b805e17dbb15d7600d312a8291637586df3545e0e27f5b1",
         "fault_class": "gain_phase_correction_direction_reversed",
-        "mutation_bundle_sha256": "5076e4f8ee02770417a2f5e7d6d542c6f2fa2ffe2e648b340c2622f43dbdbc66",
+        "mutation_bundle_sha256": "88df9ddecc583a4c7c09205fd3eac4ac9a9ad78f16cb7a4ac1deeea04708571e",
         "mutation_id": "neg_004_correction_direction_reversed",
         "source_catalog_certification_path": "negative_variants/neg_004_correction_direction_reversed/certification.json",
         "trigger_condition": "the calibration controller moves either correction state away from its common-mode reset value",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_calibrated_after_one_update/certification.json",
-        "certification_sha256": "93c397b1e05e457e8e130ad0fc148561666bbef57e2b9aeba5c56acf79d6b85c",
+        "certification_sha256": "3041caa6badb4c38187192bc67e27ee78698264b45bb5927f0c693f4aa907e18",
         "fault_class": "calibration_qualification_too_short",
-        "mutation_bundle_sha256": "0a34b86bc98f33de95432c792cd2b71814ab224cffeff4474349d5c5b0899f18",
+        "mutation_bundle_sha256": "98e15de4b86f523d5b19ba2436ad53a8a8497e91c2d114321805561093db3b36",
         "mutation_id": "neg_005_calibrated_after_one_update",
         "source_catalog_certification_path": "negative_variants/neg_005_calibrated_after_one_update/certification.json",
         "trigger_condition": "the first qualifying image-rejection update completes",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_clear_retains_mixer_outputs/certification.json",
-        "certification_sha256": "a305eba014b95148e03b72d0fe68c45d971846f5dd01c8fb43109cb44649961a",
+        "certification_sha256": "fb9c5b5d2338feb164ddbd51e6222173795cce65ffcc8d2d81700fda21f73adb",
         "fault_class": "clear_path_retains_mixer_outputs",
-        "mutation_bundle_sha256": "ae4f52c6308bfaaa2d30af747b4e324e916296ed14151160eb346fb50601a625",
+        "mutation_bundle_sha256": "a853c7fc181ac92e802fe03a72b8840d48dfe2939a4dd971fb73da58adee84a7",
         "mutation_id": "neg_001_clear_retains_mixer_outputs",
         "source_catalog_certification_path": "negative_variants/neg_001_clear_retains_mixer_outputs/certification.json",
         "trigger_condition": "reset is asserted or enable is low while the mixer output clear contract is active",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "f444a5172f06f3ec0346664629e09ecd137451faf0b83aa9b8c73a1dfa6f86d5",
       "score_deck_sha256": "46af32ef7c4830885ad41ecae252d661c863b979170abc7f14e3ece63466fe03",
-      "task_certification_sha256": "1f9dd691c10643de484d20753860f04decc50bc4a8a1505423c3473a66f81fd0",
-      "task_record_sha256": "95ec25f52c22c40b825bb51feeb7444d4b60cc1b3b325f108a0e41548c8ba5d3"
+      "task_certification_sha256": "d4595a27b27571142d65e65dac63b5afd8bf95304dd6812ad1985d2770f9073b",
+      "task_record_sha256": "2944b3f8f473e785bc9a82fa47cb91481412794052c8cb0954aa24334548e398"
     },
     "release_dir": "333-image-reject-mixer-calibration-loop"
   }

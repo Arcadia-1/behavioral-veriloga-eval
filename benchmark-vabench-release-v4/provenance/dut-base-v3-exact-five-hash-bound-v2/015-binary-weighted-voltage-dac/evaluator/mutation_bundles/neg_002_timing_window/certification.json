@@ -1,26 +1,43 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=the output is sampled after a public code transition; violated_properties=P_CONTINUOUS_UPDATE,P_ENDPOINTS",
-    "observed": "EVAS: simple_binary_dac_levels=0.000,0.006,0.015,0.024,0.033,0.042,0.051,0.060,0.069,0.078,0.087,0.096,0.105,0.114,0.123,0.132 expected=0.000,0.060,0.120,0.180,0.240,0.300,0.360,0.420,0.480,0.540,0.600,0.660,0.720,0.780,0.840,0.900 observed_codes=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 code_mismatches=0 max_err=0.768 monotonic=True zero_scale_ok=True full_scale_ok=False; Spectre: simple_binary_dac_levels=0.000,0.006,0.015,0.024,0.033,0.042,0.051,0.060,0.069,0.078,0.087,0.096,0.105,0.114,0.123,0.132 expected=0.000,0.060,0.120,0.180,0.240,0.300,0.360,0.420,0.480,0.540,0.600,0.660,0.720,0.780,0.840,0.900 observed_codes=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 code_mismatches=0 max_err=0.768 monotonic=True zero_scale_ok=True full_scale_ok=False",
+    "expected": "properties P_CONTINUOUS_UPDATE, P_ENDPOINTS satisfy the public contract; fault class timing_window_error is rejected",
+    "observed": "EVAS: levels=0:0.000/0.000,1:0.007/0.060,2:0.016/0.120,3:0.025/0.180,4:0.034/0.240,5:0.043/0.300,6:0.052/0.360,7:0.061/0.420,8:0.070/0.480,9:0.079/0.540,10:0.088/0.600,11:0.097/0.660,12:0.106/0.720,13:0.115/0.780,14:0.124/0.840,15:0.134/0.900; P_BINARY_WEIGHTS mismatch_count=15; P_ENDPOINTS mismatch_count=1; P_LINEAR_MONOTONIC_MAPPING mismatch_count=15; P_CONTINUOUS_UPDATE mismatch_count=15",
     "violated_property_ids": [
       "P_CONTINUOUS_UPDATE",
       "P_ENDPOINTS"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_015_binary_weighted_voltage_dac",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 801
   },
   "family_id": "015",
   "inputs": {
-    "checker_profile_sha256": "5567cc71803112d0d3b6a95e0593827233a4e111da330409f541b0ac8897decb",
-    "harness_spec_sha256": "99d81ccb688e80e731682168151a3213f25461617749757fdb0966b01c3eb2e2",
-    "mutation_bundle_sha256": "0b42f969692f4ebeb887fd39ee3f8dccf4d1519ef3dbf46a61e286d478a81ad5",
-    "profile_sha256": "974b88c25f7370b8b27aed54e4e729c306ca76376d5f983ea56dea129d4d3ef2"
+    "checker_profile_sha256": "4c772443cbcc8b747a1adfd950b199509cf7ab1d30da8125d51ab44c87952aa1",
+    "harness_spec_sha256": "6cbecab72416ad3d14e7bf9aacc43d1af2d3d47df493b70f4c80290a48b21e57",
+    "profile_sha256": "7ac8128541ef6d1a85871458ddff2b2f1978bce4f35020cc43e903027a2627a1"
   },
   "mutation_id": "neg_002_timing_window",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

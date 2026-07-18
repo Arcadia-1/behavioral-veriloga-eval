@@ -3,10 +3,10 @@
   "checker_task_id": "v4_302_fractional_n_divider_accumulator_flow",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "a3b269531e0b73ad6552bd2e7f7fe2163e392aaf9ba0b4aabdee2ca06e486fc6",
+    "certification.json": "fe35a430b770175f9240e91bba7def34eb1b1d361dc2c59c1db8dcbb9864b54e",
     "checker_profile.json": "53f8aac6e996aebfe9f9e4dfed8f657692b5172e2e4a67865107654168434d77",
     "derivation_manifest.json": "43d2c33bd1b7188163495c0fc9e2a62fe46512dc3724e4b03a310a29f8b4c599",
-    "family_spec.json": "6c69bb15c15c8e4d18a318bd2a201bf54e4a9a85f3627b0801bfb8d1c4ec3763",
+    "family_spec.json": "b1da880e3f7eca42407c169165ff31dd1575744712b42663d72c92c059f19eb5",
     "harness_spec.json": "f6940e5426c77ea7b940455425d47cab6389e23abfe77dd469667e1290f9a250",
     "mutation_catalog.json": "73c9880bb45c574c66582b94d4a091514d5bba3f40c7705270bdce289470d5ab",
     "profiles/feedback.json": "a5d1d43ae74bbc1f6e3e0c1e06e6275d5ffd5e225768cab340a544933881a6e8",
@@ -19,13 +19,13 @@
   "public_hashes": {
     "feedback_tb.scs": "5a06e3b9a964c118f701f27f94ce5819bbbf733ccd58768f32f055c155440d9f",
     "instruction.md": "15dd3dbfd07b654d339e3ebbf5114e460a0a916aa2162282d017b7034a691b9b",
-    "public_contract.json": "c77863ac10f6d3adcc3928b1246d7bd18525c93d84f6934a1e5533b4d10d670d",
+    "public_contract.json": "0dc14f8d19aa31e86107dc99856a2ca2067bbf86624787f3d4a450c1b0a5560f",
     "public_support/ref_step_clk.va": "b2903c6ad950df0b02ddaf7d078b7a41bf16e6b25e0742445971a7d90c40700b"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "a3b269531e0b73ad6552bd2e7f7fe2163e392aaf9ba0b4aabdee2ca06e486fc6"
+    "sha256": "fe35a430b770175f9240e91bba7def34eb1b1d361dc2c59c1db8dcbb9864b54e"
   },
   "release_dir": "302-fractional-n-divider-accumulator-flow",
   "schema_version": "v4-canonical-dut-release-task-v1",

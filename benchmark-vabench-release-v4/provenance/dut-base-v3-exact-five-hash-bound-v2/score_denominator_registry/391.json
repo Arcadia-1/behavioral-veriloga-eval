@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_reversed_frequency_map/certification.json",
-        "certification_sha256": "662b15a0edc74bc8ce897f5a75fc7e816e215e0613937956ad4331c40cbdc0db",
+        "certification_sha256": "4887b46fc6bc3c8d3dc1c9c72f5ccf7c00f86ca8a4bf9b0211a9b6001d68f429",
         "fault_class": "wrong_gain_polarity",
-        "mutation_bundle_sha256": "7ff41c819c405746fafc51fdb43d8299628129be145aa7726c509babc34b5143",
+        "mutation_bundle_sha256": "784962e4585d8296c423ef2f784675aae471796a19940d6e150283ee4792f327",
         "mutation_id": "neg_001_reversed_frequency_map",
         "source_catalog_certification_path": "negative_variants/neg_001_reversed_frequency_map/certification.json",
         "trigger_condition": "vctrl changes between low and high values",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_valid_after_one_cycle/certification.json",
-        "certification_sha256": "a055e0f384ddf877100fcc752e06dc59f423842577a668ad498bad1bdd174e9d",
+        "certification_sha256": "f70a8d890f4ee8b9ea9ec4652035ffcf1baf3ba003654bc939197335fe226145",
         "fault_class": "early_valid",
-        "mutation_bundle_sha256": "46e166cd2a248994a8c91e363df3a8495e1e31eb3b64e96b9e0b713afd8229af",
+        "mutation_bundle_sha256": "688b0a7c7a66b88fdabb362197620dc83b13fc29e1bf3a52f3478369f431f349",
         "mutation_id": "neg_003_valid_after_one_cycle",
         "source_catalog_certification_path": "negative_variants/neg_003_valid_after_one_cycle/certification.json",
         "trigger_condition": "one oscillator cycle completes",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_amplitude_metric/certification.json",
-        "certification_sha256": "f80adb44fdba14f52f0f9a89cbc8e2d6590d515ecf049616857b77ef824e9524",
+        "certification_sha256": "a82a720d68b1e88956645a432465856c0dd0da90a692c6069139b99e0094c9a2",
         "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "212f352206c6833776fc9a101c82569df3ee2b9304e5b8baa32f639e1010eae2",
+        "mutation_bundle_sha256": "677f8de464d62e4467b48f16ffff61668008f6e66e8d4567afcc8d207ceec3ea",
         "mutation_id": "neg_004_wrong_amplitude_metric",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_amplitude_metric/certification.json",
         "trigger_condition": "oscillator is enabled",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_disabled_output_not_centered/certification.json",
-        "certification_sha256": "1dabb4b2319fd52400450d36477e03f4e3c54114371185a744af0db4d02c525d",
+        "certification_sha256": "247308bd3404b559cf628cf97b1997e998fd3870e20493c46e02752c050718d4",
         "fault_class": "missing_disable_clear",
-        "mutation_bundle_sha256": "2b84af823a3c00d8a3fdc19c192919c615c8af5d7c0744c455e858ff9c410d1b",
+        "mutation_bundle_sha256": "eba650627f06e5aa68a5c8b1673887dd3c8b3f8853f4b44d242bf93149d1acc4",
         "mutation_id": "neg_005_disabled_output_not_centered",
         "source_catalog_certification_path": "negative_variants/neg_005_disabled_output_not_centered/certification.json",
         "trigger_condition": "reset or disable is active",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_noncomplementary_output/certification.json",
-        "certification_sha256": "c5aee94a12edaf8a496cfbc328ef4716974781ff605a24cb0fef2c41afc48730",
+        "certification_sha256": "01fcb91c93a8d422afa4ef658d49a8f4764b4d408d7d35d775bd7d82014943e3",
         "fault_class": "wrong_output_polarity",
-        "mutation_bundle_sha256": "78d425d5e52b997ccceb2fce6cb304ed54528d9ed75d8f37b5275a79c27a2460",
+        "mutation_bundle_sha256": "790eb0aa73e98171607d4e5f19c90c169c2e43e6712657e72c6d18f59f581be6",
         "mutation_id": "neg_002_noncomplementary_output",
         "source_catalog_certification_path": "negative_variants/neg_002_noncomplementary_output/certification.json",
         "trigger_condition": "oscillator enters its positive state",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "65209ab8cce48af3f3d601257a6df12495a20afbb25f2372f41bdc3d3b81e7e7",
       "score_deck_sha256": "5583f77c62c6798489dcea54d7e1007e90de48d8bc2aaed1bdf628703d70810d",
-      "task_certification_sha256": "07d2c11baa661e997d680cf34995cb3fc06a9be1432948061c767327f60218b9",
-      "task_record_sha256": "b3f13878067d851960574c56bb80ba990cf61bf939a9a06a07c3f736427498f5"
+      "task_certification_sha256": "5ddede8795be19899b8582ca226c9c7ff48d726dab464f701022a7bf01a38d77",
+      "task_record_sha256": "a907ebc2f97022d8f013f9a34b4f309c8737bb770c5964cdf18a499112abdcd2"
     },
     "release_dir": "391-lc-vco-behavioral-source"
   }

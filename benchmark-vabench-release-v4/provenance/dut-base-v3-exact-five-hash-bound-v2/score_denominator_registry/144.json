@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_rising_edge_latch/certification.json",
-        "certification_sha256": "e938fb43bcf120d5065deaab3341db4565391f0d35311f90f50f676406dca3a1",
+        "certification_sha256": "b8f39b4a477e7c120c62019c620d62c64be915fbe91956dc4fb9c5d2154cb4eb",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "97ee252338c681d88c5360dbca931928dcde23baa8fbf8caf5f0a41a07fc71fa",
+        "mutation_bundle_sha256": "f30ac547e8cfee29c35f4076ffa187d29992cf884873efbb87ff1411c9d3f133",
         "mutation_id": "neg_002_rising_edge_latch",
         "source_catalog_certification_path": "negative_variants/neg_002_rising_edge_latch/certification.json",
         "trigger_condition": "Latches selected input on rising clock edge.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_ignores_dsel1/certification.json",
-        "certification_sha256": "b8167794070fae0d99c4723385990b8595fce5dee3227fee6ae0c5eab1a3d3a7",
+        "certification_sha256": "cecdaee64ad177602cd35df33ffa170e695a0ac5d56a7ac32d6b1f2382f7c6ce",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "e654c24fc5498947238abe31557581ee0cf564c36ed3497562b843f37f2db1e5",
+        "mutation_bundle_sha256": "8ad008e87e2790f8555768d79c00f80e021e8775f3cf09c23c47d8dba3b0cfc0",
         "mutation_id": "neg_004_ignores_dsel1",
         "source_catalog_certification_path": "negative_variants/neg_004_ignores_dsel1/certification.json",
         "trigger_condition": "Ignores dsel1 and selects only din0/din1.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "33dc8a6dbe3e00e03d02821d79a0c8a4d1397584fe5fb93768657501d03e9009",
+        "certification_sha256": "c54642a46006015f5be0962e64d01b4ce598e6d1af00dc4d87841ca1acae998a",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "9d13eb93df0d06233d9eaeafb9e5b93693e18282deadb50939b5c8bda44eb1a4",
+        "mutation_bundle_sha256": "cb7af9a5eeb90bfde2b1e31461a32cdca672084276c7e2f036dd1474181f97d1",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Clocked Four Input Mux: scales the metric output, preserving the main path while failing measurement checks.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "09f98bab6e93962a1683d4865cc1dfb2cf5d5afb0456d398a2d680775214f27b",
+        "certification_sha256": "72831b142b675b0513bd9023729a0b7e2c512d353e7335bb1fc4142b5389f2d5",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "de710c31a236b830941b0805fabbf19a4d914e63befc3b08b3e7098b622d90fb",
+        "mutation_bundle_sha256": "772d51296ff326612bf4c92a6265d5da41973e681c8648397107b23d0fe16236",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_swapped_select_bits/certification.json",
-        "certification_sha256": "d02519c23aca62f3ad844541c150ef276d8876253fbba0fcd02ad311b9717c42",
+        "certification_sha256": "8087518e4eff6f6b8ee70bf6ad85fcde6f3a5cbc2e354848cac0a3de9cfe8cc0",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "051304c74fc5524468a48166b8a9e6aea8e5f9c646905ce1fd96e813f154a878",
+        "mutation_bundle_sha256": "8cb871ad8e6de783f8ea3d8233c3228b40b51b6851dc101d8fd680d42e3b9ea6",
         "mutation_id": "neg_003_swapped_select_bits",
         "source_catalog_certification_path": "negative_variants/neg_003_swapped_select_bits/certification.json",
         "trigger_condition": "Swaps dsel0 and dsel1 in the address decode.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "69a0fdeceef8dab06e30a85cc3cefa002b2774e42e035460d1e279fe235a0bce",
       "score_deck_sha256": "c94e08242c0763a2e31dd3d39d171a00725c1d9487a44b983b8b00d33fcb1aa4",
-      "task_certification_sha256": "ff4ea0ef3dc58833c0cefaa16633524f1e2f3a823d5ed0bdf0c08039976d3598",
-      "task_record_sha256": "7dd3d5d8c73af1fc517fa5a424eb4b0414a1ad889edba7bdbc384f285654432f"
+      "task_certification_sha256": "35c72ec9060d00d0767f409c9c8228a04f6c7e896e2737d32d19158dbb26c6ff",
+      "task_record_sha256": "2c25971ea40bd4a5598434920884a7b19def5b50cb4a632fb5b4fffcd576fc94"
     },
     "release_dir": "144-clocked-four-input-mux"
   }

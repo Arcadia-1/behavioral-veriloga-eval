@@ -7,16 +7,16 @@
   "candidate_artifacts": [
     "thermometer_bus_encoder.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "changed_artifacts": [
     "thermometer_bus_encoder.va"
   ],
   "checker_profile_sha256": "18273c0965f7c282693f4bf249298b5b537c53da2c66d19e2306e42177af4bd5",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "b20218cde2689db3fb25d55914f4c528b35742ab0c469ede5218ad8784dda792",
+  "gold_dut_certification_sha256": "53c38ffe3678b87bdc63173f9837d65ef8af80236930c5ede7fcb787abca07bf",
   "gold_solution_tree_sha256": "565f9625e010b4d21ea80a1b3faa38de1c500dcb34c7fbb846831b59d915d2c5",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "mutation_catalog_sha256": "2cce54b4d21e8cd68074b38a80e9d0155d2d2f32ab4de89c403f1261c64fb7e5",
   "schema_version": "v4-bugfix-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-1052"
 }

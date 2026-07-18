@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "37fb8c6195fb0c3388c8ac2aa8b52cb9f4e33f55a6b2e974f6b08ee60338a65e",
+        "certification_sha256": "fdbff5ac5c6622f5e13a7d6fa49a37e1dd62d96dc87a791fe7297dfcc4017947",
         "fault_class": "threshold_boundary_error",
-        "mutation_bundle_sha256": "3a568982fb9f31bb32b652aba45c19005471b2bcfefaf53bfaa9d3473b7ed3b2",
+        "mutation_bundle_sha256": "ce9639730b7966d7295402a8252ebb92a0fcf2437c9f88f3d0fc47650f19dc0d",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "boundary stimulus crosses the public threshold conditions for Comparator Offset Search",
@@ -20,9 +20,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "83e77067b3a8e5383cf2f1975d1a60f4907dc5b9d58573f50426b9de60b2fdb9",
+        "certification_sha256": "3c16311101d71010d70011c53330d50eece0afc8081c0b0c7e4fcc1d1c9537f8",
         "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "5f3df4f7b39594b99b8becc29cfff273bc32dd0c37926adc31964dadce822474",
+        "mutation_bundle_sha256": "319505abf1f684491e349a15edf003fe0b9f467a4ad96fc7659374125c60a6ee",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "score stimulus observes the public metric/output scaling for Comparator Offset Search",
@@ -34,9 +34,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "9ca8858f618844a5a5f9d6755d1674059c5b827dc5b2b2d80d7df293530e527f",
+        "certification_sha256": "ad219c58d2d5bd1b3943ee66f99eb65dee4b92b835a7186e571af08383539099",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "74f85ba5eeca4e84b7b7c799dea38857dd4b21051a33ed8b7c233aafa6127a57",
+        "mutation_bundle_sha256": "a521e4731c6e31d176aef75dc399d648b668792541a383db525be3656288c88c",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for Comparator Offset Search",
@@ -47,9 +47,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "ca245f707c72c5fe755b783cbb18b9a3b24dd223223ce8af9f8b4ee30f029676",
+        "certification_sha256": "9ead4bd2b6810ee47e3273e5367e137f1849b35305268a96d5e6458e68ebd488",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "30b40ad551586ae7e0b616ff194129ec2b58956cec60bc26404951153dcd28a7",
+        "mutation_bundle_sha256": "ea0bedee8fd0169fbec5546620b4381f94531eac2cc40b79086ec43df511ae6b",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "nonzero behavioral stimulus requires observable Comparator Offset Search outputs",
@@ -60,9 +60,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_valid_not_latched/certification.json",
-        "certification_sha256": "31e15679091d2598424ab1d31653f7008d8df87db6f2aaee917d90cf3b56641c",
+        "certification_sha256": "82ec38d859690500573c673aeb8bcc63b68827e4768c32492faf65f1f0eb781c",
         "fault_class": "behavioral_contract_near_miss",
-        "mutation_bundle_sha256": "1f5dbf89deebbf3e6521d7975e570584f9456673047a007f419b110e746f0216",
+        "mutation_bundle_sha256": "dded721eb1499108435c4009be1c4ea67a0500fb068b0241a4211933e169f026",
         "mutation_id": "neg_004_valid_not_latched",
         "source_catalog_certification_path": "negative_variants/neg_004_valid_not_latched/certification.json",
         "trigger_condition": "targeted stimulus exercises the violated observable contract for Comparator Offset Search",
@@ -77,8 +77,8 @@
     "hashes": {
       "mutation_catalog_sha256": "0489a9039c82768653bec8d7416bd8e7fb70ed63b64e81e7f6488140fdeeab6f",
       "score_deck_sha256": "8d81a34a88e51c1cb888e4e9c52966817555705a04513dbccc04ad5c1ab26039",
-      "task_certification_sha256": "1b6bc0be4b33a6e89bfbe5f082986dca873abaac19b0eabcd59b7bca7af3c17f",
-      "task_record_sha256": "21b832ac2d97e96d94b14cf5e1b326b59b0191d9d3daef93169ad59432608064"
+      "task_certification_sha256": "49f3fe246e847f27737c2eb607d8844f80d4ce144cde9f0ef37c49faf78b53cb",
+      "task_record_sha256": "69bd3e485c78c8a20baceb3917a68aa616097fe53c914a185525f550711f5f13"
     },
     "release_dir": "085-comparator-offset-search"
   }

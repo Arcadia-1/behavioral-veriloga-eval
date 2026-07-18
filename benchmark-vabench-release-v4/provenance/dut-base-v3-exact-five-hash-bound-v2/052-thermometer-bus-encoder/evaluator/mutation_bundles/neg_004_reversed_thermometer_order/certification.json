@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=Thermometer Bus Encoder: builds the active prefix from t15 downward, preserving segment count while violating bus order.; violated_properties=P_ORDERED_ACTIVATION",
-    "observed": "EVAS: therm@1.40ns code=1 observed=1 prefix=00000000 non_prefix_order@1.40ns therm@3.40ns code=5 observed=5 prefix=00000000 non_prefix_order@3.40ns therm@5.40ns code=11 observed=11 prefix=00000111; Spectre: therm@1.40ns code=1 observed=1 prefix=00000000 non_prefix_order@1.40ns therm@3.40ns code=5 observed=5 prefix=00000000 non_prefix_order@3.40ns therm@5.40ns code=11 observed=11 prefix=00000111",
+    "expected": "properties P_ORDERED_ACTIVATION satisfy the public contract; fault class reversed_thermometer_order is rejected",
+    "observed": "EVAS: property_id=P_UNIFORM_SEGMENTS category=wrong_segment_count expected=active_count=3 observed=active_count=3 event=vin_code_segment[1]@3.000000e-09s",
     "violated_property_ids": [
       "P_ORDERED_ACTIVATION"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_052_thermometer_bus_encoder",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 981
   },
   "family_id": "052",
   "inputs": {
     "checker_profile_sha256": "18273c0965f7c282693f4bf249298b5b537c53da2c66d19e2306e42177af4bd5",
-    "harness_spec_sha256": "f04b01f825466d79c180002463edc637bf75301092035eb732debc73c7a93f64",
-    "mutation_bundle_sha256": "cdb2858933add71dde5a72ff9f7d71de33c06fe81f42b085785e7b5a06382ba3",
-    "profile_sha256": "6b1536ec4f2c85679effe98f583be9666a65d92ec8a222e558242885cd5f3082"
+    "harness_spec_sha256": "9f4537750880125dc76c97ddc1b5a7e499bbff39ecdfe765aa1356c8c2d332cc",
+    "profile_sha256": "cbe7115a075acfae477b136c69802e63dff0a1934f0ac724444736e65652930e"
   },
   "mutation_id": "neg_004_reversed_thermometer_order",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "100283c771275c76271623172481be8547a27f240af6cd90e1171b6f623431b5"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }
