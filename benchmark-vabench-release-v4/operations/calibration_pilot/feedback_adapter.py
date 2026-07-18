@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Run the public EVAS feedback contract for one exported tri-form runtime."""
+"""Legacy hidden-oracle adapter retained only to reproduce pre-r45 experiments.
+
+The active G2-G5 runner never exposes or invokes this module.
+"""
 from __future__ import annotations
 
 import json

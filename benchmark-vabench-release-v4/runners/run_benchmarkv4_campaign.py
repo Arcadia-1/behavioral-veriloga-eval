@@ -7,7 +7,8 @@ calibration runner:
 
 * G0/G1 use direct one-shot artifact extraction.
 * G2-G5 use real OpenAI-compatible tool calling over the exported runtime:
-  list/read/write submission files, optional public feedback, then finalize.
+  list/read/write submission files, run the task-local visible EVAS test, then
+  finalize.
 
 The result is still an experiment runner, not the final Spectre scorer.
 """
@@ -26,7 +27,6 @@ PACKAGE = Path(__file__).resolve().parents[1]
 REPO = PACKAGE.parent
 CALIBRATION = PACKAGE / "operations" / "calibration_pilot"
 DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4"
-DEFAULT_FEEDBACK = f"{sys.executable} {CALIBRATION / 'feedback_adapter.py'}"
 MODES = tuple(f"G{i}" for i in range(6))
 
 if str(CALIBRATION) not in sys.path:
@@ -47,7 +47,6 @@ def command_for_metadata(command: list[str]) -> list[str]:
     """Keep reproducible structure without persisting credential-adjacent paths."""
     redacted_values = {
         "--api-key-file": "<redacted-credential-file>",
-        "--feedback-command": "<redacted-operator-command>",
         "--final-judge-command": "<redacted-operator-command>",
     }
     sanitized: list[str] = []
@@ -130,9 +129,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--request-timeout-s", type=int, default=600)
     parser.add_argument("--tool-timeout-s", type=int, default=120)
     parser.add_argument("--judge-timeout-s", type=int, default=600)
-    parser.add_argument("--feedback-command", default=DEFAULT_FEEDBACK)
-    parser.add_argument("--feedback-output-mode", choices=("compact", "raw"), default="compact")
     parser.add_argument("--final-judge-command")
+    parser.add_argument("--evas-command", default="evas")
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--stream", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
@@ -171,8 +169,7 @@ def main() -> int:
         "base_url_sha256": text_sha256(args.base_url.rstrip("/")),
         "temperature": args.temperature,
         "stream": args.stream,
-        "feedback_output_mode": args.feedback_output_mode,
-        "feedback_command_sha256": text_sha256(args.feedback_command or ""),
+        "evas_command_sha256": text_sha256(args.evas_command),
     }
     campaign_path = output_root / "campaign.json"
     write_json(campaign_path, campaign)
@@ -197,12 +194,10 @@ def main() -> int:
         str(args.tool_timeout_s),
         "--judge-timeout-s",
         str(args.judge_timeout_s),
-        "--feedback-command",
-        args.feedback_command,
-        "--feedback-output-mode",
-        args.feedback_output_mode,
         "--workers",
         str(args.workers),
+        "--evas-command",
+        args.evas_command,
     ]
     if args.api_key_file:
         command.extend(["--api-key-file", args.api_key_file])

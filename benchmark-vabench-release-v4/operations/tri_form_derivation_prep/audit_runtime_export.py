@@ -61,15 +61,19 @@ def main() -> int:
             ):
                 if marker.lower() in direct_prompt.lower():
                     problems.append(f"direct one-shot prompt leaks {marker!r}")
-        if (run / "public" / "tool_manifest.json").exists():
-            problems.append("direct one-shot mode exposes a tool manifest")
+        if (run / "public" / "evas_manifest.json").exists():
+            problems.append("direct one-shot mode exposes an EVAS manifest")
         if (run / "public" / "task" / "public_contract.json").exists():
             problems.append("direct one-shot mode exposes a public contract file")
     else:
         if mounts != ["public/task:ro", "public/submission:rw"]:
             problems.append("agentic model mounts differ from the public contract")
-        if not (run / "public" / "tool_manifest.json").is_file():
-            problems.append("agentic mode lacks the feedback tool manifest")
+        if policy.get("executables") != ["evas"]:
+            problems.append("agentic mode does not expose only the EVAS executable")
+        if not (run / "public" / "evas_manifest.json").is_file():
+            problems.append("agentic mode lacks the direct EVAS manifest")
+        if not (run / "public" / "task" / "evas_runtime.json").is_file():
+            problems.append("agentic mode lacks the transparent EVAS runtime contract")
         if not (run / "agent_prompt.txt").is_file():
             problems.append("agentic mode lacks the composed initial prompt")
         else:
@@ -100,17 +104,49 @@ def main() -> int:
             problems.append("private evaluator bundle missing profiles/")
         form = str(attempt.get("form") or "")
         if form in {"dut", "bugfix"}:
+            if not (run / "public" / "task" / "visible_test.scs").is_file():
+                problems.append("agentic DUT/bugfix mode lacks task-local visible_test.scs")
             if not (evaluator / "solution").is_dir():
                 problems.append("private evaluator bundle missing solution/")
-            if not (evaluator / "trusted_feedback_tb.scs").is_file():
-                problems.append("private evaluator bundle missing trusted feedback deck")
+            if not (evaluator / "canonical_test_profile.json").is_file():
+                problems.append("private evaluator bundle missing canonical_test_profile.json")
+            if not (evaluator / "trusted_replay_test.scs").is_file():
+                problems.append("private evaluator bundle missing trusted replay deck")
         if form == "testbench":
             for required in ("trusted_solution", "mutation_bundles"):
                 if not (evaluator / required).is_dir():
                     problems.append(f"private testbench evaluator bundle missing {required}/")
-            for required in ("mutation_catalog.json", "reference_tb.scs", "testbench_security_policy.json"):
+            for required in (
+                "mutation_catalog.json", "reference_tb.scs", "testbench_security_policy.json",
+                "trusted_replay_suite.json",
+            ):
                 if not (evaluator / required).is_file():
                     problems.append(f"private testbench evaluator bundle missing {required}")
+            if not (evaluator / "trusted_replay_fixtures").is_dir():
+                problems.append("private testbench evaluator bundle missing trusted_replay_fixtures/")
+        visible = run / "public" / "task" / "visible_test.scs"
+        trusted = evaluator / "trusted_replay_test.scs"
+        if mode not in {"G0", "G1"} and visible.is_file() and trusted.is_file():
+            if visible.read_bytes() != trusted.read_bytes():
+                problems.append("visible test and trusted replay deck differ")
+        if form == "testbench" and mode not in {"G0", "G1"}:
+            fixtures = run / "public" / "task" / "visible_fixtures"
+            fixture_names = sorted(
+                path.name for path in fixtures.iterdir() if path.is_dir()
+            ) if fixtures.is_dir() else []
+            if fixture_names != [
+                "mutation_01", "mutation_02", "mutation_03", "mutation_04", "mutation_05", "reference",
+            ]:
+                problems.append("public testbench runtime does not expose one reference and five mutation fixtures")
+            public_suite = run / "public" / "task" / "evas_runtime.json"
+            trusted_suite = evaluator / "trusted_replay_suite.json"
+            trusted_fixtures = evaluator / "trusted_replay_fixtures"
+            if public_suite.is_file() and trusted_suite.is_file() and public_suite.read_bytes() != trusted_suite.read_bytes():
+                problems.append("public and trusted testbench suite manifests differ")
+            if fixtures.is_dir() and trusted_fixtures.is_dir() and tree_sha(fixtures) != tree_sha(trusted_fixtures):
+                problems.append("public and trusted testbench fixture trees differ")
+            if (run / "public" / "task" / "visible_test.scs").exists():
+                problems.append("testbench runtime exposes a gold-derived visible_test.scs")
         if attempt.get("evaluator_bundle_sha256") != tree_sha(evaluator):
             problems.append("evaluator bundle hash does not match the prepared workspace")
     for path in (run / "public").rglob("*"):
@@ -118,7 +154,7 @@ def main() -> int:
             problems.append(f"public bundle contains symlink: {path}")
         if path.is_file():
             text = path.read_text(encoding="utf-8", errors="ignore")
-            if "negative_variants/" in text or "/evaluator/" in text:
+            if "negative_variants/" in text or "/evaluator/" in text or "vabench feedback" in text.lower():
                 problems.append(f"public file leaks authoring evaluator path: {path}")
     report = {"schema_version": "v4-runtime-export-audit-v1", "status": "pass" if not problems else "fail", "problems": problems}
     rendered = json.dumps(report, indent=2, sort_keys=True) + "\n"

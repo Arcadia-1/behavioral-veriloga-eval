@@ -6,11 +6,11 @@ campaigns, or pass an explicit `--selection` manifest when reproducing a
 historical pilot. `CALIBRATION_FAMILIES.json` is retained only as historical
 selection evidence.
 
-The pilot is used only to freeze generic form skills, the generic feedback
-skill, the episode output-token cap, safety limits, runner behavior, repetition count,
+The pilot is used only to freeze generic form skills, the public EVAS guide,
+the episode output-token cap, safety limits, runner behavior, repetition count,
 and telemetry. Skill text must remain task-agnostic. Form-writing skills are
-derived from installed Cadence/Spectre help; feedback skills describe the
-project-authored vaBench facility. Neither may contain a selected family ID,
+derived from installed Cadence/Spectre help; EVAS guides describe only the
+public command-line contract. Neither may contain a selected family ID,
 title, equation, threshold, stimulus constant, checker rule, or mutation hint.
 
 Because model outcomes from these families influence experimental settings,
@@ -76,8 +76,8 @@ python3 benchmark-vabench-release-v4/operations/calibration_pilot/prepare_budget
 
 `REUSE_MANIFEST.json` records every accepted or rejected cell, source-result
 hashes, candidate hashes, and rejection reasons. Reuse requires the same
-provider, model, endpoint hash, temperature, streaming mode, prompt, feedback
-adapter hash, and release; only the output-token ceiling may increase. A
+provider, model, endpoint hash, temperature, streaming mode, prompt, EVAS
+executable identity, and release; only the output-token ceiling may increase. A
 submitted file is not by itself reusable: any episode whose model turn hit the
 old output limit must be rerun because an agent may have written an intermediate
 file before truncation.
@@ -98,7 +98,10 @@ python3 benchmark-vabench-release-v4/operations/calibration_pilot/run_campaign.p
 Each runtime exposes only `public/task` and `public/submission` to an agentic
 model. Evaluator assets remain outside the model mount. G0/G1 parse exact
 artifact blocks into the submission directory. G2-G5 expose bounded file
-tools, the injected feedback adapter, and `finalize`.
+tools, restricted `run_evas`, and `finalize`. `run_evas` accepts no command
+string: DUT/bugfix tasks run the fixed visible deck, while testbench tasks may
+select only the reference or five public mutation fixtures declared by the
+task-local `evas_runtime.json`.
 
 Direct responses must use the exact artifact envelope contract. The live runner
 rejects filename-only markers, input-artifact markers, Markdown fences,
@@ -136,37 +139,59 @@ Changing providers requires only `--base-url`, the campaign model ID, and
 
 ## Evaluator Adapters
 
-`--feedback-command` and `--final-judge-command` inject benchmark-controlled
-commands. They receive these environment variables:
+`--final-judge-command` injects the benchmark-controlled trusted replay. It
+receives these environment variables:
 
 - `VABENCH_RUNTIME_DIR`
 - `VABENCH_PUBLIC_DIR`
 - `VABENCH_SUBMISSION_DIR`
 - `VABENCH_EVALUATOR_DIR`
 
-The feedback adapter may run EVAS and return public diagnostics. The final
-judge adapter runs once after submission and may dispatch Spectre remotely.
-Neither command string nor evaluator directory is sent to the model. A formal
-pilot must configure both adapters; a provider-only smoke may omit them only to
-test API transport and direct artifact parsing.
+The final judge adapter runs once after submission and may dispatch Spectre
+remotely. Neither its command string nor evaluator directory is sent to the
+model. A formal pilot must configure the final adapter; a provider-only smoke
+may omit it only to test API transport and artifact handling.
 
-By default, the runner returns a compact feedback payload to the model: oracle
-summary lines, validation diagnostics, and concrete errors are retained, while
-verbose simulator counters are omitted from the conversation to preserve the
-working-token budget. Use `--feedback-output-mode raw` only when intentionally
-reproducing older runner behavior or debugging the feedback adapter itself.
+### R45 result protocol
 
-The repository-native EVAS adapter is:
+Every completed G0-G5 cell now writes an `experiment_result` object in
+`evidence/campaign_result.json` conforming to
+`schemas/vabench-experiment-result.schema.json`. The record preserves the exact
+last assistant message and its hash, snapshots every declared final artifact
+under `evidence/final_submission/`, and records per-file and tree hashes. This
+snapshot is the scored submission; later edits to `public/submission` do not
+change it. Trusted replay receives the snapshot path in both
+`VABENCH_SUBMISSION_DIR` and `VABENCH_FINAL_SUBMISSION_DIR`, and its record binds
+the replay to the snapshot tree hash.
 
-```bash
---feedback-command \
-  "python3 benchmark-vabench-release-v4/operations/calibration_pilot/feedback_adapter.py"
+The final judge is a trusted replay, not another model-feedback turn. Before it
+runs, the runner hashes the exported evaluator tree and records
+`evas --version` (override the executable with `--evas-command`). The adapter
+must write JSON to `VABENCH_TRUSTED_REPLAY_RESULT` with one of these statuses:
+
+```json
+{
+  "status": "behavior_failure",
+  "diagnostics": ["first mismatch at 2.5e-9 s"]
+}
 ```
 
-For DUT and Bugfix it invokes the family-specific behavior oracle. For
-Testbench it runs the submitted deck on the supplied correct DUT and the
-publicly queryable anonymous mutation subset. It returns diagnostics only; it
-does not expose source mutations, checker code, or final score cases.
+Allowed terminal replay statuses are `passed`, `compile_failure`,
+`runtime_failure`, `behavior_failure`, and `infrastructure_failure`. A legacy
+adapter returning zero without JSON is accepted as `passed` with a compatibility
+diagnostic. A nonzero return without JSON is an infrastructure failure because
+the runner cannot safely infer its failure stage.
+
+Model execution is separate from replay execution. `agent_timeout` and
+`no_submission` have `score_eligible: false` and `score: null`; neither is
+reported as a hidden-test or behavior zero. Trusted replay timeouts are
+`runtime_failure`, while launch and malformed-result failures remain
+`infrastructure_failure`.
+
+The historical `feedback_adapter.py` remains only to reproduce old experiments.
+It reads evaluator assets and must never be configured as an active G2-G5 model
+tool. New runs use `run_evas`, which returns only raw public simulation output
+from the fixed task-local contract and never invokes a checker or score oracle.
 
 Generated campaign manifests, runtime workspaces, API responses, simulator
 outputs, and credentials belong outside the repository. Only runner source,
@@ -180,9 +205,9 @@ mode, token, tool, and outcome records:
 ```bash
 python3 benchmark-vabench-release-v4/operations/calibration_pilot/score_campaign.py \
   --campaign-output /tmp/v4-calibration-smoke \
-  --judge-kind feedback_evas \
+  --judge-kind final_trusted_replay \
   --judge-command \
-    "python3 benchmark-vabench-release-v4/operations/calibration_pilot/feedback_adapter.py"
+    "python3 /path/to/trusted_replay_adapter.py"
 ```
 
 `score_campaign.py` resolves campaign/output paths and existing judge-command

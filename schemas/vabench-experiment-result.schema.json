@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://arcadia-1.github.io/vaEVAS/schemas/vabench-experiment-result.schema.json",
+  "title": "vaBench immutable experiment result",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "recorded_at",
+    "cell_id",
+    "task_id",
+    "mode",
+    "model_execution",
+    "final_submission",
+    "final_trusted_replay",
+    "outcome",
+    "score_eligible",
+    "score"
+  ],
+  "properties": {
+    "schema_version": {"const": "vabench-experiment-result-v1"},
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "cell_id": {"type": "string", "minLength": 1},
+    "task_id": {"type": "string", "minLength": 1},
+    "mode": {"enum": ["G0", "G1", "G2", "G3", "G4", "G5"]},
+    "model_execution": {
+      "type": "object",
+      "required": ["status", "raw_final_output"],
+      "properties": {
+        "status": {
+          "enum": [
+            "completed",
+            "agent_timeout",
+            "provider_failure",
+            "runner_failure"
+          ]
+        },
+        "raw_final_output": {
+          "type": "object",
+          "required": ["available", "sha256", "message"],
+          "properties": {
+            "available": {"type": "boolean"},
+            "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+            "message": {"type": ["object", "null"]}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "final_submission": {
+      "type": "object",
+      "required": ["status", "artifacts", "tree_sha256", "diagnostics"],
+      "properties": {
+        "status": {"enum": ["available", "no_submission"]},
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["path", "snapshot_path", "bytes", "sha256"],
+            "properties": {
+              "path": {"type": "string"},
+              "snapshot_path": {"type": "string"},
+              "bytes": {"type": "integer", "minimum": 0},
+              "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+            },
+            "additionalProperties": false
+          }
+        },
+        "tree_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "diagnostics": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "final_trusted_replay": {
+      "type": "object",
+      "required": [
+        "status",
+        "executed",
+        "test_manifest",
+        "submission_tree_sha256",
+        "evas_identity",
+        "command",
+        "adapter_result",
+        "diagnostics"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "not_run",
+            "passed",
+            "compile_failure",
+            "runtime_failure",
+            "behavior_failure",
+            "infrastructure_failure"
+          ]
+        },
+        "executed": {"type": "boolean"},
+        "test_manifest": {"type": "object"},
+        "submission_tree_sha256": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "evas_identity": {"type": "object"},
+        "command": {"type": ["object", "null"]},
+        "adapter_result": {"type": ["object", "null"]},
+        "diagnostics": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "outcome": {
+      "enum": [
+        "passed",
+        "agent_timeout",
+        "no_submission",
+        "compile_failure",
+        "runtime_failure",
+        "behavior_failure",
+        "infrastructure_failure",
+        "not_scored"
+      ]
+    },
+    "score_eligible": {"type": "boolean"},
+    "score": {"type": ["number", "null"], "minimum": 0, "maximum": 1}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "enum": [
+              "agent_timeout",
+              "no_submission",
+              "infrastructure_failure",
+              "not_scored"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "score_eligible": {"const": false},
+          "score": {"type": "null"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"outcome": {"const": "passed"}}},
+      "then": {
+        "properties": {
+          "score_eligible": {"const": true},
+          "score": {"const": 1.0}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "enum": ["compile_failure", "runtime_failure", "behavior_failure"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "score_eligible": {"const": true},
+          "score": {"const": 0.0}
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

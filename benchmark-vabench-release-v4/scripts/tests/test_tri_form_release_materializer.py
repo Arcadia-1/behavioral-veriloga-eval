@@ -4,6 +4,8 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 
 PREP = Path(__file__).resolve().parents[2] / "operations" / "tri_form_derivation_prep"
 if str(PREP) not in sys.path:
@@ -13,6 +15,7 @@ from materialize_tri_form_release import (  # noqa: E402
     COMPONENT_METADATA,
     MODES,
     REFERENCE_TOKENIZER,
+    build_dut_view,
     build_testbench_view,
     canonical_required_behavior,
     install_prompt_assets,
@@ -25,15 +28,27 @@ from materialize_tri_form_release import (  # noqa: E402
     render_testbench_instruction,
     select_bugfix_seed,
     write_public_contract,
+    main as materialize_release,
 )
-from export_tri_form_runtime import build_mode_record, install_public, ordered_prompt_components, render_prompt  # noqa: E402
+from export_tri_form_runtime import (  # noqa: E402
+    build_mode_record,
+    install_public,
+    main as export_runtime,
+    ordered_prompt_components,
+    render_prompt,
+    task_record as load_task_record,
+)
+from audit_runtime_export import main as audit_runtime_export  # noqa: E402
 from record_runtime_ingestion_evidence import verified_audit  # noqa: E402
 from audit_tri_form_release import (  # noqa: E402
     RELEASE_SEAL_ARTIFACTS,
+    audit_release_evidence,
     audit_testbench_reference,
     build_release_seal,
+    evidence_artifacts,
     expected_buggy_artifact_hashes,
     file_sha,
+    prompt_component_path,
 )
 
 
@@ -74,12 +89,46 @@ def sample_source_task(tmp_path: Path, *, independent_reference: bool) -> tuple[
     (evaluator / "checker_profile.json").write_text(
         '{"checker_task_id":"v4_001_sample"}\n', encoding="utf-8"
     )
-    (evaluator / "harness_spec.json").write_text("{}\n", encoding="utf-8")
+    harness = {
+        "schema_version": "v4-harness-spec-v1",
+        "family_id": "001",
+        "task_id": "v4-001",
+        "generator": {"name": "render_v4_harness.py", "version": "test"},
+        "candidate": {"source_root": "./dut", "artifact_paths": ["dut.va"]},
+        "deck": {
+            "header": ["simulator lang=spectre", "global 0"],
+            "include_templates": ["ahdl_include \"{candidate_source_root}/{artifact_path}\""],
+            "body_lines": ["Vstim (vin 0) vsource dc=0.45", "XDUT (vin) dut"],
+            "analyses": ["tran tran stop=10n maxstep=100p"],
+            "save_signals": ["vin"],
+        },
+        "property_ids": ["P_HOLD"],
+        "profile_defaults": {
+            "feedback": {
+                "parameters": {}, "corners": ["nominal"], "deterministic_seed": 7,
+                "simulatorOptions": {"evas_profile": "balanced", "strict": True},
+                "deck_overrides": {},
+            },
+            "score": {
+                "parameters": {}, "corners": ["nominal"], "deterministic_seed": 7,
+                "simulatorOptions": {"strict": True}, "deck_overrides": {},
+            },
+        },
+    }
+    (evaluator / "harness_spec.json").write_text(json.dumps(harness) + "\n", encoding="utf-8")
     (evaluator / "solution" / "dut.va").write_text("module dut; endmodule\n", encoding="utf-8")
-    (evaluator / "score_tb.scs").write_text("legacy score deck\n", encoding="utf-8")
+    (evaluator / "score_tb.scs").write_text(
+        'ahdl_include "./dut/dut.va"\n', encoding="utf-8"
+    )
     if independent_reference:
         (evaluator / "reference_tb.scs").write_text("independent reference deck\n", encoding="utf-8")
     mutation_ids = [f"neg_{index}" for index in range(1, 6)]
+    for mutation_id in mutation_ids:
+        mutation = evaluator / "mutation_bundles" / mutation_id
+        mutation.mkdir()
+        (mutation / "dut.va").write_text(
+            f"module dut; // {mutation_id}\nendmodule\n", encoding="utf-8"
+        )
     (evaluator / "mutation_catalog.json").write_text(
         json.dumps({"mutations": [{"id": mutation_id} for mutation_id in mutation_ids]}) + "\n",
         encoding="utf-8",
@@ -87,10 +136,22 @@ def sample_source_task(tmp_path: Path, *, independent_reference: bool) -> tuple[
     row = {
         "canonical_dut_id": "001",
         "active_mutations": [{"mutation_id": mutation_id} for mutation_id in mutation_ids],
-        "hashes": {"mutation_catalog_sha256": file_sha(evaluator / "mutation_catalog.json")},
+        "hashes": {
+            "mutation_catalog_sha256": file_sha(evaluator / "mutation_catalog.json"),
+            "task_certification_sha256": "b" * 64,
+        },
     }
     seed_review = {"mutation_id": mutation_ids[0]}
     return source_task, row, seed_review
+
+
+def add_public_evas_runtime(task: Path) -> None:
+    (task / "public" / "visible_test.scs").write_text(
+        'ahdl_include "../submission/dut.va"\n', encoding="utf-8"
+    )
+    (task / "public" / "evas_runtime.json").write_text(
+        '{"command":"evas simulate public/task/visible_test.scs"}\n', encoding="utf-8"
+    )
 
 
 def test_reference_tb_prefers_explicit_independent_asset(tmp_path: Path) -> None:
@@ -98,6 +159,48 @@ def test_reference_tb_prefers_explicit_independent_asset(tmp_path: Path) -> None
     path, source_kind = resolve_testbench_reference(source_task)
     assert path == source_task / "evaluator" / "reference_tb.scs"
     assert source_kind == "independent_reference_tb"
+
+
+def test_dut_builder_binds_canonical_profile_to_identical_runtime_decks(
+    tmp_path: Path,
+) -> None:
+    source_task, row, _ = sample_source_task(tmp_path, independent_reference=True)
+    output = tmp_path / "release"
+    record = build_dut_view(
+        output, source_task, row, sample_spec(), file_sha(source_task / "evaluator" / "family_spec.json")
+    )
+    task = output / record["task_dir"]
+    task_record = json.loads((task / "task_record.json").read_text(encoding="utf-8"))
+    profile = json.loads(
+        (task / "evaluator" / "canonical_test_profile.json").read_text(encoding="utf-8")
+    )
+    visible = task / "public" / "visible_test.scs"
+    trusted = task / "evaluator" / "trusted_replay_test.scs"
+
+    assert visible.read_bytes() == trusted.read_bytes()
+    assert profile["test_deck_sha256"] == file_sha(visible)
+    assert task_record["release_revision"] == "r45"
+    assert task_record["evaluation_binding"]["profile_sha256"] == file_sha(
+        task / "evaluator" / "canonical_test_profile.json"
+    )
+
+
+def test_runtime_export_rejects_tampered_canonical_deck(tmp_path: Path) -> None:
+    source_task, row, _ = sample_source_task(tmp_path, independent_reference=True)
+    release = tmp_path / "release"
+    record = build_dut_view(
+        release, source_task, row, sample_spec(), file_sha(source_task / "evaluator" / "family_spec.json")
+    )
+    (release / "TASK_INDEX.json").write_text(
+        json.dumps({"tasks": [record]}) + "\n", encoding="utf-8"
+    )
+    task = release / record["task_dir"]
+    (task / "evaluator" / "trusted_replay_test.scs").write_text(
+        "tampered\n", encoding="utf-8"
+    )
+
+    with pytest.raises(SystemExit, match="decks differ"):
+        load_task_record(release, "v4-001")
 
 
 def test_reference_tb_legacy_fallback_is_explicit(tmp_path: Path) -> None:
@@ -116,6 +219,21 @@ def test_testbench_builder_records_reference_hash_and_source_kind(tmp_path: Path
     assert (evaluator / "reference_tb.scs").read_text(encoding="utf-8") == "independent reference deck\n"
     assert score["reference_tb_sha256"] == file_sha(source_task / "evaluator" / "reference_tb.scs")
     assert score["reference_tb_source_kind"] == "independent_reference_tb"
+    task = output / "tasks" / "501-sample-testbench"
+    assert not (task / "public" / "visible_test.scs").exists()
+    assert not (task / "evaluator" / "trusted_replay_test.scs").exists()
+    assert (task / "public" / "evas_runtime.json").read_bytes() == (
+        task / "evaluator" / "trusted_replay_suite.json"
+    ).read_bytes()
+    assert file_sha(task / "public" / "evas_runtime.json") == json.loads(
+        (task / "task_record.json").read_text(encoding="utf-8")
+    )["evaluation_binding"]["public_suite_sha256"]
+    assert sorted(
+        path.name for path in (task / "public" / "visible_fixtures").iterdir()
+    ) == ["mutation_01", "mutation_02", "mutation_03", "mutation_04", "mutation_05", "reference"]
+    contract = json.loads((task / "public_contract.json").read_text(encoding="utf-8"))
+    assert "feedback" not in contract
+    assert contract["evas"]["visible_and_final_suite"] == "identical_reference_plus_five_mutations"
 
 
 def test_testbench_builder_mounts_reference_support_below_dut(tmp_path: Path) -> None:
@@ -143,7 +261,7 @@ def test_testbench_builder_marks_legacy_score_deck_fallback(tmp_path: Path) -> N
     build_testbench_view(output, source_task, row, sample_spec(), "a" * 64, seed_review)
     evaluator = output / "tasks" / "501-sample-testbench" / "evaluator"
     score = json.loads((evaluator / "score_policy.json").read_text(encoding="utf-8"))
-    assert (evaluator / "reference_tb.scs").read_text(encoding="utf-8") == "legacy score deck\n"
+    assert (evaluator / "reference_tb.scs").read_text(encoding="utf-8") == 'ahdl_include "./dut/dut.va"\n'
     assert score["reference_tb_sha256"] == file_sha(source_task / "evaluator" / "score_tb.scs")
     assert "reference_tb_source_kind" not in score
 
@@ -166,7 +284,7 @@ def test_audit_rejects_false_independent_reference_claim(tmp_path: Path) -> None
 
 def test_mode_matrix_is_two_direct_plus_four_agentic() -> None:
     assert [name for name, row in MODES.items() if row["process"] == "direct_one_shot"] == ["G0", "G1"]
-    assert [name for name, row in MODES.items() if row["feedback_cli"]] == ["G2", "G3", "G4", "G5"]
+    assert [name for name, row in MODES.items() if row["evas_cli"]] == ["G2", "G3", "G4", "G5"]
 
 
 def test_bugfix_instruction_does_not_localize_fault() -> None:
@@ -250,32 +368,32 @@ def test_prompt_components_have_pinned_reference_tokenizer_metadata() -> None:
         "dut_modeling.md",
         "testbench_verification.md",
         "bugfix_diagnosis.md",
-        "feedback_core.md",
-        "feedback_dut.md",
-        "feedback_testbench.md",
-        "feedback_bugfix.md",
+        "evas_core.md",
+        "evas_dut.md",
+        "evas_testbench.md",
+        "evas_bugfix.md",
     }
     assert reference_token_count("one two; three") == 4
 
 
-def test_prompt_assets_split_wrappers_form_skills_and_feedback_guides(tmp_path: Path) -> None:
+def test_prompt_assets_split_wrappers_form_skills_and_evas_guides(tmp_path: Path) -> None:
     records = install_prompt_assets(tmp_path)
     manifest = json.loads((tmp_path / "prompt_modes" / "manifest.json").read_text(encoding="utf-8"))
     assert set(manifest["wrappers"]) == {"direct_wrapper.md", "agentic_wrapper.md"}
     assert set(manifest["form_skills"]) == {"dut_modeling.md", "testbench_verification.md", "bugfix_diagnosis.md"}
-    assert set(manifest["feedback_guides"]) == {
-        "feedback_core.md", "feedback_dut.md", "feedback_testbench.md", "feedback_bugfix.md",
+    assert set(manifest["evas_guides"]) == {
+        "evas_core.md", "evas_dut.md", "evas_testbench.md", "evas_bugfix.md",
     }
-    assert set(manifest["components"]) == set(manifest["wrappers"]) | set(manifest["form_skills"]) | set(manifest["feedback_guides"])
+    assert set(manifest["components"]) == set(manifest["wrappers"]) | set(manifest["form_skills"]) | set(manifest["evas_guides"])
     assert (tmp_path / "prompt_modes" / "wrappers" / "direct_wrapper.md").is_file()
     assert (tmp_path / "prompt_modes" / "wrappers" / "agentic_wrapper.md").is_file()
     assert (tmp_path / "prompt_modes" / "form_skills" / "dut_modeling.md").is_file()
-    assert (tmp_path / "prompt_modes" / "feedback_guides" / "feedback_dut.md").is_file()
-    assert (tmp_path / "prompt_modes" / "feedback_guides" / "feedback_core.md").is_file()
+    assert (tmp_path / "prompt_modes" / "evas_guides" / "evas_dut.md").is_file()
+    assert (tmp_path / "prompt_modes" / "evas_guides" / "evas_core.md").is_file()
     assert not (tmp_path / "prompt_modes" / "skills").exists()
     assert records["direct_wrapper.md"]["kind"] == "wrapper"
     assert records["dut_modeling.md"]["kind"] == "form_skill"
-    assert records["feedback_dut.md"]["kind"] == "feedback_guide"
+    assert records["evas_dut.md"]["kind"] == "evas_guide"
 
 
 def test_direct_wrapper_defines_unambiguous_artifact_protocol(tmp_path: Path) -> None:
@@ -296,21 +414,21 @@ def test_runtime_prompt_components_follow_explicit_order_with_wrapper_last() -> 
         "component_order": [
             "instruction",
             "bugfix_diagnosis.md",
-            "feedback_core.md",
-            "feedback_bugfix.md",
+            "evas_core.md",
+            "evas_bugfix.md",
             "agentic_wrapper.md",
         ],
         "prompt_component_hashes": {
             "bugfix_diagnosis.md": "a" * 64,
-            "feedback_core.md": "b" * 64,
-            "feedback_bugfix.md": "c" * 64,
+            "evas_core.md": "b" * 64,
+            "evas_bugfix.md": "c" * 64,
             "agentic_wrapper.md": "d" * 64,
         },
     }
     assert ordered_prompt_components(mode_record) == [
         "bugfix_diagnosis.md",
-        "feedback_core.md",
-        "feedback_bugfix.md",
+        "evas_core.md",
+        "evas_bugfix.md",
         "agentic_wrapper.md",
     ]
 
@@ -320,8 +438,8 @@ def test_render_prompt_places_guides_before_wrapper_without_public_contract_inli
     task = tmp_path / "task"
     for subdir, name, text in [
         ("form_skills", "bugfix_diagnosis.md", "bugfix skill\n"),
-        ("feedback_guides", "feedback_core.md", "feedback core\n"),
-        ("feedback_guides", "feedback_bugfix.md", "feedback bugfix\n"),
+        ("evas_guides", "evas_core.md", "EVAS core\n"),
+        ("evas_guides", "evas_bugfix.md", "EVAS bugfix\n"),
         ("wrappers", "agentic_wrapper.md", "agentic wrapper\n"),
     ]:
         path = release / "prompt_modes" / subdir / name
@@ -334,14 +452,14 @@ def test_render_prompt_places_guides_before_wrapper_without_public_contract_inli
         "component_order": [
             "instruction",
             "bugfix_diagnosis.md",
-            "feedback_core.md",
-            "feedback_bugfix.md",
+            "evas_core.md",
+            "evas_bugfix.md",
             "agentic_wrapper.md",
         ],
         "prompt_component_hashes": {
             "bugfix_diagnosis.md": "a" * 64,
-            "feedback_core.md": "b" * 64,
-            "feedback_bugfix.md": "c" * 64,
+            "evas_core.md": "b" * 64,
+            "evas_bugfix.md": "c" * 64,
             "agentic_wrapper.md": "d" * 64,
         },
     }
@@ -354,8 +472,8 @@ def test_render_prompt_places_guides_before_wrapper_without_public_contract_inli
     )
     markers = [
         '<<<VABENCH_COMPONENT id="bugfix_diagnosis.md">>>',
-        '<<<VABENCH_COMPONENT id="feedback_core.md">>>',
-        '<<<VABENCH_COMPONENT id="feedback_bugfix.md">>>',
+        '<<<VABENCH_COMPONENT id="evas_core.md">>>',
+        '<<<VABENCH_COMPONENT id="evas_bugfix.md">>>',
         '<<<VABENCH_COMPONENT id="agentic_wrapper.md">>>',
     ]
     positions = [rendered.index(marker) for marker in markers]
@@ -381,7 +499,7 @@ def test_derived_prompt_plan_hash_binds_non_visible_public_contract(tmp_path: Pa
     plan = build_mode_record(release, task, record, "G5")
     assert plan["public_contract_sha256"] == file_sha(task / "public_contract.json")
     assert plan["component_order"][-4:] == [
-        "bugfix_diagnosis.md", "feedback_core.md", "feedback_bugfix.md", "agentic_wrapper.md",
+        "bugfix_diagnosis.md", "evas_core.md", "evas_bugfix.md", "agentic_wrapper.md",
     ]
     assert set(plan["public_input_hashes"]) == {
         "public/instruction.md", "public/buggy_bundle/dut.va",
@@ -414,17 +532,22 @@ def test_agentic_bugfix_export_seeds_editable_submission(tmp_path: Path) -> None
     (task / "public" / "buggy_bundle").mkdir(parents=True)
     (task / "public" / "buggy_bundle" / "a.va").write_text("module a; endmodule\n", encoding="utf-8")
     (task / "public" / "instruction.md").write_text("Repair the bundle.\n", encoding="utf-8")
+    add_public_evas_runtime(task)
     public = tmp_path / "public"
     (public / "submission").mkdir(parents=True)
     install_public(task, public, "bugfix", "G2")
     assert (public / "submission" / "a.va").read_bytes() == (task / "public" / "buggy_bundle" / "a.va").read_bytes()
     assert (public / "task" / "buggy_bundle" / "a.va").is_file()
+    assert (public / "task" / "visible_test.scs").is_file()
+    assert (public / "evas_manifest.json").is_file()
+    assert not (public / "tool_manifest.json").exists()
 
 
 def test_export_omits_public_contract_mount(tmp_path: Path) -> None:
     task = tmp_path / "task"
     (task / "public").mkdir(parents=True)
     (task / "public" / "instruction.md").write_text("Build the DUT.\n", encoding="utf-8")
+    add_public_evas_runtime(task)
     for mode in ("G0", "G2"):
         public = tmp_path / f"public-{mode}"
         (public / "submission").mkdir(parents=True)
@@ -449,10 +572,50 @@ def test_export_mounts_declared_public_readonly_support(tmp_path: Path) -> None:
     }) + "\n", encoding="utf-8")
     (task / "public").mkdir(parents=True)
     (task / "public" / "instruction.md").write_text("Build the DUT.\n", encoding="utf-8")
+    add_public_evas_runtime(task)
     public = tmp_path / "runtime-public"
     (public / "submission").mkdir(parents=True)
     install_public(task, public, "dut", "G2")
     assert (public / "task" / "public_support" / "helper.va").read_bytes() == helper.read_bytes()
+
+
+def test_g5_testbench_runtime_exports_direct_evas_visible_suite(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    source_task, row, seed_review = sample_source_task(tmp_path, independent_reference=True)
+    release = tmp_path / "release"
+    task_record = build_testbench_view(
+        release, source_task, row, sample_spec(), "a" * 64, seed_review
+    )
+    install_prompt_assets(release)
+    (release / "TASK_INDEX.json").write_text(
+        json.dumps({"tasks": [task_record]}) + "\n", encoding="utf-8"
+    )
+    runtime = tmp_path / "runtime"
+    monkeypatch.setattr(sys, "argv", [
+        "export_tri_form_runtime.py",
+        "--release", str(release),
+        "--task", "v4-501",
+        "--mode", "G5",
+        "--output", str(runtime),
+        "--working-token-budget", "4096",
+    ])
+    assert export_runtime() == 0
+    monkeypatch.setattr(sys, "argv", [
+        "audit_runtime_export.py", "--run", str(runtime),
+    ])
+    assert audit_runtime_export() == 0
+    assert not (runtime / "public" / "task" / "visible_test.scs").exists()
+    assert (runtime / "public" / "task" / "evas_runtime.json").read_bytes() == (
+        runtime / "evaluator" / "trusted_replay_suite.json"
+    ).read_bytes()
+    suite = json.loads(
+        (runtime / "public" / "task" / "evas_runtime.json").read_text(encoding="utf-8")
+    )
+    assert [case["case"] for case in suite["cases"]] == [
+        "reference", "mutation_01", "mutation_02", "mutation_03", "mutation_04", "mutation_05",
+    ]
 
 
 def test_runtime_evidence_rejects_handwritten_pass_report(tmp_path: Path) -> None:
@@ -504,6 +667,75 @@ def test_release_seal_binds_transitive_release_and_reused_certifications(tmp_pat
     assert seal["immutable"] is True
     assert seal["certification_reuse"] == reuse
     assert set(seal["artifact_sha256"]) == set(RELEASE_SEAL_ARTIFACTS)
+
+
+def test_r45_release_seal_has_independent_revision_identity(tmp_path: Path) -> None:
+    for relative in RELEASE_SEAL_ARTIFACTS:
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({"artifact": relative}) + "\n", encoding="utf-8")
+    reuse = {"simulation_rerun_required_for_materialization": False}
+
+    seal = build_release_seal(
+        tmp_path,
+        "a" * 64,
+        reuse,
+        release_revision="r45",
+    )
+
+    assert seal["release_revision"] == "r45"
+    assert seal["release_status"] == "r45_immutable_rust_evas2_certified"
+
+
+def test_r45_evidence_never_falls_back_to_r44(tmp_path: Path) -> None:
+    for relative in evidence_artifacts("r44"):
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("{}\n", encoding="utf-8")
+    problems: list[str] = []
+
+    hashes = audit_release_evidence("r45", problems, package_root=tmp_path)
+
+    assert hashes == {}
+    assert len(problems) == 6
+    assert all("r45" in problem for problem in problems)
+    assert not any("r44" in problem for problem in problems)
+
+
+def test_r45_evidence_rejects_a_copied_r44_artifact(tmp_path: Path) -> None:
+    filename = "PROFILE_PARITY.json"
+    for revision in ("r44", "r45"):
+        path = tmp_path / "evidence" / revision / filename
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text('{"status":"pass"}\n', encoding="utf-8")
+    problems: list[str] = []
+
+    audit_release_evidence("r45", problems, package_root=tmp_path)
+
+    assert any("byte-identical to r44 evidence" in problem for problem in problems)
+
+
+def test_prompt_component_path_supports_immutable_r44_feedback_assets(tmp_path: Path) -> None:
+    assert prompt_component_path(tmp_path, "feedback_core.md") == (
+        tmp_path / "prompt_modes" / "feedback_guides" / "feedback_core.md"
+    )
+    assert prompt_component_path(tmp_path, "feedback_dut.md") == (
+        tmp_path / "prompt_modes" / "feedback_guides" / "feedback_dut.md"
+    )
+
+
+def test_materializer_refuses_to_rebuild_immutable_r44(monkeypatch) -> None:
+    monkeypatch.setattr(sys, "argv", [
+        "materialize_tri_form_release.py",
+        "--release-revision",
+        "r44",
+    ])
+    try:
+        materialize_release()
+    except SystemExit as exc:
+        assert "r44 is immutable" in str(exc)
+    else:
+        raise AssertionError("immutable r44 materialization was accepted")
 
 
 def test_release_seal_refuses_to_claim_stale_certifications(tmp_path: Path) -> None:

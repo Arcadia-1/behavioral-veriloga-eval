@@ -19,7 +19,10 @@ from score_denominator_registry import (
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4"
+DEFAULT_RELEASES = {
+    "r44": PACKAGE_ROOT / "release" / "benchmarkv4",
+    "r45": PACKAGE_ROOT / "release" / "benchmarkv4-r45",
+}
 DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 FORMS = ("dut", "testbench", "bugfix")
 MODES = ("G0", "G1", "G2", "G3", "G4", "G5")
@@ -38,6 +41,12 @@ FORM_SKILLS = {
     "testbench": "testbench_verification.md",
     "bugfix": "bugfix_diagnosis.md",
 }
+EVAS_GUIDES = {
+    "dut": "evas_dut.md",
+    "testbench": "evas_testbench.md",
+    "bugfix": "evas_bugfix.md",
+}
+EVAS_CORE = "evas_core.md"
 FEEDBACK_GUIDES = {
     "dut": "feedback_dut.md",
     "testbench": "feedback_testbench.md",
@@ -55,10 +64,10 @@ RELEASE_SEAL_ARTIFACTS = (
     "AUDIT_REPORT.json",
     "RUNTIME_INGESTION_EVIDENCE.json",
 )
-R44_EVIDENCE_ARTIFACTS = (
-    "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "evidence/r44/STIMULUS_METAMORPHIC.json",
-    "evidence/r44/PROFILE_PARITY.json",
+EVIDENCE_FILENAMES = (
+    "RUST_EVAS2_CERTIFICATION.json",
+    "STIMULUS_METAMORPHIC.json",
+    "PROFILE_PARITY.json",
 )
 STANDALONE_EVALUATOR_COMMON = (
     "family_spec.json",
@@ -181,6 +190,8 @@ def prompt_component_path(release: Path, component_id: str) -> Path:
         subdir = "wrappers"
     elif component_id in set(FORM_SKILLS.values()):
         subdir = "form_skills"
+    elif component_id == EVAS_CORE or component_id in set(EVAS_GUIDES.values()):
+        subdir = "evas_guides"
     elif component_id == FEEDBACK_CORE or component_id in set(FEEDBACK_GUIDES.values()):
         subdir = "feedback_guides"
     else:
@@ -194,6 +205,8 @@ def build_release_seal(
     certification_reuse: dict[str, Any],
     certification_problems: list[str] | None = None,
     evidence_hashes: dict[str, str] | None = None,
+    *,
+    release_revision: str = "r44",
 ) -> dict[str, Any]:
     artifact_hashes = {}
     for relative in RELEASE_SEAL_ARTIFACTS:
@@ -205,14 +218,21 @@ def build_release_seal(
     refresh_required = bool(
         certification_reuse.get("simulation_rerun_required_for_materialization")
     )
+    manifest = read_json(release / "MANIFEST.json")
+    declared_revision = manifest.get("release_revision")
+    if declared_revision is not None and str(declared_revision) != release_revision:
+        raise SystemExit(
+            "cannot seal release; manifest revision does not match selected revision: "
+            f"{declared_revision!r} != {release_revision!r}"
+        )
     seal = {
         "schema_version": "v4-benchmarkv4-release-seal-v1",
-        "release_revision": "r44",
+        "release_revision": release_revision,
         "immutable": not refresh_required,
         "release_status": (
             "materialized_certification_refresh_required"
             if refresh_required
-            else "r44_immutable_rust_evas2_certified"
+            else f"{release_revision}_immutable_rust_evas2_certified"
         ),
         "source_score_denominator_registry_sha256": source_registry_sha256,
         "artifact_sha256": artifact_hashes,
@@ -230,21 +250,49 @@ def build_release_seal(
     return seal
 
 
-def audit_r44_evidence(problems: list[str]) -> dict[str, str]:
+def evidence_artifacts(release_revision: str) -> tuple[str, ...]:
+    return tuple(
+        f"evidence/{release_revision}/{filename}" for filename in EVIDENCE_FILENAMES
+    )
+
+
+def audit_release_evidence(
+    release_revision: str,
+    problems: list[str],
+    *,
+    package_root: Path = PACKAGE_ROOT,
+) -> dict[str, str]:
+    artifacts = evidence_artifacts(release_revision)
+    expected_release_label = (
+        "release/benchmarkv4"
+        if release_revision == "r44"
+        else f"release/benchmarkv4-{release_revision}"
+    )
     payloads: dict[str, dict[str, Any]] = {}
     hashes: dict[str, str] = {}
-    for relative in R44_EVIDENCE_ARTIFACTS:
-        path = PACKAGE_ROOT / relative
+    for relative in artifacts:
+        path = package_root / relative
         if not path.is_file():
-            problems.append(f"missing r44 evidence artifact: {relative}")
+            problems.append(f"missing {release_revision} evidence artifact: {relative}")
             continue
         payloads[relative] = read_json(path)
         hashes[relative] = file_sha(path)
 
-    rust = payloads.get(R44_EVIDENCE_ARTIFACTS[0]) or {}
+    if release_revision != "r44":
+        for relative, digest in hashes.items():
+            filename = Path(relative).name
+            prior = package_root / "evidence" / "r44" / filename
+            if prior.is_file() and file_sha(prior) == digest:
+                problems.append(
+                    f"{relative} is byte-identical to r44 evidence; "
+                    f"{release_revision} requires a fresh certification artifact"
+                )
+
+    rust = payloads.get(artifacts[0]) or {}
     rust_summary = rust.get("summary") or {}
     if not (
         rust.get("status") == "pass"
+        and rust.get("release_candidate") == release_revision
         and rust.get("certification_policy") == "rust_evas2_only"
         and rust_summary.get("family_count") == 400
         and rust_summary.get("gold_pass_count") == 400
@@ -256,12 +304,13 @@ def audit_r44_evidence(problems: list[str]) -> dict[str, str]:
             == 400
         )
     ):
-        problems.append("r44 Rust EVAS2 certification summary is incomplete")
+        problems.append(f"{release_revision} Rust EVAS2 certification summary is incomplete")
 
-    metamorphic = payloads.get(R44_EVIDENCE_ARTIFACTS[1]) or {}
+    metamorphic = payloads.get(artifacts[1]) or {}
     metamorphic_summary = metamorphic.get("summary") or {}
     if not (
         metamorphic.get("status") == "pass"
+        and metamorphic.get("release") == expected_release_label
         and metamorphic.get("certification_policy") == "rust_evas2_only"
         and metamorphic_summary.get("task_count") == 400
         and metamorphic_summary.get("affine_gold_pass_count") == 400
@@ -273,17 +322,18 @@ def audit_r44_evidence(problems: list[str]) -> dict[str, str]:
             == 400
         )
     ):
-        problems.append("r44 stimulus metamorphic summary is incomplete")
+        problems.append(f"{release_revision} stimulus metamorphic summary is incomplete")
 
-    parity = payloads.get(R44_EVIDENCE_ARTIFACTS[2]) or {}
+    parity = payloads.get(artifacts[2]) or {}
     if not (
         parity.get("status") == "pass"
+        and parity.get("release") == expected_release_label
         and parity.get("evas_engine") == "evas2"
         and parity.get("task_count") == 1200
         and parity.get("pass_count") == 1200
         and parity.get("fail_count") == 0
     ):
-        problems.append("r44 profile parity summary is incomplete")
+        problems.append(f"{release_revision} profile parity summary is incomplete")
     return hashes
 
 
@@ -385,6 +435,7 @@ def audit_task(
     source_rows: dict[str, dict[str, Any]],
     row: dict[str, Any],
     problems: list[str],
+    release_revision: str = "r45",
 ) -> str | None:
     task_dir = release / str(row.get("task_dir") or "")
     task_dir_parts = Path(str(row.get("task_dir") or "")).parts
@@ -397,7 +448,14 @@ def audit_task(
         return
     if len(task_dir_parts) != 2 or task_dir_parts[0] != "tasks":
         problems.append(f"{prefix} task directory is not flat under tasks/")
-    for required in ("task_record.json", "public/instruction.md", "public_contract.json", "evaluator"):
+    required_paths = [
+        "task_record.json", "public/instruction.md", "public_contract.json", "evaluator",
+    ]
+    if release_revision == "r45":
+        required_paths.append("public/evas_runtime.json")
+        if form in {"dut", "bugfix"}:
+            required_paths.append("public/visible_test.scs")
+    for required in required_paths:
         if not (task_dir / required).exists():
             problems.append(f"{prefix} missing {required}")
     if (task_dir / "provenance").exists():
@@ -406,6 +464,11 @@ def audit_task(
         return
     record = read_json(task_dir / "task_record.json")
     contract = read_json(task_dir / "public_contract.json")
+    if release_revision == "r45":
+        if "feedback" in contract:
+            problems.append(f"{prefix} public contract retains feedback broker entry")
+        if not isinstance(contract.get("evas"), dict):
+            problems.append(f"{prefix} public contract lacks direct EVAS entry")
     expected_contract = rel(task_dir / "public_contract.json", release)
     if row.get("public_contract") != expected_contract or record.get("public_contract") != expected_contract:
         problems.append(f"{prefix} public contract path is not task-local")
@@ -446,6 +509,53 @@ def audit_task(
     evaluator = audit_standalone_evaluator(task_dir, source_task, form, prefix, problems)
     if evaluator is None:
         return
+    if release_revision == "r45":
+        binding = record.get("evaluation_binding") or {}
+        if form in {"dut", "bugfix"}:
+            visible = task_dir / "public" / "visible_test.scs"
+            trusted = evaluator / "trusted_replay_test.scs"
+            profile_path = evaluator / "canonical_test_profile.json"
+            if binding.get("kind") != "canonical_test_deck":
+                problems.append(f"{prefix} task record lacks canonical test binding")
+            if not trusted.is_file():
+                problems.append(f"{prefix} evaluator missing trusted_replay_test.scs")
+            elif visible.is_file() and visible.read_bytes() != trusted.read_bytes():
+                problems.append(f"{prefix} visible test and trusted replay deck differ")
+            if not profile_path.is_file():
+                problems.append(f"{prefix} evaluator missing canonical_test_profile.json")
+            elif visible.is_file():
+                profile = read_json(profile_path)
+                if profile.get("test_deck_sha256") != file_sha(visible):
+                    problems.append(f"{prefix} canonical profile deck hash mismatch")
+                if binding.get("profile_sha256") != file_sha(profile_path):
+                    problems.append(f"{prefix} canonical profile binding hash mismatch")
+                if binding.get("test_deck_sha256") != file_sha(visible):
+                    problems.append(f"{prefix} canonical deck binding hash mismatch")
+        else:
+            public_suite = task_dir / "public" / "evas_runtime.json"
+            trusted_suite = evaluator / "trusted_replay_suite.json"
+            public_fixtures = task_dir / "public" / "visible_fixtures"
+            trusted_fixtures = evaluator / "trusted_replay_fixtures"
+            if binding.get("kind") != "public_testbench_suite":
+                problems.append(f"{prefix} task record lacks public testbench suite binding")
+            if (task_dir / "public" / "visible_test.scs").exists():
+                problems.append(f"{prefix} testbench view exposes gold-derived visible_test.scs")
+            if (
+                not public_suite.is_file()
+                or not trusted_suite.is_file()
+                or public_suite.read_bytes() != trusted_suite.read_bytes()
+            ):
+                problems.append(f"{prefix} public and trusted suite manifests differ")
+            if (
+                not public_fixtures.is_dir()
+                or not trusted_fixtures.is_dir()
+                or tree_sha(public_fixtures) != tree_sha(trusted_fixtures)
+            ):
+                problems.append(f"{prefix} public and trusted fixture trees differ")
+            if public_suite.is_file() and binding.get("public_suite_sha256") != file_sha(public_suite):
+                problems.append(f"{prefix} public suite binding hash mismatch")
+            if public_fixtures.is_dir() and binding.get("public_fixture_tree_sha256") != tree_sha(public_fixtures):
+                problems.append(f"{prefix} public fixture binding hash mismatch")
     checker_profile = read_json(evaluator / "checker_profile.json")
     if record.get("checker_task_id") != checker_profile.get("checker_task_id"):
         problems.append(f"{prefix} task record checker_task_id does not match checker_profile.json")
@@ -481,6 +591,15 @@ def audit_task(
         supplied = task_dir / "public" / "supplied_dut"
         if tree_file_hashes(supplied) != expected_solution_file_hashes(source_task):
             problems.append(f"{prefix} supplied DUT differs from canonical gold")
+        if release_revision == "r45":
+            fixture_names = sorted(
+                path.name for path in (task_dir / "public" / "visible_fixtures").iterdir()
+                if path.is_dir()
+            ) if (task_dir / "public" / "visible_fixtures").is_dir() else []
+            if fixture_names != [
+                "mutation_01", "mutation_02", "mutation_03", "mutation_04", "mutation_05", "reference",
+            ]:
+                problems.append(f"{prefix} visible suite is not one reference plus five mutations")
         reference_tb_source_kind = audit_testbench_reference(
             evaluator, source_task, score, prefix, problems
         )
@@ -548,31 +667,39 @@ def iter_prompt_public_inputs(task_dir: Path, form: str) -> list[Path]:
     return inputs
 
 
-def audit_prompt_components(release: Path, tasks: list[dict[str, Any]], problems: list[str]) -> int:
+def audit_prompt_components(
+    release: Path,
+    tasks: list[dict[str, Any]],
+    problems: list[str],
+    release_revision: str = "r45",
+) -> int:
     if (release / "prompt_modes" / "PROMPT_RECORDS.jsonl").exists():
         problems.append("release should not include prompt_modes/PROMPT_RECORDS.jsonl")
     component_manifest = read_json(release / "prompt_modes" / "manifest.json")
     mode_manifest = read_json(release / "prompt_modes" / "modes.json")
     wrapper_records = component_manifest.get("wrappers") or {}
     form_skill_records = component_manifest.get("form_skills") or {}
-    feedback_guide_records = component_manifest.get("feedback_guides") or {}
+    guide_manifest_key = "feedback_guides" if release_revision == "r44" else "evas_guides"
+    guide_records = component_manifest.get(guide_manifest_key) or {}
     component_records = component_manifest.get("components") or {
         **wrapper_records,
         **form_skill_records,
-        **feedback_guide_records,
+        **guide_records,
     }
     tokenizer = component_manifest.get("reference_tokenizer") or {}
     tokenizer_key = f"{tokenizer.get('id')}@{tokenizer.get('version')}"
     required_wrappers = set(WRAPPERS_BY_MODE.values())
     required_form_skills = set(FORM_SKILLS.values())
-    required_feedback_guides = {FEEDBACK_CORE, *FEEDBACK_GUIDES.values()}
+    core_guide = FEEDBACK_CORE if release_revision == "r44" else EVAS_CORE
+    form_guides = FEEDBACK_GUIDES if release_revision == "r44" else EVAS_GUIDES
+    required_guides = {core_guide, *form_guides.values()}
     if set(wrapper_records) != required_wrappers:
         problems.append("component manifest wrapper set mismatch")
     if set(form_skill_records) != required_form_skills:
         problems.append("component manifest form-skill set mismatch")
-    if set(feedback_guide_records) != required_feedback_guides:
-        problems.append("component manifest feedback-guide set mismatch")
-    if set(component_records) != required_wrappers | required_form_skills | required_feedback_guides:
+    if set(guide_records) != required_guides:
+        problems.append(f"component manifest {guide_manifest_key.replace('_', '-')} set mismatch")
+    if set(component_records) != required_wrappers | required_form_skills | required_guides:
         problems.append("component manifest component set mismatch")
     if (release / "prompt_modes" / "skills").exists():
         problems.append("legacy prompt_modes/skills/ directory should not be present")
@@ -599,8 +726,9 @@ def audit_prompt_components(release: Path, tasks: list[dict[str, Any]], problems
             count += 1
             policy = mode_records.get(mode) or {}
             expected_cli = mode in AGENTIC_MODES
-            if bool(policy.get("feedback_cli")) is not expected_cli:
-                problems.append(f"{task_id}/{mode}: feedback availability mismatch")
+            cli_field = "feedback_cli" if release_revision == "r44" else "evas_cli"
+            if bool(policy.get(cli_field)) is not expected_cli:
+                problems.append(f"{task_id}/{mode}: {cli_field} availability mismatch")
             public_inputs = iter_prompt_public_inputs(task_dir, form)
             for item in public_inputs:
                 if not item.is_file():
@@ -609,7 +737,7 @@ def audit_prompt_components(release: Path, tasks: list[dict[str, Any]], problems
             if mode in {"G1", "G3", "G5"}:
                 expected_components.append(FORM_SKILLS.get(form, ""))
             if mode in {"G4", "G5"}:
-                expected_components.extend([FEEDBACK_CORE, FEEDBACK_GUIDES.get(form, "")])
+                expected_components.extend([core_guide, form_guides.get(form, "")])
             expected_components.append(WRAPPERS_BY_MODE.get(mode, ""))
             for name in expected_components:
                 component = component_records.get(name) or {}
@@ -637,16 +765,28 @@ def audit_prompt_components(release: Path, tasks: list[dict[str, Any]], problems
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--release", type=Path, default=DEFAULT_RELEASE)
+    parser.add_argument(
+        "--release-revision",
+        choices=tuple(DEFAULT_RELEASES),
+        required=True,
+        help="selects the task contract, evidence namespace, and seal identity",
+    )
+    parser.add_argument("--release", type=Path)
     parser.add_argument("--source", type=Path, default=DEFAULT_SOURCE)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--seal-output", type=Path)
     args = parser.parse_args()
-    release = args.release.expanduser().resolve()
+    release_revision = str(args.release_revision)
+    release = (args.release or DEFAULT_RELEASES[release_revision]).expanduser().resolve()
     source = args.source.expanduser().resolve()
     manifest = read_json(release / "MANIFEST.json")
     tasks = read_json(release / "TASK_INDEX.json").get("tasks") or []
     problems: list[str] = []
+    if manifest.get("release_revision") != release_revision:
+        problems.append(
+            "manifest release revision mismatch: "
+            f"declared={manifest.get('release_revision')!r} selected={release_revision!r}"
+        )
     if (release / "private_evaluator").exists():
         problems.append("top-level private_evaluator/ should not exist in standalone benchmarkv4")
     if (release / "public_contracts").exists():
@@ -691,7 +831,14 @@ def main() -> int:
     reference_tb_source_counts: Counter[str] = Counter()
     for row in tasks:
         family_forms[str(row.get("family_id") or "")].add(str(row.get("form") or ""))
-        source_kind = audit_task(release, source, source_rows, row, problems)
+        source_kind = audit_task(
+            release,
+            source,
+            source_rows,
+            row,
+            problems,
+            release_revision,
+        )
         if source_kind:
             reference_tb_source_counts[source_kind] += 1
     expected_families = {f"{value:03d}" for value in range(1, 401)}
@@ -713,13 +860,13 @@ def main() -> int:
         bugfix_seed = read_json(bugfix_dir / "evaluator" / "score_policy.json").get("bugfix_seed_mutation_id")
         if testbench_seed != bugfix_seed:
             problems.append(f"{family}: cross-form bugfix seed mismatch: testbench={testbench_seed} bugfix={bugfix_seed}")
-    prompt_count = audit_prompt_components(release, tasks, problems)
+    prompt_count = audit_prompt_components(release, tasks, problems, release_revision)
     if prompt_count != 7200:
         problems.append(f"prompt record count is {prompt_count}, expected 7200")
-    evidence_hashes = audit_r44_evidence(problems)
+    evidence_hashes = audit_release_evidence(release_revision, problems)
     report = {
         "schema_version": "v4-benchmarkv4-release-audit-v1",
-        "release_revision": "r44",
+        "release_revision": release_revision,
         "status": "pass" if not problems else "fail",
         "family_count": len(family_forms),
         "task_count": len(tasks),
@@ -737,7 +884,7 @@ def main() -> int:
             "source_score_denominator_registry_sha256": source_registry_sha,
             "manifest_sha256": file_sha(release / "MANIFEST.json"),
             **expected_materialized_hashes,
-            "r44_evidence_sha256": evidence_hashes,
+            f"{release_revision}_evidence_sha256": evidence_hashes,
         },
         "problems": problems,
     }
@@ -755,6 +902,7 @@ def main() -> int:
             certification_reuse,
             certification_problems,
             evidence_hashes,
+            release_revision=release_revision,
         )
         args.seal_output.parent.mkdir(parents=True, exist_ok=True)
         args.seal_output.write_text(json.dumps(seal, indent=2, sort_keys=True) + "\n", encoding="utf-8")

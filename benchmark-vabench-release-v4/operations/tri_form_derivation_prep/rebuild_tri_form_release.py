@@ -2,6 +2,7 @@
 """Rebuild, audit, and seal the tracked tri-form release deterministically."""
 from __future__ import annotations
 
+import argparse
 import json
 import subprocess
 import sys
@@ -11,7 +12,10 @@ from pathlib import Path
 
 PREP_ROOT = Path(__file__).resolve().parent
 PACKAGE_ROOT = PREP_ROOT.parents[1]
-RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4"
+DEFAULT_RELEASES = {
+    "r44": PACKAGE_ROOT / "release" / "benchmarkv4",
+    "r45": PACKAGE_ROOT / "release" / "benchmarkv4-r45",
+}
 
 
 def run(*args: object) -> None:
@@ -25,13 +29,34 @@ def run(*args: object) -> None:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--release-revision",
+        choices=tuple(DEFAULT_RELEASES),
+        required=True,
+    )
+    parser.add_argument("--release", type=Path)
+    args = parser.parse_args()
+    release_revision = str(args.release_revision)
+    if release_revision == "r44":
+        raise SystemExit(
+            "r44 is immutable; audit the tracked release instead of rebuilding it"
+        )
+    release = (args.release or DEFAULT_RELEASES[release_revision]).expanduser().resolve()
     materializer = PREP_ROOT / "materialize_tri_form_release.py"
     exporter = PREP_ROOT / "export_tri_form_runtime.py"
     runtime_auditor = PREP_ROOT / "audit_runtime_export.py"
     evidence_recorder = PREP_ROOT / "record_runtime_ingestion_evidence.py"
     release_auditor = PREP_ROOT / "audit_tri_form_release.py"
 
-    run(materializer, "--force")
+    run(
+        materializer,
+        "--release-revision",
+        release_revision,
+        "--output",
+        release,
+        "--force",
+    )
     samples = (("v4-001", "G1"), ("v4-501", "G2"), ("v4-1001", "G5"))
     with tempfile.TemporaryDirectory(prefix="vabench-v4-rebuild-") as raw_tmp:
         tmp = Path(raw_tmp)
@@ -40,6 +65,8 @@ def main() -> int:
             runtime = tmp / f"{task.lower()}-{mode.lower()}"
             run(
                 exporter,
+                "--release",
+                release,
                 "--task",
                 task,
                 "--mode",
@@ -61,17 +88,26 @@ def main() -> int:
         evidence_args: list[object] = [evidence_recorder]
         for runtime in runs:
             evidence_args.extend(("--run", runtime))
-        evidence_args.extend(("--output", RELEASE / "RUNTIME_INGESTION_EVIDENCE.json"))
+        evidence_args.extend(("--output", release / "RUNTIME_INGESTION_EVIDENCE.json"))
         run(*evidence_args)
 
     run(
         release_auditor,
+        "--release-revision",
+        release_revision,
+        "--release",
+        release,
         "--output",
-        RELEASE / "AUDIT_REPORT.json",
+        release / "AUDIT_REPORT.json",
         "--seal-output",
-        RELEASE / "RELEASE_SEAL.json",
+        release / "RELEASE_SEAL.json",
     )
-    print(json.dumps({"status": "pass", "release": str(RELEASE), "samples": samples}, indent=2))
+    print(json.dumps({
+        "status": "pass",
+        "release_revision": release_revision,
+        "release": str(release),
+        "samples": samples,
+    }, indent=2))
     return 0
 
 

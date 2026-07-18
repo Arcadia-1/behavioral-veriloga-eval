@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 import re
 import shlex
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -22,6 +23,10 @@ from typing import Any
 HERE = Path(__file__).resolve().parent
 PACKAGE = HERE.parents[1]
 REPO = PACKAGE.parent
+if str(HERE) not in sys.path:
+    sys.path.insert(0, str(HERE))
+import result_protocol as RESULT_PROTOCOL  # noqa: E402
+
 EXPORTER = PACKAGE / "operations" / "tri_form_derivation_prep" / "export_tri_form_runtime.py"
 DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4"
 DEFAULT_BASE_URL = "https://www.cun.ai/v1"
@@ -68,6 +73,17 @@ PROMPT_EMBEDDED_TASK_FILES = {
     "task/solver_contract.json",
     "task/public_contract.json",
 }
+PUBLIC_INCLUDE_RE = re.compile(
+    r"\b(?:ahdl_include|include)\s+[\"']([^\"']+)[\"']", re.IGNORECASE
+)
+PUBLIC_ESCAPE_RE = re.compile(
+    r"\b(?:shell|system|exec|spawn|unix|socket|tcp|udp|https?|ftp|curl|wget|ocean|skill|ipcBeginProcess)\b",
+    re.IGNORECASE,
+)
+
+
+class AgentTimeoutError(TimeoutError):
+    """The model endpoint exhausted the per-request wall-clock allowance."""
 
 
 def now() -> str:
@@ -302,20 +318,29 @@ class OpenAICompatible:
                     encoding="utf-8",
                 )
                 header_path.chmod(0o600)
-                completed = subprocess.run(
-                    [
-                        "curl", "-sS", "--max-time", str(self.timeout_s),
-                        self.endpoint, "-H", f"@{header_path}",
-                        "--data-binary", f"@{payload_path}",
-                    ],
-                    text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                    timeout=self.timeout_s + 5, check=False,
-                )
+                try:
+                    completed = subprocess.run(
+                        [
+                            "curl", "-sS", "--max-time", str(self.timeout_s),
+                            self.endpoint, "-H", f"@{header_path}",
+                            "--data-binary", f"@{payload_path}",
+                        ],
+                        text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                        timeout=self.timeout_s + 5, check=False,
+                    )
+                except subprocess.TimeoutExpired as exc:
+                    raise AgentTimeoutError(
+                        f"provider request exceeded {self.timeout_s}s"
+                    ) from exc
             if completed.returncode == 0:
                 break
             if attempt < 3:
                 time.sleep(2 * attempt)
         assert completed is not None
+        if completed.returncode == 28:
+            raise AgentTimeoutError(
+                f"provider request exceeded {self.timeout_s}s after 3 attempts"
+            )
         if completed.returncode != 0:
             raise RuntimeError(
                 f"provider transport failed after 3 attempts rc={completed.returncode}: "
@@ -347,15 +372,20 @@ class OpenAICompatible:
                 encoding="utf-8",
             )
             header_path.chmod(0o600)
-            return subprocess.run(
-                [
-                    "curl", "-sS", "--no-buffer", "--max-time", str(self.timeout_s),
-                    self.endpoint, "-H", f"@{header_path}",
-                    "--data-binary", f"@{payload_path}",
-                ],
-                text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                timeout=self.timeout_s + 5, check=False,
-            )
+            try:
+                return subprocess.run(
+                    [
+                        "curl", "-sS", "--no-buffer", "--max-time", str(self.timeout_s),
+                        self.endpoint, "-H", f"@{header_path}",
+                        "--data-binary", f"@{payload_path}",
+                    ],
+                    text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                    timeout=self.timeout_s + 5, check=False,
+                )
+            except subprocess.TimeoutExpired as exc:
+                raise AgentTimeoutError(
+                    f"provider streaming request exceeded {self.timeout_s}s"
+                ) from exc
 
     def _complete_stream(self, payload: dict[str, Any]) -> dict[str, Any]:
         completed = None
@@ -366,6 +396,10 @@ class OpenAICompatible:
             if attempt < 3:
                 time.sleep(2 * attempt)
         assert completed is not None
+        if completed.returncode == 28:
+            raise AgentTimeoutError(
+                f"provider streaming request exceeded {self.timeout_s}s after 3 attempts"
+            )
         if completed.returncode != 0:
             raise RuntimeError(
                 f"provider streaming transport failed after 3 attempts rc={completed.returncode}: "
@@ -462,30 +496,292 @@ TOOLS = [
     {"type": "function", "function": {"name": "list_files", "description": "List readable task files and writable submission files.", "parameters": {"type": "object", "properties": {}}}},
     {"type": "function", "function": {"name": "read_file", "description": "Read a public task or submission text file.", "parameters": {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]}}},
     {"type": "function", "function": {"name": "write_file", "description": "Create or replace a submission file.", "parameters": {"type": "object", "properties": {"path": {"type": "string"}, "content": {"type": "string"}}, "required": ["path", "content"]}}},
-    {"type": "function", "function": {"name": "feedback", "description": "Run the shared public feedback service on the current submission.", "parameters": {"type": "object", "properties": {"channels": {"type": "array", "items": {"type": "string"}}}}}},
+    {"type": "function", "function": {"name": "run_evas", "description": "Run EVAS against the task-local visible test. Testbench tasks require one public case name from evas_runtime.json.", "parameters": {"type": "object", "properties": {"case": {"type": "string"}}, "additionalProperties": False}}},
     {"type": "function", "function": {"name": "finalize", "description": "Finalize the current submission.", "parameters": {"type": "object", "properties": {}}}},
 ]
 
 
-def command_result(command: str, runtime: Path, timeout_s: int) -> dict[str, Any]:
+def command_result(
+    command: str,
+    runtime: Path,
+    timeout_s: int,
+    submission_dir: Path | None = None,
+) -> dict[str, Any]:
+    effective_submission = submission_dir or runtime / "public" / "submission"
     env = os.environ.copy()
     env.update({
         "VABENCH_RUNTIME_DIR": str(runtime),
         "VABENCH_PUBLIC_DIR": str(runtime / "public"),
-        "VABENCH_SUBMISSION_DIR": str(runtime / "public" / "submission"),
+        "VABENCH_SUBMISSION_DIR": str(effective_submission),
+        "VABENCH_FINAL_SUBMISSION_DIR": str(effective_submission),
         "VABENCH_EVALUATOR_DIR": str(runtime / "evaluator"),
+        "VABENCH_TRUSTED_REPLAY_RESULT": str(
+            runtime / "evidence" / "trusted_replay_result.json"
+        ),
     })
     started = time.monotonic()
-    completed = subprocess.run(
-        shlex.split(command), cwd=REPO, env=env, text=True,
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout_s, check=False,
-    )
+    try:
+        completed = subprocess.run(
+            shlex.split(command), cwd=REPO, env=env, text=True,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout_s, check=False,
+        )
+    except subprocess.TimeoutExpired as exc:
+        stdout = exc.stdout.decode(errors="replace") if isinstance(exc.stdout, bytes) else exc.stdout
+        stderr = exc.stderr.decode(errors="replace") if isinstance(exc.stderr, bytes) else exc.stderr
+        return {
+            "execution_status": "timeout",
+            "returncode": None,
+            "stdout": (stdout or "")[-12000:],
+            "stderr": (stderr or "")[-4000:],
+            "elapsed_s": time.monotonic() - started,
+        }
+    except OSError as exc:
+        return {
+            "execution_status": "launch_error",
+            "returncode": None,
+            "stdout": "",
+            "stderr": str(exc)[:4000],
+            "elapsed_s": time.monotonic() - started,
+        }
     return {
+        "execution_status": "completed",
         "returncode": completed.returncode,
         "stdout": completed.stdout[-12000:],
         "stderr": completed.stderr[-4000:],
         "elapsed_s": time.monotonic() - started,
     }
+
+
+def argv_result(argv: list[str], runtime: Path, timeout_s: int) -> dict[str, Any]:
+    """Run one operator-selected executable with benchmark-controlled arguments."""
+    started = time.monotonic()
+    try:
+        completed = subprocess.run(
+            argv,
+            cwd=runtime,
+            env=os.environ.copy(),
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            timeout=timeout_s,
+            check=False,
+        )
+    except subprocess.TimeoutExpired as exc:
+        stdout = exc.stdout.decode(errors="replace") if isinstance(exc.stdout, bytes) else exc.stdout
+        stderr = exc.stderr.decode(errors="replace") if isinstance(exc.stderr, bytes) else exc.stderr
+        return {
+            "execution_status": "timeout",
+            "returncode": None,
+            "stdout": (stdout or "")[-12000:],
+            "stderr": (stderr or "")[-4000:],
+            "elapsed_s": time.monotonic() - started,
+        }
+    except OSError as exc:
+        return {
+            "execution_status": "launch_error",
+            "returncode": None,
+            "stdout": "",
+            "stderr": str(exc)[:4000],
+            "elapsed_s": time.monotonic() - started,
+        }
+    return {
+        "execution_status": "completed",
+        "returncode": completed.returncode,
+        "stdout": completed.stdout[-12000:],
+        "stderr": completed.stderr[-4000:],
+        "elapsed_s": time.monotonic() - started,
+    }
+
+
+def confined_path(root: Path, relative: str) -> Path:
+    path = root / safe_relative(relative)
+    path.resolve().relative_to(root.resolve())
+    return path
+
+
+def validate_public_testbench(candidate: Path) -> None:
+    if candidate.is_symlink() or candidate.stat().st_size > 1_000_000:
+        raise ValueError("candidate testbench must be a regular file no larger than 1 MB")
+    text = candidate.read_text(encoding="utf-8")
+    uncommented = re.sub(r"/\*.*?\*/", "", text, flags=re.DOTALL)
+    uncommented = "\n".join(line.split("//", 1)[0] for line in uncommented.splitlines())
+    if PUBLIC_ESCAPE_RE.search(uncommented):
+        raise ValueError("candidate testbench contains a forbidden process or network escape")
+    includes = PUBLIC_INCLUDE_RE.findall(uncommented)
+    if not includes:
+        raise ValueError("candidate testbench must include its public DUT fixture")
+    for raw in includes:
+        include = Path(raw.replace("\\", "/"))
+        if include.is_absolute() or ".." in include.parts:
+            raise ValueError("candidate testbench include escapes the public DUT fixture")
+        if not include.parts or include.parts[0] != "dut":
+            raise ValueError("candidate testbench includes must remain below ./dut")
+
+
+def run_public_evas(
+    runtime: Path,
+    arguments: dict[str, Any],
+    timeout_s: int,
+    evas_command: str,
+) -> dict[str, Any]:
+    """Execute only the fixed public EVAS contract, never an agent-supplied command."""
+    public = runtime / "public"
+    task = public / "task"
+    submission = public / "submission"
+    contract_path = task / "evas_runtime.json"
+    if not contract_path.is_file():
+        return {"status": "unavailable", "reason": "public EVAS runtime contract is missing"}
+    contract = read_json(contract_path)
+    if contract.get("working_directory") != "runtime_package_root":
+        raise ValueError("unsupported EVAS working directory")
+    executable = shlex.split(evas_command)
+    if not executable:
+        raise ValueError("empty EVAS executable command")
+
+    schema_version = str(contract.get("schema_version") or "")
+    requested_case = arguments.get("case")
+    if schema_version == "r45-direct-evas-runtime-v1":
+        if requested_case not in (None, ""):
+            raise ValueError("DUT and bugfix visible tests do not accept a case")
+        if contract.get("command") != (
+            "evas simulate public/task/visible_test.scs -o "
+            "public/submission/evas-output --spectre-strict"
+        ):
+            raise ValueError("unrecognized public EVAS command contract")
+        deck = confined_path(runtime, "public/task/visible_test.scs")
+        output = confined_path(submission, "evas-output")
+        if not deck.is_file():
+            raise FileNotFoundError("visible_test.scs is missing")
+        argv = [*executable, "simulate", str(deck), "-o", str(output), "--spectre-strict"]
+        result = argv_result(argv, runtime, timeout_s)
+        result.update({
+            "status": "pass" if result.get("returncode") == 0 else "fail",
+            "case": None,
+            "test": "public/task/visible_test.scs",
+        })
+        return result
+
+    if schema_version != "r45-direct-evas-testbench-suite-v1":
+        raise ValueError(f"unsupported public EVAS runtime schema: {schema_version!r}")
+    if contract.get("fixture_policy") != "read_only_and_identical_for_visible_and_final_replay":
+        raise ValueError("unsupported public fixture policy")
+    if contract.get("candidate") != "public/submission/testbench.scs":
+        raise ValueError("unrecognized testbench candidate path")
+    case = str(requested_case or "")
+    cases = {
+        str(row.get("case")): str(row.get("dut_root"))
+        for row in contract.get("cases") or []
+        if isinstance(row, dict)
+    }
+    expected_cases = {"reference", *(f"mutation_{index:02d}" for index in range(1, 6))}
+    if set(cases) != expected_cases:
+        raise ValueError("public EVAS testbench suite must contain reference plus five mutations")
+    if case not in cases:
+        raise ValueError(f"unknown public EVAS case: {case!r}; choose one of {sorted(cases)}")
+    if not re.fullmatch(r"reference|mutation_0[1-5]", case):
+        raise ValueError("public EVAS case name is outside the fixed suite")
+    candidate = confined_path(submission, "testbench.scs")
+    if not candidate.is_file():
+        raise FileNotFoundError("submission/testbench.scs is missing")
+    validate_public_testbench(candidate)
+    fixture = confined_path(task, cases[case])
+    fixture.resolve().relative_to((task / "visible_fixtures").resolve())
+    if not fixture.is_dir():
+        raise FileNotFoundError(f"public fixture is missing for {case}")
+
+    run_dir = confined_path(submission, f"runs/{case}")
+    if run_dir.exists():
+        shutil.rmtree(run_dir)
+    run_dir.mkdir(parents=True)
+    shutil.copy2(candidate, run_dir / "testbench.scs")
+    shutil.copytree(fixture, run_dir / "dut")
+    output = confined_path(submission, f"evas-output/{case}")
+    argv = [
+        *executable,
+        "simulate",
+        str(run_dir / "testbench.scs"),
+        "-o",
+        str(output),
+        "--spectre-strict",
+    ]
+    result = argv_result(argv, runtime, timeout_s)
+    result.update({
+        "status": "pass" if result.get("returncode") == 0 else "fail",
+        "case": case,
+        "test": f"submission/runs/{case}/testbench.scs",
+    })
+    return result
+
+
+def load_trusted_replay_adapter_result(runtime: Path) -> dict[str, Any] | None:
+    path = runtime / "evidence" / "trusted_replay_result.json"
+    if not path.is_file():
+        return None
+    try:
+        value = read_json(path)
+    except (OSError, json.JSONDecodeError):
+        return {"status": "infrastructure_failure", "diagnostics": ["invalid_result_json"]}
+    if not isinstance(value, dict):
+        return {
+            "status": "infrastructure_failure",
+            "diagnostics": ["trusted_replay_result_must_be_an_object"],
+        }
+    return value
+
+
+def run_trusted_replay(
+    runtime: Path,
+    command: str | None,
+    timeout_s: int,
+    evas_command: str,
+    final_submission: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    result_path = runtime / "evidence" / "trusted_replay_result.json"
+    result_path.parent.mkdir(parents=True, exist_ok=True)
+    result_path.unlink(missing_ok=True)
+    test_manifest = RESULT_PROTOCOL.hash_test_tree(runtime / "evaluator")
+    identity = RESULT_PROTOCOL.evas_identity(shlex.split(evas_command))
+    submission_dir = runtime / "evidence" / "final_submission"
+    command_record = (
+        command_result(command, runtime, timeout_s, submission_dir) if command else None
+    )
+    adapter_result = load_trusted_replay_adapter_result(runtime) if command else None
+    return RESULT_PROTOCOL.trusted_replay(
+        command_record,
+        adapter_result,
+        test_manifest,
+        identity,
+        (final_submission or {}).get("tree_sha256"),
+    )
+
+
+def attach_experiment_result(
+    result: dict[str, Any],
+    runtime: Path,
+    messages: list[dict[str, Any]],
+    args: argparse.Namespace,
+    model_status: str,
+) -> None:
+    gate = submission_artifact_gate(runtime)
+    final_submission = RESULT_PROTOCOL.snapshot_submission(runtime, gate)
+    replay = run_trusted_replay(
+        runtime,
+        args.final_judge_command if gate["passed"] else None,
+        args.judge_timeout_s,
+        args.evas_command,
+        final_submission,
+    )
+    result["experiment_result"] = RESULT_PROTOCOL.build_experiment_result(
+        cell=result.get("cell") or {},
+        model_status=model_status,
+        messages=messages,
+        artifact_gate=gate,
+        runtime=runtime,
+        replay=replay,
+        final_submission=final_submission,
+    )
+    if replay.get("command") is not None:
+        result["final_judge"] = replay["command"]
 
 
 def compact_text_lines(text: str, *, limit: int = 24) -> list[str]:
@@ -597,9 +893,8 @@ def execute_tool(
     name: str,
     arguments: dict[str, Any],
     runtime: Path,
-    feedback_command: str | None,
     timeout_s: int,
-    feedback_output_mode: str,
+    evas_command: str,
 ) -> tuple[str, bool]:
     public = runtime / "public"
     submission = public / "submission"
@@ -654,13 +949,8 @@ def execute_tool(
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(str(arguments["content"]), encoding="utf-8")
         return json.dumps({"written": relative.as_posix(), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}), False
-    if name == "feedback":
-        if not feedback_command:
-            return json.dumps({"status": "unavailable", "reason": "feedback command not configured"}), False
-        result = command_result(feedback_command, runtime, timeout_s)
-        if feedback_output_mode == "compact":
-            result = compact_feedback_result(result)
-        return json.dumps(result), False
+    if name == "run_evas":
+        return json.dumps(run_public_evas(runtime, arguments, timeout_s, evas_command)), False
     if name == "finalize":
         return json.dumps({"status": "finalized"}), True
     raise ValueError(f"unknown tool: {name}")
@@ -1052,6 +1342,13 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         if previous.get("status") in {
             "submitted", "submitted_at_budget", "invalid_submission", "budget_exhausted"
         }:
+            if "experiment_result" not in previous:
+                checkpoint_path = runtime / "evidence" / "conversation_checkpoint.json"
+                checkpoint = read_json(checkpoint_path) if checkpoint_path.is_file() else {}
+                attach_experiment_result(
+                    previous, runtime, list(checkpoint.get("messages") or []), args, "completed"
+                )
+                write_json(result_path, previous)
             return previous
     conversation_path = runtime / "evidence" / "conversation_checkpoint.json"
     if not (args.resume and conversation_path.is_file()):
@@ -1107,9 +1404,8 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
                     function["name"],
                     arguments,
                     runtime,
-                    args.feedback_command,
                     args.tool_timeout_s,
-                    args.feedback_output_mode,
+                    args.evas_command,
                 )
             except Exception as exc:  # Model tool mistakes are episode evidence, not runner failures.
                 text = json.dumps({
@@ -1148,6 +1444,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             "recovered_from_checkpoint": True,
             **direct_submission,
         })
+        attach_experiment_result(result, runtime, messages, args, "completed")
         write_json(runtime / "evidence" / "campaign_result.json", result)
         return result
     if cell["mode"] in AGENTIC and args.resume:
@@ -1251,12 +1548,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         "output_token_budget": output_budget,
         "events": events,
     })
-    if (
-        args.final_judge_command
-        and result.get("status") in {"submitted", "submitted_at_budget"}
-        and result.get("submission_protocol_compliant") is not False
-    ):
-        result["final_judge"] = command_result(args.final_judge_command, runtime, args.judge_timeout_s)
+    attach_experiment_result(result, runtime, messages, args, "completed")
     write_json(runtime / "evidence" / "campaign_result.json", result)
     return result
 
@@ -1275,12 +1567,24 @@ def run_cell_preserving_failure(
             trace = client._redact(trace)
         failure = {
             "cell": cell,
-            "status": "runner_error",
+            "status": "agent_timeout" if isinstance(exc, AgentTimeoutError) else "runner_error",
             "error_type": type(exc).__name__,
             "error": error,
             "traceback": trace,
             "finished_at": now(),
         }
+        checkpoint_path = runtime / "evidence" / "conversation_checkpoint.json"
+        checkpoint = read_json(checkpoint_path) if checkpoint_path.is_file() else {}
+        model_status = (
+            "agent_timeout"
+            if isinstance(exc, AgentTimeoutError)
+            else "provider_failure"
+            if isinstance(exc, RuntimeError) and "provider" in str(exc).lower()
+            else "runner_failure"
+        )
+        attach_experiment_result(
+            failure, runtime, list(checkpoint.get("messages") or []), args, model_status
+        )
         write_json(runtime / "evidence" / "campaign_result.json", failure)
         return failure
 
@@ -1306,14 +1610,12 @@ def main() -> int:
     parser.add_argument("--request-timeout-s", type=int, default=600)
     parser.add_argument("--tool-timeout-s", type=int, default=120)
     parser.add_argument("--judge-timeout-s", type=int, default=600)
-    parser.add_argument("--feedback-command")
-    parser.add_argument(
-        "--feedback-output-mode",
-        choices=("compact", "raw"),
-        default="compact",
-        help="Payload returned to the model by the feedback tool; compact keeps oracle/error summaries and omits verbose simulator counters.",
-    )
     parser.add_argument("--final-judge-command")
+    parser.add_argument(
+        "--evas-command",
+        default="evas",
+        help="EVAS executable used by the restricted visible-test tool and recorded for trusted replay identity.",
+    )
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--stream", action="store_true", help="Use OpenAI-compatible SSE streaming responses.")
     parser.add_argument("--dry-run", action="store_true")
