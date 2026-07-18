@@ -150,6 +150,42 @@ Neither command string nor evaluator directory is sent to the model. A formal
 pilot must configure both adapters; a provider-only smoke may omit them only to
 test API transport and direct artifact parsing.
 
+### R45 result protocol
+
+Every completed G0-G5 cell now writes an `experiment_result` object in
+`evidence/campaign_result.json` conforming to
+`schemas/vabench-experiment-result.schema.json`. The record preserves the exact
+last assistant message and its hash, snapshots every declared final artifact
+under `evidence/final_submission/`, and records per-file and tree hashes. This
+snapshot is the scored submission; later edits to `public/submission` do not
+change it. Trusted replay receives the snapshot path in both
+`VABENCH_SUBMISSION_DIR` and `VABENCH_FINAL_SUBMISSION_DIR`, and its record binds
+the replay to the snapshot tree hash.
+
+The final judge is a trusted replay, not another model-feedback turn. Before it
+runs, the runner hashes the exported evaluator tree and records
+`evas --version` (override the executable with `--evas-command`). The adapter
+must write JSON to `VABENCH_TRUSTED_REPLAY_RESULT` with one of these statuses:
+
+```json
+{
+  "status": "behavior_failure",
+  "diagnostics": ["first mismatch at 2.5e-9 s"]
+}
+```
+
+Allowed terminal replay statuses are `passed`, `compile_failure`,
+`runtime_failure`, `behavior_failure`, and `infrastructure_failure`. A legacy
+adapter returning zero without JSON is accepted as `passed` with a compatibility
+diagnostic. A nonzero return without JSON is an infrastructure failure because
+the runner cannot safely infer its failure stage.
+
+Model execution is separate from replay execution. `agent_timeout` and
+`no_submission` have `score_eligible: false` and `score: null`; neither is
+reported as a hidden-test or behavior zero. Trusted replay timeouts are
+`runtime_failure`, while launch and malformed-result failures remain
+`infrastructure_failure`.
+
 By default, the runner returns a compact feedback payload to the model: oracle
 summary lines, validation diagnostics, and concrete errors are retained, while
 verbose simulator counters are omitted from the conversation to preserve the
@@ -180,9 +216,9 @@ mode, token, tool, and outcome records:
 ```bash
 python3 benchmark-vabench-release-v4/operations/calibration_pilot/score_campaign.py \
   --campaign-output /tmp/v4-calibration-smoke \
-  --judge-kind feedback_evas \
+  --judge-kind final_trusted_replay \
   --judge-command \
-    "python3 benchmark-vabench-release-v4/operations/calibration_pilot/feedback_adapter.py"
+    "python3 /path/to/trusted_replay_adapter.py"
 ```
 
 `score_campaign.py` resolves campaign/output paths and existing judge-command

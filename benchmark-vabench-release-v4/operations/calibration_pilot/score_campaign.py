@@ -143,7 +143,12 @@ def elapsed_seconds(result: dict[str, Any]) -> float | None:
     return max(0.0, (finished - started).total_seconds())
 
 
-def evaluate_cell(result_path: Path, command: str | None, timeout_s: int) -> dict[str, Any]:
+def evaluate_cell(
+    result_path: Path,
+    command: str | None,
+    timeout_s: int,
+    evas_command: str = "evas",
+) -> dict[str, Any]:
     result = read_json(result_path)
     cell = result["cell"]
     runtime = result_path.parents[1].resolve()
@@ -168,30 +173,51 @@ def evaluate_cell(result_path: Path, command: str | None, timeout_s: int) -> dic
         "telemetry": telemetry,
         "episode_elapsed_s": elapsed_seconds(result),
     }
+    experiment = result.get("experiment_result") or {}
     if (
         result["status"] not in SUBMITTED
         or result.get("submission_protocol_compliant") is False
         or not artifact_gate["passed"]
     ):
-        row["judge_status"] = "not_submitted"
+        outcome = str(experiment.get("outcome") or "no_submission")
+        row["judge_status"] = (
+            outcome
+            if outcome in {"agent_timeout", "no_submission", "infrastructure_failure"}
+            else "no_submission"
+        )
         if result.get("submission_protocol_compliant") is False:
             row["judge_status_reason"] = "submission_protocol_noncompliant"
         elif not artifact_gate["passed"]:
             row["judge_status_reason"] = "artifact_gate_failed"
+        row["outcome"] = outcome
     elif not command:
         row["judge_status"] = "not_run"
+        row["outcome"] = experiment.get("outcome", "not_scored")
     else:
-        try:
-            judged = RUNNER.command_result(command, runtime, timeout_s)
-        except Exception as exc:
-            row["judge_status"] = "judge_error"
-            row["judge_error"] = {
-                "error_type": type(exc).__name__,
-                "error": str(exc)[:2000],
-            }
-        else:
-            row["judge_status"] = "pass" if judged["returncode"] == 0 else "fail"
-            row["judge"] = judged
+        final_submission = RUNNER.RESULT_PROTOCOL.snapshot_submission(runtime, artifact_gate)
+        replay = RUNNER.run_trusted_replay(
+            runtime, command, timeout_s, evas_command, final_submission
+        )
+        checkpoint_path = runtime / "evidence" / "conversation_checkpoint.json"
+        checkpoint = read_json(checkpoint_path) if checkpoint_path.is_file() else {}
+        model_status = str(
+            (experiment.get("model_execution") or {}).get("status") or "completed"
+        )
+        experiment = RUNNER.RESULT_PROTOCOL.build_experiment_result(
+            cell=cell,
+            model_status=model_status,
+            messages=list(checkpoint.get("messages") or []),
+            artifact_gate=artifact_gate,
+            runtime=runtime,
+            replay=replay,
+            final_submission=final_submission,
+        )
+        result["experiment_result"] = experiment
+        result["final_judge"] = replay["command"]
+        write_json(result_path, result)
+        row["judge_status"] = replay["status"]
+        row["outcome"] = experiment["outcome"]
+        row["trusted_replay"] = replay
     return row
 
 
@@ -228,7 +254,11 @@ def summarize(rows: list[dict[str, Any]], judge_kind: str) -> dict[str, Any]:
         "schema_version": "v4-calibration-score-report-v1",
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "judge_kind": judge_kind,
-        "score_authority": "final" if judge_kind == "final_spectre" else "provisional_feedback_only",
+        "score_authority": (
+            "final"
+            if judge_kind in {"final_trusted_replay", "final_spectre"}
+            else "provisional_feedback_only"
+        ),
         "cell_count": len(rows),
         "submission_statuses": dict(Counter(row["submission_status"] for row in rows)),
         "judge_statuses": dict(Counter(row["judge_status"] for row in rows)),
@@ -241,10 +271,15 @@ def summarize(rows: list[dict[str, Any]], judge_kind: str) -> dict[str, Any]:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--campaign-output", type=Path, required=True)
-    parser.add_argument("--judge-kind", choices=("feedback_evas", "final_spectre"), required=True)
+    parser.add_argument(
+        "--judge-kind",
+        choices=("feedback_evas", "final_trusted_replay", "final_spectre"),
+        required=True,
+    )
     parser.add_argument("--judge-command")
     parser.add_argument("--timeout-s", type=int, default=120)
     parser.add_argument("--workers", type=int, default=1)
+    parser.add_argument("--evas-command", default="evas")
     parser.add_argument("--output", type=Path)
     return parser.parse_args()
 
@@ -256,17 +291,22 @@ def main() -> int:
     args.judge_command = normalize_judge_command(args.judge_command)
     if args.workers < 1:
         raise SystemExit("--workers must be at least 1")
-    if args.judge_kind == "final_spectre" and not args.judge_command:
-        raise SystemExit("--judge-kind final_spectre requires --judge-command")
+    if args.judge_kind in {"final_trusted_replay", "final_spectre"} and not args.judge_command:
+        raise SystemExit(f"--judge-kind {args.judge_kind} requires --judge-command")
     result_paths = sorted(args.campaign_output.glob("v4-*/evidence/campaign_result.json"))
     if not result_paths:
         raise SystemExit(f"no campaign results under {args.campaign_output}")
     if args.workers == 1:
-        rows = [evaluate_cell(path, args.judge_command, args.timeout_s) for path in result_paths]
+        rows = [
+            evaluate_cell(path, args.judge_command, args.timeout_s, args.evas_command)
+            for path in result_paths
+        ]
     else:
         with ThreadPoolExecutor(max_workers=args.workers) as pool:
             rows = list(pool.map(
-                lambda path: evaluate_cell(path, args.judge_command, args.timeout_s),
+                lambda path: evaluate_cell(
+                    path, args.judge_command, args.timeout_s, args.evas_command
+                ),
                 result_paths,
             ))
     report = summarize(rows, args.judge_kind)

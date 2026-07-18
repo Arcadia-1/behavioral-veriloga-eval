@@ -133,6 +133,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--feedback-command", default=DEFAULT_FEEDBACK)
     parser.add_argument("--feedback-output-mode", choices=("compact", "raw"), default="compact")
     parser.add_argument("--final-judge-command")
+    parser.add_argument("--evas-command", default="evas")
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--stream", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
@@ -203,6 +204,8 @@ def main() -> int:
         args.feedback_output_mode,
         "--workers",
         str(args.workers),
+        "--evas-command",
+        args.evas_command,
     ]
     if args.api_key_file:
         command.extend(["--api-key-file", args.api_key_file])

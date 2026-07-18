@@ -22,6 +22,10 @@ from typing import Any
 HERE = Path(__file__).resolve().parent
 PACKAGE = HERE.parents[1]
 REPO = PACKAGE.parent
+if str(HERE) not in sys.path:
+    sys.path.insert(0, str(HERE))
+import result_protocol as RESULT_PROTOCOL  # noqa: E402
+
 EXPORTER = PACKAGE / "operations" / "tri_form_derivation_prep" / "export_tri_form_runtime.py"
 DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4"
 DEFAULT_BASE_URL = "https://www.cun.ai/v1"
@@ -68,6 +72,10 @@ PROMPT_EMBEDDED_TASK_FILES = {
     "task/solver_contract.json",
     "task/public_contract.json",
 }
+
+
+class AgentTimeoutError(TimeoutError):
+    """The model endpoint exhausted the per-request wall-clock allowance."""
 
 
 def now() -> str:
@@ -302,20 +310,29 @@ class OpenAICompatible:
                     encoding="utf-8",
                 )
                 header_path.chmod(0o600)
-                completed = subprocess.run(
-                    [
-                        "curl", "-sS", "--max-time", str(self.timeout_s),
-                        self.endpoint, "-H", f"@{header_path}",
-                        "--data-binary", f"@{payload_path}",
-                    ],
-                    text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                    timeout=self.timeout_s + 5, check=False,
-                )
+                try:
+                    completed = subprocess.run(
+                        [
+                            "curl", "-sS", "--max-time", str(self.timeout_s),
+                            self.endpoint, "-H", f"@{header_path}",
+                            "--data-binary", f"@{payload_path}",
+                        ],
+                        text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                        timeout=self.timeout_s + 5, check=False,
+                    )
+                except subprocess.TimeoutExpired as exc:
+                    raise AgentTimeoutError(
+                        f"provider request exceeded {self.timeout_s}s"
+                    ) from exc
             if completed.returncode == 0:
                 break
             if attempt < 3:
                 time.sleep(2 * attempt)
         assert completed is not None
+        if completed.returncode == 28:
+            raise AgentTimeoutError(
+                f"provider request exceeded {self.timeout_s}s after 3 attempts"
+            )
         if completed.returncode != 0:
             raise RuntimeError(
                 f"provider transport failed after 3 attempts rc={completed.returncode}: "
@@ -347,15 +364,20 @@ class OpenAICompatible:
                 encoding="utf-8",
             )
             header_path.chmod(0o600)
-            return subprocess.run(
-                [
-                    "curl", "-sS", "--no-buffer", "--max-time", str(self.timeout_s),
-                    self.endpoint, "-H", f"@{header_path}",
-                    "--data-binary", f"@{payload_path}",
-                ],
-                text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                timeout=self.timeout_s + 5, check=False,
-            )
+            try:
+                return subprocess.run(
+                    [
+                        "curl", "-sS", "--no-buffer", "--max-time", str(self.timeout_s),
+                        self.endpoint, "-H", f"@{header_path}",
+                        "--data-binary", f"@{payload_path}",
+                    ],
+                    text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                    timeout=self.timeout_s + 5, check=False,
+                )
+            except subprocess.TimeoutExpired as exc:
+                raise AgentTimeoutError(
+                    f"provider streaming request exceeded {self.timeout_s}s"
+                ) from exc
 
     def _complete_stream(self, payload: dict[str, Any]) -> dict[str, Any]:
         completed = None
@@ -366,6 +388,10 @@ class OpenAICompatible:
             if attempt < 3:
                 time.sleep(2 * attempt)
         assert completed is not None
+        if completed.returncode == 28:
+            raise AgentTimeoutError(
+                f"provider streaming request exceeded {self.timeout_s}s after 3 attempts"
+            )
         if completed.returncode != 0:
             raise RuntimeError(
                 f"provider streaming transport failed after 3 attempts rc={completed.returncode}: "
@@ -467,25 +493,126 @@ TOOLS = [
 ]
 
 
-def command_result(command: str, runtime: Path, timeout_s: int) -> dict[str, Any]:
+def command_result(
+    command: str,
+    runtime: Path,
+    timeout_s: int,
+    submission_dir: Path | None = None,
+) -> dict[str, Any]:
+    effective_submission = submission_dir or runtime / "public" / "submission"
     env = os.environ.copy()
     env.update({
         "VABENCH_RUNTIME_DIR": str(runtime),
         "VABENCH_PUBLIC_DIR": str(runtime / "public"),
-        "VABENCH_SUBMISSION_DIR": str(runtime / "public" / "submission"),
+        "VABENCH_SUBMISSION_DIR": str(effective_submission),
+        "VABENCH_FINAL_SUBMISSION_DIR": str(effective_submission),
         "VABENCH_EVALUATOR_DIR": str(runtime / "evaluator"),
+        "VABENCH_TRUSTED_REPLAY_RESULT": str(
+            runtime / "evidence" / "trusted_replay_result.json"
+        ),
     })
     started = time.monotonic()
-    completed = subprocess.run(
-        shlex.split(command), cwd=REPO, env=env, text=True,
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout_s, check=False,
-    )
+    try:
+        completed = subprocess.run(
+            shlex.split(command), cwd=REPO, env=env, text=True,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout_s, check=False,
+        )
+    except subprocess.TimeoutExpired as exc:
+        stdout = exc.stdout.decode(errors="replace") if isinstance(exc.stdout, bytes) else exc.stdout
+        stderr = exc.stderr.decode(errors="replace") if isinstance(exc.stderr, bytes) else exc.stderr
+        return {
+            "execution_status": "timeout",
+            "returncode": None,
+            "stdout": (stdout or "")[-12000:],
+            "stderr": (stderr or "")[-4000:],
+            "elapsed_s": time.monotonic() - started,
+        }
+    except OSError as exc:
+        return {
+            "execution_status": "launch_error",
+            "returncode": None,
+            "stdout": "",
+            "stderr": str(exc)[:4000],
+            "elapsed_s": time.monotonic() - started,
+        }
     return {
+        "execution_status": "completed",
         "returncode": completed.returncode,
         "stdout": completed.stdout[-12000:],
         "stderr": completed.stderr[-4000:],
         "elapsed_s": time.monotonic() - started,
     }
+
+
+def load_trusted_replay_adapter_result(runtime: Path) -> dict[str, Any] | None:
+    path = runtime / "evidence" / "trusted_replay_result.json"
+    if not path.is_file():
+        return None
+    try:
+        value = read_json(path)
+    except (OSError, json.JSONDecodeError):
+        return {"status": "infrastructure_failure", "diagnostics": ["invalid_result_json"]}
+    if not isinstance(value, dict):
+        return {
+            "status": "infrastructure_failure",
+            "diagnostics": ["trusted_replay_result_must_be_an_object"],
+        }
+    return value
+
+
+def run_trusted_replay(
+    runtime: Path,
+    command: str | None,
+    timeout_s: int,
+    evas_command: str,
+    final_submission: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    result_path = runtime / "evidence" / "trusted_replay_result.json"
+    result_path.parent.mkdir(parents=True, exist_ok=True)
+    result_path.unlink(missing_ok=True)
+    test_manifest = RESULT_PROTOCOL.hash_test_tree(runtime / "evaluator")
+    identity = RESULT_PROTOCOL.evas_identity(shlex.split(evas_command))
+    submission_dir = runtime / "evidence" / "final_submission"
+    command_record = (
+        command_result(command, runtime, timeout_s, submission_dir) if command else None
+    )
+    adapter_result = load_trusted_replay_adapter_result(runtime) if command else None
+    return RESULT_PROTOCOL.trusted_replay(
+        command_record,
+        adapter_result,
+        test_manifest,
+        identity,
+        (final_submission or {}).get("tree_sha256"),
+    )
+
+
+def attach_experiment_result(
+    result: dict[str, Any],
+    runtime: Path,
+    messages: list[dict[str, Any]],
+    args: argparse.Namespace,
+    model_status: str,
+) -> None:
+    gate = submission_artifact_gate(runtime)
+    final_submission = RESULT_PROTOCOL.snapshot_submission(runtime, gate)
+    replay = run_trusted_replay(
+        runtime,
+        args.final_judge_command if gate["passed"] else None,
+        args.judge_timeout_s,
+        args.evas_command,
+        final_submission,
+    )
+    result["experiment_result"] = RESULT_PROTOCOL.build_experiment_result(
+        cell=result.get("cell") or {},
+        model_status=model_status,
+        messages=messages,
+        artifact_gate=gate,
+        runtime=runtime,
+        replay=replay,
+        final_submission=final_submission,
+    )
+    if replay.get("command") is not None:
+        result["final_judge"] = replay["command"]
 
 
 def compact_text_lines(text: str, *, limit: int = 24) -> list[str]:
@@ -1052,6 +1179,13 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         if previous.get("status") in {
             "submitted", "submitted_at_budget", "invalid_submission", "budget_exhausted"
         }:
+            if "experiment_result" not in previous:
+                checkpoint_path = runtime / "evidence" / "conversation_checkpoint.json"
+                checkpoint = read_json(checkpoint_path) if checkpoint_path.is_file() else {}
+                attach_experiment_result(
+                    previous, runtime, list(checkpoint.get("messages") or []), args, "completed"
+                )
+                write_json(result_path, previous)
             return previous
     conversation_path = runtime / "evidence" / "conversation_checkpoint.json"
     if not (args.resume and conversation_path.is_file()):
@@ -1148,6 +1282,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             "recovered_from_checkpoint": True,
             **direct_submission,
         })
+        attach_experiment_result(result, runtime, messages, args, "completed")
         write_json(runtime / "evidence" / "campaign_result.json", result)
         return result
     if cell["mode"] in AGENTIC and args.resume:
@@ -1251,12 +1386,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         "output_token_budget": output_budget,
         "events": events,
     })
-    if (
-        args.final_judge_command
-        and result.get("status") in {"submitted", "submitted_at_budget"}
-        and result.get("submission_protocol_compliant") is not False
-    ):
-        result["final_judge"] = command_result(args.final_judge_command, runtime, args.judge_timeout_s)
+    attach_experiment_result(result, runtime, messages, args, "completed")
     write_json(runtime / "evidence" / "campaign_result.json", result)
     return result
 
@@ -1275,12 +1405,24 @@ def run_cell_preserving_failure(
             trace = client._redact(trace)
         failure = {
             "cell": cell,
-            "status": "runner_error",
+            "status": "agent_timeout" if isinstance(exc, AgentTimeoutError) else "runner_error",
             "error_type": type(exc).__name__,
             "error": error,
             "traceback": trace,
             "finished_at": now(),
         }
+        checkpoint_path = runtime / "evidence" / "conversation_checkpoint.json"
+        checkpoint = read_json(checkpoint_path) if checkpoint_path.is_file() else {}
+        model_status = (
+            "agent_timeout"
+            if isinstance(exc, AgentTimeoutError)
+            else "provider_failure"
+            if isinstance(exc, RuntimeError) and "provider" in str(exc).lower()
+            else "runner_failure"
+        )
+        attach_experiment_result(
+            failure, runtime, list(checkpoint.get("messages") or []), args, model_status
+        )
         write_json(runtime / "evidence" / "campaign_result.json", failure)
         return failure
 
@@ -1314,6 +1456,11 @@ def main() -> int:
         help="Payload returned to the model by the feedback tool; compact keeps oracle/error summaries and omits verbose simulator counters.",
     )
     parser.add_argument("--final-judge-command")
+    parser.add_argument(
+        "--evas-command",
+        default="evas",
+        help="EVAS executable command used only to record trusted replay identity.",
+    )
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--stream", action="store_true", help="Use OpenAI-compatible SSE streaming responses.")
     parser.add_argument("--dry-run", action="store_true")
