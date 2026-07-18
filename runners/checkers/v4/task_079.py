@@ -105,10 +105,7 @@ def check_bound_step_period_guard(rows: list[dict[str, float]]) -> tuple[bool, s
             expected_phase = vss + span * phase
             guard_observed = float(row["guard_out"])
             guard_norm = (guard_observed - vss) / span
-            # Spectre may keep a few transition-filter samples close to the
-            # rail; they are useful for edge placement, but they should not be
-            # judged as settled rail-tracking samples.
-            if 0.10 < guard_norm < 0.90:
+            if 0.15 < guard_norm < 0.85:
                 continue
             expected_guard = vdd if guard_norm >= 0.5 else vss
             phase_err = abs(float(row["phase_out"]) - expected_phase)
@@ -128,12 +125,11 @@ def check_bound_step_period_guard(rows: list[dict[str, float]]) -> tuple[bool, s
                     event="periodic_sample",
                 )
                 break
-        min_rail_checks = 5
-        if rail_checks < min_rail_checks:
+        if rail_checks < 20:
             rail_failure = diagnostic(
                 "P_RAIL_TRACKING",
                 "missing_event",
-                expected=f"rail_tracking_samples>={min_rail_checks}",
+                expected="rail_tracking_samples>=20",
                 observed=f"rail_tracking_samples:{rail_checks}",
                 event="full_trace",
             )

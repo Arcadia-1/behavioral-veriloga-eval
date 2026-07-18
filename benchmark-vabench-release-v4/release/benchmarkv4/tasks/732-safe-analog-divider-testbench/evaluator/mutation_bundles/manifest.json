@@ -31,7 +31,7 @@
     },
     {
       "artifact_hashes": {
-        "safe_analog_divider.va": "fb4cfc4d63516ee64303d83c9d4c28d133c8b19b9fe08e0fab05764fc2ab5cee"
+        "safe_analog_divider.va": "b564b1c50afc721ce6f2cef1eb81f56014958fbe70bcad21e4e4fa516cfe5ef8"
       },
       "certification": {
         "activated_property_ids": [
@@ -51,7 +51,7 @@
       ],
       "fault_class": "omission_or_incomplete_behavior",
       "id": "neg_002_no_denominator_guard",
-      "trigger_condition": "Uses an under-sized 20 mV denominator guard instead of the required 200 mV small-signal clamp.",
+      "trigger_condition": "Divides by the raw denominator without the small-signal clamp.",
       "violated_property_ids": [
         "P_WHEN_V_SIGDENOM_IS_EXACTLY_ZERO",
         "P_WHEN_V_SIGDENOM_IS_NEGATIVE_BUT",

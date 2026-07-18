@@ -69,27 +69,21 @@ def check_v4_318_resistor_ladder_monotonic_decoder(rows: list[dict[str, float]])
             monotonic_sequence = True
         last_code = code
         last_vout = vout
-    code_error_limit = max(50, checked // 8)
-    metric_error_limit = max(6, checked // 25)
-    flag_error_limit = max(6, checked // 30)
-    clear_error_limit = max(7, checked // 50)
     ok = (
         checked >= 35
         and len(codes_seen) >= 8
         and monotonic_sequence
         and disabled_clear
         and reset_clear
-        and code_errors <= code_error_limit
-        and metric_errors <= metric_error_limit
-        and flag_errors <= flag_error_limit
-        and clear_errors <= clear_error_limit
+        and code_errors <= max(6, checked // 25)
+        and metric_errors <= max(6, checked // 25)
+        and flag_errors <= max(4, checked // 30)
+        and clear_errors <= 3
     )
     return ok, (
         f"v4_318 checked={checked} codes={sorted(codes_seen)} monotonic_sequence={monotonic_sequence} "
         f"disabled_clear={disabled_clear} reset_clear={reset_clear} code_errors={code_errors} "
-        f"metric_errors={metric_errors} flag_errors={flag_errors} clear_errors={clear_errors} "
-        f"code_error_limit={code_error_limit} metric_error_limit={metric_error_limit} "
-        f"flag_error_limit={flag_error_limit} clear_error_limit={clear_error_limit}"
+        f"metric_errors={metric_errors} flag_errors={flag_errors} clear_errors={clear_errors}"
     )
 
 CHECKER_ID = "v4_318_resistor_ladder_monotonic_decoder"

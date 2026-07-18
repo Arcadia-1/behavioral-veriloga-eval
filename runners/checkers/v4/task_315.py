@@ -61,9 +61,6 @@ def check_v4_315_reference_ladder_buffered_taps(rows: list[dict[str, float]]) ->
         monotonic = taps[0] <= taps[1] + 0.02 and taps[1] <= taps[2] + 0.02 and taps[2] <= taps[3] + 0.02
         if (float(row["monotonic_ok"]) > 0.45) != monotonic:
             flag_errors += 1
-    spacing_error_limit = max(32, checked // 10)
-    flag_error_limit = max(12, checked // 25)
-    clear_error_limit = max(14, checked // 25)
     ok = (
         checked >= 40
         and normal_seen
@@ -71,16 +68,14 @@ def check_v4_315_reference_ladder_buffered_taps(rows: list[dict[str, float]]) ->
         and clamp_seen
         and disabled_clear
         and reset_clear
-        and spacing_errors <= spacing_error_limit
-        and flag_errors <= flag_error_limit
-        and clear_errors <= clear_error_limit
+        and spacing_errors <= max(8, checked // 20)
+        and flag_errors <= max(6, checked // 25)
+        and clear_errors <= 3
     )
     return ok, (
         f"v4_315 checked={checked} normal={normal_seen} reversed={reversed_seen} clamp={clamp_seen} "
         f"disabled_clear={disabled_clear} reset_clear={reset_clear} spacing_errors={spacing_errors} "
-        f"flag_errors={flag_errors} clear_errors={clear_errors} "
-        f"spacing_error_limit={spacing_error_limit} flag_error_limit={flag_error_limit} "
-        f"clear_error_limit={clear_error_limit}"
+        f"flag_errors={flag_errors} clear_errors={clear_errors}"
     )
 
 CHECKER_ID = "v4_315_reference_ladder_buffered_taps"
