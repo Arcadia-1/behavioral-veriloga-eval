@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "042-sample-and-hold-with-droop-leakage",
+  "checker_task_id": "v4_042_sample_and_hold_with_droop_leakage",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "5c6529b8e47fabeec56692b99fe6e2ebcfdc4a58acbed5f2ffc84f6c970a1d41",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "64c6f061013f4f015eb42c5f8efaf3961fcfe0ab93fd6f0bde09e722ebb67c2d",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "042",
+  "family_spec_sha256": "606873e046d316a776913046cb9715d62d0f2610090fb41c8442a70e6ce8f896",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "47262e109f2ef12d4d79a79b2ee392a89bdfd358eb6f57889a550f1d0945b9dc",
+  "public_contract": "tasks/542-sample-and-hold-with-droop-leakage-testbench/public_contract.json",
+  "public_contract_sha256": "d6c8d86840e486ef88d365c3b1b104c14b31dd61fc49d9f1c40f453fad58f686",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/542-sample-and-hold-with-droop-leakage-testbench",
+  "task_id": "v4-542"
+}

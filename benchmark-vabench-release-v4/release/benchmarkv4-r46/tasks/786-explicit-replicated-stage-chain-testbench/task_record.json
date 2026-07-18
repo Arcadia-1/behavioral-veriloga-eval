@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "286-explicit-replicated-stage-chain",
+  "checker_task_id": "v4_286_explicit_replicated_stage_chain",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "4194205315932c956d0b5a5dd1ef4fa154190142c2f814595d05cac2517a1fb0",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "aa49c9e4b42379ac2a5b93136f8eb1e8000cae4c447c012e5e3f24a521c0ef82",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "286",
+  "family_spec_sha256": "7ba09ad201f7962dd53e846301bffeeffb50c92d81498b895914b16e537958b6",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7454018925f6039d7931e349be1e416853a5ac53bda5eaa5e4207d2eebb55a8b",
+  "public_contract": "tasks/786-explicit-replicated-stage-chain-testbench/public_contract.json",
+  "public_contract_sha256": "ff37017cdb2946d9c95d280466653a59643a965b0851a48512ff008d162cf5b2",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/786-explicit-replicated-stage-chain-testbench",
+  "task_id": "v4-786"
+}

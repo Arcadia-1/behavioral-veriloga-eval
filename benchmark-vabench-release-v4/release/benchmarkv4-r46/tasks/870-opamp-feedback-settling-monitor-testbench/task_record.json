@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "370-opamp-feedback-settling-monitor",
+  "checker_task_id": "v4_370_opamp_feedback_settling_monitor",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "2903c605123618e7e17cc82275a1b67134745642cf8dea8f38a2234facd98998",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "505dff9a7b1d20817d01258d76ca137f6c996f3415f54f9d91a279f260a0ba7a",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "370",
+  "family_spec_sha256": "b0bc360542f9cc024d05d8b4d70043ac5b449d9e6c8bcafe8f2d406fd7432e33",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ce1bc04431ed205a2bdd884ff5a412888dd3d707924edaada8e37c4954d05e72",
+  "public_contract": "tasks/870-opamp-feedback-settling-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "703d8f19c72acc72e3f9b9a1e07bef9ab102283fff88e30d73330263aa30b9c5",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/870-opamp-feedback-settling-monitor-testbench",
+  "task_id": "v4-870"
+}

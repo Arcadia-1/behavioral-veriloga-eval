@@ -22,6 +22,7 @@ PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RELEASES = {
     "r44": PACKAGE_ROOT / "release" / "benchmarkv4",
     "r45": PACKAGE_ROOT / "release" / "benchmarkv4-r45",
+    "r46": PACKAGE_ROOT / "release" / "benchmarkv4-r46",
 }
 DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 FORMS = ("dut", "testbench", "bugfix")
@@ -75,6 +76,9 @@ STANDALONE_EVALUATOR_COMMON = (
     "harness_spec.json",
     "score_tb.scs",
 )
+# The name records the revision that introduced this stable profile format;
+# release identity is carried by the task record and public runtime schemas.
+CANONICAL_TEST_PROFILE_SCHEMA = "r45-canonical-test-profile-v1"
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -83,6 +87,19 @@ def read_json(path: Path) -> dict[str, Any]:
 
 def file_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def valid_sha256(value: object) -> bool:
+    return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{64}", value) is not None
+
+
+def rust_evas2_runtime(payload: object, *, backend_key: str = "evas_backend") -> bool:
+    return isinstance(payload, dict) and (
+        payload.get("evas_engine") == "evas2"
+        and payload.get("evas_engine_used") == "evas2"
+        and payload.get("evas_version") == "0.8.3"
+        and payload.get(backend_key) == "evas-rust"
+    )
 
 
 def audit_testbench_reference(
@@ -243,7 +260,7 @@ def build_release_seal(
             if refresh_required
             else (
                 "fresh full400 Rust EVAS2 evidence with hash-bound source inputs"
-                if release_revision == "r45"
+                if release_revision != "r44"
                 else "canonical DUT gold and exact-five negative Rust EVAS2 certifications reused by hash"
             )
         ),
@@ -265,6 +282,8 @@ def audit_release_evidence(
     problems: list[str],
     *,
     package_root: Path = PACKAGE_ROOT,
+    release: Path | None = None,
+    source_registry_sha256: str | None = None,
 ) -> dict[str, str]:
     artifacts = evidence_artifacts(release_revision)
     expected_release_label = (
@@ -285,12 +304,17 @@ def audit_release_evidence(
     if release_revision != "r44":
         for relative, digest in hashes.items():
             filename = Path(relative).name
-            prior = package_root / "evidence" / "r44" / filename
-            if prior.is_file() and file_sha(prior) == digest:
-                problems.append(
-                    f"{relative} is byte-identical to r44 evidence; "
-                    f"{release_revision} requires a fresh certification artifact"
-                )
+            current_number = int(release_revision.removeprefix("r"))
+            for prior_revision in DEFAULT_RELEASES:
+                prior_number = int(prior_revision.removeprefix("r"))
+                if prior_number >= current_number:
+                    continue
+                prior = package_root / "evidence" / prior_revision / filename
+                if prior.is_file() and file_sha(prior) == digest:
+                    problems.append(
+                        f"{relative} is byte-identical to {prior_revision} evidence; "
+                        f"{release_revision} requires a fresh certification artifact"
+                    )
 
     rust = payloads.get(artifacts[0]) or {}
     rust_summary = rust.get("summary") or {}
@@ -338,6 +362,72 @@ def audit_release_evidence(
         and parity.get("fail_count") == 0
     ):
         problems.append(f"{release_revision} profile parity summary is incomplete")
+
+    if int(release_revision.removeprefix("r")) >= 46:
+        manifest_sha256 = None
+        if release is None or not (release / "MANIFEST.json").is_file():
+            problems.append(f"{release_revision} evidence audit lacks a release manifest binding target")
+        else:
+            manifest_sha256 = file_sha(release / "MANIFEST.json")
+        if not valid_sha256(source_registry_sha256):
+            problems.append(f"{release_revision} evidence audit lacks a source registry binding target")
+
+        expected_schemas = {
+            artifacts[0]: f"v4-{release_revision}-rust-evas2-certification-report-v1",
+            artifacts[1]: f"v4-{release_revision}-stimulus-metamorphic-compact-v1",
+            artifacts[2]: "v4-profile-parity-evas2-smoke-v1",
+        }
+        for relative, expected_schema in expected_schemas.items():
+            payload = payloads.get(relative)
+            if payload is not None and payload.get("schema_version") != expected_schema:
+                problems.append(
+                    f"{relative} schema mismatch: "
+                    f"declared={payload.get('schema_version')!r} expected={expected_schema!r}"
+                )
+
+        if rust and not rust_evas2_runtime(rust.get("runtime")):
+            problems.append(f"{release_revision} Rust certification lacks EVAS 0.8.3 Rust runtime markers")
+        if metamorphic and not rust_evas2_runtime(metamorphic):
+            problems.append(f"{release_revision} metamorphic evidence lacks EVAS 0.8.3 Rust runtime markers")
+        if parity and not (
+            rust_evas2_runtime(parity, backend_key="evas_backend_required")
+            and rust_evas2_runtime(parity.get("runtime"))
+        ):
+            problems.append(f"{release_revision} profile evidence lacks EVAS 0.8.3 Rust runtime markers")
+
+        for label, payload in (
+            ("Rust certification", rust),
+            ("metamorphic evidence", metamorphic),
+            ("profile evidence", parity),
+        ):
+            if payload and payload.get("source_score_denominator_registry_sha256") != source_registry_sha256:
+                problems.append(f"{release_revision} {label} source registry binding mismatch")
+        for label, payload in (
+            ("metamorphic evidence", metamorphic),
+            ("profile evidence", parity),
+        ):
+            if payload and payload.get("release_manifest_sha256") != manifest_sha256:
+                problems.append(f"{release_revision} {label} release manifest binding mismatch")
+
+        rust_inputs = rust.get("input_report_sha256") if rust else None
+        if rust and not (
+            isinstance(rust_inputs, list)
+            and bool(rust_inputs)
+            and all(
+                isinstance(item, dict)
+                and isinstance(item.get("name"), str)
+                and bool(item.get("name"))
+                and valid_sha256(item.get("sha256"))
+                for item in rust_inputs
+            )
+        ):
+            problems.append(f"{release_revision} Rust certification input report binding is invalid")
+        if metamorphic and not valid_sha256(metamorphic.get("input_report_sha256")):
+            problems.append(f"{release_revision} metamorphic input report binding is invalid")
+        if metamorphic and metamorphic.get("release_revision") != release_revision:
+            problems.append(f"{release_revision} metamorphic release revision mismatch")
+        if parity and parity.get("release_revision") != release_revision:
+            problems.append(f"{release_revision} profile release revision mismatch")
     return hashes
 
 
@@ -455,7 +545,7 @@ def audit_task(
     required_paths = [
         "task_record.json", "public/instruction.md", "public_contract.json", "evaluator",
     ]
-    if release_revision == "r45":
+    if release_revision != "r44":
         required_paths.append("public/evas_runtime.json")
         if form in {"dut", "bugfix"}:
             required_paths.append("public/visible_test.scs")
@@ -468,7 +558,28 @@ def audit_task(
         return
     record = read_json(task_dir / "task_record.json")
     contract = read_json(task_dir / "public_contract.json")
-    if release_revision == "r45":
+    if release_revision != "r44":
+        if record.get("release_revision") != release_revision:
+            problems.append(
+                f"{prefix} task record release revision mismatch: "
+                f"declared={record.get('release_revision')!r} selected={release_revision!r}"
+            )
+        expected_record_schema = f"{release_revision}-benchmarkv4-task-record-v1"
+        if record.get("schema_version") != expected_record_schema:
+            problems.append(
+                f"{prefix} task record schema mismatch: "
+                f"declared={record.get('schema_version')!r} expected={expected_record_schema!r}"
+            )
+        runtime_path = task_dir / "public" / "evas_runtime.json"
+        if runtime_path.is_file():
+            runtime = read_json(runtime_path)
+            runtime_kind = "direct-evas-testbench-suite" if form == "testbench" else "direct-evas-runtime"
+            expected_runtime_schema = f"{release_revision}-{runtime_kind}-v1"
+            if runtime.get("schema_version") != expected_runtime_schema:
+                problems.append(
+                    f"{prefix} public EVAS runtime schema mismatch: "
+                    f"declared={runtime.get('schema_version')!r} expected={expected_runtime_schema!r}"
+                )
         if "feedback" in contract:
             problems.append(f"{prefix} public contract retains feedback broker entry")
         if not isinstance(contract.get("evas"), dict):
@@ -513,7 +624,7 @@ def audit_task(
     evaluator = audit_standalone_evaluator(task_dir, source_task, form, prefix, problems)
     if evaluator is None:
         return
-    if release_revision == "r45":
+    if release_revision != "r44":
         binding = record.get("evaluation_binding") or {}
         if form in {"dut", "bugfix"}:
             visible = task_dir / "public" / "visible_test.scs"
@@ -529,6 +640,8 @@ def audit_task(
                 problems.append(f"{prefix} evaluator missing canonical_test_profile.json")
             elif visible.is_file():
                 profile = read_json(profile_path)
+                if profile.get("schema_version") != CANONICAL_TEST_PROFILE_SCHEMA:
+                    problems.append(f"{prefix} canonical profile schema mismatch")
                 if profile.get("test_deck_sha256") != file_sha(visible):
                     problems.append(f"{prefix} canonical profile deck hash mismatch")
                 if binding.get("profile_sha256") != file_sha(profile_path):
@@ -595,7 +708,7 @@ def audit_task(
         supplied = task_dir / "public" / "supplied_dut"
         if tree_file_hashes(supplied) != expected_solution_file_hashes(source_task):
             problems.append(f"{prefix} supplied DUT differs from canonical gold")
-        if release_revision == "r45":
+        if release_revision != "r44":
             fixture_names = sorted(
                 path.name for path in (task_dir / "public" / "visible_fixtures").iterdir()
                 if path.is_dir()
@@ -784,13 +897,27 @@ def main() -> int:
     release = (args.release or DEFAULT_RELEASES[release_revision]).expanduser().resolve()
     source = args.source.expanduser().resolve()
     manifest = read_json(release / "MANIFEST.json")
-    tasks = read_json(release / "TASK_INDEX.json").get("tasks") or []
+    task_index = read_json(release / "TASK_INDEX.json")
+    tasks = task_index.get("tasks") or []
     problems: list[str] = []
     if manifest.get("release_revision") != release_revision:
         problems.append(
             "manifest release revision mismatch: "
             f"declared={manifest.get('release_revision')!r} selected={release_revision!r}"
         )
+    if release_revision != "r44":
+        expected_manifest_schema = f"{release_revision}-benchmarkv4-release-manifest-v1"
+        if manifest.get("schema_version") != expected_manifest_schema:
+            problems.append(
+                "manifest schema mismatch: "
+                f"declared={manifest.get('schema_version')!r} expected={expected_manifest_schema!r}"
+            )
+        expected_index_schema = f"{release_revision}-benchmarkv4-task-index-v1"
+        if task_index.get("schema_version") != expected_index_schema:
+            problems.append(
+                "task index schema mismatch: "
+                f"declared={task_index.get('schema_version')!r} expected={expected_index_schema!r}"
+            )
     if (release / "private_evaluator").exists():
         problems.append("top-level private_evaluator/ should not exist in standalone benchmarkv4")
     if (release / "public_contracts").exists():
@@ -867,7 +994,12 @@ def main() -> int:
     prompt_count = audit_prompt_components(release, tasks, problems, release_revision)
     if prompt_count != 7200:
         problems.append(f"prompt record count is {prompt_count}, expected 7200")
-    evidence_hashes = audit_release_evidence(release_revision, problems)
+    evidence_hashes = audit_release_evidence(
+        release_revision,
+        problems,
+        release=release,
+        source_registry_sha256=source_registry_sha,
+    )
     report = {
         "schema_version": "v4-benchmarkv4-release-audit-v1",
         "release_revision": release_revision,

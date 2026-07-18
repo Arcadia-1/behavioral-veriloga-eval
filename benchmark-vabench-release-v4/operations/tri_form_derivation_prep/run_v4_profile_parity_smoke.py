@@ -17,7 +17,8 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE_ROOT = ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
-DEFAULT_RELEASE = ROOT / "release" / "benchmarkv4-r45"
+DEFAULT_RELEASE = ROOT / "release" / "benchmarkv4-r46"
+DEFAULT_RELEASE_REVISION = "r46"
 FORMS = ("dut", "testbench", "bugfix")
 REQUIRED_EVAS_ENGINE = "evas2"
 REQUIRED_EVAS_VERSION = "0.8.3"
@@ -30,11 +31,30 @@ from run_v4_reference_evas_smoke import (  # noqa: E402
     probe_evas2_runtime,
     require_evas2_environment,
 )
+from score_denominator_registry import score_denominator_registry_sha256  # noqa: E402
 import render_v4_harness  # noqa: E402
 
 
 def read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def file_sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def release_provenance(release: Path) -> dict[str, str]:
+    manifest_path = release / "MANIFEST.json"
+    if not manifest_path.is_file():
+        raise SystemExit(f"release manifest is missing: {manifest_path}")
+    source_registry_sha = score_denominator_registry_sha256(SOURCE_ROOT)
+    manifest = read_json(manifest_path)
+    if manifest.get("source_score_denominator_registry_sha256") != source_registry_sha:
+        raise SystemExit("release manifest is not bound to the current source denominator")
+    return {
+        "source_score_denominator_registry_sha256": source_registry_sha,
+        "release_manifest_sha256": file_sha(manifest_path),
+    }
 
 
 def canonical_payload(spec: dict[str, Any]) -> dict[str, Any]:
@@ -154,7 +174,11 @@ def audit_row(release: Path, row: dict[str, Any]) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--release", type=Path, default=DEFAULT_RELEASE)
-    parser.add_argument("--release-revision", choices=("r44", "r45"), default="r45")
+    parser.add_argument(
+        "--release-revision",
+        choices=("r44", "r45", "r46"),
+        default=DEFAULT_RELEASE_REVISION,
+    )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--task-id", action="append")
     parser.add_argument("--family-range", type=parse_range, default=(1, 400))
@@ -162,6 +186,7 @@ def main() -> int:
     require_evas2_environment()
     runtime = probe_evas2_runtime()
     release = args.release.expanduser().resolve()
+    provenance = release_provenance(release)
     rows = [
         audit_row(release, row)
         for row in release_rows(release, args.task_id, args.family_range)
@@ -170,6 +195,7 @@ def main() -> int:
         "schema_version": "v4-profile-parity-evas2-smoke-v1",
         "release": release_label(args.release_revision),
         "release_revision": args.release_revision,
+        **provenance,
         "family_range": f"{args.family_range[0]:03d}-{args.family_range[1]:03d}",
         "simulation_performed": False,
         "evas_engine": REQUIRED_EVAS_ENGINE,

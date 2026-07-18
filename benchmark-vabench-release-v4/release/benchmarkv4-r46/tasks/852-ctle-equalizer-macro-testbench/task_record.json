@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "352-ctle-equalizer-macro",
+  "checker_task_id": "v4_352_ctle_equalizer_macro",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "6032170cbdcbaa4b540ab10e1401bbda19ecb97670f53fdeae4caa9643e71364",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "1ebd857ecddd61c409fe3a671335d48cbe448effa95fa61f8350e15428b26ed6",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "352",
+  "family_spec_sha256": "d9d7cbc5c42b158e1d9812cf4ed4ecfc551c0722561b2b8fe8090d2fd92b5d74",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b13a32c8149de60eb503152d75afee2273fddc419a1e18dfb362beb065523ec8",
+  "public_contract": "tasks/852-ctle-equalizer-macro-testbench/public_contract.json",
+  "public_contract_sha256": "7a3644ebc3f39a42e6c8f60b00a4b86b18742aef274d4755d03a00f4e2816061",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/852-ctle-equalizer-macro-testbench",
+  "task_id": "v4-852"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "269-saturation-recovery-limiter",
+  "checker_task_id": "v4_269_saturation_recovery_limiter",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "63f171f7a10952e88769f265c469318b7bb4b8da745466b449a202b97918654e",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "99d76e083e0f811d5f84f367e24a2b2524e5fc1ea5ab7e381107235e148498c1",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "269",
+  "family_spec_sha256": "46a32763c11e8c15f03d8dda059967ad5da9553d2cd21acda36e4eadcf003d12",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e2d7f653b0848b6efc7998f031a4846fb8f9f2d4539c0f1f0bfa3ff29802b5ce",
+  "public_contract": "tasks/769-saturation-recovery-limiter-testbench/public_contract.json",
+  "public_contract_sha256": "5dc6ca285d68e105f24d33ed86724552841c91ef9ba306a85bf5c319fe6e7b81",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/769-saturation-recovery-limiter-testbench",
+  "task_id": "v4-769"
+}

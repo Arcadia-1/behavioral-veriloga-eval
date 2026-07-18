@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "113-sar-weighted-sum",
+  "checker_task_id": "v4_113_sar_weighted_sum",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "1c6fe4617416c23491a318910885bce843e3dec2c1d4e167f475d85f98353a01",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "6ee967565e4ca73286782b6e71c699b658501ee651ba406e197632241e6bc280",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "113",
+  "family_spec_sha256": "f1c4ba0d8e5f52feff316b70904fcfcead2acd57f9bcb1cadb13272b49f6f6f8",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "099b31e24c057bb8e380e9389f4215019f79b7e7407b2d13c7c3adb74c86588c",
+  "public_contract": "tasks/613-sar-weighted-sum-testbench/public_contract.json",
+  "public_contract_sha256": "18a808aaaadf4e6d8d22af70b0cb1261a832dd183dead0314ea74a46a6c507bc",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/613-sar-weighted-sum-testbench",
+  "task_id": "v4-613"
+}

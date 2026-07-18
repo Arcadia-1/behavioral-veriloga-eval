@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "282-enable-saturating-ready-counter",
+  "checker_task_id": "v4_282_enable_saturating_ready_counter",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "63e75ac1b12f945bab11b1cec54f7eeb7a167d61ed1f40ae4145b6d1985ecb29",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "606c9a352344d2934379cb2917988cd8379785d0582699c05ed10bfc7a111630",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "282",
+  "family_spec_sha256": "000217e5ddf28a03d8b139e42450585a9534e02c6893897460abff3ebfd7ecfc",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a687805e2e150ee067328892bf5e7eb7e3f2670aef810205f7c99c03423881c0",
+  "public_contract": "tasks/782-enable-saturating-ready-counter-testbench/public_contract.json",
+  "public_contract_sha256": "49b50c115301ca294a5b4fb627255e8287dfe4fc2f969bfba8d4f3a0a5c0d30f",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/782-enable-saturating-ready-counter-testbench",
+  "task_id": "v4-782"
+}

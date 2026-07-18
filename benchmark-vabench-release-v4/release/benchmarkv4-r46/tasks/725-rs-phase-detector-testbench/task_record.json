@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "225-rs-phase-detector",
+  "checker_task_id": "v4_225_rs_phase_detector",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "b069277efaea701cdf57bcf0dce4502828466501fd1ebb54462b206bc369291f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "32fd23e32d213ade3dbf030335fc7452bae12ab5d2b85003200feaaed73ae559",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "225",
+  "family_spec_sha256": "e387826c73ba69569c09d1a6bc88eb49edb65d5781041be23f64f2ee44c5858e",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b5b48dad005ae3e757a21c95acea8b51785a357611a8969907a921b015273ff0",
+  "public_contract": "tasks/725-rs-phase-detector-testbench/public_contract.json",
+  "public_contract_sha256": "6a3ca5ed6c31825fd442cf386b8c3801bdbd7606ee59b9370ed1d3360a00689b",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/725-rs-phase-detector-testbench",
+  "task_id": "v4-725"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "393-deserializer-demux-alignment-macro",
+  "checker_task_id": "v4_393_deserializer_demux_alignment_macro",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "717e2ce8f90845338621343acd086a0a205248241692e2b7e2833121134908a9",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "3f5770bc2bc079bf08b996f07bb06673beb3e404de83b1912c502dba78ebd729",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "393",
+  "family_spec_sha256": "2b3f498f27a1f73c2f67c79ce2d9d77d089cc799abfe852286df34b3d74958b6",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "cb79de925680766ae56c6d692c6ca7dc9989450e96f220fee516f2b3ed14103a",
+  "public_contract": "tasks/893-deserializer-demux-alignment-macro-testbench/public_contract.json",
+  "public_contract_sha256": "606fe1560a52ff85f7eeb752694c94d118a4d9c06f5d6f5ddc99c6357c3717b6",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/893-deserializer-demux-alignment-macro-testbench",
+  "task_id": "v4-893"
+}

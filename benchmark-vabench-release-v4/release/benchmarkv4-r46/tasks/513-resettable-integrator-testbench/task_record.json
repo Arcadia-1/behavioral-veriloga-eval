@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "013-resettable-integrator",
+  "checker_task_id": "v4_013_resettable_integrator",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "14cb6793c75081ce38370d08a6043cbb0b4bcacede16b7ae245ebaa4efba15be",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "0b47c233d7f7aff7debd1fb58874bdccae3777ef1c14c8fa3598a598c862a05b",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "013",
+  "family_spec_sha256": "aa14c5bf21ca7e3ae3832755f96d422751a6244043d0f9c40247a362c76946cd",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b3b30cb44b04811b2b85db8841f8b4906caa266d9880275e53b0aa85a4fba5a6",
+  "public_contract": "tasks/513-resettable-integrator-testbench/public_contract.json",
+  "public_contract_sha256": "ddbf8495ca9c5b724eaae33a9bf3b3bc543b8bfd541d064ed448ae4ec87e5aff",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/513-resettable-integrator-testbench",
+  "task_id": "v4-513"
+}

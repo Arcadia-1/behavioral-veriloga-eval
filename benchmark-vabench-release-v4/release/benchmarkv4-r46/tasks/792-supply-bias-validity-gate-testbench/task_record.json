@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "292-supply-bias-validity-gate",
+  "checker_task_id": "v4_292_supply_bias_validity_gate",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "300867204bab7bb8822120d2289da39447e383906ebca63445527eed4adc36b6",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "c8c12528a872b578dcd0143654b004e365e35de424e6404ab10c28c37a577814",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "292",
+  "family_spec_sha256": "c416be62d0d998bf94d9f9cfb9778296c66d1719884fa5295d98ba93be7f9729",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6056bd7b0f94b3e41b65f4334a17144ea14bb5081cee73490f2b762a37b81ab9",
+  "public_contract": "tasks/792-supply-bias-validity-gate-testbench/public_contract.json",
+  "public_contract_sha256": "ab0c2de8ac5cbd3111c814289447c08c5926cb5cd3e538295e642a81901898cc",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/792-supply-bias-validity-gate-testbench",
+  "task_id": "v4-792"
+}

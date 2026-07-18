@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "055-first-order-sigma-delta-modulator",
+  "checker_task_id": "v4_055_first_order_sigma_delta_modulator",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "bec2afe7f9feef43de9fffdc89c9a13ad2ae48522869478dfeffffa066f561e6",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "239dd6edb5e2fecd9e4301203fcce7ef6c0970dbcfbe8683c76f5575be0c3e4b",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "055",
+  "family_spec_sha256": "43aab179babd997455024e3a389931216c6ce89e82c00873af4515937b4ac403",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b0aa7ee215e271eb79072b4a6bc5113bac028568a1324cedb5dc8b12a6283541",
+  "public_contract": "tasks/555-first-order-sigma-delta-modulator-testbench/public_contract.json",
+  "public_contract_sha256": "810f39c42a8bd4ed201763603570c1a5e87dcc43c3dbe8eadc95d0a5ae68cf85",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/555-first-order-sigma-delta-modulator-testbench",
+  "task_id": "v4-555"
+}

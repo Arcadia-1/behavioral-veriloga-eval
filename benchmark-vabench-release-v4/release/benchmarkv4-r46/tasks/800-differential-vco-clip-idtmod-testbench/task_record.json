@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "300-differential-vco-clip-idtmod",
+  "checker_task_id": "v4_300_differential_vco_clip_idtmod",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "4d04230fab37f1fb507bc7c90a79f0a69b7d37f69179ba234ad72ae97c6381f3",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "b7ccabae584e575b5f211a5fef8ea3d16ff8afcdaaae3aa6a506fd3c4eaad8a5",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "300",
+  "family_spec_sha256": "5f35b1e83a22e20b6bd28afcf134a3d61e55e9bd16f1fb9c32d2b12079c11d1c",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "349835f21502952ce3f4c19a1a8601efac98e1d07df9d67ec307d9564366905a",
+  "public_contract": "tasks/800-differential-vco-clip-idtmod-testbench/public_contract.json",
+  "public_contract_sha256": "07ad67c2d64cbbec472b4d706ffd945e99f5d8a07b11ce87f6732375839fe540",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/800-differential-vco-clip-idtmod-testbench",
+  "task_id": "v4-800"
+}

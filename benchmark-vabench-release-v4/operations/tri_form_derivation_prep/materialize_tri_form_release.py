@@ -41,6 +41,7 @@ DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-boun
 DEFAULT_OUTPUTS = {
     "r44": PACKAGE_ROOT / "release" / "benchmarkv4",
     "r45": PACKAGE_ROOT / "release" / "benchmarkv4-r45",
+    "r46": PACKAGE_ROOT / "release" / "benchmarkv4-r46",
 }
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
 MODES = {
@@ -568,10 +569,11 @@ def common_task_record(
     source_task_slug: str, checker_task_id: str, candidate_artifacts: list[str],
     public_contract: str, public_contract_sha: str, public_bundle_sha: str,
     evaluation_binding: dict[str, Any],
+    release_revision: str = "r45",
 ) -> dict[str, Any]:
     return {
-        "schema_version": "r45-benchmarkv4-task-record-v1",
-        "release_revision": "r45",
+        "schema_version": f"{release_revision}-benchmarkv4-task-record-v1",
+        "release_revision": release_revision,
         "task_id": task_id,
         "form": form,
         "family_id": family_id,
@@ -651,7 +653,10 @@ def canonical_profile_for_task(source_task: Path) -> tuple[dict[str, Any], str]:
 
 
 def install_visible_dut_runtime(
-    task_dir: Path, source_task: Path
+    task_dir: Path,
+    source_task: Path,
+    *,
+    release_revision: str = "r45",
 ) -> dict[str, Any]:
     public = task_dir / "public"
     evaluator = task_dir / "evaluator"
@@ -664,7 +669,7 @@ def install_visible_dut_runtime(
     profile_path = evaluator / "canonical_test_profile.json"
     write_json(profile_path, profile)
     write_json(public / "evas_runtime.json", {
-        "schema_version": "r45-direct-evas-runtime-v1",
+        "schema_version": f"{release_revision}-direct-evas-runtime-v1",
         "command": "evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict",
         "working_directory": "runtime_package_root",
         "candidate_root": "public/submission",
@@ -689,6 +694,8 @@ def install_visible_testbench_runtime(
     source_task: Path,
     spec: dict[str, Any],
     mutation_ids: list[str],
+    *,
+    release_revision: str = "r45",
 ) -> dict[str, Any]:
     public = task_dir / "public"
     evaluator = task_dir / "evaluator"
@@ -707,7 +714,7 @@ def install_visible_testbench_runtime(
         cases.append({"case": case, "dut_root": f"visible_fixtures/{case}/dut"})
 
     suite = {
-        "schema_version": "r45-direct-evas-testbench-suite-v1",
+        "schema_version": f"{release_revision}-direct-evas-testbench-suite-v1",
         "candidate": "public/submission/testbench.scs",
         "candidate_dut_binding": "./dut",
         "cases": cases,
@@ -748,6 +755,8 @@ def build_dut_view(
     row: dict[str, Any],
     spec: dict[str, Any],
     spec_sha: str,
+    *,
+    release_revision: str = "r45",
 ) -> dict[str, Any]:
     family = str(row["canonical_dut_id"])
     task_dir = output / "tasks" / source_task.name
@@ -788,7 +797,9 @@ def build_dut_view(
         "gold_solution_tree_sha256": tree_sha(evaluator / "solution"),
         "gold_dut_certification_sha256": row["hashes"]["task_certification_sha256"],
     })
-    evaluation_binding = install_visible_dut_runtime(task_dir, source_task)
+    evaluation_binding = install_visible_dut_runtime(
+        task_dir, source_task, release_revision=release_revision
+    )
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
         task_id=f"v4-{family}", form="dut", family_id=family,
@@ -799,6 +810,7 @@ def build_dut_view(
         public_contract_sha=public_contract_sha,
         public_bundle_sha=bundle_sha,
         evaluation_binding=evaluation_binding,
+        release_revision=release_revision,
     ))
     return {
         "task_id": f"v4-{family}",
@@ -817,6 +829,8 @@ def build_testbench_view(
     spec: dict[str, Any],
     spec_sha: str,
     seed_review: dict[str, Any],
+    *,
+    release_revision: str = "r45",
 ) -> dict[str, Any]:
     family = str(row["canonical_dut_id"])
     task_num = 500 + int(family)
@@ -902,7 +916,11 @@ def build_testbench_view(
         "require": ["declared_dut_binding", "transient_analysis", "all_required_public_traces"],
     })
     evaluation_binding = install_visible_testbench_runtime(
-        task_dir, source_task, spec, suite
+        task_dir,
+        source_task,
+        spec,
+        suite,
+        release_revision=release_revision,
     )
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
@@ -915,6 +933,7 @@ def build_testbench_view(
         public_contract_sha=public_contract_sha,
         public_bundle_sha=bundle_sha,
         evaluation_binding=evaluation_binding,
+        release_revision=release_revision,
     ))
     return {
         "task_id": f"v4-{task_num:03d}",
@@ -933,6 +952,8 @@ def build_bugfix_view(
     spec: dict[str, Any],
     spec_sha: str,
     seed_review: dict[str, Any],
+    *,
+    release_revision: str = "r45",
 ) -> dict[str, Any]:
     family = str(row["canonical_dut_id"])
     task_num = 1000 + int(family)
@@ -988,7 +1009,9 @@ def build_bugfix_view(
         "changed_artifacts": changed,
         "gold_dut_certification_sha256": row["hashes"]["task_certification_sha256"],
     })
-    evaluation_binding = install_visible_dut_runtime(task_dir, source_task)
+    evaluation_binding = install_visible_dut_runtime(
+        task_dir, source_task, release_revision=release_revision
+    )
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
         task_id=f"v4-{task_num}", form="bugfix", family_id=family,
@@ -1000,6 +1023,7 @@ def build_bugfix_view(
         public_contract_sha=public_contract_sha,
         public_bundle_sha=bundle_sha,
         evaluation_binding=evaluation_binding,
+        release_revision=release_revision,
     ))
     return {
         "task_id": f"v4-{task_num}",
@@ -1087,7 +1111,7 @@ def main() -> int:
         "--release-revision",
         choices=tuple(DEFAULT_OUTPUTS),
         required=True,
-        help="release contract to materialize; r44 and r45 never share an output tree",
+        help="release contract to materialize; revisions never share an output tree",
     )
     parser.add_argument("--output", type=Path)
     parser.add_argument("--force", action="store_true")
@@ -1099,6 +1123,13 @@ def main() -> int:
             "r44 is immutable; audit the tracked release instead of rebuilding it"
         )
     output = (args.output or DEFAULT_OUTPUTS[revision]).expanduser().resolve()
+    if (
+        output == DEFAULT_OUTPUTS[revision].resolve()
+        and (output / "RELEASE_SEAL.json").is_file()
+    ):
+        raise SystemExit(
+            f"{revision} is immutable; materialize it only to an explicit comparison output"
+        )
     if output.exists():
         if not args.force:
             raise SystemExit(f"output exists; pass --force to replace it: {output}")
@@ -1123,18 +1154,47 @@ def main() -> int:
         spec_sha = file_sha(spec_path)
         seed_review = select_bugfix_seed(row)
         task_rows.extend([
-            build_dut_view(output, source_task, row, spec, spec_sha),
-            build_testbench_view(output, source_task, row, spec, spec_sha, seed_review),
-            build_bugfix_view(output, source_task, row, spec, spec_sha, seed_review),
+            build_dut_view(
+                output,
+                source_task,
+                row,
+                spec,
+                spec_sha,
+                release_revision=revision,
+            ),
+            build_testbench_view(
+                output,
+                source_task,
+                row,
+                spec,
+                spec_sha,
+                seed_review,
+                release_revision=revision,
+            ),
+            build_bugfix_view(
+                output,
+                source_task,
+                row,
+                spec,
+                spec_sha,
+                seed_review,
+                release_revision=revision,
+            ),
         ])
 
     task_rows.sort(key=lambda item: int(str(item["task_id"]).split("-", 1)[1]))
     install_prompt_assets(output)
-    write_json(output / "TASK_INDEX.json", {"schema_version": "r45-benchmarkv4-task-index-v1", "tasks": task_rows})
+    write_json(
+        output / "TASK_INDEX.json",
+        {
+            "schema_version": f"{revision}-benchmarkv4-task-index-v1",
+            "tasks": task_rows,
+        },
+    )
     counts = {form: sum(item["form"] == form for item in task_rows) for form in ("dut", "testbench", "bugfix")}
     rerun_required = bool(certification_reuse["simulation_rerun_required_for_materialization"])
     manifest = {
-        "schema_version": "r45-benchmarkv4-release-manifest-v1",
+        "schema_version": f"{revision}-benchmarkv4-release-manifest-v1",
         "release_revision": revision,
         "release_status": (
             "materialized_certification_refresh_required"

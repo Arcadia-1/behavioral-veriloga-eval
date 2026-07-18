@@ -1,0 +1,35 @@
+{
+  "artifact_sha256": {
+    "AUDIT_REPORT.json": "11268ab8a20fc7b97635750ae60a4c1ba1ec0fcab6ec4a2f8a97a24173215b3f",
+    "MANIFEST.json": "72d6e5128bf128e39cad2d83148fb98116f97e9a4bda8d2f08177f1d7ee32592",
+    "RUNTIME_INGESTION_EVIDENCE.json": "8a1fa2888a947c44588f7963abded10c5a8055faa694a1436329c1010bb44949",
+    "TASK_INDEX.json": "d170d12b792a9b65bd08fa8db429a7969dea1e5c8316d8d18ed7442694cee96e",
+    "prompt_modes/manifest.json": "af0a5ea3da99d9fcf4eecae6df408b596d643388413d9c8d1dbf783d3d9c379b",
+    "prompt_modes/modes.json": "c29b0c4f957a430b4a767510089e19649d313c8af3dee3164b42570c9d7483af"
+  },
+  "certification_reuse": {
+    "evaluators": [
+      "rust_evas2"
+    ],
+    "policy": "source_transitive_input_hash_bound",
+    "simulation_rerun_required_for_materialization": false,
+    "source_dut_gold_certification_count": 400,
+    "source_dut_gold_certification_total": 400,
+    "source_negative_certification_count": 2000,
+    "source_negative_certification_total": 2000,
+    "stale_certification_family_ids": [],
+    "stale_gold_family_ids": [],
+    "stale_negative_case_ids": []
+  },
+  "evidence_sha256": {
+    "evidence/r46/PROFILE_PARITY.json": "bc36fc5812a014045b27b4d6f4be3cb96a51f110aa10ece765f15888d8b43e47",
+    "evidence/r46/RUST_EVAS2_CERTIFICATION.json": "5a9b6180275ec2fae774d8967efbfaf00b984100e11537c777121c814ab39393",
+    "evidence/r46/STIMULUS_METAMORPHIC.json": "8dc2fb95045535af2f8cff74de4591da96d28dccf7c7e96777de324111632456"
+  },
+  "immutable": true,
+  "release_revision": "r46",
+  "release_status": "r46_immutable_rust_evas2_certified",
+  "schema_version": "v4-benchmarkv4-release-seal-v1",
+  "simulation_claim": "fresh full400 Rust EVAS2 evidence with hash-bound source inputs",
+  "source_score_denominator_registry_sha256": "142ac6a32693c20b450b7f52b7d551e680cc6d7f4da360247fd006632d981aac"
+}

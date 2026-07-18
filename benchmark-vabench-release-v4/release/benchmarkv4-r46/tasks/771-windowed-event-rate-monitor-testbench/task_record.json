@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "271-windowed-event-rate-monitor",
+  "checker_task_id": "v4_271_windowed_event_rate_monitor",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "4b33e8c1456291f9501398db2b4c8e64d339125bcb04d1eef2ec6bf81e1e2e4d",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "0d13981b84d0ebfefafefba99731b10bd27935899a4f9e79272147d57002b6a1",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "271",
+  "family_spec_sha256": "759f61a88b370ff0676e35df04a53cc09913a78a7dd9fe234dc3d80d7b38152a",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3cacae5f3f008810926ffb3a8021a4565d3ab7923f672249bff6db3179590fda",
+  "public_contract": "tasks/771-windowed-event-rate-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "61294aebb6a3e442aa9698951f610b05aaf1ca9549c6f0e9aeca2f4593fccd86",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/771-windowed-event-rate-monitor-testbench",
+  "task_id": "v4-771"
+}

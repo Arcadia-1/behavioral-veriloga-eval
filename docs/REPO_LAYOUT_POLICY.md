@@ -22,8 +22,9 @@ artifacts. Do not add new v3 tasks there.
 five candidate tasks have been absorbed into v3.
 
 The active benchmarkv4 release package lives at
-`benchmark-vabench-release-v4/release/benchmarkv4-r45/`. The frozen r44 package
-remains at `benchmark-vabench-release-v4/release/benchmarkv4/` only for
+`benchmark-vabench-release-v4/release/benchmarkv4-r46/`. The frozen
+predecessors remain at `benchmark-vabench-release-v4/release/benchmarkv4/`
+(r44) and `benchmark-vabench-release-v4/release/benchmarkv4-r45/` for
 historical reproduction and immutable release verification.
 
 ## Stable Top-Level Directories

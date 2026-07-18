@@ -12,7 +12,7 @@ from typing import Any
 
 HERE = Path(__file__).resolve().parent
 PACKAGE = HERE.parents[1]
-DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r45"
+DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r46"
 MODES = tuple(f"G{i}" for i in range(6))
 FORM_ORDER = {"dut": 0, "testbench": 1, "bugfix": 2}
 MODE_RESPONSE_PROTOCOL = {

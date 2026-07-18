@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "148-four-channel-edge-sampler",
+  "checker_task_id": "v4_148_four_channel_edge_sampler",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "c8b24af0e20a4b1af9f15e7fd2ec45847868b4370c51a3ad2368a51ca1b2f51b",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "7007569a6999b809d8f0c87ec584777bbc15c7a84eb3490af0c43628405eb6fb",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "148",
+  "family_spec_sha256": "795d53c7937130d21e6352a7fd6424c79c91d1e4792640d43898e072f23ab446",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a138d9bed42767cea7dd458cc50bbb7adf793e6e721aa38773d732c97af3273c",
+  "public_contract": "tasks/648-four-channel-edge-sampler-testbench/public_contract.json",
+  "public_contract_sha256": "820e6b61c60bf44b3b6f3b997480201f047087577c6f786f523e1b90f4e19606",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/648-four-channel-edge-sampler-testbench",
+  "task_id": "v4-648"
+}

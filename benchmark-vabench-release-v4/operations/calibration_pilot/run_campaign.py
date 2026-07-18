@@ -28,7 +28,7 @@ if str(HERE) not in sys.path:
 import result_protocol as RESULT_PROTOCOL  # noqa: E402
 
 EXPORTER = PACKAGE / "operations" / "tri_form_derivation_prep" / "export_tri_form_runtime.py"
-DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r45"
+DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r46"
 DEFAULT_BASE_URL = "https://www.cun.ai/v1"
 DEFAULT_API_KEY_ENV = "VAEVAS_API_KEY"
 DIRECT_PARSER_VERSION = "v4-exact-artifact-envelope-parser-v1"

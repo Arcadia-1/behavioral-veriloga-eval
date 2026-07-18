@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "386-pa-gain-compression-ampm-macro",
+  "checker_task_id": "v4_386_pa_gain_compression_ampm_macro",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "5b529347010ce9e55653a98402f87339b29d972329e46acb33648635702decd8",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "ab3106e253a2596972604eb4d12dd686c51d2de54000077b59deaeb8120171f6",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "386",
+  "family_spec_sha256": "b0a0d174e3a7fb97b53f0407fd4d99e5ee4e9e2ff02b0c9aa5622840e2e8b073",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d26c1386e4e2625f1636ffffe9db4a606767f96c3c27b3b375eaca4db622cf32",
+  "public_contract": "tasks/886-pa-gain-compression-ampm-macro-testbench/public_contract.json",
+  "public_contract_sha256": "cf315c6664b8d53f25bb74a7e3a241edeb146de80cc86a97bded9fd006759703",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/886-pa-gain-compression-ampm-macro-testbench",
+  "task_id": "v4-886"
+}

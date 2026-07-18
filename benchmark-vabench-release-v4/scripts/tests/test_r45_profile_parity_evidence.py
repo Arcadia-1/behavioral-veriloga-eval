@@ -22,16 +22,30 @@ def test_profile_evidence_uses_evas_083_rust_runtime() -> None:
     assert runner.REQUIRED_EVAS_VERSION == "0.8.3"
     assert runner.REQUIRED_EVAS_ENGINE == "evas2"
     assert runner.RUST_EVAS_LOG_ENGINE == "evas-rust"
+    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r46"
+    assert runner.DEFAULT_RELEASE_REVISION == "r46"
 
 
 def test_profile_evidence_labels_are_revision_scoped() -> None:
     assert runner.release_label("r44") == "release/benchmarkv4"
     assert runner.release_label("r45") == "release/benchmarkv4-r45"
+    assert runner.release_label("r46") == "release/benchmarkv4-r46"
 
 
 def test_profile_cli_writes_selected_release_revision(tmp_path: Path, monkeypatch) -> None:
     output = tmp_path / "PROFILE_PARITY.json"
+    release = tmp_path / "staged-release"
+    release.mkdir()
+    (release / "MANIFEST.json").write_text(
+        json.dumps({"source_score_denominator_registry_sha256": "a" * 64}) + "\n",
+        encoding="utf-8",
+    )
     monkeypatch.setattr(runner, "require_evas2_environment", lambda: None)
+    monkeypatch.setattr(
+        runner,
+        "score_denominator_registry_sha256",
+        lambda source: "a" * 64,
+    )
     monkeypatch.setattr(
         runner,
         "probe_evas2_runtime",
@@ -49,9 +63,9 @@ def test_profile_cli_writes_selected_release_revision(tmp_path: Path, monkeypatc
         [
             "run_v4_profile_parity_smoke.py",
             "--release",
-            str(tmp_path / "staged-release"),
+            str(release),
             "--release-revision",
-            "r45",
+            "r46",
             "--output",
             str(output),
         ],
@@ -59,6 +73,10 @@ def test_profile_cli_writes_selected_release_revision(tmp_path: Path, monkeypatc
 
     assert runner.main() == 0
     payload = json.loads(output.read_text(encoding="utf-8"))
-    assert payload["release"] == "release/benchmarkv4-r45"
-    assert payload["release_revision"] == "r45"
+    assert payload["release"] == "release/benchmarkv4-r46"
+    assert payload["release_revision"] == "r46"
     assert payload["evas_version"] == "0.8.3"
+    assert payload["source_score_denominator_registry_sha256"] == "a" * 64
+    assert payload["release_manifest_sha256"] == runner.file_sha(
+        release / "MANIFEST.json"
+    )

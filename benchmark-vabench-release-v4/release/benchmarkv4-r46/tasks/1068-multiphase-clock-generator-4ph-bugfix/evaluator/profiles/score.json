@@ -1,0 +1,22 @@
+{
+  "corners": [],
+  "deck_overrides": {},
+  "deterministic_seed": 0,
+  "generated_from": {
+    "script": "render_v4_harness.py",
+    "version": "v4-harness-renderer-v1"
+  },
+  "harness_spec_sha256": "0516a07941734dc94c23d77a9674ba8caaa061542716e06c44b17f7d1fd685f9",
+  "parameters": {},
+  "profile_name": "score",
+  "property_ids": [
+    "P_PERIOD",
+    "P_DUTY_CYCLE",
+    "P_PHASE_OFFSETS",
+    "P_PHASE_STABILITY",
+    "P_OUTPUT_LEVELS"
+  ],
+  "public_visible": false,
+  "schema_version": "v4-harness-profile-v1",
+  "simulatorOptions": {}
+}

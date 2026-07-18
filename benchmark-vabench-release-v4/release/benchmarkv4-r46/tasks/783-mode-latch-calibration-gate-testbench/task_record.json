@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "283-mode-latch-calibration-gate",
+  "checker_task_id": "v4_283_mode_latch_calibration_gate",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "da4e5aafa355a0bc791a7b486d52454123d7c7f7efc9aa693f8aebc9274f383b",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "4ecdbce96a355cd19f7df85b398f0381102c74124bae9da423fb26155d8b1f0a",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "283",
+  "family_spec_sha256": "824669462d8050fa5eb8534205e07b1e37c9b86b885d0f19ec8562fcb58dfda0",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f4b07a38adeddb49f3338ccc01cbed14e1ce38c6ddb6baa8a67b406532ab1304",
+  "public_contract": "tasks/783-mode-latch-calibration-gate-testbench/public_contract.json",
+  "public_contract_sha256": "cc3ca39ed18fd1c79705c12311c73853f37ef677b0e8d3cf3c8f73747b91e794",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/783-mode-latch-calibration-gate-testbench",
+  "task_id": "v4-783"
+}

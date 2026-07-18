@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "dynamic_comparator_kickback_metric.va"
+  ],
+  "canonical_dut_source_slug": "313-dynamic-comparator-kickback-metric",
+  "checker_task_id": "v4_313_dynamic_comparator_kickback_metric",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "88e66530fbd79a30e73a1765ca304ad84855382abac11fd9644361b7151d0f13",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "ef8da13226636c334160b13de5bb4a562f6d39c46e3241f20026f45352d975a8",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "f4d595fcad7f49279ce89d21f88b64e1e9a30f0cacb9291d695b6a010bc57490",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "313",
+  "family_spec_sha256": "9ccb61f872241f103c8fc5cc34d7fb7c9cc1cfa3c95cb728100883e9ad665beb",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f54a951e26819040004cd8550ef1f8f77050eb4ed58000050b5fdb51f9027750",
+  "public_contract": "tasks/313-dynamic-comparator-kickback-metric/public_contract.json",
+  "public_contract_sha256": "97fcbbfab01b0fd692aab4f5c47b67360a3d316b531c95f38e0e9a64914d8b6b",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/313-dynamic-comparator-kickback-metric",
+  "task_id": "v4-313"
+}

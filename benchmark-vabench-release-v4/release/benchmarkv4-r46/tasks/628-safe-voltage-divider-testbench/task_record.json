@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "128-safe-voltage-divider",
+  "checker_task_id": "v4_128_safe_voltage_divider",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "9a114ef52e5d4af04b83bdd6c9ec105dac542aabc1869f98e6fea70c014a1d63",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "e38345f376cc8ee1338c594aa7e79639e4a538d66110f97c00ad22b3f448668c",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "128",
+  "family_spec_sha256": "c28e9e11be6fdf475be0082d5b1f9f795bcd3ddc1c4420636bf4ac57403b9d13",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0a83d48a2ccfcd214cc943f5d079abae6f0e200db5e8fd68b88598d53726d512",
+  "public_contract": "tasks/628-safe-voltage-divider-testbench/public_contract.json",
+  "public_contract_sha256": "e3cf0f5544fe16f5d968832e1217a5be6e90fae2ba006c7fae368eb4c53f158c",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/628-safe-voltage-divider-testbench",
+  "task_id": "v4-628"
+}

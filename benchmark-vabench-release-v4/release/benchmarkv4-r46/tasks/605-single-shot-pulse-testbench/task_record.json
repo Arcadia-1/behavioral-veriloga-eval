@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "105-single-shot-pulse",
+  "checker_task_id": "v4_105_single_shot_pulse",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "f5cecb9edb0f002badad76b8e20a2cde1decac848742a52af0ef6790ccc183f7",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "130cb74f33e568694b44781dfcc195b90882e666f101ab2d0922e4af0d9fcdbd",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "105",
+  "family_spec_sha256": "c0e105c64eeababe7a964807753465f3fa9fb9154360b5ab5a63dad02ab18c25",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a5fd0ee3212eb5b2109b5278a2c3f9151b0fe25a3cb2598f645463789ea1543f",
+  "public_contract": "tasks/605-single-shot-pulse-testbench/public_contract.json",
+  "public_contract_sha256": "eb1cb3a5c8223b1232c033a54aa9bf696cd4aecf3f7d99993f2129c617ac3f23",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/605-single-shot-pulse-testbench",
+  "task_id": "v4-605"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "adpll_ratio_hop_ref.va"
+  ],
+  "canonical_dut_source_slug": "081-adpll-ratio-hop-timer",
+  "checker_task_id": "v4_081_adpll_ratio_hop_timer",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "a08d8b93fea5de9c74b0f9ffd2d884203a230488cb1ef840ec816acd41db1e50",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "456eb317a8f0f19d7d9d81f7e8fe3ed745bb073dba76fdcb76a2f06c505d34fb",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "9f76375ffd3a1cacaf2a57c624d246d290df74b2c0013d4f2eddbd79da146e4f",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "081",
+  "family_spec_sha256": "d07fa8463ddeece6bc4c013e0c2b99f84de80476d922533781f8c48ca72c0df0",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8fc6b74340eb5556481e526d6777fd4b4c7d8dae1e501cd3ef446d7f924353e4",
+  "public_contract": "tasks/1081-adpll-ratio-hop-timer-bugfix/public_contract.json",
+  "public_contract_sha256": "6544a8fcbef917c446aaa2739b30b8af08643b0f82897576a980e74dacf78954",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1081-adpll-ratio-hop-timer-bugfix",
+  "task_id": "v4-1081"
+}

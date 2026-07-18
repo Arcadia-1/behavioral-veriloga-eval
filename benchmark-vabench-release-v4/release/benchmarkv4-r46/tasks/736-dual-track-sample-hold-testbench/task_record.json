@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "236-dual-track-sample-hold",
+  "checker_task_id": "v4_236_dual_track_sample_hold",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "1af042f7e8c23aa3f72c2f3a2cee091a9557e635d340fe1fd87c9b619476be31",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "3154ad9e245f5f1a92d1592e0ef134bac0ea9a8688ca6c687df728e4e46c7ad3",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "236",
+  "family_spec_sha256": "22d42b9dfc56a3bad2612bb6be98190f07cfcb5e4c049160f180a53c455d42b4",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "eccaf76c9979013816d8cce9880f83f29f169e8cfb776f1fa0e3f5b835797889",
+  "public_contract": "tasks/736-dual-track-sample-hold-testbench/public_contract.json",
+  "public_contract_sha256": "54fef2c806106b3b57f43906ed2f93d0a6d7e40e7d95c821060128651fc454f4",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/736-dual-track-sample-hold-testbench",
+  "task_id": "v4-736"
+}

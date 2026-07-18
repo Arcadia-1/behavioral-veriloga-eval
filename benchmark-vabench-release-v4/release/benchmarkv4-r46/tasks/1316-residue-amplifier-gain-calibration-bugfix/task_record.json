@@ -1,0 +1,38 @@
+{
+  "candidate_artifacts": [
+    "residue_amp_gain_calibration_top.va",
+    "residue_amp_core.va",
+    "gain_cal_controller.va"
+  ],
+  "canonical_dut_source_slug": "316-residue-amplifier-gain-calibration",
+  "checker_task_id": "v4_316_residue_amplifier_gain_calibration",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "b203d9a1228f4b1a15fc3d7eb5dfa8d611c494b26e345f8abe3b8788efd77509",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "c1f3eebc5345e1c32e5f61a154a2c3ffeb114b7b2f028cddebc8694204b37e8e",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "db6309e169b74e7fde53e7950eeecc90e416f3c02eb42c6d399ecfc2028f4120",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "316",
+  "family_spec_sha256": "e9d63ba269e34af42ec027761615e65bf49e85781f768886afdf8134c2bd742d",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "71db92b70a68678728d595bea01eefb3bca7eaad4e5a8dbfa4c1a8c6cde79eaa",
+  "public_contract": "tasks/1316-residue-amplifier-gain-calibration-bugfix/public_contract.json",
+  "public_contract_sha256": "9461faef6cfea15a8f1bf3ebad4498e98f489d31eedfdf9942984f38856f371d",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1316-residue-amplifier-gain-calibration-bugfix",
+  "task_id": "v4-1316"
+}

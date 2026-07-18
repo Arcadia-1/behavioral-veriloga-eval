@@ -5,6 +5,8 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 
 MODULE_DIR = (
     Path(__file__).resolve().parents[2]
@@ -64,9 +66,11 @@ def family_cases(family: str) -> dict[str, dict]:
     return cases
 
 
-def test_r45_evidence_only_refresh_does_not_rewrite_source(
+@pytest.mark.parametrize("release_revision", ["r45", "r46"])
+def test_evidence_only_refresh_does_not_rewrite_source(
     tmp_path: Path,
     monkeypatch,
+    release_revision: str,
 ) -> None:
     families = [f"{value:03d}" for value in range(1, 401)]
     report = tmp_path / "full400.json"
@@ -76,6 +80,11 @@ def test_r45_evidence_only_refresh_does_not_rewrite_source(
         refresh,
         "load_family_rows",
         lambda source: [family_row(family) for family in families],
+    )
+    monkeypatch.setattr(
+        refresh,
+        "score_denominator_registry_sha256",
+        lambda source: "a" * 64,
     )
     monkeypatch.setattr(
         refresh,
@@ -107,14 +116,17 @@ def test_r45_evidence_only_refresh_does_not_rewrite_source(
             "--output",
             str(output),
             "--release-revision",
-            "r45",
+            release_revision,
         ],
     )
 
     assert refresh.main() == 0
     payload = json.loads(output.read_text(encoding="utf-8"))
-    assert payload["schema_version"] == "v4-r45-rust-evas2-certification-report-v1"
-    assert payload["release_candidate"] == "r45"
+    assert payload["schema_version"] == (
+        f"v4-{release_revision}-rust-evas2-certification-report-v1"
+    )
+    assert payload["release_candidate"] == release_revision
+    assert payload["source_score_denominator_registry_sha256"] == "a" * 64
     assert payload["source_certifications_updated"] is False
     assert payload["runtime"]["evas_version"] == "0.8.3"
     assert payload["summary"] == {

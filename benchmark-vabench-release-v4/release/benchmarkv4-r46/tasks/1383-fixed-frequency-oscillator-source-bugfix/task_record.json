@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "fixed_frequency_oscillator_source.va"
+  ],
+  "canonical_dut_source_slug": "383-fixed-frequency-oscillator-source",
+  "checker_task_id": "v4_383_fixed_frequency_oscillator_source",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "859d4d5bbb09b59ad995cb02cc3eb85a42805e6a0e2488c2fccbd27cb9d33683",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "0b76802b331415b3f8814a9a9cd8915c9ce514b35583637e127b3dd8c346b8b2",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "eb3ce37cf7121515ddb3a809df9663de3cca604e9deaba5d9e0826c1f28af10d",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "383",
+  "family_spec_sha256": "1469ed97771bc37e05a88b7460ae54cb22f6885714e7c2f5b8a6a37b24896f5d",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "acd9c116b088e95d1e4230621fd74d57736055e7ddd0bf1413f3985eba3e2eb8",
+  "public_contract": "tasks/1383-fixed-frequency-oscillator-source-bugfix/public_contract.json",
+  "public_contract_sha256": "0367220f807469268e8acabd270995c5a3d90959dba1187794e25e040a10c274",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1383-fixed-frequency-oscillator-source-bugfix",
+  "task_id": "v4-1383"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "015-binary-weighted-voltage-dac",
+  "checker_task_id": "v4_015_binary_weighted_voltage_dac",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "d0231bc8d44de02bb62d79cce84c62bf879bf2b98f2ce89378dd038faf1f2d66",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "90b4e8e2a86cb1b3525c8d82c2246b59fd8499f4af52bbb5fc8d1b0cf1c0998a",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "015",
+  "family_spec_sha256": "e9e246939f63a42840fc429a0f1eaff407bb5350c935b38ce0e657541cadecaa",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "80826f0ccd64669fa2c4c6e88942f5731db86d602189c4d9cd6a6e98f54ec7b3",
+  "public_contract": "tasks/515-binary-weighted-voltage-dac-testbench/public_contract.json",
+  "public_contract_sha256": "6d6da59f6685ce7b3cd3f8c3c894f1d61de71c24542bbc4fb17e4c58de374e43",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/515-binary-weighted-voltage-dac-testbench",
+  "task_id": "v4-515"
+}

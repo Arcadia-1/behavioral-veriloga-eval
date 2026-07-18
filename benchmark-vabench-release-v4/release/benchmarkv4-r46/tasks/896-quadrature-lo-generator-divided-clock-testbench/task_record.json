@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "396-quadrature-lo-generator-divided-clock",
+  "checker_task_id": "v4_396_quadrature_lo_generator_divided_clock",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "17c48381132f1435b35407691acc4daa076dc9e47e8e39516fb61fc39bc4d0c8",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "047b026ca20204643977c2523b4ad0fcd88b110e5c5007765c2dae489c6249c7",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "396",
+  "family_spec_sha256": "0e462f2083bb57adfb947a51c8b0f3acedd3eaa413390fcb14452f2630886c5e",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "13c76f135fc806e45ea6e69c9f83bff31d55cd05b0f10f7169ab6438572c30eb",
+  "public_contract": "tasks/896-quadrature-lo-generator-divided-clock-testbench/public_contract.json",
+  "public_contract_sha256": "d3f01a4d7815ce1dc93ccc7dd5ce34ccb60317b4b901f4903d5f3d295277f3b6",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/896-quadrature-lo-generator-divided-clock-testbench",
+  "task_id": "v4-896"
+}

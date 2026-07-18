@@ -1,8 +1,9 @@
 # r44 Release Certification
 
-`r44` replaces the mutable `r43` campaign image as the final benchmarkv4
-release. Release certification uses the Rust EVAS2 backend as the sole
-executable evaluator. Spectre evidence is neither required nor inferred.
+`r44` is a frozen historical predecessor that replaced the mutable `r43`
+campaign image. The active release is documented separately. R44 release
+certification uses the Rust EVAS2 backend as the sole executable evaluator;
+Spectre evidence is neither required nor inferred.
 
 ## Certification Gate
 

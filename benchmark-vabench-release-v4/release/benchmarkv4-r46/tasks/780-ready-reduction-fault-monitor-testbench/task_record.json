@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "280-ready-reduction-fault-monitor",
+  "checker_task_id": "v4_280_ready_reduction_fault_monitor",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "31e056ada98f025c4cdfde31784e3ae921763adbce762f3ce5e597bf94e1cdcc",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "0cc2c6db365e179414afbdd62c8489509e7212eea08746becfa13b25dc9527e9",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "280",
+  "family_spec_sha256": "261a5f79ad650f7e6e03ec4bc183a95756f25f54806949256a35cce4c336972b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "502ec4fc99099848a1d497d964040181ef7208b24c9e94c2d4cabb70930e7b86",
+  "public_contract": "tasks/780-ready-reduction-fault-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "802ccd9fafd0bed3cc16d074f3c38306b5a7cfa7c095e80a6c0b37e76eefd210",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/780-ready-reduction-fault-monitor-testbench",
+  "task_id": "v4-780"
+}

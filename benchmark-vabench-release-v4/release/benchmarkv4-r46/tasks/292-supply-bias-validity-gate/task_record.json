@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "supply_bias_validity_gate.va"
+  ],
+  "canonical_dut_source_slug": "292-supply-bias-validity-gate",
+  "checker_task_id": "v4_292_supply_bias_validity_gate",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "eda0f6797e9433145c07ff168e1028e6230481a582872515be200c0405564f1f",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "8d6187d24cf36523bacbce019f36e1bbc0dd32c2f4442f343cfd5bffd705dd3a",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "5b84d473608f02fab20cfaf8a82f39e1e5265b70428ff313ff6ac45284288836",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "292",
+  "family_spec_sha256": "c416be62d0d998bf94d9f9cfb9778296c66d1719884fa5295d98ba93be7f9729",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2ada19b5e743389b16c2d1fc43e87c0da87cbcacb6b7c10bfa9f3bac5fbd2ac3",
+  "public_contract": "tasks/292-supply-bias-validity-gate/public_contract.json",
+  "public_contract_sha256": "c939df3d12a0aa0dbad73a669b474dadc9928cd644efa146a492ffede97bb82c",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/292-supply-bias-validity-gate",
+  "task_id": "v4-292"
+}

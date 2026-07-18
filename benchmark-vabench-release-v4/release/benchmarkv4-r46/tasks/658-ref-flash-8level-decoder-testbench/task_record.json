@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "158-ref-flash-8level-decoder",
+  "checker_task_id": "v4_158_ref_flash_8level_decoder",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "31d2ec371703717537dc150b1ebc3b70f342e8b0bda3c08a6fe35ea7b6d3348b",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "3516aebaa877be52a7d6e920aebb70e9db2355a62a03f197b51f8bf4d4d489b4",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "158",
+  "family_spec_sha256": "70ba1121ee3a843d31b9eaa76467eb365c1d0a5a53aa18be658d901ae42bd48b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d65d8edba3a6e714276bd7c31796cbc1b3f203cdc1fadae2550f28c11a6623c2",
+  "public_contract": "tasks/658-ref-flash-8level-decoder-testbench/public_contract.json",
+  "public_contract_sha256": "f8a9f0131ed9b4ca66681eb674687bc611573cf178331ca33a9a6329b6fd7cd9",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/658-ref-flash-8level-decoder-testbench",
+  "task_id": "v4-658"
+}

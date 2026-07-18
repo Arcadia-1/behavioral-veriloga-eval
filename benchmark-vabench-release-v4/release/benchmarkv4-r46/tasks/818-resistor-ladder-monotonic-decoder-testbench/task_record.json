@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "318-resistor-ladder-monotonic-decoder",
+  "checker_task_id": "v4_318_resistor_ladder_monotonic_decoder",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "145e0345e2a019394cfe8b1665d2fbdf26a9bc854027c4a0a94bcc34a2ab3d99",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "5fe2525c914721664d622c25724b3e00636ece4246451b349850bd23c2b024f0",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "318",
+  "family_spec_sha256": "abbf12010a03af2de9769b1eb2fb91069e790664bde1b5124fbe33d2b3429a61",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "11cc8e90ac9bd052bac0e71455e092dce00b43fc66de2881d7fa0a636590f22a",
+  "public_contract": "tasks/818-resistor-ladder-monotonic-decoder-testbench/public_contract.json",
+  "public_contract_sha256": "0de295e7a01504614ef300a707db5be5284b3b4efb5a7eecf5b7c1451db85ae1",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/818-resistor-ladder-monotonic-decoder-testbench",
+  "task_id": "v4-818"
+}

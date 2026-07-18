@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "358-quadrature-phase-interpolator",
+  "checker_task_id": "v4_358_quadrature_phase_interpolator",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "5f655ed562946247c3364f503e09661b946a0c35f8e9527c5de16f940628004b",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "9fce8bca614f280b49ef9b8283b9122081ebb9da5c5e9b059d361e11b966c528",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "358",
+  "family_spec_sha256": "4f3348c1878040f9ec850823b712b36c254e3a03af5a9206abb609f939da422f",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7798e3119533cb028a70c9dca95a23f0a4f027eb4420b563ce7938e1da79b2b5",
+  "public_contract": "tasks/858-quadrature-phase-interpolator-testbench/public_contract.json",
+  "public_contract_sha256": "45aba8889558e493c5cff9fc480362ae573aac48aff376dadf892a434ef0f6c5",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/858-quadrature-phase-interpolator-testbench",
+  "task_id": "v4-858"
+}

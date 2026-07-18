@@ -10,6 +10,7 @@ from typing import Any
 
 from score_denominator_registry import (
     load_family_rows,
+    score_denominator_registry_sha256,
     write_family_row,
 )
 from source_certification_binding import _task_input_hashes, file_sha, tree_sha_by_file_hash
@@ -239,7 +240,7 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument(
         "--release-revision",
-        choices=("r44", "r45"),
+        choices=("r44", "r45", "r46"),
         required=True,
         help="labels the evidence; revisions never share a certification report",
     )
@@ -258,6 +259,7 @@ def main() -> int:
     campaign = f"{release_revision}-full400"
     family_cases, runtime = report_cases(report_paths)
     rows = {str(row["canonical_dut_id"]): row for row in load_family_rows(source)}
+    source_registry_sha256 = score_denominator_registry_sha256(source)
     if set(rows) != {f"{value:03d}" for value in range(1, 401)}:
         raise SystemExit("source denominator does not contain exactly families 001-400")
     if set(family_cases) != set(rows):
@@ -297,6 +299,7 @@ def main() -> int:
         "status": "pass",
         "release_candidate": release_revision,
         "certification_policy": POLICY,
+        "source_score_denominator_registry_sha256": source_registry_sha256,
         "runtime": runtime,
         "summary": {
             "family_count": 400,

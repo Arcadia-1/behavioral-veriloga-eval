@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "serializer_mux_timing_macro.va"
+  ],
+  "canonical_dut_source_slug": "392-serializer-mux-timing-macro",
+  "checker_task_id": "v4_392_serializer_mux_timing_macro",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "43b25c25a2d6ed5115d400605d84fa36e8371a219b4555036be3b133f1875a04",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "5e907f08642d32407d0e4edfc73c5f36ba3b2fa5696f29e8b3abdfa0ad74f7c3",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "1f53d5e8d5e30a56713da9c8c6951d65844dd15e4c5c294d81369a1f28714f4b",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "392",
+  "family_spec_sha256": "32cb12634b0662240d54e467117ab266dfbfb73498c0ac30b6de93fa1c6cc649",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5bbef6c3451a673c74212974efc461b7964c7a45c90d9333cc5523eeb57914d1",
+  "public_contract": "tasks/392-serializer-mux-timing-macro/public_contract.json",
+  "public_contract_sha256": "0e39c15d69919f00c8342a46af59637f7ad7ed760c9ce6b3027d07fe4abbe514",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/392-serializer-mux-timing-macro",
+  "task_id": "v4-392"
+}

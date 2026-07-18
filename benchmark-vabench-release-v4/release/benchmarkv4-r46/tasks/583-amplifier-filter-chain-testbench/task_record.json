@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "083-amplifier-filter-chain",
+  "checker_task_id": "v4_083_amplifier_filter_chain",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "9faaec978ca67d834abc471cfe57f66319da5ef1f07f086d9d8f1c8f992ffef3",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "1aa2d8e32fe3c61b29f40a95cc1a05e09edb75a0957adafb581c3bd13e10c122",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "083",
+  "family_spec_sha256": "fd70e77c9b67228ff0168cb5c86badc26d284af6c7d4dc692330c48320f21339",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e3f3f85abf953e84044204802e49f6553338d04d425e4e3c2edc7f7f1c6cf15b",
+  "public_contract": "tasks/583-amplifier-filter-chain-testbench/public_contract.json",
+  "public_contract_sha256": "cacd62684684d162f978b2eb73ab7730a78b39b06e6b336979ecfa3b35431e69",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/583-amplifier-filter-chain-testbench",
+  "task_id": "v4-583"
+}

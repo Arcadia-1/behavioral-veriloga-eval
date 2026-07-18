@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "272-reset-release-sequencer",
+  "checker_task_id": "v4_272_reset_release_sequencer",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "e8b6ea89b951a5332d7772318d53592c6bc0f885e32a7a28d1a1435f35ae4805",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "f712c3f5c667e80b75ee898a77dc530bf72ab3b2c95492704e5ce81372acb0da",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "272",
+  "family_spec_sha256": "b96bd9693c7c6c54af56b14ee0690930afe08245a0d3675bd9b6660cf838fb9d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "761f082998102e5a949ff04c56211a2a27fd57987a63ba9347dbb9989e1be9f6",
+  "public_contract": "tasks/772-reset-release-sequencer-testbench/public_contract.json",
+  "public_contract_sha256": "9a673022e6fb26d338e7a04b8bbd5c608b7bdd7e217369ff7131d1b7800e69e2",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/772-reset-release-sequencer-testbench",
+  "task_id": "v4-772"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "088-cppll-tracking-reacquire-timer",
+  "checker_task_id": "v4_088_cppll_tracking_reacquire_timer",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "07dba1d8cec1e785443a7de124b5e2c5835859cb809e53ec7a0f8032613a4e2c",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "d7aa7e61da1d87b503b73917c6fe9fb3efb8b8920430367ad9ee0e27eb9c35cf",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "088",
+  "family_spec_sha256": "fa1bacf47aa1dadcdcf04d5240daf9d99fdf0f927dc6c26ad777f92747a1b19e",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "146883083bd813f94da5996262044afa2e619dc8bf51aede77ad69480379f23c",
+  "public_contract": "tasks/588-cppll-tracking-reacquire-timer-testbench/public_contract.json",
+  "public_contract_sha256": "ff2bf7b61853e33337ba5ad2e27df612396d313b18b7ea576ff77171bb0fd3c1",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/588-cppll-tracking-reacquire-timer-testbench",
+  "task_id": "v4-588"
+}

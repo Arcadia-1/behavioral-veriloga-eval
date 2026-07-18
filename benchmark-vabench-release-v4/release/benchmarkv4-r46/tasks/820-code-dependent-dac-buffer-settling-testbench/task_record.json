@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "320-code-dependent-dac-buffer-settling",
+  "checker_task_id": "v4_320_code_dependent_dac_buffer_settling",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "7db55b389ad858a754a93873bfa9102de0a652a28bb5647dd3726bfc20c34328",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "80d06b58e89bcc52cbf8e65ccbbc9e12f76befb058840299d7bb1f952b7e5585",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "320",
+  "family_spec_sha256": "fa05e3a81f9ac287e2858a489dba34bff08af535896812f87b935bf35f8f17d0",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "573c39a8715a7b05d246ba08e987e08d630cc803e95b701f7c834501ef07f4dc",
+  "public_contract": "tasks/820-code-dependent-dac-buffer-settling-testbench/public_contract.json",
+  "public_contract_sha256": "69bc0831c61d81fc1bf2dd7928d30edd96afef7adf28046ca4e78a141bddca33",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/820-code-dependent-dac-buffer-settling-testbench",
+  "task_id": "v4-820"
+}

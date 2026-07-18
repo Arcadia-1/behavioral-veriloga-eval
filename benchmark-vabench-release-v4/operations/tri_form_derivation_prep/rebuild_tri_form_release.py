@@ -15,6 +15,7 @@ PACKAGE_ROOT = PREP_ROOT.parents[1]
 DEFAULT_RELEASES = {
     "r44": PACKAGE_ROOT / "release" / "benchmarkv4",
     "r45": PACKAGE_ROOT / "release" / "benchmarkv4-r45",
+    "r46": PACKAGE_ROOT / "release" / "benchmarkv4-r46",
 }
 
 
@@ -43,6 +44,13 @@ def main() -> int:
             "r44 is immutable; audit the tracked release instead of rebuilding it"
         )
     release = (args.release or DEFAULT_RELEASES[release_revision]).expanduser().resolve()
+    if (
+        release == DEFAULT_RELEASES[release_revision].resolve()
+        and (release / "RELEASE_SEAL.json").is_file()
+    ):
+        raise SystemExit(
+            f"{release_revision} is immutable; rebuild it only into an explicit comparison output"
+        )
     materializer = PREP_ROOT / "materialize_tri_form_release.py"
     exporter = PREP_ROOT / "export_tri_form_runtime.py"
     runtime_auditor = PREP_ROOT / "audit_runtime_export.py"

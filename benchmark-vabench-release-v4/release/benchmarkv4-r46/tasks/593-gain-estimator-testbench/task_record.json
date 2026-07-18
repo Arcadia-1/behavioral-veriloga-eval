@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "093-gain-estimator",
+  "checker_task_id": "v4_093_gain_estimator",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "8499aa959cf4a98e35b73a4e001aa48d0ea885c74fd4c302505b324d4a43beef",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "f58006479d21aad10d7035a282bab2f1c4e490019e81c144cea6e25e1bb2f30c",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "093",
+  "family_spec_sha256": "f37d52173916180575da20087ed0390a7a870e02cb8dcadbe590cfd4d4d43065",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c1546131166a8cbbddbb305f7fd5c55ad79f5bf932cd458a916170c5df98ffbf",
+  "public_contract": "tasks/593-gain-estimator-testbench/public_contract.json",
+  "public_contract_sha256": "20138f84f70d58b13ca85c8b6715eacca2092f65b28277b4886db935f922096f",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/593-gain-estimator-testbench",
+  "task_id": "v4-593"
+}

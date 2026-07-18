@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "346-tdc-measurement-system",
+  "checker_task_id": "v4_346_tdc_measurement_system",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "26da190b2793fa3830bf7bdc6dde767dde2173781d557534ff74dd754d5db315",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "46a8a8bec3d37b21170dd3d94fb7ccb81bebc0855ff1514961a2363fe3a9b123",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "346",
+  "family_spec_sha256": "3ab9da12ea64b107edcdbdf1f675c0d4b4cf07729bf37c8964e4ac0c7c5cc42b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f7515f81e0c66ca2a7bc1845d6c5dedbcad024aefe51aeae411bcdd566d219a1",
+  "public_contract": "tasks/846-tdc-measurement-system-testbench/public_contract.json",
+  "public_contract_sha256": "ce3764f5e40761973987f981e658ce0a6293bcd2a59062221b4c948698183761",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/846-tdc-measurement-system-testbench",
+  "task_id": "v4-846"
+}

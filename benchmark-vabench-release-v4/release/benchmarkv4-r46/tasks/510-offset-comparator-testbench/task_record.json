@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "010-offset-comparator",
+  "checker_task_id": "v4_010_offset_comparator",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "c1599d503065f51a9b57f101f4299e7b100eb6112ea5d89c86e5c36b9c7ab65f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "435f070b19897a05eaa0e82515579232d436fc50ba7e0120c044d05898980115",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "010",
+  "family_spec_sha256": "bf5d9aa96c735ca948c1ecf437acc0659979f4a78a49a0270bf4b89828b62d1d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "342906b373948e13b7579790ac9240ca463f580d7c5cefa216d12474bf46ef24",
+  "public_contract": "tasks/510-offset-comparator-testbench/public_contract.json",
+  "public_contract_sha256": "9a6fc107834c3ce101554d067eb12a9bb314357ea755344f8a58602f164a7c51",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/510-offset-comparator-testbench",
+  "task_id": "v4-510"
+}

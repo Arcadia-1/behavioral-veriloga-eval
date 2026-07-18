@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "260-comparator-decision-capture",
+  "checker_task_id": "v4_260_comparator_decision_capture",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "20c79d3f6e928ac520baeea74f256be9064b94e44cf45f9ba00c10b2476df80b",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "92f51c0cfc44ffc5c657866324c437a4a17d37fc94c93ca985f291a62fee9de1",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "260",
+  "family_spec_sha256": "9543151391c678443dcdaa743947e46b1f4308ec2dd5dc03e32d665328de340e",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a52ee4a958a33f3ea0ea3503e313148fdb683889dd314b03b21196073684e22e",
+  "public_contract": "tasks/760-comparator-decision-capture-testbench/public_contract.json",
+  "public_contract_sha256": "1e6942f6e369d89fb1ef2a78956aacfc9894243c33d56ebebbe3608c0a088cb3",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/760-comparator-decision-capture-testbench",
+  "task_id": "v4-760"
+}

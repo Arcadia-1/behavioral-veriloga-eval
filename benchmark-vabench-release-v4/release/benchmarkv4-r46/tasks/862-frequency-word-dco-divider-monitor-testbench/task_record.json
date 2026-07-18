@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "362-frequency-word-dco-divider-monitor",
+  "checker_task_id": "v4_362_frequency_word_dco_divider_monitor",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "eed96f4d9394a78f3eaeb035dfddb0d7c07fd0904348e4087785bb547fd705f8",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "407d384f41a39ee17c075d9010debe993e164d22c44245a458bfc0b7d1611488",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "362",
+  "family_spec_sha256": "0d68d74300154a21ca427e4402405566fb083f9575fa5bdb0025592e7c31dbfd",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a265552fd8ce09e0ded656a7dd94991664c7f2014cf3661e3429ef76a3e3c32c",
+  "public_contract": "tasks/862-frequency-word-dco-divider-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "e16e0d2e09c0785644f2561669713dd8b4295bd31c4245ad90ed06cdcbb5082b",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/862-frequency-word-dco-divider-monitor-testbench",
+  "task_id": "v4-862"
+}

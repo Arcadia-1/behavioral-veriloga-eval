@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "040-ptat-ctat-reference-generator",
+  "checker_task_id": "v4_040_ptat_ctat_reference_generator",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "691126d12348656f23e40e2bfbe4b5fc8a97819b37846996fe2fc70b13dd2ddb",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "ce099b3d35cc1768ef4fbc599997d5e80002913ba6cf83b54d6980a4775d58f7",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "040",
+  "family_spec_sha256": "50d74d4b3ff7d95fd09f56b97b8cd354d42bb3d1872b84c78471de10e8ca91d2",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4e9f7b9cfb3ab63c3c2b4ecaafd6e249d068a52a5234d0cb1332a687f7144820",
+  "public_contract": "tasks/540-ptat-ctat-reference-generator-testbench/public_contract.json",
+  "public_contract_sha256": "273639162cd7e840ee74a44f4ce8943658b58bb9b9f225ee3c1e92aff18bd4fd",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/540-ptat-ctat-reference-generator-testbench",
+  "task_id": "v4-540"
+}

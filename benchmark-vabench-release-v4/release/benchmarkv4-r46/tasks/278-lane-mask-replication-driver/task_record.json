@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "lane_mask_replication_driver.va"
+  ],
+  "canonical_dut_source_slug": "278-lane-mask-replication-driver",
+  "checker_task_id": "v4_278_lane_mask_replication_driver",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "f555b64219c4574a8c10c968695cebf5f23e6610368c15f0357155e0364469a6",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "6cddb2d1aff8ac5052ccd82c53fa47568042070c0b1f9da5f9062c8cd55a4aad",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "85b1c040a5610903b4b85de2a487fb8e2165cf8acab1dcffe9bf3731357377d8",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "278",
+  "family_spec_sha256": "f1559e7e1fe7a4a464e8ef338f865dab270f26f87e4021c04c4a1bf60193de3f",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "070774d004b5ae06d6e382705c1033bd20b70eabd2e8d0c7ced7d964dac340e5",
+  "public_contract": "tasks/278-lane-mask-replication-driver/public_contract.json",
+  "public_contract_sha256": "812c7fb2ce4e3370cc9d1778b86535d5f8000e1d389206bb99b0181168edbbaa",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/278-lane-mask-replication-driver",
+  "task_id": "v4-278"
+}

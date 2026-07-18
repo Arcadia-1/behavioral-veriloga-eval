@@ -40,20 +40,20 @@ python3 operations/tri_form_derivation_prep/audit_tri_form_release.py \
   --output /tmp/benchmarkv4_audit.json
 ```
 
-Stage r45 in its separate `release/benchmarkv4-r45/` tree only after the
-three r45 certification artifacts exist under `evidence/r45/`:
+Stage r46 in its separate `release/benchmarkv4-r46/` tree only after the
+three r46 certification artifacts exist under `evidence/r46/`:
 
 ```bash
 python3 operations/tri_form_derivation_prep/rebuild_tri_form_release.py \
-  --release-revision r45
+  --release-revision r46
 ```
 
-Every release command requires an explicit revision. The r44 materializer and
-rebuilder fail closed because rebuilding that tracked immutable tree would
-change its identity. The r45 auditor never falls back to `evidence/r44/`.
+Every release command requires an explicit revision. The tracked r44 and r45
+release trees are immutable: the materializer/rebuilder fail closed rather
+than overwrite them. The r46 auditor never falls back to prior evidence.
 
-The active tracked release package is `release/benchmarkv4-r45/`. The immutable
-r44 predecessor remains at `release/benchmarkv4/` for historical verification.
+The active tracked release package is `release/benchmarkv4-r46/`. The immutable
+r44 and r45 predecessors remain available for historical verification.
 The active package root contains the package manifest, task index, prompt
 components, and `tasks/`. There is no
 separate top-level `private_evaluator/` mirror and no top-level
@@ -75,7 +75,7 @@ The construction source package is tracked separately under
 the final distributable package. Build/audit provenance stays there and in the
 materializer/audit scripts, not in every task directory. Per-task public
 contracts live at
-`release/benchmarkv4-r45/tasks/<task>/public_contract.json` as
+`release/benchmarkv4-r46/tasks/<task>/public_contract.json` as
 machine-readable metadata for evaluators and tooling. Runtime export does not
 mount or inline them into model prompts.
 
@@ -96,13 +96,15 @@ needed:
 python3 operations/tri_form_derivation_prep/build_sync_prep.py
 ```
 
-The materialized release is structurally audited, but its status remains
-`materialized_gate3_audit_pending`. Runtime export evidence proves record
-ingestion and public/private bundle isolation only. It is not a model-run
-result, a fixed-toolchain EVAS/Spectre certification, or a final score.
+A newly materialized candidate remains `materialized_gate3_audit_pending`
+until its revision-scoped simulation evidence, audit, and seal are complete.
+The tracked r46 package has passed that gate; see `R46_RELEASE_CERTIFICATION.md`.
+Runtime export evidence alone proves record ingestion and public/private bundle
+isolation only. It is not a model-run result, a fixed-toolchain EVAS/Spectre
+certification, or a final score.
 
 The old `formal_derivatives/` front-20 packages are prototypes and are not the
 canonical 800 derivative tasks. The canonical public generated views live under
-`release/benchmarkv4-r45/tasks/`. The historical "tri-form" wording remains an
+`release/benchmarkv4-r46/tasks/`. The historical "tri-form" wording remains an
 internal construction term for DUT/Testbench/Bugfix derivation, not the public
 package name.

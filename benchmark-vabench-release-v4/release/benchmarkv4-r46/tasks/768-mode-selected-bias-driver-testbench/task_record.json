@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "268-mode-selected-bias-driver",
+  "checker_task_id": "v4_268_mode_selected_bias_driver",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "273334da5791c542993718ac55b430421b397834e949ce4937175a3895565588",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "c6ad044bf9cc77f8d0acdf7a9d88c6c60a0b205f2eb355c118be2eba7fd3a8e9",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "268",
+  "family_spec_sha256": "e6f0414c910eabdc107a2c05337e8b1d4aad373c35499c88ecb7b27300bf9b6d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d07b29f120b63f4d6166cfeb85f00015fd5ae09674c7f8d0bb22c37f4452bbd8",
+  "public_contract": "tasks/768-mode-selected-bias-driver-testbench/public_contract.json",
+  "public_contract_sha256": "83cec570e17f5dd6ebad8a4d5ee254c8d3931f9d06af638cb0b8558c49cd843c",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/768-mode-selected-bias-driver-testbench",
+  "task_id": "v4-768"
+}

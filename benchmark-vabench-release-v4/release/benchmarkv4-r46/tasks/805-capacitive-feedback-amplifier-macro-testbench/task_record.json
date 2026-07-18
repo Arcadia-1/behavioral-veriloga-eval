@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "305-capacitive-feedback-amplifier-macro",
+  "checker_task_id": "v4_305_capacitive_feedback_amplifier_macro",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "4f7195cb33a2f4574adac8c76a155f9ec352f381e924209ea6ef7aed80f1c463",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "ac71207204b77ea05f327e1596223ad3564e638de92ac736c1d4e22c45ce218a",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "305",
+  "family_spec_sha256": "33057e69d60e8e9bf599d6ca3b38414590ff5aaae522bfa943e5c2c6f5bf1eab",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "09da510d7c79a714c3fbd3ba22763a90d54ee082dd0fef6d8c6e6a8ff29248b9",
+  "public_contract": "tasks/805-capacitive-feedback-amplifier-macro-testbench/public_contract.json",
+  "public_contract_sha256": "58e39a7082b7d50608e515d83091068e9f027f13991ca62a402d896194e6a375",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/805-capacitive-feedback-amplifier-macro-testbench",
+  "task_id": "v4-805"
+}

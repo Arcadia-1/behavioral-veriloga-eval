@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "234-programmable-divider-by-n",
+  "checker_task_id": "v4_234_programmable_divider_by_n",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "988585e90b094a99e6580984f46be5deca7c61a323ca6f85c0e06ca858ffa532",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "324b5d046a2ce7af76af98fbc14c7d39f35b5faab4413543796cf7a1e3cdc66b",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "234",
+  "family_spec_sha256": "55c2fecb246ae16a9acad4fec93d7b9b9b19ebfb8c42d9f41ad1588ebfb47df9",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1a28880e3f7c8642fee152da2f58fbfff04f1f2c8fb32b4189e2a42b50e3e280",
+  "public_contract": "tasks/734-programmable-divider-by-n-testbench/public_contract.json",
+  "public_contract_sha256": "a8b2c0702ba8d8f83bff052250ac70a073077fe51f2bf313965b0260df7057dd",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/734-programmable-divider-by-n-testbench",
+  "task_id": "v4-734"
+}

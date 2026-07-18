@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "213-tool-4bit-sar-signed-dac",
+  "checker_task_id": "v4_213_tool_4bit_sar_signed_dac",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "c36bf3f1c7a30eec321cfddb4559cee8412a03c63551377b12b0bfe1b005344e",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "478a932bbd0a6b74a36dbbd48c01e0c80d1007f5747ca3050f545ae31c9f72d4",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "213",
+  "family_spec_sha256": "5e9573ccd93d1c21c8ab2e3f055359c810d46cc1129892917c43b08ec75ac941",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e6aac1063c45c4fcc538b059a32e6eb19c1769d2cbab74b3d4e05eff78902327",
+  "public_contract": "tasks/713-tool-4bit-sar-signed-dac-testbench/public_contract.json",
+  "public_contract_sha256": "185ca6f67a4c2c626770d88b383b8395aa5c3aa51050ef5e7111c959567c863d",
+  "release_revision": "r46",
+  "schema_version": "r46-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/713-tool-4bit-sar-signed-dac-testbench",
+  "task_id": "v4-713"
+}

@@ -1,0 +1,24 @@
+{
+  "corners": [],
+  "deck_overrides": {},
+  "deterministic_seed": 0,
+  "generated_from": {
+    "script": "render_v4_harness.py",
+    "version": "v4-harness-renderer-v1"
+  },
+  "harness_spec_sha256": "c81a6c40fe9fda9c9622b4c67a61479f5c32b92e70b5489e2c41217418d4494f",
+  "parameters": {},
+  "profile_name": "feedback",
+  "property_ids": [
+    "P_FREQ_Q_CLIP_FNOM_DFDV_V",
+    "P_PHASE_Q_IDTMOD_FREQ_Q_0",
+    "P_OUTP_VCM_VAC_SIN_M_TWO",
+    "P_OUTM_VCM_VAC_SIN_M_TWO",
+    "P_METRIC_0_9_PHASE_Q_VOLTAGE"
+  ],
+  "public_visible": true,
+  "schema_version": "v4-harness-profile-v1",
+  "simulatorOptions": {
+    "evas_profile": "balanced"
+  }
+}
