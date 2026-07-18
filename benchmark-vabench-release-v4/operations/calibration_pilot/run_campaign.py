@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 import re
 import shlex
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -488,7 +489,7 @@ TOOLS = [
     {"type": "function", "function": {"name": "list_files", "description": "List readable task files and writable submission files.", "parameters": {"type": "object", "properties": {}}}},
     {"type": "function", "function": {"name": "read_file", "description": "Read a public task or submission text file.", "parameters": {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]}}},
     {"type": "function", "function": {"name": "write_file", "description": "Create or replace a submission file.", "parameters": {"type": "object", "properties": {"path": {"type": "string"}, "content": {"type": "string"}}, "required": ["path", "content"]}}},
-    {"type": "function", "function": {"name": "feedback", "description": "Run the shared public feedback service on the current submission.", "parameters": {"type": "object", "properties": {"channels": {"type": "array", "items": {"type": "string"}}}}}},
+    {"type": "function", "function": {"name": "run_evas", "description": "Run EVAS against the task-local visible test. Testbench tasks require one public case name from evas_runtime.json.", "parameters": {"type": "object", "properties": {"case": {"type": "string"}}, "additionalProperties": False}}},
     {"type": "function", "function": {"name": "finalize", "description": "Finalize the current submission.", "parameters": {"type": "object", "properties": {}}}},
 ]
 
@@ -542,6 +543,147 @@ def command_result(
         "stderr": completed.stderr[-4000:],
         "elapsed_s": time.monotonic() - started,
     }
+
+
+def argv_result(argv: list[str], runtime: Path, timeout_s: int) -> dict[str, Any]:
+    """Run one operator-selected executable with benchmark-controlled arguments."""
+    started = time.monotonic()
+    try:
+        completed = subprocess.run(
+            argv,
+            cwd=runtime,
+            env=os.environ.copy(),
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            timeout=timeout_s,
+            check=False,
+        )
+    except subprocess.TimeoutExpired as exc:
+        stdout = exc.stdout.decode(errors="replace") if isinstance(exc.stdout, bytes) else exc.stdout
+        stderr = exc.stderr.decode(errors="replace") if isinstance(exc.stderr, bytes) else exc.stderr
+        return {
+            "execution_status": "timeout",
+            "returncode": None,
+            "stdout": (stdout or "")[-12000:],
+            "stderr": (stderr or "")[-4000:],
+            "elapsed_s": time.monotonic() - started,
+        }
+    except OSError as exc:
+        return {
+            "execution_status": "launch_error",
+            "returncode": None,
+            "stdout": "",
+            "stderr": str(exc)[:4000],
+            "elapsed_s": time.monotonic() - started,
+        }
+    return {
+        "execution_status": "completed",
+        "returncode": completed.returncode,
+        "stdout": completed.stdout[-12000:],
+        "stderr": completed.stderr[-4000:],
+        "elapsed_s": time.monotonic() - started,
+    }
+
+
+def confined_path(root: Path, relative: str) -> Path:
+    path = root / safe_relative(relative)
+    path.resolve().relative_to(root.resolve())
+    return path
+
+
+def run_public_evas(
+    runtime: Path,
+    arguments: dict[str, Any],
+    timeout_s: int,
+    evas_command: str,
+) -> dict[str, Any]:
+    """Execute only the fixed public EVAS contract, never an agent-supplied command."""
+    public = runtime / "public"
+    task = public / "task"
+    submission = public / "submission"
+    contract_path = task / "evas_runtime.json"
+    if not contract_path.is_file():
+        return {"status": "unavailable", "reason": "public EVAS runtime contract is missing"}
+    contract = read_json(contract_path)
+    if contract.get("working_directory") != "runtime_package_root":
+        raise ValueError("unsupported EVAS working directory")
+    executable = shlex.split(evas_command)
+    if not executable:
+        raise ValueError("empty EVAS executable command")
+
+    schema_version = str(contract.get("schema_version") or "")
+    requested_case = arguments.get("case")
+    if schema_version == "r45-direct-evas-runtime-v1":
+        if requested_case not in (None, ""):
+            raise ValueError("DUT and bugfix visible tests do not accept a case")
+        if contract.get("command") != (
+            "evas simulate public/task/visible_test.scs -o "
+            "public/submission/evas-output --spectre-strict"
+        ):
+            raise ValueError("unrecognized public EVAS command contract")
+        deck = confined_path(runtime, "public/task/visible_test.scs")
+        output = confined_path(submission, "evas-output")
+        if not deck.is_file():
+            raise FileNotFoundError("visible_test.scs is missing")
+        argv = [*executable, "simulate", str(deck), "-o", str(output), "--spectre-strict"]
+        result = argv_result(argv, runtime, timeout_s)
+        result.update({
+            "status": "pass" if result.get("returncode") == 0 else "fail",
+            "case": None,
+            "test": "public/task/visible_test.scs",
+        })
+        return result
+
+    if schema_version != "r45-direct-evas-testbench-suite-v1":
+        raise ValueError(f"unsupported public EVAS runtime schema: {schema_version!r}")
+    if contract.get("fixture_policy") != "read_only_and_identical_for_visible_and_final_replay":
+        raise ValueError("unsupported public fixture policy")
+    if contract.get("candidate") != "public/submission/testbench.scs":
+        raise ValueError("unrecognized testbench candidate path")
+    case = str(requested_case or "")
+    cases = {
+        str(row.get("case")): str(row.get("dut_root"))
+        for row in contract.get("cases") or []
+        if isinstance(row, dict)
+    }
+    expected_cases = {"reference", *(f"mutation_{index:02d}" for index in range(1, 6))}
+    if set(cases) != expected_cases:
+        raise ValueError("public EVAS testbench suite must contain reference plus five mutations")
+    if case not in cases:
+        raise ValueError(f"unknown public EVAS case: {case!r}; choose one of {sorted(cases)}")
+    if not re.fullmatch(r"reference|mutation_0[1-5]", case):
+        raise ValueError("public EVAS case name is outside the fixed suite")
+    candidate = confined_path(submission, "testbench.scs")
+    if not candidate.is_file():
+        raise FileNotFoundError("submission/testbench.scs is missing")
+    fixture = confined_path(task, cases[case])
+    fixture.resolve().relative_to((task / "visible_fixtures").resolve())
+    if not fixture.is_dir():
+        raise FileNotFoundError(f"public fixture is missing for {case}")
+
+    run_dir = confined_path(submission, f"runs/{case}")
+    if run_dir.exists():
+        shutil.rmtree(run_dir)
+    run_dir.mkdir(parents=True)
+    shutil.copy2(candidate, run_dir / "testbench.scs")
+    shutil.copytree(fixture, run_dir / "dut")
+    output = confined_path(submission, f"evas-output/{case}")
+    argv = [
+        *executable,
+        "simulate",
+        str(run_dir / "testbench.scs"),
+        "-o",
+        str(output),
+        "--spectre-strict",
+    ]
+    result = argv_result(argv, runtime, timeout_s)
+    result.update({
+        "status": "pass" if result.get("returncode") == 0 else "fail",
+        "case": case,
+        "test": f"submission/runs/{case}/testbench.scs",
+    })
+    return result
 
 
 def load_trusted_replay_adapter_result(runtime: Path) -> dict[str, Any] | None:
@@ -724,9 +866,8 @@ def execute_tool(
     name: str,
     arguments: dict[str, Any],
     runtime: Path,
-    feedback_command: str | None,
     timeout_s: int,
-    feedback_output_mode: str,
+    evas_command: str,
 ) -> tuple[str, bool]:
     public = runtime / "public"
     submission = public / "submission"
@@ -781,13 +922,8 @@ def execute_tool(
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(str(arguments["content"]), encoding="utf-8")
         return json.dumps({"written": relative.as_posix(), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}), False
-    if name == "feedback":
-        if not feedback_command:
-            return json.dumps({"status": "unavailable", "reason": "feedback command not configured"}), False
-        result = command_result(feedback_command, runtime, timeout_s)
-        if feedback_output_mode == "compact":
-            result = compact_feedback_result(result)
-        return json.dumps(result), False
+    if name == "run_evas":
+        return json.dumps(run_public_evas(runtime, arguments, timeout_s, evas_command)), False
     if name == "finalize":
         return json.dumps({"status": "finalized"}), True
     raise ValueError(f"unknown tool: {name}")
@@ -1241,9 +1377,8 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
                     function["name"],
                     arguments,
                     runtime,
-                    args.feedback_command,
                     args.tool_timeout_s,
-                    args.feedback_output_mode,
+                    args.evas_command,
                 )
             except Exception as exc:  # Model tool mistakes are episode evidence, not runner failures.
                 text = json.dumps({
@@ -1448,18 +1583,11 @@ def main() -> int:
     parser.add_argument("--request-timeout-s", type=int, default=600)
     parser.add_argument("--tool-timeout-s", type=int, default=120)
     parser.add_argument("--judge-timeout-s", type=int, default=600)
-    parser.add_argument("--feedback-command")
-    parser.add_argument(
-        "--feedback-output-mode",
-        choices=("compact", "raw"),
-        default="compact",
-        help="Payload returned to the model by the feedback tool; compact keeps oracle/error summaries and omits verbose simulator counters.",
-    )
     parser.add_argument("--final-judge-command")
     parser.add_argument(
         "--evas-command",
         default="evas",
-        help="EVAS executable command used only to record trusted replay identity.",
+        help="EVAS executable used by the restricted visible-test tool and recorded for trusted replay identity.",
     )
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--stream", action="store_true", help="Use OpenAI-compatible SSE streaming responses.")

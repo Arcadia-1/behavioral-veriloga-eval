@@ -8,18 +8,16 @@ Implemented:
 - `run_benchmarkv4_campaign.py` is the unified experiment entry point for
   `release/benchmarkv4`: it builds a random or preselected campaign, then runs
   `G0`/`G1` through direct one-shot artifact extraction and `G2`-`G5` through
-  the real agentic tool-calling filesystem/feedback loop. Both paths enter the
+  the real agentic filesystem plus restricted visible-EVAS loop. Both paths enter the
   same strict declared-artifact gate before they become score-eligible.
 
 Boundary:
 
 - The campaign runner is a generation/materialization runner, not the final
   Spectre scorer.
-- Faithful single-turn API runs are `G0` and `G1`. `G2`-`G5` use the real
-  tool-calling filesystem/feedback backend; they are not simulated by a single
-  chat prompt.
-- `feedback_evas` scoring is provisional feedback only. Final benchmark scores
-  still require Spectre plus the deterministic checker.
+- Faithful single-turn API runs are `G0` and `G1`. `G2`-`G5` can read and write
+  their isolated workspace and invoke only the public `run_evas` contract;
+  they cannot query a checker, gold solution, mutation catalog, or score.
 - Deprecated API-only and initial-judge entry points were removed from this
   package to keep one comparable G0-G5 path.
 
@@ -48,12 +46,12 @@ python3 benchmark-vabench-release-v4/runners/run_benchmarkv4_campaign.py \
   --output-root /tmp/benchmarkv4-campaign-dry-run
 ```
 
-Provisional feedback scoring for a completed campaign:
+Final trusted replay for a completed campaign:
 
 ```bash
 python3 benchmark-vabench-release-v4/operations/calibration_pilot/score_campaign.py \
   --campaign-output /tmp/benchmarkv4-deepseek-campaign/run \
-  --judge-kind feedback_evas \
+  --judge-kind final_trusted_replay \
   --judge-command \
-    "python3 benchmark-vabench-release-v4/operations/calibration_pilot/feedback_adapter.py"
+    "python3 /path/to/trusted_replay_adapter.py"
 ```

@@ -152,11 +152,10 @@ def run_args(output: Path) -> SimpleNamespace:
         release=RELEASE,
         resume=False,
         dry_run=False,
-        feedback_command=None,
-        feedback_output_mode="compact",
         final_judge_command=None,
         tool_timeout_s=30,
         judge_timeout_s=30,
+        evas_command="evas",
     )
 
 
@@ -178,6 +177,98 @@ class FakeClient:
 class UnexpectedClientCall:
     def complete(self, *_args, **_kwargs):
         raise AssertionError("resume should finish checkpointed tool calls before another model call")
+
+
+def fake_evas_command(tmp_path: Path) -> str:
+    script = tmp_path / "fake_evas.py"
+    script.write_text(
+        """from pathlib import Path
+import json
+import sys
+args = sys.argv[1:]
+output = Path(args[args.index('-o') + 1])
+output.mkdir(parents=True, exist_ok=True)
+(output / 'invocation.json').write_text(json.dumps({'argv': args, 'cwd': str(Path.cwd())}))
+""",
+        encoding="utf-8",
+    )
+    return f"{sys.executable} {script}"
+
+
+def test_active_agent_tools_expose_restricted_evas_not_feedback() -> None:
+    runner = load_run_campaign()
+    names = [tool["function"]["name"] for tool in runner.TOOLS]
+    assert names == ["list_files", "read_file", "write_file", "run_evas", "finalize"]
+
+
+def test_run_evas_dut_uses_fixed_public_contract(tmp_path: Path) -> None:
+    runner = load_run_campaign()
+    runtime = tmp_path / "runtime"
+    task = runtime / "public" / "task"
+    submission = runtime / "public" / "submission"
+    task.mkdir(parents=True)
+    submission.mkdir(parents=True)
+    (task / "visible_test.scs").write_text("tran tran stop=1n\n", encoding="utf-8")
+    (task / "evas_runtime.json").write_text(json.dumps({
+        "schema_version": "r45-direct-evas-runtime-v1",
+        "command": "evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict",
+        "working_directory": "runtime_package_root",
+    }) + "\n", encoding="utf-8")
+
+    result = runner.run_public_evas(runtime, {}, 30, fake_evas_command(tmp_path))
+
+    assert result["status"] == "pass"
+    invocation = json.loads(
+        (submission / "evas-output" / "invocation.json").read_text(encoding="utf-8")
+    )
+    assert invocation["cwd"] == str(runtime)
+    assert invocation["argv"][0] == "simulate"
+    assert Path(invocation["argv"][1]) == task / "visible_test.scs"
+    assert Path(invocation["argv"][invocation["argv"].index("-o") + 1]).is_relative_to(submission)
+
+
+def test_run_evas_testbench_uses_candidate_and_public_case_only(tmp_path: Path) -> None:
+    runner = load_run_campaign()
+    runtime = tmp_path / "runtime"
+    task = runtime / "public" / "task"
+    submission = runtime / "public" / "submission"
+    fixture_roots = {}
+    for case in ["reference", *(f"mutation_{index:02d}" for index in range(1, 6))]:
+        fixture_roots[case] = task / "visible_fixtures" / case / "dut"
+        fixture_roots[case].mkdir(parents=True)
+        (fixture_roots[case] / "dut.va").write_text(
+            f"module dut; // {case}\nendmodule\n", encoding="utf-8"
+        )
+    fixture = fixture_roots["reference"]
+    submission.mkdir(parents=True)
+    (submission / "testbench.scs").write_text('ahdl_include "./dut/dut.va"\n', encoding="utf-8")
+    (task / "evas_runtime.json").write_text(json.dumps({
+        "schema_version": "r45-direct-evas-testbench-suite-v1",
+        "candidate": "public/submission/testbench.scs",
+        "fixture_policy": "read_only_and_identical_for_visible_and_final_replay",
+        "working_directory": "runtime_package_root",
+        "cases": [
+            {"case": case, "dut_root": f"visible_fixtures/{case}/dut"}
+            for case in fixture_roots
+        ],
+    }) + "\n", encoding="utf-8")
+
+    result = runner.run_public_evas(
+        runtime, {"case": "reference"}, 30, fake_evas_command(tmp_path)
+    )
+
+    assert result["status"] == "pass"
+    run_dir = submission / "runs" / "reference"
+    assert (run_dir / "testbench.scs").read_bytes() == (submission / "testbench.scs").read_bytes()
+    assert (run_dir / "dut" / "dut.va").read_bytes() == (fixture / "dut.va").read_bytes()
+    try:
+        runner.run_public_evas(
+            runtime, {"case": "../../evaluator"}, 30, fake_evas_command(tmp_path)
+        )
+    except ValueError as exc:
+        assert "unknown public EVAS case" in str(exc)
+    else:
+        raise AssertionError("run_evas accepted a case outside the public suite")
 
 
 def test_build_campaign_samples_complete_benchmarkv4_families_without_prompt_records() -> None:
@@ -202,10 +293,10 @@ def test_build_campaign_samples_complete_benchmarkv4_families_without_prompt_rec
 
     by_mode = {cell["mode"]: cell for cell in campaign["cells"][:6]}
     assert by_mode["G0"]["process"] == "direct_one_shot"
-    assert by_mode["G0"]["feedback_cli_available"] is False
+    assert by_mode["G0"]["evas_cli_available"] is False
     assert by_mode["G1"]["process"] == "direct_one_shot"
     assert by_mode["G2"]["process"] == "agentic"
-    assert by_mode["G2"]["feedback_cli_available"] is True
+    assert by_mode["G2"]["evas_cli_available"] is True
     assert by_mode["G5"]["response_protocol"] == "v4-strict-workspace-finalizer-v1"
 
 
@@ -642,7 +733,7 @@ def test_campaign_wrapper_redacts_credential_and_operator_command_paths(
 ) -> None:
     output = tmp_path / "campaign-redacted"
     secret_path = tmp_path / "private" / "provider.key"
-    feedback_command = f"python3 {tmp_path / 'private' / 'feedback.py'}"
+    judge_command = f"python3 {tmp_path / 'private' / 'judge.py'}"
     completed = subprocess.run(
         [
             sys.executable,
@@ -659,8 +750,8 @@ def test_campaign_wrapper_redacts_credential_and_operator_command_paths(
             "test-model",
             "--api-key-file",
             str(secret_path),
-            "--feedback-command",
-            feedback_command,
+            "--final-judge-command",
+            judge_command,
             "--dry-run",
         ],
         text=True,
@@ -674,7 +765,7 @@ def test_campaign_wrapper_redacts_credential_and_operator_command_paths(
     campaign_text = (output / "campaign.json").read_text(encoding="utf-8")
     persisted_text = summary_text + campaign_text
     assert str(secret_path) not in persisted_text
-    assert feedback_command not in persisted_text
+    assert judge_command not in persisted_text
     assert "<redacted-credential-file>" in summary_text
     assert "<redacted-operator-command>" in summary_text
 
@@ -691,7 +782,7 @@ def test_budget_reuse_requires_identical_execution_configuration() -> None:
             "temperature": 0.0,
             "stream": False,
             "base_url_sha256": "c" * 64,
-            "feedback_command_sha256": "d" * 64,
+            "evas_command_sha256": "d" * 64,
         },
     }
     target = json.loads(json.dumps(base))

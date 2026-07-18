@@ -48,7 +48,7 @@ def mode_prompt_record(release: Path, task_id: str, mode: str) -> dict[str, Any]
         "task_id": task_id,
         "mode": mode,
         "process": process,
-        "evas_cli_available": bool(spec.get("evas_cli")),
+        "evas_cli_available": process == "agentic",
         "response_protocol": MODE_RESPONSE_PROTOCOL[process],
         "prompt_mode_spec": spec,
     }

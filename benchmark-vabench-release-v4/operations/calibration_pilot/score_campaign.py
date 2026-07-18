@@ -126,7 +126,8 @@ def event_telemetry(events: list[dict[str, Any]]) -> dict[str, Any]:
         ),
         "tool_calls": dict(sorted(tools.items())),
         "tool_calls_total": sum(tools.values()),
-        "feedback_calls": tools.get("feedback", 0),
+        "evas_calls": tools.get("run_evas", 0),
+        "legacy_feedback_calls": tools.get("feedback", 0),
         "provider_output_tokens_total": output_tokens,
         "provider_reasoning_tokens_total": reasoning_tokens,
         "provider_visible_tokens_total": visible_tokens,
@@ -240,7 +241,11 @@ def summarize(rows: list[dict[str, Any]], judge_kind: str) -> dict[str, Any]:
             "episode_elapsed_s_median": statistics.median(elapsed) if elapsed else None,
             "model_calls_total": sum(int(row.get("telemetry", {}).get("model_calls", 0)) for row in selected),
             "tool_calls_total": sum(int(row.get("telemetry", {}).get("tool_calls_total", 0)) for row in selected),
-            "feedback_calls_total": sum(int(row.get("telemetry", {}).get("feedback_calls", 0)) for row in selected),
+            "evas_calls_total": sum(int(row.get("telemetry", {}).get("evas_calls", 0)) for row in selected),
+            "legacy_feedback_calls_total": sum(
+                int(row.get("telemetry", {}).get("legacy_feedback_calls", 0))
+                for row in selected
+            ),
             "provider_reasoning_tokens_total": sum(
                 int(row.get("telemetry", {}).get("provider_reasoning_tokens_total", 0))
                 for row in selected
@@ -257,7 +262,7 @@ def summarize(rows: list[dict[str, Any]], judge_kind: str) -> dict[str, Any]:
         "score_authority": (
             "final"
             if judge_kind in {"final_trusted_replay", "final_spectre"}
-            else "provisional_feedback_only"
+            else "legacy_provisional_feedback_only"
         ),
         "cell_count": len(rows),
         "submission_statuses": dict(Counter(row["submission_status"] for row in rows)),
@@ -273,7 +278,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--campaign-output", type=Path, required=True)
     parser.add_argument(
         "--judge-kind",
-        choices=("feedback_evas", "final_trusted_replay", "final_spectre"),
+        choices=("legacy_feedback_evas", "final_trusted_replay", "final_spectre"),
         required=True,
     )
     parser.add_argument("--judge-command")
