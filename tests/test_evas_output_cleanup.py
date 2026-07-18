@@ -1,8 +1,13 @@
 import json
 import subprocess
+import sys
 from pathlib import Path
 
-import simulate_evas
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "runners"))
+
+import simulate_evas  # noqa: E402
 
 
 def test_run_case_removes_stale_tran_csv_before_evas(monkeypatch, tmp_path: Path) -> None:
