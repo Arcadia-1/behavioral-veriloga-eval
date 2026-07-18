@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 
 
-REQUIRED_EVAS_VERSION = "0.8.2"
+REQUIRED_EVAS_VERSION = "0.8.3"
 
 
 def find_repo_root(path: Path) -> Path:
