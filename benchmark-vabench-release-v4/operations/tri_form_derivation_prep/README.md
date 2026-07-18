@@ -52,8 +52,10 @@ Every release command requires an explicit revision. The r44 materializer and
 rebuilder fail closed because rebuilding that tracked immutable tree would
 change its identity. The r45 auditor never falls back to `evidence/r44/`.
 
-The tracked release package is `release/benchmarkv4/`. Its root contains the
-package manifest, task index, prompt components, and `tasks/`. There is no
+The active tracked release package is `release/benchmarkv4-r45/`. The immutable
+r44 predecessor remains at `release/benchmarkv4/` for historical verification.
+The active package root contains the package manifest, task index, prompt
+components, and `tasks/`. There is no
 separate top-level `private_evaluator/` mirror and no top-level
 `public_contracts/` tree. Instead, every task has the same internal layout:
 
@@ -73,7 +75,7 @@ The construction source package is tracked separately under
 the final distributable package. Build/audit provenance stays there and in the
 materializer/audit scripts, not in every task directory. Per-task public
 contracts live at
-`release/benchmarkv4/tasks/<task>/public_contract.json` as
+`release/benchmarkv4-r45/tasks/<task>/public_contract.json` as
 machine-readable metadata for evaluators and tooling. Runtime export does not
 mount or inline them into model prompts.
 
@@ -101,6 +103,6 @@ result, a fixed-toolchain EVAS/Spectre certification, or a final score.
 
 The old `formal_derivatives/` front-20 packages are prototypes and are not the
 canonical 800 derivative tasks. The canonical public generated views live under
-`release/benchmarkv4/tasks/`. The historical "tri-form" wording remains an
+`release/benchmarkv4-r45/tasks/`. The historical "tri-form" wording remains an
 internal construction term for DUT/Testbench/Bugfix derivation, not the public
 package name.

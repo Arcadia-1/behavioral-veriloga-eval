@@ -1,6 +1,9 @@
 # V4 Calibration Pilot
 
-The default release target is `benchmark-vabench-release-v4/release/benchmarkv4`.
+The default release target is
+`benchmark-vabench-release-v4/release/benchmarkv4-r45`. Tools that support
+historical inspection require the frozen r44 path explicitly; the active
+direct-EVAS runner never falls back to it.
 Use `--sample-families N --seed S` for reproducible random complete-family
 campaigns, or pass an explicit `--selection` manifest when reproducing a
 historical pilot. `CALIBRATION_FAMILIES.json` is retained only as historical

@@ -45,8 +45,9 @@ from runners.simulate_evas import (  # noqa: E402
 
 
 REQUIRED_EVAS_ENGINE = "evas2"
-REQUIRED_EVAS_VERSION = "0.8.2"
+REQUIRED_EVAS_VERSION = "0.8.3"
 REQUIRED_EVAS_BACKEND = "evas-rust"
+DEFAULT_RELEASE_REVISION = "r45"
 
 # Scaling the stimulus changes the physical operating point when the DUT owns
 # fixed absolute delay/frequency constants. Translation still exercises the
@@ -71,6 +72,18 @@ _SCALE = {
 }
 
 
+def compact_evidence_identity(release_revision: str) -> tuple[str, str]:
+    if release_revision not in {"r44", "r45"}:
+        raise ValueError(f"unsupported release revision: {release_revision}")
+    release_label = (
+        "release/benchmarkv4"
+        if release_revision == "r44"
+        else f"release/benchmarkv4-{release_revision}"
+    )
+    schema_version = f"v4-{release_revision}-stimulus-metamorphic-compact-v1"
+    return release_label, schema_version
+
+
 def parse_time(value: str) -> float:
     match = _QUANTITY.fullmatch(value.strip())
     if match is None or match.group("unit").lower() not in _SCALE:
@@ -90,7 +103,7 @@ def format_time(seconds: float) -> str:
 
 
 def require_rust_evas2(combined: str) -> dict[str, str]:
-    """Reject metamorphic evidence unless EVAS 0.8.2 Rust actually ran."""
+    """Reject metamorphic evidence unless the pinned Rust EVAS actually ran."""
     configured = effective_evas_engine()
     explicit_engine = os.environ.get("EVAS_ENGINE", "").strip().lower()
     default_engine = os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE", "").strip().lower()
@@ -105,7 +118,9 @@ def require_rust_evas2(combined: str) -> dict[str, str]:
             f"configured={configured!r} explicit={explicit_engine!r} default={default_engine!r}"
         )
     if f"Version {REQUIRED_EVAS_VERSION}" not in combined:
-        raise RuntimeError("EVAS2 evidence missing EVAS 0.8.2 version marker")
+        raise RuntimeError(
+            f"EVAS2 evidence missing EVAS {REQUIRED_EVAS_VERSION} version marker"
+        )
     if f"evas_engine = {REQUIRED_EVAS_BACKEND}" not in combined:
         raise RuntimeError("EVAS2 evidence missing Rust backend marker")
     return {
@@ -370,7 +385,14 @@ def main() -> int:
     parser.add_argument("--shift", type=float, default=2e-9)
     parser.add_argument("--timeout-s", type=int, default=120)
     parser.add_argument("--workers", type=int, default=8)
+    parser.add_argument(
+        "--release-revision",
+        choices=("r44", "r45"),
+        default=DEFAULT_RELEASE_REVISION,
+        help="release identity written into evidence (default: r45)",
+    )
     args = parser.parse_args()
+    release_label, compact_schema = compact_evidence_identity(args.release_revision)
     require_evas2_environment()
     if args.work_root.exists():
         shutil.rmtree(args.work_root)
@@ -418,7 +440,7 @@ def main() -> int:
         "evas_engine_used": REQUIRED_EVAS_ENGINE,
         "evas_version": REQUIRED_EVAS_VERSION,
         "evas_backend": REQUIRED_EVAS_BACKEND,
-        "release": "release/benchmarkv4",
+        "release": release_label,
         "transform": {
             "default_scale": args.scale,
             "shift_s": args.shift,
@@ -459,14 +481,14 @@ def main() -> int:
             for item in results
         ]
         compact = {
-            "schema_version": "v4-r44-stimulus-metamorphic-compact-v1",
+            "schema_version": compact_schema,
             "status": report["status"],
             "certification_policy": "rust_evas2_only",
             "evas_engine": REQUIRED_EVAS_ENGINE,
             "evas_engine_used": REQUIRED_EVAS_ENGINE,
             "evas_version": REQUIRED_EVAS_VERSION,
             "evas_backend": REQUIRED_EVAS_BACKEND,
-            "release": "release/benchmarkv4",
+            "release": release_label,
             "transform": report["transform"],
             "summary": {
                 "task_count": len(results),

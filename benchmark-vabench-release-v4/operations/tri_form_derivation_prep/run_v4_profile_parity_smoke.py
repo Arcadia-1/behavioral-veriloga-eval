@@ -17,10 +17,10 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE_ROOT = ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
-DEFAULT_RELEASE = ROOT / "release" / "benchmarkv4"
+DEFAULT_RELEASE = ROOT / "release" / "benchmarkv4-r45"
 FORMS = ("dut", "testbench", "bugfix")
 REQUIRED_EVAS_ENGINE = "evas2"
-REQUIRED_EVAS_VERSION = "0.8.2"
+REQUIRED_EVAS_VERSION = "0.8.3"
 RUST_EVAS_LOG_ENGINE = "evas-rust"
 
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -59,6 +59,12 @@ def canonical_payload(spec: dict[str, Any]) -> dict[str, Any]:
 def digest(value: Any) -> str:
     encoded = json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
     return hashlib.sha256(encoded).hexdigest()
+
+
+def release_label(revision: str) -> str:
+    if revision == "r44":
+        return "release/benchmarkv4"
+    return f"release/benchmarkv4-{revision}"
 
 
 def source_family(family_id: str) -> Path:
@@ -148,6 +154,7 @@ def audit_row(release: Path, row: dict[str, Any]) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--release", type=Path, default=DEFAULT_RELEASE)
+    parser.add_argument("--release-revision", choices=("r44", "r45"), default="r45")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--task-id", action="append")
     parser.add_argument("--family-range", type=parse_range, default=(1, 400))
@@ -161,7 +168,8 @@ def main() -> int:
     ]
     report = {
         "schema_version": "v4-profile-parity-evas2-smoke-v1",
-        "release": "release/benchmarkv4",
+        "release": release_label(args.release_revision),
+        "release_revision": args.release_revision,
         "family_range": f"{args.family_range[0]:03d}-{args.family_range[1]:03d}",
         "simulation_performed": False,
         "evas_engine": REQUIRED_EVAS_ENGINE,

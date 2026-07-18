@@ -1,6 +1,8 @@
 import importlib.util
 from pathlib import Path
 
+import pytest
+
 MODULE_PATH = Path(__file__).parents[1] / "run_v4_stimulus_metamorphic.py"
 SPEC = importlib.util.spec_from_file_location("run_v4_stimulus_metamorphic", MODULE_PATH)
 assert SPEC and SPEC.loader
@@ -72,22 +74,39 @@ def test_insufficient_stimulus_leaves_constant_configuration_pwl_unchanged() -> 
     assert runner.suppress_stimulus(deck) == deck
 
 
-def test_evas2_evidence_requires_version_and_rust_backend_markers() -> None:
+def test_evas2_evidence_requires_version_and_rust_backend_markers(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("EVAS_ENGINE", "evas2")
+    monkeypatch.setenv("VAEVAS_DEFAULT_EVAS_ENGINE", "evas2")
     evidence = runner.require_rust_evas2(
-        "Version 0.8.2\n    evas_engine = evas-rust\n"
+        "Version 0.8.3\n    evas_engine = evas-rust\n"
     )
     assert evidence["evas_engine"] == "evas2"
     assert evidence["evas_engine_used"] == "evas2"
-    assert evidence["evas_version"] == "0.8.2"
+    assert evidence["evas_version"] == "0.8.3"
 
 
-def test_evas2_evidence_rejects_python_marker() -> None:
+def test_evas2_evidence_rejects_python_marker(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("EVAS_ENGINE", "evas2")
+    monkeypatch.setenv("VAEVAS_DEFAULT_EVAS_ENGINE", "evas2")
     try:
-        runner.require_rust_evas2("Version 0.8.2\n    evas_engine = python\n")
+        runner.require_rust_evas2("Version 0.8.3\n    evas_engine = python\n")
     except RuntimeError as exc:
         assert "Rust backend marker" in str(exc)
     else:
         raise AssertionError("Python EVAS evidence was accepted")
+
+
+def test_compact_evidence_identity_separates_r45_from_r44() -> None:
+    assert runner.compact_evidence_identity("r44") == (
+        "release/benchmarkv4",
+        "v4-r44-stimulus-metamorphic-compact-v1",
+    )
+    assert runner.compact_evidence_identity("r45") == (
+        "release/benchmarkv4-r45",
+        "v4-r45-stimulus-metamorphic-compact-v1",
+    )
 
 
 def test_run_case_rejects_missing_per_case_runtime_log(tmp_path, monkeypatch) -> None:

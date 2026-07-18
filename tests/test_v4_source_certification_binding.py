@@ -42,6 +42,13 @@ def write_json(path: Path, value: dict) -> None:
 
 def source_fixture(tmp_path: Path) -> tuple[Path, dict[str, dict]]:
     source = tmp_path / "source"
+    evidence_relative = Path("evidence") / "rust_evas2_fixture.json"
+    evidence_report = source.parents[1] / evidence_relative
+    write_json(evidence_report, {"engine": "evas2", "version": "0.8.3"})
+    evidence = {
+        "report_path": evidence_relative.as_posix(),
+        "report_sha256": file_sha(evidence_report),
+    }
     task = source / "001-sample"
     evaluator = task / "evaluator"
     public = task / "public" / "task"
@@ -98,7 +105,9 @@ def source_fixture(tmp_path: Path) -> tuple[Path, dict[str, dict]]:
     certification = {
         "schema_version": "v4-task-certification-v3",
         "status": "gate2_pass",
-        "evaluators": {"evas": {"status": "pass"}, "spectre": {"status": "pass"}},
+        "certification_policy": "rust_evas2_only",
+        "evaluators": {"evas2": {"status": "pass"}},
+        "evidence": evidence,
         "input_hashes": actual,
         "component_fingerprints": {"task_inputs": task_inputs},
     }
@@ -106,10 +115,9 @@ def source_fixture(tmp_path: Path) -> tuple[Path, dict[str, dict]]:
     negative_certification = {
         "schema_version": "v4-negative-certification-v1",
         "outcome": "killed_behaviorally",
-        "evaluators": {
-            "evas": "compile_pass_behavior_fail",
-            "spectre": "compile_pass_behavior_fail",
-        },
+        "certification_policy": "rust_evas2_only",
+        "evaluators": {"evas2": "compile_pass_behavior_fail"},
+        "evidence": evidence,
         "inputs": {
             "checker_profile_sha256": actual["checker_profile"],
             "harness_spec_sha256": actual["harness_spec"],
@@ -233,4 +241,3 @@ def test_unshipped_hash_only_refresh_cannot_revalidate_a_negative(tmp_path: Path
     assert summary["source_negative_certification_count"] == 0
     assert summary["stale_gold_family_ids"] == ["001"]
     assert summary["stale_negative_case_ids"] == ["001/neg_001"]
-
