@@ -28,6 +28,7 @@ from materialize_tri_form_release import (  # noqa: E402
     render_testbench_instruction,
     select_bugfix_seed,
     write_public_contract,
+    main as materialize_release,
 )
 from export_tri_form_runtime import (  # noqa: E402
     build_mode_record,
@@ -41,10 +42,13 @@ from audit_runtime_export import main as audit_runtime_export  # noqa: E402
 from record_runtime_ingestion_evidence import verified_audit  # noqa: E402
 from audit_tri_form_release import (  # noqa: E402
     RELEASE_SEAL_ARTIFACTS,
+    audit_release_evidence,
     audit_testbench_reference,
     build_release_seal,
+    evidence_artifacts,
     expected_buggy_artifact_hashes,
     file_sha,
+    prompt_component_path,
 )
 
 
@@ -663,6 +667,75 @@ def test_release_seal_binds_transitive_release_and_reused_certifications(tmp_pat
     assert seal["immutable"] is True
     assert seal["certification_reuse"] == reuse
     assert set(seal["artifact_sha256"]) == set(RELEASE_SEAL_ARTIFACTS)
+
+
+def test_r45_release_seal_has_independent_revision_identity(tmp_path: Path) -> None:
+    for relative in RELEASE_SEAL_ARTIFACTS:
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({"artifact": relative}) + "\n", encoding="utf-8")
+    reuse = {"simulation_rerun_required_for_materialization": False}
+
+    seal = build_release_seal(
+        tmp_path,
+        "a" * 64,
+        reuse,
+        release_revision="r45",
+    )
+
+    assert seal["release_revision"] == "r45"
+    assert seal["release_status"] == "r45_immutable_rust_evas2_certified"
+
+
+def test_r45_evidence_never_falls_back_to_r44(tmp_path: Path) -> None:
+    for relative in evidence_artifacts("r44"):
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("{}\n", encoding="utf-8")
+    problems: list[str] = []
+
+    hashes = audit_release_evidence("r45", problems, package_root=tmp_path)
+
+    assert hashes == {}
+    assert len(problems) == 6
+    assert all("r45" in problem for problem in problems)
+    assert not any("r44" in problem for problem in problems)
+
+
+def test_r45_evidence_rejects_a_copied_r44_artifact(tmp_path: Path) -> None:
+    filename = "PROFILE_PARITY.json"
+    for revision in ("r44", "r45"):
+        path = tmp_path / "evidence" / revision / filename
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text('{"status":"pass"}\n', encoding="utf-8")
+    problems: list[str] = []
+
+    audit_release_evidence("r45", problems, package_root=tmp_path)
+
+    assert any("byte-identical to r44 evidence" in problem for problem in problems)
+
+
+def test_prompt_component_path_supports_immutable_r44_feedback_assets(tmp_path: Path) -> None:
+    assert prompt_component_path(tmp_path, "feedback_core.md") == (
+        tmp_path / "prompt_modes" / "feedback_guides" / "feedback_core.md"
+    )
+    assert prompt_component_path(tmp_path, "feedback_dut.md") == (
+        tmp_path / "prompt_modes" / "feedback_guides" / "feedback_dut.md"
+    )
+
+
+def test_materializer_refuses_to_rebuild_immutable_r44(monkeypatch) -> None:
+    monkeypatch.setattr(sys, "argv", [
+        "materialize_tri_form_release.py",
+        "--release-revision",
+        "r44",
+    ])
+    try:
+        materialize_release()
+    except SystemExit as exc:
+        assert "r44 is immutable" in str(exc)
+    else:
+        raise AssertionError("immutable r44 materialization was accepted")
 
 
 def test_release_seal_refuses_to_claim_stale_certifications(tmp_path: Path) -> None:

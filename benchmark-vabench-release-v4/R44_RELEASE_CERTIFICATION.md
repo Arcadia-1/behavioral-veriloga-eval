@@ -50,7 +50,9 @@ python3 benchmark-vabench-release-v4/operations/tri_form_derivation_prep/refresh
   --report /tmp/r44-checker-batch.json \
   --output benchmark-vabench-release-v4/evidence/r44/RUST_EVAS2_CERTIFICATION.json
 
-python3 benchmark-vabench-release-v4/operations/tri_form_derivation_prep/rebuild_tri_form_release.py
+python3 benchmark-vabench-release-v4/operations/tri_form_derivation_prep/audit_tri_form_release.py \
+  --release-revision r44 \
+  --output /tmp/r44-release-audit.json
 
 python3 benchmark-vabench-release-v4/operations/tri_form_derivation_prep/run_v4_profile_parity_smoke.py \
   --family-range 001-400 \

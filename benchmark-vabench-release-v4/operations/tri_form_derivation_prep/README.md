@@ -32,13 +32,25 @@ proved. Legacy include paths use a content-identical private path adapter and
 do not trigger analog reruns by themselves. Public candidate testbenches still
 use the canonical `./dut/{artifact_path}` binding.
 
-Materialize and audit the 1,200 task views:
+Audit the immutable tracked r44 package:
 
 ```bash
-python3 operations/tri_form_derivation_prep/materialize_tri_form_release.py
 python3 operations/tri_form_derivation_prep/audit_tri_form_release.py \
+  --release-revision r44 \
   --output /tmp/benchmarkv4_audit.json
 ```
+
+Stage r45 in its separate `release/benchmarkv4-r45/` tree only after the
+three r45 certification artifacts exist under `evidence/r45/`:
+
+```bash
+python3 operations/tri_form_derivation_prep/rebuild_tri_form_release.py \
+  --release-revision r45
+```
+
+Every release command requires an explicit revision. The r44 materializer and
+rebuilder fail closed because rebuilding that tracked immutable tree would
+change its identity. The r45 auditor never falls back to `evidence/r44/`.
 
 The tracked release package is `release/benchmarkv4/`. Its root contains the
 package manifest, task index, prompt components, and `tasks/`. There is no
