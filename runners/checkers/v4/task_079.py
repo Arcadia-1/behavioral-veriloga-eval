@@ -88,6 +88,11 @@ def check_bound_step_period_guard(rows: list[dict[str, float]]) -> tuple[bool, s
                 event="full_trace",
             )
         edge_guard = 0.02 * period
+        guard_transition_times = [
+            t[idx]
+            for idx in range(1, len(g))
+            if (g[idx - 1] < gth <= g[idx]) or (g[idx - 1] >= gth > g[idx])
+        ]
         # Check recorded solver points directly. Interpolating a sawtooth across
         # the two samples that bracket a wrap invents a falling ramp which the
         # behavioral source never produced; the same applies to smoothed guard
@@ -104,12 +109,14 @@ def check_bound_step_period_guard(rows: list[dict[str, float]]) -> tuple[bool, s
             phase = ((sample_t - t0) % period) / period
             expected_phase = vss + span * phase
             guard_observed = float(row["guard_out"])
-            guard_norm = (guard_observed - vss) / span
-            if 0.15 < guard_norm < 0.85:
-                continue
-            expected_guard = vdd if guard_norm >= 0.5 else vss
+            if abs(guard_observed - vdd) <= abs(guard_observed - vss):
+                expected_guard = vdd
+            else:
+                expected_guard = vss
             phase_err = abs(float(row["phase_out"]) - expected_phase)
             guard_err = abs(guard_observed - expected_guard)
+            if any(abs(sample_t - edge_time) <= edge_guard for edge_time in guard_transition_times):
+                continue
             max_guard_err = max(max_guard_err, guard_err)
             rail_checks += 1
             phase_time = (sample_t - t0) % period
@@ -125,7 +132,7 @@ def check_bound_step_period_guard(rows: list[dict[str, float]]) -> tuple[bool, s
                     event="periodic_sample",
                 )
                 break
-        if rail_checks < 20:
+        if rail_checks < 20 and not rail_failure:
             rail_failure = diagnostic(
                 "P_RAIL_TRACKING",
                 "missing_event",
