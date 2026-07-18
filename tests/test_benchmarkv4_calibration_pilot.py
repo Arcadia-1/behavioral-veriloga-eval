@@ -68,6 +68,8 @@ def r45_release(tmp_path_factory: pytest.TempPathFactory) -> Path:
         [
             sys.executable,
             str(MATERIALIZE_RELEASE),
+            "--release-revision",
+            "r45",
             "--output",
             str(release),
             "--force",

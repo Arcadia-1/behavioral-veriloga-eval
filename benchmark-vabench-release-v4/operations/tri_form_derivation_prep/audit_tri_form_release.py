@@ -219,7 +219,12 @@ def build_release_seal(
         certification_reuse.get("simulation_rerun_required_for_materialization")
     )
     manifest = read_json(release / "MANIFEST.json")
-    release_revision = str(manifest.get("release_revision") or "r44")
+    declared_revision = manifest.get("release_revision")
+    if declared_revision is not None and str(declared_revision) != release_revision:
+        raise SystemExit(
+            "cannot seal release; manifest revision does not match selected revision: "
+            f"{declared_revision!r} != {release_revision!r}"
+        )
     seal = {
         "schema_version": "v4-benchmarkv4-release-seal-v1",
         "release_revision": release_revision,
