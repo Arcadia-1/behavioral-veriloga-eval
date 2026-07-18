@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "368-tia-limiting-receiver-macro",
+  "checker_task_id": "v4_368_tia_limiting_receiver_macro",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "7f03f7b143f4e1992198b7f564856d6abd9181c5a80d2313059c5178c4b0be5e",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "9b2c39e25d39887ec5d5420dc5e3ebca19b1870ac10a207d4c9149bff6f1a64d",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "368",
+  "family_spec_sha256": "97c1ecf0ab03d524f7b23e532445ab25deae794dc56ee991df30577ea51f60b8",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9401f873bba78d00ac537105b52910ea3e29f336d2303cb1daadfd220c95c1cb",
+  "public_contract": "tasks/868-tia-limiting-receiver-macro-testbench/public_contract.json",
+  "public_contract_sha256": "d66a3878b9e0fc8932e01e24397d5bbe02103d1ac00c6bfd57ec0a0aeaff2b58",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/868-tia-limiting-receiver-macro-testbench",
+  "task_id": "v4-868"
+}

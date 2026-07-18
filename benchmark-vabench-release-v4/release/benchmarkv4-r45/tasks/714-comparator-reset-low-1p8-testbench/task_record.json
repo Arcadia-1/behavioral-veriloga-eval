@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "214-comparator-reset-low-1p8",
+  "checker_task_id": "v4_214_comparator_reset_low_1p8",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "bfc48452ddd954bade47d50d83a8cf3ecd1a10395562ad51935856776ee1001a",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "c61f5a414a908300394fa0a0e88edea752dc97b33a3f38477995003aa3a98a61",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "214",
+  "family_spec_sha256": "c27beadfe0d9c77f98ae9d7f114707c473efc661e6964cdd521f46c4aa341afe",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2d90ffffe17371375c6b7360d6b92c1762fb35a62b635f9a2f26762e8f951da6",
+  "public_contract": "tasks/714-comparator-reset-low-1p8-testbench/public_contract.json",
+  "public_contract_sha256": "9701a79f00c5178a3d3e65eb7e845b8dc4f6dcca9cd22601bf74777c2ae9ee38",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/714-comparator-reset-low-1p8-testbench",
+  "task_id": "v4-714"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "219-bin2ther-2b",
+  "checker_task_id": "v4_219_bin2ther_2b",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "694fe8ae19694c91cbf6c3ebbf55492ea86cda2e60cb4e5ad10534757e600a9d",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "0c3081f7d253557bbfdbd79a256517c22af0f553e15d208964471c2396b8934b",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "219",
+  "family_spec_sha256": "0c26c00c7ac49462668e89d5f21caa27eb95221540b9521aaafcf04dd7398fe4",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "914629d332bda4dbe218f522bbc7fb3ae92ec37a97325f65177322590a992b05",
+  "public_contract": "tasks/719-bin2ther-2b-testbench/public_contract.json",
+  "public_contract_sha256": "dcfd1101928eb089e91c425d83132274175498ed6c7ebcd028dada4b27c2aad7",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/719-bin2ther-2b-testbench",
+  "task_id": "v4-719"
+}

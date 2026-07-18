@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "243-subradix-dac10",
+  "checker_task_id": "v4_243_subradix_dac10",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "7007e01e89eedc1ae082d8153b97cb115956e58748f48e83adf77a2b26979d4c",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "21c79b61f9eea165c6d7be141739a5b9d68c45a190586dddf31e1d79d103e769",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "243",
+  "family_spec_sha256": "13717f2f68c50d98885fede55f4ecb2d38ee9c00cd947be16b83ef81fe7f1e7a",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9fb5a81ca9b44e7fa6a0a69407b0f283bb89c47f2f2ae0f7ae022c1a62a51a41",
+  "public_contract": "tasks/743-subradix-dac10-testbench/public_contract.json",
+  "public_contract_sha256": "0e870cabea2da6576d58a9e7f2150c69485f13fdbd320937ab2e0d0a6b516224",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/743-subradix-dac10-testbench",
+  "task_id": "v4-743"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "312-interleaved-adc-skew-monitor",
+  "checker_task_id": "v4_312_interleaved_adc_skew_monitor",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "680fe14c81206967ad0045ea4fe46cd2b7277c91424334533998ca5ae467c7b3",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "6d15ca5a4b73fca1abd7bc3e458481722a6558d5a243deebcbc3c6871619eed1",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "312",
+  "family_spec_sha256": "adc1ca91951b79e07206a33731f7511a7b19ccde698b7af13f7a9f18d4f061a5",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "01ed0df90bba57d8f846b541d2305626632640106bc59ca30a9a173cd43e0e58",
+  "public_contract": "tasks/812-interleaved-adc-skew-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "46dfbc09bc4ac148b74c395ff62a313785f6636f6ff08372f79e79855f9402e6",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/812-interleaved-adc-skew-monitor-testbench",
+  "task_id": "v4-812"
+}

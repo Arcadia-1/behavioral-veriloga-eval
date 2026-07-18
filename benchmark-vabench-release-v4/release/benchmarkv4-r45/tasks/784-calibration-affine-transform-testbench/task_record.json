@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "284-calibration-affine-transform",
+  "checker_task_id": "v4_284_calibration_affine_transform",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "d80abc607347feef959e92c5415c091e82e1ac52a260f83fb294191838913b1f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "83ab0fd30c9e2fdb8461b63434cbfefc0d1acede0e63c4c01cd4b760d8189469",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "284",
+  "family_spec_sha256": "cb75b861a25a08be81cc497fd66c1a0861c5dd5d1e2117b6b23215ca53b05579",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2aaba070b9d87a05588916648ac757ee24c19ccb12058cd2a1fba589b776ff84",
+  "public_contract": "tasks/784-calibration-affine-transform-testbench/public_contract.json",
+  "public_contract_sha256": "c401bc87877529f54e6fed5b8ea82c6e471e5b1f67bcaa333f379065a6426810",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/784-calibration-affine-transform-testbench",
+  "task_id": "v4-784"
+}

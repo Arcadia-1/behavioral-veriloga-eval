@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "230-xor-phase-detector",
+  "checker_task_id": "v4_230_xor_phase_detector",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "b9f82e4cf5107070e6a1cdcb0e9e33b5bea626023e2173689e3d501dad3a58b5",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "1e8698fd76a269d9cd32cd3bb27e80aa7a91e37c2e7fbb3970ece8d45e70aea5",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "230",
+  "family_spec_sha256": "34194f5a894d19b1e7de9054073d74de52827b28dd9122a2f6d8e46edb1e5d7b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2354f5dbd648cca0631717303c4669f6a51eb9bc57ae269ea8c9b26176430ad6",
+  "public_contract": "tasks/730-xor-phase-detector-testbench/public_contract.json",
+  "public_contract_sha256": "31ae0cca95a8ccaa39c6071bd8cdf4b03158bc86025921caf73e2d9d489ea5b6",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/730-xor-phase-detector-testbench",
+  "task_id": "v4-730"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "058-masked-config-update-32b",
+  "checker_task_id": "v4_058_masked_config_update_32b",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "932291280e326d22144b5522da88f8572f8eb42c08c8b74f0b9af45ef77f6634",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "2f3868dd8ab05b63f9a90a91fb69f95a12bedae709b1b18564f214fa869acf8c",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "058",
+  "family_spec_sha256": "6cbbb5c39e310f4c92135fcacee8097df06f355c64f4c914316428702c2d7cf4",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9dc290f623b19992254a04d5c91a7dd06f57930f7ab644ac9cc238c692f42c0b",
+  "public_contract": "tasks/558-masked-config-update-32b-testbench/public_contract.json",
+  "public_contract_sha256": "cb8c3eab877d54c2021f2b273353197b6fe419386f3fdfaf3a85169ce8fa4b2b",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/558-masked-config-update-32b-testbench",
+  "task_id": "v4-558"
+}

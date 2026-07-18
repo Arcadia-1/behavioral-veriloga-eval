@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "335-quadrature-oscillator-phase-error-monitor",
+  "checker_task_id": "v4_335_quadrature_oscillator_phase_error_monitor",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "5dc77b5846e2e6809ef6846b7436bbc6548484f4c5b8c1c5dbf94eb7071376f6",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "1395a2b287fda9893afd9443da64c2943b1a0fc32ecaa297f6828f41b5a4d775",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "335",
+  "family_spec_sha256": "88cb9113b178500df3b08cda05a30e2c696f9d9ab7528684c4f2a42a1f7c59c1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "331f7c9fd9afb83ccdd38cc5f7d77fea528b332879b08ad18c9f0ea5e4f20124",
+  "public_contract": "tasks/835-quadrature-oscillator-phase-error-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "238e84c521a28b5d225c96b9f4e8d13abdac05330e1394eecaf3e3d2cebd9755",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/835-quadrature-oscillator-phase-error-monitor-testbench",
+  "task_id": "v4-835"
+}

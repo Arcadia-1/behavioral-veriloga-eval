@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "061-event-counter-windowed-16b",
+  "checker_task_id": "v4_061_event_counter_windowed_16b",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "110e2b4273e6037b3fb1c5b40aac036d88ecc25e201dcf7e2b190834bceea3d4",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "7ef34509267bb276cb70db5dc31415d626da2efbd7333157abfe3c43231b5261",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "061",
+  "family_spec_sha256": "17f2547d7798873eaf27bb5f8a00954823173f85d655160fa85d7166de522417",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d1f69e1948f899736183f82fdcdf3dcae90b28f7b779850a51dee3a3a267c61a",
+  "public_contract": "tasks/561-event-counter-windowed-16b-testbench/public_contract.json",
+  "public_contract_sha256": "1b150f40d3549c543a59c57873daaafacd0f6de6df7d1daff3634b5aa27bebc0",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/561-event-counter-windowed-16b-testbench",
+  "task_id": "v4-561"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "265-dynamic-supply-enable-driver",
+  "checker_task_id": "v4_265_dynamic_supply_enable_driver",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "44a5c8f871c4b6ccfe6c5ffa9c00ec54331825763c6123a95561e27e299a9484",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "43cff8f8cdd2eb4c7004efb0d7e030c693aae3c6e02e85673a551e99cabe7a0e",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "265",
+  "family_spec_sha256": "9fbddca3f0dfeae842de1992205ae0b5755d68decfb577735384cf6d968b1547",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7926af6565529a209726da77245858534c9c41013a77c0fc7dd2cde16cba1f9f",
+  "public_contract": "tasks/765-dynamic-supply-enable-driver-testbench/public_contract.json",
+  "public_contract_sha256": "559a5e653e14115c370093a0c1e13b346a9848cc74f4a46b3165f3072d6a6346",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/765-dynamic-supply-enable-driver-testbench",
+  "task_id": "v4-765"
+}

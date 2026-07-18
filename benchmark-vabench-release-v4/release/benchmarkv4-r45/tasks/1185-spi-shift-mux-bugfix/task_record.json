@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "spi_shift_mux.va"
+  ],
+  "canonical_dut_source_slug": "185-spi-shift-mux",
+  "checker_task_id": "v4_185_spi_shift_mux",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "97676c1c03e8d76e3eb2c7a06c6cdf7b92cc7c6ceb840569ec6d9b9328278d9d",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "243da2718e0672e11fc7b8309fef0319f4abd9fd157fc81a17cb41315b0ffba4",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "7a693a5e6f32bde24048e06e17835a0af483e6a9ede8aa93d40f406857948fe3",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "185",
+  "family_spec_sha256": "d799411e6138ac220107ff2c112de00a41a39c5d94f7a179088855f6bb14f31e",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8ab624e61c42dbea8fed6b228c459f37239007847e1a99ac7f24c9345fff5e75",
+  "public_contract": "tasks/1185-spi-shift-mux-bugfix/public_contract.json",
+  "public_contract_sha256": "a87368645029974f1f4dd581639800c8a62ffb417040c4633f2e246140333319",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1185-spi-shift-mux-bugfix",
+  "task_id": "v4-1185"
+}

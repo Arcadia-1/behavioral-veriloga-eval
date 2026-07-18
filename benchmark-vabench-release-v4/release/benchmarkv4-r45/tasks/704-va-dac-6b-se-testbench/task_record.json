@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "204-va-dac-6b-se",
+  "checker_task_id": "v4_204_va_dac_6b_se",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "b49d8a269573852d7987fa70b79cbea82fd716ed9fe62a41bb622a789b159224",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "0502bc8eb698e23e863e3349904a4b5b08b961921839ee3e567c3e8c757dc118",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "204",
+  "family_spec_sha256": "343695967c1c51becb2a5286a065365d511c013c8dd3c18bdea88267eb710ac3",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9ae4d9e383999513109e40b3bd9f2a1b4f659b5a3c2e727ce76cc24d7b985a59",
+  "public_contract": "tasks/704-va-dac-6b-se-testbench/public_contract.json",
+  "public_contract_sha256": "89de59bc9d527c3edbb90a602918e4a8b7cd9687694121d37503c350d5d98558",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/704-va-dac-6b-se-testbench",
+  "task_id": "v4-704"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "174-iterative-isar-dac",
+  "checker_task_id": "v4_174_iterative_isar_dac",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "f13edc3bda21303fc45f1537caa6b272984497412aca576a952ab5357e8a934e",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "06f00fc2a5eb0779450a0673894c9ebdfbb44c76bfdc724e872c40a128818f9a",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "174",
+  "family_spec_sha256": "c822b9fcce80ebccfed937d4e0eda5a12bccac903076d1afa434ad0288482942",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "64e73c425e7de24d1b6a9ed08aef258e280767e24b5f59451f05c101a45a0cbf",
+  "public_contract": "tasks/674-iterative-isar-dac-testbench/public_contract.json",
+  "public_contract_sha256": "0add343aa065866529a8ee9bdf5187f1ecd55b5d1f6182ef5250854064d9ff08",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/674-iterative-isar-dac-testbench",
+  "task_id": "v4-674"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "279-explicit-sar-slice-router",
+  "checker_task_id": "v4_279_explicit_sar_slice_router",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "aeb5c46806298dd069778c5ddcbb396de6fa7dd000c9d01e4f739a247c7bafc9",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "c3733fa2c7e4ef84e97f3549885a32f428e56d32c41ea5e26397ad3e09fa5597",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "279",
+  "family_spec_sha256": "00e321a6b3674fa04f7dad23fadba1648a153fad66b1848d85120c3de934d41b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "45a853bc75f58030e589ac2f0457b17023071e556ec42789771db2eac3c5c08c",
+  "public_contract": "tasks/779-explicit-sar-slice-router-testbench/public_contract.json",
+  "public_contract_sha256": "09254532db6eea5711bba17d379cca25779d1af9c54f1f6d80160b459827e5ba",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/779-explicit-sar-slice-router-testbench",
+  "task_id": "v4-779"
+}

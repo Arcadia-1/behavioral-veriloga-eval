@@ -1,0 +1,23 @@
+{
+  "corners": [],
+  "deck_overrides": {},
+  "deterministic_seed": 0,
+  "generated_from": {
+    "script": "render_v4_harness.py",
+    "version": "v4-harness-renderer-v1"
+  },
+  "harness_spec_sha256": "fc8d0b1161c22fabcbdfc82de0e6632ec07371259dc51c1fb08e33c20bcd2414",
+  "parameters": {},
+  "profile_name": "score",
+  "property_ids": [
+    "P_NOMINAL_CLOCK",
+    "P_SEED_DECODE",
+    "P_EDGE_MODULATION",
+    "P_REPEATABILITY",
+    "P_TIMING_BOUNDS",
+    "P_OUTPUT_LEVELS"
+  ],
+  "public_visible": false,
+  "schema_version": "v4-harness-profile-v1",
+  "simulatorOptions": {}
+}

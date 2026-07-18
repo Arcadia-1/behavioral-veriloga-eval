@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "078-lfsr-prbs-generator",
+  "checker_task_id": "v4_078_lfsr_prbs_generator",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "228d83420a39e1b5ce7dad704e3baabe08a518200716a760a9d44e10329bb612",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "46b65fa6164013038e30334f17d563192904deb993bb20707bfade78ddeaddd7",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "078",
+  "family_spec_sha256": "89a9f61a1c08879a2527f15e99d61e6423285fc6f847173a7f3c888630a2532d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "efc5b543ff1e2a159694e381efc2e544885b34cce8f4ff7b93caed0dbf2257f1",
+  "public_contract": "tasks/578-lfsr-prbs-generator-testbench/public_contract.json",
+  "public_contract_sha256": "eb1a4b70b8f1af093b83352a4c5a913b9caa0f9a028de1b30ddcbf4a9406178b",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/578-lfsr-prbs-generator-testbench",
+  "task_id": "v4-578"
+}

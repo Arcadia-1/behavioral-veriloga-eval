@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "050-dc-aware-adc3bit",
+  "checker_task_id": "v4_050_dc_aware_adc3bit",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "e99508ddadff46d7507e21dcffc689b806cb1310eea7396aa8ab10a5acdc5338",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "58f9201b666ae5c0e911e3ff2e1e16e5a5603b17e950a75cf2b9c947cb00959f",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "050",
+  "family_spec_sha256": "2882cdfb0fa38db8d336c8e286949affcbdfc5a91dc48bb1f542cdba3f01f2a6",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7f13595bb4c916b3ae9b0e5650533af7f6e902bf514b54035ca7461042489840",
+  "public_contract": "tasks/550-dc-aware-adc3bit-testbench/public_contract.json",
+  "public_contract_sha256": "20d721f1374254a29ef8cf2c7d5ee41b7ae618bd165b22c85697f45e4699ee55",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/550-dc-aware-adc3bit-testbench",
+  "task_id": "v4-550"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "weighted_balance_summer.va"
+  ],
+  "canonical_dut_source_slug": "251-weighted-balance-summer",
+  "checker_task_id": "v4_251_weighted_balance_summer",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "5191a187ac8c2caea31eda8fdfe3573a2d6052e2791008d11dab4565d54949f4",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "922e2d9a0f95d36e9075d4ffd52ebc1ee8ba728cad1f159879e449a4aa89594f",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "55f237d59ee741d5f4cf3f2ed8b1d54d4d0174b0725f05f62431a102564aaa92",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "251",
+  "family_spec_sha256": "24ce2b007dc62d36adf6ea04b881b6e8380a64555fd7f7b3626daa152fec3109",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "fe81939ad3c92ea6a56cbbca4514e517b5ef63fe9b8bceb63536ec7b6c09a1a5",
+  "public_contract": "tasks/1251-weighted-balance-summer-bugfix/public_contract.json",
+  "public_contract_sha256": "a44a2a5a61d8089a7e93cba4c69a210ffdc969b6eb816e8bfc94d2af9b13cd92",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1251-weighted-balance-summer-bugfix",
+  "task_id": "v4-1251"
+}

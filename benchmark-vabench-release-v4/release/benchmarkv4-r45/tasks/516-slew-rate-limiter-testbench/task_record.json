@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "016-slew-rate-limiter",
+  "checker_task_id": "v4_016_slew_rate_limiter",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "b5afb0c1f207bd3edf386927f252822135f8beacc6294e6a936b36750b81e76a",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "56c85026ea465f5b9ea58475f67f87e06613e486f46b0c0be3fcfa249081d2bb",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "016",
+  "family_spec_sha256": "7205a7092111d215f0ca592aecee6d312ea1cd4e7b300c733e9748c685154f79",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8b816d521ee9c49332aac9d2992734eed50a49bf96ba8abfc51a3f5ad29009de",
+  "public_contract": "tasks/516-slew-rate-limiter-testbench/public_contract.json",
+  "public_contract_sha256": "61ab7b5b1d64777aec387d4c2ea959677da6533f83a89edbf453d42083160c36",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/516-slew-rate-limiter-testbench",
+  "task_id": "v4-516"
+}

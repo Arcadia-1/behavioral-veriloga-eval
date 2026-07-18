@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "206-sar-comparator-reset-high",
+  "checker_task_id": "v4_206_sar_comparator_reset_high",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "18d809ffda8e43e173487459a3dc7a331f5d7a259accab3cbe846af500de8a7d",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "ba4210a39403df67844d6f67199d41aa8f59766d04768e55bd49c539415a40cb",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "206",
+  "family_spec_sha256": "f0538df1a4744ec408848abe765eefeb068ded58b10022d640f384943c86fdca",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "aa253943d69fbfd7ad35d8df82f1def823c4b39c5fcc0d5b5c818f651733a535",
+  "public_contract": "tasks/706-sar-comparator-reset-high-testbench/public_contract.json",
+  "public_contract_sha256": "4bfe0cefb00e35b3b8939b4dba6f43e3cd9412f1a8d3041465b655532b76971b",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/706-sar-comparator-reset-high-testbench",
+  "task_id": "v4-706"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "current_limited_regulator_macro.va"
+  ],
+  "canonical_dut_source_slug": "378-current-limited-regulator-macro",
+  "checker_task_id": "v4_378_current_limited_regulator_macro",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "3ca0607ed6670acb13c7306bb8977213b6b7b70e64da6a5581a70e57c0060ad4",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "d82e8299721df6da7256b7e484cb2e76b12c2b2df730ae3c8dbe00b4c26c8f86",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "49cd8ae85c20980a5eac00b8513e51c4bed0865abb197c20d1ba0090c38a593b",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "378",
+  "family_spec_sha256": "c49b2a62e23d68d3ccd46c921f891d060d340f66fea27e2d599cfabd57ef4ddf",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d05f89d84ad3c5125caa0b67c9fbc18d284b1457bd8ba5ac183b16ba64e406df",
+  "public_contract": "tasks/1378-current-limited-regulator-macro-bugfix/public_contract.json",
+  "public_contract_sha256": "b9e9ea7b929ee8dec1d673d620b2db44747ef02f679cb3595fb00e8f2d2ab916",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1378-current-limited-regulator-macro-bugfix",
+  "task_id": "v4-1378"
+}

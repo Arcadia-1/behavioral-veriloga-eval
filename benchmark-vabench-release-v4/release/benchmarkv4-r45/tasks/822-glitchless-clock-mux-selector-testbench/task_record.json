@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "322-glitchless-clock-mux-selector",
+  "checker_task_id": "v4_322_glitchless_clock_mux_selector",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "31309502881608842fc7fa062df59121fb48e4e28c97cc914a3ad6d9e9f9b67a",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "a868984c4e264eb4de3ce3870953ffd83cdd953af452664c12ac5bd199cf188f",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "322",
+  "family_spec_sha256": "bc9d8555ebfb2acec4e0e0b21694eb69894861e101571fdb2733ce50261fa688",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3297246c022eae937b304b7957156e6c538b0238793097e292bdd92677ec346c",
+  "public_contract": "tasks/822-glitchless-clock-mux-selector-testbench/public_contract.json",
+  "public_contract_sha256": "997a51ef8886aac49e74fc8b0d63e14ba33b366b5e78e23378af13becd39f51d",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/822-glitchless-clock-mux-selector-testbench",
+  "task_id": "v4-822"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "363-fractional-n-synthesizer-mini-loop",
+  "checker_task_id": "v4_363_fractional_n_synthesizer_mini_loop",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "c699f645694b1632c5e746b0173560d7f9aee8139f47b26b91adc21aa632e704",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "d1ad8df657fdc24b20dc2179aadb7a7c57ac57a19e6226edad641637177e557c",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "363",
+  "family_spec_sha256": "9049b85075df6f56169fb9d3adec2281d050c98934c738242885e6a56fb83c3a",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b2da20ca0d50187889f94aeeea0f34b0a4ceaea1b9222a47a83baa1f1fb57b6f",
+  "public_contract": "tasks/863-fractional-n-synthesizer-mini-loop-testbench/public_contract.json",
+  "public_contract_sha256": "fe51f3c91a45d2ca67fe85adc659e03c9da128ba5c00386bdc332bc0b7a89210",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/863-fractional-n-synthesizer-mini-loop-testbench",
+  "task_id": "v4-863"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "087-converter-static-linearity-measurement",
+  "checker_task_id": "v4_087_converter_static_linearity_measurement",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "94c547aab98daf4a518d1103371273ae8b18040e90a7b2261faedffa82a9bc62",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "6b30c1cb73a932c63018faf1819119e1a764e4820e693fbd7ea01d23c120c4dc",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "087",
+  "family_spec_sha256": "7a8450ac3a5cbbb87999b2e5421ae1b3f0f4fd5ae033cfa1dfe8fae566ddb7f1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3278fdf7127f10fa2a1359e1a0c9e0400952ee75701bb21c827a197e05483264",
+  "public_contract": "tasks/587-converter-static-linearity-measurement-testbench/public_contract.json",
+  "public_contract_sha256": "26c305945de709f1ee848e78db84d3fd9f185a2db79fc1b65169e140cf389bc8",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/587-converter-static-linearity-measurement-testbench",
+  "task_id": "v4-587"
+}

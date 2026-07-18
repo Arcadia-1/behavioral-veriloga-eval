@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "028-higher-order-filter",
+  "checker_task_id": "v4_028_higher_order_filter",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "632e1e2575f73943101251178184476990525b18c1700b488b1b7161609a7072",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "e25480f81beb688b407fad151dc71b0f2060375b5c09a2f634bcf9650905561c",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "028",
+  "family_spec_sha256": "3c1b5496cf499bbc588fdf2d4766c11c56be9f3b7e7d279146a0f0f89e975d29",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7219798af033fc95afb8aff7d93f219e9b77a2bf7cf8505fdd8df43819d4d260",
+  "public_contract": "tasks/528-higher-order-filter-testbench/public_contract.json",
+  "public_contract_sha256": "fcea596e4fd6b1f738d1deb767963799007e77ffd0456dd6d4feee9e5430718c",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/528-higher-order-filter-testbench",
+  "task_id": "v4-528"
+}

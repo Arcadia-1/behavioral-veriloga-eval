@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "162-flash-data-align-pipeline",
+  "checker_task_id": "v4_162_flash_data_align_pipeline",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "a63f7f9f52983f58fa5d873002dced92429262e25d1959b9a8def8d37f4fe521",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "5f10a47015e2d6673994feec289d608872b5997e00e293259b221b6fc78499cb",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "162",
+  "family_spec_sha256": "640609763e55149c7b0f2b8a9d16a0330024e0914f0bd97a7d52797bf5d4d376",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1fa0053489012917649cd9b63147aa6528226951e61b66dea5b2675973a12431",
+  "public_contract": "tasks/662-flash-data-align-pipeline-testbench/public_contract.json",
+  "public_contract_sha256": "16d019819d826ea9e767769c466801c4ec3bfbf34fa822c0b28c43528a106e9c",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/662-flash-data-align-pipeline-testbench",
+  "task_id": "v4-662"
+}

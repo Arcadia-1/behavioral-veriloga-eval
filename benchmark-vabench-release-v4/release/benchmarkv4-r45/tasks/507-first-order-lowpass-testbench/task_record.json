@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "007-first-order-lowpass",
+  "checker_task_id": "v4_007_first_order_lowpass",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "17f0a97bbe9b7f372b02740165b71bb72af5aa6aa7fba0ed3335af542e5628f0",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "b2f0ce89f873e6962545025f8d08315be29e2dbdc9d6f6fbbc6e04e566396f59",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "007",
+  "family_spec_sha256": "5518438b82d9a11eb203c8701fbe7bdf1a947af714b908a044506d6a89eee800",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "75016255015ed55dd1c1d8ce8cc6689f23c414417a2bdf91771a980b9bbd9c6a",
+  "public_contract": "tasks/507-first-order-lowpass-testbench/public_contract.json",
+  "public_contract_sha256": "a094e6983863c03fd2a914c8b1844d0cd7e0209820f5f11a0742839dd3e7a358",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/507-first-order-lowpass-testbench",
+  "task_id": "v4-507"
+}

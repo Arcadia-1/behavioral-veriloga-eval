@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "217-single-shot-timer-pulse",
+  "checker_task_id": "v4_217_single_shot_timer_pulse",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "5dd83b4165fdfed469dbcf57f0af31b43a8f1af44f2bf91ff8bf812f7febd609",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "c1a0b6f1a4c3e15133848b070224d648380dde6b6821e7bc60702ce8997135f3",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "217",
+  "family_spec_sha256": "2090ec38a0d6ba8b40abf73410745c2126d03592554dcf568245fcb94a4d725d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "dd5f549c416706cbbac7c00a73f59b6bd792990cc1ff7672e60807f3a3d9989d",
+  "public_contract": "tasks/717-single-shot-timer-pulse-testbench/public_contract.json",
+  "public_contract_sha256": "291dba58585c5c130b524636988395630b1457195e2eba1b1c0c273c09807d91",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/717-single-shot-timer-pulse-testbench",
+  "task_id": "v4-717"
+}

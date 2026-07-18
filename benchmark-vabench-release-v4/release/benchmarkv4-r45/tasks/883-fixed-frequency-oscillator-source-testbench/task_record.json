@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "383-fixed-frequency-oscillator-source",
+  "checker_task_id": "v4_383_fixed_frequency_oscillator_source",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "de7f63df6473d4fe6259db80d7ace4c4fa86d09ec3566136ebff865004b88990",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "62f77d4a19e790e30830a37212d92654fd04bd9d7de4be95432b676e3304f369",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "383",
+  "family_spec_sha256": "1469ed97771bc37e05a88b7460ae54cb22f6885714e7c2f5b8a6a37b24896f5d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "35603fcd5fe0c612678bf2716cc11c603069e1ae0eb6abaf34fc414c57612290",
+  "public_contract": "tasks/883-fixed-frequency-oscillator-source-testbench/public_contract.json",
+  "public_contract_sha256": "121479d065e6bfcbd705747789ea04f55cb6505108e17b9255fd833aad3f8902",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/883-fixed-frequency-oscillator-source-testbench",
+  "task_id": "v4-883"
+}

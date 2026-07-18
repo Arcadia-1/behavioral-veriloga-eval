@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "253-power-mode-clamped-mux",
+  "checker_task_id": "v4_253_power_mode_clamped_mux",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "f7f8879d1ec1c0e4b85fcf35fb871065e2ece978202bab20eaf394d2ceb223eb",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "4ada4d6bead434a64627a15c010bdd2884b9e1f8dd7d8ce01c27e9fcc72bdf63",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "253",
+  "family_spec_sha256": "9f39e60427cabea339f974b898f49eb91d182d8f8ee6112019ea0cbff0524b45",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "546b06ba908b648b0dd3af956f364c32284d886f55f6394c3a1696ecf4461c4f",
+  "public_contract": "tasks/753-power-mode-clamped-mux-testbench/public_contract.json",
+  "public_contract_sha256": "cd160d4e8c8ba44fd877a6a3230089bca2447e9cd7f10d529da9a88764d84aea",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/753-power-mode-clamped-mux-testbench",
+  "task_id": "v4-753"
+}

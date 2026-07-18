@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "006-element-shuffler",
+  "checker_task_id": "v4_006_element_shuffler",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "ee163920a03cfb1b1d4c6041e5550ead060f4ef9ebbdc2b12f60b321d2be6405",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "b34f9db45d9378b563ea8134f07b1edd327d76894bd5f1cd5db44c591db41bb9",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "006",
+  "family_spec_sha256": "adaa158a08b0036c6dbc59aedd39853c025706538de75e087fa2122b9f64a5e2",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f164cbd65deeaf255cec0e668ac521e8ecf7b5405bec123eb3033d8b18549716",
+  "public_contract": "tasks/506-element-shuffler-testbench/public_contract.json",
+  "public_contract_sha256": "888656da65593533aba2e6cd098b0b79c809628b2e518264bc50f50628a5d057",
+  "release_revision": "r45",
+  "schema_version": "r45-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/506-element-shuffler-testbench",
+  "task_id": "v4-506"
+}
