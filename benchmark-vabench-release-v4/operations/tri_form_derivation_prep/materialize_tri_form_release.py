@@ -38,7 +38,10 @@ from render_r45_canonical_test import (  # noqa: E402
     build_canonical_test,
 )
 DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
-DEFAULT_OUTPUT = PACKAGE_ROOT / "release" / "benchmarkv4"
+DEFAULT_OUTPUTS = {
+    "r44": PACKAGE_ROOT / "release" / "benchmarkv4",
+    "r45": PACKAGE_ROOT / "release" / "benchmarkv4-r45",
+}
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
 MODES = {
     "G0": {"process": "direct_one_shot", "form_skill": False, "evas_guide": False, "evas_cli": False},
@@ -1080,11 +1083,22 @@ def iter_public_inputs(task_dir: Path, form: str, mode: str | None = None) -> It
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=DEFAULT_SOURCE)
-    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument(
+        "--release-revision",
+        choices=tuple(DEFAULT_OUTPUTS),
+        required=True,
+        help="release contract to materialize; r44 and r45 never share an output tree",
+    )
+    parser.add_argument("--output", type=Path)
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
     source = args.source.expanduser().resolve()
-    output = args.output.expanduser().resolve()
+    revision = str(args.release_revision)
+    if revision == "r44":
+        raise SystemExit(
+            "r44 is immutable; audit the tracked release instead of rebuilding it"
+        )
+    output = (args.output or DEFAULT_OUTPUTS[revision]).expanduser().resolve()
     if output.exists():
         if not args.force:
             raise SystemExit(f"output exists; pass --force to replace it: {output}")
@@ -1121,11 +1135,11 @@ def main() -> int:
     rerun_required = bool(certification_reuse["simulation_rerun_required_for_materialization"])
     manifest = {
         "schema_version": "r45-benchmarkv4-release-manifest-v1",
-        "release_revision": "r45",
+        "release_revision": revision,
         "release_status": (
             "materialized_certification_refresh_required"
             if rerun_required
-            else "r45_materialized_rust_evas2_audit_pending"
+            else f"{revision}_materialized_rust_evas2_audit_pending"
         ),
         "family_count": 400,
         "task_count": len(task_rows),
