@@ -1073,3 +1073,28 @@ def test_testbench_oracle_failure_excerpt_keeps_error_before_counters() -> None:
 
     assert "Error: tb_candidate.scs:4" in excerpt
     assert "solver_counter_250" not in excerpt
+
+
+def test_testbench_oracle_requires_r45_evas_version(monkeypatch) -> None:
+    oracle = load_derived_testbench_oracle()
+    monkeypatch.setenv("EVAS_ENGINE", "evas2")
+    monkeypatch.setenv("VAEVAS_DEFAULT_EVAS_ENGINE", "evas2")
+    runtime_report = "\n".join(
+        [
+            "Version 0.8.3 -- Jul 2026",
+            "evas_engine = evas-rust",
+            "evas_rust_required = true",
+            "evas_rust_full_model_required = true",
+            "rust_full_model_required_failures = 0",
+        ]
+    )
+
+    valid, note = oracle._validate_required_evas_engine(runtime_report, "evas2")
+    stale, stale_note = oracle._validate_required_evas_engine(
+        runtime_report.replace("Version 0.8.3", "Version 0.8.2"), "evas2"
+    )
+
+    assert valid is True
+    assert "evas_version=0.8.3" in note
+    assert stale is False
+    assert "observed='0.8.2'" in stale_note
