@@ -10,17 +10,19 @@ def check_v4_318_resistor_ladder_monotonic_decoder(rows: list[dict[str, float]])
     if not rows:
         return False, "v4_1016 empty_trace"
 
+    ordered = sorted(rows, key=lambda row: float(row["time"]))
+    settle_window_s = 0.8e-9
+
     def settled(index: int) -> bool:
-        """Score stable code/output plateaus, independent of event timestamps."""
+        """Score after the event-relative settle window and stable outputs."""
         if index < 2:
             return False
         names = (
-            "enable", "rst", "code_0", "code_1", "code_2",
             "vout", "step_metric", "monotonic_ok",
         )
         for current in range(index - 1, index + 1):
-            previous = rows[current - 1]
-            row = rows[current]
+            previous = ordered[current - 1]
+            row = ordered[current]
             if any(abs(float(row[name]) - float(previous[name])) > 1e-4 for name in names):
                 return False
         return True
@@ -31,15 +33,29 @@ def check_v4_318_resistor_ladder_monotonic_decoder(rows: list[dict[str, float]])
     last_code = None
     last_vout = None
     saw_active = False
-    for index, row in enumerate(rows):
+    watched = ("enable", "rst", "code_0", "code_1", "code_2")
+    previous_event_values = tuple(_v4_topup_logic_high(ordered[0], name) for name in watched)
+    last_event_time = float(ordered[0]["time"])
+    for index, row in enumerate(ordered):
         t = float(row["time"])
+        event_values = tuple(_v4_topup_logic_high(row, name) for name in watched)
+        if event_values != previous_event_values:
+            last_event_time = t
+            previous_event_values = event_values
         enabled = _v4_topup_logic_high(row, "enable") and not _v4_topup_logic_high(row, "rst")
         vout = float(row["vout"])
         step_metric = float(row["step_metric"])
         flag = float(row["monotonic_ok"]) > 0.45
+        code = (
+            (1 if _v4_topup_logic_high(row, "code_0") else 0)
+            + (2 if _v4_topup_logic_high(row, "code_1") else 0)
+            + (4 if _v4_topup_logic_high(row, "code_2") else 0)
+        )
+        expected_vout = 0.0 if not enabled else 0.9 * code / 7.0
+        expected_step = 0.0 if not enabled else 0.9 / 7.0
+        stable = settled(index) and t - last_event_time >= settle_window_s
         if not enabled:
             clear = abs(vout) < 0.08 and step_metric < 0.08 and not flag
-            stable = settled(index)
             if saw_active and not _v4_topup_logic_high(row, "enable") and not _v4_topup_logic_high(row, "rst") and stable and clear:
                 disabled_clear = True
             if _v4_topup_logic_high(row, "rst") and stable and clear:
@@ -48,15 +64,8 @@ def check_v4_318_resistor_ladder_monotonic_decoder(rows: list[dict[str, float]])
                 clear_errors += 1
             continue
         saw_active = True
-        if not settled(index):
+        if not stable:
             continue
-        code = (
-            (1 if _v4_topup_logic_high(row, "code_0") else 0)
-            + (2 if _v4_topup_logic_high(row, "code_1") else 0)
-            + (4 if _v4_topup_logic_high(row, "code_2") else 0)
-        )
-        expected_vout = 0.9 * code / 7.0
-        expected_step = 0.9 / 7.0
         checked += 1
         codes_seen.add(code)
         if abs(vout - expected_vout) > 0.08:

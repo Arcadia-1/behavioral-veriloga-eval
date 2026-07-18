@@ -24,9 +24,10 @@ def check_v4_316_residue_amplifier_gain_calibration(rows: list[dict[str, float]]
                 rises.append(float(row["time"]))
             previous = now
         periods = [right - left for left, right in zip(rises, rises[1:]) if right > left]
-        return sorted(periods)[len(periods) // 2] if periods else 1.0
+        return sorted(periods)[len(periods) // 2] if periods else 1e-9
 
     period = clock_period()
+    settle_window = min(1e-9, max(0.35e-9, 0.10 * period))
     times = [float(row["time"]) for row in rows]
     checked = code_errors = vout_errors = metric_errors = clear_errors = lock_errors = 0
     codes_seen: set[int] = set()
@@ -36,10 +37,13 @@ def check_v4_316_residue_amplifier_gain_calibration(rows: list[dict[str, float]]
     expected_code = 0
     lock_streak = 0
     ever_enabled = False
+    inactive_kind: str | None = None
+    inactive_start = float(rows[0].get("time", 0.0))
     previous_clk = float(rows[0].get("clk", 0.0))
     for row in rows:
         rst = _v4_topup_logic_high(row, "rst")
         enabled = _v4_topup_logic_high(row, "cal_en") and not rst
+        row_time = float(row["time"])
         clk = float(row.get("clk", 0.0))
         code = (
             (1 if _v4_topup_logic_high(row, "gain_0") else 0)
@@ -50,17 +54,32 @@ def check_v4_316_residue_amplifier_gain_calibration(rows: list[dict[str, float]]
         metric = float(row["error_metric"])
         locked = _v4_topup_logic_high(row, "locked")
         if not enabled:
+            next_inactive_kind = (
+                "reset"
+                if rst
+                else "disabled"
+                if ever_enabled and not _v4_topup_logic_high(row, "cal_en")
+                else None
+            )
+            if next_inactive_kind != inactive_kind:
+                inactive_kind = next_inactive_kind
+                inactive_start = row_time
             clear = code == 0 and abs(vout - 0.45) < 0.08 and metric < 0.08 and not locked
             if rst and clear:
                 reset_clear = True
             if ever_enabled and not rst and not _v4_topup_logic_high(row, "cal_en") and clear:
                 disabled_clear = True
-            if (rst or (ever_enabled and not _v4_topup_logic_high(row, "cal_en"))) and not clear:
+            if (
+                next_inactive_kind is not None
+                and row_time - inactive_start >= settle_window
+                and not clear
+            ):
                 clear_errors += 1
             expected_code = 0
             lock_streak = 0
             previous_clk = clk
             continue
+        inactive_kind = None
         ever_enabled = True
         if not _v4_rising(previous_clk, clk):
             previous_clk = clk
@@ -123,14 +142,14 @@ def check_v4_316_residue_amplifier_gain_calibration(rows: list[dict[str, float]]
         and vout_errors == 0
         and metric_errors == 0
         and lock_errors == 0
-        and clear_errors <= max(8, checked // 4)
+        and clear_errors == 0
     )
     return ok, (
         f"v4_316 checked={checked} codes={sorted(codes_seen)} reset_clear={reset_clear} "
         f"disabled_clear={disabled_clear} high_code_seen={high_code_seen} locked_seen={locked_seen} "
         f"error_reduced={error_reduced} code_errors={code_errors} "
         f"vout_errors={vout_errors} metric_errors={metric_errors} "
-        f"lock_errors={lock_errors} clear_errors={clear_errors}"
+        f"lock_errors={lock_errors} clear_errors={clear_errors} settle_window={settle_window:.6g}"
     )
 
 CHECKER_ID = "v4_316_residue_amplifier_gain_calibration"

@@ -8,6 +8,11 @@ from ..common.v4_topup import (
     _v4_topup_near,
 )
 
+SETTLE_TIME_S = 0.8e-9
+CHECK_INTERVAL_S = 0.8e-9
+TIME_EPS_S = 1e-15
+
+
 def check_v4_311_muxed_track_hold_array_readout(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, "v4_1009 empty_trace"
@@ -19,12 +24,30 @@ def check_v4_311_muxed_track_hold_array_readout(rows: list[dict[str, float]]) ->
     codes_seen: set[int] = set()
     previous = rows[0]
     last_sample_en = _v4_topup_logic_high(previous, "sample_en")
+    last_semantic_event_time = float(previous.get("time", 0.0))
+    last_checked_time = last_semantic_event_time - CHECK_INTERVAL_S
 
     def code_at(row: dict[str, float]) -> int:
         return int(_v4_topup_logic_high(row, "sel_0")) + 2 * int(_v4_topup_logic_high(row, "sel_1"))
 
     for index, row in enumerate(rows[1:], start=1):
+        row_time = float(row.get("time", index))
         clk_rise = (not _v4_topup_logic_high(previous, "clk")) and _v4_topup_logic_high(row, "clk")
+        control_changed = any(
+            _v4_topup_logic_high(previous, name) != _v4_topup_logic_high(row, name)
+            for name in ("rst", "sample_en", "sel_0", "sel_1")
+        )
+        # Repeated clock edges while reset is held do not create new mux
+        # behavior. A sample-enabled capture can update the held inputs and
+        # therefore starts a fresh readout settle interval.
+        capture_event = (
+            clk_rise
+            and not _v4_topup_logic_high(row, "rst")
+            and _v4_topup_logic_high(row, "sample_en")
+        )
+        if control_changed or capture_event:
+            last_semantic_event_time = row_time
+            last_checked_time = row_time
         if clk_rise:
             if _v4_topup_logic_high(row, "rst"):
                 held = [0.45, 0.45, 0.45]
@@ -40,16 +63,16 @@ def check_v4_311_muxed_track_hold_array_readout(rows: list[dict[str, float]]) ->
             disabled_hold_seen = True
         last_sample_en = sample_en
 
-        stable_ref = rows[max(0, index - 8)]
-        if any(
-            abs(float(row[name]) - float(stable_ref[name])) > 0.25
-            for name in ("rst", "sample_en", "sel_0", "sel_1")
-        ):
+        if row_time - last_semantic_event_time <= SETTLE_TIME_S + TIME_EPS_S:
             previous = row
             continue
+        should_check = row_time - last_checked_time >= CHECK_INTERVAL_S - TIME_EPS_S
+        if should_check:
+            last_checked_time = row_time
         code = code_at(row)
         if (
-            not _v4_topup_logic_high(row, "rst")
+            should_check
+            and not _v4_topup_logic_high(row, "rst")
             and not sample_en
             and code != 3
             and any(held_valid)
@@ -59,7 +82,7 @@ def check_v4_311_muxed_track_hold_array_readout(rows: list[dict[str, float]]) ->
 
         previous = row
 
-        if index % 8 != 0:
+        if not should_check:
             continue
         if _v4_topup_logic_high(row, "rst"):
             if _v4_topup_near(row["vout"], 0.45, 0.08) and row["valid"] < 0.2 and row["channel_metric"] < 0.2:
