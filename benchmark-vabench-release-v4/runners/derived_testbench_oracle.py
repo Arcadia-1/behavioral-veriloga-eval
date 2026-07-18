@@ -14,6 +14,9 @@ from pathlib import PurePosixPath
 from typing import Any
 
 
+REQUIRED_EVAS_VERSION = "0.8.3"
+
+
 class CaseOutcome(str, Enum):
     REFERENCE_PASS = "reference_pass"
     REFERENCE_FAIL = "reference_fail"
@@ -267,7 +270,7 @@ def _validate_required_evas_engine(
         combined, "evas_rust_full_model_required"
     )
     failures = _evas_engine_value(combined, "rust_full_model_required_failures")
-    if observed_version != "0.8.2":
+    if observed_version != REQUIRED_EVAS_VERSION:
         return False, f"engine_validation_failed=version observed={observed_version!r}"
     if reported_engine != "evas-rust":
         return False, f"engine_validation_failed=backend observed={reported_engine!r}"
@@ -282,7 +285,7 @@ def _validate_required_evas_engine(
         return False, f"engine_validation_failed=rust_required_failures observed={failures}"
     return (
         True,
-        "evas_engine=evas2 evas_engine_used=evas2 evas_version=0.8.2 "
+        f"evas_engine=evas2 evas_engine_used=evas2 evas_version={REQUIRED_EVAS_VERSION} "
         "evas_backend=rust evas_reported_engine=evas-rust",
     )
 
