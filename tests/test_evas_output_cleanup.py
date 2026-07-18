@@ -73,6 +73,7 @@ def test_run_evas_defaults_to_strict_rust_evas2(monkeypatch, tmp_path: Path) -> 
     assert proc.returncode == 0
     assert captured["cmd"] == ["evas", "simulate", "tb.scs", "-o", str(out_dir)]
     assert captured["env"]["EVAS_ENGINE"] == "evas2"
+    assert (out_dir / "evas.log").read_text(encoding="utf-8") == "\n"
 
 
 def test_v2_lowpass_checker_uses_yaml_thresholds(tmp_path: Path) -> None:

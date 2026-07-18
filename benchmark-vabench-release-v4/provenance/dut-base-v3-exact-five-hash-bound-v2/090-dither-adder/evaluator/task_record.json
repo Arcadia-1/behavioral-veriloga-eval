@@ -3,10 +3,10 @@
   "checker_task_id": "v4_090_dither_adder",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "6908364cadaa6e517ff95d94fe12c75fa0629ab8f01b00f590727906c7e4bf2f",
+    "certification.json": "62929bc8fb7cc4d066f94fdbce1379ae258adca1c7f0fef7e96249dd4274a4cf",
     "checker_profile.json": "60d55fc7d6855c40a173d3c0561364226ffad74ef1203ced3a50a930a78d1f5e",
     "derivation_manifest.json": "61c1df1b51717a589c23ad47cbeb4db84235502621954581c559bc53b59c4cb5",
-    "family_spec.json": "d60a784cbefaecb37fb143323193513193dfee3765e08a9497d8fd602e10ea0e",
+    "family_spec.json": "27f8b84495b5afbefb13f350539725e9c83f91bd238db9b9f02a3adace25721e",
     "harness_spec.json": "afe89a050cf2fb5e9d0eeb3a58cac37e2d3a2c71b1cc69be663c3de04864ccdd",
     "mutation_catalog.json": "b37f2d0cbd916d0ab2b05dbb98ede3694f7a3445deaaf4b8c54e0cd81f12679d",
     "profiles/feedback.json": "bd72de37a3545ebb9ca8f7457e0b70a350844cb67dc8828519a1d164e7fee807",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "6908364cadaa6e517ff95d94fe12c75fa0629ab8f01b00f590727906c7e4bf2f"
+    "sha256": "62929bc8fb7cc4d066f94fdbce1379ae258adca1c7f0fef7e96249dd4274a4cf"
   },
   "release_dir": "090-dither-adder",
   "schema_version": "v4-canonical-dut-release-task-v1",

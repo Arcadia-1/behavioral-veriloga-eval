@@ -5,6 +5,9 @@
     ],
     "source_root": "./dut"
   },
+  "canonical_semantics": {
+    "mode": "single_deck_v1"
+  },
   "deck": {
     "analyses": [
       "tran tran stop={stop_time} maxstep={maxstep}"
@@ -48,8 +51,7 @@
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {},
-      "deterministic_seed": 0,
+      "deterministic_seed": 1,
       "parameters": {
         "maxstep": "50p",
         "stop_time": "190n"
@@ -59,7 +61,6 @@
       }
     },
     "score": {
-      "deck_overrides": {},
       "deterministic_seed": 1,
       "parameters": {
         "maxstep": "50p",

@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises Adds sampled perturbation with a DC bias instead of zero mean. against the public observable contract; violated_properties=P_DETERMINISTIC_SEQUENCE",
-    "observed": "EVAS: noise_mean=0.1218 noise_std=0.0567 max_abs=0.2467; Spectre: noise_mean=0.1218 noise_std=0.0567 max_abs=0.2467",
+    "expected": "properties P_DETERMINISTIC_SEQUENCE satisfy the public contract; fault class adds_sampled_perturbation_with_a_dc_bias_instead_of_zero_mean is rejected",
+    "observed": "EVAS: property_id=P_ZERO_MEAN_DITHER category=value_mismatch expected=std:0.025..0.12,abs_mean<=0.025,max_abs:0.05..0.22 observed=std:0.0711,mean:0.1220,max_abs:0.2783 event=full_trace",
     "violated_property_ids": [
       "P_DETERMINISTIC_SEQUENCE"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_077_dither_noise_like_deterministic_source",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 1001
   },
   "family_id": "077",
   "inputs": {
     "checker_profile_sha256": "e1d5aae1f685d6eb083c6cd7eabe7d2694b003995b37c8708c94c7f3ba6a1a4c",
-    "harness_spec_sha256": "1fc397e9acfe7e92d282e2b56e19c9adc59a1b49692cf5a7d1cd87e59ae769a3",
-    "mutation_bundle_sha256": "836ef2a2e38a8bd34aefc967fd2aec81136ea8e441c5878c1735474a70180ba5",
-    "profile_sha256": "befa973fffc9ead0624c410f69adc66710ccdb112f96d607d723543761dc439e"
+    "harness_spec_sha256": "8378cbc64fcd2bfc97d910ed6a9e126ab9df02640d496a84fa742ee3503683b8",
+    "profile_sha256": "e25092e724fbecb4a7f8b6137e4708875d51dd68aa4649ecdf303760814d95d6"
   },
   "mutation_id": "neg_004_biased_noise",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

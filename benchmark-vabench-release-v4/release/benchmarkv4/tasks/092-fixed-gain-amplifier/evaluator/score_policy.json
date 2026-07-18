@@ -2,12 +2,12 @@
   "candidate_artifacts": [
     "gain_amp_fixed.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "checker_profile_sha256": "b00ecedf37f4569ddaf15c8a422d66762f507095e52784c520768c265b962502",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "793700301bf3d8638db9d6939181c99ab29151afb3ce730027c7216d0bed5a84",
+  "gold_dut_certification_sha256": "752ca71cfb94f8c6b90376570ae48efa84ef575143571e01ffbe5326353cb51b",
   "gold_solution_tree_sha256": "fbae8e2512efb4e2d1d5716be4ac8e3c595618adf0b5e8114d785506349bc7d6",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "schema_version": "v4-dut-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-092"
 }

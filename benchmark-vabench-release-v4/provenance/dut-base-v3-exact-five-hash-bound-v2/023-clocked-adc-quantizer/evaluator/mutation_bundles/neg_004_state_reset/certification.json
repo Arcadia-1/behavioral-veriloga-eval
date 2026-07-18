@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=reset, enable, initial-condition, done, or ready behavior is exercised; violated_properties=P_CODE_MONOTONICITY",
-    "observed": "EVAS: only_4_codes (need 8); Spectre: only_4_codes (need 8)",
+    "expected": "properties P_CODE_MONOTONICITY satisfy the public contract; fault class state_reset_or_enable_error is rejected",
+    "observed": "EVAS: v4_023_clocked_adc_quantizer checked=141 mismatch_count=38 coverage=rising_edges=23 expected_bins=8 settle_s=1.2e-09; P_RISING_EDGE_QUANTIZATION checked=24 mismatch_count=12 expected=code=4 observed=code=3 sample_time=1.114e-07 metric_gap=1; P_CODE_CLAMP checked=4 mismatch_count=2 expected=endpoint_code=7 observed=code=3 sample_time=2.114e-07 metric_gap=4; P_BINARY_RAIL_ENCODING checked=69 mismatch_count=24 expected=dout0=0+/-0.04 observed=dout0=0.9 sample_time=1.114e-07 metric_gap=0.9; P_CODE_MONOTONICITY checked=22 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0; P_SAMPLE_HOLD checked=22 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0",
     "violated_property_ids": [
       "P_CODE_MONOTONICITY"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_023_clocked_adc_quantizer",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 1301
   },
   "family_id": "023",
   "inputs": {
-    "checker_profile_sha256": "7b4350b360d411a3ec2c8a21e49494778f4caa4a8671c0b5284a899d5d99aa92",
-    "harness_spec_sha256": "fdf7b333b2e932f5b9176592e584f14c08e1174097a491594df7c6b4a233b1e5",
-    "mutation_bundle_sha256": "f0e035565adcc2bffa02f1cb416940e9bc57195c2271d35ae10a316b209095ad",
-    "profile_sha256": "8efd70fab447e4c4c151a1357ba001863e9d7cca0c8c5c4b49c8d8b85edd1ded"
+    "checker_profile_sha256": "2e3a0b366d65ec7f3e876580ac1e773a26a87d304a7bf8ef8f9c9ace91053934",
+    "harness_spec_sha256": "2503fdd79032cc691a48eb6e25384483233cb87125c1bd1d287d5f267ceba5e7",
+    "profile_sha256": "8eb4dd38b9a21cd9ccefe3883ff2d5fcd13e79f3b8cbc8bd5cd745e44e09107f"
   },
   "mutation_id": "neg_004_state_reset",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

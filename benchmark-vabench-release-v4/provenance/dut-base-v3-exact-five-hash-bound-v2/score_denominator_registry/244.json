@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "9a4f647666e35b187cfabb46ceb03b467e4226a74349f605dff741282b40e756",
+        "certification_sha256": "bdd63d55fb9f632616e07a32b4bf4f9842ffef7b8864886041925d37a7fc7449",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "7a477cca9bb64fe45cba54ee678835129d3f92ffc34fabc3781c179a841f5a24",
+        "mutation_bundle_sha256": "461b26cb90686b7b7f8d99397f3d196b8096210cb5b3adfdc3655eeda0d9301e",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Clocked ADC3bit: scales the metric output, preserving the main path while failing measurement checks.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "72c8a74c4651f69fe4ed3386cc6d453cb9fd6be0cb459a05e654f0c20a2c93f7",
+        "certification_sha256": "f0f36220c27eb286a939b4bdecbd5dd41296d6b4f3c2b3d925e4d52ce002cc23",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "a3b4723c57223163995ad6fb6f981c9f330bd3e02828116c090355460813646e",
+        "mutation_bundle_sha256": "22a3eb88631c2570cb726ad71adcc0bc4442cda6238b196088c80c14f648c535",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_bit_order_swapped/certification.json",
-        "certification_sha256": "ae57831988596a510baa16ed8c50a127f98937846e34f7c9dac987e2d7b009e8",
+        "certification_sha256": "fa45a6d544d9d7a9975fa79900c3b6d50dad388005c72d0b1a77870163bcb014",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "07c3aac91aa4f850d94ea68357de1d545c5609b3a192e1676502c1e142023be4",
+        "mutation_bundle_sha256": "0330230ecdf40e397f5cc8df447116df55ebae2f255d02fa99bc83f2435f2e9e",
         "mutation_id": "neg_003_bit_order_swapped",
         "source_catalog_certification_path": "negative_variants/neg_003_bit_order_swapped/certification.json",
         "trigger_condition": "Swaps the output bit order.",
@@ -45,9 +45,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_four_level_adc/certification.json",
-        "certification_sha256": "195af0e168344c3a4d3f7c30f70225356f3713c24db1e4b1136f3066436a6ed7",
+        "certification_sha256": "da6f079e6ff0925bf6440574d5ab4ed5ca3e8c2fae076edfeacfa5962f36a22d",
         "fault_class": "four_level_adc",
-        "mutation_bundle_sha256": "d2653a97a3555de4e3d5b1370fc45c6283925787c570888d2cb654ee8240f240",
+        "mutation_bundle_sha256": "e781d6d72f47d5540a9f244c8397ec97b1f495c64c9a7a2f021ec865020d3c70",
         "mutation_id": "neg_002_four_level_adc",
         "source_catalog_certification_path": "negative_variants/neg_002_four_level_adc/certification.json",
         "trigger_condition": "Quantizes into four levels rather than eight.",
@@ -58,9 +58,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_falling_edge_sample/certification.json",
-        "certification_sha256": "9193b45ccc04f2b2c1a4784780b4c41675c1432e3ecd61b058c7b26944973013",
+        "certification_sha256": "cbdf7ec4fada6725d99710231a7b16e0faaecff61a6589d6650ebc0c31aadd7f",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "6f6a2f12cfb6c357e1d81ecc5a69d96ee97d0553880da983e4a8e57c0fe9fbb0",
+        "mutation_bundle_sha256": "41ebb4b7930baba35b13f4e8a8047f8cefbc55dbad85f344cfe812cdacc78231",
         "mutation_id": "neg_004_falling_edge_sample",
         "source_catalog_certification_path": "negative_variants/neg_004_falling_edge_sample/certification.json",
         "trigger_condition": "Samples on the falling clock edge instead of the rising edge.",
@@ -75,8 +75,8 @@
     "hashes": {
       "mutation_catalog_sha256": "3ce132356fc0036a81fe5b2633a7b579fd88e628d68d03d7422ac0f63250f989",
       "score_deck_sha256": "4c1a27f75e00f14cfa6178b5daff0224cf5b65dd160ca57de170f84591b4a501",
-      "task_certification_sha256": "0276b2bfa9f16c20bebc45dbe387a33b80e4334770793bacf87f425c7470158e",
-      "task_record_sha256": "3c0e1034f95ad02f521778d221884e7735c54312e58c041196c94dd98e1978fa"
+      "task_certification_sha256": "75c8089fe749fc877d82e13a623701500571afad9ecc3293f2e3b501c841439a",
+      "task_record_sha256": "65c1d9bb9331ff8f56f80674ee13a528cffaf9852e0a0ca937a5a4484593da96"
     },
     "release_dir": "244-clocked-adc3bit"
   }

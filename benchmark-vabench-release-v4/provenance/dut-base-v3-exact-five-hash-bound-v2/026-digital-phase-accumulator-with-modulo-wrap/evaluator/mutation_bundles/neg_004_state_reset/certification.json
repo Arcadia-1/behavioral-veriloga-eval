@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=reset, enable, initial-condition, done, or ready behavior is exercised; violated_properties=P_PHASE_DERIVED_CLOCK",
-    "observed": "EVAS: phase_span_too_small=0.000; Spectre: phase_span_too_small=0.000",
+    "expected": "properties P_PHASE_DERIVED_CLOCK satisfy the public contract; fault class state_reset_or_enable_error is rejected",
+    "observed": "EVAS: v4_026_digital_phase_accumulator_with_modulo_wrap checked=2 mismatch_count=5 coverage=timer_events=0 wraps=0 inferred_step=0 cadence_s=0; P_TIMER_INCREMENT checked=0 mismatch_count=1 expected=checked>=1 observed=checked=0 sample_time=0 metric_gap=1; P_MODULO_WRAP checked=1 mismatch_count=1 expected=at_least_2_bounded_wraps observed=wraps=0 sample_time=0 metric_gap=2; P_PHASE_RAIL_SCALING checked=0 mismatch_count=1 expected=checked>=1 observed=checked=0 sample_time=0 metric_gap=1; P_PHASE_DERIVED_CLOCK checked=0 mismatch_count=1 expected=checked>=1 observed=checked=0 sample_time=0 metric_gap=1; P_PARAMETERIZED_PERIOD checked=1 mismatch_count=1 expected=stable_positive_timer_cadence_and_step observed=events=0,cadence=0,max_gap_error=inf,step=0 sample_time=0 metric_gap=inf",
     "violated_property_ids": [
       "P_PHASE_DERIVED_CLOCK"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_026_digital_phase_accumulator_with_modulo_wrap",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 1801
   },
   "family_id": "026",
   "inputs": {
-    "checker_profile_sha256": "3533798e01034fc6a2dfdf0d241144be0d09074fca6e784d57e8dba388754169",
-    "harness_spec_sha256": "11c93a9a1e43852b8eb0337ed93ebd6107b002b3978b1f46f5cb25dd88dd9530",
-    "mutation_bundle_sha256": "9cdd444a0f89ff97ef158fbd41c6093e4b9f90f49237e56dab0c6ca1dc739618",
-    "profile_sha256": "ab00b6c27e4eefad5e06e492ce2441549fef613be84be4057df53c8a19529d58"
+    "checker_profile_sha256": "09a2a00b6aac2d3ed5a71c684f010f54f3f448db12e059b70ab4e502e1f348f7",
+    "harness_spec_sha256": "8e4184427955cc4eaf276a2b314cf2ee97142c665c7b812f93eb81fc7d440da6",
+    "profile_sha256": "15fa1fa4c764f28051f23d86e9130d26b1266e01ac5c723f8581413fbc5f0175"
   },
   "mutation_id": "neg_004_state_reset",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

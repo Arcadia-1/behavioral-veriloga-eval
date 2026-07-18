@@ -18,7 +18,6 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE_ROOT = ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 DEFAULT_RELEASE = ROOT / "release" / "benchmarkv4"
-FAMILIES = tuple(range(361, 371))
 FORMS = ("dut", "testbench", "bugfix")
 REQUIRED_EVAS_ENGINE = "evas2"
 REQUIRED_EVAS_VERSION = "0.8.2"
@@ -27,7 +26,10 @@ RUST_EVAS_LOG_ENGINE = "evas-rust"
 sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT / "operations" / "tri_form_derivation_prep"))
 
-from run_v4_reference_evas_smoke import require_evas2_environment  # noqa: E402
+from run_v4_reference_evas_smoke import (  # noqa: E402
+    probe_evas2_runtime,
+    require_evas2_environment,
+)
 import render_v4_harness  # noqa: E402
 
 
@@ -66,18 +68,34 @@ def source_family(family_id: str) -> Path:
     return matches[0].parent.parent
 
 
-def release_rows(release: Path, task_ids: list[str] | None) -> list[dict[str, Any]]:
+def parse_range(value: str) -> tuple[int, int]:
+    left, separator, right = value.partition("-")
+    if not separator:
+        right = left
+    start, stop = int(left), int(right)
+    if start < 1 or stop < start or stop > 400:
+        raise argparse.ArgumentTypeError(f"invalid family range: {value}")
+    return start, stop
+
+
+def release_rows(
+    release: Path,
+    task_ids: list[str] | None,
+    family_range: tuple[int, int],
+) -> list[dict[str, Any]]:
     index = read_json(release / "TASK_INDEX.json")
     wanted = set(task_ids or [])
+    start, stop = family_range
+    families = {f"{value:03d}" for value in range(start, stop + 1)}
     rows = [
         row
         for row in index.get("tasks") or []
-        if str(row.get("family_id")) in {str(value) for value in FAMILIES}
+        if str(row.get("family_id")) in families
         and str(row.get("form")) in FORMS
         and (not wanted or str(row.get("task_id")) in wanted)
     ]
     rows.sort(key=lambda row: (int(str(row["family_id"])), FORMS.index(str(row["form"]))))
-    expected = len(FAMILIES) * len(FORMS)
+    expected = (stop - start + 1) * len(FORMS)
     if len(rows) != expected:
         raise SystemExit(f"expected {expected} assigned release tasks, found {len(rows)}")
     return rows
@@ -95,6 +113,7 @@ def audit_row(release: Path, row: dict[str, Any]) -> dict[str, Any]:
     errors: list[str] = []
     try:
         render_v4_harness.validate_profile_semantics(release_spec)
+        render_v4_harness.validate_profile_semantic_parity(release_spec)
     except ValueError as exc:
         errors.append(str(exc))
     if expected != observed:
@@ -105,9 +124,9 @@ def audit_row(release: Path, row: dict[str, Any]) -> dict[str, Any]:
         source_profile = (source_spec.get("profile_defaults") or {}).get(profile) or {}
         if profile_data.get("deck_overrides"):
             errors.append(f"{profile}:semantic_deck_overrides_present")
-        if profile_data.get("parameters") != source_profile.get("parameters"):
+        if (profile_data.get("parameters") or {}) != (source_profile.get("parameters") or {}):
             errors.append(f"{profile}:parameters_mismatch")
-        if profile_data.get("corners", []) != source_profile.get("corners", []):
+        if (profile_data.get("corners") or []) != (source_profile.get("corners") or []):
             errors.append(f"{profile}:corners_mismatch")
         if profile_data.get("property_ids") != source_spec.get("property_ids"):
             errors.append(f"{profile}:property_ids_mismatch")
@@ -131,18 +150,25 @@ def main() -> int:
     parser.add_argument("--release", type=Path, default=DEFAULT_RELEASE)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--task-id", action="append")
+    parser.add_argument("--family-range", type=parse_range, default=(1, 400))
     args = parser.parse_args()
     require_evas2_environment()
+    runtime = probe_evas2_runtime()
     release = args.release.expanduser().resolve()
-    rows = [audit_row(release, row) for row in release_rows(release, args.task_id)]
+    rows = [
+        audit_row(release, row)
+        for row in release_rows(release, args.task_id, args.family_range)
+    ]
     report = {
         "schema_version": "v4-profile-parity-evas2-smoke-v1",
-        "release": str(release),
+        "release": "release/benchmarkv4",
+        "family_range": f"{args.family_range[0]:03d}-{args.family_range[1]:03d}",
         "simulation_performed": False,
         "evas_engine": REQUIRED_EVAS_ENGINE,
         "evas_engine_used": REQUIRED_EVAS_ENGINE,
         "evas_version": REQUIRED_EVAS_VERSION,
         "evas_backend_required": RUST_EVAS_LOG_ENGINE,
+        "runtime": runtime,
         "task_count": len(rows),
         "pass_count": sum(row["status"] == "pass" for row in rows),
         "fail_count": sum(row["status"] != "pass" for row in rows),

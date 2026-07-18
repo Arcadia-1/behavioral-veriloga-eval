@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_msb_weight/certification.json",
-        "certification_sha256": "8b32ad532e2153d5561cf68ec4feab4d01ea66ad3ac3a44adef4080adf59c632",
+        "certification_sha256": "1a06df8f4761ad7548fede12cc2849ae4f520983fff18f19eccfac95813b4681",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "92033e8c3fe8fe37cd747f08bae08508dcb1beb865f66e6bf0172bf7cc3ec677",
+        "mutation_bundle_sha256": "10f5e0f82943004ec81ff49d8c9e334a153f5b07e857560e619e12359b394ceb",
         "mutation_id": "neg_003_wrong_msb_weight",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_msb_weight/certification.json",
         "trigger_condition": "Uses a quarter-scale MSB weight for din4.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "d4dee07e99196fe3c0c251d608be20bead55db170f14e93b577d488d8f4ee32f",
+        "certification_sha256": "b607a0a7912e3f7ce8e96fe2c4321a73e0523ae7a4e2e90801449577e299e139",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "3b6bc64592cf9382ed2e7e8700e3f502e392a6ba55c8231d91ef8bf261fcfeea",
+        "mutation_bundle_sha256": "755dc6dac8ab41c21586d0926f8114bd45384a13458735b3029a7a4eca29f1af",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_ignore_lsb/certification.json",
-        "certification_sha256": "e784367dc832408202e4944f786ef88c2c361937fdb41bd2dda90de86e2ca2d3",
+        "certification_sha256": "2e90e5d694bc4ea8820b93e8d44b69d248e88d660cb5a5e1dc9e8abef5b305af",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "a620ac06c2e98333ac0661b86ba80d983045fb5fc35448e0d7512faa90557f72",
+        "mutation_bundle_sha256": "bc578a04f8e7034bec9cb8145efeeb1caaa8de0d6a0ce3cc010e74c33f885232",
         "mutation_id": "neg_004_ignore_lsb",
         "source_catalog_certification_path": "negative_variants/neg_004_ignore_lsb/certification.json",
         "trigger_condition": "Drops the din1 least-significant bit contribution.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_missing_vdd_scale/certification.json",
-        "certification_sha256": "8cac4c239b0d353a72d32463f08f7265d0e525f5bddabe9da3a3d4a58dad8faf",
+        "certification_sha256": "fa821fa8c25d2a5d380e8fa83e8e6050a199e2213da39b6d9359690cef91229c",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "7a9b83238a8ff17f7b4b9b158a8277db01a60a3b294140910ad2bc959266600b",
+        "mutation_bundle_sha256": "8ff4d3dad06b9f6321cfea8012d7c7b3b8a3bf05dc1dcfdfcb949924d7afbb4e",
         "mutation_id": "neg_002_missing_vdd_scale",
         "source_catalog_certification_path": "negative_variants/neg_002_missing_vdd_scale/certification.json",
         "trigger_condition": "Leaves the decoded DAC fraction unscaled by vdd.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "96e3955e0b02d4fe12f67c04dd6ef6b39e82031860d9d8247831868f6b8bab39",
+        "certification_sha256": "3120681606a67df3d9506b913b403393f6d0dd44f5800bc8dfdd618ebd680752",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "9e93da4ab1283f5f263dc108bdc0665230591eed998386c4f27d80ce20bfa28e",
+        "mutation_bundle_sha256": "31d0b822f924e57976c1f76431cf925ae6799c3e209259aa200a588e4b94b9af",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "VA Lx DAC Ideal 4b: scales the metric output, preserving the main path while failing measurement checks.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "8ad06ac78f54e329cf483343ca5897e804e1ed470b915d0bc21fd792f034d44a",
       "score_deck_sha256": "81942e0b0b1afbb44a07fcc104332b6004cf36814180dac804ecf19badeb8eec",
-      "task_certification_sha256": "47b9fdfd6a3c68bcd32fe9d70a6a7bc6aba2640d8105c6a8c6c49751bdb692bf",
-      "task_record_sha256": "53c92f12406013425e90ffa0d0020ee9af7ecd5c443beed9ad30074d9ef66542"
+      "task_certification_sha256": "727288ab1c32638ee1a64aec59e680064f2deed53ee718b33ac76e661cfd70e2",
+      "task_record_sha256": "9d65bac6123069def480aae28eb60305ddd75b11b92f6a37d05ca35276da0076"
     },
     "release_dir": "165-va-lx-dac-ideal-4b"
   }

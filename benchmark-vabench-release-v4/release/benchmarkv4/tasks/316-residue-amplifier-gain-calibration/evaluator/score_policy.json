@@ -4,12 +4,12 @@
     "residue_amp_core.va",
     "gain_cal_controller.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "checker_profile_sha256": "3ead6cb439284eebf0a6250310b26b4d118766da09644bc356fce5291d32e65e",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "bb5a97f38107bffb84511191212c50de583f67bcaecc2e69330bfc6d3c06a5e1",
+  "gold_dut_certification_sha256": "d8b9c4631a1f7b3aed9f6a17903bb3a267aa68f2240b54dc47cce53810afc288",
   "gold_solution_tree_sha256": "a5c3aca3d38bf7bf562807c7ce37b34051f44526dec34c79e02feb67f67abd31",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "schema_version": "v4-dut-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-316"
 }

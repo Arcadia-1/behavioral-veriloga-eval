@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_phase_metric_scale_wrong/certification.json",
-        "certification_sha256": "5f54785e8ce00c2c78a02c8da9367dee55fde94e6766b50e4b4e5ea4bf1b5145",
+        "certification_sha256": "91fd355f809307507df43f0722088d4e2a9247ece302814bfa4edd0320faa351",
         "fault_class": "phase_metric_scale_wrong",
-        "mutation_bundle_sha256": "4751e13cb52fdb585aa0edf94e8591b4529e707e6755df3ea3084690a528beb9",
+        "mutation_bundle_sha256": "36feb053082e379d41d82152d65619e68a66f135b37fb0c3d8ed006a3446b16c",
         "mutation_id": "neg_003_phase_metric_scale_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_phase_metric_scale_wrong/certification.json",
         "trigger_condition": "phase_metric_scale_wrong",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_fractional_delay_code_reversed/certification.json",
-        "certification_sha256": "4f3f851c53bf34e6f87dfb955267637efadade490726b20ee48b3aa59791b650",
+        "certification_sha256": "a325d41b23a2595bcd7efddf59904b4d4e2bd4c19adbee3d2fe242861a06be2c",
         "fault_class": "fractional_delay_code_reversed",
-        "mutation_bundle_sha256": "50335885ce5876d956f6cec133ac19ad649c6c5928d11dec5a009b543587eada",
+        "mutation_bundle_sha256": "93851ee6baa0381387e9e2c25980a287de8af7ae59b316d7e14c8d55f4fae595",
         "mutation_id": "neg_002_fractional_delay_code_reversed",
         "source_catalog_certification_path": "negative_variants/neg_002_fractional_delay_code_reversed/certification.json",
         "trigger_condition": "fractional_delay_code_reversed",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_disable_clear_missing/certification.json",
-        "certification_sha256": "5115ea7a9a82e15784c0c71aaf3c151ed34fbac7206cda5701c14fe0367ce15c",
+        "certification_sha256": "179f30ed47be99aae05c2fbc7fc66792cb9357a2ced524edab874e2242e3aa22",
         "fault_class": "reset_disable_clear_missing",
-        "mutation_bundle_sha256": "b270cfd6e2384838dbb3011e1f8f97fd1932138e80de143b031c1293c1df2a23",
+        "mutation_bundle_sha256": "fa96ee061d0fde751194864eb845f5ccc70744780ab067645211a998e3ea39c2",
         "mutation_id": "neg_004_reset_disable_clear_missing",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_disable_clear_missing/certification.json",
         "trigger_condition": "reset_disable_clear_missing",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_valid_flag_missing/certification.json",
-        "certification_sha256": "02c4c7d0e02c1f13d1cdf70b39ee5b0c0c624847e40b4c6af0760cf4cdb39816",
+        "certification_sha256": "d56703a0d93b3b53a593a0ec51bc81cd95bf8fc176103d6b9fce6530075f1d46",
         "fault_class": "valid_flag_missing",
-        "mutation_bundle_sha256": "b51fef9e259f72c928b50f7e7f0506663de517a6c9968f7c6c613f5c9b875c23",
+        "mutation_bundle_sha256": "e93e67f3e15067368c571294c9ce5ce05fe7125fdce2709549fb8d756abd4d67",
         "mutation_id": "neg_005_valid_flag_missing",
         "source_catalog_certification_path": "negative_variants/neg_005_valid_flag_missing/certification.json",
         "trigger_condition": "valid_flag_missing",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_fractional_delay_code_ignored/certification.json",
-        "certification_sha256": "d4ad0d6da561c5514dfcea643f3de58aef1f3a19acd59986dd2a8ed271e70ff5",
+        "certification_sha256": "9c0d217e99343addc147fb0e01cb3509ef06afb29f422d74c75c86bb63b68103",
         "fault_class": "fractional_delay_code_ignored",
-        "mutation_bundle_sha256": "29727fdb114d06d36732705449a241e08b2aa08b3909947a3ba583d3ce3e57f9",
+        "mutation_bundle_sha256": "6b2a2152e28481fb020c863d27e13cf6d10359ca7442fa64d40b84eda4fc4668",
         "mutation_id": "neg_001_fractional_delay_code_ignored",
         "source_catalog_certification_path": "negative_variants/neg_001_fractional_delay_code_ignored/certification.json",
         "trigger_condition": "fractional_delay_code_ignored",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "303774d5f39ba51f7e5b56ee03005e23a7c5a290cd26579b3c23379474e83c3d",
       "score_deck_sha256": "3a4e1db05c2d22da87b458b3eec0aa12f94aff87c55ac1df0e50dc9f36faea29",
-      "task_certification_sha256": "2a976b1dc56912ed5611dcf3d7e19568b3aa0a2b425783ff68a26df5f637677f",
-      "task_record_sha256": "9b2de1812831000f7eba9eb5c023f9528d1af808dfbac048ed66511b308dd84e"
+      "task_certification_sha256": "c72bd94a2289ada4a27deddd79d3035d72c46ce81d1fe0812b1c1c57d495526d",
+      "task_record_sha256": "04fdb709aadd8f67d29017d53f94df37a1758b20b22ba47899c9c06368a49c03"
     },
     "release_dir": "326-fractional-delay-dtc-macro"
   }

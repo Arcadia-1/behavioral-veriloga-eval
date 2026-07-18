@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_missing_input_offset/certification.json",
-        "certification_sha256": "d88b0d03d14bc1256fcae91a5ce72a0054c8889671c4f5bd8ab3ec51f1a73d2e",
+        "certification_sha256": "8b028947b6e1b732bd62e78202fb6190d89ad260c7448821514efe12972a15e5",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "dbb6f5cbf943b24a557ffca51eb813820edd49e0b7d5b69adfb66b9e859a6aef",
+        "mutation_bundle_sha256": "eee8abed5c2fbfcb1a4e293efcc03a8ae6c812648e8819517eca9b022848e2c0",
         "mutation_id": "neg_002_missing_input_offset",
         "source_catalog_certification_path": "negative_variants/neg_002_missing_input_offset/certification.json",
         "trigger_condition": "Does not subtract sigin_offset before amplification.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_clamp/certification.json",
-        "certification_sha256": "6574a14f1a9c234c7c5c141a222eb805e2a74785c196ca63ed865d8a8139e5af",
+        "certification_sha256": "b1793d7d374741057b1ab3ee43335f9f0d7744edb71bb3b4f468033de195dfe3",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "5193ae6b51aa9e4c9c145eb4684a60e4c2b9392f7379cf48d6ecb66bfddf34c4",
+        "mutation_bundle_sha256": "765e32ccb180bdd7fd93da75e513b2de7d3410dbc1caee8af45e37c760693372",
         "mutation_id": "neg_003_no_clamp",
         "source_catalog_certification_path": "negative_variants/neg_003_no_clamp/certification.json",
         "trigger_condition": "Does not clamp the amplified output to the rails.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_reference/certification.json",
-        "certification_sha256": "42e757d8e66c6966db7f94d4f41d0bb2d90220cb0b1040b61cea2c208fd7343f",
+        "certification_sha256": "47d139ca2eac6cf5386755afe158a10aa0cefda44e8e16094dafafdd04ca7a80",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "021a43dd241da85c332166a28b91e62aee360f61460f552a1e4123828b246110",
+        "mutation_bundle_sha256": "80df55380e44e9c6b65e9269374a92d557c9bfe6bbd7649c6542fe3eb653f4fd",
         "mutation_id": "neg_004_wrong_reference",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_reference/certification.json",
         "trigger_condition": "Centers the amplifier at zero instead of the rail midpoint.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "7d3fcc74931825c26d5d052a7bc7b0b21cd7303b4295bbc3526f935615f0be61",
+        "certification_sha256": "4daacbc418d11ca7499b11838709fda01bc933e89451dd289d1f2ceddd22edd7",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "f9caa43d12afea3819d1be0da440868d7b7580cab5bcf4283cffb63f0c45d15a",
+        "mutation_bundle_sha256": "57b2210677e24414527d35ec838971a16bfbb75fa557185274fc4e25193629d8",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales the limited output too low while preserving the module/interface shape.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "d347ec946aa239339f1d1f440aafb1141dc913590182d7d6a9b3e63c09b26465",
+        "certification_sha256": "0da1a319ffa60d02fdbab5ba3cdd8b80c9c5173c0393c7592b094cde57ead07f",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "3fcb4b1250c10145f084b2b82b2d6f7b6107bbc61e253b1fb149988c56f69432",
+        "mutation_bundle_sha256": "ce355edfe27c699e1aedca962816d494d38a61e369766954df69c9a3eae91c31",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "f718d394a0ae8ce962db958d0bb7676dc81893ab90eb6e1193e03f1da8c3bd62",
       "score_deck_sha256": "f2d8a9a5489252fe021a23ba935a37101cab63403d4dbcf57f95bbb38a678378",
-      "task_certification_sha256": "60de45af7e754e99b959659e67bf539b9bd1551645bd46add775d6f6f016b90b",
-      "task_record_sha256": "b5888a5d0649cb343a956117af9bb38fe698b6be711e9d2a7027de6a805a3a96"
+      "task_certification_sha256": "cc23fbe40e12c9a612be9203493b1902c90ab9238eae5882f224162af6e19298",
+      "task_record_sha256": "c6c41da8a143109230c7932476a7e2ca5a81131732ab1e180e43858aac3903de"
     },
     "release_dir": "131-limiting-differential-amplifier"
   }

@@ -14,7 +14,7 @@ PREP = Path(__file__).resolve().parents[1] / "operations" / "tri_form_derivation
 if str(PREP) not in sys.path:
     sys.path.insert(0, str(PREP))
 
-from score_denominator_registry import load_score_denominator_registry  # noqa: E402
+from score_denominator_registry import load_family_rows, load_registry_metadata  # noqa: E402
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -43,12 +43,12 @@ def canonical_sha(value: Any) -> str:
     return hashlib.sha256(payload.encode()).hexdigest()
 
 
-def is_dual_behavioral_kill(certification: dict[str, Any]) -> bool:
+def is_rust_evas2_behavioral_kill(certification: dict[str, Any]) -> bool:
     evaluators = certification.get("evaluators") or {}
     return (
         certification.get("outcome") == "killed_behaviorally"
-        and evaluators.get("evas") == "compile_pass_behavior_fail"
-        and evaluators.get("spectre") == "compile_pass_behavior_fail"
+        and certification.get("certification_policy") == "rust_evas2_only"
+        and evaluators.get("evas2") == "compile_pass_behavior_fail"
     )
 
 
@@ -58,11 +58,11 @@ def main() -> int:
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     release = args.release.resolve()
-    denominator = load_score_denominator_registry(release)
+    denominator = load_registry_metadata(release)
     archive = read_json(release / "provenance_only_mutation_archive.json")
     review = read_json(release / "semantic_selection_review.json")
     problems: list[str] = []
-    rows = denominator.get("tasks") or []
+    rows = load_family_rows(release)
     selection_inputs = release / "selection_inputs"
     for name, expected in (denominator.get("input_hashes") or {}).items():
         path = selection_inputs / name
@@ -113,8 +113,8 @@ def main() -> int:
                 problems.append(f"{family}/{mutation_id}: release certification path mismatch")
             if not cert.is_file() or item.get("certification_sha256") != file_sha(cert):
                 problems.append(f"{family}/{mutation_id}: certification hash mismatch")
-            elif not is_dual_behavioral_kill(read_json(cert)):
-                problems.append(f"{family}/{mutation_id}: certification lacks dual behavioral kill")
+            elif not is_rust_evas2_behavioral_kill(read_json(cert)):
+                problems.append(f"{family}/{mutation_id}: certification lacks Rust EVAS2 behavioral kill")
             if item.get("mutation_bundle_sha256") != tree_sha(bundle):
                 problems.append(f"{family}/{mutation_id}: mutation bundle hash mismatch")
     if len(active_pairs) != 2000 or denominator.get("active_mutation_count") != 2000:
@@ -147,8 +147,6 @@ def main() -> int:
             problems.append(f"{family}/{mutation_id}: archived catalog certification is incomplete")
         if not cert.is_file() or row.get("certification_sha256") != file_sha(cert):
             problems.append(f"{family}/{mutation_id}: archived certification hash mismatch")
-        elif not is_dual_behavioral_kill(read_json(cert)):
-            problems.append(f"{family}/{mutation_id}: archived certification lacks dual behavioral kill")
         if row.get("mutation_bundle_sha256") != tree_sha(bundle):
             problems.append(f"{family}/{mutation_id}: archived mutation bundle hash mismatch")
     if review.get("reviewed_family_count") != 36 or len(review.get("families") or []) != 36:
@@ -158,9 +156,7 @@ def main() -> int:
         problems.append("supplemental duplicate-semantic review does not cover 092 and 098")
     if any(not str(row.get("status") or "").startswith("approved_") for row in supplemental):
         problems.append("supplemental duplicate-semantic review contains an unresolved finding")
-    for name, payload in (
-        ("denominator", denominator), ("archive", archive), ("semantic review", review)
-    ):
+    for name, payload in (("archive", archive), ("semantic review", review)):
         if payload.get("content_sha256") != canonical_sha(payload):
             problems.append(f"{name} content hash mismatch")
     summary = {

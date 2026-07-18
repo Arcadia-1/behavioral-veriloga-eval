@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_step_metric_wrong/certification.json",
-        "certification_sha256": "8d0fbd78386eaf5651edb2048ea1e200aca0d408fdc1506e9a55f2181b60655e",
+        "certification_sha256": "9c1d564dd23194ea4d728c40c5df818a9b7e75a6fe325a92dca2d97c495519c7",
         "fault_class": "step_metric_wrong",
-        "mutation_bundle_sha256": "0a72b8d299724231e067089ebf26fa4e774620d783f96a1c08ee2a5ee86b43df",
+        "mutation_bundle_sha256": "8dc13c207bbc345796139156cc877a4f468a57ed49d4524af0d467f2a639f450",
         "mutation_id": "neg_002_step_metric_wrong",
         "source_catalog_certification_path": "negative_variants/neg_002_step_metric_wrong/certification.json",
         "trigger_condition": "step_metric_wrong",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_ladder_gain_wrong/certification.json",
-        "certification_sha256": "6fef65de785e1f8ce70da176598a9b9371965ebb12e006c2de5f69e2b0e55d48",
+        "certification_sha256": "8b147e193b245c873fed392a768ca4b9c6354000d782ccb8dd3d8c46e880eec6",
         "fault_class": "ladder_gain_wrong",
-        "mutation_bundle_sha256": "aaa6b5528852f4cb55efdaa28e2aea12136bcaf00113dfac004ce7a08551b6d4",
+        "mutation_bundle_sha256": "48f19fd10e1dad7cc1b472551baf5b345227bb2a0c2f1cdfa6a3eade11d8b10e",
         "mutation_id": "neg_003_ladder_gain_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_ladder_gain_wrong/certification.json",
         "trigger_condition": "ladder_gain_wrong",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_enable_reset_ignored/certification.json",
-        "certification_sha256": "46750351ccd01128a20a2e733d9323fdfe8329f41a83ce1a0671e96bfff2ba7c",
+        "certification_sha256": "ed78af61147b0745b9de41127d1c6a4759b155a0716e4cc2134233b864ec97ea",
         "fault_class": "enable_reset_ignored",
-        "mutation_bundle_sha256": "83301d11c78381b6540cb2eadf33b201979c4ad77e14da68d8b15674a5f8a5ca",
+        "mutation_bundle_sha256": "3805707dfa255e7b2bbb5b96e092114ae350ce4c9b7a2ab5fada36a43e8caa99",
         "mutation_id": "neg_004_enable_reset_ignored",
         "source_catalog_certification_path": "negative_variants/neg_004_enable_reset_ignored/certification.json",
         "trigger_condition": "enable_reset_ignored",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_monotonic_flag_wrong/certification.json",
-        "certification_sha256": "43f0a73482b67007f1b1a251ad9ce9f79c5620b492dcfa4a5d4c25fdb79cf254",
+        "certification_sha256": "9e266ed3d014d58509091c3ad61ed50014c7a843b21c3b48e3e74e9011393333",
         "fault_class": "monotonic_flag_wrong",
-        "mutation_bundle_sha256": "87b2a9ae896e930f67469d59f4bea683cd9c5fa0a0d4d34ef821d3051436251b",
+        "mutation_bundle_sha256": "6bf208150f3f7d96e19befbd431f9cf751e3933cbd705c7cb3843283291d68dd",
         "mutation_id": "neg_005_monotonic_flag_wrong",
         "source_catalog_certification_path": "negative_variants/neg_005_monotonic_flag_wrong/certification.json",
         "trigger_condition": "monotonic_flag_wrong",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_code_mapping_reversed/certification.json",
-        "certification_sha256": "2adc6a40e3c7bca8babd3438c9b32557e1886d52764634edaf363c3ee2e5e2f9",
+        "certification_sha256": "12eb6a66712d7698c8d6077ae5c7a1e8d778b532daad257399f66a41b4532481",
         "fault_class": "code_mapping_reversed",
-        "mutation_bundle_sha256": "e6f668a9bb1adecaaac25be4478f97ab1841890e9f0b87f7f16e6ecb90e0f76e",
+        "mutation_bundle_sha256": "a8fc1cedf359376e53bda5bdc171f356c2314b0d1942dc3e735c4a4f7d6b502a",
         "mutation_id": "neg_001_code_mapping_reversed",
         "source_catalog_certification_path": "negative_variants/neg_001_code_mapping_reversed/certification.json",
         "trigger_condition": "code_mapping_reversed",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "d566ca8eb57a18e16f37aa8234ae51c8e7227863003176ed38b8dfde86c641d7",
       "score_deck_sha256": "a88062411dda052f957d84b1eb473284450487d7ad4a8fb71f2b0a2790684e59",
-      "task_certification_sha256": "99ead04582ce4d8198352da111ce1ca08ec5ab4a0fcc4a522a6cdbac3b9f82b6",
-      "task_record_sha256": "b303ed2afd1e1cdcd99f681f257bbfd43afe3233f4de9450cdd45771e23d1abf"
+      "task_certification_sha256": "46770dc22ae2cf0454284eae4ad50bd40cde67444fc473351603628a90937ad9",
+      "task_record_sha256": "4f43c6a2001481ef8a5fde282a913915c976f87495f4653a83e409ca6db5399a"
     },
     "release_dir": "318-resistor-ladder-monotonic-decoder"
   }

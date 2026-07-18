@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_hold/certification.json",
-        "certification_sha256": "130b5bbdcdb75bce8068c62e7955f0b047ceb770945cec9e3f629d7092be0b0f",
+        "certification_sha256": "4e3d91e58f8a76c9a2bc61529f24cecc6a4579c4536dd3b28d4642c02bfb2db3",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "f1c8953ebad637d44061c70374ccc01f4246c9858350911ce3ebfcd53a95a73f",
+        "mutation_bundle_sha256": "225505d915b0e3ac3ed4ac1be6ac44055173c3618068a9fa3750ff11660b1a51",
         "mutation_id": "neg_002_no_hold",
         "source_catalog_certification_path": "negative_variants/neg_002_no_hold/certification.json",
         "trigger_condition": "Drops Q low whenever set is not asserted.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_swapped_set_reset/certification.json",
-        "certification_sha256": "c0cbfcf2eae935ff77e7cef82579e86ae395996f2e9078369ee4ffd47e378f42",
+        "certification_sha256": "40b0e83f8688c0c82803b8398585e8a6d416f855e758defa94b4e97beea33b09",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "70ac30303006a670d807ad3ef4095c8ad700ccdf188b35d19712bad5acd38720",
+        "mutation_bundle_sha256": "bf5b70812e086901f77c9760315e8ead0876a57f589afd1758815ca5a37e0705",
         "mutation_id": "neg_003_swapped_set_reset",
         "source_catalog_certification_path": "negative_variants/neg_003_swapped_set_reset/certification.json",
         "trigger_condition": "Treats reset as set and set as reset.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_qbar_not_complement/certification.json",
-        "certification_sha256": "fc0da89495a903a4c7fc72192706512068386ee8d8f63b2f90e31d40c7425fa6",
+        "certification_sha256": "8e58a6d39d5e7b2e3538e458a4e283b010e1936c7a81693d3ee86c8635a201f5",
         "fault_class": "qbar_not_complement",
-        "mutation_bundle_sha256": "536454788a83be7b26354af37cf470a347b1d633593a3ed074dcf578bbced8a9",
+        "mutation_bundle_sha256": "b5f87103087217ed2a58950e48c24677b09df52a7e1784e3013f1c92887bbd24",
         "mutation_id": "neg_004_qbar_not_complement",
         "source_catalog_certification_path": "negative_variants/neg_004_qbar_not_complement/certification.json",
         "trigger_condition": "Drives qbar equal to q.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "2ee27953e7d124eb3409294e541e4a7cea48539ccfdbd26a98c9cdd47e9c537f",
+        "certification_sha256": "7942b7d46e4d95e7a3e2799d8d87b0ecd15bd5415b55ce84b62b3b3d5847fcc6",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "5b9e3bf9cca20fbccdb4827764f3463551f7399535d072da7c33393671fbc2ea",
+        "mutation_bundle_sha256": "c71d8c20f56bb59c6dffe3ee0f0d107e6b1c06bfef046ee6664f1a0e4b3ee74e",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "RS Latch Voltage: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "f7f8d8fc8df10515ab25237ac50d1cd80471d48671097f2be667d407e32293ae",
+        "certification_sha256": "63da5ba1db383378d97738d4af07172ad0363a4d65192ad2ec90919a597a93f4",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "dcee6c45a9df4a52c3db8c5309d20b359cccbc0b7cbd764b2b0cf2722c491884",
+        "mutation_bundle_sha256": "039fde7535207a362306934567122f8c8463ae7a6ae7521bc2a290d09468e7bb",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero outputs and therefore fails the arithmetic/state contract.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "744f287c200cd84c8d42aeda0449c96e5a8627c2c48fb28e9135c3bf4a1dd0d3",
       "score_deck_sha256": "968dbbece8cf8f51f04cea973fe70b33b16c12a29a58e17a41434bd578835c7b",
-      "task_certification_sha256": "cb4cfbc7b67afa5598583a2e125bd08040abb116074d1db050fa1f2ea1e3ac38",
-      "task_record_sha256": "9837577c27fd952e45c3b5a7367bdc68f9e0aff2be26a745b0deac77098eb505"
+      "task_certification_sha256": "a41c92f2ba16608ff4a4453875ccbfe818f561540108345ef9605ed373857afc",
+      "task_record_sha256": "38befceb4a3c8cc9a611338db392bd67d302aac5d6969bef3cae89b9abab94dc"
     },
     "release_dir": "140-rs-latch-voltage"
   }

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_early_late_swapped/certification.json",
-        "certification_sha256": "6caf35fc67396b2b9f45382bb1b6a6d87639ee9419ca88b3780bd9ef9f36a44e",
+        "certification_sha256": "7c75c3e2a15bab325fd84cc120664fa437fae0bba50971dba9d3d888097cbc28",
         "fault_class": "wrong_polarity",
-        "mutation_bundle_sha256": "5a10d55a7741fbd3749a30241a863a34358a68914c75106c08d703a0c6d41889",
+        "mutation_bundle_sha256": "08bf70a44e7b7a0cb683cc266687123da940d5bf8550e72196c2ce4ee4b47f14",
         "mutation_id": "neg_001_early_late_swapped",
         "source_catalog_certification_path": "negative_variants/neg_001_early_late_swapped/certification.json",
         "trigger_condition": "data and recovered edges are separated",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_phase_code_resets_zero/certification.json",
-        "certification_sha256": "4ecae8cc95a17b9b54bd92b0b8b87bb2f4408c96237ec61b98426598f020ec11",
+        "certification_sha256": "710416faa54b0e7f8b10176688dfe72210fd790603db36828af750ab6a438541",
         "fault_class": "missing_reset",
-        "mutation_bundle_sha256": "74477362b0cbef6e63d542d1db361221580721df80ca27bce5032a5eec0a897d",
+        "mutation_bundle_sha256": "eab1ad96087d0f493b2dbb8f44214976023868d359cecffb1750a941341a87b2",
         "mutation_id": "neg_003_phase_code_resets_zero",
         "source_catalog_certification_path": "negative_variants/neg_003_phase_code_resets_zero/certification.json",
         "trigger_condition": "reset or disable is asserted",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_rotator_has_no_delay/certification.json",
-        "certification_sha256": "421b62ba5587d59f6251ffd49b273f1476b831992dd992b159628cba83a3b3e7",
+        "certification_sha256": "b550d1ed42a0a6922d5230c1215b61b88a1bc0b9871578fba479a8b03ac10141",
         "fault_class": "timing_error",
-        "mutation_bundle_sha256": "b99baf89cbb0b834c9873bb414e5c60c97a657df896b3295143ec766adf9aef1",
+        "mutation_bundle_sha256": "69fac40a48915c93afcbd859f340f5dfc07e2e4f8998985c30dd8f7654069bde",
         "mutation_id": "neg_004_rotator_has_no_delay",
         "source_catalog_certification_path": "negative_variants/neg_004_rotator_has_no_delay/certification.json",
         "trigger_condition": "a reference-clock edge occurs",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_lock_asserts_early/certification.json",
-        "certification_sha256": "b14b27ae7b4d8c8942f90c47f7b9df210dd08b50f1275b75b772f0d32f2d6b6d",
+        "certification_sha256": "c279080e6944728c22cb6f8e5c7b5b6da7b972856fcdd09616ec8baac392ae9a",
         "fault_class": "wrong_qualification",
-        "mutation_bundle_sha256": "72867b15928582d8d5f4b5f6ddf94b24e3ef62a5cd0b274c80943b4aca8470eb",
+        "mutation_bundle_sha256": "6768fc043249b3dcd22bdd6a7dfb93a99cbd6d0e9f1df95b8c18fd8e89f17062",
         "mutation_id": "neg_005_lock_asserts_early",
         "source_catalog_certification_path": "negative_variants/neg_005_lock_asserts_early/certification.json",
         "trigger_condition": "one in-window decision occurs",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_loop_direction_reversed/certification.json",
-        "certification_sha256": "fbf7bba97dff8e558d59402b1df0feca7d03a18b82b485ae6928458ad6fcb221",
+        "certification_sha256": "c4dacf6a1d34c681a6975830a479695c21677970394ce764b328aec7f905f8bd",
         "fault_class": "wrong_polarity",
-        "mutation_bundle_sha256": "6d9d24de34023d3b43c479a4581bba64c59a743305076bb1b90bb626dffff516",
+        "mutation_bundle_sha256": "6191fed37120e6f6e0738c1b8c070ec784141b2ca41b901905b17761a07e4c81",
         "mutation_id": "neg_002_loop_direction_reversed",
         "source_catalog_certification_path": "negative_variants/neg_002_loop_direction_reversed/certification.json",
         "trigger_condition": "an early or late decision occurs",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "25ebfa33e8c7e6e251ae41d5e72785e740b9fd5038561bbbf47164aef639852d",
       "score_deck_sha256": "642107256b331368c0fe3f288b02fa49879232edd6f288fd7c662109e7fbf0f3",
-      "task_certification_sha256": "32c50c8136761ceaa7f9d1ce768f2a3086082b528f511c9dd904a8775aa8f62b",
-      "task_record_sha256": "e0898acfd155d7a7425d3e88a8f7e5c681903337bd65a97a47a2e2366a80b6c7"
+      "task_certification_sha256": "02aaf01744b7177338d3e3602234c95bf7684888e70e6e8b356604b66f17ce49",
+      "task_record_sha256": "94c31d4dd4def7453adbc92631b188ff33f9601fb08fc346585a2d388bd3c9ac"
     },
     "release_dir": "357-bangbang-cdr-loop"
   }

@@ -3,7 +3,7 @@
   "checker_task_id": "v4_073_bias_voltage_generator_with_enable_trim",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "6998ed6c4d8a1bb32f3974c6c118ff059f58f4f2fd9fbef5b324fede6ac56e2a",
+    "certification.json": "db76a51b381230a658539406acc3028c4a67f6dc9558eb68bf35ded9a330a222",
     "checker_profile.json": "feda42009a829f4ce7ddbd62a9a5612049786182782f7aada85500292116ddc8",
     "derivation_manifest.json": "6eca32160a3edcedfa888ddcea7edcb278d041859d4858970ecddd554e94a849",
     "family_spec.json": "90d54d0c495e7076dff22333fa2a40d2d0e526d484c2652c4922b89f1f37239a",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "6998ed6c4d8a1bb32f3974c6c118ff059f58f4f2fd9fbef5b324fede6ac56e2a"
+    "sha256": "db76a51b381230a658539406acc3028c4a67f6dc9558eb68bf35ded9a330a222"
   },
   "release_dir": "073-bias-voltage-generator-with-enable-trim",
   "schema_version": "v4-canonical-dut-release-task-v1",

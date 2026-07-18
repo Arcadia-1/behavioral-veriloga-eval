@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_swap_outputs/certification.json",
-        "certification_sha256": "218b4633647f2eec690af2a9dd6bbffadb161d49439051859f16447ef69518a7",
+        "certification_sha256": "fa2c2a35a70a15d2aa97ce1434f09c264350ab0c4fdeba150c5f46538143e2c3",
         "fault_class": "direction_swap",
-        "mutation_bundle_sha256": "c58a202b4a7b2acefba1ac600df1e041d439f212cab6606b2ac34f9d10b908d8",
+        "mutation_bundle_sha256": "290e08bdb463d08da088290679fd4cd49c80ec428c47a903b76dc296ca250654",
         "mutation_id": "neg_001_swap_outputs",
         "source_catalog_certification_path": "negative_variants/neg_001_swap_outputs/certification.json",
         "trigger_condition": "data leads or lags clk",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_never_clears_on_clock/certification.json",
-        "certification_sha256": "a213b670d14adee2d7d43b2c9273ed86053f022dcd8216b35554a3d746fadca9",
+        "certification_sha256": "d082ad003eb51a302fbe0f1988c394762b02f5902ac43f62b487fc635ed279d2",
         "fault_class": "missing_clock_clear",
-        "mutation_bundle_sha256": "1031a9f0b2d88e93e3d14e9b04048ef182f6e282e209747425b09b3552e1ba8f",
+        "mutation_bundle_sha256": "bc643f78b7f4c28bf97a7492342e91e18821852893da0a71e6eb8eeb26eefb4a",
         "mutation_id": "neg_003_never_clears_on_clock",
         "source_catalog_certification_path": "negative_variants/neg_003_never_clears_on_clock/certification.json",
         "trigger_condition": "clk rising edge follows an asserted decision pulse",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_both_outputs_on_direction/certification.json",
-        "certification_sha256": "fe8f9a59944275c054bbf19b6c2a042b2cfab6a303d6c663f77ad59f35c7e124",
+        "certification_sha256": "74e654fd9e64c85d0006d8b2ac4b677da4d18c758111d5a511840ee47902c08b",
         "fault_class": "nonexclusive_outputs",
-        "mutation_bundle_sha256": "016c8a00d180ad667ec4cdee11e7a71e565fdedc630e716ccc0707415f154063",
+        "mutation_bundle_sha256": "7ba02f0ed5e25990dbe7186d87dd3175e0d38ef9c55ac95e8c47a9400fa21257",
         "mutation_id": "neg_004_both_outputs_on_direction",
         "source_catalog_certification_path": "negative_variants/neg_004_both_outputs_on_direction/certification.json",
         "trigger_condition": "a directional phase event occurs",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_weak_high_level/certification.json",
-        "certification_sha256": "3b4fa72a5ef00f0295c61f2cf82aaa30844443ca45677cf081c27006aa001353",
+        "certification_sha256": "eab3154c93f1fbfb27a628b85a7268f3882cc35de9a62213929ebf84f96162f6",
         "fault_class": "weak_logic_high",
-        "mutation_bundle_sha256": "02f50ecc1790a0885e6b1687c458d176a379c4affffb89e9fc327b352e51986c",
+        "mutation_bundle_sha256": "a008db10d6b122e24653f19f3e857ac5a115ddc9f268656592a81a2e459ffb69",
         "mutation_id": "neg_006_weak_high_level",
         "source_catalog_certification_path": "negative_variants/neg_006_weak_high_level/certification.json",
         "trigger_condition": "either direction output is asserted",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_retimed_ignored/certification.json",
-        "certification_sha256": "88b77fa551b343ed9b0f1fad65eeba6aaf17a45d2663440dbeb9415a0afe055e",
+        "certification_sha256": "63df78009c50be2fb635c5088b612d74c00dec84171b90f50b484ec53f3ea636",
         "fault_class": "missing_retimed_direction",
-        "mutation_bundle_sha256": "03fcc22580523b2d7172d68db4baaa48fa3799f2b5b4241867cd65705cc60f09",
+        "mutation_bundle_sha256": "ed6413311803d009337876e5902c3bb39f1bde541bdd0e584c657794aa897880",
         "mutation_id": "neg_005_retimed_ignored",
         "source_catalog_certification_path": "negative_variants/neg_005_retimed_ignored/certification.json",
         "trigger_condition": "retimed data changes phase ordering",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "1fa563bf0aee87b0bb982ef90bb9e36309a8564f1c411c2f4a46edbe73a42478",
       "score_deck_sha256": "10051f3b2ff95ad882a799090da345bfd6d8c1567870e3b1e5aca8d21e826cc8",
-      "task_certification_sha256": "60654c175bf3fb8b3924bb0ac3ecd4a951b782ebf23a2a2d538f9667531d189c",
-      "task_record_sha256": "2c164b2d05e0761b75c156f6f53f3259f0d9f82d8b015fe3f2b5b28cd2065fd6"
+      "task_certification_sha256": "d5ec713abfb63df22734e5bfae1e3ac1be65a2b4caeea52791030dc2c83445be",
+      "task_record_sha256": "7812b61c7ef9b376f77cf678e541e7fe1e207f6a06c6658f5af23392c2f18138"
     },
     "release_dir": "001-bang-bang-phase-detector"
   }

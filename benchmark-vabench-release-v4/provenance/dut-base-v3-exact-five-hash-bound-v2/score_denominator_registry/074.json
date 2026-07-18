@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "9fc403c7e8d6b22474098a0454101c31ad6137b7944dd2c8873b2041e864bc62",
+        "certification_sha256": "34fe4d1e463afa25fbac62b84f20280d8f37777468cd812453bbe9362abcd2f0",
         "fault_class": "zero_stub_output_implementation_copied_from_starter_must_not_satisfy_hidden_beha",
-        "mutation_bundle_sha256": "ca529ca1b58f8029d421389b81d592e18e1a539a6196e864b8645bc8166a2325",
+        "mutation_bundle_sha256": "c69327b624102562668d153f573aec00a5c33ec5a8e3e45a808dff3227b1a837",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "stimulus exercises zero/stub output implementation copied from starter must not satisfy hidden behavior checker against the public observable contract",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "87f697d7bfc2673cbf796f6fb4519c546333d27be0c00c7313333489a654fc36",
+        "certification_sha256": "928499b03e021c2f0d53235173611e2ae91fb3ee42ad46acc8f3a4b83520a237",
         "fault_class": "crossing_metric_writer_uses_the_opposite_event_edge_preserving_interface_behavio",
-        "mutation_bundle_sha256": "1be9b029836f86038218a9a659055d6a5534417e07edfeae5cb840da7a45693a",
+        "mutation_bundle_sha256": "36fa6a7b63764b1bebb67eea138a0cda765edc5d98c53fddf3d11e536778cffb",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "stimulus exercises Crossing Metric Writer: uses the opposite event edge, preserving interface behavior while failing timing windows. against the public observable contract",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "a5b5f769d2714b457933ea1abb9255a0f49be8d850d7519ba805e7e420fadd55",
+        "certification_sha256": "40b6f9abbd3304d98b5ec7fda8a535167a02cfd52705b218e591c57592ba24d5",
         "fault_class": "crossing_metric_writer_uses_the_wrong_reset_polarity_preserving_steady_state_beh",
-        "mutation_bundle_sha256": "ed4ddee6e5f3821ee7440e32bf3a1d653fa6fb2f4955e1a19183f3ab0742f4ac",
+        "mutation_bundle_sha256": "bf7a54c2cba75ac09060fcc9ce094dab1586ca243e7997bd10f333945e6cb7b6",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "stimulus exercises Crossing Metric Writer: uses the wrong reset polarity, preserving steady-state behavior while failing recovery checks. against the public observable contract",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "3dcbd1cb6e1b15645f74b3a77dfa56a7b7c69c2492baeb058a4b881fb1cfb300",
+        "certification_sha256": "a0995c2b553336d352c1d39876d6f54970eba0518890d9ef6f546befe32ce685",
         "fault_class": "crossing_metric_writer_scales_the_metric_output_preserving_the_main_path_while_f",
-        "mutation_bundle_sha256": "232ff67e16cdd5cff11c6eb3bc8a8fb59582803d6d2205572373750bd4fe6df1",
+        "mutation_bundle_sha256": "06a36bfcd2a9178954466afef2071246ae9cd385131be7e58cf461de11218ba2",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "stimulus exercises Crossing Metric Writer: scales the metric output, preserving the main path while failing measurement checks. against the public observable contract",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "d1ed4e5cab39c490434b17e98eb9fb8e921eb44b60740b65418a72b881a8495d",
+        "certification_sha256": "d26a9e368737c3013d2395577b35dddea3091bd38f3f569dd32a131d662cd11f",
         "fault_class": "crossing_metric_writer_shifts_the_decision_threshold_preserving_nominal_behavior",
-        "mutation_bundle_sha256": "f16b25c5c489d480b3d99c685c72bde56ec3f1635fc4eb0e03c99851f98a29ec",
+        "mutation_bundle_sha256": "57da523e9951a98f021bcbaee3e8b5a216857b0a100d70c9996bddbd09458570",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "stimulus exercises Crossing Metric Writer: shifts the decision threshold, preserving nominal behavior while failing boundary checks. against the public observable contract",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "77f62cb1e51a2c0e2907e07b8f0e10b188829cc9662052d77775090ccb6ed5d9",
       "score_deck_sha256": "a2b8cf84f21707334e6b778dd8814d2051a5298a3561762e1d62bfbb420df01e",
-      "task_certification_sha256": "428736a4753b68a23dabb419144ab89c998a29b21b8a78a1c18b8d37bd4c5160",
-      "task_record_sha256": "4f195eb3413f6bc7d66aa2f08b05628f286d258ff897dcb5c680baf806fab026"
+      "task_certification_sha256": "dd99e1a54bc0126a6dca28262d74b197ca6a22ab482f6ba44ce6a4177312907d",
+      "task_record_sha256": "84d6b34ce098507b71450914f0ac2f9693331841c4cb2d53b477595ce8aa0d18"
     },
     "release_dir": "074-crossing-metric-writer"
   }

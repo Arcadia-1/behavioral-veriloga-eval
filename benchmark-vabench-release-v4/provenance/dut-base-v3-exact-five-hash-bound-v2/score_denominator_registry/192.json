@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_invert_decision/certification.json",
-        "certification_sha256": "cb11113e44a4ad43208750e27e2398cc23fc2449236a88552725d8a35802f329",
+        "certification_sha256": "322c5a7183868a5a3ecdceff76ff5925cc9081ed42bfaec4176eb3bf0bbb3724",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "3875af56036fe5fa3c0aabfcd5d53fff864649c70f29aeaf265860f93d1c7a72",
+        "mutation_bundle_sha256": "ecd56656b2881ba1f04834f18d4846d810463341669dadcb2727faecfec6c8ed",
         "mutation_id": "neg_002_invert_decision",
         "source_catalog_certification_path": "negative_variants/neg_002_invert_decision/certification.json",
         "trigger_condition": "Stores comparator decisions with inverted dcmpp/dcmpn polarity.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_step_decrement/certification.json",
-        "certification_sha256": "00d5f0099df0f55c6d1131a06f4be8605a4fab4a56fe4c95ce066d367f47aa86",
+        "certification_sha256": "4757d97dbb70815a61fbd35a2cbad907f2994fea99c7ae72738758acb6e74d37",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "e090541409578bfdabb511996bdb4d4fd987cca3d32e2bc8c1790a272e9909f8",
+        "mutation_bundle_sha256": "a237566196d0d0eda004a2bc3520c5cec3861fea9f7b633b7c5101d0b02de25f",
         "mutation_id": "neg_003_no_step_decrement",
         "source_catalog_certification_path": "negative_variants/neg_003_no_step_decrement/certification.json",
         "trigger_condition": "Does not advance the SAR step when comparator outputs fall.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_cmpck/certification.json",
-        "certification_sha256": "cc8e6822e072124410fe3c4d565f9e16d06666ee7f4fb327bf09cc5af8282780",
+        "certification_sha256": "8d9e9ab427572916735cba0d087140402d280cf22fa2246097186849575093e1",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "dda348af9a074f4ab43e1a30caf5611d5437174f07313f87e108c8f9352f5b4c",
+        "mutation_bundle_sha256": "bdfb89d75caa24c758d72770419e1a4f360e89c156d037171b5d843718a26a87",
         "mutation_id": "neg_004_half_cmpck",
         "source_catalog_certification_path": "negative_variants/neg_004_half_cmpck/certification.json",
         "trigger_condition": "Drives cmpck at half supply amplitude.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "0f2db22a96ba5ee7efd5242c0f46a0c6ea588e202cd350ed49165ec67a7dced8",
+        "certification_sha256": "43effe927025fc8bdde19ae41b0f50f47619aa3f5fd37edeab569c3677178382",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "9ec72bf07f220fe7ddbd9035c7ce66cfa40d9ce26792b65531c9b8f20d30c64a",
+        "mutation_bundle_sha256": "12d768be0580d555a26ac40a3c77beb31c3c1ad48eea5c2eed0c812c92921015",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "1b5d63ccb48d6ee3814dec45f7adaea4ea5f17eb914b7e9c371d905b10fbe5d6",
+        "certification_sha256": "51a4da744e23e58a7486eb0f0cfc05a4b451f27d318f0a667d1072eba3b6f233",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "200c782da9fbc76a59afe7f95e55c24c491b69b9afe72f5601c53f6f03cd18d0",
+        "mutation_bundle_sha256": "eebee324c7e77ab82d73a63cc6864a9a6436f73eaed53baaffc787def203e8b8",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "SAR Logic 4b Self Timed: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "66898c693a014e7d9099555b550ff16afe637e4467a249fd4320dd2658178874",
       "score_deck_sha256": "3da125e5ff09a373436d31f3150ca69c0df005c190c8490ab18b1f88ab4de80c",
-      "task_certification_sha256": "4239858eb4e08bea5c90345bd52ff0be5c3e8e71e053b5d64e661b942fda5b77",
-      "task_record_sha256": "ed098c64edaa1477e62bac8129788398b6db3dae8705fb2fa702ea7c8e3ed597"
+      "task_certification_sha256": "69dceb836049622d31db7a10f63a1c1e0b5f7e9c04b7c807f05b297f88860d88",
+      "task_record_sha256": "b6db5e790131965c03fbda3f8b0c8e1f1732295b19a383ec068f6b3b5e12e1bd"
     },
     "release_dir": "192-sar-logic-4b-self-timed"
   }

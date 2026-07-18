@@ -3,15 +3,15 @@
   "checker_task_id": "v4_369_offset_cancellation_servo",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "75e117da3ace984be593156958987cde5ea405599b30044fe1e7054c8f076609",
+    "certification.json": "0dd052e87769dc8619f5333dcf85b6ea3395f062799ad629a33dd99782ac3b19",
     "checker_profile.json": "047a5a5bad94226be3632dfd57b11ba347405675eff791d59c53893a9d601870",
     "derivation_manifest.json": "34c98731b033df219cb7c7cc851a46edd9137436de32fa1500d76df9e603c6de",
     "family_spec.json": "75187efa6b83a65562a3c5d86db3edb5f9be4a7d5c96ca88563a7c1ef5b0ecbe",
-    "harness_spec.json": "4b99db9278e54dca6b73f2f41789d2199af73af4e8f8896c0408147e7f86d837",
+    "harness_spec.json": "1a02fde6c4589d91311f6f8e31fc21252c1bfd47581f7550dceb329ffdc9b4dc",
     "mutation_catalog.json": "eaa83aaab6d48ece71149f2b0171f90549cfa9a06a5c3abccb1fd1b57274380e",
-    "profiles/feedback.json": "99619ec323e68759336b3a96bacba6c85008d9058a9bab50ef2417ee2844ecac",
-    "profiles/score.json": "d61658e1fc23bdd0bbf373334edee82892269e0285bed0b95207b21c98c42566",
-    "score_tb.scs": "198832e21a4639207b836de9b2e85078443c76650b145ddc6e29dd7f9e5f72d5",
+    "profiles/feedback.json": "5710f26bd3f5903fd5551279e1bf9cff27511ae6554840928d909916a848e7b4",
+    "profiles/score.json": "8c57a60972363204ec5f738153ed6b26a0ba1af2e046cb70e547cd14d1d47813",
+    "score_tb.scs": "4a43ed176e3d0fe112fcda7008da4e173ddc561bd76ab2be1b3048397e26f09d",
     "solution_tree": "52bf14c27b84ca2c8805d1a302e21d63ea893933f17ded49adaff91b1a907102",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "75e117da3ace984be593156958987cde5ea405599b30044fe1e7054c8f076609"
+    "sha256": "0dd052e87769dc8619f5333dcf85b6ea3395f062799ad629a33dd99782ac3b19"
   },
   "release_dir": "369-offset-cancellation-servo",
   "schema_version": "v4-canonical-dut-release-task-v1",

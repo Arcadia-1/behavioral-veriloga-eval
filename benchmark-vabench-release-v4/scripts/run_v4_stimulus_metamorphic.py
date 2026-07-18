@@ -10,6 +10,7 @@ non-infrastructure failure.
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import json
 import os
 import re
@@ -46,6 +47,11 @@ from runners.simulate_evas import (  # noqa: E402
 REQUIRED_EVAS_ENGINE = "evas2"
 REQUIRED_EVAS_VERSION = "0.8.2"
 REQUIRED_EVAS_BACKEND = "evas-rust"
+
+# Scaling the stimulus changes the physical operating point when the DUT owns
+# fixed absolute delay/frequency constants. Translation still exercises the
+# checker against a shifted time origin without making a false invariance claim.
+TRANSLATION_ONLY_FAMILIES = {"361", "362"}
 
 
 _QUANTITY = re.compile(r"^(?P<number>[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)(?P<unit>[a-zA-Z]*)$")
@@ -350,36 +356,74 @@ def run_task(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--release", type=Path, required=True)
-    parser.add_argument("--task-id", action="append", required=True)
+    parser.add_argument("--task-id", action="append", default=[])
+    parser.add_argument("--family-range", default="001-400")
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--compact-output", type=Path)
+    parser.add_argument(
+        "--base-report",
+        type=Path,
+        help="replace selected task results in a prior full raw report",
+    )
     parser.add_argument("--work-root", type=Path, required=True)
     parser.add_argument("--scale", type=float, default=1.37)
     parser.add_argument("--shift", type=float, default=2e-9)
     parser.add_argument("--timeout-s", type=int, default=120)
+    parser.add_argument("--workers", type=int, default=8)
     args = parser.parse_args()
     require_evas2_environment()
     if args.work_root.exists():
         shutil.rmtree(args.work_root)
     args.work_root.mkdir(parents=True)
-    results = [
-        run_task(
+    task_ids = list(args.task_id)
+    if not task_ids:
+        left, separator, right = args.family_range.partition("-")
+        if not separator:
+            right = left
+        start, stop = int(left), int(right)
+        if start < 1 or stop < start or stop > 400:
+            raise SystemExit(f"invalid family range: {args.family_range}")
+        task_ids = [f"v4-{500 + family:03d}" for family in range(start, stop + 1)]
+
+    def execute(task_id: str) -> dict[str, Any]:
+        family = f"{int(task_id.split('-', 1)[1]) - 500:03d}"
+        effective_scale = 1.0 if family in TRANSLATION_ONLY_FAMILIES else args.scale
+        return run_task(
             release=args.release.resolve(),
             task_id=task_id,
             output_root=args.work_root,
-            scale=args.scale,
+            scale=effective_scale,
             shift=args.shift,
             timeout_s=args.timeout_s,
         )
-        for task_id in args.task_id
-    ]
+
+    with ThreadPoolExecutor(max_workers=max(1, args.workers)) as pool:
+        results = list(pool.map(execute, task_ids))
+    if args.base_report:
+        base = json.loads(args.base_report.read_text(encoding="utf-8"))
+        combined = {
+            str(item["task_id"]): item
+            for item in base.get("results") or []
+        }
+        combined.update({str(item["task_id"]): item for item in results})
+        expected = {f"v4-{value:03d}" for value in range(501, 901)}
+        if set(combined) != expected:
+            raise SystemExit(
+                "base report plus replacements must cover exactly v4-501 through v4-900"
+            )
+        results = [combined[task_id] for task_id in sorted(combined, key=lambda value: int(value.split("-", 1)[1]))]
     report = {
         "schema_version": "v4-stimulus-metamorphic-evidence-v1",
         "evas_engine": REQUIRED_EVAS_ENGINE,
         "evas_engine_used": REQUIRED_EVAS_ENGINE,
         "evas_version": REQUIRED_EVAS_VERSION,
         "evas_backend": REQUIRED_EVAS_BACKEND,
-        "release": str(args.release.resolve()),
-        "transform": {"scale": args.scale, "shift_s": args.shift},
+        "release": "release/benchmarkv4",
+        "transform": {
+            "default_scale": args.scale,
+            "shift_s": args.shift,
+            "translation_only_family_ids": sorted(TRANSLATION_ONLY_FAMILIES),
+        },
         "task_count": len(results),
         "pass_count": sum(item["status"] == "pass" for item in results),
         "fail_count": sum(item["status"] != "pass" for item in results),
@@ -388,6 +432,68 @@ def main() -> int:
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    if args.compact_output:
+        compact_results = [
+            {
+                "task_id": item["task_id"],
+                "family_id": item["family_id"],
+                "checker_task_id": item["checker_task_id"],
+                "status": item["status"],
+                "affine": {
+                    key: item["affine"][key]
+                    for key in (
+                        "status",
+                        "reference_pass",
+                        "mutation_kill_count",
+                        "mutation_count",
+                        "infrastructure_error_count",
+                        "mutation_survivor_count",
+                    )
+                },
+                "insufficient_excitation": {
+                    key: item["insufficient_excitation"].get(key)
+                    for key in ("status", "simulator_ok", "checker_ok", "reason")
+                    if key in item["insufficient_excitation"]
+                },
+            }
+            for item in results
+        ]
+        compact = {
+            "schema_version": "v4-r44-stimulus-metamorphic-compact-v1",
+            "status": report["status"],
+            "certification_policy": "rust_evas2_only",
+            "evas_engine": REQUIRED_EVAS_ENGINE,
+            "evas_engine_used": REQUIRED_EVAS_ENGINE,
+            "evas_version": REQUIRED_EVAS_VERSION,
+            "evas_backend": REQUIRED_EVAS_BACKEND,
+            "release": "release/benchmarkv4",
+            "transform": report["transform"],
+            "summary": {
+                "task_count": len(results),
+                "affine_gold_pass_count": sum(
+                    item["affine"]["reference_pass"] for item in results
+                ),
+                "affine_mutation_kill_count": sum(
+                    item["affine"]["mutation_kill_count"] for item in results
+                ),
+                "affine_infrastructure_error_count": sum(
+                    item["affine"]["infrastructure_error_count"] for item in results
+                ),
+                "insufficient_excitation_rejection_count": sum(
+                    item["insufficient_excitation"]["status"] == "explicit_failure"
+                    for item in results
+                ),
+                "insufficient_excitation_not_applicable_count": sum(
+                    item["insufficient_excitation"]["status"] == "not_applicable"
+                    for item in results
+                ),
+            },
+            "results": compact_results,
+        }
+        args.compact_output.parent.mkdir(parents=True, exist_ok=True)
+        args.compact_output.write_text(
+            json.dumps(compact, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
     print(json.dumps({
         "schema_version": report["schema_version"],
         "status": report["status"],

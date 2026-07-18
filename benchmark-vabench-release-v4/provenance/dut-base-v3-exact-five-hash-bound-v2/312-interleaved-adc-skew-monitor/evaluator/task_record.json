@@ -3,15 +3,15 @@
   "checker_task_id": "v4_312_interleaved_adc_skew_monitor",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "68b13c2fbc48674b43a083e873abd41b3226765dba438d8ea89cc2d85bb51c4b",
+    "certification.json": "0e6c9338cddfd1f8901aa95f5f4662397e7533635462d77e94316d87a0da09e0",
     "checker_profile.json": "f03ed9a172bfa167b4411c53bccb84336bae8bd9291cfd662fe4b2af2e8cd877",
     "derivation_manifest.json": "0ebca98c8b7dd1ee34a9b04aa55de9af433573d1f6ec03429202766154566986",
     "family_spec.json": "adc1ca91951b79e07206a33731f7511a7b19ccde698b7af13f7a9f18d4f061a5",
-    "harness_spec.json": "4d29984c9fcc198629503c762bd2416200ffecb11d10a206322a9b803dc7f938",
+    "harness_spec.json": "90432ed48ee853c17ae8019f795b8f918908b674e6d67be6d5fc8a1bd36aae2b",
     "mutation_catalog.json": "ffa122ebcc59fe57ad1b948cb28d9b090c43383e8a178f0f8cbc9c0657d629a1",
-    "profiles/feedback.json": "251f436b8f46192be8e6d728c8b41ee5c229df919e9b2dd32ac5f8441f568ae2",
-    "profiles/score.json": "b1497199b981b30a6b7d05821963177fa5846a690192b6f79d345fd4b8e67ab7",
-    "score_tb.scs": "ba53df0a8b73a20f63aad4b54e7446e9c3bedb7af97bf4e5f182d4ba72dc9526",
+    "profiles/feedback.json": "3daac48ea70a2b57763d92bececafb116e7a487fd55a192a2e7747f9ae1fc90d",
+    "profiles/score.json": "1925de8fb2329d7086c9468322d11567063c591eb911638fce49ad800e6a5ebc",
+    "score_tb.scs": "1f557a956b50fc4e1b4400a2dad0d44f0c607b7f4708b2f8f9debdea1a5ca00e",
     "solution_tree": "90ff75d1eba5191273163a674f592b24df77b48fa881d28bd6b601b288aa65aa",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "68b13c2fbc48674b43a083e873abd41b3226765dba438d8ea89cc2d85bb51c4b"
+    "sha256": "0e6c9338cddfd1f8901aa95f5f4662397e7533635462d77e94316d87a0da09e0"
   },
   "release_dir": "312-interleaved-adc-skew-monitor",
   "schema_version": "v4-canonical-dut-release-task-v1",

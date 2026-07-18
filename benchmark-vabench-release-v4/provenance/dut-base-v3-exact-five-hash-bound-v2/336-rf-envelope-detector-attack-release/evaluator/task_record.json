@@ -3,14 +3,14 @@
   "checker_task_id": "v4_336_rf_envelope_detector_attack_release",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "d75331bd8831426f36aaffd329ccd83f9d3020cceb636796652cb7deb194586a",
-    "checker_profile.json": "5a785cd8946006933db1c1c564a295276f4efcb666bf49580678801f6acb9570",
+    "certification.json": "0ba6d846cb886f60faf38d0b45dc68a1a8583e03714c5c22afdd0fb8d3ad7464",
+    "checker_profile.json": "c50c3f86114203fe47beaea45e9b96c7639ea425415add3d7c3952806a33033d",
     "derivation_manifest.json": "141b2ca62d1d336a6ffe7bf63385f3e1a93f35e7e9c3a78919ecab20c6cca78c",
     "family_spec.json": "8417f07420a9b4cc3195a641219dd0f233b6109971f5ec88a029d343092d8ad6",
-    "harness_spec.json": "0fd4ef21a9a0fc0aa59f4dbbe748a3be6130bd44bcb23844fac32967b4d6363b",
+    "harness_spec.json": "0d4f32ccc8c8b46ee12dbd2966f64d2f2299a6b85d9c3b40f5f56c85b1b4b39d",
     "mutation_catalog.json": "1372e30c22c2cb5e366e69c503f7913637c871ab3ca18d55a62dde6540b3c130",
-    "profiles/feedback.json": "5a14dcb834f39a3c66bb0bd150da25f78ba172d7fb3a5ff5297416f9f569450c",
-    "profiles/score.json": "cd4ecd459f5e46b469df6cfc3148c125a935ab54f1955e5f9f16ef82d73e4075",
+    "profiles/feedback.json": "465630cf5ead6b416af51daa9cb17b3025e2d18c8fbc188b0eb6208858bcc66f",
+    "profiles/score.json": "a7d49704a7608273b3b54ee42b9598af228f047548dd5300d57cb743c4d8b209",
     "score_tb.scs": "546e8e144a15ed0fd45199b05b579bf3f074f08268306721e572166a99f50b88",
     "solution_tree": "10f3d07688f0474c603f965c9e3fe8a6446d2e2bc4bcf8f281f57e45697bf0c8",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "d75331bd8831426f36aaffd329ccd83f9d3020cceb636796652cb7deb194586a"
+    "sha256": "0ba6d846cb886f60faf38d0b45dc68a1a8583e03714c5c22afdd0fb8d3ad7464"
   },
   "release_dir": "336-rf-envelope-detector-attack-release",
   "schema_version": "v4-canonical-dut-release-task-v1",

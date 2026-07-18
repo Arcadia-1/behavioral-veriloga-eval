@@ -10,6 +10,7 @@
     "trim_controller.va",
     "output_balancer.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "changed_artifacts": [
     "cm_sensor.va",
     "cmfb_loop_top.va",
@@ -18,11 +19,10 @@
   ],
   "checker_profile_sha256": "8491195548b79a8ff08a5c5253828dcba2a354c589e58f32c7bcbe30f572d6b4",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "76df318217c240f4d5a8d548823b4af7597eb23ddb6857d1e825d162fd5785a5",
+  "gold_dut_certification_sha256": "395405e2daf3e16ca6a1d525c731bcb800316886b5dad671da77c5e1e1c7cd51",
   "gold_solution_tree_sha256": "a56eb3159ee65ca4d43500f9e4c00101c15b331afe70743da2439fa0e5f5db87",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "mutation_catalog_sha256": "be3d0221117f218e8ae4530207e3544f03e33d3eda9d4c5bbb47a999cb6bd68a",
   "schema_version": "v4-bugfix-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-1390"
 }

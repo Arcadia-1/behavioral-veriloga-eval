@@ -3,6 +3,7 @@
   "candidate_artifacts": [
     "testbench.scs"
   ],
+  "certification_evaluator": "rust_evas2",
   "checker_profile_sha256": "59fcd24b407f6bc09c7e62e223f6318e0e0c0884a7a006b84fa31ac3af994ef5",
   "full_credit": "reference_gate and five_of_five_killed_behaviorally",
   "kill_ratio_denominator": 5,
@@ -27,6 +28,5 @@
   "reference_tb_sha256": "46cbea2fc6f69715809af29515b0020327274826cdff7e0e4afc237153fd9f19",
   "reference_tb_source_kind": "independent_reference_tb",
   "schema_version": "v4-testbench-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-670"
 }

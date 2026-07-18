@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=sig falls after out has qualified high; violated_properties=P_FALL_CLEAR",
-    "observed": "EVAS: reset_arm_rejected_20ns:0.000 short_glitch_low_34ns:0.000 short_glitch_low_40ns:0.000 reset_cancel_low_67ns:0.000 post_cancel_low_72ns:0.000 pre_qualify_low_82ns:0.000 qualified_high_100ns:0.900 qualified_high_130ns:0.900 expected_rises=1 observed_rises=1 observed_falls=0 unmatched_expected=0 unauthorized_rises=0 unauthorized_falls=0 required_falls=1 unmatched_required_falls=1 rail_failures=0 missing_required_fall_ns=132.025; Spectre: reset_arm_rejected_20ns:0.000 short_glitch_low_34ns:0.000 short_glitch_low_40ns:0.000 reset_cancel_low_67ns:0.000 post_cancel_low_72ns:0.000 pre_qualify_low_82ns:0.000 qualified_high_100ns:0.900 qualified_high_130ns:0.900 expected_rises=1 observed_rises=1 observed_falls=0 unmatched_expected=0 unauthorized_rises=0 unauthorized_falls=0 required_falls=1 unmatched_required_falls=1 rail_failures=0 missing_required_fall_ns=132.025",
+    "expected": "properties P_FALL_CLEAR satisfy the public contract; fault class fall_clear_omission is rejected",
+    "observed": "EVAS: expected_rises=1 observed_rises=1 observed_falls=0 unmatched_expected=0 unauthorized_rises=0 unauthorized_falls=0 required_falls=1 unmatched_required_falls=1 rail_failures=1 missing_required_fall_ns=132.050 rail_detail=fall@132.050ns=0.9",
     "violated_property_ids": [
       "P_FALL_CLEAR"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_005_debounce_latch",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 306
   },
   "family_id": "005",
   "inputs": {
     "checker_profile_sha256": "139e3bf50a398b32a46ad8bd4ff824bc5e8c25b81f62108309465b2ba3c497cf",
-    "harness_spec_sha256": "c1567d2468b7a912bc0f76bbab34a3090328d5ae37d54c22e1070fb6e4ccf456",
-    "mutation_bundle_sha256": "20796315255255981dbb707ac8c112df42b0939a1815557bf4ca2a66a72a405f",
-    "profile_sha256": "28f8e92b6d80a8d8f75556f06671d269f258712a1258f7c38de592babee8d4bc"
+    "harness_spec_sha256": "e8a08abf0061f076c2356ef68017125e8f02c24c718f15d8906a9b210de240ee",
+    "profile_sha256": "548c2dab6296f0c33f2deef32e551bb526a1092f2c3374f0f1957f2bd70171ad"
   },
   "mutation_id": "neg_007_missing_fall_clear",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

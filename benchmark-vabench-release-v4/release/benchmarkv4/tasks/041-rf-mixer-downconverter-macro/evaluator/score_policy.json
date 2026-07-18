@@ -2,12 +2,12 @@
   "candidate_artifacts": [
     "rf_mixer_downconverter_macro.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "checker_profile_sha256": "8cf733f9f1b41de8c90b30b37e5a1ba2275123c9ec5acd8a1c414e7eed4cd349",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "a82560151fd2c6d83b7f60cba937842b473b1e51bd945cde472966e4f54d0ecc",
+  "gold_dut_certification_sha256": "c10f5b5afbf2ee1368416e4036d1d72dd7ea2598f4d00e8de2a3a649d18bda92",
   "gold_solution_tree_sha256": "b22411fa6142dcc1ec937e54396f473166b580811802e9bf6e68e1f6ae871bc4",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "schema_version": "v4-dut-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-041"
 }

@@ -3,14 +3,14 @@
   "checker_task_id": "v4_318_resistor_ladder_monotonic_decoder",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "99ead04582ce4d8198352da111ce1ca08ec5ab4a0fcc4a522a6cdbac3b9f82b6",
+    "certification.json": "46770dc22ae2cf0454284eae4ad50bd40cde67444fc473351603628a90937ad9",
     "checker_profile.json": "d667916d91d52479e2af9f48b30a5e3ea1dbb0d28670f3935fde1a4dd41c672a",
     "derivation_manifest.json": "64305a2782108789771cfeb20cd90ec374d9716ff1e73df9f9a830990ed065fa",
     "family_spec.json": "abbf12010a03af2de9769b1eb2fb91069e790664bde1b5124fbe33d2b3429a61",
-    "harness_spec.json": "8681318d5d3041da8be36c65010cba2525cba34310ae06cd34f069ac9c88581e",
+    "harness_spec.json": "decbfd84adcba6991c8a2e5d99a53239f92d581faa22e1d53b0afebb1403c376",
     "mutation_catalog.json": "d566ca8eb57a18e16f37aa8234ae51c8e7227863003176ed38b8dfde86c641d7",
-    "profiles/feedback.json": "b90b3f07bf008417fe0920ee1c549d7e8b39764758f0de91ea68b5a618d76754",
-    "profiles/score.json": "070bc47a3750973f419cc643965e637b4b92ce6fbec31ece712e6894c738486b",
+    "profiles/feedback.json": "203666d8e5207c7793eb2f2fd0080a5b5b046e3ed5714b90ae7f6980010824b9",
+    "profiles/score.json": "fafe5d70b2e623a7cd72bb7a97e3f16b8fc9560309bf79aa77edb8eef52fca44",
     "score_tb.scs": "a88062411dda052f957d84b1eb473284450487d7ad4a8fb71f2b0a2790684e59",
     "solution_tree": "5675e9fa4082bebb05d1192c72597359531922c53562d41a5a20bbff7a933c80",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "99ead04582ce4d8198352da111ce1ca08ec5ab4a0fcc4a522a6cdbac3b9f82b6"
+    "sha256": "46770dc22ae2cf0454284eae4ad50bd40cde67444fc473351603628a90937ad9"
   },
   "release_dir": "318-resistor-ladder-monotonic-decoder",
   "schema_version": "v4-canonical-dut-release-task-v1",

@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises no clocks against the public observable contract; violated_properties=P_PERIOD",
-    "observed": "EVAS: too_few_edges={'clk0': 0, 'clk90': 0, 'clk180': 0, 'clk270': 0}; Spectre: too_few_edges={'clk0': 0, 'clk90': 0, 'clk180': 0, 'clk270': 0}",
+    "expected": "properties P_PERIOD satisfy the public contract; fault class no_clocks is rejected",
+    "observed": "EVAS: property_id=P_PERIOD category=insufficient_coverage expected=at_least_two_edges_per_phase observed=clk0=0,clk90=0,clk180=0,clk270=0 event=full_trace",
     "violated_property_ids": [
       "P_PERIOD"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_068_multiphase_clock_generator_4ph",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 2001
   },
   "family_id": "068",
   "inputs": {
     "checker_profile_sha256": "f6c5e07b26c09e01f30d15745cec2c179106c00fc16cd2ab60517f8231773572",
-    "harness_spec_sha256": "5d522ed1b4ca7656b5b8a780d6d74bd7c326b404ba726f08199cd9111e44bb4e",
-    "mutation_bundle_sha256": "b1e6536f3464f8dbec387bd69879ee28fd0902df596921515fee71483c900e57",
-    "profile_sha256": "b75d72b9c6f68346a54e83a0713e2cafd79fced3dea4aebae6d6bcd6a140dea9"
+    "harness_spec_sha256": "0516a07941734dc94c23d77a9674ba8caaa061542716e06c44b17f7d1fd685f9",
+    "profile_sha256": "f9b33faa9c8f20090dc0b7c809c00514e5d41220f16c489fb4ef8ddd6d98dcf1"
   },
   "mutation_id": "neg_001_zero",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

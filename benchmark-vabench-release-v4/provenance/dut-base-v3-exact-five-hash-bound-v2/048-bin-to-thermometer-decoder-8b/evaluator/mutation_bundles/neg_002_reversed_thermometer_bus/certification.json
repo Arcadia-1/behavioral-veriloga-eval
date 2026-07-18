@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=Drives a cumulative count from th255 downward instead of from th0 upward.; violated_properties=P_PREFIX_THERMOMETER",
-    "observed": "EVAS: checked=[0, 1, 2, 3, 7, 15, 16, 31, 63, 127, 128, 200, 255, -1, -1] boundary_seen=[0, 1, 255] enable_low_ok=True count_errors=0 cumulative_errors=12; Spectre: checked=[0, 1, 2, 3, 7, 15, 16, 31, 63, 127, 128, 200, 255, -1, -1] boundary_seen=[0, 1, 255] enable_low_ok=True count_errors=0 cumulative_errors=12",
+    "expected": "properties P_PREFIX_THERMOMETER satisfy the public contract; fault class reversed_thermometer_bus is rejected",
+    "observed": "EVAS: property_id=P_THERMOMETER_CUMULATIVE_ORDER category=behavior_mismatch expected=th[0:code) high and th[code:] low observed=cumulative_errors=13 event=stable_input_vector_intervals",
     "violated_property_ids": [
       "P_PREFIX_THERMOMETER"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_048_bin_to_thermometer_decoder_8b",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 1451
   },
   "family_id": "048",
   "inputs": {
-    "checker_profile_sha256": "4a2663421a1846bb261327ca81b8b1c17db3f15195aa813393011efc6456825e",
-    "harness_spec_sha256": "9618c0f4ce9a3cd936fb5694ca61e78d57b9061152a408bd14879f02cf968dff",
-    "mutation_bundle_sha256": "62d47d3ee5798db46461610140b74a320068d921ad16af73a684e866b040f23d",
-    "profile_sha256": "56030c0ef85a88de8bb57306bc0c5057784513b984b84d68e455414b342b6df8"
+    "checker_profile_sha256": "5f50679e7a3a8405875004edf09a0f7254a276e7be899619a20db58f350fc5fc",
+    "harness_spec_sha256": "1a2c2122a8f941576e2c805c893f406c4527f01a907a24abd55bff8d9f7da935",
+    "profile_sha256": "40a1ff2567f3929e327cf10cd982a58d80f562d0162189cebfa790446f2de1f5"
   },
   "mutation_id": "neg_002_reversed_thermometer_bus",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "100283c771275c76271623172481be8547a27f240af6cd90e1171b6f623431b5"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

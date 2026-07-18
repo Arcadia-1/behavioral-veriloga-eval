@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_phase_modulus/certification.json",
-        "certification_sha256": "ec5d36dd76b4e311857c1b5e77027bca5e47686e6091eafc37b075ae8eb49ba7",
+        "certification_sha256": "dcc856e3cfd6ba3a21f229b2657bf095fbd6691e8ee7f1cd85898e36a43ddaa4",
         "fault_class": "phase_modulus_error",
-        "mutation_bundle_sha256": "34dc0ab0813b2077186187420f1850069d67c901f0afbb4192ef3b61eb1e3459",
+        "mutation_bundle_sha256": "06b500a24c9a4a904921b1eb239f2cae216c79277f60364dfd068c6a5dc600d0",
         "mutation_id": "neg_003_wrong_phase_modulus",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_phase_modulus/certification.json",
         "trigger_condition": "Differential VCO With Clip And Idtmod: uses a 0.5 idtmod modulus so the phase wraps twice per cycle and the sine and metric diverge from the modulo-1 reference.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_drive_metric_zero/certification.json",
-        "certification_sha256": "8f1da0bbae025312c3f65eeae94df0dbb4d04336fc7e23153a1afbe88aff321e",
+        "certification_sha256": "4badb6bf3e3638948663b9ec785b33c72d393c046c57b1e7248ce69c5e44aaa7",
         "fault_class": "phase_metric_missing",
-        "mutation_bundle_sha256": "4c90b984a58fcc54c87e7ec498178b49df741fbe5f15263e0b9629d38d2a8611",
+        "mutation_bundle_sha256": "c85b366184ec191c83f6d30800bb95d15b4a18bebcd52b911fd562634a379041",
         "mutation_id": "neg_002_drive_metric_zero",
         "source_catalog_certification_path": "negative_variants/neg_002_drive_metric_zero/certification.json",
         "trigger_condition": "Differential VCO With Clip And Idtmod: keeps the differential sine but drives the wrapped-phase metric to zero so the metric trace fails.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_gain_sign_flipped/certification.json",
-        "certification_sha256": "a29b87a80cc13a240174c8919f771176f2c4cf9033de7d4b853a65bf8c2c59e4",
+        "certification_sha256": "5cd95f61632ae50f6bbff348e8b0c15702d4ead65736ca6925731716ae24d5f7",
         "fault_class": "vco_tuning_polarity_error",
-        "mutation_bundle_sha256": "f138467eed1727efaeb38c5939e63ee2582118af5c096e9cc580ad3ec57e4540",
+        "mutation_bundle_sha256": "f1a45ba7156152ced6f63b82cc69ddc2101d0598403087dbf6227cd755cd7ab3",
         "mutation_id": "neg_004_gain_sign_flipped",
         "source_catalog_certification_path": "negative_variants/neg_004_gain_sign_flipped/certification.json",
         "trigger_condition": "Differential VCO With Clip And Idtmod: flips the dFdV sign so the frequency moves the wrong way with the differential control and the reintegrated phase diverges.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_single_ended_output/certification.json",
-        "certification_sha256": "23cd356a6f052179c7870730b3d034718d5934ca6a0daa2ba3590b86104928e6",
+        "certification_sha256": "b43645607af3dfe44bd15d65328a2704f7b3318bdc0e6bfcf6470a0375f7070d",
         "fault_class": "differential_symmetry_error",
-        "mutation_bundle_sha256": "5247d085f653a689618264fabff1a05cfaf9860bb9d56310c2351101719a4f2f",
+        "mutation_bundle_sha256": "5c81a73e53e0c6d000bbb7d619765999570e65c5542b82443c4d3183f272a513",
         "mutation_id": "neg_005_single_ended_output",
         "source_catalog_certification_path": "negative_variants/neg_005_single_ended_output/certification.json",
         "trigger_condition": "Differential VCO With Clip And Idtmod: drives both arms with the same polarity so outp and outm no longer bracket the common mode symmetrically.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_drive_outputs_zero/certification.json",
-        "certification_sha256": "c6a6b3dd781425fa0451a7c2eca24e722125f64c30c36d9c140e209577a247f0",
+        "certification_sha256": "9cc98e93fcb1aa5e45c1f992c3a9c4e13f8881b05554e9d59e396f7c4a39a16b",
         "fault_class": "differential_output_amplitude_zero",
-        "mutation_bundle_sha256": "2cf05f66f40a18dbe19857d68e18fd04f9ba13c1838fc9cb0a51b64f57fcfc2f",
+        "mutation_bundle_sha256": "9a157cb4438d123deb8c9b22071197bd048e2ec1d619e9749c05d8ca71664f55",
         "mutation_id": "neg_001_drive_outputs_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_drive_outputs_zero/certification.json",
         "trigger_condition": "Differential VCO With Clip And Idtmod: keeps the sin() terms but multiplies them by zero so both differential arms are flat at the common mode.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "b8232e1a366cb54894e6155970734e6726ee4eb4f274b5fc1aa332b37652b2a1",
       "score_deck_sha256": "3cbdca7bfb7e447db03ea39fa5e035a69c3099af8f0aef285da2f2605ce89cbb",
-      "task_certification_sha256": "e0e5da995edb7023e97776765be322aa3239c9d8e67bba8b7bedfa8415318380",
-      "task_record_sha256": "20ab38b4958d863db5df847a50bef93bd2c91a80ee4a7b7411cf60e8f5b12ec4"
+      "task_certification_sha256": "610a5409a5da0ec31db57ceee593f8d9a083dd62e6f93be05d70784bbe646660",
+      "task_record_sha256": "6614655e1afd7c5c87c403457df95afb341168d1bf822ab9b626321cb6ba809c"
     },
     "release_dir": "300-differential-vco-clip-idtmod"
   }

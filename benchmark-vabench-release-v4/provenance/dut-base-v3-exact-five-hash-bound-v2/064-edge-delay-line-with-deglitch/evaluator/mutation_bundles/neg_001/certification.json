@@ -1,26 +1,43 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=a stable qualified input edge is accepted while delay_ticks is nonzero; violated_properties=P_DELAYED_EDGE_EMISSION,P_PARAMETER_OVERRIDE",
-    "observed": "EVAS: v4_delay_line_contract observed=wide_matches:2,delay_range:(1.025e-09,1.025e-09),rejected:True,valid:True,disabled_clears:True,early_errors:0 expected=wide_matches>=2,delay=1.8..3.4ns,rejected/valid/disabled_clear,true,no_early window=full_trace; Spectre: v4_delay_line_contract observed=wide_matches:4,delay_range:(1.025e-09,1.025e-09),rejected:False,valid:True,disabled_clears:True,early_errors:0 expected=wide_matches>=2,delay=1.8..3.4ns,rejected/valid/disabled_clear,true,no_early window=full_trace",
+    "expected": "properties P_DELAYED_EDGE_EMISSION, P_PARAMETER_OVERRIDE satisfy the public contract; fault class configured_delay_omitted is rejected",
+    "observed": "EVAS: property_id=P_DELAYED_EDGE_EMISSION category=semantic_mismatch expected=wide_matches>=2,delay=1.8..3.4ns,rejected_valid_disabled_clear,no_early observed=input_edges=6_output_edges=4_wide_matches=4_delay_range=(1.025e-09,1.025e-09)_rejected=False_valid=True_disabled_clears=True_early_errors=0 event=full_trace",
     "violated_property_ids": [
       "P_DELAYED_EDGE_EMISSION",
       "P_PARAMETER_OVERRIDE"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_064_edge_delay_line_with_deglitch",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 1268
   },
   "family_id": "064",
   "inputs": {
     "checker_profile_sha256": "1ab5f0742ac8dfdeb9dccb987424dbbdc3a573dc5bad96098f909b0c114f8d0d",
-    "harness_spec_sha256": "40a7f8462e127c699b9ed2e9f3691debdd596c2d9fe71f23335eb547352d27f8",
-    "mutation_bundle_sha256": "7e029aa92e72b7919c6987e537f1869d2315976c638973c63443f24b072fb469",
-    "profile_sha256": "288fca3dd40f6cdc49fe6ddd65b3848eeadccd220d463537938b91ca93a36da6"
+    "harness_spec_sha256": "bbf7d9549fb4baa3632281eb73efd5b26e167eba0afaec456bd3a6915c8a32d7",
+    "profile_sha256": "f92f87adfeb5b0fc2a938a273c12e8c71abe1414851b57669494e4cccb45e9a6"
   },
   "mutation_id": "neg_001",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "100283c771275c76271623172481be8547a27f240af6cd90e1171b6f623431b5"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

@@ -15,7 +15,7 @@ DECISIONS = ROOT / "operations" / "dut_base_exact_five" / "SEMANTIC_SELECTION_DE
 if str(ROOT / "scripts") not in sys.path:
     sys.path.insert(0, str(ROOT / "scripts"))
 
-from audit_exact_five_dut_release import is_dual_behavioral_kill  # noqa: E402
+from audit_exact_five_dut_release import is_rust_evas2_behavioral_kill  # noqa: E402
 
 
 def test_exact_five_release_passes_strict_audit() -> None:
@@ -48,14 +48,14 @@ def test_semantic_decisions_cover_overfive_and_duplicate_proxy_reviews() -> None
     assert {row["family_id"] for row in decisions["supplemental_exact_five_reviews"]} == {"092", "098"}
 
 
-def test_dual_behavioral_kill_requires_evas_and_spectre() -> None:
+def test_behavioral_kill_requires_rust_evas2_policy() -> None:
     certification = {
         "outcome": "killed_behaviorally",
+        "certification_policy": "rust_evas2_only",
         "evaluators": {
-            "evas": "compile_pass_behavior_fail",
-            "spectre": "compile_pass_behavior_fail",
+            "evas2": "compile_pass_behavior_fail",
         },
     }
-    assert is_dual_behavioral_kill(certification)
-    certification["evaluators"]["spectre"] = "pass"
-    assert not is_dual_behavioral_kill(certification)
+    assert is_rust_evas2_behavioral_kill(certification)
+    certification["evaluators"]["evas2"] = "pass"
+    assert not is_rust_evas2_behavioral_kill(certification)

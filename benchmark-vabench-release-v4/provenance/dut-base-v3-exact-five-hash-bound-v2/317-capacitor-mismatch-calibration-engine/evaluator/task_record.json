@@ -3,14 +3,14 @@
   "checker_task_id": "v4_317_capacitor_mismatch_calibration_engine",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "21376c397d7e326856ae25b745326d8a0a7fe1d8cf687a6e6242a6ea5d892bdf",
+    "certification.json": "17bd4c14c7a09fff1f5638f1d00676a67aa7ea59f5a7205ce287ad676a9c84a4",
     "checker_profile.json": "e1d0c190625fe121b10e37235a5148b3733230f637f9b56fe43a7a1765f383dd",
     "derivation_manifest.json": "b14b89bf9b2c6a37c82e92d23965c5d77b5b11a5fa7018fb736df61beb00b6d3",
     "family_spec.json": "2b29141377d9be92578a6d3bd2ffe534c3d1b1b2caf5be56ede3a322dfe78a9e",
-    "harness_spec.json": "de60836ea8db55f907009b682192173df231f0b6c35a07446990440e8e726404",
+    "harness_spec.json": "bd76cac38d70e3230aa19a886c631c16f374934c08a2e54fc6e8ccce1083f752",
     "mutation_catalog.json": "3d516a9de463375c0ca7bdc4d16fc85a18740f39eb124ef5c58b71dce1ed68ff",
-    "profiles/feedback.json": "74b7bdee5609af0920c1bea20929ad7bb6e66472f7f1eae340f86ab062e818d4",
-    "profiles/score.json": "ee1554b3ee0f9945ccfebfe7bb37417c783a4f7dc5b332ad9d0bcc1611d12cfd",
+    "profiles/feedback.json": "69f106ee3fa2986ea524cdb875079550a404643f1ce7e3ed15e57861f934c1f4",
+    "profiles/score.json": "1728dad8fa87c3ab175aa7a4ab154cc399c411fd7b987ca72a7200cf36221c2f",
     "score_tb.scs": "1e00072d91ef5261cf967c86983c6f4a2f15e8fc858c257a4815bac3214ebe8b",
     "solution_tree": "a486e48b304fc0c49251e1303b2c02436737add6b98609ee409d6e2a96ff5efc",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "21376c397d7e326856ae25b745326d8a0a7fe1d8cf687a6e6242a6ea5d892bdf"
+    "sha256": "17bd4c14c7a09fff1f5638f1d00676a67aa7ea59f5a7205ce287ad676a9c84a4"
   },
   "release_dir": "317-capacitor-mismatch-calibration-engine",
   "schema_version": "v4-canonical-dut-release-task-v1",

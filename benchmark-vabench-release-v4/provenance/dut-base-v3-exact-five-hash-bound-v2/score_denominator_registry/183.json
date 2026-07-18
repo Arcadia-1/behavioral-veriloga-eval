@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_initial_code/certification.json",
-        "certification_sha256": "e6d14348a229eadf83e2cb2eee363a3b064044a7935a0fefe467a88c7f77b510",
+        "certification_sha256": "4fd053e802cf5db67373f62bf5bbc08273e2cf5f3e97db504897d4450d3caca6",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "702e9190056a440e9a4b5f7d2e353f6648d86bea6c0af62ee4c02399792ff9a3",
+        "mutation_bundle_sha256": "94751eb29698cd8c93d1a7b7c0d0f771828bffc489ff2f9cebf228bc7b376931",
         "mutation_id": "neg_002_wrong_initial_code",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_initial_code/certification.json",
         "trigger_condition": "Initializes the MSB calibration code low instead of high.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_inverted_decision/certification.json",
-        "certification_sha256": "b0cf6895a33c36418dc0e660cc9859768beef152cbff9b91713d592044c2dcf1",
+        "certification_sha256": "9d0e6a523e571d1f3b0edae2a976ea87e75db671d32d3967dc80154d8bfdfeca",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "189f3288721a777184702aaa61d03efb2a2aab281ed30d7622538ea1a7e82f2f",
+        "mutation_bundle_sha256": "e8cc4b63fb89ac3646fa4983154e48f26163dad57b494ff2a51200fad10daef6",
         "mutation_id": "neg_003_inverted_decision",
         "source_catalog_certification_path": "negative_variants/neg_003_inverted_decision/certification.json",
         "trigger_condition": "Clears the current code bit for low d decisions instead of high d decisions.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "1d966a9725450b8bba3b0e579383f4b2fb41b966915df749b537b508c8143e87",
+        "certification_sha256": "90403bdf2f4b0a1bb8721e64894c5857d70309e78943f69c58de8259ba7b2913",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "4a4df928fa3ba6feb06340c2f308137f4abe48f4211af80f87087cf3e32ea77c",
+        "mutation_bundle_sha256": "3eb9dd6055d97154b0ae6f249a0013450897b96dd69d6de70da2ddcc6ee0d3d6",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "86386d8a93eceda3879ff2b7f86d600435eb089ab55e1063431914316d193d49",
+        "certification_sha256": "bf64494a302e8d5ab941b6105021a7fa2a641eda3e44ed813f0fd0106fd7fcf3",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "9f55edfc5a9b9299ad53bb7e81461ba5e37cbfdaaa7b745d32b0136dd027033f",
+        "mutation_bundle_sha256": "e09e6d4d85ba95c7e14eb5e15b235f76d5ed0257dc230e844a3a8c66e34c849c",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Foreground RDAC Calibrator: scales the metric output, preserving the main path while failing measurement checks.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_enable_never_finishes/certification.json",
-        "certification_sha256": "601471a82deff805cf6c1fe53158456d6fc7c30d4c0bfddffecbcf03a4ec8e76",
+        "certification_sha256": "52e277b35f0d1a5de25fe10316fd46368aa665d9a726ad9a981a954229164ed5",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "8c21645fe1f0f7be56dc1668a8fd0d876631422832d8f1a4c5f018f556f8afd9",
+        "mutation_bundle_sha256": "bb9c9b3cb19647ec447234dd98587bd247ab1fcdcb18cd21e3246560dae34a4b",
         "mutation_id": "neg_004_enable_never_finishes",
         "source_catalog_certification_path": "negative_variants/neg_004_enable_never_finishes/certification.json",
         "trigger_condition": "Leaves calibration enable high after all RDAC bits are visited.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "741e06e4eeff73a5b6976e052f328f86ab93d5c6d861651364038d6162a2b32c",
       "score_deck_sha256": "b3772e150bf43b26dd221304fece3ffa7f3222eb6f0dc5b20a009a0134964ce3",
-      "task_certification_sha256": "9c9b0a5f8b2c91c3da59f5509c59fc97ca30cbf31fc8b6a7462d0ee7dd8ddf61",
-      "task_record_sha256": "2da7ef7909e14a56dc1a9dd7b628ec821090681cb31397ebe20eba1340520ffe"
+      "task_certification_sha256": "ff839d22bfce5869058a2dff130d0866bcd5118c239a2c7f1bd261ca685f6461",
+      "task_record_sha256": "d22b2d4b51d88a260509cd06081bcce2e7491c39b4815d93b93f7f3d6789772e"
     },
     "release_dir": "183-foreground-rdac-calibrator"
   }

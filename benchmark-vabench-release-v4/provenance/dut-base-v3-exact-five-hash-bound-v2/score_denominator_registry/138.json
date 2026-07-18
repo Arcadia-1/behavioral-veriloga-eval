@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_missing_input_offset/certification.json",
-        "certification_sha256": "abc4f75ba44bca2c9b70cc8b344221673526f18dfd342a7339cde3da9cc218a2",
+        "certification_sha256": "f3c719863c44e9aa67d6b2810002674e901ba822ad58629790e859b02cb5c9fb",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "ad935ad9ba85049fe355cc19f46608613663f5c91b8a115e581f68325e308af2",
+        "mutation_bundle_sha256": "73b2dd1806046e9ac132f2a295bb919e1d484dc1e2c34bbb1e16465d62af9664",
         "mutation_id": "neg_002_missing_input_offset",
         "source_catalog_certification_path": "negative_variants/neg_002_missing_input_offset/certification.json",
         "trigger_condition": "Omits the 0.05 input offset.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_single_ended_control/certification.json",
-        "certification_sha256": "b1047ea5e2f9147f0c6ac2282fee54721568252729f1da7a3ded09ec91093c36",
+        "certification_sha256": "2c8f8555446711b778ba14f353755ad86f118a124c1eba7264b3982b23c71a9c",
         "fault_class": "single_ended_control",
-        "mutation_bundle_sha256": "c8236af345573d5ee08ff1ea51747f7180c5d2d40d6b4d925c18e2182feac93f",
+        "mutation_bundle_sha256": "ea3ef69fe56b64a81db0e4ef4483e6c8075cdf310ed85c6877d8026851a5522b",
         "mutation_id": "neg_003_single_ended_control",
         "source_catalog_certification_path": "negative_variants/neg_003_single_ended_control/certification.json",
         "trigger_condition": "Uses single-ended control voltage instead of differential control.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_clamp/certification.json",
-        "certification_sha256": "144df35879f2648c783d1104a0cf601ed3562ac2b547a93645d7606667ee84a3",
+        "certification_sha256": "2cf1b0cc88a9828ec113a75a3040c76ef8148d2e972949f7fb6a21d711b0ea52",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "e419609a170db17247ac5dfa30324717a9fba82b4aa123b29497db66eec796d9",
+        "mutation_bundle_sha256": "c8717aebd7904478424ab9824ab25013823d57422cde5f8ffbeeaf93ed1e99b8",
         "mutation_id": "neg_004_no_clamp",
         "source_catalog_certification_path": "negative_variants/neg_004_no_clamp/certification.json",
         "trigger_condition": "Does not clamp output to [0.1,0.9].",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "566dd170c8adb8a46a7eed45ea776e370ad67e3f1fbdd648570ed40c6ba07a0e",
+        "certification_sha256": "5e3139087c15f5e6c2baeced332ca5f3ac638ead0d3054403918629d886a44ae",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "1d7f728da33c646443452eb25645d5c99ba8d25ae3cda92c810e6b68d2da60a7",
+        "mutation_bundle_sha256": "41014b4ad1728ec9e334d5b3f9c8805d6c5c5944b4c202c64506cc7c34b93b2f",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales the limited voltage-controlled output too low while preserving the module/interface shape.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "f73a3d5585a3c84af7b8b737e884168ec9a5dea0878155bebaabf873f3cd6686",
+        "certification_sha256": "9451e756a716ef794bce1a1a51ee6d91231ca42e164b3bd663790fa728f57678",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "eb763c9af7880f60ba307a5ce821bb99084a1233ea44b26f765906c067f32711",
+        "mutation_bundle_sha256": "ee76ba981ec28ced2fc21f2929ef1bf198d995ce93f058867e5582c719e48936",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "ab4d12e22890fd1faf06860063128bf41f1519f7accf436388995c63b2aa66d4",
       "score_deck_sha256": "02e48d17d4ceefd71c32cde935ac842ff3105233a117e4b68c7712ccdaee8e1a",
-      "task_certification_sha256": "1f55f7800b6203b8d164b5882e48d839734e214cd85ba1dbbcb0a3b9313f2871",
-      "task_record_sha256": "0433517747a36f624e7a458a63c15246b9037c68c82d79137af8690a7e6c2822"
+      "task_certification_sha256": "d1434b3dd673d0c5f192f0c2ebe3245cf5fb713f86a4b688ab7c8f6ad4f8fd2a",
+      "task_record_sha256": "7f4100a7f65302152a9b9611fcbb3112fa7c541b63d754bbf6c770f65f6d60f0"
     },
     "release_dir": "138-voltage-controlled-gain-amplifier"
   }

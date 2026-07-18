@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "ed7a36356b3f05408a578e9bf0923270da04ae424817fd8e2bccd17fd1a41cbf",
+        "certification_sha256": "a4a361d8c292f944389c696a5e0cfbcc218fea77d8a83879b17653c06ff1ad23",
         "fault_class": "zero_output_stub_misses_required_burst_high_phases",
-        "mutation_bundle_sha256": "67433761a47baf968d588fa09354104ee09fcfc26a2c504e0f4004517a921b94",
+        "mutation_bundle_sha256": "d5c6f6cc25e261b3b701cfa5285bf73d34a52625c600ffeccb1223e2620a6fa7",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives CLK_OUT low for all cycles, missing the required two passed high phases.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_div4/certification.json",
-        "certification_sha256": "5d1bcc6357d5403edc14c51c290bf974896f9ff9a40cca4f8a2ca06ba185e729",
+        "certification_sha256": "50373a3f4b373551944d5b38f5e735ef7782cea7c1a8d3231e01286433127ae4",
         "fault_class": "uses_a_four_cycle_repeat_frame_instead_of_the_public_div_8_frame",
-        "mutation_bundle_sha256": "2af4e6a67145ee65b32088e37bde10f5801dbe9572f1d23323efda2eaf92eabe",
+        "mutation_bundle_sha256": "4b760686e64e10983b1ae28c4d23d390c605bd8a028e80fed3ecaed5af1be957",
         "mutation_id": "neg_004_wrong_div4",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_div4/certification.json",
         "trigger_condition": "stimulus exercises Uses a four-cycle repeat frame instead of the public div=8 frame. against the public observable contract",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "c5cefc0531753b95ff3cf588634b213404f29c5c213b43e46a089c3ba6e01ed3",
+        "certification_sha256": "f5f14e6a239a0bc4101a5b6db39f83062173594c856290fcd0aedfdb91437dbe",
         "fault_class": "clk_out_level_scaled_below_logic_high_threshold",
-        "mutation_bundle_sha256": "8025cc1a5634da0a5d25fe5b30739b82d370adfb915213db006dc30a23cf7971",
+        "mutation_bundle_sha256": "2de0f7e2325a41820667e3f3663b5dcb27f698be795a1cf5cca95942e7343924",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Preserves burst timing but scales CLK_OUT high level below the public logic-high threshold.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_reset_ignored/certification.json",
-        "certification_sha256": "fc6b087bc7885f6324f73bf28581cf5cb5b6016b6446ed7e763e34b61380b5cb",
+        "certification_sha256": "4e3f898116a0079001cc5e375f0b3b8c9c0e4e2cb4b82abcc75b20a079ac3bca",
         "fault_class": "active_low_reset_is_ignored",
-        "mutation_bundle_sha256": "7b89e46f4152d9db60b3b62f3014858163c70c7def14f399b0b4c0e60b8e0a0d",
+        "mutation_bundle_sha256": "9938b9a6ecf8002ba76f13bb72c5c57c30ddaed43dc69921b9c0a5780f224420",
         "mutation_id": "neg_006_reset_ignored",
         "source_catalog_certification_path": "negative_variants/neg_006_reset_ignored/certification.json",
         "trigger_condition": "CLK_OUT must remain low while RST_N is below threshold",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_007_frame_start_offset/certification.json",
-        "certification_sha256": "9451e360bc61acdb0df771f9818295806d5058571812616132399bac53014d99",
+        "certification_sha256": "9893eb70d79c297ee05c78e349af45e5bae53a62cd1e32a403e77362d6f6c608",
         "fault_class": "frame_restarts_after_the_two_pulse_window",
-        "mutation_bundle_sha256": "38add7f89ffcde061baa965340d9286d0e3de55a83acb8069a5fe03307c1c017",
+        "mutation_bundle_sha256": "969a754bd14ac3aaf385495faf611d661826133d5c4b59d8624671335d408c1c",
         "mutation_id": "neg_007_frame_start_offset",
         "source_catalog_certification_path": "negative_variants/neg_007_frame_start_offset/certification.json",
         "trigger_condition": "the first two clock cycles after reset must form the burst",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "d4b11db9c0b25cdf9a7e1a973226f7caddca7e2327fb9d05a2b9039e4d252c87",
       "score_deck_sha256": "9ee2d3ee8ea9b5f512b9786c36992b2fe1ec91e788615234fa009ae1a1a8328c",
-      "task_certification_sha256": "6e6b94b34c04fa0e3c5986992135320ca0b22febc131f32a825451f081f07183",
-      "task_record_sha256": "34737c953d3d7f030da8a2af742ca6a42bdb4047bfef6d4c125ead6694a89df6"
+      "task_certification_sha256": "1b57392fd4b32f1dd74ad377fd3a7e56ad60d27217d44046e32c4b1e2e649151",
+      "task_record_sha256": "267c6d0addeb9818a1e288cb918663e30e53193979636a73f4ed789eb6bf22f7"
     },
     "release_dir": "076-burst-clock-source"
   }

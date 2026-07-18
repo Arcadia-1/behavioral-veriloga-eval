@@ -3,12 +3,12 @@
     "cmp_delay.va",
     "edge_interval_timer.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "checker_profile_sha256": "e1424cc20756ac1260ceb320adb6f7ab399ed6a3ac545e75d03cd267419705d1",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "3f8ced441fc62167fd623416010e9e8f53ff6afaafe1b18588a82f81c4d5335d",
+  "gold_dut_certification_sha256": "4f0b68ddde27125fd4520240b1130128ff4e11875ca7ccc24ef5e2ad2c0b9950",
   "gold_solution_tree_sha256": "2447fd73474e7358451baf4ebeea1947affe09a2c1b115715d753f2ca50d79f0",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "schema_version": "v4-dut-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-039"
 }

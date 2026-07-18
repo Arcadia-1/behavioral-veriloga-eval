@@ -9,6 +9,7 @@
     "coarse_counter.va",
     "fine_residual_metric.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "changed_artifacts": [
     "coarse_counter.va",
     "fine_coarse_tdc_encoder_top.va",
@@ -16,11 +17,10 @@
   ],
   "checker_profile_sha256": "6f913ade63d70eb7eabfb13ef1f981d8da2082f6989a57fffcf1d2af1d8c193e",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "84ed4858d0f9324b1733f1722182c7ece78d387f5d519e62678be12a4c69f5cf",
+  "gold_dut_certification_sha256": "cb246ad960970a6e6043a96fc615718a215c0565d3537757fb1aa37a6061c869",
   "gold_solution_tree_sha256": "67244243cadd9cca956d321d20b13b98afa228a146f033f1689aa2fcf9cdbeba",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "mutation_catalog_sha256": "ff9170b6407b77c0d5961e62ff73c6c138a841ceeb4f565b49429f55a5656946",
   "schema_version": "v4-bugfix-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-1325"
 }

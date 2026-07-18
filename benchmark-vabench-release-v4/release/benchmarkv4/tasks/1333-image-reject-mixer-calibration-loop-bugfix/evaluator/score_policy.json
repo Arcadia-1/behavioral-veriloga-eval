@@ -9,6 +9,7 @@
     "quadrature_mixer_proxy.va",
     "image_cal_controller.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "changed_artifacts": [
     "image_cal_controller.va",
     "image_reject_mixer_cal_loop_top.va",
@@ -16,11 +17,10 @@
   ],
   "checker_profile_sha256": "611b5da73c38b3cb79e88203d52009d04a2a51bdf8e02f364f20ebc96bce1ec1",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "1f9dd691c10643de484d20753860f04decc50bc4a8a1505423c3473a66f81fd0",
+  "gold_dut_certification_sha256": "d4595a27b27571142d65e65dac63b5afd8bf95304dd6812ad1985d2770f9073b",
   "gold_solution_tree_sha256": "9199a785bd0cfcfb573cc748f82ad7875aed8162094f98b356449a219ea8033f",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "mutation_catalog_sha256": "f444a5172f06f3ec0346664629e09ecd137451faf0b83aa9b8c73a1dfa6f86d5",
   "schema_version": "v4-bugfix-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-1333"
 }

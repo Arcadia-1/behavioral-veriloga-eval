@@ -7,16 +7,16 @@
   "candidate_artifacts": [
     "multiphase_clock_generator_4ph.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "changed_artifacts": [
     "multiphase_clock_generator_4ph.va"
   ],
   "checker_profile_sha256": "f6c5e07b26c09e01f30d15745cec2c179106c00fc16cd2ab60517f8231773572",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "3c5f8647d6d6c3fc2e46f2b128426629513ef46aa9906e431327cf477bb0188c",
+  "gold_dut_certification_sha256": "5484e67625468d45e3acd5d09d784d70b1a53ea05afe39196204b8e0a15af079",
   "gold_solution_tree_sha256": "e0989f3f36198be7d0fa16f32d82d0535ee6d927dc416b2fc6c830a9c4e56da6",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "mutation_catalog_sha256": "a481264bb37cf3217549b9872449bd87eddaea053f789ec55e43ca24b5f2ca99",
   "schema_version": "v4-bugfix-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-1068"
 }

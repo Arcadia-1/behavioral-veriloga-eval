@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_gain/certification.json",
-        "certification_sha256": "3fdd13ecba7658c960765d82be41e359dfa9935ad99a41b181c0aa40ef9f02a7",
+        "certification_sha256": "7e2bf6126534244a71fbee07c14f7052fc616bf59562eab484a697a1dead7c19",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "c9102f951de3d0b83e58311deee8cdc6e9c4fa08903a2d4aff9d3afbc6717909",
+        "mutation_bundle_sha256": "177aea1f4de3380ea42dec7fef52e5c9d350cd0c025695611397582cc2894662",
         "mutation_id": "neg_003_wrong_gain",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_gain/certification.json",
         "trigger_condition": "Uses half of the specified signed DAC gain.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_unipolar_bits/certification.json",
-        "certification_sha256": "a27dcf2ce47d881ea53a217d8505fa85b541c613dcd438bcd23715736400e099",
+        "certification_sha256": "a45b732a66d4c1048beef58c566267f609baf72202e578b9fc1aeb4e96d23808",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "aadca84962ad46722877271bbdee4b76756decb525544ae7c52ac15a0cc22abc",
+        "mutation_bundle_sha256": "d4c679669888f37c632cb225a83eec585650b82d4da2e31ca4fd960f05d9cc46",
         "mutation_id": "neg_002_unipolar_bits",
         "source_catalog_certification_path": "negative_variants/neg_002_unipolar_bits/certification.json",
         "trigger_condition": "Treats low bits as zero instead of negative signed weights.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_falling_sample/certification.json",
-        "certification_sha256": "b1f647a57766195e6c08b82dbea364026bec015d0c0fa45f0662b193fb593b9c",
+        "certification_sha256": "25fbe32799cc11ffbdd5c0b15e5ee988de189057d5c19f35dc3bffa65b6bc32c",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "dfac689fc132bdf24e003acb85b9a3531dd27959d46899a44055e3765df9927d",
+        "mutation_bundle_sha256": "fc43770b3f43821edf5a9b4e0730a6e025e7bad9811d74ff8377997968886022",
         "mutation_id": "neg_004_falling_sample",
         "source_catalog_certification_path": "negative_variants/neg_004_falling_sample/certification.json",
         "trigger_condition": "Samples the signed DAC on falling sh edges instead of rising edges.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "04f0d51d41918ada3d45e2d8e4c14b58885b5856e966a02190153181bc40c307",
+        "certification_sha256": "632b08646cbcb75b134483373265bda5b9fdcd8bdf1731d1d68b9eff328e5774",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "c3ff880da1028a9de494f1183e2c92959dc1bd7fbef80c8a2d4114ca37ff2c91",
+        "mutation_bundle_sha256": "3c53ab6a7985e42bb2fe7faf825905f444de91ba17f48c838be9e128a109f369",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Tool 4bit SAR Signed DAC: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "f2bdcaaae2ea9c2ecbb9163057714944f626f4997f3c86c520d5a3eaf04385b7",
+        "certification_sha256": "feb5625727c2079301b4f9abcea2198da626c3957fed5d03abff16a83d0c5a4c",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "56630795774199e1d43ecadcaf709bedf60bb01dc59a7b15e693e91b6a282f0d",
+        "mutation_bundle_sha256": "8cc18fd085442d9a6c09dd6d0405f7de3198d9087990cc0e55c191c572c2f88c",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "f39cfd2bf9d42dc31e207fc0fef1fe4ffa74ad5863eec1d67d5755960cbcc2fd",
       "score_deck_sha256": "d43bb9e7ece733f7733f2f86c50b775b3b74e7c9ee88f907fce9246a2ba6aab2",
-      "task_certification_sha256": "23a2942763d1da7a787ecbe74dca2d43273e8e001cbc01765e0fe9e12d4eb97c",
-      "task_record_sha256": "f80a2a65fb5115fdc2f1ba1244be4c2e95d23a1b4a97096f4dcff433407a393d"
+      "task_certification_sha256": "5072bd1529929c17029538914af43ec3e61a1483425949cd2ea5f17bfa7b6882",
+      "task_record_sha256": "25e08c13b3696445d4216b524e7b230c32a07678bb5f7b8976902ade9895743e"
     },
     "release_dir": "213-tool-4bit-sar-signed-dac"
   }

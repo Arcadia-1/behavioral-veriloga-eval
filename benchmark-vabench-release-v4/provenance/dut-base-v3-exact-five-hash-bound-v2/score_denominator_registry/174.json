@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_inverted_comparator_polarity/certification.json",
-        "certification_sha256": "0af59e41ac82769095abcde8144d34f85d34f179b112f6e17c56b35c75ca0d3b",
+        "certification_sha256": "40a610da6cb1a17c1aee2b40d59d40d76ae3572977540f23fe5cb85f8573635d",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "032c296799318fc51cbb1c70f91615f9e578a1b783330fc4c0a884418d5e2853",
+        "mutation_bundle_sha256": "bdc0f4767636856ac34315cb2faf943028f2e3ac470a1eaf00e8c7fdd6901159",
         "mutation_id": "neg_002_inverted_comparator_polarity",
         "source_catalog_certification_path": "negative_variants/neg_002_inverted_comparator_polarity/certification.json",
         "trigger_condition": "Updates vdac in the opposite direction for dcmp decisions.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_reset_to_range/certification.json",
-        "certification_sha256": "3ba6a0ecd3da40b3dee244705f7ff2b96489578df2d6bb90ab1d68e4c5321737",
+        "certification_sha256": "3413b94272e19f43221e08fe92c6de646ccd0d9f263b47595dad4c2937155e96",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "c8d5b2a6836bda124bd39e1a960a90ddcc651ebcf45f483e7524fe8f2b4e2171",
+        "mutation_bundle_sha256": "b65c233a79f9eb0fdd1956072fd22fc6263716a5188dfc99c0e62d6ebac73a45",
         "mutation_id": "neg_004_no_reset_to_range",
         "source_catalog_certification_path": "negative_variants/neg_004_no_reset_to_range/certification.json",
         "trigger_condition": "Shrinks the search step twice as fast as the specified radix update.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "00f6927fe28e911d95998b4c473d0d866074f61ea56a6ecc48be31a943fd2449",
+        "certification_sha256": "06dba5e70a727f58319db0f0211e87a36527e1f6d66ad65551d74ebe0560cb29",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "8cc50f0be6348cf30030605dd59573bc5de193ca0e3251f4902f0f36d6498eca",
+        "mutation_bundle_sha256": "6d098b4723f22eae8d83047cc55786c2815af5c76261171e61fabdd953407d14",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_delta_halving/certification.json",
-        "certification_sha256": "0d0a7da46f537ee27af402797585ba2aed4a6b806935c4141049a6ce96d75896",
+        "certification_sha256": "260a2cb1cb1ee701478b7a4f7dc4922ec1da40e958a7bfdc5a2b4e0d4980331f",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "cfb1ceb0bcaa82f019b9ab58e2341b47a7a77edd6ee60adb977e75a4051292fd",
+        "mutation_bundle_sha256": "72688b3e5d3f75f65ab76cfade150614598462bb793867b7b09a590f0e03073f",
         "mutation_id": "neg_003_no_delta_halving",
         "source_catalog_certification_path": "negative_variants/neg_003_no_delta_halving/certification.json",
         "trigger_condition": "Keeps the DAC search step fixed instead of dividing by radix each cycle.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "f76d785cb6f3afc15688162c45f6785fe952390c4669c5fa4434a06dde1a4883",
+        "certification_sha256": "d677a8fb840b9a275d4f06867c6cc39941e03b30cfebe82b1016788ac5e10abf",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "873b26a12e45080dc859a906959d15cb5325e6132419a3f13ae917a0c996c3dc",
+        "mutation_bundle_sha256": "79b87eea3825fe5fbe6dca3e67775a1633243f1732ccc0ab7bb8a2a5ca6d399c",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Iterative ISAR DAC: preserves the iterative search state machine but drives the DAC output with inverted polarity.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "e6c1d0bb77b16864db22aa5df852a03c470e2d6d0635f7e4909d84006eb6e237",
       "score_deck_sha256": "af2f3dcac6b58a3865602f2a440700f22f1495d641bf048857e7f9e1b0650a20",
-      "task_certification_sha256": "ec1f92b63772037ec42cb4c0823184181d3e9e97ff9dff6f9e2cc4f26ab357cd",
-      "task_record_sha256": "7e80e57c9022fa0a1763d0c3190de6441f460c38116592d295a376b97bd01a32"
+      "task_certification_sha256": "3bae4806786aba306248814f7c1b4957bdc49aab3860db66a1ca7988309c919e",
+      "task_record_sha256": "426f2c565d8d0b1050df3c234e5b65cd43384d85347b7b972582b6998f06572c"
     },
     "release_dir": "174-iterative-isar-dac"
   }

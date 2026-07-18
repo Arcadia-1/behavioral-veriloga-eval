@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=positive/negative path, feedback direction, I/Q polarity, or trim direction is exercised; violated_properties=P_SIGNED_UPDATE",
-    "observed": "EVAS: loop_filter_no_proportional_decay first=0.000 later=0.000; Spectre: loop_filter_no_proportional_decay first=0.000 later=0.000",
+    "expected": "properties P_SIGNED_UPDATE satisfy the public contract; fault class polarity_or_direction_error is rejected",
+    "observed": "EVAS: property_id=P_SIGNED_UPDATE category=behavior_mismatch expected=out:0.6632 observed=out:0.4500,vin:0.7800,accepted:1 event=clk_rise[14]@2.522000e-08s",
     "violated_property_ids": [
       "P_SIGNED_UPDATE"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_034_loop_filter_abstraction",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 449
   },
   "family_id": "034",
   "inputs": {
-    "checker_profile_sha256": "9c98a1f6ba9643694ca635bc354287baff6dd669688f1582c67659ecc177c9b4",
-    "harness_spec_sha256": "1bf66d93f389e509e023bf59a73b9ee28834e29d61f031707832538d671fdb55",
-    "mutation_bundle_sha256": "555ee70eb854e17d840b316096def95abe6a4dd3b18c06425443c642c487f150",
-    "profile_sha256": "8607e76832b730d2d78d87c6705f91e28822790e1a680845494a0a819ee3152e"
+    "checker_profile_sha256": "1e55a5a150b497fad570dd5ac242b5086dead25f93156d809c1146d78a32b8b1",
+    "harness_spec_sha256": "826cebdc362ef10f22d4281929dda34e5b2c23020790cebf28fabef84c4f3ab4",
+    "profile_sha256": "f626a118f20f2ead59d728d9471201706a5d8951b669bded2b6b868dd6019904"
   },
   "mutation_id": "neg_003_polarity_direction",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

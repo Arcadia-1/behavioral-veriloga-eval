@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_knee_points/certification.json",
-        "certification_sha256": "2ea59aa8911eac55774d0a2f4e6455015b084dc2b9719ed3d0a86d4f3d9509a8",
+        "certification_sha256": "28de9b16c3f4602789786c2efc0c192beecbf0fec0e8790cb4790a698bf64725",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "20ce378a9f25c8d7f528ff13957b0b5aa73e6f27f5cca5a9e7e16c55719f712b",
+        "mutation_bundle_sha256": "71e0bb381dde354a4f5ab5379ab4c2f0f23b8319aabcff4688701635741480ee",
         "mutation_id": "neg_003_wrong_knee_points",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_knee_points/certification.json",
         "trigger_condition": "Uses the final rail values as soft-clamp knees.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_hard_clamp/certification.json",
-        "certification_sha256": "f9cd3e1f6a2d8172f15a2ff7f35ff2a33d72bc4166fa0a3e2b09f73682a99bec",
+        "certification_sha256": "17f37d9408a2984abd071e013d6f95d1a4dec4e6116c6f202fbf9c873cb81f29",
         "fault_class": "hard_clamp",
-        "mutation_bundle_sha256": "5fb1f74be25d54e75d7f3ceadc8bab7c906839ad78d138624662989f81c38dd8",
+        "mutation_bundle_sha256": "e4c5fc02daa6c5ae76b12a173250a160e5fcf5778240723a0a7b5182d1299349",
         "mutation_id": "neg_002_hard_clamp",
         "source_catalog_certification_path": "negative_variants/neg_002_hard_clamp/certification.json",
         "trigger_condition": "Uses hard clamp rails instead of the exponential soft clamp.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "eba47a6cd02e17f2ad78e418b27163d09995a93d32ca5b78235668b30d534032",
+        "certification_sha256": "c429daf770752c3c9458315cef698a7edba75b992a64499e7f77f20027700bd3",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "7e190760a0e727175e0d716a42b2778eb32cac69a265457efd7ffec64d8038c7",
+        "mutation_bundle_sha256": "e30a1b94912708eece42c85884039443ecd9cf2ec462b052b2659473eea9b259",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "49900c10acd60886aadd0b510ff9fd92c0521be2a4b7a1d9641b45df9579b3f4",
+        "certification_sha256": "824cdcf56369eb7ade5a4d478ac2009976a6061f36731834e186a089c93b2809",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "7a5daf93cc0f4d9daf6a44195d1c84ad38f9978ae40d589b40a64ded9d9d639b",
+        "mutation_bundle_sha256": "78c9a1fe83e9b25980b4316bf76cfa374f46b4e1106238e3a8fb3521b3360c1d",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Soft Voltage Clamp: scales the metric output, preserving the main path while failing measurement checks.",
@@ -57,9 +57,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_soft_fraction/certification.json",
-        "certification_sha256": "181583832af3c195e9d692db3f2b2e1c702361170937b29df25cc45e6f9f257b",
+        "certification_sha256": "e8a229d407644954cd5c0ef45ba3038cb6e496357ff9b55401a257fc32aee9bd",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "6f48425d8926235cd01cb2779734522edd62fc704a8f3181afd895af1e903233",
+        "mutation_bundle_sha256": "0638ec4f936e36a3937c60783c959c7aa94083ad5dcab0297b9f4d169558cbf8",
         "mutation_id": "neg_004_half_soft_fraction",
         "source_catalog_certification_path": "negative_variants/neg_004_half_soft_fraction/certification.json",
         "trigger_condition": "Uses half of the intended exponential soft-clamp fraction.",
@@ -74,8 +74,8 @@
     "hashes": {
       "mutation_catalog_sha256": "d397942fa61081e36c6c2e3cb2ee2a8dbf1a8cc4ba174109cdc81e4333bbf9b5",
       "score_deck_sha256": "cb7297fb2a614dfa1704c238ee8471ecf1d518950a0e2df65b7f6e011254d9ca",
-      "task_certification_sha256": "101fc1ec39a34cc975bcd7019bc0c323690ef281821c22428a947906d9f0acf8",
-      "task_record_sha256": "1cdde9b708e91869ebec8389d4871083d7b99d8fb4b4b3c9f18c1763093bde19"
+      "task_certification_sha256": "7bb837541cf646fc139602089734ac412b3cf0eb60234ffdf7048caa326e98c4",
+      "task_record_sha256": "0a6809fa874a77b3778395c2cef209a884bab081ff55946b3301818bf064bb80"
     },
     "release_dir": "136-soft-voltage-clamp"
   }

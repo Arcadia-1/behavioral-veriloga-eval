@@ -7,16 +7,16 @@
   "candidate_artifacts": [
     "rs_latch_voltage.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "changed_artifacts": [
     "rs_latch_voltage.va"
   ],
   "checker_profile_sha256": "0eef88dcc58f191a6cca56d7d95e93322c8a632d78e10fd95dc943982e6fce6c",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "cb4cfbc7b67afa5598583a2e125bd08040abb116074d1db050fa1f2ea1e3ac38",
+  "gold_dut_certification_sha256": "a41c92f2ba16608ff4a4453875ccbfe818f561540108345ef9605ed373857afc",
   "gold_solution_tree_sha256": "1cfbf0a6762a449b005ec5f614060ac33e5e9c33f3985fb1040da1dc4f6ca85c",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "mutation_catalog_sha256": "744f287c200cd84c8d42aeda0449c96e5a8627c2c48fb28e9135c3bf4a1dd0d3",
   "schema_version": "v4-bugfix-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-1140"
 }

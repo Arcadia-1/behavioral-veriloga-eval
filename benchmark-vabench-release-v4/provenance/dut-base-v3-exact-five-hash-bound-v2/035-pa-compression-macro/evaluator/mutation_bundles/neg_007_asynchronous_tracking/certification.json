@@ -1,26 +1,43 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=vin changes while reset is inactive and no rising clk crossing occurs; violated_properties=P_CLOCKED_UPDATE,P_LINEAR_REGION",
-    "observed": "EVAS: pa_gain_missing vin=0.520 out=0.520; Spectre: pa_gain_missing vin=0.520 out=0.520",
+    "expected": "properties P_CLOCKED_UPDATE, P_LINEAR_REGION satisfy the public contract; fault class clocked_hold_omission is rejected",
+    "observed": "EVAS: property_id=P_LINEAR_REGION category=behavior_mismatch expected=out:0.6600,metric:0.100 observed=out:0.5200,metric:0.100,vin:0.5200 event=clk_rise[6]@1.022000e-08s",
     "violated_property_ids": [
       "P_CLOCKED_UPDATE",
       "P_LINEAR_REGION"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_035_pa_compression",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 445
   },
   "family_id": "035",
   "inputs": {
     "checker_profile_sha256": "db6dd533ecbacffda5f1a6272a5cff53d2b11b4793ca06dd3659ef0ab33f3171",
-    "harness_spec_sha256": "5df61be9853c307e63f190fd7617d0676429b6ebe3e3f309fd9710279b8e4f2b",
-    "mutation_bundle_sha256": "e0b993143b00ade61fc55a56f812955bcf10042550b6e70d1c05d6b48b0081e1",
-    "profile_sha256": "d0f34f0d5e823f93f3763f59c4203e4c8c382765b48856c25cfc28b283680d5a"
+    "harness_spec_sha256": "e6ff61a11e5710d8b25c4dea39759a80a31f22891b4c586c1908ae37e4ec3b70",
+    "profile_sha256": "17a402f28fb7433cd5424b2cf8fa4be6e65e1dddaa4c5c4be83d5ce0fb12fdef"
   },
   "mutation_id": "neg_007_asynchronous_tracking",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

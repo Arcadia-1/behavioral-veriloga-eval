@@ -3,14 +3,14 @@
   "checker_task_id": "v4_338_lna_blocker_compression_detector",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "7340c351e7878072bb8270ecfa461178981fac96a3500614af2312d839c8f634",
-    "checker_profile.json": "3ccef44161cf3afbba28e27420ba7e00195a9be8ff6296b015e685d2365cf2c1",
+    "certification.json": "87a084034048ed7b267c089e961a842b1f0d776aa87609fdcc892cb8173d2e71",
+    "checker_profile.json": "c87f562a198c4b88bfe67863c9f74b2c981156747aa44b51eeecda83c2a6570b",
     "derivation_manifest.json": "7326d2aa4576d44a8625a3c5e5e8cd89e487ee7e33f6b9925500e2c2ee190738",
     "family_spec.json": "e20f784230f1de26a917a62c03ff71218988c224bb8c03b2dbdaed30664797ce",
-    "harness_spec.json": "0b0879366a6e8d8a0df9dbc40e3d14003af75051a2cf27340b3d3ae03ee9dc2e",
+    "harness_spec.json": "166bf97b31f7fc578a9fadf6857fc89cd2e7c91463f17724496fe3b4851fbfb0",
     "mutation_catalog.json": "80b6c2725f623c8c947df28b0bdc52b2857cf4416dccf2ad592f5f671633dd9c",
-    "profiles/feedback.json": "d68f6826acc9e5707c49e75c27a18c2514fea64d50259a3b9876b3a6af972ce0",
-    "profiles/score.json": "148632168ff0d5451e4a869360d2b35e3233741430e8950766af8bcf849034e4",
+    "profiles/feedback.json": "ba2028db79d435548ab1f61b031db675be741f50e4ad382ca6e8f1aa03f6fbb5",
+    "profiles/score.json": "b267b617bde2d7c51015e56790c0e2ace224dbab855864ca099c6d73b490d9b7",
     "score_tb.scs": "0209842ff4eb37a77934fa5fedde60edf8d715d33b704ade22340d6f1d872f17",
     "solution_tree": "1f237935f09b6bc4de0556b35dcf161f06895ed98d6880aa134197fac312e201",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "7340c351e7878072bb8270ecfa461178981fac96a3500614af2312d839c8f634"
+    "sha256": "87a084034048ed7b267c089e961a842b1f0d776aa87609fdcc892cb8173d2e71"
   },
   "release_dir": "338-lna-blocker-compression-detector",
   "schema_version": "v4-canonical-dut-release-task-v1",

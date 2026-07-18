@@ -3,10 +3,10 @@
   "checker_task_id": "v4_020_bandgap_reference_macro_model",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "4fb00f3e95aa4086a37726fa1af060b9c11233212e4cdb79918acfe090e5e435",
+    "certification.json": "74c22f01ac5c525b2380433442ce2b2ff95a9ef36c867ecedf135c3d77a8802e",
     "checker_profile.json": "9313f3543d98852fdcd31de7ca8cea9bc5dfaabf8f102425296d5e0cf20b7bac",
     "derivation_manifest.json": "000346d92c28791d9b7dbe6a508d58c5680509bf997538fdefca57451bf98edc",
-    "family_spec.json": "f9897f139adddb8e616941f9533ed98fb5376d73abbfbff0683caae39796e65f",
+    "family_spec.json": "5452f74c4342f32713a964bb90607b97e1e921fdcdd9e2cf51d340ce6c59d41b",
     "harness_spec.json": "4a30ee4f3f859dea50c4dcd78ad436c545964955b45d065b45224dcb5c6398b8",
     "mutation_catalog.json": "62aa3801711c266d5bb7addd5740f41c8c1d3fde6d46839c5b6ee113ca520b90",
     "profiles/feedback.json": "91f7a9885874ba1625c36fbe0cb32841a80754b4ee11d43e37796f5323b3db84",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "4fb00f3e95aa4086a37726fa1af060b9c11233212e4cdb79918acfe090e5e435"
+    "sha256": "74c22f01ac5c525b2380433442ce2b2ff95a9ef36c867ecedf135c3d77a8802e"
   },
   "release_dir": "020-bandgap-reference-macro-model",
   "schema_version": "v4-canonical-dut-release-task-v1",

@@ -2,12 +2,12 @@
   "candidate_artifacts": [
     "safe_voltage_divider.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "checker_profile_sha256": "eb56a3364e90be68a514be82be370de9ccb124c8124100e76fa7bb41dd974814",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "78086620b776b19abd55bea51303f6ef1512a3db9f03747b42e8d850057ab47d",
+  "gold_dut_certification_sha256": "a7edebbafaa68bd524d60948d3959fc9689f33cc3932c3e4ec88d53a0ade8184",
   "gold_solution_tree_sha256": "e534802f2a5457241f5ba66a2317e9a3a9832f34a1fcaf91f2ea297633aa3a1a",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "schema_version": "v4-dut-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-128"
 }

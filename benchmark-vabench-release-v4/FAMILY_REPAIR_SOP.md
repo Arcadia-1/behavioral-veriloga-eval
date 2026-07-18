@@ -15,8 +15,7 @@ provenance/dut-base-v3-exact-five-hash-bound-v2/
 
 `_meta.json` contains only stable release-wide metadata. Each numbered file owns
 one canonical family and its DUT, testbench, bugfix, mutation, and hash bindings.
-The former `score_denominator_manifest.json` is a generated compatibility view,
-not a source-controlled editing surface.
+There is no aggregate denominator file or aggregate-generation workflow.
 
 ## Repair PR
 
@@ -26,8 +25,7 @@ not a source-controlled editing surface.
 3. Regenerate harness/profile data with `migrate_v4_profile_parity.py`. The tool
    refreshes only the selected family shards.
 4. Do not edit or commit `release/benchmarkv4`, `AUDIT_REPORT.json`,
-   `MANIFEST.json`, `RELEASE_SEAL.json`, or a generated denominator manifest in
-   a family repair PR.
+   `MANIFEST.json` or `RELEASE_SEAL.json` in a family repair PR.
 5. Run the source repair gate for the exact family range:
 
    ```bash
@@ -62,14 +60,9 @@ After family PRs merge, one release-maintainer job runs on the latest `main`:
 Family repair PRs must never carry global release rebuilds. This keeps family
 ownership independent and prevents unrelated batches from conflicting.
 
-## Generated Aggregate
+## No Aggregate Registry
 
-Generate the legacy aggregate only for external consumers that require it:
-
-```bash
-python3 benchmark-vabench-release-v4/operations/tri_form_derivation_prep/score_denominator_registry.py \
-  --source benchmark-vabench-release-v4/provenance/dut-base-v3-exact-five-hash-bound-v2 \
-  --render /tmp/score_denominator_manifest.json
-```
-
-Never edit the rendered file by hand or copy it back into canonical provenance.
+Do not generate or maintain a repository-wide denominator table. The metadata
+file and the 400 family shards are the complete source of truth. Consumers must
+read the shards directly. `TASK_INDEX.json` and `MANIFEST.json` are generated
+immutable release artifacts, not maintenance registries.

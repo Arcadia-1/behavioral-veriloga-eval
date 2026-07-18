@@ -7,16 +7,16 @@
   "candidate_artifacts": [
     "deadband_voltage.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "changed_artifacts": [
     "deadband_voltage.va"
   ],
   "checker_profile_sha256": "117b75210a7bc49eab4824a38d0be5ad0e307f3950e540c292f1f25925ae40a4",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "34ee1f3649674b9266179101de6f1ed7347aa3cffed9658ce33f5ad32e46e65d",
+  "gold_dut_certification_sha256": "f55358a016febb48940f7b4d6f9a43ce08fffa2bd124b8a57c53e0333103f285",
   "gold_solution_tree_sha256": "7c2252fb22847e9883f6ef9c828fa5b5cbec0288fa336125682031fdca29e5f4",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "mutation_catalog_sha256": "e708aeb9bc912348103d97c94e84090263bc196a53346c8d6630dd92932a57cc",
   "schema_version": "v4-bugfix-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-1238"
 }

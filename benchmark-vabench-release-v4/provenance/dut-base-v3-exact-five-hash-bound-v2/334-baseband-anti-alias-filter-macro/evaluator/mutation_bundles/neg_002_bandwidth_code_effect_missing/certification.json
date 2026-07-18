@@ -1,59 +1,42 @@
 {
-  "component_fingerprints": {
-    "assembly": {
-      "policy_sha256": "91f4e21b94263e796c846aedef282c79d4abeb7ccc415a0e6f1311f8816b33a4",
-      "release_snapshot_sha256": "563cf8dc56e8652f8055c34f13a5a0cbdba9f7140d030eb4e1185610331f6e33"
-    },
-    "backend": {
-      "ahdl_like_sha256": "91ce239e5f278a6d5dfcde85ca2d820c5133d8f8a3de26dc6477164e703342f3",
-      "evas_sha256": "2d71c227644956df64209b49d0da6ef55bc6934891020eb26d762e8cb8cc6df2",
-      "spectre_sha256": "ac4c1cf785d5eab74058944d52bf40869e83c94e19202ab72c8e8a250c4dc51b"
-    },
-    "oracle": {
-      "checker_binding_sha256": "c64f5370c529a133b9095f1c593520a9a5e6304bd002265ae1409a9a694af1c6",
-      "checker_implementation_sha256": "de9ebc2de4749da23e107db7da88b4555956848774406192a5ce61724a4d1d41",
-      "checker_profile_sha256": "4ebbad1207e2fafd3fe607076d1d805d209a47cea2c5fee927e9c493b4172419",
-      "diagnostic_policy_sha256": "69b217a349cb0e8a3eab574e7e6d1af03f069fea668b15b37868ef3d2e7deea3",
-      "oracle_runner_sha256": "e70bd46cd3abdfd8ed9658cb13f64bc96e27d364d51ed0fdcd05f8139e63af2b",
-      "property_activation_policy_sha256": "3ec24c6a3e0683b2e5dff9281204751929b21e64996d9ab3f3f74fbb7dfe2b14"
-    },
-    "policy_id": "v4-dependency-scoped-evidence-v2",
-    "schema_version": "v4-evidence-components-v2",
-    "state": "carried_forward",
-    "task_inputs": {
-      "candidate_bundle_sha256": "2ffb8af75b3891e6c990f8d9c42ceb4e6bc987b4cac6c155ac01a4ca5766ae1b",
-      "deck_sha256": "d24a07721828a18932064725e3c742bf4fdb9388a4b41a9cd2ac82f820c4eef3",
-      "gold_bundle_sha256": "2d0a6f05d546eece3e398efb9fcb3b0874961800998c54e8ad01201c81c00fb4",
-      "harness_spec_sha256": "831e57f5c2fcc32009b61ae8807923255b02710799b4d52b6dbc6edbdbe75aaf",
-      "mutation_bundle_sha256": "2ffb8af75b3891e6c990f8d9c42ceb4e6bc987b4cac6c155ac01a4ca5766ae1b",
-      "profile_sha256": "50df949e5e1e1466493db1c1aacdff6e385a446033f64ffca63164c2441614b3",
-      "property_contract_sha256": "235e8ffba7ef6ce89ce8ac9b76e2b15dd0f073c314774652a73509111e1a7816",
-      "public_support_bundle_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "trace_contract_sha256": "644f93a0a3326f5dcb239d3ef67dcf18ec3167832fa10cd05982db7c5e707fa4"
-    }
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
   },
   "diagnostics": {
-    "expected": "trigger=bandwidth_code_effect_missing; violated_properties=P_ON_EACH_ENABLED_RISING_CLK_EDGE",
-    "observed": "EVAS: v4_1032 checked=511 codes=[0, 1, 2, 3] reset_clear=True disabled_clear=True high_bw_seen=True low_bw_seen=True moved_toward_input=True vout_errors=317 metric_errors=0 valid_errors=0 clear_errors=0; P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count=0; P_ON_EACH_ENABLED_RISING_CLK_EDGE mismatch_count=283; P_UPDATE_VOUT_AS_A_FIRST_ORDER mismatch_count=283; P_HIGHER_BANDWIDTH_CODE_MUST_MOVE_VOUT mismatch_count=283; P_EXPOSE_THE_ACTIVE_BANDWIDTH_CODE_ON mismatch_count=0; Spectre: v4_1032 checked=500 codes=[0, 1, 2, 3] reset_clear=True disabled_clear=True high_bw_seen=True low_bw_seen=True moved_toward_input=True vout_errors=322 metric_errors=0 valid_errors=0 clear_errors=0; P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count=0; P_ON_EACH_ENABLED_RISING_CLK_EDGE mismatch_count=289; P_UPDATE_VOUT_AS_A_FIRST_ORDER mismatch_count=289; P_HIGHER_BANDWIDTH_CODE_MUST_MOVE_VOUT mismatch_count=289; P_EXPOSE_THE_ACTIVE_BANDWIDTH_CODE_ON mismatch_count=0",
+    "expected": "properties P_ON_EACH_ENABLED_RISING_CLK_EDGE satisfy the public contract; fault class bandwidth_code_effect_missing is rejected",
+    "observed": "EVAS: v4_1032 checked=511 codes=[0, 1, 2, 3] reset_clear=True disabled_clear=True high_bw_seen=True low_bw_seen=True moved_toward_input=True vout_errors=317 metric_errors=0 valid_errors=0 clear_errors=0; P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count=0; P_ON_EACH_ENABLED_RISING_CLK_EDGE mismatch_count=283; P_UPDATE_VOUT_AS_A_FIRST_ORDER mismatch_count=283; P_HIGHER_BANDWIDTH_CODE_MUST_MOVE_VOUT mismatch_count=283; P_EXPOSE_THE_ACTIVE_BANDWIDTH_CODE_ON mismatch_count=0; diagnostic_schema=v4-checker-diagnostic-v1 status=fail category=behavior_mismatch event=stimulus_relative event_context=stimulus_relative expected=public_contract observed=trace",
     "violated_property_ids": [
       "P_ON_EACH_ENABLED_RISING_CLK_EDGE"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_334_baseband_anti_alias_filter_macro",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 766
   },
   "family_id": "334",
   "inputs": {
-    "checker_profile_sha256": "514152482ad3d151beda10fcad750c8095c15ff2e796371332212f899d496d6e",
-    "harness_spec_sha256": "831e57f5c2fcc32009b61ae8807923255b02710799b4d52b6dbc6edbdbe75aaf",
-    "mutation_bundle_sha256": "2ffb8af75b3891e6c990f8d9c42ceb4e6bc987b4cac6c155ac01a4ca5766ae1b",
-    "profile_sha256": "50df949e5e1e1466493db1c1aacdff6e385a446033f64ffca63164c2441614b3"
+    "checker_profile_sha256": "f1d93b3df2e1487b4038c5bfbe53f929f750202a996ba409e03a3220876f187a",
+    "harness_spec_sha256": "1fe8e19bf84e169a91c586903738d448a4445b4baf8a69d6147936d374d749ee",
+    "profile_sha256": "f0e0ba5a86742959e476b26b4123ba0aea6e4d0138165321338ffcbe1f57e828"
   },
   "mutation_id": "neg_002_bandwidth_code_effect_missing",
   "outcome": "killed_behaviorally",
-  "release_snapshot_sha256": "563cf8dc56e8652f8055c34f13a5a0cbdba9f7140d030eb4e1185610331f6e33",
-  "schema_version": "v4-negative-certification-v2",
-  "toolchain_lock_sha256": "563cf8dc56e8652f8055c34f13a5a0cbdba9f7140d030eb4e1185610331f6e33"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

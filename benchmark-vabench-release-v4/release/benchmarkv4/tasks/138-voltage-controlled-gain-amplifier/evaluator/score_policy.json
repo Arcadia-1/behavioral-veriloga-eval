@@ -2,12 +2,12 @@
   "candidate_artifacts": [
     "voltage_controlled_gain_amplifier.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "checker_profile_sha256": "6eaad93677ee1f44b12657277a849aefe652210f788b992e727bb30c6a275446",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "1f55f7800b6203b8d164b5882e48d839734e214cd85ba1dbbcb0a3b9313f2871",
+  "gold_dut_certification_sha256": "d1434b3dd673d0c5f192f0c2ebe3245cf5fb713f86a4b688ab7c8f6ad4f8fd2a",
   "gold_solution_tree_sha256": "89349342f2def2d5eb3ff48e1693d25cbd8a99cc761422ddf80325c4482ae3b9",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "schema_version": "v4-dut-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-138"
 }

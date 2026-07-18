@@ -30,7 +30,7 @@ PREP = (
 if str(PREP) not in sys.path:
     sys.path.insert(0, str(PREP))
 
-from score_denominator_registry import load_score_denominator_registry  # noqa: E402
+from score_denominator_registry import load_family_rows  # noqa: E402
 
 FAMILIES = tuple(f"{value:03d}" for value in range(21, 31))
 
@@ -70,10 +70,9 @@ def _materialize_batch(output: Path) -> list[dict[str, object]]:
         write_json,
     )
 
-    denominator = load_score_denominator_registry(SOURCE)
     rows = {
         str(row["canonical_dut_id"]): row
-        for row in denominator["tasks"]
+        for row in load_family_rows(SOURCE)
         if str(row["canonical_dut_id"]) in FAMILIES
     }
     assert sorted(rows) == list(FAMILIES)
@@ -206,8 +205,7 @@ def test_batch_03_trace_contracts_equal_the_public_observable_contract() -> None
 
 
 def test_batch_03_records_bind_profiles_checker_and_five_mutations() -> None:
-    denominator = load_score_denominator_registry(SOURCE)
-    rows = {str(row["canonical_dut_id"]): row for row in denominator["tasks"]}
+    rows = {str(row["canonical_dut_id"]): row for row in load_family_rows(SOURCE)}
     for family_id in FAMILIES:
         task = _family(family_id)
         evaluator = task / "evaluator"

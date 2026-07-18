@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "e448c918008394b86c96c0936ddd73cac039d7188a0bd6a90c04925fd5fc2a54",
+        "certification_sha256": "1d873ec4bbe3a7b4a45e461168463502e3371648f5f46ea04ff11bc2c182b74f",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "df3c6879f72ed4fa50b59dda2beee2ce70f324995573feb045a680ba082962bf",
+        "mutation_bundle_sha256": "c73cfdf3a8088fe21c5ecaff595d348d1b2a9835ddcaa162f371fdaee15a8d8f",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales the active-high PFD outputs by the wrong output gain.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "cc80f271ef0a5c4e0bd93cf0d66a4021a6f223ac4d6d4fbe065ba078ffc71dda",
+        "certification_sha256": "3e16007fb99896b13178194c8413263a69b397ab1e464e73c87429b3c225128f",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "43cc4a79888dcbef589494c4f98ea8f7224e503ab0395db5cc2092fc390f4439",
+        "mutation_bundle_sha256": "fe2bf091d4f4286e34e177d9ddd4c7c892cc9f3207f3351f7b837b219addb3ef",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_reset_delay/certification.json",
-        "certification_sha256": "3a0e2c9b4ad837cb047a14844d2ae913f1f665b820c076561bcb97b8d3aeca53",
+        "certification_sha256": "1051b6f94e30648f2a389744d947f3b6e0f86cec6fa48d4c24b791b7a4162621",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "2431bd98215bca6239c4cd5fe8c3a26376e1cb7e1885c2fe576357b638f58098",
+        "mutation_bundle_sha256": "8801b27cb0a06c88d6717004b9b397d696bde3126aab5581de918143c772a35c",
         "mutation_id": "neg_003_no_reset_delay",
         "source_catalog_certification_path": "negative_variants/neg_003_no_reset_delay/certification.json",
         "trigger_condition": "Resets immediately once both edges have arrived.",
@@ -45,9 +45,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_ignore_reset/certification.json",
-        "certification_sha256": "62e75bb63a302180d3be6866e3354111db67d756b6065df705af3d771f6977a7",
+        "certification_sha256": "ca52c387bc9b572ad0a9911f3dfd180dca0bf75139773bce1a53d1853adf8475",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "bcabd936330c38330e82cc16d5137fe3c2fb1b33368ef790de172aba177442b9",
+        "mutation_bundle_sha256": "95a4821e72a24bc51f2168b0b165968655ec66c0240244fe694d6eb82c92932d",
         "mutation_id": "neg_002_ignore_reset",
         "source_catalog_certification_path": "negative_variants/neg_002_ignore_reset/certification.json",
         "trigger_condition": "Implements the edge state machine but ignores the external active-low reset input.",
@@ -58,9 +58,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_swapped_edges/certification.json",
-        "certification_sha256": "bf5d12266a83f508c84d0843fac48fc2a847712590670e755abce3f50281a143",
+        "certification_sha256": "6431a3e3399b5566fb5271ee8c83aaf3bd1dc79ee40b53ba6a8f76cba7d85eb5",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "7ee3df97511ee77a4fdc4f5d7d76c749f736be558ec90a1b167c030debae13d7",
+        "mutation_bundle_sha256": "beda32e9702659e75ce0396eecfa210815730fea50b23d63456fa08f895929d9",
         "mutation_id": "neg_004_swapped_edges",
         "source_catalog_certification_path": "negative_variants/neg_004_swapped_edges/certification.json",
         "trigger_condition": "Swaps REF and FB state updates.",
@@ -75,8 +75,8 @@
     "hashes": {
       "mutation_catalog_sha256": "ffd6b37d6bf4b246cc1c6998986b6c239dfd06526b5fc19203ea26314344a7ae",
       "score_deck_sha256": "ca562086183e2d9621375a005f09f97bad35806fd2cb6649db46a31883c6c28b",
-      "task_certification_sha256": "c4db56f7cb9a0529307e9c08e889342d525fc70c610bce4eb57e14d36bd34bf0",
-      "task_record_sha256": "7aef9447c88073532a464979ba9c7bd1b058ad027edce7cfcf096fafa74bbd8e"
+      "task_certification_sha256": "80ff84225abb9e4f2dab32358148ad3795556e1d5bfbd1a2a506841ef3053896",
+      "task_record_sha256": "0003814ef6dd8b318cacd55d72ad28d73e47d37c9060e5e9a9576e9ec7dae109"
     },
     "release_dir": "249-pfd-active-low-reset"
   }

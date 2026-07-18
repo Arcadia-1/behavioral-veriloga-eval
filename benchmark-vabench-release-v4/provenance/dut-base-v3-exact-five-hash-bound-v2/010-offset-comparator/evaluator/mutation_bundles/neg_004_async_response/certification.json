@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=VINP changes between rising CLK edges; violated_properties=P_LATCH_HOLD",
-    "observed": "EVAS: offset_decisions=LLLHHLL expected=LLLHHLL diffs_mv=[-12.0,-1.0,4.0,8.0,16.0,-1.0,-13.0] mismatches=0 below_offset_positive=True above_offset_positive=True strict_samples=LLLHHHLLLL async_hold_before_pos_7mv_edge:H!=L@0.900 async_hold_before_pos_7mv_edge:low_not_rail=0.900>max=0.180 async_hold_before_zero_edge:L!=H@0.100 async_hold_before_zero_edge:high_not_rail=0.100<min=0.820; Spectre: offset_decisions=LLLHHLL expected=LLLHHLL diffs_mv=[-12.0,-1.0,4.0,8.0,16.0,-1.0,-13.0] mismatches=0 below_offset_positive=True above_offset_positive=True strict_samples=LLLHHHLLLL async_hold_before_pos_7mv_edge:H!=L@0.900 async_hold_before_pos_7mv_edge:low_not_rail=0.900>max=0.180 async_hold_before_zero_edge:L!=H@0.100 async_hold_before_zero_edge:high_not_rail=0.100<min=0.820",
+    "expected": "properties P_LATCH_HOLD satisfy the public contract; fault class asynchronous_decision is rejected",
+    "observed": "EVAS: offset_decisions=LLLHHLL expected=LLLHHLL diffs_mv=[-12.0,-1.0,4.0,8.0,16.0,-1.0,-13.0] mismatches=0 below_offset_positive=True above_offset_positive=True strict_samples=LLLLLHHHHLLLL hold_before_edge_3:H!=L@0.900 hold_before_edge_3:low_not_rail=0.900>max=0.180 hold_before_edge_5:L!=H@0.100 hold_before_edge_5:high_not_rail=0.100<min=0.820 properties_checked=P_RISING_EDGE_SAMPLE,P_OFFSET_DECISION,P_LATCH_HOLD,P_RAIL_REFERENCE",
     "violated_property_ids": [
       "P_LATCH_HOLD"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_010_offset_comparator",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 1425
   },
   "family_id": "010",
   "inputs": {
     "checker_profile_sha256": "18ca0fd0582155a85c85014f789a05eafb631d399b52c1c8dc4a0709a0bc2242",
-    "harness_spec_sha256": "f3ec35ea1c4ce15c121dc9689e159c57dbf0a8fd01839b104ce90a43f7fac301",
-    "mutation_bundle_sha256": "9f9589673726fc5fb91eb968ddd5947f64378b8f167e219a1520972618af37e4",
-    "profile_sha256": "4a096e82e07103d4c39eee5d20a639f64249fb6123f24e5aba947667b40c27cc"
+    "harness_spec_sha256": "650424f6947e99d97315cd567729f08cc6afc36742e5cbfce208e287ff174101",
+    "profile_sha256": "e4e8fb537dc494c5f7ac296d22fb711c58d6315ce598bdcaafcdc2ece10d3705"
   },
   "mutation_id": "neg_004_async_response",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

@@ -1,25 +1,42 @@
 {
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
   "diagnostics": {
-    "expected": "trigger=Passes nominal/smoke cases but fails an endpoint, threshold, saturation, or settling boundary.; violated_properties=P_RESET_FAULT",
-    "observed": "EVAS: uvlo_initial_power_good_high=0.900; Spectre: uvlo_initial_power_good_high=0.900",
+    "expected": "properties P_RESET_FAULT satisfy the public contract; fault class passes_nominal_smoke_cases_but_fails_an_endpoint is rejected",
+    "observed": "EVAS: property_id=P_RESET_FAULT category=behavior_mismatch expected=initial_out<=0.20 observed=initial_out=0.626 event=pre_upper_trip_region",
     "violated_property_ids": [
       "P_RESET_FAULT"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_046_uvlo_brownout_detector",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 371
   },
   "family_id": "046",
   "inputs": {
     "checker_profile_sha256": "1d6b3c89688d358c4465f3b97a2d7fa1df5682dc76e0d0dcf9de6f1b286e0582",
-    "harness_spec_sha256": "5d4a5b0b0b80fd712e20741ed573a8fec207a235d1086fa6db1936b6e28808dc",
-    "mutation_bundle_sha256": "bf1a2e06a88d7eada4b946406f462da34b1e463bde3b985869f4ae90ae752100",
-    "profile_sha256": "9843e551931f30200d8a6ea0231a37f718c210d6dbc635a04f4246c5b7605d20"
+    "harness_spec_sha256": "0605f4bfe49dc55eccbe167c299ade9e877b8da4e21891aa96f158048f161efb",
+    "profile_sha256": "73e0b577dae2c7b63a05ca4d8e3ddde93fcea1be147a79c2b88cb841148469c8"
   },
   "mutation_id": "neg_001",
   "outcome": "killed_behaviorally",
-  "schema_version": "v4-negative-certification-v1",
-  "toolchain_lock_sha256": "9f937d769f2b2653034dc1f578001a89e7fcb92323764e1a91f4e8ab2cfb787a"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

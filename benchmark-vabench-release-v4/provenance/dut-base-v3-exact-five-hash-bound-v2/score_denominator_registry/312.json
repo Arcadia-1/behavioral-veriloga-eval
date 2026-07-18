@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_skew_metric_uses_average/certification.json",
-        "certification_sha256": "fe0c781291c1c96efbe3df9b6b303d4a303628d46fbbb0b85f6078868e2c1231",
+        "certification_sha256": "9b40f0d64f5cd4634da450c1aecf94669a662add7fa9b50fa20a2376da1b1e62",
         "fault_class": "skew_metric_uses_average",
-        "mutation_bundle_sha256": "736e019e1c91a10694393c69007423644fdf8028f146702afea56252036e43af",
+        "mutation_bundle_sha256": "6a1e071020058b07f06d0f7deb497f472c08ec98cb7931870ec67f6f0136d448",
         "mutation_id": "neg_002_skew_metric_uses_average",
         "source_catalog_certification_path": "negative_variants/neg_002_skew_metric_uses_average/certification.json",
         "trigger_condition": "skew_metric_uses_average",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_alarm_after_one_violation/certification.json",
-        "certification_sha256": "c74f126baabd7d2c92628a91469efdad9daf5d944e99ea41a2f624c1e1a88f01",
+        "certification_sha256": "2bf4517acf6e66a007286924f274d12b4d59667a52a28d2d0483b4889ed1e27b",
         "fault_class": "alarm_after_one_violation",
-        "mutation_bundle_sha256": "2a9870e90aea37926f330ffa3551431afc762735e2b718c0e317d72962054fd3",
+        "mutation_bundle_sha256": "3a3c816adac261d03992eca1cfeb75aa3b92d7f387a74206fbae31044b26438e",
         "mutation_id": "neg_003_alarm_after_one_violation",
         "source_catalog_certification_path": "negative_variants/neg_003_alarm_after_one_violation/certification.json",
         "trigger_condition": "alarm_after_one_violation",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_magnitude_metric_uses_difference/certification.json",
-        "certification_sha256": "d2855e6cbc84fa1dc71a801221b676d085edfdf948038adb4766dc155e7aa9a3",
+        "certification_sha256": "f1750326dd9543622952bc63f773b54aa54f2c2051d9ae802943a501b27d6461",
         "fault_class": "magnitude_metric_uses_difference",
-        "mutation_bundle_sha256": "882009a010f14627bf94f2aef30de9992028167d164239d2b86c8c6962bcd6a0",
+        "mutation_bundle_sha256": "971a0d3595e130f9789db94c35530a6597fa350e3776b3c5f9af17cb0b7ad617",
         "mutation_id": "neg_004_magnitude_metric_uses_difference",
         "source_catalog_certification_path": "negative_variants/neg_004_magnitude_metric_uses_difference/certification.json",
         "trigger_condition": "magnitude_metric_uses_difference",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_reset_does_not_clear/certification.json",
-        "certification_sha256": "c24ecde7584fe7a21cdc609c9def179a35cef2d67accafb65666759f6413d003",
+        "certification_sha256": "18bc603ccd7cc5b680d309c666326d8f36702fc8e95eea15863bf39fa2a03b29",
         "fault_class": "reset_does_not_clear",
-        "mutation_bundle_sha256": "fe007ec2a0221c75330edc7c6e39829289fc6d0d3e664aae0cf924aa0f544330",
+        "mutation_bundle_sha256": "694d4b7fb5a36a3b17d308d8c5d06ba75d639ef0c51c397fd94fe69e0e3f0097",
         "mutation_id": "neg_005_reset_does_not_clear",
         "source_catalog_certification_path": "negative_variants/neg_005_reset_does_not_clear/certification.json",
         "trigger_condition": "reset_does_not_clear",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_samples_same_clock_only/certification.json",
-        "certification_sha256": "fc545c957f4b3da748fdde5b1bf0d720479421856078ae8980422dc4ddff78b1",
+        "certification_sha256": "19f35d6d3cc7be76e5a9c67b27b4b5f6fe33fce8170ede9cf18cd6f74f7fdc9c",
         "fault_class": "samples_same_clock_only",
-        "mutation_bundle_sha256": "940b8c62e06ff1525c6f16b4c0a3cf6c2ecbeeeca964fcf94d60cf6b9e8c5b2c",
+        "mutation_bundle_sha256": "96b6863f594be4bf844098e86dc66885352f23865b542ae929b3c33cf679f749",
         "mutation_id": "neg_001_samples_same_clock_only",
         "source_catalog_certification_path": "negative_variants/neg_001_samples_same_clock_only/certification.json",
         "trigger_condition": "samples_same_clock_only",
@@ -70,9 +70,9 @@
     "canonical_dut_id": "312",
     "hashes": {
       "mutation_catalog_sha256": "ffa122ebcc59fe57ad1b948cb28d9b090c43383e8a178f0f8cbc9c0657d629a1",
-      "score_deck_sha256": "ba53df0a8b73a20f63aad4b54e7446e9c3bedb7af97bf4e5f182d4ba72dc9526",
-      "task_certification_sha256": "68b13c2fbc48674b43a083e873abd41b3226765dba438d8ea89cc2d85bb51c4b",
-      "task_record_sha256": "2378ffd92094fc97efc859e097ed4c5d3c4615a34e40e8dd9b0c021247059e03"
+      "score_deck_sha256": "1f557a956b50fc4e1b4400a2dad0d44f0c607b7f4708b2f8f9debdea1a5ca00e",
+      "task_certification_sha256": "0e6c9338cddfd1f8901aa95f5f4662397e7533635462d77e94316d87a0da09e0",
+      "task_record_sha256": "81bab1637b83dd16e5284d71ba168a2dbe7e6ff3c3b66e9ca2fd6f8b80c99c77"
     },
     "release_dir": "312-interleaved-adc-skew-monitor"
   }

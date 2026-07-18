@@ -1,59 +1,42 @@
 {
-  "component_fingerprints": {
-    "assembly": {
-      "policy_sha256": "91f4e21b94263e796c846aedef282c79d4abeb7ccc415a0e6f1311f8816b33a4",
-      "release_snapshot_sha256": "563cf8dc56e8652f8055c34f13a5a0cbdba9f7140d030eb4e1185610331f6e33"
-    },
-    "backend": {
-      "ahdl_like_sha256": "91ce239e5f278a6d5dfcde85ca2d820c5133d8f8a3de26dc6477164e703342f3",
-      "evas_sha256": "2d71c227644956df64209b49d0da6ef55bc6934891020eb26d762e8cb8cc6df2",
-      "spectre_sha256": "ac4c1cf785d5eab74058944d52bf40869e83c94e19202ab72c8e8a250c4dc51b"
-    },
-    "oracle": {
-      "checker_binding_sha256": "0f1b68cab797201d738dfe4afae0234dab4ea3680394979a2477fe42e21b1ac8",
-      "checker_implementation_sha256": "37db44deeeb4245a34b65de0e0522b7858a54fad5f537bb49de9217440ed396c",
-      "checker_profile_sha256": "3a9b6a7176382b3b2cfd956dde2b0ac044b3c4d945504c39c7f15cd69ddbb393",
-      "diagnostic_policy_sha256": "69b217a349cb0e8a3eab574e7e6d1af03f069fea668b15b37868ef3d2e7deea3",
-      "oracle_runner_sha256": "e70bd46cd3abdfd8ed9658cb13f64bc96e27d364d51ed0fdcd05f8139e63af2b",
-      "property_activation_policy_sha256": "46a7da110d6f23efbba43805b7477ecddb48b5885a34d093f67f83409a2faf58"
-    },
-    "policy_id": "v4-dependency-scoped-evidence-v2",
-    "schema_version": "v4-evidence-components-v2",
-    "state": "carried_forward",
-    "task_inputs": {
-      "candidate_bundle_sha256": "2a859124fa28120b9987666403b14a5ae3d27ea4b3027b73b80927bb10b29e69",
-      "deck_sha256": "7efedac1cf4877545a9922fb97e740a473a85e004837505bcba78d785c23962d",
-      "gold_bundle_sha256": "72e8aabeb7d781fec0df405542dccac8e6ac54a0ea18d7859dd948d040f8f18d",
-      "harness_spec_sha256": "ab339d44706c0e0f1fff714c351d9db66bd925b3ccbbe9a59fbb17d7d2271bb0",
-      "mutation_bundle_sha256": "2a859124fa28120b9987666403b14a5ae3d27ea4b3027b73b80927bb10b29e69",
-      "profile_sha256": "d6f1ca8496dad3a61e60ddc44baeb195002d63e74a14653e6c3db410cdf1e4f6",
-      "property_contract_sha256": "3317814a07a9c540a9bb3fe2dd4c68bee826ea0d3e2baf4d79eccb9ea84ab9ca",
-      "public_support_bundle_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "trace_contract_sha256": "f27188d53ea6bc75bdc16cee7fdcb2fa273f4e7b66b687619f2cf5239d53d161"
-    }
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
   },
   "diagnostics": {
-    "expected": "trigger=semantic zero mutation from gold; violated_properties=P_RESET_INITIALIZES_THE_EQUALIZED_OUTPUT_TO",
-    "observed": "EVAS: v4_ctle checked=15 codes=[0, 1, 2, 3, 4, 5, 7] metric_seen=True sat_seen=True vout_errors=14 metric_errors=3 sat_errors=2 reset_errors=1 errors=19; P_RESET_INITIALIZES_THE_EQUALIZED_OUTPUT_TO mismatch_count=1; P_ON_EACH_RISING_CLK_SAMPLE_THE mismatch_count=19; P_DRIVE_VOUT_FROM_THE_CURRENT_INPUT mismatch_count=14; P_CLAMP_VOUT_TO_THE_VSS_TO mismatch_count=16; P_EDGE_METRIC_REPORTS_THE_ABSOLUTE_BOOSTED mismatch_count=3; P_SAT_FLAG_IS_HIGH_WHEN_THE mismatch_count=2; Spectre: v4_ctle checked=15 codes=[0, 1, 2, 3, 4, 5, 7] metric_seen=True sat_seen=True vout_errors=14 metric_errors=3 sat_errors=2 reset_errors=1 errors=19; P_RESET_INITIALIZES_THE_EQUALIZED_OUTPUT_TO mismatch_count=1; P_ON_EACH_RISING_CLK_SAMPLE_THE mismatch_count=19; P_DRIVE_VOUT_FROM_THE_CURRENT_INPUT mismatch_count=14; P_CLAMP_VOUT_TO_THE_VSS_TO mismatch_count=16; P_EDGE_METRIC_REPORTS_THE_ABSOLUTE_BOOSTED mismatch_count=3; P_SAT_FLAG_IS_HIGH_WHEN_THE mismatch_count=2",
+    "expected": "properties P_RESET_INITIALIZES_THE_EQUALIZED_OUTPUT_TO satisfy the public contract; fault class zero_stub_output is rejected",
+    "observed": "EVAS: P_OUTPUT_TRANSFER checked=15 mismatch_count=14 expected=vout=0.45 observed=vout=0 sample_time=1.2225e-09 metric_gap=0.45 ; P_EDGE_METRIC checked=15 mismatch_count=3 expected=edge_metric=0.0832 observed=edge_metric=0 sample_time=3.12225e-08 metric_gap=0.0832 ; P_SATURATION checked=15 mismatch_count=2 expected=sat_flag=1 observed=sat_flag=0 sample_time=4.1245e-08 metric_gap=1 ; P_EXCITATION checked=1 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0",
     "violated_property_ids": [
       "P_RESET_INITIALIZES_THE_EQUALIZED_OUTPUT_TO"
     ]
   },
   "evaluators": {
-    "ahdl_like": "pass",
-    "evas": "compile_pass_behavior_fail",
-    "spectre": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r44-full400",
+    "checker_id": "v4_352_ctle_equalizer_macro",
+    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "trace_row_count": 955
   },
   "family_id": "352",
   "inputs": {
-    "checker_profile_sha256": "8411ee35338520243da4bb665d9335b8ee6a6a8a9c30a287d0bb6cd5647dfad7",
-    "harness_spec_sha256": "ab339d44706c0e0f1fff714c351d9db66bd925b3ccbbe9a59fbb17d7d2271bb0",
-    "mutation_bundle_sha256": "2a859124fa28120b9987666403b14a5ae3d27ea4b3027b73b80927bb10b29e69",
-    "profile_sha256": "d6f1ca8496dad3a61e60ddc44baeb195002d63e74a14653e6c3db410cdf1e4f6"
+    "checker_profile_sha256": "b5e00941e32a9186e2e950d3702b99d7230c29d55bce5135cee9273ae2118668",
+    "harness_spec_sha256": "4434311c93ac0bc9a9c87aac52ea64c56ca2ded4d80c366136c6785b339497ce",
+    "profile_sha256": "c6d368d634c4fc1438adcf873c106ce64aea5f72263bcd252efdf94d32f9b25b"
   },
   "mutation_id": "neg_001_zero",
   "outcome": "killed_behaviorally",
-  "release_snapshot_sha256": "563cf8dc56e8652f8055c34f13a5a0cbdba9f7140d030eb4e1185610331f6e33",
-  "schema_version": "v4-negative-certification-v2",
-  "toolchain_lock_sha256": "563cf8dc56e8652f8055c34f13a5a0cbdba9f7140d030eb4e1185610331f6e33"
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "status": "pass"
 }

@@ -7,16 +7,16 @@
   "candidate_artifacts": [
     "bandgap_reference_macro_model.va"
   ],
+  "certification_evaluator": "rust_evas2",
   "changed_artifacts": [
     "bandgap_reference_macro_model.va"
   ],
   "checker_profile_sha256": "9313f3543d98852fdcd31de7ca8cea9bc5dfaabf8f102425296d5e0cf20b7bac",
   "full_contract_pass_required": true,
-  "gold_dut_certification_sha256": "4fb00f3e95aa4086a37726fa1af060b9c11233212e4cdb79918acfe090e5e435",
+  "gold_dut_certification_sha256": "74c22f01ac5c525b2380433442ce2b2ff95a9ef36c867ecedf135c3d77a8802e",
   "gold_solution_tree_sha256": "01c6b2c96b324af65455a27140bdde44c7a22167156b2389834d3cff3c52f6bb",
   "materialized_checker_profile": "evaluator/checker_profile.json",
   "mutation_catalog_sha256": "62aa3801711c266d5bb7addd5740f41c8c1d3fde6d46839c5b6ee113ca520b90",
   "schema_version": "v4-bugfix-score-policy-v1",
-  "spectre_final_judge": true,
   "task_id": "v4-1020"
 }
