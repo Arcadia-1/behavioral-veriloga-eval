@@ -22,8 +22,8 @@ def check_v4_314_hysteretic_window_comparator(rows: list[dict[str, float]]) -> t
     expected_toggle_times: list[float] = []
     toggle_seen: list[bool] = []
     pending_toggle: int | None = None
-    last_semantic_change_index = 0
-    settle_samples = 8
+    last_semantic_change_time = float(ordered[0]["time"])
+    settle_window_s = 0.8e-9
     checked = state_errors = metric_errors = clear_errors = 0
     reset_samples = disabled_samples = 0
     inside_seen = outside_seen = False
@@ -71,7 +71,7 @@ def check_v4_314_hysteretic_window_comparator(rows: list[dict[str, float]]) -> t
         control_changed = reset != previous_reset or enabled != previous_enabled
         state_changed = state != old_state
         if control_changed or state_changed:
-            last_semantic_change_index = index
+            last_semantic_change_time = t
             pending_toggle = None
         if state_changed and not reset and enabled:
             expected_toggle_times.append(t)
@@ -82,16 +82,18 @@ def check_v4_314_hysteretic_window_comparator(rows: list[dict[str, float]]) -> t
         previous_reset = reset
         previous_enabled = enabled
 
-        # The grace period is relative to the observed semantic transition,
-        # not to a deck-specific timestamp.  Stability still gates scoring so
-        # a solver breakpoint cannot be mistaken for a settled output.
-        if index <= last_semantic_change_index + settle_samples or not stable_output(index):
-            continue
-        checked += 1
         expected_level = 0.9 if state else 0.0
         observed_inside = float(row["inside_flag"])
         observed_metric = float(row["state_metric"])
         observed_toggle = float(row["toggled"])
+        # The grace period is time-relative to the semantic transition, not to
+        # a sample count. Stability still gates scoring so a solver breakpoint
+        # cannot be mistaken for a settled output.
+        if not stable_output(index):
+            continue
+        if t - last_semantic_change_time < settle_window_s:
+            continue
+        checked += 1
 
         if reset or not enabled:
             clear_ok = observed_inside < 0.18 and observed_metric < 0.18 and observed_toggle < 0.25

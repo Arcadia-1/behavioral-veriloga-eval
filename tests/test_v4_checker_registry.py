@@ -69,11 +69,16 @@ def _lowpass_rows(
     vin_low: float,
     vin_high: float,
     passthrough: bool = False,
+    initial_vout: float = 0.0,
     end_time: float = 110e-9,
 ) -> list[dict[str, float]]:
     step_time = 10e-9
     response_span = vin_high - vin_low
-    samples = [(0.0, vin_low, 0.0), (0.3e-9, vin_low, 0.0), (9.9e-9, vin_low, vin_low)]
+    samples = [
+        (0.0, vin_low, initial_vout),
+        (0.3e-9, vin_low, initial_vout),
+        (9.9e-9, vin_low, vin_low),
+    ]
     for index in range(0, 41):
         time_s = step_time + index * 0.25e-9
         update_count = max(0, math.floor((time_s - step_time) / 0.5e-9) + 1)
@@ -108,6 +113,20 @@ def test_first_order_lowpass_checker_is_independent_of_tran_stop() -> None:
             _lowpass_rows(vin_low=0.0, vin_high=1.0, end_time=end_time)
         )
         assert passed, detail
+
+
+def test_first_order_lowpass_registry_checker_preserves_initial_state_gate() -> None:
+    from checkers.v4.registry import load_checker
+
+    checker = load_checker("v4_007_first_order_lowpass")
+    assert checker is not None
+
+    passed, detail = checker(
+        _lowpass_rows(vin_low=0.0, vin_high=0.8, initial_vout=0.195)
+    )
+
+    assert not passed
+    assert "first_mismatch=P_INITIAL_STATE" in detail
 
 
 def test_bandgap_checker_reports_first_hold_mismatch(monkeypatch) -> None:
