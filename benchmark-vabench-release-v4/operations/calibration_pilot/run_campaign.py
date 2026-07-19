@@ -32,6 +32,16 @@ DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r45"
 DEFAULT_BASE_URL = "https://www.cun.ai/v1"
 DEFAULT_API_KEY_ENV = "VAEVAS_API_KEY"
 DIRECT_PARSER_VERSION = "v4-exact-artifact-envelope-parser-v1"
+DIRECT_DUT_RUNTIME_SCHEMAS = {
+    "r45-direct-evas-runtime-v1",
+    "r45-direct-evas-runtime-v2",
+    "r47-direct-evas-runtime-v2",
+}
+DIRECT_TESTBENCH_RUNTIME_SCHEMAS = {
+    "r45-direct-evas-testbench-suite-v1",
+    "r45-direct-evas-testbench-suite-v2",
+    "r47-direct-evas-testbench-suite-v2",
+}
 ARTIFACT_RE = re.compile(
     r'(?m)^<<<VABENCH_ARTIFACT path="([^"\r\n]+)">>>\r?\n'
     r'(.*?)'
@@ -640,7 +650,7 @@ def run_public_evas(
 
     schema_version = str(contract.get("schema_version") or "")
     requested_case = arguments.get("case")
-    if schema_version in {"r45-direct-evas-runtime-v1", "r45-direct-evas-runtime-v2"}:
+    if schema_version in DIRECT_DUT_RUNTIME_SCHEMAS:
         if requested_case not in (None, ""):
             raise ValueError("DUT and bugfix visible tests do not accept a case")
         expected_output = (
@@ -671,10 +681,7 @@ def run_public_evas(
         })
         return result
 
-    if schema_version not in {
-        "r45-direct-evas-testbench-suite-v1",
-        "r45-direct-evas-testbench-suite-v2",
-    }:
+    if schema_version not in DIRECT_TESTBENCH_RUNTIME_SCHEMAS:
         raise ValueError(f"unsupported public EVAS runtime schema: {schema_version!r}")
     if contract.get("fixture_policy") != "read_only_and_identical_for_visible_and_final_replay":
         raise ValueError("unsupported public fixture policy")
