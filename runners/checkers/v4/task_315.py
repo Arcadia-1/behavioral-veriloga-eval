@@ -11,17 +11,19 @@ def check_v4_315_reference_ladder_buffered_taps(rows: list[dict[str, float]]) ->
     if not rows:
         return False, "v4_1013 empty_trace"
 
+    ordered = sorted(rows, key=lambda row: float(row["time"]))
+    settle_window_s = 0.8e-9
+
     def settled(index: int) -> bool:
-        """Only score after stimulus and DUT outputs stop moving."""
+        """Only score after the event-relative settle window and stable outputs."""
         if index < 2:
             return False
         names = (
-            "vref_hi", "vref_lo", "enable", "rst",
             "tap0", "tap1", "tap2", "tap3", "monotonic_ok",
         )
         for current in range(index - 1, index + 1):
-            previous = rows[current - 1]
-            row = rows[current]
+            previous = ordered[current - 1]
+            row = ordered[current]
             if any(abs(float(row[name]) - float(previous[name])) > 1e-4 for name in names):
                 return False
         return True
@@ -29,13 +31,29 @@ def check_v4_315_reference_ladder_buffered_taps(rows: list[dict[str, float]]) ->
     checked = spacing_errors = flag_errors = clear_errors = 0
     normal_seen = reversed_seen = clamp_seen = disabled_clear = reset_clear = False
     saw_active = False
-    for index, row in enumerate(rows):
+    watched = ("vref_hi", "vref_lo", "enable", "rst")
+    previous_event_values = tuple(float(ordered[0][name]) for name in watched)
+    last_event_time = float(ordered[0]["time"])
+    for index, row in enumerate(ordered):
         t = float(row["time"])
+        event_values = tuple(float(row[name]) for name in watched)
+        if any(abs(value - previous) > 1e-6 for value, previous in zip(event_values, previous_event_values)):
+            last_event_time = t
+            previous_event_values = event_values
         enabled = _v4_topup_logic_high(row, "enable") and not _v4_topup_logic_high(row, "rst")
         taps = [float(row[f"tap{i}"]) for i in range(4)]
+        if enabled:
+            hi_raw = float(row["vref_hi"])
+            lo_raw = float(row["vref_lo"])
+            hi_c = _v4_topup_clip01(max(hi_raw, lo_raw))
+            lo_c = _v4_topup_clip01(min(hi_raw, lo_raw))
+            span = hi_c - lo_c
+            expected = [lo_c + span * i / 3.0 for i in range(4)]
+        else:
+            expected = [0.0, 0.0, 0.0, 0.0]
+        stable = settled(index) and t - last_event_time >= settle_window_s
         if not enabled:
             clear = max(abs(v) for v in taps) < 0.08 and float(row["monotonic_ok"]) < 0.12
-            stable = settled(index)
             if saw_active and not _v4_topup_logic_high(row, "enable") and not _v4_topup_logic_high(row, "rst") and stable and clear:
                 disabled_clear = True
             if _v4_topup_logic_high(row, "rst") and stable and clear:
@@ -44,14 +62,8 @@ def check_v4_315_reference_ladder_buffered_taps(rows: list[dict[str, float]]) ->
                 clear_errors += 1
             continue
         saw_active = True
-        if not settled(index):
+        if not stable:
             continue
-        hi_raw = float(row["vref_hi"])
-        lo_raw = float(row["vref_lo"])
-        hi_c = _v4_topup_clip01(max(hi_raw, lo_raw))
-        lo_c = _v4_topup_clip01(min(hi_raw, lo_raw))
-        span = hi_c - lo_c
-        expected = [lo_c + span * i / 3.0 for i in range(4)]
         checked += 1
         normal_seen = normal_seen or hi_raw > lo_raw + 0.12
         reversed_seen = reversed_seen or lo_raw > hi_raw + 0.12

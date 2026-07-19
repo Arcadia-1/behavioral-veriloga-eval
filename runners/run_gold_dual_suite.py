@@ -337,6 +337,26 @@ def parse_psf_float(value: str) -> float:
     return float(token)
 
 
+def psf_parenthesis_delta(value: str) -> int:
+    delta = 0
+    in_string = False
+    escaped = False
+    for char in value:
+        if escaped:
+            escaped = False
+            continue
+        if char == "\\" and in_string:
+            escaped = True
+        elif char == '"':
+            in_string = not in_string
+        elif not in_string:
+            if char == "(":
+                delta += 1
+            elif char == ")":
+                delta -= 1
+    return delta
+
+
 def find_spectre_tran_file(raw_dir: Path) -> Path:
     for path in (raw_dir / "tran.tran.tran", raw_dir / "tran.tran", raw_dir / "tran"):
         if path.exists() and path.is_file():
@@ -347,9 +367,11 @@ def find_spectre_tran_file(raw_dir: Path) -> Path:
     return candidates[0]
 
 
-def read_psf_trace_names(psf_path: Path) -> list[str]:
+def read_psf_signal_names(psf_path: Path) -> tuple[list[str], list[str]]:
     section = ""
+    sweeps: list[str] = []
     traces: list[str] = []
+    prop_depth = 0
     with psf_path.open("r", encoding="utf-8", errors="replace") as f:
         for raw_line in f:
             line = raw_line.strip()
@@ -357,29 +379,50 @@ def read_psf_trace_names(psf_path: Path) -> list[str]:
                 continue
             if line in {"HEADER", "TYPE", "SWEEP", "TRACE", "VALUE"}:
                 section = line
+                prop_depth = 0
                 if section == "VALUE":
                     break
                 continue
-            if section != "TRACE":
+            if section not in {"SWEEP", "TRACE"}:
+                continue
+            if prop_depth:
+                prop_depth = max(0, prop_depth + psf_parenthesis_delta(line))
                 continue
             parsed = parse_psf_pair(line)
             if parsed is None:
                 continue
-            name, _kind = parsed
-            if name not in traces:
+            name, kind = parsed
+            if section == "SWEEP" and name not in sweeps:
+                sweeps.append(name)
+            elif section == "TRACE" and name not in traces:
                 traces.append(name)
+            prop_match = re.search(r"\bPROP\s*\(", kind)
+            if prop_match is not None:
+                prop_depth = max(0, psf_parenthesis_delta(kind[prop_match.start() :]))
+    return sweeps, traces
+
+
+def read_psf_trace_names(psf_path: Path) -> list[str]:
+    _sweeps, traces = read_psf_signal_names(psf_path)
     return traces
 
 
 def write_spectre_psf_csv(raw_dir: Path, csv_path: Path) -> dict[str, object]:
     psf_path = find_spectre_tran_file(raw_dir)
-    trace_names = read_psf_trace_names(psf_path)
+    sweep_names, trace_names = read_psf_signal_names(psf_path)
     columns = ["time", *[name for name in trace_names if name != "time"]]
+    value_order = (
+        [(name, "sweep") for name in sweep_names] + [(name, "trace") for name in trace_names]
+        if sweep_names
+        else []
+    )
     csv_path.parent.mkdir(parents=True, exist_ok=True)
 
     rows = 0
+    duplicate_time_values_ignored = 0
     section = ""
     current: dict[str, float] = {}
+    value_index = 0
     with psf_path.open("r", encoding="utf-8", errors="replace") as src, csv_path.open(
         "w",
         newline="",
@@ -404,7 +447,21 @@ def write_spectre_psf_csv(raw_dir: Path, csv_path: Path) -> dict[str, object]:
                 value = parse_psf_float(value_text)
             except ValueError:
                 continue
+            expected_name = ""
+            expected_kind = ""
+            if value_order:
+                expected_name, expected_kind = value_order[value_index % len(value_order)]
+                value_index += 1
             if name == "time":
+                if (
+                    expected_name == name
+                    and expected_kind == "trace"
+                    and name in sweep_names
+                ) or (
+                    not value_order and set(current) == {"time"}
+                ):
+                    duplicate_time_values_ignored += 1
+                    continue
                 if current:
                     writer.writerow(current)
                     rows += 1
@@ -422,6 +479,7 @@ def write_spectre_psf_csv(raw_dir: Path, csv_path: Path) -> dict[str, object]:
         "csv_path": str(csv_path),
         "rows": rows,
         "columns": columns,
+        "duplicate_time_values_ignored": duplicate_time_values_ignored,
     }
 
 
