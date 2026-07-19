@@ -230,7 +230,13 @@ def test_active_agent_tools_expose_restricted_evas_not_feedback() -> None:
     assert names == ["list_files", "read_file", "write_file", "run_evas", "finalize"]
 
 
-def test_run_evas_dut_uses_fixed_public_contract(tmp_path: Path) -> None:
+@pytest.mark.parametrize(
+    ("release_revision", "runtime_version"),
+    [("r45", 1), ("r45", 2), ("r47", 2)],
+)
+def test_run_evas_dut_uses_fixed_public_contract(
+    tmp_path: Path, release_revision: str, runtime_version: int,
+) -> None:
     runner = load_run_campaign()
     runtime = tmp_path / "runtime"
     task = runtime / "public" / "task"
@@ -238,25 +244,39 @@ def test_run_evas_dut_uses_fixed_public_contract(tmp_path: Path) -> None:
     task.mkdir(parents=True)
     submission.mkdir(parents=True)
     (task / "visible_test.scs").write_text("tran tran stop=1n\n", encoding="utf-8")
+    output_contract = (
+        "/tmp/vabench-visible/evas-output"
+        if runtime_version == 2
+        else "public/submission/evas-output"
+    )
     (task / "evas_runtime.json").write_text(json.dumps({
-        "schema_version": "r45-direct-evas-runtime-v1",
-        "command": "evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict",
+        "schema_version": f"{release_revision}-direct-evas-runtime-v{runtime_version}",
+        "command": f"evas simulate public/task/visible_test.scs -o {output_contract} --spectre-strict",
         "working_directory": "runtime_package_root",
     }) + "\n", encoding="utf-8")
 
     result = runner.run_public_evas(runtime, {}, 30, fake_evas_command(tmp_path))
 
     assert result["status"] == "pass"
-    invocation = json.loads(
-        (submission / "evas-output" / "invocation.json").read_text(encoding="utf-8")
+    output = (
+        runtime / ".vabench-visible" / "evas-output"
+        if runtime_version == 2
+        else submission / "evas-output"
     )
+    invocation = json.loads((output / "invocation.json").read_text(encoding="utf-8"))
     assert invocation["cwd"] == str(runtime)
     assert invocation["argv"][0] == "simulate"
     assert Path(invocation["argv"][1]) == task / "visible_test.scs"
-    assert Path(invocation["argv"][invocation["argv"].index("-o") + 1]).is_relative_to(submission)
+    assert Path(invocation["argv"][invocation["argv"].index("-o") + 1]) == output
 
 
-def test_run_evas_testbench_uses_candidate_and_public_case_only(tmp_path: Path) -> None:
+@pytest.mark.parametrize(
+    ("release_revision", "runtime_version"),
+    [("r45", 1), ("r45", 2), ("r47", 2)],
+)
+def test_run_evas_testbench_uses_candidate_and_public_case_only(
+    tmp_path: Path, release_revision: str, runtime_version: int,
+) -> None:
     runner = load_run_campaign()
     runtime = tmp_path / "runtime"
     task = runtime / "public" / "task"
@@ -272,7 +292,7 @@ def test_run_evas_testbench_uses_candidate_and_public_case_only(tmp_path: Path) 
     submission.mkdir(parents=True)
     (submission / "testbench.scs").write_text('ahdl_include "./dut/dut.va"\n', encoding="utf-8")
     (task / "evas_runtime.json").write_text(json.dumps({
-        "schema_version": "r45-direct-evas-testbench-suite-v1",
+        "schema_version": f"{release_revision}-direct-evas-testbench-suite-v{runtime_version}",
         "candidate": "public/submission/testbench.scs",
         "fixture_policy": "read_only_and_identical_for_visible_and_final_replay",
         "working_directory": "runtime_package_root",
@@ -287,7 +307,8 @@ def test_run_evas_testbench_uses_candidate_and_public_case_only(tmp_path: Path) 
     )
 
     assert result["status"] == "pass"
-    run_dir = submission / "runs" / "reference"
+    scratch_root = runtime / ".vabench-visible" if runtime_version == 2 else submission
+    run_dir = scratch_root / "runs" / "reference"
     assert (run_dir / "testbench.scs").read_bytes() == (submission / "testbench.scs").read_bytes()
     assert (run_dir / "dut" / "dut.va").read_bytes() == (fixture / "dut.va").read_bytes()
     try:
@@ -310,6 +331,24 @@ def test_run_evas_testbench_uses_candidate_and_public_case_only(tmp_path: Path) 
         assert "escapes the public DUT fixture" in str(exc)
     else:
         raise AssertionError("run_evas accepted an absolute candidate include")
+
+
+def test_r47_runtime_rejects_legacy_v1_schema(tmp_path: Path) -> None:
+    runner = load_run_campaign()
+    runtime = tmp_path / "runtime"
+    task = runtime / "public" / "task"
+    submission = runtime / "public" / "submission"
+    task.mkdir(parents=True)
+    submission.mkdir(parents=True)
+    (task / "visible_test.scs").write_text("tran tran stop=1n\n", encoding="utf-8")
+    (task / "evas_runtime.json").write_text(json.dumps({
+        "schema_version": "r47-direct-evas-runtime-v1",
+        "command": "evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict",
+        "working_directory": "runtime_package_root",
+    }) + "\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="unsupported public EVAS runtime schema"):
+        runner.run_public_evas(runtime, {}, 30, fake_evas_command(tmp_path))
 
 
 def test_build_campaign_samples_complete_benchmarkv4_families_without_prompt_records() -> None:
