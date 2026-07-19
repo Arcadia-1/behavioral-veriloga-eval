@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_denominator_guard/certification.json",
-        "certification_sha256": "aa7822e1cdceb5cde4064d9d5caa67767ea544a8fc43de3a25a81a38613f9f5a",
+        "certification_sha256": "419614c62667fcbe5baa71f97a63828eb99f6c7698b2560e27ea03c400ea8225",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "d8475c2f4368f2e8f4bcd53769199e21111ac997dfb81f70596c66be5aa52c86",
+        "mutation_bundle_sha256": "9bef9a1862f82f6d86c9b23f89e9d4d1b16a5f3c644e034b809b481151c116b6",
         "mutation_id": "neg_002_no_denominator_guard",
         "source_catalog_certification_path": "negative_variants/neg_002_no_denominator_guard/certification.json",
         "trigger_condition": "Uses an under-sized 20 mV denominator guard instead of the required 200 mV small-signal clamp.",
@@ -74,8 +74,8 @@
     "hashes": {
       "mutation_catalog_sha256": "2fc0b5dd38358177165e1eb3fb8540337030671a1530935c52d971a93f47341c",
       "score_deck_sha256": "2f75709a0d04745a11f9d9d18a5909e99f1b0f7ce697e96ed4fc1d99fbd382e5",
-      "task_certification_sha256": "3d1d02e6eefcc1251afa6b065c885886208a355769d3d362642ea56d8e8575cc",
-      "task_record_sha256": "b809038f986dffce27c2e539516048d68ee6298aed537e416e003b0265873dc6"
+      "task_certification_sha256": "18ba6c188bc7bf955c9acef372bd9ec0799d47671ddb9c4341cab7898acc0790",
+      "task_record_sha256": "d3d35f63fe8306f65379d589265abeaf78a65bf504e894239b68ade2d061ddde"
     },
     "release_dir": "232-safe-analog-divider"
   }
