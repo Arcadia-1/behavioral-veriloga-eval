@@ -354,7 +354,7 @@ def install_public(task_dir: Path, public_root: Path, form: str, mode: str) -> N
         commands = ["evas --help"]
         if form in {"dut", "bugfix"}:
             commands.append(
-                "evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict"
+                "evas simulate public/task/visible_test.scs -o /tmp/vabench-visible/evas-output --spectre-strict"
             )
         else:
             commands.append("use candidate_command_template from public/task/evas_runtime.json")

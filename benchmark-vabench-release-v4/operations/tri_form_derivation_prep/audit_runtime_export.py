@@ -114,6 +114,14 @@ def main() -> int:
                 problems.append("private evaluator bundle missing canonical_test_profile.json")
             if not (evaluator / "trusted_replay_test.scs").is_file():
                 problems.append("private evaluator bundle missing trusted replay deck")
+            runtime_contract = run / "public" / "task" / "evas_runtime.json"
+            if mode not in {"G0", "G1"} and runtime_contract.is_file():
+                runtime_data = read_json(runtime_contract)
+                command = str(runtime_data.get("command") or "")
+                if runtime_data.get("schema_version") != "r45-direct-evas-runtime-v2":
+                    problems.append("public EVAS runtime schema is not scratch-isolated v2")
+                if "/tmp/vabench-visible/evas-output" not in command or "public/submission/evas-output" in command:
+                    problems.append("public EVAS output is not isolated from submission")
         if form == "testbench":
             for required in ("trusted_solution", "mutation_bundles"):
                 if not (evaluator / required).is_dir():
@@ -145,6 +153,15 @@ def main() -> int:
             trusted_fixtures = evaluator / "trusted_replay_fixtures"
             if public_suite.is_file() and trusted_suite.is_file() and public_suite.read_bytes() != trusted_suite.read_bytes():
                 problems.append("public and trusted testbench suite manifests differ")
+            if public_suite.is_file():
+                suite_data = read_json(public_suite)
+                command = str(suite_data.get("candidate_command_template") or "")
+                if suite_data.get("schema_version") != "r45-direct-evas-testbench-suite-v2":
+                    problems.append("public testbench suite schema is not scratch-isolated v2")
+                if "/tmp/vabench-visible/runs/{case}" not in command:
+                    problems.append("public testbench runs are not scratch-isolated")
+                if "public/submission/runs" in command or "public/submission/evas-output" in command:
+                    problems.append("public testbench scratch pollutes submission")
             if fixtures.is_dir() and trusted_fixtures.is_dir() and tree_sha(fixtures) != tree_sha(trusted_fixtures):
                 problems.append("public and trusted testbench fixture trees differ")
             if (run / "public" / "task" / "visible_test.scs").exists():

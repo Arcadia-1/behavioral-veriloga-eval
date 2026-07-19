@@ -231,6 +231,12 @@ def test_testbench_builder_records_reference_hash_and_source_kind(tmp_path: Path
     assert sorted(
         path.name for path in (task / "public" / "visible_fixtures").iterdir()
     ) == ["mutation_01", "mutation_02", "mutation_03", "mutation_04", "mutation_05", "reference"]
+    suite = json.loads((task / "public" / "evas_runtime.json").read_text(encoding="utf-8"))
+    command = suite["candidate_command_template"]
+    assert "/tmp/vabench-visible/runs/{case}" in command
+    assert "/tmp/vabench-visible/evas-output/{case}" in command
+    assert "public/submission/runs" not in command
+    assert "public/submission/evas-output" not in command
     contract = json.loads((task / "public_contract.json").read_text(encoding="utf-8"))
     assert "feedback" not in contract
     assert contract["evas"]["visible_and_final_suite"] == "identical_reference_plus_five_mutations"
@@ -616,6 +622,8 @@ def test_g5_testbench_runtime_exports_direct_evas_visible_suite(
     assert [case["case"] for case in suite["cases"]] == [
         "reference", "mutation_01", "mutation_02", "mutation_03", "mutation_04", "mutation_05",
     ]
+    assert "public/submission/runs" not in suite["candidate_command_template"]
+    assert "/tmp/vabench-visible/runs/{case}" in suite["candidate_command_template"]
 
 
 def test_g1_dut_runtime_audit_does_not_require_agentic_visible_mount(

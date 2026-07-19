@@ -1,8 +1,9 @@
 # Direct EVAS Guide
 
 Use the installed `evas` executable directly. The public task mount contains
-the complete visible test and `evas_runtime.json`; the writable submission
-mount contains the candidate and all generated simulator output.
+the complete visible test and `evas_runtime.json`. Keep only final candidate
+artifacts in the writable submission mount; use `/tmp/vabench-visible/` for
+generated simulator output and per-case work directories.
 
 Run `evas simulate` with `--spectre-strict`. Inspect its log and generated
 `tran.csv` waveforms when testing a hypothesis. EVAS does not return a private

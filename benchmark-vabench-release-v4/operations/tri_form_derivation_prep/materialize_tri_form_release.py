@@ -664,8 +664,8 @@ def install_visible_dut_runtime(
     profile_path = evaluator / "canonical_test_profile.json"
     write_json(profile_path, profile)
     write_json(public / "evas_runtime.json", {
-        "schema_version": "r45-direct-evas-runtime-v1",
-        "command": "evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict",
+        "schema_version": "r45-direct-evas-runtime-v2",
+        "command": "evas simulate public/task/visible_test.scs -o /tmp/vabench-visible/evas-output --spectre-strict",
         "working_directory": "runtime_package_root",
         "candidate_root": "public/submission",
         "test": "visible_test.scs",
@@ -707,18 +707,22 @@ def install_visible_testbench_runtime(
         cases.append({"case": case, "dut_root": f"visible_fixtures/{case}/dut"})
 
     suite = {
-        "schema_version": "r45-direct-evas-testbench-suite-v1",
+        "schema_version": "r45-direct-evas-testbench-suite-v2",
         "candidate": "public/submission/testbench.scs",
         "candidate_dut_binding": "./dut",
         "cases": cases,
         "fixture_policy": "read_only_and_identical_for_visible_and_final_replay",
         "working_directory": "runtime_package_root",
         "candidate_command_template": (
-            "mkdir -p public/submission/runs/{case} && "
-            "cp public/submission/testbench.scs public/submission/runs/{case}/testbench.scs && "
-            "ln -sfn ../../../task/{dut_root} public/submission/runs/{case}/dut && "
-            "evas simulate public/submission/runs/{case}/testbench.scs "
-            "-o public/submission/evas-output/{case} --spectre-strict"
+            "rm -rf /tmp/vabench-visible/runs/{case} "
+            "/tmp/vabench-visible/evas-output/{case} && "
+            "mkdir -p /tmp/vabench-visible/runs/{case} && "
+            "cp public/submission/testbench.scs "
+            "/tmp/vabench-visible/runs/{case}/testbench.scs && "
+            "ln -sfn \"$(pwd)/public/task/{dut_root}\" "
+            "/tmp/vabench-visible/runs/{case}/dut && "
+            "evas simulate /tmp/vabench-visible/runs/{case}/testbench.scs "
+            "-o /tmp/vabench-visible/evas-output/{case} --spectre-strict"
         ),
         "fixture_tree_sha256": tree_sha(fixtures),
     }
@@ -769,7 +773,7 @@ def build_dut_view(
         "target_artifacts": [str(item["path"]) for item in spec["artifact_contract"]["files"]],
         "evas": {
             "available_in_modes": ["G2", "G3", "G4", "G5"],
-            "command": "evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict",
+            "command": "evas simulate public/task/visible_test.scs -o /tmp/vabench-visible/evas-output --spectre-strict",
             "visible_and_final_test": "identical",
         },
     })
@@ -962,7 +966,7 @@ def build_bugfix_view(
         "problem_statement": "the supplied system violates the public contract",
         "evas": {
             "available_in_modes": ["G2", "G3", "G4", "G5"],
-            "command": "evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict",
+            "command": "evas simulate public/task/visible_test.scs -o /tmp/vabench-visible/evas-output --spectre-strict",
             "visible_and_final_test": "identical",
         },
     })

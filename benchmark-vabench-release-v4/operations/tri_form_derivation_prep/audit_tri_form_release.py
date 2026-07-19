@@ -517,6 +517,7 @@ def audit_task(
         binding = record.get("evaluation_binding") or {}
         if form in {"dut", "bugfix"}:
             visible = task_dir / "public" / "visible_test.scs"
+            runtime_contract = task_dir / "public" / "evas_runtime.json"
             trusted = evaluator / "trusted_replay_test.scs"
             profile_path = evaluator / "canonical_test_profile.json"
             if binding.get("kind") != "canonical_test_deck":
@@ -535,6 +536,15 @@ def audit_task(
                     problems.append(f"{prefix} canonical profile binding hash mismatch")
                 if binding.get("test_deck_sha256") != file_sha(visible):
                     problems.append(f"{prefix} canonical deck binding hash mismatch")
+            if not runtime_contract.is_file():
+                problems.append(f"{prefix} public EVAS runtime contract is missing")
+            else:
+                runtime_data = read_json(runtime_contract)
+                if runtime_data.get("schema_version") != "r45-direct-evas-runtime-v2":
+                    problems.append(f"{prefix} public EVAS runtime schema is not scratch-isolated v2")
+                command = str(runtime_data.get("command") or "")
+                if "/tmp/vabench-visible/evas-output" not in command or "public/submission/evas-output" in command:
+                    problems.append(f"{prefix} public EVAS output is not isolated from submission")
         else:
             public_suite = task_dir / "public" / "evas_runtime.json"
             trusted_suite = evaluator / "trusted_replay_suite.json"
@@ -558,6 +568,15 @@ def audit_task(
                 problems.append(f"{prefix} public and trusted fixture trees differ")
             if public_suite.is_file() and binding.get("public_suite_sha256") != file_sha(public_suite):
                 problems.append(f"{prefix} public suite binding hash mismatch")
+            if public_suite.is_file():
+                suite_data = read_json(public_suite)
+                if suite_data.get("schema_version") != "r45-direct-evas-testbench-suite-v2":
+                    problems.append(f"{prefix} public testbench suite schema is not scratch-isolated v2")
+                command = str(suite_data.get("candidate_command_template") or "")
+                if "/tmp/vabench-visible/runs/{case}" not in command:
+                    problems.append(f"{prefix} public testbench runs are not scratch-isolated")
+                if "public/submission/runs" in command or "public/submission/evas-output" in command:
+                    problems.append(f"{prefix} public testbench scratch pollutes submission")
             if public_fixtures.is_dir() and binding.get("public_fixture_tree_sha256") != tree_sha(public_fixtures):
                 problems.append(f"{prefix} public fixture binding hash mismatch")
     checker_profile = read_json(evaluator / "checker_profile.json")

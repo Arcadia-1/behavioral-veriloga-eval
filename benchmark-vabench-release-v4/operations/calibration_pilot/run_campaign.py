@@ -640,16 +640,26 @@ def run_public_evas(
 
     schema_version = str(contract.get("schema_version") or "")
     requested_case = arguments.get("case")
-    if schema_version == "r45-direct-evas-runtime-v1":
+    if schema_version in {"r45-direct-evas-runtime-v1", "r45-direct-evas-runtime-v2"}:
         if requested_case not in (None, ""):
             raise ValueError("DUT and bugfix visible tests do not accept a case")
+        expected_output = (
+            "/tmp/vabench-visible/evas-output"
+            if schema_version.endswith("-v2")
+            else "public/submission/evas-output"
+        )
         if contract.get("command") != (
             "evas simulate public/task/visible_test.scs -o "
-            "public/submission/evas-output --spectre-strict"
+            f"{expected_output} --spectre-strict"
         ):
             raise ValueError("unrecognized public EVAS command contract")
         deck = confined_path(runtime, "public/task/visible_test.scs")
-        output = confined_path(submission, "evas-output")
+        output = confined_path(
+            runtime,
+            ".vabench-visible/evas-output"
+            if schema_version.endswith("-v2")
+            else "public/submission/evas-output",
+        )
         if not deck.is_file():
             raise FileNotFoundError("visible_test.scs is missing")
         argv = [*executable, "simulate", str(deck), "-o", str(output), "--spectre-strict"]
@@ -661,7 +671,10 @@ def run_public_evas(
         })
         return result
 
-    if schema_version != "r45-direct-evas-testbench-suite-v1":
+    if schema_version not in {
+        "r45-direct-evas-testbench-suite-v1",
+        "r45-direct-evas-testbench-suite-v2",
+    }:
         raise ValueError(f"unsupported public EVAS runtime schema: {schema_version!r}")
     if contract.get("fixture_policy") != "read_only_and_identical_for_visible_and_final_replay":
         raise ValueError("unsupported public fixture policy")
@@ -689,13 +702,16 @@ def run_public_evas(
     if not fixture.is_dir():
         raise FileNotFoundError(f"public fixture is missing for {case}")
 
-    run_dir = confined_path(submission, f"runs/{case}")
+    scratch_root = runtime / (
+        ".vabench-visible" if schema_version.endswith("-v2") else "public/submission"
+    )
+    run_dir = confined_path(scratch_root, f"runs/{case}")
     if run_dir.exists():
         shutil.rmtree(run_dir)
     run_dir.mkdir(parents=True)
     shutil.copy2(candidate, run_dir / "testbench.scs")
     shutil.copytree(fixture, run_dir / "dut")
-    output = confined_path(submission, f"evas-output/{case}")
+    output = confined_path(scratch_root, f"evas-output/{case}")
     argv = [
         *executable,
         "simulate",
@@ -708,7 +724,11 @@ def run_public_evas(
     result.update({
         "status": "pass" if result.get("returncode") == 0 else "fail",
         "case": case,
-        "test": f"submission/runs/{case}/testbench.scs",
+        "test": (
+            f".vabench-visible/runs/{case}/testbench.scs"
+            if schema_version.endswith("-v2")
+            else f"submission/runs/{case}/testbench.scs"
+        ),
     })
     return result
 

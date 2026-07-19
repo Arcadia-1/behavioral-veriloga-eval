@@ -2,7 +2,7 @@
 
 Write the declared DUT artifacts under `public/submission/`, then run:
 
-`evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict`
+`evas simulate public/task/visible_test.scs -o /tmp/vabench-visible/evas-output --spectre-strict`
 
 The visible deck includes the current submission by relative path. Use the
 simulation log and saved public traces to check interface, event, level,
