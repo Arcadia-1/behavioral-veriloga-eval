@@ -136,17 +136,27 @@ def _trace_042() -> list[dict[str, float]]:
 
 
 def _trace_043() -> list[dict[str, float]]:
-    return _stable_intervals(
-        [
-            {"clk": 0.0, "rst": 0.9, "vin": 0.45, "out": 0.45, "metric": 0.0},
-            {"clk": 0.9, "rst": 0.0, "vin": 0.82, "out": 0.78, "metric": 0.72},
-            {"clk": 0.0, "rst": 0.0, "vin": 0.45, "out": 0.66, "metric": 0.66},
-            {"clk": 0.9, "rst": 0.0, "vin": 0.18, "out": 0.15, "metric": 0.20},
-            {"clk": 0.0, "rst": 0.0, "vin": 0.45, "out": 0.30, "metric": 0.25},
-            {"clk": 0.9, "rst": 0.0, "vin": 0.85, "out": 0.78, "metric": 0.72},
-            {"clk": 0.0, "rst": 0.0, "vin": 0.45, "out": 0.66, "metric": 0.66},
-        ]
-    )
+    rows: list[dict[str, float]] = []
+    state_out = state_metric = 0.45
+    scenarios = [
+        (0.9, 0.45, 0.45, 0.45),
+        (0.0, 0.82, 0.82, 0.61),
+        (0.0, 0.45, 0.53, 0.61),
+        (0.0, 0.18, 0.10, 0.29),
+        (0.0, 0.45, 0.37, 0.29),
+    ]
+    for index, (rst, vin, next_out, next_metric) in enumerate(scenarios):
+        edge = (101.0 + 2.0 * index) * 1e-9
+        rows.append({"time": edge - 0.4e-9, "clk": 0.0, "rst": rst, "vin": vin,
+                     "out": state_out, "metric": state_metric})
+        rows.append({"time": edge, "clk": 0.9, "rst": rst, "vin": vin,
+                     "out": state_out, "metric": state_metric})
+        rows.append({"time": edge + 0.4e-9, "clk": 0.9, "rst": rst, "vin": vin,
+                     "out": next_out, "metric": next_metric})
+        rows.append({"time": edge + 0.8e-9, "clk": 0.0, "rst": rst, "vin": vin,
+                     "out": next_out, "metric": next_metric})
+        state_out, state_metric = next_out, next_metric
+    return rows
 
 
 def _trace_044() -> list[dict[str, float]]:

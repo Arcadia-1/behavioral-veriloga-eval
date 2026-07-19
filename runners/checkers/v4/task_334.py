@@ -23,6 +23,7 @@ def check_v4_1032_baseband_antialias_filter_macro(rows: list[dict[str, float]]) 
     reset_clear = disabled_clear = high_bw_seen = low_bw_seen = moved_toward_input = False
     ever_enabled = False
     disable_time: float | None = None
+    inactive_time: float | None = None
     codes_seen: set[int] = set()
     for row in rows:
         t = float(row["time"])
@@ -30,10 +31,14 @@ def check_v4_1032_baseband_antialias_filter_macro(rows: list[dict[str, float]]) 
         rst = _v4_topup_logic_high(row, "rst")
         enabled = _v4_topup_logic_high(row, "enable") and not rst
         if not enabled:
+            update_time = -1.0
             expected_vout = 0.45
             expected_metric = 0.0
+            if inactive_time is None:
+                inactive_time = t
+            inactive_ready = t >= inactive_time + 0.7e-9
             clear = abs(float(row["vout"]) - 0.45) < 0.08 and abs(float(row["bandwidth_metric"])) < 0.08 and not _v4_topup_logic_high(row, "valid")
-            if rst and clear:
+            if rst and inactive_ready and clear:
                 reset_clear = True
             disabled = ever_enabled and not _v4_topup_logic_high(row, "enable")
             if disabled and disable_time is None:
@@ -45,11 +50,12 @@ def check_v4_1032_baseband_antialias_filter_macro(rows: list[dict[str, float]]) 
             )
             if disabled_ready and clear:
                 disabled_clear = True
-            if (rst or disabled_ready) and not clear:
+            if ((rst and inactive_ready) or disabled_ready) and not clear:
                 clear_errors += 1
             prev_clk = clk
             continue
         ever_enabled = True
+        inactive_time = None
         disable_time = None
         if _v4_rising(prev_clk, clk):
             code = _v4_code_from_bits(row, ["bw_0", "bw_1"])

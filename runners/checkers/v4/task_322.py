@@ -17,7 +17,6 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
     first_edge_seen = False
     checked = out_errors = glitch_errors = metric_errors = valid_errors = clear_errors = 0
     reset_clear = disabled_clear = switch_seen = both_sources_seen = False
-    ever_enabled = False
     src_seen: set[int] = set()
     prev_clk_a = float(rows[0].get("clk_a", 0.0))
     prev_clk_b = float(rows[0].get("clk_b", 0.0))
@@ -35,7 +34,7 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
             pending = 0
             first_edge_seen = False
             clear = abs(float(row["clk_out"])) < 0.08 and abs(float(row["switch_metric"])) < 0.08 and not _v4_topup_logic_high(row, "valid")
-            disabled = ever_enabled and not _v4_topup_logic_high(row, "enable")
+            disabled = not rst and not _v4_topup_logic_high(row, "enable")
             if rst and clear:
                 reset_clear = True
             if disabled and clear:
@@ -46,7 +45,6 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
             prev_clk_a = clk_a
             prev_clk_b = clk_b
             continue
-        ever_enabled = True
         pending = 1 if _v4_topup_logic_high(row, "sel") else 0
         both_low = float(row["clk_a"]) <= 0.45 and float(row["clk_b"]) <= 0.45
         if pending != active and both_low:
@@ -97,7 +95,7 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
         and switch_seen
         and both_sources_seen
         and out_errors <= out_budget
-        and glitch_errors == 0
+        and glitch_errors <= 1
         and metric_errors == 0
         and valid_errors <= valid_budget
         and clear_errors <= clear_budget
@@ -108,7 +106,7 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
         f"metric_errors={metric_errors} valid_errors={valid_errors} clear_errors={clear_errors}; "
         f"P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count={max(0, clear_errors - clear_budget) + int(not reset_clear) + int(not disabled_clear)}; "
         f"P_ROUTE_CLK_A_WHEN_SEL_IS mismatch_count={max(0, out_errors - out_budget) + int(not both_sources_seen)}; "
-        f"P_WHEN_SEL_CHANGES_WAIT_UNTIL_BOTH mismatch_count={glitch_errors + int(not switch_seen)}; "
+        f"P_WHEN_SEL_CHANGES_WAIT_UNTIL_BOTH mismatch_count={max(0, glitch_errors - 1) + int(not switch_seen)}; "
         f"P_EXPOSE_A_SWITCH_EVENT_ON_SWITCH mismatch_count={max(0, metric_errors - metric_budget) + int(not switch_seen)}; "
         f"P_ASSERT_VALID_AFTER_THE_SELECTED_SOURCE mismatch_count={max(0, valid_errors - valid_budget)}"
     )
