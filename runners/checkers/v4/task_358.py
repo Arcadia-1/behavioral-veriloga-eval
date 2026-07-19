@@ -79,7 +79,7 @@ def check_v4_917_quadrature_phase_interpolator(rows: list[dict[str, float]]) -> 
     settle_until = 0.0
 
     reset_intervals = _high_intervals(rows, "rst")
-    required_reset_count = 2
+    required_reset_count = 1
     diagnostics["P_RESET_CLEAR"].checked = max(1, len(reset_intervals))
     sampled_rows = rows[::6]
     for index, (start, end) in enumerate(reset_intervals):

@@ -28,19 +28,25 @@ def check_v4_929_opamp_feedback_settling_monitor(rows: list[dict[str, float]]) -
     settle_count = 0
     checked = vout_errors = err_errors = settled_errors = clear_errors = 0
     reset_clear = disabled_clear = settled_seen = move_seen = False
+    inactive_time: float | None = None
     for row in rows:
         t = float(row["time"])
         rst = _v4_topup_logic_high(row, "rst")
         enabled = _v4_topup_logic_high(row, "enable") and not rst
         if not enabled:
+            if inactive_time is None:
+                inactive_time = t
+            inactive_ready = t >= inactive_time + 0.7e-9
             vout = 0.45; settle_count = 0
             clear = abs(row["vout"] - 0.45) < 0.08 and abs(row["error_metric"] - 0.45) < 0.08 and row["settled"] < 0.10
-            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
-            disabled_clear = disabled_clear or (t > 82e-9 and clear)
-            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+            reset_clear = reset_clear or (rst and inactive_ready and clear)
+            disabled = not rst and not _v4_topup_logic_high(row, "enable")
+            disabled_clear = disabled_clear or (disabled and inactive_ready and clear)
+            if inactive_ready and not clear:
                 clear_errors += 1
             prev_clk = float(row["clk"])
             continue
+        inactive_time = None
         if _v4_rising(prev_clk, float(row["clk"])):
             code = _v4_code_from_bits(row, ["gain_0", "gain_1", "gain_2"])
             target = _v4_topup_clip01(0.45 + (1.0 + 0.5 * code) * (float(row["vin"]) - 0.45))
