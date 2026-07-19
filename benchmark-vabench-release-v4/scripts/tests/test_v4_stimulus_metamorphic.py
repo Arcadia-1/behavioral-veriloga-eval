@@ -1,4 +1,5 @@
 import importlib.util
+import json
 from pathlib import Path
 
 import pytest
@@ -98,7 +99,7 @@ def test_evas2_evidence_rejects_python_marker(monkeypatch: pytest.MonkeyPatch) -
         raise AssertionError("Python EVAS evidence was accepted")
 
 
-def test_compact_evidence_identity_separates_r45_from_r44() -> None:
+def test_compact_evidence_identity_separates_release_revisions() -> None:
     assert runner.compact_evidence_identity("r44") == (
         "release/benchmarkv4",
         "v4-r44-stimulus-metamorphic-compact-v1",
@@ -107,6 +108,69 @@ def test_compact_evidence_identity_separates_r45_from_r44() -> None:
         "release/benchmarkv4-r45",
         "v4-r45-stimulus-metamorphic-compact-v1",
     )
+    assert runner.compact_evidence_identity("r47") == (
+        "release/benchmarkv4-r47",
+        "v4-r47-stimulus-metamorphic-compact-v1",
+    )
+
+
+def test_release_provenance_binds_manifest_and_source_registry(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    manifest = tmp_path / "MANIFEST.json"
+    manifest.write_text(
+        json.dumps({
+            "release_revision": "r47",
+            "source_score_denominator_registry_sha256": "a" * 64,
+        }) + "\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        runner,
+        "score_denominator_registry_sha256",
+        lambda source: "a" * 64,
+    )
+
+    assert runner.release_provenance(tmp_path, "r47") == {
+        "source_score_denominator_registry_sha256": "a" * 64,
+        "release_manifest_sha256": runner.file_sha(manifest),
+    }
+
+    with pytest.raises(SystemExit, match="revision does not match"):
+        runner.release_provenance(tmp_path, "r45")
+
+
+def test_release_provenance_preserves_frozen_r45_source_binding(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    manifest = tmp_path / "MANIFEST.json"
+    manifest.write_text(
+        json.dumps({
+            "release_revision": "r45",
+            "source_score_denominator_registry_sha256": "b" * 64,
+        }) + "\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        runner,
+        "score_denominator_registry_sha256",
+        lambda source: "a" * 64,
+    )
+
+    assert runner.release_provenance(tmp_path, "r45") == {
+        "source_score_denominator_registry_sha256": "b" * 64,
+        "release_manifest_sha256": runner.file_sha(manifest),
+    }
+
+    manifest.write_text(
+        json.dumps({
+            "release_revision": "r47",
+            "source_score_denominator_registry_sha256": "b" * 64,
+        }) + "\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(SystemExit, match="current source denominator"):
+        runner.release_provenance(tmp_path, "r47")
 
 
 def test_run_case_rejects_missing_per_case_runtime_log(tmp_path, monkeypatch) -> None:
