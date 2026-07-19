@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 from concurrent.futures import ThreadPoolExecutor
+import hashlib
 import json
 import os
 import re
@@ -42,12 +43,14 @@ from runners.simulate_evas import (  # noqa: E402
     required_trace_signals_for_checker,
     run_evas,
 )
+from score_denominator_registry import score_denominator_registry_sha256  # noqa: E402
 
 
 REQUIRED_EVAS_ENGINE = "evas2"
 REQUIRED_EVAS_VERSION = "0.8.3"
 REQUIRED_EVAS_BACKEND = "evas-rust"
 DEFAULT_RELEASE_REVISION = "r45"
+SOURCE_ROOT = ROOT / "benchmark-vabench-release-v4" / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 
 # Scaling the stimulus changes the physical operating point when the DUT owns
 # fixed absolute delay/frequency constants. Translation still exercises the
@@ -73,7 +76,7 @@ _SCALE = {
 
 
 def compact_evidence_identity(release_revision: str) -> tuple[str, str]:
-    if release_revision not in {"r44", "r45"}:
+    if release_revision not in {"r44", "r45", "r47"}:
         raise ValueError(f"unsupported release revision: {release_revision}")
     release_label = (
         "release/benchmarkv4"
@@ -82,6 +85,35 @@ def compact_evidence_identity(release_revision: str) -> tuple[str, str]:
     )
     schema_version = f"v4-{release_revision}-stimulus-metamorphic-compact-v1"
     return release_label, schema_version
+
+
+def file_sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def release_provenance(release: Path, release_revision: str) -> dict[str, str]:
+    manifest_path = release / "MANIFEST.json"
+    if not manifest_path.is_file():
+        raise SystemExit(f"release manifest is missing: {manifest_path}")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest.get("release_revision") != release_revision:
+        raise SystemExit(
+            "release manifest revision does not match --release-revision: "
+            f"declared={manifest.get('release_revision')!r} selected={release_revision!r}"
+        )
+    source_registry_sha = str(
+        manifest.get("source_score_denominator_registry_sha256") or ""
+    )
+    if re.fullmatch(r"[0-9a-f]{64}", source_registry_sha) is None:
+        raise SystemExit("release manifest lacks a valid source denominator binding")
+    if release_revision == "r47":
+        current_source_sha = score_denominator_registry_sha256(SOURCE_ROOT)
+        if source_registry_sha != current_source_sha:
+            raise SystemExit("release manifest is not bound to the current source denominator")
+    return {
+        "source_score_denominator_registry_sha256": source_registry_sha,
+        "release_manifest_sha256": file_sha(manifest_path),
+    }
 
 
 def parse_time(value: str) -> float:
@@ -387,13 +419,15 @@ def main() -> int:
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument(
         "--release-revision",
-        choices=("r44", "r45"),
+        choices=("r44", "r45", "r47"),
         default=DEFAULT_RELEASE_REVISION,
         help="release identity written into evidence (default: r45)",
     )
     args = parser.parse_args()
     release_label, compact_schema = compact_evidence_identity(args.release_revision)
     require_evas2_environment()
+    release = args.release.expanduser().resolve()
+    provenance = release_provenance(release, args.release_revision)
     if args.work_root.exists():
         shutil.rmtree(args.work_root)
     args.work_root.mkdir(parents=True)
@@ -411,7 +445,7 @@ def main() -> int:
         family = f"{int(task_id.split('-', 1)[1]) - 500:03d}"
         effective_scale = 1.0 if family in TRANSLATION_ONLY_FAMILIES else args.scale
         return run_task(
-            release=args.release.resolve(),
+            release=release,
             task_id=task_id,
             output_root=args.work_root,
             scale=effective_scale,
@@ -441,6 +475,8 @@ def main() -> int:
         "evas_version": REQUIRED_EVAS_VERSION,
         "evas_backend": REQUIRED_EVAS_BACKEND,
         "release": release_label,
+        "release_revision": args.release_revision,
+        **provenance,
         "transform": {
             "default_scale": args.scale,
             "shift_s": args.shift,
@@ -489,6 +525,9 @@ def main() -> int:
             "evas_version": REQUIRED_EVAS_VERSION,
             "evas_backend": REQUIRED_EVAS_BACKEND,
             "release": release_label,
+            "release_revision": args.release_revision,
+            **provenance,
+            "input_report_sha256": file_sha(args.output),
             "transform": report["transform"],
             "summary": {
                 "task_count": len(results),

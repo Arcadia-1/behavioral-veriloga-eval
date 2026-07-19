@@ -8,6 +8,19 @@ import json
 from pathlib import Path
 
 
+ALLOWED_DUT_RUNTIME_SCHEMAS = {
+    "r45": {"r45-direct-evas-runtime-v1", "r45-direct-evas-runtime-v2"},
+    "r47": {"r47-direct-evas-runtime-v2"},
+}
+ALLOWED_TESTBENCH_RUNTIME_SCHEMAS = {
+    "r45": {
+        "r45-direct-evas-testbench-suite-v1",
+        "r45-direct-evas-testbench-suite-v2",
+    },
+    "r47": {"r47-direct-evas-testbench-suite-v2"},
+}
+
+
 def read_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -103,6 +116,11 @@ def main() -> int:
         if not (evaluator / "profiles").is_dir():
             problems.append("private evaluator bundle missing profiles/")
         form = str(attempt.get("form") or "")
+        task_record_path = evaluator / "task_record.json"
+        task_record = read_json(task_record_path) if task_record_path.is_file() else {}
+        release_revision = str(task_record.get("release_revision") or "")
+        if release_revision not in ALLOWED_DUT_RUNTIME_SCHEMAS:
+            problems.append("private task record has an unsupported release revision")
         if form in {"dut", "bugfix"}:
             if mode not in {"G0", "G1"} and not (
                 run / "public" / "task" / "visible_test.scs"
@@ -118,10 +136,12 @@ def main() -> int:
             if mode not in {"G0", "G1"} and runtime_contract.is_file():
                 runtime_data = read_json(runtime_contract)
                 command = str(runtime_data.get("command") or "")
-                if runtime_data.get("schema_version") != "r45-direct-evas-runtime-v2":
-                    problems.append("public EVAS runtime schema is not scratch-isolated v2")
-                if "/tmp/vabench-visible/evas-output" not in command or "public/submission/evas-output" in command:
-                    problems.append("public EVAS output is not isolated from submission")
+                schema_version = runtime_data.get("schema_version")
+                if schema_version not in ALLOWED_DUT_RUNTIME_SCHEMAS.get(release_revision, set()):
+                    problems.append("public EVAS runtime schema does not match the release")
+                if schema_version == f"{release_revision}-direct-evas-runtime-v2":
+                    if "/tmp/vabench-visible/evas-output" not in command or "public/submission/evas-output" in command:
+                        problems.append("public EVAS output is not isolated from submission")
         if form == "testbench":
             for required in ("trusted_solution", "mutation_bundles"):
                 if not (evaluator / required).is_dir():
@@ -156,12 +176,14 @@ def main() -> int:
             if public_suite.is_file():
                 suite_data = read_json(public_suite)
                 command = str(suite_data.get("candidate_command_template") or "")
-                if suite_data.get("schema_version") != "r45-direct-evas-testbench-suite-v2":
-                    problems.append("public testbench suite schema is not scratch-isolated v2")
-                if "/tmp/vabench-visible/runs/{case}" not in command:
-                    problems.append("public testbench runs are not scratch-isolated")
-                if "public/submission/runs" in command or "public/submission/evas-output" in command:
-                    problems.append("public testbench scratch pollutes submission")
+                schema_version = suite_data.get("schema_version")
+                if schema_version not in ALLOWED_TESTBENCH_RUNTIME_SCHEMAS.get(release_revision, set()):
+                    problems.append("public testbench suite schema does not match the release")
+                if schema_version == f"{release_revision}-direct-evas-testbench-suite-v2":
+                    if "/tmp/vabench-visible/runs/{case}" not in command:
+                        problems.append("public testbench runs are not scratch-isolated")
+                    if "public/submission/runs" in command or "public/submission/evas-output" in command:
+                        problems.append("public testbench scratch pollutes submission")
             if fixtures.is_dir() and trusted_fixtures.is_dir() and tree_sha(fixtures) != tree_sha(trusted_fixtures):
                 problems.append("public and trusted testbench fixture trees differ")
             if (run / "public" / "task" / "visible_test.scs").exists():
