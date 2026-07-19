@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "324-duty-cycle-window-monitor",
+  "checker_task_id": "v4_324_duty_cycle_window_monitor",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "1c077da95bc137576f9b739a61cf6f4c83383702e4357bd2c7680ea8cd28d9de",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "001cf40a3f01168331d72597df4c4afcfcd0434520fb53df950e88920d31fcd7",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "324",
+  "family_spec_sha256": "366664ab3a80ec6fc01424acfa5350255ee20255500040180e25e365c8cfc866",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a099f421479ebdb85a633a7d082d84c58d6f3c49c24bf544c85fb90025ba842a",
+  "public_contract": "tasks/824-duty-cycle-window-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "ed15a5081ca221b749e5b7a5057104e910dc780741de04f2f0c8feae25d17379",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/824-duty-cycle-window-monitor-testbench",
+  "task_id": "v4-824"
+}

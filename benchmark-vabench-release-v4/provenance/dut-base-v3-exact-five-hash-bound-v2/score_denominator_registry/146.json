@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_gain/certification.json",
-        "certification_sha256": "a459f2de7f77e6f6ebdf0401e11b181065f3e8d66a791ded3b4ef669ed41265f",
+        "certification_sha256": "6c9ffab753a515c55f16bbc5d6921c96083f482047d7575c4828a4040acd50a9",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "e5565163ec402d88b66ffafa1f76cdc69ca0beab49c62eb4d09e1d794ab059d0",
+        "mutation_bundle_sha256": "da8f05ca0bba0ff1bd0d386969ca90189e39a65b2f2428a4d61aa7c6fb92e62c",
         "mutation_id": "neg_003_wrong_gain",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_gain/certification.json",
         "trigger_condition": "Uses the wrong output gain.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_uncentered_sum/certification.json",
-        "certification_sha256": "188af14a933228953f0d73dcb29d2ba652fa7f727f5ce6e2d05ac5fcf4df1844",
+        "certification_sha256": "810417a34bbf724baa0a65ee78367e42fa269ad8c8b4cabc031b021030653ce0",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "940fa81ddeaa10eb09cdf92764641d6bdd574cd8f8fe185443eb22e8a28c05e6",
+        "mutation_bundle_sha256": "2a3e0efff6706cebc6ed0fb2113e48ee051b1ee57aede06d3b85c9f029754e05",
         "mutation_id": "neg_002_uncentered_sum",
         "source_catalog_certification_path": "negative_variants/neg_002_uncentered_sum/certification.json",
         "trigger_condition": "Adds a fixed DC offset to the centered thermometer sum.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_ignores_upper_bits/certification.json",
-        "certification_sha256": "3f9a200ba5af0fbcfa43a7bdae8ff7225d548036e87a82a90294bb6ef093458c",
+        "certification_sha256": "7d52d214c8aff319db2aefb4f3c6d302329ce150ae229ba582e5a6597dff8cfd",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "8075dcd8ccf1035e8e39ee0b70cba4c89c63709066592b79b09ea5c583d30f97",
+        "mutation_bundle_sha256": "8c6527d931f55f75c89c256fc0a98263afc2ac668c16403f79d18922bfca060e",
         "mutation_id": "neg_004_ignores_upper_bits",
         "source_catalog_certification_path": "negative_variants/neg_004_ignores_upper_bits/certification.json",
         "trigger_condition": "Counts only the lower four thermometer inputs.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "612b06e900d60315393bdf4a833f68dcda58162f5194cdd15d19ff90aa7b6a0a",
+        "certification_sha256": "931c42515750bbe4c52062c1285b5ce5b1981d87f976617d5e067660fe9779cc",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "b60026a3fdf4fb8a76429d24915cb9bec481aefddd70400025df38e5ad5b319f",
+        "mutation_bundle_sha256": "a956ce61b4aa01a6f2c114d7fc1c71ece10bfb2fc37ed507e62a4ab07f730490",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "9090fe72a5c64316c48339f1ebab17a6175065cc527bdec7f3625958a96ff16a",
+        "certification_sha256": "a695b65efada1e77b23a4ee389ec583e96fdc6f45794b358d758fc5b1a556b70",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "708c20f433c40a25300e3fea5790dd62f94b81b7c68256693d446406e81960e4",
+        "mutation_bundle_sha256": "4c96c4aba16b4625299c26a98bbea5861aae99032e6cc45592c1b7106933c046",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Flash Thermometer Centered Sum: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "2f72278cb9a5dbb0c56427d095d25fa9754ce2de4a0a30a1bb5a049a0fe1d9f6",
       "score_deck_sha256": "4b71dd41e18ac931e2430636c840f28bff3f82a0babb289bb78fc3601c285e87",
-      "task_certification_sha256": "a22dd24f0143a297993d7e624cd7f7c28baddf244c527af216309fdc0bd5eb59",
-      "task_record_sha256": "337f6724573a8883b95f298d8b4a290e03a9bba7bd1ed88501334cea757e2bf4"
+      "task_certification_sha256": "b9ea36e86dcbdba41ffed06e7d65224d1d1f642e6fd06417f2a14e57d888700f",
+      "task_record_sha256": "d1a1b34874a768ef65fb41610c9366214e2a7d16989e029b4f3160d1aa013485"
     },
     "release_dir": "146-flash-thermometer-centered-sum"
   }

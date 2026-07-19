@@ -11,7 +11,10 @@ from pathlib import Path
 from typing import Any
 
 from materialize_tri_form_release import materialized_testbench_reference, resolve_testbench_reference
-from source_certification_binding import inspect_source_certification_reuse
+from source_certification_binding import (
+    inspect_source_certification_reuse,
+    source_certification_definition_sha256,
+)
 from score_denominator_registry import (
     load_family_rows,
     score_denominator_registry_sha256,
@@ -293,6 +296,7 @@ def audit_release_evidence(
     package_root: Path = PACKAGE_ROOT,
     release: Path | None = None,
     source_registry_sha256: str | None = None,
+    source_definition_sha256: str | None = None,
 ) -> dict[str, str]:
     artifacts = evidence_artifacts(release_revision)
     expected_release_label = (
@@ -382,7 +386,7 @@ def audit_release_evidence(
             problems.append(f"{release_revision} evidence audit lacks a source registry binding target")
 
         expected_schemas = {
-            artifacts[0]: f"v4-{release_revision}-rust-evas2-certification-report-v1",
+            artifacts[0]: f"v4-{release_revision}-rust-evas2-certification-report-v2",
             artifacts[1]: f"v4-{release_revision}-stimulus-metamorphic-compact-v1",
             artifacts[2]: "v4-profile-parity-evas2-smoke-v1",
         }
@@ -404,8 +408,9 @@ def audit_release_evidence(
         ):
             problems.append(f"{release_revision} profile evidence lacks EVAS 0.8.3 Rust runtime markers")
 
+        if rust and rust.get("source_certification_definition_sha256") != source_definition_sha256:
+            problems.append(f"{release_revision} Rust certification source definition binding mismatch")
         for label, payload in (
-            ("Rust certification", rust),
             ("metamorphic evidence", metamorphic),
             ("profile evidence", parity),
         ):
@@ -963,6 +968,7 @@ def main() -> int:
         str(item.get("canonical_dut_id") or ""): item
         for item in source_rows_list
     }
+    source_definition_sha = source_certification_definition_sha256(source, source_rows)
     expected_materialized_hashes = {
         relative: file_sha(release / relative)
         for relative in MATERIALIZED_ARTIFACTS
@@ -1031,6 +1037,7 @@ def main() -> int:
         problems,
         release=release,
         source_registry_sha256=source_registry_sha,
+        source_definition_sha256=source_definition_sha,
     )
     report = {
         "schema_version": "v4-benchmarkv4-release-audit-v1",

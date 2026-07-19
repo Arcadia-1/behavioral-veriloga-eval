@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_QUADRATURE_SEQUENCE, P_RESET_COMMON_MODE satisfy the public contract; fault class reset_semantics_error is rejected",
-    "observed": "EVAS: property_id=P_PHASE_MONITOR category=missing_phase_cycle expected=phases:0,1,2,3 observed=phases:3 event=vin_high[0]@7.955000e-09s",
+    "observed": "EVAS: v4_094 checked=265 mismatch_count=200 coverage=clock_rises=33 reset_edges=2 phases=[0, 1, 2, 3] vin_regions=['high', 'mid']; P_RESET_COMMON_MODE checked=15 mismatch_count=14 expected=out=0.45+/-0.08 observed=out=0.189 sample_time=2.65e-10 metric_gap=0.261; P_QUADRATURE_SEQUENCE checked=32 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0; P_LO_MONITORS checked=62 mismatch_count=62 expected=lo_i=0.85+/-0.08 observed=lo_i=0.189 sample_time=4.265e-09 metric_gap=0.661; P_MIXER_MONITORS checked=62 mismatch_count=50 expected=mix_i=0.45+/-0.08 observed=mix_i=0.189 sample_time=4.265e-09 metric_gap=0.261; P_BASEBAND_UPDATES checked=63 mismatch_count=50 expected=i_state=0.45+/-0.08 observed=i_state=0.189 sample_time=4.265e-09 metric_gap=0.261; P_PHASE_MONITOR checked=31 mismatch_count=24 expected=phase_mon=0+/-0.08 observed=phase_mon=0.9 sample_time=4.265e-09 metric_gap=0.9",
     "violated_property_ids": [
       "P_QUADRATURE_SEQUENCE",
       "P_RESET_COMMON_MODE"
@@ -18,16 +18,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_094_iq_downconversion_chain",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 314
   },
   "family_id": "094",
   "inputs": {
     "checker_profile_sha256": "ee1bda4a25c313833d94cd54253094ff79789ed9cecd0749285977bcda5f57fd",
     "harness_spec_sha256": "f759f8a8cd3f1b492cf146e9fb2400aeb6208ac99190c9c0e6e847792e8e3077",
+    "mutation_bundle_sha256": "85cf803ba10fb69b52bc1683fac3eec1e62cd9959f1eba45ff87269f711b0c9c",
     "profile_sha256": "0e1564c34386c42997d2180bb06fd0faa95ece5d56a6ccf87caaec82ef8efd18"
   },
   "mutation_id": "neg_004_reset_polarity_wrong",
@@ -36,8 +37,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

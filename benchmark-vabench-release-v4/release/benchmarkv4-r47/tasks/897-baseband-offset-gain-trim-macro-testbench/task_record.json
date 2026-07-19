@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "397-baseband-offset-gain-trim-macro",
+  "checker_task_id": "v4_397_baseband_offset_gain_trim_macro",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "dc2ba0f60197f6a6f46de966b43a37827ca82faf9ce7e57b463fcfbd2e07e478",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "4562efb503b845010ef93a93563d2360c6b7716ce4f20c292410c43ade4f84c2",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "397",
+  "family_spec_sha256": "3fd94ab8ea9306d3129d191787941cfd859865d5fa86c21d2466f344a3deb801",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "337b87b33a84a56c1b1073a3a4f841c82fcffa4d78cf19c58d47c438439b4870",
+  "public_contract": "tasks/897-baseband-offset-gain-trim-macro-testbench/public_contract.json",
+  "public_contract_sha256": "95a766b31a436a1dc4b9762851425c175decbdfe464b995f0d0482edb3881d00",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/897-baseband-offset-gain-trim-macro-testbench",
+  "task_id": "v4-897"
+}

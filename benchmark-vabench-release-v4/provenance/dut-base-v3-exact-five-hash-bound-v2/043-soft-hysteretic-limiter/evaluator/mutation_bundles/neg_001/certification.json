@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_RESET_NEUTRAL satisfy the public contract; fault class passes_nominal_smoke_cases_but_fails_an_endpoint is rejected",
-    "observed": "EVAS: property_id=P_GAINED_LIMITER_TRANSFER category=behavior_mismatch expected=0.70<=high_limited<=0.84 observed=high_limited=0.450 event=vin.high_region",
+    "observed": "EVAS: v4_043 checked=117 mismatch_count=78 coverage=clock_rises=30 regions=['high', 'low'] memory=['high', 'low']; P_RESET_NEUTRAL checked=4 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0; P_HYSTERESIS_STATE_UPDATE checked=29 mismatch_count=26 expected=state_metric=0.61+/-0.08 observed=state_metric=0.45 sample_time=1.102e-08 metric_gap=0.16; P_GAINED_LIMITER_TRANSFER checked=28 mismatch_count=26 expected=held_out=0.82+/-0.08 observed=held_out=0.45 sample_time=1.102e-08 metric_gap=0.37; P_OUTPUT_LIMITS checked=28 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0; P_STATE_METRIC checked=28 mismatch_count=26 expected=metric=0.61+/-0.08 observed=metric=0.45 sample_time=1.102e-08 metric_gap=0.16",
     "violated_property_ids": [
       "P_RESET_NEUTRAL"
     ]
@@ -17,16 +17,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_043_soft_hysteretic_limiter",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 774
   },
   "family_id": "043",
   "inputs": {
     "checker_profile_sha256": "18a093ebf026bc4e1db5e49729c40cd7fa5bb86b13906d54cbd9e2ae4a2d7a5f",
     "harness_spec_sha256": "53b795c72adf44b3050fddc6120c49cf9e3dfffc5df67b449db01d1da1019be3",
+    "mutation_bundle_sha256": "d03306e51a0949399a9fcf3c5c395a49bac01e1cb4974eefb1f22f31563c90cb",
     "profile_sha256": "f0c3647cd714a13a62e29c1884c1b18edc2b7dce490f46c281519354c51bb60a"
   },
   "mutation_id": "neg_001",
@@ -35,8 +36,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

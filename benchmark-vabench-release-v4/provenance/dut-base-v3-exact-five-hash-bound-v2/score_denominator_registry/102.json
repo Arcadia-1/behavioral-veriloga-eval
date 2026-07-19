@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "4ef9c05f6afc91df5f362a587fa2334a713ac1c7925b3ed984936fff19a51b25",
+        "certification_sha256": "cbd4f69611b1bebf4a6243728f85c90b0914d6846cf07ec32835fa89805ece8b",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "8504bb773dcda789f69aa4ff45b770cbe5b677a183ad08b900d7c3c6a60b2123",
+        "mutation_bundle_sha256": "d5e72a934870f5602a3751db51f14a0965355300ff5d2c98022beca83fe5f698",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives both stimulus outputs to zero.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "52479d1612d31776548377e5285dc82180e556d967953388d6a697abafe39b5f",
+        "certification_sha256": "6fd98170b86c6adada4b28b9ee070e0875067fd27564b2cd60bd354eadadc4ae",
         "fault_class": "fault_005_metric_scale_low",
-        "mutation_bundle_sha256": "fbb53f102a2ebc1ef63ea02ced5b8f5635e4c564d91e6304b2efcbdae5e1c410",
+        "mutation_bundle_sha256": "25799b8f3c8a68800fb36bbc92c2ea81cc6897f6c64f679736edf783051b140c",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Clocked Sine Source: preserves clocked sampling and deterministic noise but attenuates the sine stimulus too far.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_common_mode_sine/certification.json",
-        "certification_sha256": "0a044f6eeff933976aae0fefe87f2c286ba512a646ee6eb419a95036f77e779c",
+        "certification_sha256": "6ba979e6ee81fee7c98b5d3d22525e391a4d176531aeb22269bdc4acc1f6ebf1",
         "fault_class": "fault_003_common_mode_sine",
-        "mutation_bundle_sha256": "6df4834d4f2c4cecd44ea7344f2169d0fc0f87c871fb9a33b408c2f7c53736c2",
+        "mutation_bundle_sha256": "f9c17c5148433e4ceb1cc1c472c411054cafce2760f5ac94917f59eded46d2bc",
         "mutation_id": "neg_003_common_mode_sine",
         "source_catalog_certification_path": "negative_variants/neg_003_common_mode_sine/certification.json",
         "trigger_condition": "Drives both outputs to the wrong high common-mode level with no differential stimulus.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_stuck/certification.json",
-        "certification_sha256": "aebc0788345f9c75f92d2ecdb92619e642dab9d088c287258d03a38aa826a72b",
+        "certification_sha256": "aa42daaf430b272767a0196e904f38829da79bb2d57132e5bb8155a7b97def93",
         "fault_class": "fault_004_reset_stuck",
-        "mutation_bundle_sha256": "1e0b9aa6944df5c5e22c23d9f9bf28872604db0642b7d323a8c40cbfb5cf58bd",
+        "mutation_bundle_sha256": "182cde446e8c5e48599dec6421a7f0855f8d6969ac9ac8beb754f1d8bf20ec85",
         "mutation_id": "neg_004_reset_stuck",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_stuck/certification.json",
         "trigger_condition": "Never updates after reset release.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_static_common_mode/certification.json",
-        "certification_sha256": "722989255de49543480508c29cd14349f2e987c5c8e6e6ae17b6f8cb6eaad8d3",
+        "certification_sha256": "605368f47b16705f7a495d70c34e3394f6677425ef4cb4c49f94412ccd2f5442",
         "fault_class": "fault_002_static_common_mode",
-        "mutation_bundle_sha256": "3fd438d1f731c916ea4a5a22d3dd49b439be8d4fba4491e5cf4753c007b5beb7",
+        "mutation_bundle_sha256": "efaeb6bc25232b0332ff8242f86a1cfa1f490254d54858efc0d41e259eabec3b",
         "mutation_id": "neg_002_static_common_mode",
         "source_catalog_certification_path": "negative_variants/neg_002_static_common_mode/certification.json",
         "trigger_condition": "Holds both outputs at common mode, so the composed gain flow sees no input signal.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "1815380cb84619c1091ed18e441b8ba54b8b62d28e0722cde029c9ccf626d545",
       "score_deck_sha256": "44fa3a8016adbe54e49d1be45fdc05d6a3f1cddc7a9fabac5b0aa1bcb8c3850e",
-      "task_certification_sha256": "57412f7d39c9a0447c77a68b667d59d5cd94b70c09b643d4f09d9761eb92cfbf",
-      "task_record_sha256": "0f3d61e16900ecda428104097bff0901f2ccdc0f890ad5c6ab29b03f1f347472"
+      "task_certification_sha256": "828bc3e26193d551d5059418fcafd754b748930bad9a288ebf4983cde1c02d87",
+      "task_record_sha256": "0f518af293e5ca8feef978156071032d174ea269c52f7d1624b6ea3e3f61f6f1"
     },
     "release_dir": "102-clocked-sine-source"
   }

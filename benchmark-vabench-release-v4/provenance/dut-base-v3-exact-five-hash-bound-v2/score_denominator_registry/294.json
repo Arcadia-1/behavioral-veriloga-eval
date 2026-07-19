@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_ignore_bias_validity/certification.json",
-        "certification_sha256": "be4f500dda1f6b30cb0a7a4931211b4a7169f16dd6646d2a80c9fcd7b530f3dc",
+        "certification_sha256": "53b244cad2adb09d1e7ef374c676107dbb34f853c7f4f930ee59c3bc2c306404",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "6e75ec4f8671824481d519d9c433e5a0732e12a73b630f78beb4d87ee3133a4d",
+        "mutation_bundle_sha256": "7cad736e57a99c582868c5736691b2310565a4900d68046bf230869685131d7d",
         "mutation_id": "neg_002_ignore_bias_validity",
         "source_catalog_certification_path": "negative_variants/neg_002_ignore_bias_validity/certification.json",
         "trigger_condition": "stimulus exercises neg_002_ignore_bias_validity",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_fault_reset/certification.json",
-        "certification_sha256": "05931e3c6ad0d2e55587c6050f37280f4bd470afcd45f8208d3a0f8136db8936",
+        "certification_sha256": "a2e24bc48275b927ed83fcf6c11a99e544bfb381c2ce3f6fc8f63db9e041eeec",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "341293ec56e64b1adddf46d09e5e0c0a35c82c9d5398fa2d72ebec9c5858cb62",
+        "mutation_bundle_sha256": "6a2d3a6b693a28127bb96bdd860dbbe617a1eaf1f4e85d0fc2255d741b8b1c6a",
         "mutation_id": "neg_004_no_fault_reset",
         "source_catalog_certification_path": "negative_variants/neg_004_no_fault_reset/certification.json",
         "trigger_condition": "stimulus exercises neg_004_no_fault_reset",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_short_delay/certification.json",
-        "certification_sha256": "fb07a3275c2cf52fdc4a54c8011bbabfca73bca6b4db5ed8484b2d5c2a1369da",
+        "certification_sha256": "3b7c9f69b696f9636a7c38ba24097a8675ef35f7fe7ff684eb75bbb2000d4fac",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "5651c7ee85ce4efdb4ee72712d68e90505770422367323438711879d9f40a523",
+        "mutation_bundle_sha256": "9b0f1ade466eb22a01b9009b5752f4fb5d5355c6f5e624952e2840f92f9d4fec",
         "mutation_id": "neg_005_short_delay",
         "source_catalog_certification_path": "negative_variants/neg_005_short_delay/certification.json",
         "trigger_condition": "stimulus exercises neg_005_short_delay",
@@ -45,9 +45,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_ignore_powerdown/certification.json",
-        "certification_sha256": "4c9f5d81ac4011c98570649e1a21918fde491b0c207fe83b005587350c4e0f8a",
+        "certification_sha256": "8a8e6937eae7f34ac01365cd1d3499dc7606c9bc32e06612c250acfd8d726dfc",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "c537914619eded40044b86c3b32cc397ba0c542900b7fb9cf71a2ba71e50b7e6",
+        "mutation_bundle_sha256": "782d8f750dbd60088340eaeb29f9a52c19fd6b098af1a2f414e60f3bd011cd4d",
         "mutation_id": "neg_003_ignore_powerdown",
         "source_catalog_certification_path": "negative_variants/neg_003_ignore_powerdown/certification.json",
         "trigger_condition": "stimulus exercises neg_003_ignore_powerdown",
@@ -58,9 +58,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_no_turnon_delay/certification.json",
-        "certification_sha256": "0d2d12fb18b07e1105bd188757044f7ae6d7c22cbd3d3a504089ec55203a6160",
+        "certification_sha256": "6b69a0bd8ce050cb3df854ff7d5db2f5e698a359be6f9fa9d2c9797e8893e038",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "58b2069a2866fc8c6dcf0b8892be1d994786d1ee972c54d6e41e9794785d689b",
+        "mutation_bundle_sha256": "ad0d7de536c94aa48d0f0dcd026e3810d2613ee875f911a79e10f3e0f0aea453",
         "mutation_id": "neg_001_no_turnon_delay",
         "source_catalog_certification_path": "negative_variants/neg_001_no_turnon_delay/certification.json",
         "trigger_condition": "stimulus exercises neg_001_no_turnon_delay",
@@ -75,8 +75,8 @@
     "hashes": {
       "mutation_catalog_sha256": "93102457602eba8baef09824cf5af510f77b65bdd4b888062f2e2b3bcda2a972",
       "score_deck_sha256": "daeb34da5972104bfb815c96f56bf1daba05b0f0538c7f7ea4cf60b7f06fc717",
-      "task_certification_sha256": "821599f5a380701556a4a07a17a5dc8ad6ea56ea3fb02d61507a58fc736adb4a",
-      "task_record_sha256": "5a196456a475807a252e4c001f9344e1a1997002071104e2716df9ac90ea6e7d"
+      "task_certification_sha256": "cde55f21a28e68e3783aec4d2f687b7fdac207b869b97b082b8a2ba014b6a75a",
+      "task_record_sha256": "fc4e06616490bcb3bb5b5ae73beab9863aa71a77ebe0ce3655f36cc71d1d87fc"
     },
     "release_dir": "294-power-enable-turnon-delay-gate"
   }

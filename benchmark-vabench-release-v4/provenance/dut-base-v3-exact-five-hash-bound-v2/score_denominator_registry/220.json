@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_swapped_ref_fb/certification.json",
-        "certification_sha256": "dd18c8bef08f073ac267bfa8e1146d96848f3943a9bf63a7ea3070e617354da7",
+        "certification_sha256": "32d98fd5fe4c00a975020bdab083f1210a37253dc6155606cbcdae7d8cd5a322",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "80d85b1f89447d44b907a4d509ef2465ab9e5c1829cb62049097729272c7549f",
+        "mutation_bundle_sha256": "18d6e926aaf1f72c01d3b73b5edebec50c5a7430d7111274359f124440d71757",
         "mutation_id": "neg_002_swapped_ref_fb",
         "source_catalog_certification_path": "negative_variants/neg_002_swapped_ref_fb/certification.json",
         "trigger_condition": "Swaps REF and FB state effects, reversing UP/DOWN behavior.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_up_stuck_for_zero_state/certification.json",
-        "certification_sha256": "7a20059edbbfd6d173a2e774a35dc3455ee1ebdaf6cd289d3c31be8c5b59c2bc",
+        "certification_sha256": "912a1a17d5edb6dcf291d4c6cd84df71ea65442cfbc5a6dc2857119347e66bcb",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "a4bfeb78c33f5ca214b26ba32fb882e0c9d0f7eb2f8f0f481ae1fe79631c2ff7",
+        "mutation_bundle_sha256": "cee0db6290811f81507a8cc4f7495207f71523034189e3d034091bfa5a7e68b4",
         "mutation_id": "neg_004_up_stuck_for_zero_state",
         "source_catalog_certification_path": "negative_variants/neg_004_up_stuck_for_zero_state/certification.json",
         "trigger_condition": "Asserts UP whenever the state is nonnegative, including the neutral zero state.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "257202f4a01dd00854407a877daefb23d2b154f672ead9fccb661dd19b321294",
+        "certification_sha256": "577c83ac09c1259fe319909b5d6db70c839a3cbccaba32f702c1d06ae7936ac0",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "9dd730cd40a31df5a7ce0c9436c69b04a1cc69bb6b3bc6cefac346adb44a0b70",
+        "mutation_bundle_sha256": "cb107ba10766fd4f803450b3b487e77b4fe0d14d9b4b5d5da7d01b1f8fe899f2",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "PFD Up Down State: scales the metric output, preserving the main path while failing measurement checks.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_fb_decrement/certification.json",
-        "certification_sha256": "35d71e507d72ff93e5a100a4064320c3ae351e8bb4cae71de7f89b094e0a8dcd",
+        "certification_sha256": "ed2dec5fea71e499614f2561f29ab0b54c9e920d013d0eeae0c9dd4964bf520f",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "0a31b6605a705bf47420e765660fb8bdf5d43b98ce4304246779fcc9b70856f0",
+        "mutation_bundle_sha256": "1c0d21c623ac2a562ce5cc432018a79816408c42973b95da7e119b3f360ef93b",
         "mutation_id": "neg_003_no_fb_decrement",
         "source_catalog_certification_path": "negative_variants/neg_003_no_fb_decrement/certification.json",
         "trigger_condition": "Ignores FB rising edges, so DOWN never asserts.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "9a1430e183620d0589eb9dbfb1f34c9caf25a935b89a0c80ce971fb7e09fa77c",
+        "certification_sha256": "e94a857bc5816f9c7fe48a4670d32cbead516fb74422380773793ce8b5fcba9b",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "c82de4836fc52d564f6b3a9cc6e04c4c6897a5d5b4568567d6404ff449266735",
+        "mutation_bundle_sha256": "ee53a25f04d7341dac5d1ac4574d0bc49b1f9b4cc999f12fa564e68b20cefbfb",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "0422e851e129dbde5a6ac9c48386667b63fabb7475acef638736157af57e90bd",
       "score_deck_sha256": "0b9425fe50f3d4c439dab14a56cca53f6726d7222a818b4fc7192a0b1b3b20f3",
-      "task_certification_sha256": "71188a4a450f1b68c8a32066dbb3618dd42fc8cc8332babfb37454a1f7a45677",
-      "task_record_sha256": "292b4217c5bc219064d57454d8f9755bcdf8f408ae23dfc451bec20473756b03"
+      "task_certification_sha256": "c599c201a495c582e075ac9efcfa83e064fcbc3eea0ba0b271fcfac2d49272dd",
+      "task_record_sha256": "e1e69ea4d2ee8aa80e8bea24f363546c6bc70f90fee14e8a5c22548a7f0e0f29"
     },
     "release_dir": "220-pfd-up-down-state"
   }

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "resettable_phase_toggle_monitor.va"
+  ],
+  "canonical_dut_source_slug": "262-resettable-phase-toggle-monitor",
+  "checker_task_id": "v4_262_resettable_phase_toggle_monitor",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "662c3c90e11839e6774990464ef386f64a526be59a112ad859f979d9771babe6",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "d1060a741bc2c02f8432f5775631c27a6ad844cc47d83f51e5691848ab71fdb8",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "8a694194d2c867f16b49764b8d6914b2cb009b66e35f270ca9ceb5fbdb708019",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "262",
+  "family_spec_sha256": "58c7f5145462f2f379c8772e080c86fb79aaeeff1bc41f927309dad10fde7f4f",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "73b18457ccf9fecd2f11aaaf13200e64e781a4fb4bf4ea31fa35ed323b37a3a5",
+  "public_contract": "tasks/262-resettable-phase-toggle-monitor/public_contract.json",
+  "public_contract_sha256": "1b8540abef707c33d9da0e8bce5102f73b87259fec36c5bddbe93eec9cf19653",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/262-resettable-phase-toggle-monitor",
+  "task_id": "v4-262"
+}

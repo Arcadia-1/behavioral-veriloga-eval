@@ -17,16 +17,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_080_sine_periodic_voltage_source",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 1001
   },
   "family_id": "080",
   "inputs": {
     "checker_profile_sha256": "065303014a86ed380efd0d4ae8f40c4cc97fce618a714b1d721e9b40583f430d",
     "harness_spec_sha256": "51d85108361eba34352446124faedfac38be2ed1a9f8d5d4e2ab1d68c2ae1c03",
+    "mutation_bundle_sha256": "7117cfb40708cb1fcd32f70b3b9dfb78b908b0524ea6c99a166b99bf43eeecde",
     "profile_sha256": "eaa3f605312bbbcbff1134c56e4516550aeb1cb1c17ded642791172385933d9e"
   },
   "mutation_id": "neg_003_wrong_frequency",
@@ -35,8 +36,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

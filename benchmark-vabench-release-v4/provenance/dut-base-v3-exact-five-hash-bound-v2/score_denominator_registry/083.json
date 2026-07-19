@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "919844727ff355f0fab04fbb5c2773367c5c05500312696ac3b45fc43ccf8a73",
+        "certification_sha256": "9a5f36c812f594cf43fa6c45453f17554410607243cc77944e212b0e398c69a0",
         "fault_class": "threshold_boundary_error",
-        "mutation_bundle_sha256": "bcb2a69358a96ebd1dd871d333a4a1cf68a5de6b991514d766ed335444510622",
+        "mutation_bundle_sha256": "054ab7e8c6725a2812107dc671cca2b56dbea87b1c9532ce16c8082940ffba9f",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "boundary stimulus crosses the public threshold conditions for Amplifier Filter Chain",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "ee2f2b7f9c9d6318f77b4454fe42b6e41ca22c26820891a6b90e994cbae5b79a",
+        "certification_sha256": "7850bc0faa5317874a21b82351c13569d443c2d5c5e3b6cab594f69f4bc636f9",
         "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "d16713f20555f6eb15330bf52e78aee6a08b0ec3fda4e685f0137f5cfb307d7d",
+        "mutation_bundle_sha256": "88b3aa88fc1ac073762256b6329e063ec6e4c54644cb7d2a787bb2c69a91927b",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "score stimulus observes the public metric/output scaling for Amplifier Filter Chain",
@@ -34,9 +34,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "99fe874c4303010990273c9b20001a0e6a9e8bebde03f8a587de1e78b01c98f8",
+        "certification_sha256": "1d4f13befcb7efd8effb0b9ea258ed94a18669e4e8b901c16df24e75e4c3d0e6",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "f3e3f44d8ded94a6ae3dbcd44d1afac6699769fcce03f0fd0eef0d0bf547f279",
+        "mutation_bundle_sha256": "68de49bddd9eab5353aaacda049cc1cd33947bf047f961e1a461ad8de1684a35",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for Amplifier Filter Chain",
@@ -48,9 +48,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "8f84660c08b6b3482439edf8e1e3c73619a48ec23a5a63dc2a51bb276c861cb2",
+        "certification_sha256": "194c6a758d20eb3fc2847d2d1b01486067e660e96318c5965fcd929f512017fb",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "639a5f887f5ebdab724c8126b497ae7bc08d133eb0c2e65ca48c73dbb2dd5d24",
+        "mutation_bundle_sha256": "85ade536b0a5de3523a093cd4e94f37f85410f857ab5df0145dae3f8f35408f1",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "nonzero behavioral stimulus requires observable Amplifier Filter Chain outputs",
@@ -61,9 +61,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "8a7dddfd7904914c46223cf668938a36b0fda884390709a57ebd8e5600e63e4b",
+        "certification_sha256": "0f068d3f75db959229c497c6cb44e5cfe4dddc4ae1b11d828fef5123401a2235",
         "fault_class": "reset_semantics_error",
-        "mutation_bundle_sha256": "c1ddac8050a0d4f03149da337a15f8da53c526d4ad38cd2c63bfed8220168064",
+        "mutation_bundle_sha256": "c8300a3e8052b8ebd5cfc87c7cc3c95308ff5828666edd8e98ed82325ec6493f",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "reset/recovery stimulus exercises Amplifier Filter Chain state override behavior",
@@ -77,8 +77,8 @@
     "hashes": {
       "mutation_catalog_sha256": "a329f265abf5bdc0be158e52044c782ce480e867cd6a685819c2a783e04e5da0",
       "score_deck_sha256": "f2d250640db90a5cd3d1836fb5f4bc0fc0cb60955b929bdde0ef4441ae894c84",
-      "task_certification_sha256": "3e6153cd0b346cbe15165d8cf7d303d3d8bc94f4c4b914d7ddef171b70ce975e",
-      "task_record_sha256": "7137005cb9266e2c971a67e03363fa311ec21747401add45d037e769d8d3d552"
+      "task_certification_sha256": "81e9fcef0a4f8d1fb37957d66d297ec51219b9bac74094a4fcc74a91ffb95201",
+      "task_record_sha256": "bb0187389adad5838067accb4def6c4a5ab7610084bc538963ac7e6389c5b79f"
     },
     "release_dir": "083-amplifier-filter-chain"
   }

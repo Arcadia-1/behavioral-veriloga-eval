@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "133-three-way-threshold-mux",
+  "checker_task_id": "v4_133_three_way_threshold_mux",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "d3da415bd3531ee2262e061d3fc2216467c1d9d96cf7c21cead00c334ba04b7a",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "38a5970d98f52653123d80b43cd165c5250db11fcf764fa0f05b372dc15dee60",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "133",
+  "family_spec_sha256": "4d9fd5be5eb112ef90a81433b052c6d8e6b9167c87a31086e971fe84af44e7da",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "79775ef014b991a0c28121a68baabe80aa9421e662a39720400ebffddc70651e",
+  "public_contract": "tasks/633-three-way-threshold-mux-testbench/public_contract.json",
+  "public_contract_sha256": "388755667924171a45b2d609669594f05b4fea402d8f3bc20f3c664bc64c63f5",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/633-three-way-threshold-mux-testbench",
+  "task_id": "v4-633"
+}

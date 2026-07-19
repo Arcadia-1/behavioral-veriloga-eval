@@ -17,16 +17,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_321_charge_pump_pulse_balancer",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 795
   },
   "family_id": "321",
   "inputs": {
     "checker_profile_sha256": "abeba0873ad00a99c0de5d77da159aacc61d1d38fc019697d9f1a9247086ebbd",
     "harness_spec_sha256": "1a1e397dae7725a47cb327c59205915523234bffb491a3fd72eefc9012c8a670",
+    "mutation_bundle_sha256": "7a878a4d6e4e4e2d8ccdd3f70ca88f7c55e2414d3090a052e99eeb1f86557334",
     "profile_sha256": "a2809d70aa350996e6d7082dc61cda1a13444c66784f9bf88e7515714ba5032d"
   },
   "mutation_id": "neg_004_imbalance_metric_half_scale",
@@ -35,8 +36,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "rs_latch_voltage.va"
+  ],
+  "canonical_dut_source_slug": "140-rs-latch-voltage",
+  "checker_task_id": "v4_140_rs_latch_voltage",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "0e33b15cd3e26fa6e74764b0b1555a201b34ac972ca32fc81be426c9f610a847",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "b2b51a3697b4f98aeacdd5922c93099ce1f1a92c91f1c98d27c84f0013a699fd",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "6ad6c4ffa85c8ceda4df2749efd4a968e45ed61f76dad2ce5eb643bd272b870c",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "140",
+  "family_spec_sha256": "c590a9dac1b970520868f440ed1d57dee29839130ab29415feee5a5cd5c954d9",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "43bdc6478dacb5a9804e484b491786d536833396e0e9db7335a69b14cf24c557",
+  "public_contract": "tasks/140-rs-latch-voltage/public_contract.json",
+  "public_contract_sha256": "7984784c5fa059af8fbdce98eed214680abfe353716239d8c46ba0c4d89a7379",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/140-rs-latch-voltage",
+  "task_id": "v4-140"
+}

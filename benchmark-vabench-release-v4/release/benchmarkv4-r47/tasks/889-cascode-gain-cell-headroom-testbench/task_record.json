@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "389-cascode-gain-cell-headroom",
+  "checker_task_id": "v4_389_cascode_gain_cell_headroom",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "9a1588f0524c24a24514e8cf0c0209a4101bb4c1217ebf8731b87fd9452cfde3",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "246e800dc31ad3130ee2c405a46781f81ff3205b8631958c17e52b58431e7fc8",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "389",
+  "family_spec_sha256": "6ef2e32af8ab0cabfb32d0eae3f138115565eba8ff7dbc992e39e5dee96fe3d1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "22a2ca771868aefdd92916488e311725ad06ac59bca79764f204a1d2c945d890",
+  "public_contract": "tasks/889-cascode-gain-cell-headroom-testbench/public_contract.json",
+  "public_contract_sha256": "69aa066a67b23f6704345358eb7e012535af6abfbafe1b9a6003c65621c80486",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/889-cascode-gain-cell-headroom-testbench",
+  "task_id": "v4-889"
+}

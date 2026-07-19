@@ -10,10 +10,14 @@ from typing import Any
 
 from score_denominator_registry import (
     load_family_rows,
-    score_denominator_registry_sha256,
     write_family_row,
 )
-from source_certification_binding import _task_input_hashes, file_sha, tree_sha_by_file_hash
+from source_certification_binding import (
+    _task_input_hashes,
+    file_sha,
+    source_certification_definition_sha256,
+    tree_sha_by_file_hash,
+)
 
 
 GOLD_SCHEMA_VERSION = "v4-task-certification-rust-evas2-v1"
@@ -222,6 +226,29 @@ def refresh_task_record(task: Path) -> None:
     write_json(record_path, record)
 
 
+def refresh_mutation_summary(task: Path, mutation_ids: list[str]) -> None:
+    """Promote targeted/pending catalog rows after full400 evidence passes."""
+    evaluator = task / "evaluator"
+    for relative in ("mutation_catalog.json", "mutation_bundles/manifest.json"):
+        path = evaluator / relative
+        payload = read_json(path)
+        rows = {str(item.get("id") or ""): item for item in payload.get("mutations") or []}
+        for mutation_id in mutation_ids:
+            if mutation_id not in rows:
+                raise RefreshError(f"{task.name}/{mutation_id}: absent from {relative}")
+            certification = rows[mutation_id].setdefault("certification", {})
+            certification.update(
+                {
+                    "status": "pass",
+                    "compile_status": "pass",
+                    "simulation_status": "pass",
+                    "behavior_status": "killed_behaviorally",
+                }
+            )
+            certification.pop("certification_scope", None)
+        write_json(path, payload)
+
+
 def update_registry_row(source: Path, family: str, row: dict[str, Any], task: Path) -> None:
     evaluator = task / "evaluator"
     row["hashes"] = {
@@ -263,7 +290,6 @@ def main() -> int:
     campaign = f"{release_revision}-full400"
     family_cases, runtime = report_cases(report_paths)
     rows = {str(row["canonical_dut_id"]): row for row in load_family_rows(source)}
-    source_registry_sha256 = score_denominator_registry_sha256(source)
     if set(rows) != {f"{value:03d}" for value in range(1, 401)}:
         raise SystemExit("source denominator does not contain exactly families 001-400")
     if set(family_cases) != set(rows):
@@ -271,6 +297,7 @@ def main() -> int:
             f"evidence coverage mismatch: missing={sorted(set(rows) - set(family_cases))} "
             f"extra={sorted(set(family_cases) - set(rows))}"
         )
+    source_definition_sha256 = source_certification_definition_sha256(source, rows)
 
     compact_cases: list[dict[str, Any]] = []
     for family in sorted(rows):
@@ -299,11 +326,11 @@ def main() -> int:
 
     output = args.output.expanduser().resolve()
     payload = {
-        "schema_version": f"v4-{release_revision}-rust-evas2-certification-report-v1",
+        "schema_version": f"v4-{release_revision}-rust-evas2-certification-report-v2",
         "status": "pass",
         "release_candidate": release_revision,
         "certification_policy": POLICY,
-        "source_score_denominator_registry_sha256": source_registry_sha256,
+        "source_certification_definition_sha256": source_definition_sha256,
         "runtime": runtime,
         "summary": {
             "family_count": 400,
@@ -352,6 +379,7 @@ def main() -> int:
         task = source / str(row["release_dir"])
         cases = family_cases[family]
         mutation_ids = validate_family_cases(family, row, cases)
+        refresh_mutation_summary(task, mutation_ids)
         write_json(
             task / "evaluator" / "certification.json",
             gold_certificate(family, task, cases, runtime, evidence_ref, campaign),

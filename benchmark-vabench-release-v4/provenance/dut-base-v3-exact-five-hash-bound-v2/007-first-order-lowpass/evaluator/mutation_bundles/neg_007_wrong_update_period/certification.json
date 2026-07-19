@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_PERIODIC_UPDATE satisfy the public contract; fault class update_period_error is rejected",
-    "observed": "EVAS: lowpass_samples=0.544,0.766,0.799,0.800 normalized_samples=0.681,0.957,0.999,1.000 step_amplitude=0.8 input_step=True monotonic=True response_fast_enough=True not_instant=False bounded=True input_ceiling=0.8 max_vout=0.8; first_mismatch=P_LOW_PASS_RESPONSE signal=vout expected=normalized_sample0<0.5625 observed=0.680515 tolerance=0 initial_samples=[0.0, 0.0] initial_ok=True",
+    "observed": "EVAS: lowpass_samples=0.032,0.140,0.313,0.507 normalized_samples=0.040,0.175,0.392,0.633 expected_normalized=0.025,0.096,0.224,0.397 step_amplitude=0.8 input_step=True monotonic=True response_matches=False response_tolerance=0.05 bounded=True input_ceiling=0.8 max_vout=0.8; first_mismatch=P_LOW_PASS_RESPONSE signal=vout expected=0.025,0.0963121,0.22367,0.397312 observed=0.040,0.175,0.392,0.633 tolerance=0.05 initial_samples=[0.0, 0.0] initial_ok=True",
     "violated_property_ids": [
       "P_PERIODIC_UPDATE"
     ]
@@ -17,16 +17,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_007_first_order_lowpass",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 2910
   },
   "family_id": "007",
   "inputs": {
     "checker_profile_sha256": "949b47d36d74112869dcf4d5309f0fef8940f8e782b39105961d85c95517d672",
     "harness_spec_sha256": "d424aca8a9738ebdb8e81b94b35d13458835f8c4217db49ad50eb447cf99af6f",
+    "mutation_bundle_sha256": "92cdfd864a89df344a8fdde21bee137f64d822717ae1e77d1479bc1b66c4903c",
     "profile_sha256": "b785569bba3287b017fbae7fe68437c371b5ba7394ceb4c6484b146f2282072e"
   },
   "mutation_id": "neg_007_wrong_update_period",
@@ -35,8 +36,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

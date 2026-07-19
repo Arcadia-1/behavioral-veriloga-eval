@@ -17,16 +17,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_348_vga_gain_calibration_loop",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 2383
   },
   "family_id": "348",
   "inputs": {
     "checker_profile_sha256": "ae3998a541b5ed6f58303317dce6172c180824d5c3cbd61914904280068d6a6c",
     "harness_spec_sha256": "6f62498989e2bb85f25914ef5e73e2b3520ab0672c58b9afd4c120cc37d43c6c",
+    "mutation_bundle_sha256": "854e152252caa647ba38f1f16b629aedb505e8f74813de1939221c3964bd096e",
     "profile_sha256": "f68a753cf78b7cc8dfce0c7e83b5d1df1db061a8b47c8761652b669cb217762d"
   },
   "mutation_id": "neg_001_gain_direction_reversed",
@@ -35,8 +36,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

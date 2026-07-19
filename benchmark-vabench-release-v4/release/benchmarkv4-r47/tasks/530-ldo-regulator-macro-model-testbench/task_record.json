@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "030-ldo-regulator-macro-model",
+  "checker_task_id": "v4_030_ldo_regulator_macro_model",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "e21d3d4c928bab94c1efdeae470c374bbe9a989f80b45abe5f0c223647b5c2dc",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "2a34a5e5b766c691dd8e10d1e12f2ae5b8e7da1256644ddb2d12c12aa8c59093",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "030",
+  "family_spec_sha256": "6e87710d02e2d35422c32058229519b2817bfd95fbf7af29a66794ee25c5f3af",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ae968bdfacde54dcc3890fa8093e2d4bfc8fe7aece8820b2f060957fdfbb6196",
+  "public_contract": "tasks/530-ldo-regulator-macro-model-testbench/public_contract.json",
+  "public_contract_sha256": "36d8d5d01b36069d565b382387ae189e9c7822b0aee6797b2c83f2d25e7a8afe",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/530-ldo-regulator-macro-model-testbench",
+  "task_id": "v4-530"
+}

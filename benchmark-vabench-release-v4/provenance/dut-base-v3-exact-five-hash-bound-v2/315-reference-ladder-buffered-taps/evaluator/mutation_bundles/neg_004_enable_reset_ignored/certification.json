@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_ASSERT_MONOTONIC_OK_ONLY_WHEN_THE satisfy the public contract; fault class enable_reset_ignored is rejected",
-    "observed": "EVAS: v4_315 checked=332 normal=True reversed=True clamp=True disabled_clear=False reset_clear=False spacing_errors=3 flag_errors=0 clear_errors=73",
+    "observed": "EVAS: v4_315 checked=322 normal=True reversed=True clamp=True disabled_clear=False reset_clear=False spacing_errors=0 flag_errors=0 clear_errors=64",
     "violated_property_ids": [
       "P_ASSERT_MONOTONIC_OK_ONLY_WHEN_THE"
     ]
@@ -17,16 +17,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_315_reference_ladder_buffered_taps",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 443
   },
   "family_id": "315",
   "inputs": {
     "checker_profile_sha256": "22b8792d1362999336eb4502f5cc3c3b70acb5533041936b3b904ab0ab8cba29",
     "harness_spec_sha256": "a6dbabb042c7d9c67ba3e4caac79f4d5bda23beaa178771f9e39623c6a945272",
+    "mutation_bundle_sha256": "23997e2415aa3fadf73a50a2dac6df927f1cdcbcdb2f15338edcbf5d913e3815",
     "profile_sha256": "0062b34cf570cbda85110f4c6e03d0184a5bf4eda2b49ae4d877605e59d970cb"
   },
   "mutation_id": "neg_004_enable_reset_ignored",
@@ -35,8 +36,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

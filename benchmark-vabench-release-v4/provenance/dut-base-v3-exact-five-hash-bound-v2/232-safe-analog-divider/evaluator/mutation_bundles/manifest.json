@@ -39,13 +39,12 @@
           "P_WHEN_V_SIGDENOM_IS_NEGATIVE_BUT",
           "P_WHEN_V_SIGDENOM_IS_POSITIVE_BUT"
         ],
-        "behavior_status": "targeted_killed_behaviorally",
-        "certification_scope": "r47_pending_full400",
-        "compile_status": "targeted_pass",
+        "behavior_status": "killed_behaviorally",
+        "compile_status": "pass",
         "evidence_path": "negative_variants/neg_002_no_denominator_guard/certification.json",
         "profile": "feedback",
-        "simulation_status": "targeted_pass",
-        "status": "pending_full400"
+        "simulation_status": "pass",
+        "status": "pass"
       },
       "changed_artifacts": [
         "safe_analog_divider.va"

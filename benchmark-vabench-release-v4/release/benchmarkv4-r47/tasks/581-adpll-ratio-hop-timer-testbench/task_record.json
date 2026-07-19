@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "081-adpll-ratio-hop-timer",
+  "checker_task_id": "v4_081_adpll_ratio_hop_timer",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "e571e55c8ec40f49b8b88d6b9a4770aae804202303579b35f36a089ba1d4e253",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "11cd16d2d33172bf8239b1931dd38669f142dcf321a6886a34461b0c6ea9b46b",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "081",
+  "family_spec_sha256": "d07fa8463ddeece6bc4c013e0c2b99f84de80476d922533781f8c48ca72c0df0",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2ffb1e6d5473257a32bd1a22c5ea5b6fb51fc09a02d24949fd3496f41c234fbd",
+  "public_contract": "tasks/581-adpll-ratio-hop-timer-testbench/public_contract.json",
+  "public_contract_sha256": "4bd7d91e4b887bc944573ef99cbf1a00784998e3135ac8fe150711b156352457",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/581-adpll-ratio-hop-timer-testbench",
+  "task_id": "v4-581"
+}

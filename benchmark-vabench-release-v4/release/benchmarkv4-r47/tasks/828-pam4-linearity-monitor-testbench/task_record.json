@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "328-pam4-linearity-monitor",
+  "checker_task_id": "v4_328_pam4_linearity_monitor",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "b7b4a8da9315ec7b1201a1e664ac16a10262ba1d1da017223500e9660b4b3989",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "2dcee86b15ea015cd2096987f7adc971bcba9110d3a85246b0f14eb5d1a332af",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "328",
+  "family_spec_sha256": "1b476a5e5d2ff87f2e8d7e0c136c145d7d0873c6825972777fd03355a7d78943",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3e87448fac385947a3010afaf852fe7b4f0ce9b236425c1905fa8ed9465b0817",
+  "public_contract": "tasks/828-pam4-linearity-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "942850a837313c5a3d238be9f941abc7678b056200f2313e5cb6f5991bd14348",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/828-pam4-linearity-monitor-testbench",
+  "task_id": "v4-828"
+}

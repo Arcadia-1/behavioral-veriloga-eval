@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "089-edge-crossing-interval-timer",
+  "checker_task_id": "v4_089_edge_crossing_interval_timer",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "c32afdb59a860d05f480a4995c3319164b202125097de38db48341a1f66ca40a",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "9b8057a4d08000a4accf540587df1bcae56fc612d96b605e74068d616036a7b4",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "089",
+  "family_spec_sha256": "78904205d36a6476dcd8b8f8b934cdf196ce7ef2d49f6d206187bd8f2b356322",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4468f9a41c9ad3e858f770e348c78221e3219df790a92b90a0eef236c0178218",
+  "public_contract": "tasks/589-edge-crossing-interval-timer-testbench/public_contract.json",
+  "public_contract_sha256": "e55695b59822fa01dc37dde2d54223a9e1a88de28635e5b0a5d5bd4590fd6c06",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/589-edge-crossing-interval-timer-testbench",
+  "task_id": "v4-589"
+}

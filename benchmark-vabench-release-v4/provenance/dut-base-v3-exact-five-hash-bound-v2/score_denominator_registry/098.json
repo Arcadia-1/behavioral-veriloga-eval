@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_frequency_step/certification.json",
-        "certification_sha256": "de8f0b26853f369cefabe3145493623bbaf8e2a7f5953bb7dddfb44d3039b3c2",
+        "certification_sha256": "2a0e805bc3bf63fab46a723eb9616e20dd2837fac53b25bc44e551ff08bea1ac",
         "fault_class": "periodic_source_spectral_error",
-        "mutation_bundle_sha256": "e8a3da1374d1a105df942a77b69f3a2e50c7d5a890accefdf5e429431a07265e",
+        "mutation_bundle_sha256": "b1a86749035779677bdbd934b95b4d2b87c79e13492e95698a9733f07f9f32a0",
         "mutation_id": "neg_002_no_frequency_step",
         "source_catalog_certification_path": "negative_variants/neg_002_no_frequency_step/certification.json",
         "trigger_condition": "targeted stimulus exercises the violated observable contract for Reference Step Clock",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_bad_duty_cycle/certification.json",
-        "certification_sha256": "4d47a2e18020f0f19d9822e7c6584959d346bd797ef6dd8f2cc6be710c26d3e3",
+        "certification_sha256": "9ed4c7302805ce4c71ffda6152806ec8c0ea9e0453e447bec62d9c2dcd0ef292",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "63fadbe2b0fb545a5aadf46904953dfa656914a350696ebae04e31a499405f3e",
+        "mutation_bundle_sha256": "084b9bbfacb1d91c93dabd3d39a8fe33edad5de42121304e411e46794e4cc8d9",
         "mutation_id": "neg_005_bad_duty_cycle",
         "source_catalog_certification_path": "negative_variants/neg_005_bad_duty_cycle/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for Reference Step Clock",
@@ -34,9 +34,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_post_period/certification.json",
-        "certification_sha256": "6081a4289c37edc5c0ff7568f04f4399b369078092bd6f7f88d9b97f69f72d11",
+        "certification_sha256": "da3c93ebdd53b25561983e1f70d3d3a17ee253d6747461d33408e2da92e02649",
         "fault_class": "behavioral_contract_near_miss",
-        "mutation_bundle_sha256": "6f7c4e1dea3ee2cb9a234b69aa4f183e0d065734592d9006556150bb8be6c94d",
+        "mutation_bundle_sha256": "49316081a90391f5958301359ab603fd1d1a78bbd71e3a335f264a34484bfde1",
         "mutation_id": "neg_003_wrong_post_period",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_post_period/certification.json",
         "trigger_condition": "targeted stimulus exercises the violated observable contract for Reference Step Clock",
@@ -48,9 +48,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "d7318020f73641c570561a0843073f1317ff3b31aeb0c661823360d4f6372551",
+        "certification_sha256": "f6a31bd1a114373222de3d78278ad3e80ef1acccfd206ebe7f2cdc8ee5e35316",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "cacce65ec55e084dacfa083cf45bbfaad6cc4cc8a3483115a4242fb4c648177f",
+        "mutation_bundle_sha256": "75ac962fef6252f20a6094a56bf2dcac0e89ca63ed1ac92b707aeec71d2b4a17",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for Reference Step Clock",
@@ -62,9 +62,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_late_switch/certification.json",
-        "certification_sha256": "185aefb63f0ec106feafacb1758bf8e7b45ff80f5a569a29fe4f036b442846bd",
+        "certification_sha256": "222e4144734ad0b3f499550c53921ed03f337ad05f57a4bdb99496db7e173a67",
         "fault_class": "periodic_source_spectral_error",
-        "mutation_bundle_sha256": "ba9cf334df77425598a1bf74813bb05406f57dcc23dc25223ff09785eeab9608",
+        "mutation_bundle_sha256": "d16c40a0dd08f4d82f7b3400f555653f9ec1a21c4728f30197ec2b1aa0977820",
         "mutation_id": "neg_004_late_switch",
         "source_catalog_certification_path": "negative_variants/neg_004_late_switch/certification.json",
         "trigger_condition": "targeted stimulus exercises the violated observable contract for Reference Step Clock",
@@ -79,8 +79,8 @@
     "hashes": {
       "mutation_catalog_sha256": "a630c9a3336fdd5cd5e9b03eaba6044270f456800eb9e4b06c395aa22044dcf8",
       "score_deck_sha256": "b52b0bcc5f36b9c1c005a9e021569e17bf426f929ae04590718a4240d76f3779",
-      "task_certification_sha256": "b17d872ef159f56b289bc6bc78318522b060b5f2e394de235119d7e354cb76df",
-      "task_record_sha256": "114080514977e3405c2d776a43e4fb12ecab4cb7a43082e315cc683ea3a0f032"
+      "task_certification_sha256": "6ef3d010671acc556afc4e9030ba27d5bfedaa8bd2e7905a5062fb8c45f14e30",
+      "task_record_sha256": "92151aa6126cd20681d99244f30cb70a60e57749be0d5ddffaad6a503f8e08fb"
     },
     "release_dir": "098-reference-step-clock"
   }

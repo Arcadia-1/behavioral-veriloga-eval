@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_three_cycle_delay/certification.json",
-        "certification_sha256": "34d806cdf9d74c855ba9a5a756ae487d509858a01f5632cbb3f421686460a0ca",
+        "certification_sha256": "2cca184ad32fb4a456b5e5e16d31f1878ea3b187d829a8c34da1a7e9466bbff1",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "11ec8c1d93092b2e3ba3ad0ef91f5327cf7ce6d4200df1bb8a124d15473e229a",
+        "mutation_bundle_sha256": "d11a04a8610d3202e06ba964363a363bb64adbd6ef0681d474fb4131777d45c1",
         "mutation_id": "neg_002_three_cycle_delay",
         "source_catalog_certification_path": "negative_variants/neg_002_three_cycle_delay/certification.json",
         "trigger_condition": "Publishes the third pipeline stage instead of the required fourth-cycle aligned count.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "9030bab94908a3b9c5a358c7dbc167f372e143c8a29cdac5b37f9911a1be914b",
+        "certification_sha256": "eb1ffee900acde59438a6fde095964facf782f5a2fe582fbc07126a94dfdee28",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "b911930e793e54fe8007f4c493471f867160407a45b089e39df288f6f02782c7",
+        "mutation_bundle_sha256": "9243ed1894ad256f61207ddb7019e2260f3e60ace61f589185d34539090e22cf",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_ignore_upper_inputs/certification.json",
-        "certification_sha256": "b7ecf26a2154640a0e5f02e5d59af0473133ee6e1add2b09f93eff643a164a64",
+        "certification_sha256": "36dc4841e8f256ea8b2ff39787151a2f21e06280625e415652c4fbe424fddb08",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "3dc1e5bc9a21e8ae4191d7b364bff6ee174cd6ade43eced1b84e5e2ad7a0dab7",
+        "mutation_bundle_sha256": "0b92c978963e4ac348c0acae7755445bba1381a24b6a3676bd7622e1b1565402",
         "mutation_id": "neg_003_ignore_upper_inputs",
         "source_catalog_certification_path": "negative_variants/neg_003_ignore_upper_inputs/certification.json",
         "trigger_condition": "Counts only the lower four thermometer inputs, missing din4 through din7.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_swap_output_bits/certification.json",
-        "certification_sha256": "0fa2ed7da0e2896f36b0ad17a632d4e830434ea13623a595b84964a1c2bbb9fe",
+        "certification_sha256": "55065aca087ca48a06ee5773653f61fe20dbb0895d6f1ce5c4061afc36c66398",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "b4235db433118bc5cfd02731c7335e426a317d5950f0043b94cc36b523c61ef1",
+        "mutation_bundle_sha256": "0817f959c08bc457a0fd678351518989598f0cdf9f1dc058dd296b12160426d0",
         "mutation_id": "neg_004_swap_output_bits",
         "source_catalog_certification_path": "negative_variants/neg_004_swap_output_bits/certification.json",
         "trigger_condition": "Swaps the two least significant output bits while keeping timing intact.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "4c00e42e3a08d01c078fcd57da79f77a7d81df0655645b8c9c3f79b580a67f49",
+        "certification_sha256": "9a938b8c049cf9634467950d9d50233ab09461da4a1ad5e7f3522e5cfb9bbb6d",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "aadbbaaa2e258ba7e2f8431e6c4b940602f1ab45e1b2442dee7412bb848d2046",
+        "mutation_bundle_sha256": "96b51b970bc34856ff8db9d81ba7efae018682e0d9e6a806794faf82fe653a07",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Flash Data Align Pipeline: scales the metric output, preserving the main path while failing measurement checks.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "4feb412a77c2c983f1b3383430d4dc1794cfe950901a8c7bd7e2728bcb60d1be",
       "score_deck_sha256": "f0882fb2db23f0b45b1103e2952af3c6c61bfbfb67d22131980bf5aac4998ee3",
-      "task_certification_sha256": "a4d8a03716930f173bab7f4fc2556ceba270f6aeb4942a91e923ef4913f5371a",
-      "task_record_sha256": "3d774a36526169ad5c6cf0d1dc5e83809799df9c43097127ebf9fd5465b43505"
+      "task_certification_sha256": "22afda5e65c518922399bdceb5318c09dc87f6ce0866e7919953676c08576511",
+      "task_record_sha256": "64554a7f5c227b51b0cd83b31d14da6856749ba935196d3a98e3a17314448a75"
     },
     "release_dir": "162-flash-data-align-pipeline"
   }

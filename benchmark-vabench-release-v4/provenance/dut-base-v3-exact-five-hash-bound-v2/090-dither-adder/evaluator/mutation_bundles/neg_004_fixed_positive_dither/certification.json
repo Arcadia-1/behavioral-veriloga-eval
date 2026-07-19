@@ -19,16 +19,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_090_dither_adder",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 801
   },
   "family_id": "090",
   "inputs": {
     "checker_profile_sha256": "60d55fc7d6855c40a173d3c0561364226ffad74ef1203ced3a50a930a78d1f5e",
     "harness_spec_sha256": "afe89a050cf2fb5e9d0eeb3a58cac37e2d3a2c71b1cc69be663c3de04864ccdd",
+    "mutation_bundle_sha256": "ff75454de904e184855c3d9250dc5881e6891e4f40b67bf61e417f444cf22b11",
     "profile_sha256": "953c8c53f5648ee3b063bbae33ed9184c623bbda16ebf1c9cc445e56fc6e03e8"
   },
   "mutation_id": "neg_004_fixed_positive_dither",
@@ -37,8 +38,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

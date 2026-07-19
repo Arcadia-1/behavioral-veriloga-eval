@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "264-enable-qualified-bias-hold",
+  "checker_task_id": "v4_264_enable_qualified_bias_hold",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "f81c861be63561252ed086166c33a7219e0aa879079be253265b97986758542f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "cb49743712f543a135c717bddeb34f1547c1490202813d29f8d9412499e0bbee",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "264",
+  "family_spec_sha256": "a70a757765c41274a8ad7e099b3846774a6e771a1003f132b0dd67b75589683f",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a569f679979318c728a560a058d61878a9b08de98c057a9180a3bc6aff430488",
+  "public_contract": "tasks/764-enable-qualified-bias-hold-testbench/public_contract.json",
+  "public_contract_sha256": "8b731244d88f227a4d4883097f8310470125dc1ed4d1f5f3e69820ad27888f21",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/764-enable-qualified-bias-hold-testbench",
+  "task_id": "v4-764"
+}

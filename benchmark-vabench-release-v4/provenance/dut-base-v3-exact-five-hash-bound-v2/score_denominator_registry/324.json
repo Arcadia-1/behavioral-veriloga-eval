@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_duty_metric_wrong_quantity/certification.json",
-        "certification_sha256": "204cf443e6686794cdc5ca3dfae66ab54f03c859ad4567a0524f7b915d088902",
+        "certification_sha256": "737936751f0e1ad63093035c96996825d4a5e6607f1e90887c0278f629ff281c",
         "fault_class": "duty_metric_wrong_quantity",
-        "mutation_bundle_sha256": "ddc075c2b2d7be94b736e9485473313a656da7e052b46e517a0a49d1d6f132a0",
+        "mutation_bundle_sha256": "c0910cc2469d95be0909cb009d90d9bb553241bc2ee84b9d53e7dae68284032b",
         "mutation_id": "neg_001_duty_metric_wrong_quantity",
         "source_catalog_certification_path": "negative_variants/neg_001_duty_metric_wrong_quantity/certification.json",
         "trigger_condition": "duty_metric_wrong_quantity",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_valid_flag_missing/certification.json",
-        "certification_sha256": "c33835cb9d2af6129c49a5dd27057bcd0459b57bb71c50fc806ee67edf559e3f",
+        "certification_sha256": "5ceb39ad92282690a9078edff6bf68db2df6803f33fe533f463bbc4cbcdb4000",
         "fault_class": "valid_flag_missing",
-        "mutation_bundle_sha256": "355bbdc9c39e91e1cc3ed22057ec9f940aba4edfc0ef6a197aff4ff1971ce6a5",
+        "mutation_bundle_sha256": "3980e0e04713cfb684c53fddc4c6e9218326eec677dc9a658176b1d0fa50a3fe",
         "mutation_id": "neg_004_valid_flag_missing",
         "source_catalog_certification_path": "negative_variants/neg_004_valid_flag_missing/certification.json",
         "trigger_condition": "valid_flag_missing",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_window_flag_inverted/certification.json",
-        "certification_sha256": "c193343a90827c03b072c8d7e257bf149176cf00eb0d47f46544a74d7a063582",
+        "certification_sha256": "a765ec89a03533d9491e5296800e01d42586ec7aa068c71818e3d90b2d3e3186",
         "fault_class": "window_flag_inverted",
-        "mutation_bundle_sha256": "efc7c3f85971f48da4e04bdb8c7e1fd47dfb90b24c637de9fbb083d81fceda53",
+        "mutation_bundle_sha256": "3b61c2034cb6939edc66dc5f935a703529ffc2f320a5db69db776efd5b429c8e",
         "mutation_id": "neg_002_window_flag_inverted",
         "source_catalog_certification_path": "negative_variants/neg_002_window_flag_inverted/certification.json",
         "trigger_condition": "window_flag_inverted",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_reset_disable_clear_missing/certification.json",
-        "certification_sha256": "9dc081a6abb8da8623cbfe0ff3559f64b943f1be5162dc05a67fe95d4a812bab",
+        "certification_sha256": "c38f0e5700db55466a9ef94ee5e2f7832cd81f0da273d2a16870f41779739d69",
         "fault_class": "reset_disable_clear_missing",
-        "mutation_bundle_sha256": "a63f3c04c04017876b5a6c52afeaf9f3074b4753abddff0650d35e71a31ac027",
+        "mutation_bundle_sha256": "aa57dbc9882156a0b9fb60a53483e3d4b9f0adc52e8d08829046e470c6df69ea",
         "mutation_id": "neg_003_reset_disable_clear_missing",
         "source_catalog_certification_path": "negative_variants/neg_003_reset_disable_clear_missing/certification.json",
         "trigger_condition": "reset_disable_clear_missing",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_window_flag_missing/certification.json",
-        "certification_sha256": "e24790740badd39b03046c9cad6a139c453b089a1795f9ac67aba4efcfb6cf57",
+        "certification_sha256": "e12cca611bc201600da2ac6c1134e0ab8d3f3666ba281c050dd869ce4ecbf980",
         "fault_class": "window_flag_missing",
-        "mutation_bundle_sha256": "d50da9b5a92e9aa64d6d191915d462415aa35e536639e25aed1371d5de307be4",
+        "mutation_bundle_sha256": "e50260256458aaa31ff0e364a0c238ccae2e83e45ca928b2465fa62ca428d8c6",
         "mutation_id": "neg_005_window_flag_missing",
         "source_catalog_certification_path": "negative_variants/neg_005_window_flag_missing/certification.json",
         "trigger_condition": "window_flag_missing",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "8b4abe62a5314914fe7fc9c9b3c5c7f9d11d622108e4eecdea560ff35dbd1608",
       "score_deck_sha256": "afca2470aed1a63f0bd45ab8b8ab0a314ffe3a4d9eab6665d29e8412dc5ef8bf",
-      "task_certification_sha256": "a788ab3222bbe558567490f0da1af9a5f53bc7c79c6db7b63fb0af351e414b82",
-      "task_record_sha256": "7260c6b1139078c647b7f8ca456e80d7594ed1a3e9b94ddf773cd21e1d86ef44"
+      "task_certification_sha256": "e09490dfc04e783fe34ef4adb1b4679aff0dd38753460cbcc9107f7e6bf9007a",
+      "task_record_sha256": "f37cc7c3815cf4049b50e1e7877ced3b4ff7b7eaa4c09499497dc74e2d2d578e"
     },
     "release_dir": "324-duty-cycle-window-monitor"
   }

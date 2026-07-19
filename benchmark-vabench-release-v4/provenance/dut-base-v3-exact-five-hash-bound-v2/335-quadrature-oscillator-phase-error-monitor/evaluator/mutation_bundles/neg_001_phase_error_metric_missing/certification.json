@@ -17,16 +17,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_335_quadrature_oscillator_phase_error_monitor",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 507
   },
   "family_id": "335",
   "inputs": {
     "checker_profile_sha256": "54dfed0a7873bb736f771902025fb838ce65bf3a2660d1f14ac39ac4cc625402",
     "harness_spec_sha256": "da943bd969336fc1f4f5a53d012ffb1cf1c449e099bdf50607a4e88cf2810c87",
+    "mutation_bundle_sha256": "0166e5cb80a8318f0ec86c83ac5f45f8f2cc02adc910cde9fa1f3c80114b8e00",
     "profile_sha256": "cde7e07dad219a49bc65539e48f84e571556838a25c2d6b431faf33101e39a7f"
   },
   "mutation_id": "neg_001_phase_error_metric_missing",
@@ -35,8 +36,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

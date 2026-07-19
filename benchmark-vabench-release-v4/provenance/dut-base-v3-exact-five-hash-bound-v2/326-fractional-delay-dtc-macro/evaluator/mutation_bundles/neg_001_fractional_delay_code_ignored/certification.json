@@ -17,16 +17,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_326_fractional_delay_dtc_macro",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 534
   },
   "family_id": "326",
   "inputs": {
     "checker_profile_sha256": "56cda6f88aeb42c4edba07ed8d4c2b8965cef06a1c99113507ab6cfd246716d0",
     "harness_spec_sha256": "443189d82c7140016beb27da2db0c5d73f74a4fc4b2abff8489041957e3ccb5a",
+    "mutation_bundle_sha256": "2f272870083034ed926e0bb448bee7f860663ea0c249197534d24f318e461675",
     "profile_sha256": "3a1abed058894874cb4416a74c894f4c8c3b1f93be6da1c3286146e458665eb8"
   },
   "mutation_id": "neg_001_fractional_delay_code_ignored",
@@ -35,8 +36,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

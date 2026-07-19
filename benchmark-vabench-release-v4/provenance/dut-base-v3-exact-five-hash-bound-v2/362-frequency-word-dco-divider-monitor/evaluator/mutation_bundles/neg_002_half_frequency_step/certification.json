@@ -17,16 +17,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_362_frequency_word_dco_divider_monitor",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 3959
   },
   "family_id": "362",
   "inputs": {
     "checker_profile_sha256": "0beb093a5f0418adc7802af2085f012d96f5fb5ccb84d94dc71d6a0dda36be9b",
     "harness_spec_sha256": "43272d9331e52634678cc201cf442f1e9df74df24ef873a9d53bd8c2b9f89672",
+    "mutation_bundle_sha256": "7bbec860b65b32a065db26046a2778c4509682f4d648ec318014316614dfed89",
     "profile_sha256": "0f831afb6a43d2f0f991cb0dbdc9b33ecdf0b4fcee41fac071969493614bec66"
   },
   "mutation_id": "neg_002_half_frequency_step",
@@ -35,8 +36,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "376-pwm-ramp-modulator-front-end",
+  "checker_task_id": "v4_376_pwm_ramp_modulator_front_end",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "e0f6a93b9e59579fea323a008eae1e11e91aa74215b1be9922acba08fbdb25e2",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "b3fbce3ecf81e98bd153d93da721c55f02caf66e4ae9f925f8ba599475ee90e7",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "376",
+  "family_spec_sha256": "cc1bdce2ad6c21361744a1948d501e3c445ba7dc7da9344f7ceb90ec4e55c2ec",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4a86831446a68390247b8d304f60cfea4d573f99abeff0ab985c420558724913",
+  "public_contract": "tasks/876-pwm-ramp-modulator-front-end-testbench/public_contract.json",
+  "public_contract_sha256": "3f4aee2c0fdf9c4042644b6abd524c54f5dbb7051595829a8a972105d3026a5a",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/876-pwm-ramp-modulator-front-end-testbench",
+  "task_id": "v4-876"
+}

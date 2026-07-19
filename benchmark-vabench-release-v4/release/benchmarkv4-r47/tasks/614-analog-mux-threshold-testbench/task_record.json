@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "114-analog-mux-threshold",
+  "checker_task_id": "v4_114_analog_mux_threshold",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "bde61da74326de65ddc2ba8bae603833924448b5528c816eff376052fdb212a2",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "63497638a6c22b3219ef83f3ec12c6cc0a23755c5305093d40d5dab9c988062f",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "114",
+  "family_spec_sha256": "ee0ff9a51938a4fe9cbc0e49be7115b30a517e017c33b0e7223779eccf1d56b0",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "69fb0f53e8eb30cb972daf33bfffa6da6934ee96db4378de4cf684996bc99c1c",
+  "public_contract": "tasks/614-analog-mux-threshold-testbench/public_contract.json",
+  "public_contract_sha256": "3512bd167d2a66c4b1080ae92d6f99c82d6f200b53c881b5ddb59b1c55d4b5ca",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/614-analog-mux-threshold-testbench",
+  "task_id": "v4-614"
+}

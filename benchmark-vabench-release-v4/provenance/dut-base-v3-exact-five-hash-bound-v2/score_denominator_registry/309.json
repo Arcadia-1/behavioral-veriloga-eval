@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_offset_subtraction_missing/certification.json",
-        "certification_sha256": "827877c7836163d6d633abb96bbae84571df6ef7b9fbae8cb64a207542d489d6",
+        "certification_sha256": "8dff9f1800bfc64d76c89a35d18985daac00ef12a529e61f94b4fe38cd7a8962",
         "fault_class": "offset_subtraction_missing",
-        "mutation_bundle_sha256": "d1a6d845d8be57bdb9025b043da9c51edd1693b174d24f77b5d138f8d135e456",
+        "mutation_bundle_sha256": "70a92f60ca98da9e2a2da824c30f614f3718f457f77883444d3fe262d38cf4c0",
         "mutation_id": "neg_001_offset_subtraction_missing",
         "source_catalog_certification_path": "negative_variants/neg_001_offset_subtraction_missing/certification.json",
         "trigger_condition": "offset_subtraction_missing",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_ready_without_autozero/certification.json",
-        "certification_sha256": "6f99087c28c9348c4ebb9254ccaee64289e36998a67910c97098dddf86a2567e",
+        "certification_sha256": "bbdf1a05420f1ebc129a8cbc8f0ad719d0b2312953980cc09ccd8396f5ecf15c",
         "fault_class": "ready_without_autozero",
-        "mutation_bundle_sha256": "6ecbae9f7372af5dfd6cc0c4786efd22bfce2ec2c459493911a04dcfd654ecd1",
+        "mutation_bundle_sha256": "e04f1558addc355659b55f3f27bd1f16b68dc7946f2a113b3abb6be4826cfc56",
         "mutation_id": "neg_003_ready_without_autozero",
         "source_catalog_certification_path": "negative_variants/neg_003_ready_without_autozero/certification.json",
         "trigger_condition": "ready_without_autozero",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_does_not_clear_state/certification.json",
-        "certification_sha256": "06ce6bd04619e87e9f80b56ac01c41652e85154be8ad943c076a16993f96496c",
+        "certification_sha256": "71230c686dfcdb3367faee1de2f4f95e4ac97dfb49b68bd04e2ac927fae4e992",
         "fault_class": "reset_does_not_clear_state",
-        "mutation_bundle_sha256": "d565cb94d0087592549dd109160112769bca950ddab98291db3d0169af68f525",
+        "mutation_bundle_sha256": "108ca62415215a6809c95134a49d9da851e46c47acfcc799b9d9ddd521bad154",
         "mutation_id": "neg_004_reset_does_not_clear_state",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_does_not_clear_state/certification.json",
         "trigger_condition": "reset_does_not_clear_state",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_offset_store_stuck_common_mode/certification.json",
-        "certification_sha256": "2c03020228de77c686e22916c7d677c6f325559bb9f3945732fa0b718bf914aa",
+        "certification_sha256": "4eeeab4d789e4b8bb47bc85b6467e44a9b2bcb200691afc3ef71e0ef6cc97cbd",
         "fault_class": "offset_store_stuck_common_mode",
-        "mutation_bundle_sha256": "1934fbb655c158ece232e0edd096ee9d18e4cc8380e32f44c9373a0b203ff22d",
+        "mutation_bundle_sha256": "9c47839d11d29e89dc9c837ed2613a09455461e163c5facc7649f31a552da2dd",
         "mutation_id": "neg_005_offset_store_stuck_common_mode",
         "source_catalog_certification_path": "negative_variants/neg_005_offset_store_stuck_common_mode/certification.json",
         "trigger_condition": "offset_store_stuck_common_mode",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_decision_polarity_inverted/certification.json",
-        "certification_sha256": "728167ec55886617d49c733353f3ec07a750efc6af9acc2a0048f453e78c4f45",
+        "certification_sha256": "126b9d3a0c9c8e5266b51d0eb5bc2539ac69cb5355608e3842c35bef53b0a2f2",
         "fault_class": "decision_polarity_inverted",
-        "mutation_bundle_sha256": "895676a24d920fb49da769477ffb80bc1f2dd3571e819df12b070d5956c3945e",
+        "mutation_bundle_sha256": "9faba7960bfe5bb3708313c7334f988f28f0a0ec9e501f126f5a95ff389f4b11",
         "mutation_id": "neg_002_decision_polarity_inverted",
         "source_catalog_certification_path": "negative_variants/neg_002_decision_polarity_inverted/certification.json",
         "trigger_condition": "decision_polarity_inverted",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "b180d22b9dacbd4132b7e90847b5a00314eeb62d295b6f9729a558a72ebc08d4",
       "score_deck_sha256": "998fe29f72ad5334cef811cabc38bbca30e3027c65b6219612c6da1bd16c9327",
-      "task_certification_sha256": "f8ce457d87f6144463451845d70d890adbfd5a2a55fb4c07a9c59ff2ac824026",
-      "task_record_sha256": "4d1989d2c9676f76db4d9b2f63eed365a54eb4f2729785c8623150b88dbf29f4"
+      "task_certification_sha256": "bff062099611e0e568712878ca64abf0d07f70bfc73a4ad9c7bb048e35b0514e",
+      "task_record_sha256": "e4d18a6bcd227bb74bd8795b0ff6f561612a4a569066a637fc724a3955cce2b2"
     },
     "release_dir": "309-autozero-comparator-preamplifier"
   }

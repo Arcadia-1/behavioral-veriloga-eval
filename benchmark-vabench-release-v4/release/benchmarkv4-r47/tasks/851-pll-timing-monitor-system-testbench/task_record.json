@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "351-pll-timing-monitor-system",
+  "checker_task_id": "v4_351_pll_timing_monitor_system",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "9951ec314a96d109783e2d642efa3e3d8eb22e76527559722493997c8f41cc8d",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "96a447dbeda7dbd1c39087acab5852719a8961dc1a710db2c0d4b30fb7eb109b",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "351",
+  "family_spec_sha256": "ef0c80f7ac0211a174c187b5825cebdc71a40744c0c48373cd5765f35dd65948",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5bcb79d967c1d698ab7277f18f8e15587e5076ae6e2a418e2cbd16cb343a2853",
+  "public_contract": "tasks/851-pll-timing-monitor-system-testbench/public_contract.json",
+  "public_contract_sha256": "19151e7a1926e133c6fcb98ebe8194b38f78c499dcc10d29e798170cf6411371",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/851-pll-timing-monitor-system-testbench",
+  "task_id": "v4-851"
+}

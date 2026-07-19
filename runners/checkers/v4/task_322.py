@@ -18,6 +18,7 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
     checked = out_errors = glitch_errors = metric_errors = valid_errors = clear_errors = 0
     reset_clear = disabled_clear = switch_seen = both_sources_seen = False
     src_seen: set[int] = set()
+    inactive_time: float | None = None
     prev_clk_a = float(rows[0].get("clk_a", 0.0))
     prev_clk_b = float(rows[0].get("clk_b", 0.0))
     last_input_rise = -1.0
@@ -30,21 +31,25 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
         clk_b = float(row["clk_b"])
         enabled = _v4_topup_logic_high(row, "enable") and not rst
         if not enabled:
+            if inactive_time is None:
+                inactive_time = t
+            inactive_ready = t >= inactive_time + 0.7e-9
             active = 0
             pending = 0
             first_edge_seen = False
             clear = abs(float(row["clk_out"])) < 0.08 and abs(float(row["switch_metric"])) < 0.08 and not _v4_topup_logic_high(row, "valid")
             disabled = not rst and not _v4_topup_logic_high(row, "enable")
-            if rst and clear:
+            if rst and inactive_ready and clear:
                 reset_clear = True
-            if disabled and clear:
+            if disabled and inactive_ready and clear:
                 disabled_clear = True
-            if ((rst and reset_clear) or (disabled and disabled_clear)) and not clear:
+            if inactive_ready and not clear:
                 clear_errors += 1
             prev_out = float(row.get("clk_out", 0.0))
             prev_clk_a = clk_a
             prev_clk_b = clk_b
             continue
+        inactive_time = None
         pending = 1 if _v4_topup_logic_high(row, "sel") else 0
         both_low = float(row["clk_a"]) <= 0.45 and float(row["clk_b"]) <= 0.45
         if pending != active and both_low:

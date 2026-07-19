@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "181-pipe15-data-align",
+  "checker_task_id": "v4_181_pipe15_data_align",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "a9fbdbf2ddbd7245d24d6066e652cb97adfb9c37fa4b5ccfb714a01eb44e3e47",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "8b84a6e345505e42a234e7bed4ff97f09c1553bac5d0c54f0607023d10937d8c",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "181",
+  "family_spec_sha256": "6e6bc6d9344699301210155b25b80b60b5130b6f37c9645555ccea2b52cd1031",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "822c76e967b7e8b302427dbee4f57ea13b71eb106c65a7d5a882c4059390c2e9",
+  "public_contract": "tasks/681-pipe15-data-align-testbench/public_contract.json",
+  "public_contract_sha256": "ecb022df12d91ab3a04920035df280dbfe2a6141816bf03c2e5d3972e3922573",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/681-pipe15-data-align-testbench",
+  "task_id": "v4-681"
+}

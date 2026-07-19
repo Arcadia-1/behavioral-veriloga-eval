@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "127-offset-gain-amplifier",
+  "checker_task_id": "v4_127_offset_gain_amplifier",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "fe161c717b857d12f6ac86eac7aa3b06282f0e1dce7432621b1e6b7929a512e8",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "9a9297c4a02c27f36cb60ce251505ae1a21b08ad457787646952ddf10318dba3",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "127",
+  "family_spec_sha256": "eee986a7d0b55578bb70b0bfd6d88d6300239495a1b91fa45ad599f4e2b6572c",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b4688f57274324a1bb5527905eca62eb0923f59708fa8200e0255afbfc4748f7",
+  "public_contract": "tasks/627-offset-gain-amplifier-testbench/public_contract.json",
+  "public_contract_sha256": "6c6ea06032650405d083f2156487cb3c29648907728e09e97fe18763a8616068",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/627-offset-gain-amplifier-testbench",
+  "task_id": "v4-627"
+}

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_gain/certification.json",
-        "certification_sha256": "6db016f360792f730b082cf22198c45ce5ab0cf204544312611f2a42e313f106",
+        "certification_sha256": "d3856ed4b4e3b9003997cdda90b273ea56faaf040136f0580754930db98df112",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "cf85c5561d823be424eecf885f650dcddd4086540d9a9c344cc47446b812f9c5",
+        "mutation_bundle_sha256": "9177e34fbe74cc862fa905853620b397fae4653ef5753b9855be3a0730fbe790",
         "mutation_id": "neg_003_wrong_gain",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_gain/certification.json",
         "trigger_condition": "Uses unity gain instead of the specified 1.25 conversion gain.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "2e38fa0d3f5838015a8b00d353f44add99da0b61ecd57f863fc3ca02f6ece37b",
+        "certification_sha256": "b8c67b1711b484b889439563570eed31e85fce845b02eb2564434716d1b1e7e5",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "386aa349bac249a9e8b8e93174f635619b95994a0bf6aee227e720d125b68a67",
+        "mutation_bundle_sha256": "436b2d958631d4033a926f3276ca9eac3f3809c1805de9196fa7b4fe905bf578",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_chop_inversion/certification.json",
-        "certification_sha256": "a5ce53745ea3a0766f39d6c27c8a4f1349f31593646d7c07382c4168e7b2acf3",
+        "certification_sha256": "5cf68473b28dacb1ce3cdefbc2ae256f6c3de506eca54001f472e8bc7ca77f20",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "8b23cb2142109639216561e81a39a43b24c328c9d5e4d7db243edded4e13550b",
+        "mutation_bundle_sha256": "ba8d07ff4b64772cb0a2c70f001f1d9f99f35ab4a82450b5a0db9786cf2a4cb6",
         "mutation_id": "neg_002_no_chop_inversion",
         "source_catalog_certification_path": "negative_variants/neg_002_no_chop_inversion/certification.json",
         "trigger_condition": "Passes vin_rf without sign inversion when the local oscillator is low.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_inverted_lo_polarity/certification.json",
-        "certification_sha256": "4bf5439845d120b2c4e1f1f46f7899d01eb5d03b90430d3d8707cf8b7f6c5fca",
+        "certification_sha256": "783070b76af7e7fb77aa62fa25b986c3b258c472f10d11a4d7707276f0e3d1b3",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "5d022ebb1879551f8c713676599b4a7bf9e216b1cd74cfb447dd9dc389ce63f2",
+        "mutation_bundle_sha256": "06b95764c4b543b609aa2d4435cb128a5cf66d96b4b9a7a364c2b75811e668ce",
         "mutation_id": "neg_004_inverted_lo_polarity",
         "source_catalog_certification_path": "negative_variants/neg_004_inverted_lo_polarity/certification.json",
         "trigger_condition": "Uses the opposite local-oscillator polarity for chopping.",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "4fe19a162c4ebfb75fb2180b649adbbe9c13e00e48c2424943cb0738ae6bfacd",
+        "certification_sha256": "d958690d920c0ce91dc89836da7a69e76c01084014239a16eed3e3dbf4403cc3",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "ce5fb8cb3ba034a1bef92198044fc146e1e5f39c60d3f1ed2c53bcd6f47647cf",
+        "mutation_bundle_sha256": "0fc469ac779551ce3b56faab5331a57b66ce18ec6294c4aa41f6210b475bfe58",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Phase Detector Chopper: scales the metric output, preserving the main path while failing measurement checks.",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "53dc0c04821c37e38c4056cdefb90d5207d671304a8d8a6bcc473d2e17b60409",
       "score_deck_sha256": "75b85f9b1b11db5b01280cca1fbe9dece73a90113411db95bd03a223b70c2ae5",
-      "task_certification_sha256": "5582937fe3a2119c760a11e25e1ceffc2ad5c55da9d0f6bd43a2acab3ffca197",
-      "task_record_sha256": "8799f6d39cbe7b2a9091ce507444987f566874c668a83a7fe0fed0b4923d85d4"
+      "task_certification_sha256": "1e873fb0ae05c0ce163f9ba7f5c1cab72060f9d7bc0f1468dc8e1b51fa5a80e5",
+      "task_record_sha256": "a4f0f4bea5249baa352e937f694b0c79f62b4c53dda82dc66d1ddba5cf39f8d2"
     },
     "release_dir": "196-phase-detector-chopper"
   }

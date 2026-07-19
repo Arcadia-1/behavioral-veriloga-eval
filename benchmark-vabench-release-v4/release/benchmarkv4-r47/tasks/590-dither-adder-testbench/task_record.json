@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "090-dither-adder",
+  "checker_task_id": "v4_090_dither_adder",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "c5612b970738e7a61bc835cf9d4a4b1487b89865796e2e76b705331b45e610cb",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "21d6be73852fb35741d1dba7acd224afd985b6e315b7a24e48778119e87ba8f4",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "090",
+  "family_spec_sha256": "27f8b84495b5afbefb13f350539725e9c83f91bd238db9b9f02a3adace25721e",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "26e81809cef1532b23ecdd240082ceae929e8b0dc8e45709cab9707e2a6115d4",
+  "public_contract": "tasks/590-dither-adder-testbench/public_contract.json",
+  "public_contract_sha256": "9a4a70e4b5a2318b8d13be2ee7c4ce569f4b86a0bd4c3994c3d0efff26ea990a",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/590-dither-adder-testbench",
+  "task_id": "v4-590"
+}

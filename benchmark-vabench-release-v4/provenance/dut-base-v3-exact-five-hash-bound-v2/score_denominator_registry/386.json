@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_gain_metric_wrong/certification.json",
-        "certification_sha256": "b6dfcbb071f9df8f145d7bbe331191cc48379ed9231adae7b8ae2e0ffd58fe98",
+        "certification_sha256": "21ac2e441ec805585eec443ad9965d39bce424cd827c8786dcd9e83f922917a5",
         "fault_class": "gain_metric_wrong",
-        "mutation_bundle_sha256": "33fe30b1a33a34a34363dc8439863ccf682b1e6c4d720dba8bf6f54702932948",
+        "mutation_bundle_sha256": "4ff1d5ffad125afcfdd84d246c89dc1d9c76d42e8f64421dd04448f82207ef96",
         "mutation_id": "neg_002_gain_metric_wrong",
         "source_catalog_certification_path": "negative_variants/neg_002_gain_metric_wrong/certification.json",
         "trigger_condition": "gain_metric_wrong",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_no_compression/certification.json",
-        "certification_sha256": "9f77cddd990ae88ab9987b5db53d3dbbaa1431d2f4ff6eea2cfb82a663034818",
+        "certification_sha256": "686bfbfd511060917eb1c5fddc93cb6e2af41f60b63906640c3433cad432bb69",
         "fault_class": "no_compression",
-        "mutation_bundle_sha256": "63b55a8673e4f7635de7fe2fcba69e095dd9154538a8dcdc63b1b3363cdd7ab3",
+        "mutation_bundle_sha256": "64f0d56d857dbc0ed8582eacc619e18d923b6102b592b152389ec185b2177927",
         "mutation_id": "neg_001_no_compression",
         "source_catalog_certification_path": "negative_variants/neg_001_no_compression/certification.json",
         "trigger_condition": "no_compression",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_phase_metric_stuck/certification.json",
-        "certification_sha256": "c3e3dd1c833d8f0c836bcb5f00571d206e415eaa70b956efea8c624f27196a50",
+        "certification_sha256": "97338656692b8d8755cc8557acf59146f69dff503064704c41d8255f023b6fcb",
         "fault_class": "phase_metric_stuck",
-        "mutation_bundle_sha256": "3afe1f85d331b23eb58e38570e515ff6eb92b4b3b46c01b9fb557cb35cceefb7",
+        "mutation_bundle_sha256": "f1f27ceec94e2fa142a6b5d44f977665b1abd581402ad69796986a8df9f1977e",
         "mutation_id": "neg_003_phase_metric_stuck",
         "source_catalog_certification_path": "negative_variants/neg_003_phase_metric_stuck/certification.json",
         "trigger_condition": "phase_metric_stuck",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_flag_stuck_low/certification.json",
-        "certification_sha256": "4e6cf06357b4a2b6fa8dcc99d15daf41671c947ff5b5ae6dddcf53bf48c400a0",
+        "certification_sha256": "69be3d5249c4c2155b2aa45399aa6c0941f14fd7ba21a17c314009220a0cf9d0",
         "fault_class": "flag_stuck_low",
-        "mutation_bundle_sha256": "bf04ce3f936a924def4eb1d904782a9faaa4578e0a2b5074fefa61bfda920107",
+        "mutation_bundle_sha256": "9b0cad1b32f5c57a8972732cd309a507091f17edc06b51dd00083debc8f240c3",
         "mutation_id": "neg_004_flag_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_004_flag_stuck_low/certification.json",
         "trigger_condition": "flag_stuck_low",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_output_not_clamped/certification.json",
-        "certification_sha256": "690ffa7c184ed3ef784678ed3652af739ec9458ce196e02adc4f4cee9d0050bb",
+        "certification_sha256": "b78ed9b31c460eaf95ff47aae29d1c550c9f11998963eacdf3b787014d83ede8",
         "fault_class": "output_clamp_removed",
-        "mutation_bundle_sha256": "ce02ad2659df2bca90959165c48c85bbed6fc933f140ba16c99f71483e65f6fa",
+        "mutation_bundle_sha256": "da242e824cc326e485826ce26fd0750038049165ee68a7682e1622654570639e",
         "mutation_id": "neg_006_output_not_clamped",
         "source_catalog_certification_path": "negative_variants/neg_006_output_not_clamped/certification.json",
         "trigger_condition": "input and gain demand an output beyond a supply rail",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "2fc091775337aa67385e7be17ad21556e08678bda30184e20bac8157f663c08a",
       "score_deck_sha256": "ee226a6152e118bd62fb1c11b3c8f6b596f3149cd038e1781a821c33b9faf648",
-      "task_certification_sha256": "6f30681f0e0e7b96f9ea5ae669760e6241a48ca93c056e42c79618819d8f54dc",
-      "task_record_sha256": "79efb3bc1fe1fb82eed655e977e9b6ba954f7684263106d70f7ee3aff0864689"
+      "task_certification_sha256": "e52bc2309454cff74904e525e9699bf4c382295d82b0a4d2ca5addba824f5e01",
+      "task_record_sha256": "5d23b4814378038bd4cba85a57bf42f0f9b037f4af3254b5bda17c264b1747ab"
     },
     "release_dir": "386-pa-gain-compression-ampm-macro"
   }

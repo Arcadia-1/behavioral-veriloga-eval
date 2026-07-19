@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "e97b8030a1385a81f8c84b61cba020267f2a5e2ac4a7db713d80384747263429",
+        "certification_sha256": "5a4cc94172cf604df15e4263f126a987acddfe7956f26f6f18caf967586fcd2e",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "f972a2f335152c48d6f11059a6507765800b0482b7c6d91a3760a184a3bafa18",
+        "mutation_bundle_sha256": "b7a3f67400af76e53d0dedecb5e949a7309394e91b9ffa1ab33a7c529f863ad9",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Mux4 Priority: scales the metric output, preserving the main path while failing measurement checks.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_swapped_select_bits/certification.json",
-        "certification_sha256": "f71a9e6e7a121c2af9fa9e682625b9431f7e3e446ee1aa723210a3bcc7e4b333",
+        "certification_sha256": "8e95b5d49d20681ffae7ae486ae8c8829c178664efd9ce847b96b468a2a7fef4",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "4412dd7c729b6957a7a63fa2a7b41b06761e0aac92057071042eadfbfa186bf5",
+        "mutation_bundle_sha256": "e7148bfb7c14fe453a52ac6c400177735b05e250046302c15b7d7ee71d00d277",
         "mutation_id": "neg_002_swapped_select_bits",
         "source_catalog_certification_path": "negative_variants/neg_002_swapped_select_bits/certification.json",
         "trigger_condition": "Swaps sel0 and sel1 when decoding the mux select.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "c518e9be8fc1492ea8f4826b19768e83c8d4fb4f438e5409d1297348b2ce5091",
+        "certification_sha256": "bf54d8748619668f5659a9ff405b774966cb8120371fa13a5b8ec7a29721c1f6",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "9b56b258ed445a0b73d5bb7d0ff7e0d18f69840e0e8adda05a44d4ab677411ad",
+        "mutation_bundle_sha256": "f71172000b03c01973890d823833f8af249013dfa87c9b3d360a30ab253efd3b",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_always_in0/certification.json",
-        "certification_sha256": "81dbc68edbc9c84e3a4871f42276b772863e747a9548d71fdd9c71f5ee0b0d96",
+        "certification_sha256": "4d759885a75fde8e391d8445b725b0b658aed2f80c17f4a83c3b01b5cf474c01",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "ce0dfc5f64e70b8c7fc806d2e3bc076a264ec430cb99971dd9b212a036fcc3ac",
+        "mutation_bundle_sha256": "dec244e079da7ef10fb6f682764dbc9cefa28a904d4c8e2c6722bd120de94447",
         "mutation_id": "neg_004_always_in0",
         "source_catalog_certification_path": "negative_variants/neg_004_always_in0/certification.json",
         "trigger_condition": "Ignores select and always routes input 0.",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_inverted_select_threshold/certification.json",
-        "certification_sha256": "7a97ce12e47e264cc5fd46815e3a2150af43eca7aa23e7a4e857163a410e5d99",
+        "certification_sha256": "4d0b8aa9c98d328894b02f80bbc6626bcdac0f175c72b794ec1a22537d4378b7",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "ab7cebece54dd6fa76ac41a17ec54afda70a1d56e7c73815d1d5a02922b7d7b7",
+        "mutation_bundle_sha256": "71d4ce67a89b5087ad0d8f49a3170c46588a3ff4eb8bb19cfa4d0b52d5ab18db",
         "mutation_id": "neg_003_inverted_select_threshold",
         "source_catalog_certification_path": "negative_variants/neg_003_inverted_select_threshold/certification.json",
         "trigger_condition": "Inverts the select-bit decisions.",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "808b670281d96a37ab1584409aaaf342c38bec7a4c4bccdf20fe17cde961c3d7",
       "score_deck_sha256": "6bed9022497970c6e4f3f18966e892c360ee8200189e3f37a966c91b7a406448",
-      "task_certification_sha256": "6f6dbbc3fe49c37690ad5e824b7684e932113711c236fa23bb851580eeeedcff",
-      "task_record_sha256": "01696e7bbe968983cebe07fbc653ef23b02262f55eab934facf039e187056007"
+      "task_certification_sha256": "9e695da180bb9c98c4af2b6fe0f36e158cde9df8d0efa930417b667ffa519fb9",
+      "task_record_sha256": "e91c5f127e4a3838667662f8c56a0aa8a375de57b70d7353c50b4741a1067cf7"
     },
     "release_dir": "246-mux4-priority"
   }

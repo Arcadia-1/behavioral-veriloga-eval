@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_denominator/certification.json",
-        "certification_sha256": "68b912d3caa2b4827f5865260c694d688dad9973750764c1265056ea579dab2f",
+        "certification_sha256": "9e7d591d6e214190fac6305e06be17ca6cfa9f2510d4f225d9ac87b5fd8bf3c5",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "f32f96eeab6a7e3a0b5b70fec4d4ec4f77081d931219937eea51a78033c2c61d",
+        "mutation_bundle_sha256": "dcdfebec6413ebfb9c5361cd5dbe0ab2c4a8daa4a1878bf2f2b189c8a9a378ad",
         "mutation_id": "neg_003_wrong_denominator",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_denominator/certification.json",
         "trigger_condition": "Normalizes by 63 instead of 64.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_unipolar_output/certification.json",
-        "certification_sha256": "718732a68bb01bb7f1173b6d30a524bf7df93685750086806b8cc499cb779c3a",
+        "certification_sha256": "e72df7ff11203f73321b4a118cf6a2e8d9b6dcbe4e51f2883d46e5ab8e8012b3",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "f6e8f08b32bfd00914445b6c0f67e4805140d68e5cba7408d8122a4982268135",
+        "mutation_bundle_sha256": "f386893ca8c9b476f1b2a7feb5c2bb6a6ceeadf152ac5c237f1714c12ddd73fa",
         "mutation_id": "neg_004_unipolar_output",
         "source_catalog_certification_path": "negative_variants/neg_004_unipolar_output/certification.json",
         "trigger_condition": "Omits the bipolar -1.8 offset.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "16de53115c2c1bb24692f98d8699f7d60942e08ebc8bf337a7beb197dab564c6",
+        "certification_sha256": "4cdee084b00ab7dc253d80f5bc98e19b9e7bf31297d3c1f360024bb82b6c626e",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "2129fc506a58c94d47c6261ed41575857cdcd6b65606928ab25d86c3f341ee9c",
+        "mutation_bundle_sha256": "1fd35f1f7635e0e74d8ba107a56335ae8f4b8101e34778ac87c722935b6a16a7",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "DAC Restore 6bit 1p8: scales the metric output, preserving the main path while failing measurement checks.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "2589a4d8e737c7197314567c467668b0f095f5593f20646ffc354b3034907e31",
+        "certification_sha256": "111b6ccb1ce290fb2e1a446f43e03ce40be3f8ecb23064e05b88b44eed33f95d",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "279934781e75c2107182f053fc10ab59e45254fcfb51b36f890f67d96b0ec0fc",
+        "mutation_bundle_sha256": "cb909e9d6cc20ef7ab3fc78d50c52e0344008d8d281ca151bf237f7e5c2e58e2",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_omit_msb/certification.json",
-        "certification_sha256": "b79e967220b061771a79a77db5f4362f61fb41d0330dbc0b0401fb57fc875206",
+        "certification_sha256": "c1ed64cee0d7ce0783dbcaf0b5a63b6e044f1cf576c3e9c767efed335c108135",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "f358e4e4eb4c8add678657b63d09c7cdd9d92a2503825b3516be1619972af59a",
+        "mutation_bundle_sha256": "9bfb58d59bfcddebdf8c7a077e1967a12017c0ca6b3c68c06688b1c80efc0a91",
         "mutation_id": "neg_002_omit_msb",
         "source_catalog_certification_path": "negative_variants/neg_002_omit_msb/certification.json",
         "trigger_condition": "Drops the d1 MSB contribution.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "be2239989a2c49402acc5318af8c06e6111b72727fbe6075ae7ed600359852e7",
       "score_deck_sha256": "bb49d0affc772b9acfaee7486a461c6749d217eb5f0a878a4541d3576b86630b",
-      "task_certification_sha256": "4a8142c2d04cb68b48e0f50eb4187decb949d2263502cd18d4aa83d3378ec7ea",
-      "task_record_sha256": "14b23ec8f4db138ba64a4d50e6e07277d710b5d94358fa6c76ee3788a148e6d9"
+      "task_certification_sha256": "7bdaf5a783826f75b3433998ac9ea875c8d80756343e81e588db5475239e7167",
+      "task_record_sha256": "37e8b2a0b99807805b7b83e24fd5af7de8958705f754af6ae34d62bcdde1cc18"
     },
     "release_dir": "209-dac-restore-6bit-1p8"
   }

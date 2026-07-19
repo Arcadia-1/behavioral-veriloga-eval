@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_final_stage_source/certification.json",
-        "certification_sha256": "8c766ac588a9d2848efdfa4bf8cbcf5dac71755f96a12c5df0c2a6392b3b83e1",
+        "certification_sha256": "ebd8a9a6d6c8caef848ddd8f4ca089d0b0ae2586fd5b2a7b60caa770b6811137",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "ee28c3a6fe693fcc087e6bd8404121c293863e713af8814da473d3251eccbca3",
+        "mutation_bundle_sha256": "633501d52e5f709c0d1ee83a761173bb75085af4f553c2d92f1ed1ce200ac381",
         "mutation_id": "neg_002_wrong_final_stage_source",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_final_stage_source/certification.json",
         "trigger_condition": "Forces the most delayed synchronized output bit low.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "2540dbe1c3d35c69bd025f83e320de5d13b39d6f5b144fd530ed99f292de9f68",
+        "certification_sha256": "74562e4ba028b346a067aa45f9d769f6a713e74a0fe836bcf0c4b51207597540",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "f7ee2a00a55f1df6647e1da888d7cb670708bdee70f03b4a7382d5bc1cc237cc",
+        "mutation_bundle_sha256": "6e796458a5d68fd3b168c90cc7ecccecb1d5f53d1a3f6ce421ba8867c2510bb0",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_omit_do4_capture/certification.json",
-        "certification_sha256": "451115b55ac3a2cd2ba758bf30bcf7cafb761a94924bb086fd24e65ea591e631",
+        "certification_sha256": "74b5482ed837709f72a45ed3839a290caa16d40e1f71e5e61e7930319aab6204",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "4ecb823af60775aa243511e6fb707126ac78cae359308afa1e60945478f53213",
+        "mutation_bundle_sha256": "5d278b514656c7a904d3c46f2124409362a990dc3080f761bf23da68fd67534a",
         "mutation_id": "neg_003_omit_do4_capture",
         "source_catalog_certification_path": "negative_variants/neg_003_omit_do4_capture/certification.json",
         "trigger_condition": "Forces output bit do4 low regardless of the synchronized pipeline state.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "ff3c34b3ef88371c5e90a5bb335cf3af7a1cedb69df5f4678870f7dcaf7e9d48",
+        "certification_sha256": "d5d92f5ca9759aff1a74edcabdfe595c619188c597e149e3b68bf25e615aa8b9",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "48645a7c134c77675d1397a026e2745baecdbbeb459bc4bad75c0c63852f465d",
+        "mutation_bundle_sha256": "888a8393d53f06752069454edf8be21dbf668e0fb1ddc3fda590801260be76f0",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Sync 8b DFFs V2: scales the metric output, preserving the main path while failing measurement checks.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_invert_do8/certification.json",
-        "certification_sha256": "31f441b56882460384f93bea68cb08af76a559f322d6d81c936ea914693e0ab7",
+        "certification_sha256": "6ffd749661d3cd0ebabb6ac7262a256185492ac19d5fc7da2c42102969c5964a",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "effad24caa0d5e16f8614b430a43dec461520dcf13c54678cc81c5a722c2338e",
+        "mutation_bundle_sha256": "762520b37a405dec60e4825afa9e9da4f74a2689b8131bd3dfb583a6ca808314",
         "mutation_id": "neg_004_invert_do8",
         "source_catalog_certification_path": "negative_variants/neg_004_invert_do8/certification.json",
         "trigger_condition": "Inverts the most delayed synchronized output bit.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "8fe092b144cb021dc5be6a46af296c8353ef26bbdb8c24067940fd971174dda9",
       "score_deck_sha256": "8209441ff48d33f3d826d9199a8cd1d144ec1b6e28106a6e33d60807ff5ab10f",
-      "task_certification_sha256": "b201c547250116f6ab613ae9af91b76d59fa3bc52a4c156e405e4b37b728715b",
-      "task_record_sha256": "4bdcbad9deec32264655655333c76100a1c77613aca1f9f87c8f8eda77b527b7"
+      "task_certification_sha256": "2d7be704ce4e5ccc7f367adfecc431ff932ff158337ac503dc1f95600755257c",
+      "task_record_sha256": "8100638db8c8b3680cbebbcc928d227411c1d264070b4e63a1cd9be92554472e"
     },
     "release_dir": "177-sync-8b-dffs-v2"
   }

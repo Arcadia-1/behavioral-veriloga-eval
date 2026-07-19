@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "251-weighted-balance-summer",
+  "checker_task_id": "v4_251_weighted_balance_summer",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "c4fb46515cc9a23067931bb528a2aba63763b8643459af1afb58e996dcedc262",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "db4f880e52614f11de254404a6e1f491edeba3a25b4043f9e32260b92be7603b",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "251",
+  "family_spec_sha256": "24ce2b007dc62d36adf6ea04b881b6e8380a64555fd7f7b3626daa152fec3109",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7dce7f31e6b26c876d3289ed7d3c0343f1cc6590aee14c409174f21a735b2405",
+  "public_contract": "tasks/751-weighted-balance-summer-testbench/public_contract.json",
+  "public_contract_sha256": "6065b9c3ff4ce747f9d8a235a76e6848a1664dc2b822467710509896f2904a4b",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/751-weighted-balance-summer-testbench",
+  "task_id": "v4-751"
+}

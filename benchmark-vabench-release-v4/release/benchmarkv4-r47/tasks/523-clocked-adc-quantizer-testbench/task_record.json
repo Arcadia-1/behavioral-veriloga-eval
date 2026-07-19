@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "023-clocked-adc-quantizer",
+  "checker_task_id": "v4_023_clocked_adc_quantizer",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "d364dd08882ab16f8ed44ba155485e0380ddbd8a17be2550621c5cf1384c7149",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "85cc3a8c2b791140e653b942548ce7219312e7bbc70170309897ef744e2ea6d4",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "023",
+  "family_spec_sha256": "4d47713ebf463474cd85f8f706805824495be8c3df1d063bf675ae0906de6e7e",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "be188364e62c544db0eecea91d40a20b9e065d26e8be3eb3361237bd38fa9a5c",
+  "public_contract": "tasks/523-clocked-adc-quantizer-testbench/public_contract.json",
+  "public_contract_sha256": "d4f50094c29a9ac2a4a4f2b5a5516071947d513f09ac376f6ab78957fe1c6bf7",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/523-clocked-adc-quantizer-testbench",
+  "task_id": "v4-523"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "adc_zoom_timing_sequencer.va"
+  ],
+  "canonical_dut_source_slug": "202-adc-zoom-timing-sequencer",
+  "checker_task_id": "v4_202_adc_zoom_timing_sequencer",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "35d3b3b6184fe7f6d8ecf321066b2a5c027b70fcd6aab7cee5c1fa5a8fd5a49f",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "87f86cd3a8a2a3179bcae4d44e115722bbc97b5499954b6efc8c8a9506266d4e",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "d4a2dbd96fcd396b5664048a2d8c4673d1bbfcaec01fb26965552711c2ac4af7",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "202",
+  "family_spec_sha256": "3091409e1058e7b28b7ffd90b77e69536ea3faae06e6876f7826bb15ae084b7f",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "085163f2527fe7991368ba40e0c19dcda9b4121283b122d60a0a4873884ab08f",
+  "public_contract": "tasks/202-adc-zoom-timing-sequencer/public_contract.json",
+  "public_contract_sha256": "aa76ccefc118e6b80f6375dd5d9637addaf179cbae55f33bf355aa87101e748d",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/202-adc-zoom-timing-sequencer",
+  "task_id": "v4-202"
+}

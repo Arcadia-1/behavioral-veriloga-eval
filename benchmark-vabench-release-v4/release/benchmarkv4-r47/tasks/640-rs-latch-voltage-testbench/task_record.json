@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "140-rs-latch-voltage",
+  "checker_task_id": "v4_140_rs_latch_voltage",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "9bc51556ddbc18fd490b76085f23a1adb96e15856b5be8ee5e165b6cd0a525d5",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "daac7e434986069af012cf4b39a99a26ac666f903bfc3d04042768b682f12821",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "140",
+  "family_spec_sha256": "c590a9dac1b970520868f440ed1d57dee29839130ab29415feee5a5cd5c954d9",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "fe2c30a7c499e844de83c2c3ba973be1d2c221ef439268d51a0c9cabb40a52fc",
+  "public_contract": "tasks/640-rs-latch-voltage-testbench/public_contract.json",
+  "public_contract_sha256": "3c2bb44471e332439a7d7630cbacc840b658d103f90acf1f591161865739d3b2",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/640-rs-latch-voltage-testbench",
+  "task_id": "v4-640"
+}

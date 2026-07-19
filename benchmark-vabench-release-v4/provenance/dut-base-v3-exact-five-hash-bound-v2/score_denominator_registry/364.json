@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_q_sign_swapped/certification.json",
-        "certification_sha256": "718a8d4807b08f653a289c3d97ccf98dd778fbc44ad8e36c6e2c89629b1c1820",
+        "certification_sha256": "c3557894c16247a68b79ec9f0d08323ebc9d1f077d9278ba129ee422c48b1855",
         "fault_class": "mixer_polarity_error",
-        "mutation_bundle_sha256": "57c99681f572d0557b2488fa0aa644f66f471398fb1209be2d43f4b4eb26194e",
+        "mutation_bundle_sha256": "ecb73bf7c035f0275926cd6d84f989c1e35af0803062512133c7a64fefea2849",
         "mutation_id": "neg_001_q_sign_swapped",
         "source_catalog_certification_path": "negative_variants/neg_001_q_sign_swapped/certification.json",
         "trigger_condition": "q_in differs from vcm while lo_q toggles.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_quad_ok_after_i_only/certification.json",
-        "certification_sha256": "64364ca46e8550098a434a4568f01e87e771f4ef6c6efa125a6fdd153eb0b6ac",
+        "certification_sha256": "9938df0d536e2b8c5b01ee8fb830e03453987b6b38d3fbea8b15a7a3bc139d3a",
         "fault_class": "activity_qualification_error",
-        "mutation_bundle_sha256": "0cf4afde2c37f0bc1a63e4445060bf2c82df73c70c1741f360a94480dec1ba90",
+        "mutation_bundle_sha256": "046d61af69749e735247bcb9c82268048f950ce98f3e0c872b71a56cabea0ceb",
         "mutation_id": "neg_004_quad_ok_after_i_only",
         "source_catalog_certification_path": "negative_variants/neg_004_quad_ok_after_i_only/certification.json",
         "trigger_condition": "lo_i crosses before lo_q after enable.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_disable_keeps_rf_active/certification.json",
-        "certification_sha256": "67ecef022cfefdaecc2c2a072683fd6f889debf9358675cf7368d45fd666af66",
+        "certification_sha256": "ba521a92082297e609909c8240086578fc3876a44a06ed7d39fe09d5d5e2db05",
         "fault_class": "disable_clear_error",
-        "mutation_bundle_sha256": "6b8416a2a1de530608c1066586cdd92f0f7b8c014722d0921e6fbc7f24a460ad",
+        "mutation_bundle_sha256": "dc1358a50b7ff278a5fb1230c699886f8a293db901c8f65a0c26e559b674bf03",
         "mutation_id": "neg_005_disable_keeps_rf_active",
         "source_catalog_certification_path": "negative_variants/neg_005_disable_keeps_rf_active/certification.json",
         "trigger_condition": "enable is low while baseband and LO sources remain active.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_rf_ignores_q/certification.json",
-        "certification_sha256": "d619cc92ef7e0f8eee74bb80804d1043e682596ea08bcebcda5982cd6f9e8e6c",
+        "certification_sha256": "cc917ca651a0dca3b9f2ff6e8b2d11b442adff152306375c6714f541df92c191",
         "fault_class": "summer_path_missing",
-        "mutation_bundle_sha256": "731ee048e23d1399f568a5dd798fe82f601ce9646d20db7ed2b3fd1535d4e1e0",
+        "mutation_bundle_sha256": "7160c03cc7f1b4ff33e36fabfc0fa2f5ad95460eae46e2d0f28c0f0560af8bf3",
         "mutation_id": "neg_003_rf_ignores_q",
         "source_catalog_certification_path": "negative_variants/neg_003_rf_ignores_q/certification.json",
         "trigger_condition": "Both baseband paths are active.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_i_path_zero/certification.json",
-        "certification_sha256": "7461627079300be6cdf08822b92cd34c683b5f2e6a5e04d6b24be0536871c45c",
+        "certification_sha256": "f9c4096057eae5aea3242946ebabee7994196e25abc8408249103404f68dcb16",
         "fault_class": "mixer_path_missing",
-        "mutation_bundle_sha256": "776c3cd4625dcdca563aed2dfff096fff030a68f217008829b5986dce4bd9240",
+        "mutation_bundle_sha256": "4ffbb051cd78316483d0a73eb63ac93cc2422389b3991b4395a9fb8da325f21b",
         "mutation_id": "neg_002_i_path_zero",
         "source_catalog_certification_path": "negative_variants/neg_002_i_path_zero/certification.json",
         "trigger_condition": "i_in differs from vcm while lo_i toggles.",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "3ceaa044c03b83eaad842dceae349809f548b58c8a822d8a7ef4b86d0c966a60",
       "score_deck_sha256": "bf7bb43fc6186d52e988a10c1ef421c5c52a6acdbd9193d6bf0def46adce1c3f",
-      "task_certification_sha256": "1752ea11d188c00b4e3089a60a0b980c57bdc1b8c32a90c78a3684e10db9eb71",
-      "task_record_sha256": "f4275cc77d02d819b819d4ce3d0a154deb2b7f22553fb14bbf215b4b23761453"
+      "task_certification_sha256": "d0828b0cb14134ac79a1dbbcee1aaecec5eadfdb6b18e189069dafe818e5d7de",
+      "task_record_sha256": "0a843693dd31677d5de876025b1fce0140927450fc6793fc39a29addeab386f1"
     },
     "release_dir": "364-iq-upconversion-mixer-chain"
   }

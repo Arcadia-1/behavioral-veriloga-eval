@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "002-capacitive-sar-feedback-dac",
+  "checker_task_id": "v4_002_capacitive_weighted_sar_feedback_dac",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "f5e238e237d5b838f3758c1970d8918f9a4abfe65f6c00245e698a857a3aceab",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "d704d7923da74310f055738ed33e9aad42ec6a9d9d3e5e01a63b46a438db1f07",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "002",
+  "family_spec_sha256": "6e0b2955719b62ed92c44542bc4f6328d510489e7cd1c11a8721c1029445d4cc",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5f6edc2813ade8fe0bcf0d88aece272f5b472cc31953fbe622dbc7f12997c35b",
+  "public_contract": "tasks/502-capacitive-sar-feedback-dac-testbench/public_contract.json",
+  "public_contract_sha256": "d47dfd830b9d42878b141d75f75f4ae95cec6525f8f1f09390198c27a249aad6",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/502-capacitive-sar-feedback-dac-testbench",
+  "task_id": "v4-502"
+}

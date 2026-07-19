@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_HOLD_ALL_CHANNEL_SAMPLES_BETWEEN_SAMPLING satisfy the public contract; fault class channel_metric_reversed is rejected",
-    "observed": "EVAS: v4_311 checked=129 reset_clear=True disabled_hold=True invalid_seen=True valid_seen=True codes=[0, 1, 2] vout_errors=27 metric_errors=74 valid_errors=4 disabled_update_errors=0",
+    "observed": "EVAS: v4_311 checked=84 reset_clear=True disabled_hold=True invalid_seen=True valid_seen=True codes=[0, 1, 2] vout_errors=14 metric_errors=47 valid_errors=0 disabled_update_errors=0",
     "violated_property_ids": [
       "P_HOLD_ALL_CHANNEL_SAMPLES_BETWEEN_SAMPLING"
     ]
@@ -17,16 +17,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_311_muxed_track_hold_array_readout",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 1198
   },
   "family_id": "311",
   "inputs": {
     "checker_profile_sha256": "cd4b0d3796a295967e40549afde9d4760ea309dca1ea7969a8009247f2d8c203",
     "harness_spec_sha256": "dd633241d9346d56643252dd9e31426032ce128e48e953d76179a5eb45f97826",
+    "mutation_bundle_sha256": "e0a2bb1c529e780551ba750950673fb1e4c404475b7b38982a255478647a6c09",
     "profile_sha256": "31035a3d9a3af4b13b709ec81400e0bf74f119f2e2fbe7c995370767ac3afa76"
   },
   "mutation_id": "neg_005_channel_metric_reversed",
@@ -35,8 +36,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

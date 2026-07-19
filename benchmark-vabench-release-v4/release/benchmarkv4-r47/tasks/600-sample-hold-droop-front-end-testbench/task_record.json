@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "100-sample-hold-droop-front-end",
+  "checker_task_id": "v4_100_sample_hold_droop_front_end",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "45df06ee6a163440fad03a1e09c92073beeee2b754cab10012eb87e9f1f84b81",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "46943f2add061c258f3b6a6ab27b058e88b4ce68dfe45c7919fa2cb21a026c33",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "100",
+  "family_spec_sha256": "7903038bf782411c78f1396645e9b95d027acc5cf55ede140f868738db2b8995",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0d594d33ae15cc8cc71e7484c686e71c1ec2353407ec77963ef04fd1265f151a",
+  "public_contract": "tasks/600-sample-hold-droop-front-end-testbench/public_contract.json",
+  "public_contract_sha256": "6832e7582faf39df7c882773fa04d5ec823f10b5b55e78e0536ab19e9bf3ecec",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/600-sample-hold-droop-front-end-testbench",
+  "task_id": "v4-600"
+}

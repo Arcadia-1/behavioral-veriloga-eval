@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "384-level-shifter-enable-rail-tracking",
+  "checker_task_id": "v4_384_level_shifter_enable_rail_tracking",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "0da33f9a667f83fdde9fb820dea624baef99e28d7dc784fdeab2f2191c6598ff",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "e9847ab929ed229388f56d40181f3af431ca0469c66c96cb3067612f380716b7",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "384",
+  "family_spec_sha256": "289d2c26ccd11b99b43e7fe44ad5b16c6444c1fab6548b64717c22d8633f623e",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "31a257bb59c864a510dcd4201688dfe7a6cbe26a96dda3cdfe014b1fa863e989",
+  "public_contract": "tasks/884-level-shifter-enable-rail-tracking-testbench/public_contract.json",
+  "public_contract_sha256": "98f5d53a1e648e5779e0c10d39fe1974d5d005afec182d5b502b808836e11103",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/884-level-shifter-enable-rail-tracking-testbench",
+  "task_id": "v4-884"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "354-dfe-receiver-2tap",
+  "checker_task_id": "v4_354_dfe_receiver_2tap",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "6f58fd4f1dddc60932b68afcb0fda4858f2c0fca7690933c73439fa46aa836ca",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "598d7ed18071d6e7c3385c555134ab9906c88d6624dd29db72230d0f9099db55",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "354",
+  "family_spec_sha256": "6ea4bdf1b3727c894fdf9cda716f0f19c78f8a895ddc309af2eaa70940112656",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e0930c3e2de42291fc756ba0ad5f73ab2daa8aa61965348d922b7f5742335830",
+  "public_contract": "tasks/854-dfe-receiver-2tap-testbench/public_contract.json",
+  "public_contract_sha256": "571c92f8ff142f04c35067efa552a014658034a33a13bd4e867d9997d70777fd",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/854-dfe-receiver-2tap-testbench",
+  "task_id": "v4-854"
+}

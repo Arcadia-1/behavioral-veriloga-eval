@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "ee1b5d86f4656ea02bfbe5414d562f1755c562627e7d3fa111a49bd49d873d17",
+        "certification_sha256": "24960b57da13a28486f8919688a1ffd388b636e66c06613ec3ffddebd27b7166",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "a525293384e54040ce3bf6305bb4025d7ff8216376f592939880a5c509691790",
+        "mutation_bundle_sha256": "585b0131d973a6caafb671d216cce861d291ab1e2608569515bdf6bc5ee366a2",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Existing concrete negative.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_reversed_bit_weights/certification.json",
-        "certification_sha256": "0f326f84fc059a46f976ba8784c8091d96ae0387ae7b0e2117934bd3a75e7c24",
+        "certification_sha256": "65509818fb4df7744338ef280dab5e3fe5ea7cc953334bb6aa8aeb4544e8d34c",
         "fault_class": "fault_003_reversed_bit_weights",
-        "mutation_bundle_sha256": "306e8cb7894b13cc7f83eb408ca0a5ab61d0058da09391f55433a6701589b8f1",
+        "mutation_bundle_sha256": "e05213847f892041799100c4c2be9af58877a0ff269be37346f1186387c9eda0",
         "mutation_id": "neg_003_reversed_bit_weights",
         "source_catalog_certification_path": "negative_variants/neg_003_reversed_bit_weights/certification.json",
         "trigger_condition": "Reverses the bit weights.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_fullscale/certification.json",
-        "certification_sha256": "6fd588adb921c8a5b7081f5ff0828dd15a6c6dc584ead78a150c9ecdc061c65d",
+        "certification_sha256": "a32fe76b581d1a6ad702f85efe34136d14ac9df5ef34c868f34ee108576d5c94",
         "fault_class": "fault_004_wrong_fullscale",
-        "mutation_bundle_sha256": "ade33798622edebac89c273f9008c764eaf6aacaee5391a98c78c18426c2f38f",
+        "mutation_bundle_sha256": "8a9411f4fac25da57d38e67e71d636db3f7d560f3e98708c8659caa756707349",
         "mutation_id": "neg_004_wrong_fullscale",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_fullscale/certification.json",
         "trigger_condition": "Uses the wrong denominator for full scale.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "16bc488efe8f95381970c22bc0bcc3202a153d9e846fcabe5916294934de1102",
+        "certification_sha256": "de59b97f3cbabd2c17ac25b17e1a0e491bc3db29480399e9d0b6e1241242a702",
         "fault_class": "fault_005_metric_scale_low",
-        "mutation_bundle_sha256": "359f23c33e96c3da1b7fd74b6e426fe88161874d64fcaf1996e0210c649cff8e",
+        "mutation_bundle_sha256": "b0c39fffc0b47edbe368794f8b5a3b60fe8b82e9830c36c82ebe21b4643de540",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Bipolar DAC 4b Continuous: scales the metric output, preserving the main path while failing measurement checks.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_unipolar_output/certification.json",
-        "certification_sha256": "49d6b8d95c20c12f5e216ae387f2d33398715c442d44156bb2893fb1be66ce62",
+        "certification_sha256": "9da9066e39a6aff80976e6372c6de50016dac853e10f7c02929479c83dcf7425",
         "fault_class": "fault_002_unipolar_output",
-        "mutation_bundle_sha256": "ee4c128de88d218071dc9b30f5951aa99f500ab92a7353d4148096ab77f02cdd",
+        "mutation_bundle_sha256": "55edc7bc7442a24ca1e735de5878f0890c277a421de115cffc3ba5657e3908cf",
         "mutation_id": "neg_002_unipolar_output",
         "source_catalog_certification_path": "negative_variants/neg_002_unipolar_output/certification.json",
         "trigger_condition": "Implements a unipolar DAC instead of bipolar output.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "7a97a7e57a23ae03b1ebb732b6e05879f86d83fbe6bc3e0ca2e1071dec1af9b2",
       "score_deck_sha256": "5bc2fbb68af42e984dd96ae705e62cc6ba9ceeedeff9e3ea66f2eb6bd769d59a",
-      "task_certification_sha256": "af8e5b78e8bc57907c2d8a8be760f9a6a11576cd2cff1c596bc018cee2770990",
-      "task_record_sha256": "14b3fed2026c35027917172cb9c50d5d83d2ecda85ebc072f57396f029f1c519"
+      "task_certification_sha256": "8ebda36bf3ed49ce6175a9ea6c6a0055db302c84b24aabb2531cf1783e70618b",
+      "task_record_sha256": "256e702e09237598e33219812af00b709133ac65035eac46aa7afbbdabbd62d1"
     },
     "release_dir": "107-bipolar-dac-4b-continuous"
   }

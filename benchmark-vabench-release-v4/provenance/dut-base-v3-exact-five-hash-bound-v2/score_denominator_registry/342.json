@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_sample_stuck_zero/certification.json",
-        "certification_sha256": "ae6e933049d78bdefaf9b04780c2255447fb30ad92bc88870cf9f5060dc984cd",
+        "certification_sha256": "1f3cfd5874109a1005703153562bb852404b23cdb6851e4e62fc7eb12362beba",
         "fault_class": "sample_hold_failure",
-        "mutation_bundle_sha256": "a553208c954a008001c3a423daa5199b7633295d330d7837f1b03d3558de36e4",
+        "mutation_bundle_sha256": "08a8cd8cfbcdf8b4ebc31cd1ffdfc328d90ba18d9ff7e1da091ae7ce9dec9d5a",
         "mutation_id": "neg_001_sample_stuck_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_sample_stuck_zero/certification.json",
         "trigger_condition": "sample request captures a nonzero vin",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_first_trial/certification.json",
-        "certification_sha256": "6ed7191a28204d96acad7070572e5d8531ec22af9d94c19b3c9bb8daae469ed2",
+        "certification_sha256": "12ed0fb1abc62ef072ecbf581b43c30017cc872339376bde9cb0eb2ac18efb1c",
         "fault_class": "bit_trial_order",
-        "mutation_bundle_sha256": "b2a0bb93d67d8ca6cf4a4db6d7c55d7d6f3b1e3121f09e04def43bb8497902c4",
+        "mutation_bundle_sha256": "5a9e3906c372dcd8db59688d477e8d74cbe633317017f8eba88610812e1a373b",
         "mutation_id": "neg_004_wrong_first_trial",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_first_trial/certification.json",
         "trigger_condition": "a conversion starts",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_done_stuck_low/certification.json",
-        "certification_sha256": "225f5c98bcf095edee24e4d1b0dcc6f75297dd83aea3b704a5cdeb7cfc25fe02",
+        "certification_sha256": "65f1068023f11c82935a9c2e5103679b60cfaafc4be44371d83e8bc5494d4fc7",
         "fault_class": "reset_clear_failure",
-        "mutation_bundle_sha256": "e2a731bea3be48fd2a05be1e99620fce6a121b09897b36aa463243d82ddb8771",
+        "mutation_bundle_sha256": "52a5a3ae1bb08ec34e18131e5b5a3b54584bf670dfbcc09496d78c9d1b657a3a",
         "mutation_id": "neg_005_done_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_005_done_stuck_low/certification.json",
         "trigger_condition": "rst is asserted at startup",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_comparator_polarity/certification.json",
-        "certification_sha256": "4b0912850a61940c450e34639ea981c9abed3f79f19f5ad0ee0ca24f7f7c7f07",
+        "certification_sha256": "2516e333050c4613c6c42072d0d4e71079b57bdc572c30b50dd1eec64f4cf222",
         "fault_class": "comparator_polarity",
-        "mutation_bundle_sha256": "f43f77c0c8c3840f41716ed5f0e9900d1cce1f7763ef3fac9611681f7da3f28b",
+        "mutation_bundle_sha256": "73801fdc08a1e71d9d3af2d6ba061302412e3948312909d0d22988f977fc3767",
         "mutation_id": "neg_003_comparator_polarity",
         "source_catalog_certification_path": "negative_variants/neg_003_comparator_polarity/certification.json",
         "trigger_condition": "held sample and DAC trial differ",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_cdac_divisor_15/certification.json",
-        "certification_sha256": "9a335816032c4f8f3487c6ca11079eef2b3f8489673e354c86c793d8d6fcb334",
+        "certification_sha256": "d93a6f036fad876aedf290c865712d5fd334a7b3848472a3cac6126f88efb47e",
         "fault_class": "dac_weight_error",
-        "mutation_bundle_sha256": "795afadee3c0ab08c66778d9be7c51402145a258d904a010519509f25ab52c64",
+        "mutation_bundle_sha256": "7b19a31a80ea3e373d6b059797595bc737549d6fdc06158e2c24948d1c74c68c",
         "mutation_id": "neg_002_cdac_divisor_15",
         "source_catalog_certification_path": "negative_variants/neg_002_cdac_divisor_15/certification.json",
         "trigger_condition": "a nonzero trial code is active",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "dd56d20e72bf33ff28f8d5c75de332d47b4c60fe5478f55744c43c23c7a0c13a",
       "score_deck_sha256": "f2398ab3db0fd95e439c524a7f0d8ba528ad4a1d220de03551a79a453795835d",
-      "task_certification_sha256": "7bb8c32e2d26c804fb757631581297bf51a707c142cfd07ae383f23824129639",
-      "task_record_sha256": "f44dd38ebc6b441eb154eb38a4d53d12c7626e2c9cfe0cb2dfef027727bb7629"
+      "task_certification_sha256": "89e68925fb251f0e747878dc383b3ccfb0a2ad09f838ee90857ad1da6c423baf",
+      "task_record_sha256": "a8548d27352680383f7058308fc6c5544ad64fc1b7bbe0c58c6fc6a888062206"
     },
     "release_dir": "342-sar-adc-system-4b"
   }

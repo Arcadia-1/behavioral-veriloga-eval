@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "191-sar-das-logic-6b",
+  "checker_task_id": "v4_191_sar_das_logic_6b",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "b2a797671d4b736bc5ffb935a580b6e1bdb13da7bc7406d897d35d05a0853fef",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "97c2a2076581f7b55db379cce24e71b4cb083473e2703caa83e33868a97d9fe3",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "191",
+  "family_spec_sha256": "008f0242c95ea1fb8d7f7583408f54a2f8f140c574f734722cf4d8bd5a3249b7",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "226e54b3359cd3099e54185dd43a1d721cf4ae3764f6ff2617d472a66f74f840",
+  "public_contract": "tasks/691-sar-das-logic-6b-testbench/public_contract.json",
+  "public_contract_sha256": "d06b8948ac55ab101eced27d813e6393d270365c8f9ee25525e9f36aec2ecf25",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/691-sar-das-logic-6b-testbench",
+  "task_id": "v4-691"
+}

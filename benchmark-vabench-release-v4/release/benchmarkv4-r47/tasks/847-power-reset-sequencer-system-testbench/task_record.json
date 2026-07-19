@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "347-power-reset-sequencer-system",
+  "checker_task_id": "v4_347_power_reset_sequencer_system",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "2bfc4ddcea1afd454928bb05fd74427ff4c7622da14e23ae35428a8c90411ab4",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "baaef7b8b5893aee4f44760c15d546a59fa43e47d78295ce936b927af13e78b7",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "347",
+  "family_spec_sha256": "53f53541156402704f92c484744f4c56a086e8ca283c13cb3b633f0a85f4a920",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "63ba399297cb94b4d8a3bb735d5c43eff27c5ee46eb9f6b54a9156b7aa257779",
+  "public_contract": "tasks/847-power-reset-sequencer-system-testbench/public_contract.json",
+  "public_contract_sha256": "c8ec4814081dc1e9b244f89abbdf64cde8b9406cacbabe58839e970c1ce1ac58",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/847-power-reset-sequencer-system-testbench",
+  "task_id": "v4-847"
+}

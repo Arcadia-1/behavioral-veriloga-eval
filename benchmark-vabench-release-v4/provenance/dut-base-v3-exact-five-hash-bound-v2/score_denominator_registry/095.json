@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "e232ec9a22c92c400f54ef390ed1afa9aa94ad459180445346b052e1b33af866",
+        "certification_sha256": "32dce3f8d386d98b3e947b383ec984f466b8a10ef515424fbb5cef58a808313d",
         "fault_class": "threshold_boundary_error",
-        "mutation_bundle_sha256": "f6b852587ca2c4a97d7add2649bd3ead5456a41d236813e25decd1ed58fee7fe",
+        "mutation_bundle_sha256": "1a0816d1763a9420651621896107a3dd67615328921ee3493700789653dee14b",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "boundary stimulus crosses the public threshold conditions for LDO Load Step Recovery",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "36435b40a840ad66b16729d6ca9cf47b1a6e4b3d467988e093d0ca9029044e87",
+        "certification_sha256": "f4795f23f76ea6539e4cca1b26d4cbf0d652e344962367bddef46a317dead190",
         "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "ca3b20b9eb0d1936e474aa0af4228612aca2c65502d5d5d818f87a81b1a971fb",
+        "mutation_bundle_sha256": "19971bf458af61cccfe7b63162548a5b32c4ab3ef22e9075f9bae66e0e7d5deb",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "score stimulus observes the public metric/output scaling for LDO Load Step Recovery",
@@ -33,9 +33,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "68db753f6e952a32585ef45ec67742b9076d4deb8b943acea00a236ca6aaef46",
+        "certification_sha256": "10e2ffbb3475950b9302771a7488fd8c6de7e81f5c95753c320bb44145643f2f",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "66a85597564c904cada161db5ca50554a17fc77e4cb1d73b20cf3d7fe0c3a3d8",
+        "mutation_bundle_sha256": "e599a49c75f1ac476f546765d772aad7f1711a6868adeef2626ae6fc7f264532",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for LDO Load Step Recovery",
@@ -47,9 +47,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "27c08ca4d08274b165c57de90005a299773520e17e910a25966d250394d6c4b7",
+        "certification_sha256": "d8922365edd69e166e8c6883b86d647f8fb17c4fdb5067a30383bc4f2ed2ff4e",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "61099e4f9f51c0db00a905ca46ceb45d7971999496c0209a4a5192a157ca09a7",
+        "mutation_bundle_sha256": "add4acc3d3139e03f7edf3bd7e6b6eef7ee4a71fb2641ae27207c3bdf4da38cd",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "nonzero behavioral stimulus requires observable LDO Load Step Recovery outputs",
@@ -60,9 +60,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "30842e52c29abad8613dc3308e9db3929e8fe129c89445167b25c4e4d6aa3147",
+        "certification_sha256": "5f8ae79c322969217b7ffcfebb08a5fb47a2b20a7d41e4f762162410c0bbd603",
         "fault_class": "reset_semantics_error",
-        "mutation_bundle_sha256": "03b8a3ec788a814039470ea71306d31c4802eb2d326b0917ac9e4763e93f40b9",
+        "mutation_bundle_sha256": "db50db228cd31736c9b1cca0e2e19f998f4ed92d2ab589452b89e2ae6d91b962",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "reset/recovery stimulus exercises LDO Load Step Recovery state override behavior",
@@ -78,8 +78,8 @@
     "hashes": {
       "mutation_catalog_sha256": "aa2d5861601224bdad292269e03e7479dc5bf191ab40c5b1ebf93dedc8a4125b",
       "score_deck_sha256": "955d10cfffd0cb4353579461aaf0141c6d1235ddd21af736631b2cfe3d4b5fd2",
-      "task_certification_sha256": "a4c93acf9097d0ec67463b5964f1149394f6f123d0feb733f2f5fac955d143d4",
-      "task_record_sha256": "70d7a36675a7732d1429c44dca2b2e57916ebe7567b0cc406bbad4f9158891d4"
+      "task_certification_sha256": "f5fb15815f2eafc2a4b0392b318b4f517de9805717a49cd70e06a803e8e3ba7b",
+      "task_record_sha256": "5cde7dcbee2cf31cb1d0a4789eb49b4e87194c912c6bca65627202cb2c7f27f3"
     },
     "release_dir": "095-ldo-load-step-recovery"
   }

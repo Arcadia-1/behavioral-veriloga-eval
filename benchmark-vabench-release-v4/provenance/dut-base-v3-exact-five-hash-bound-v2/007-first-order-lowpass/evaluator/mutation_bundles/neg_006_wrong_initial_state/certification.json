@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_INITIAL_STATE satisfy the public contract; fault class initial_state_error is rejected",
-    "observed": "EVAS: lowpass_samples=0.389,0.650,0.780,0.799 normalized_samples=0.424,0.789,0.972,0.999 step_amplitude=0.8 input_step=True monotonic=True response_fast_enough=True not_instant=True bounded=True input_ceiling=0.8 max_vout=0.799442 initial_samples=[0.195, 0.195] initial_ok=False; first_mismatch=P_INITIAL_STATE signal=vout time=3.000000e-10 expected=0 observed=0.195 tolerance=0.02",
+    "observed": "EVAS: lowpass_samples=0.096,0.148,0.240,0.365 normalized_samples=0.014,0.086,0.215,0.390 expected_normalized=0.025,0.096,0.224,0.397 step_amplitude=0.8 input_step=True monotonic=True response_matches=True response_tolerance=0.0560799 bounded=True input_ceiling=0.8 max_vout=0.799442 initial_samples=[0.195, 0.195] initial_ok=False; first_mismatch=P_INITIAL_STATE signal=vout time=3.000000e-10 expected=0 observed=0.195 tolerance=0.02",
     "violated_property_ids": [
       "P_INITIAL_STATE"
     ]
@@ -17,16 +17,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_007_first_order_lowpass",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 1598
   },
   "family_id": "007",
   "inputs": {
     "checker_profile_sha256": "949b47d36d74112869dcf4d5309f0fef8940f8e782b39105961d85c95517d672",
     "harness_spec_sha256": "d424aca8a9738ebdb8e81b94b35d13458835f8c4217db49ad50eb447cf99af6f",
+    "mutation_bundle_sha256": "fc58d145c10609d81b488a50fdfd9174b8abc9f8e54c27410125fec60c7e8ef4",
     "profile_sha256": "b785569bba3287b017fbae7fe68437c371b5ba7394ceb4c6484b146f2282072e"
   },
   "mutation_id": "neg_006_wrong_initial_state",
@@ -35,8 +36,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

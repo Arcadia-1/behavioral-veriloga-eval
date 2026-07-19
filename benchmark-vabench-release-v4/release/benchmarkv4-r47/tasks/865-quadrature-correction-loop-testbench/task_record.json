@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "365-quadrature-correction-loop",
+  "checker_task_id": "v4_365_quadrature_correction_loop",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "29cf2e7d8937d2912b397b3afe39592622ef709c80128cccd3a89f1c8520078a",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "79a09da56275ae8d90a5a8f7e393b49f2a6b5527d4840085f86ebce77e685409",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "365",
+  "family_spec_sha256": "5c3527a69cde2c2adb44004e46c2625cafd7243cf48f75e1249cb6cfa81daad0",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "30491f290d44c5386ba2dec5dd07626b2c575323833a056c98e1dd3708061047",
+  "public_contract": "tasks/865-quadrature-correction-loop-testbench/public_contract.json",
+  "public_contract_sha256": "56cd04695038bef09d691d95db2e8a04c077928f0cc4e233e9ae7b16c5aaf967",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/865-quadrature-correction-loop-testbench",
+  "task_id": "v4-865"
+}

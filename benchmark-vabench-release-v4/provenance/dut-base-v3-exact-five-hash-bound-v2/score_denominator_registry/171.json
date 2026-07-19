@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_step_halving/certification.json",
-        "certification_sha256": "b818fc7dcae3397420014ef9a4143d0311371147d5b6b8ce9890d9a2fcecfa1b",
+        "certification_sha256": "e7813eca2e3d6789a1ccb367793cc4a92823d1ce749269a0d4c8f52547ae274c",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "c35abddcd6ce9a4e8a21a5ae7f379ae5fd07d0c502fc5383bd23a16f31b08d4f",
+        "mutation_bundle_sha256": "6684845b77d919568a1e8109c9fac203211c81f7733864d32896d700bf2c8091",
         "mutation_id": "neg_002_no_step_halving",
         "source_catalog_certification_path": "negative_variants/neg_002_no_step_halving/certification.json",
         "trigger_condition": "Keeps the same offset-search step size after every clock edge.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "2cde80f39a1f88c223e2466097daf7ab2958473d937c5f792c7376233fc2e44b",
+        "certification_sha256": "903d672e82f4c9e74e52d80db3a6892b2dd49c73839f0595a54cb0fecae4e896",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "67fd940d0b7e8ec1abf567086dd55ea3ece9c375efb31500225b8a19a6f7e1d5",
+        "mutation_bundle_sha256": "e62c1d272d45c8a74b0a58c458c2a810d3ae55bd24e48de8387670e0a1ec1bb8",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_inverted_update/certification.json",
-        "certification_sha256": "b83704c9571c2aab86ee3efd66154baf8ac540bf54ecb41aa84d080529decacd",
+        "certification_sha256": "8ad6f795223248fe2ed4965ac6ccfc5da30014e57694f40b42306b90715f2555",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "1fa7a6b976b0cb2b31eeab5ca91748fe97733f8841692024667d8d7462101003",
+        "mutation_bundle_sha256": "8c298319858411c6e049f29deaa66916d704e46dc6c195b0038ac4e0db69b03e",
         "mutation_id": "neg_003_inverted_update",
         "source_catalog_certification_path": "negative_variants/neg_003_inverted_update/certification.json",
         "trigger_condition": "Moves vin in the opposite direction for each comparator decision.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_full_diff_scale/certification.json",
-        "certification_sha256": "e04475e0aba75a6288ee06ac84f4470178d712f10dabcd54c84c23797f28870f",
+        "certification_sha256": "ac4c153774d4b9478c5a61356d50c55efc1eac39db4fe9a0455bb6240d379b62",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "351714bdb10f5d02e728d3b54b26f0db00aedffdf798aef2d2f5c33fb3bba058",
+        "mutation_bundle_sha256": "2b8325f60ab25954f1ae2002f8bb438d58f0d6eb9b8eb32609b244b5cf57b19d",
         "mutation_id": "neg_004_full_diff_scale",
         "source_catalog_certification_path": "negative_variants/neg_004_full_diff_scale/certification.json",
         "trigger_condition": "Uses full vin on each differential output instead of half-scale around common mode.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "14320b1b75f078e3e95cdb6e8d09d7c37604d1e7fcaa6cdbdcebb27463410d04",
+        "certification_sha256": "2a182b969a1d119d169d277e2d4b1cfe1c68817647073a2d74b72a5709e4cb39",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "a7d9e762b35e2e84cc232bcfdaf352ce194da1c4ef61268e023c9de29d5fd85c",
+        "mutation_bundle_sha256": "db24204af12d4301468e9cb5966330bd165c0032c1e73bafad04b4741feec721",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Comparator Offset Driver: scales the metric output, preserving the main path while failing measurement checks.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "24440c844932c79b9c19bcc2f10623bc0c5cd196e9d82174a7fc27face361bb9",
       "score_deck_sha256": "9909e3236ce475dbd223ac02fe80b5f5abd08e7e67678b8e46fdaaf586811aca",
-      "task_certification_sha256": "3d612ae97c5f404fa8c1865d0b3e8c2d2e73999fafc92eab8461dfa0dc910f57",
-      "task_record_sha256": "56b1cb7dc79ce8a16801300bb8a4948b94dad2f4b560c2eeef2c69d98c511a88"
+      "task_certification_sha256": "05e0267638234228fa5c42d18a598a6e9399dead7233857b4b0e77e1e0dfcad4",
+      "task_record_sha256": "9f042b1be94c6f1ef697714491f8819f958131160162ade314b572d1ad7049c1"
     },
     "release_dir": "171-comparator-offset-driver"
   }

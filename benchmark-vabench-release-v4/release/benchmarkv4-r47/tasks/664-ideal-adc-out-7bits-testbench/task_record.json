@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "164-ideal-adc-out-7bits",
+  "checker_task_id": "v4_164_ideal_adc_out_7bits",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "3e62fe4fc884818ab6416f3ec2dea2e92e2912b1f131716abd77879a629c643b",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "a3ad05e40b0572c726d7ede9bc8b6725da861522720f0ba4cf5e6655c77c4fee",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "164",
+  "family_spec_sha256": "979d1e489337f70ba6fd093330b42bee491bc3415904695416f6b1689531ad0c",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6fda6dcb1061b8e80e2345878cfae053a3031f51ce36907ec05ab295ee777426",
+  "public_contract": "tasks/664-ideal-adc-out-7bits-testbench/public_contract.json",
+  "public_contract_sha256": "4bd9c6e16f1fb5a532e4190f9bb5453195d2075168d4d1753d16262465d6767c",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/664-ideal-adc-out-7bits-testbench",
+  "task_id": "v4-664"
+}

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_comparator_polarity/certification.json",
-        "certification_sha256": "4eda7a1d426c807bb019a02b378b8b47565afe630bc32c48500cdad6b08c7092",
+        "certification_sha256": "c3b31bd3fcca8862b62dee61abbe8dbe3876cbc17646803648a33c8d0c0a1ad9",
         "fault_class": "wrong_polarity",
-        "mutation_bundle_sha256": "c627552517e26854431c138089c661b43ddbaa031cf945a3a1f5e8cf3f3aafa9",
+        "mutation_bundle_sha256": "16ee1ffa7f7c3c8501b7beb09fc7cf99ca34c783840222f4e489381de6a3bbc2",
         "mutation_id": "neg_001_comparator_polarity",
         "source_catalog_certification_path": "negative_variants/neg_001_comparator_polarity/certification.json",
         "trigger_condition": "state crosses VCM",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_short_decimation_window/certification.json",
-        "certification_sha256": "a9b450c7f101aca31c909c4279bb206fc17bf6e75d0730145a2e57d007c7a555",
+        "certification_sha256": "64db9661489feeaf662ecf275e53f8a6e3020c022995a489b400ad7ab1678ad8",
         "fault_class": "wrong_window",
-        "mutation_bundle_sha256": "4ce3d78bc6cb1b198c52789e7fe46baba306ba1f1c3a135b0e30c9e1ba58aa77",
+        "mutation_bundle_sha256": "eafe8396aa0aec26296df11f219d95d4bc8ef75eb8cf00e04215510770726895",
         "mutation_id": "neg_004_short_decimation_window",
         "source_catalog_certification_path": "negative_variants/neg_004_short_decimation_window/certification.json",
         "trigger_condition": "eight or more samples arrive",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_decimator_wraps_fullscale/certification.json",
-        "certification_sha256": "bb25dce78a1684112ebe0bb2b3138d013047417ec0ce02e423281ed630fe2a11",
+        "certification_sha256": "6ecac41389f847e9e8a7c30496a035cffc5da18be2ca3c1be1a5ce1d479967fa",
         "fault_class": "reset_clear_failure",
-        "mutation_bundle_sha256": "ce156b9edd9e1ae1ef5e7b9532a25a442835f66b80b744c5a77e87fb4c092ea3",
+        "mutation_bundle_sha256": "05e74ef9ee3db4eb909a2f88bd80ae22e5a2ae2cfc456548f7b4d9243b5c5a1e",
         "mutation_id": "neg_005_decimator_wraps_fullscale",
         "source_catalog_certification_path": "negative_variants/neg_005_decimator_wraps_fullscale/certification.json",
         "trigger_condition": "rst is asserted at startup",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_feedback_stuck_low/certification.json",
-        "certification_sha256": "a221567e371fc6e978ed71efa906b2dcb991e8ff1fccdb00347581ba60665233",
+        "certification_sha256": "fed540515d27e79bdc601ed4d23830b7bb174b52e74976af1ab24e8752821a2f",
         "fault_class": "stuck_state",
-        "mutation_bundle_sha256": "f7a8ddaca14b6d9b79a5f74d677da4b77e7682ef5d9f6b9dd166bbd84f0d8efc",
+        "mutation_bundle_sha256": "e24125f56b703971822bbd814a39def39a255fde500415342380f7b739752b59",
         "mutation_id": "neg_002_feedback_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_002_feedback_stuck_low/certification.json",
         "trigger_condition": "bit_out becomes high",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_integrator_input_sign/certification.json",
-        "certification_sha256": "7748abb2e2a1fd092862887dda41e1e6ceae4273ed260ebdc6f10a14dc6699a6",
+        "certification_sha256": "cb1d85b460a09c08dbf45e56929f78c61cd300944d55ca9e979086c399780bca",
         "fault_class": "wrong_polarity",
-        "mutation_bundle_sha256": "acc87f4ca75a3718a9a22657646d9d2287e707c9cef387b6c5a0e3675ce871e0",
+        "mutation_bundle_sha256": "8c2b340c9bb946731268a0e4c660b66c177bca79920bb119b5c543682b55bcd6",
         "mutation_id": "neg_003_integrator_input_sign",
         "source_catalog_certification_path": "negative_variants/neg_003_integrator_input_sign/certification.json",
         "trigger_condition": "VIN differs from feedback",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "43ba32898c629aafcedec7fad99881442acca1d496d9a769fd9cee1edb36d98a",
       "score_deck_sha256": "3ddceebb5a57367fdcec0a7810dd014549e293ef6f6a7e61dfe5e0f1cc101dc7",
-      "task_certification_sha256": "2d18b0568c5be109035320c3f30202b0c05992d709c41135f574a269d39d18dd",
-      "task_record_sha256": "cbaadf4534aca4b74782e52b09aaf39977116a998bf699b378a1efa37da34f85"
+      "task_certification_sha256": "0a370ab97fc9b55d769d1dad1623ec0a7b472c4b7ec23739b48be50cbe6acf9b",
+      "task_record_sha256": "7803f2f8524220d7f3bb64a047819ee22706c84e73b44610035d92c301e6e952"
     },
     "release_dir": "350-sigma-delta-mini-loop"
   }

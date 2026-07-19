@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_denominator/certification.json",
-        "certification_sha256": "5380635f1d154b1c8c8cd2a0ae7a97cf8fa7306025c0e4fbbb7c582f68ee99e0",
+        "certification_sha256": "a92f9f4b7fd2946c049f9893fa32ad6122147d4dd34577dc16ef60932237224a",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "875c03abf806f5a42091d3ceb1196acbe1f379e4b5c814c9f15401ad0e82a0c6",
+        "mutation_bundle_sha256": "a057c2d508f6e18ab5aa4605729d85020c045bad8244d72f47498b0790a90024",
         "mutation_id": "neg_003_wrong_denominator",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_denominator/certification.json",
         "trigger_condition": "Normalizes by 15 instead of 16.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_reverse_weights/certification.json",
-        "certification_sha256": "2447c630c2f0d35f73e5ab7ae1a5a834a52afa26d5181de586212cc0841b0e58",
+        "certification_sha256": "9c16c920d3351240595dfaae7bdcc4398b75cd5678a202823ebb125ff7114c4f",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "2cf68d738044358aca3cbd68bb6778c6309f9b174502365328cd1c477b854784",
+        "mutation_bundle_sha256": "52594b0b0376daa789c62a743050f1b228b656ea2b018d34c618af9be3ab1de1",
         "mutation_id": "neg_002_reverse_weights",
         "source_catalog_certification_path": "negative_variants/neg_002_reverse_weights/certification.json",
         "trigger_condition": "Swaps the d0 and d3 weights.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_output/certification.json",
-        "certification_sha256": "a73cd2c81262863f70db633e8d337c615abc58a7e207231ef8d85589183acafa",
+        "certification_sha256": "00aa3762a2b5a5652a97b384ce819ea39fd07d56e69317356e1735acb35fa3af",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "fbb54dc51ceb01da1c403537cdc3e2d696c92881ca8e5ec9863fc9ebadca6318",
+        "mutation_bundle_sha256": "cd3a89c1956363c2f97d60e1489ee0d265323255116962de4ce3cfe479f4499d",
         "mutation_id": "neg_004_half_output",
         "source_catalog_certification_path": "negative_variants/neg_004_half_output/certification.json",
         "trigger_condition": "Drives the readout output at half amplitude.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "944ff191d2bd5756a4dae85ec2c993730070e6fa9ffc1e6bcf689d6459153978",
+        "certification_sha256": "3c52e03894aef4b41bedc408dbd3fe83c56e07f8fffd2f7ddff6798f5df96010",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "c93604484697980c757fc1f4e0a7d39d001d9a88f6bc4bbaf75192aab405ffaa",
+        "mutation_bundle_sha256": "c6d2eecc8c015c7d4846429d0435126ecb6c23fd9ab463eca0199c592ea920aa",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "60463e400f83364311db4852c2bf0d97206c6046e2d529d16441f7b812a2a197",
+        "certification_sha256": "0798e7650c7f26b3b7a732dd67db9687f113300c279dd9e711484a7d637e7948",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "fcbc878efe81c3d79613152a98f0b685971da52e786499f376285c0b23c73be2",
+        "mutation_bundle_sha256": "09a0e0ee93e92507ed72f054bd9d7888e329bf244f5d57629451afa80589c1fe",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "LT Readout SAR4: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "c59165ed14c24458f1e2150e5e164d09af1657a966382ececd682a8d70af5e42",
       "score_deck_sha256": "f24c7b9ce8fca955f341028cdbfdf6c12760871193360f22a03a7b8dac286713",
-      "task_certification_sha256": "2909942ac720bbf143becbf504c224fc8f0b41e80a56a5ee60353a6fcdc2bcc2",
-      "task_record_sha256": "e8460e128861bebdcf84c06ff6ad063b6db3e1c1c348ed3b67500d92a896577f"
+      "task_certification_sha256": "2c589db065332b82e635a7d24565087cc314019e4e4ded99b7af3462c566bab8",
+      "task_record_sha256": "5328e2d9569106906b1662ebbeb61db8673e83abcde063a3b27afa0bae838b40"
     },
     "release_dir": "212-lt-readout-sar4"
   }

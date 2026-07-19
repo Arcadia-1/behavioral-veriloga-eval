@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "070-jittered-clock-source-deterministic",
+  "checker_task_id": "v4_070_jittered_clock_source_deterministic",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "06410f8949aa82f599df20673c47b205fa70b2ebeeb1420008b1417b6e9d01b4",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "17230d8392a06dfe7823a7474b73100d480090930d0dd23a5e47352fc74dbe0e",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "070",
+  "family_spec_sha256": "2715ac259ec5ad41dd4af756e1a8ceae575fcf37854940011583c8774d235fc4",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "76ad7e5cb195a1c7fc10dc7ae803224643fab783d425680c11b920e281d40f6b",
+  "public_contract": "tasks/570-jittered-clock-source-deterministic-testbench/public_contract.json",
+  "public_contract_sha256": "18f3dc6351f60467247d413b58875bfb055eb68eb3eab9ec6b5a87ef1e740187",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/570-jittered-clock-source-deterministic-testbench",
+  "task_id": "v4-570"
+}
