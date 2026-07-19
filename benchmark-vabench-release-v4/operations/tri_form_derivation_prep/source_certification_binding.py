@@ -317,6 +317,26 @@ def inspect_source_certification_reuse(
                         problems=problems,
                     ):
                         negative_valid = False
+                    declared_bundle = (negative_certification.get("inputs") or {}).get(
+                        "mutation_bundle_sha256"
+                    )
+                    requires_bundle_binding = (
+                        negative_certification.get("schema_version")
+                        == "v4-negative-certification-rust-evas2-v2"
+                    )
+                    if requires_bundle_binding and not declared_bundle:
+                        problems.append(
+                            f"{family}: source negative {mutation_id} lacks mutation bundle binding"
+                        )
+                        negative_valid = False
+                    elif declared_bundle and declared_bundle != tree_sha_by_file_hash(
+                        bundle, excluded_names={"certification.json"}
+                    ):
+                        problems.append(
+                            f"{family}: source negative {mutation_id} input hash mismatch: "
+                            "mutation_bundle_sha256"
+                        )
+                        negative_valid = False
                     declared_profile = (negative_certification.get("inputs") or {}).get(
                         "profile_sha256"
                     )

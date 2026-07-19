@@ -17,7 +17,7 @@ from source_certification_binding import _task_input_hashes, file_sha, tree_sha_
 
 
 GOLD_SCHEMA_VERSION = "v4-task-certification-rust-evas2-v1"
-NEGATIVE_SCHEMA_VERSION = "v4-negative-certification-rust-evas2-v1"
+NEGATIVE_SCHEMA_VERSION = "v4-negative-certification-rust-evas2-v2"
 POLICY = "rust_evas2_only"
 
 
@@ -170,6 +170,10 @@ def negative_certificate(
         "inputs": {
             "checker_profile_sha256": file_sha(evaluator / "checker_profile.json"),
             "harness_spec_sha256": file_sha(evaluator / "harness_spec.json"),
+            "mutation_bundle_sha256": tree_sha_by_file_hash(
+                evaluator / "mutation_bundles" / mutation_id,
+                excluded_names={"certification.json"},
+            ),
             "profile_sha256": file_sha(evaluator / "profiles" / f"{profile}.json"),
         },
         "checks": {

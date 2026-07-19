@@ -31,7 +31,7 @@
     },
     {
       "artifact_hashes": {
-        "safe_analog_divider.va": "b564b1c50afc721ce6f2cef1eb81f56014958fbe70bcad21e4e4fa516cfe5ef8"
+        "safe_analog_divider.va": "fb4cfc4d63516ee64303d83c9d4c28d133c8b19b9fe08e0fab05764fc2ab5cee"
       },
       "certification": {
         "activated_property_ids": [
@@ -39,19 +39,20 @@
           "P_WHEN_V_SIGDENOM_IS_NEGATIVE_BUT",
           "P_WHEN_V_SIGDENOM_IS_POSITIVE_BUT"
         ],
-        "behavior_status": "killed_behaviorally",
-        "compile_status": "pass",
+        "behavior_status": "targeted_killed_behaviorally",
+        "certification_scope": "r47_pending_full400",
+        "compile_status": "targeted_pass",
         "evidence_path": "negative_variants/neg_002_no_denominator_guard/certification.json",
         "profile": "feedback",
-        "simulation_status": "pass",
-        "status": "pass"
+        "simulation_status": "targeted_pass",
+        "status": "pending_full400"
       },
       "changed_artifacts": [
         "safe_analog_divider.va"
       ],
       "fault_class": "omission_or_incomplete_behavior",
       "id": "neg_002_no_denominator_guard",
-      "trigger_condition": "Divides by the raw denominator without the small-signal clamp.",
+      "trigger_condition": "Uses an under-sized 20 mV denominator guard instead of the required 200 mV small-signal clamp.",
       "violated_property_ids": [
         "P_WHEN_V_SIGDENOM_IS_EXACTLY_ZERO",
         "P_WHEN_V_SIGDENOM_IS_NEGATIVE_BUT",
