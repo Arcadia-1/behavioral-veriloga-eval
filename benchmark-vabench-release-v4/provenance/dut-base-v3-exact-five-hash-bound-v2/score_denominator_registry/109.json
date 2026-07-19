@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "bfc0f27a004834ff5a9218e97f5ed548a78b0ba34e0bdd7af7fcf8e11be053e0",
+        "certification_sha256": "b9540642716a9e0dae2c9d7e34e7cd5c95d39f94df61a4f83f416da07c24ce34",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "c71b01a7268ad428dbf64b2aecb490cc03d7aad45de9710ca0e5fcb627b267d9",
+        "mutation_bundle_sha256": "d443f7d845055b52211edd6721d23ad672cba67054417ea271e28ea7c2dffc1e",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Leaves stimulus, estimate, and valid outputs at zero.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_valid/certification.json",
-        "certification_sha256": "d5a22dd6f747fe887d86aa014cbf216990269b487b769571160ad33c5baf59a1",
+        "certification_sha256": "339c6ecc7036ebeb8ae6c56c3c0f062a9b5130e8f2958a237aa7609c2a53f862",
         "fault_class": "fault_004_no_valid",
-        "mutation_bundle_sha256": "da1e2e99ab2d16092b2c1a8e8c31d92aba3e4120cfdbace45eb3b7ca609d4950",
+        "mutation_bundle_sha256": "0c34e3da054f3e3dfaf46496a77a5bbbb8d64e378a309b5b19030d791f42202f",
         "mutation_id": "neg_004_no_valid",
         "source_catalog_certification_path": "negative_variants/neg_004_no_valid/certification.json",
         "trigger_condition": "Runs the search but never asserts the completion flag.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_step_halving/certification.json",
-        "certification_sha256": "f92dcd7244d95639e07568af550137f0517141134511857022cefea1254f726e",
+        "certification_sha256": "74a81e34d13de142a820baa7a6cb157038d550cd8855d9dfd4025a65e569a353",
         "fault_class": "fault_003_no_step_halving",
-        "mutation_bundle_sha256": "1d496cd508f7d56a3726ebfed676a07bc4b633fd332f039a55368fc9dd8479e5",
+        "mutation_bundle_sha256": "3f5d030292d646b169f20df783eb1484686f39fc66d7b6e80f6aad14e81666af",
         "mutation_id": "neg_003_no_step_halving",
         "source_catalog_certification_path": "negative_variants/neg_003_no_step_halving/certification.json",
         "trigger_condition": "Uses a constant search step rather than a halving search.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "dfb493d15feb4932b4124297085c7ef176dbc738eacfedb407408beecd66bea8",
+        "certification_sha256": "abd6edc823be428669d13a631ab9d93c636dfc6fe527216fce9a5097d1091dc6",
         "fault_class": "fault_005_metric_scale_low",
-        "mutation_bundle_sha256": "b53a7ad586edea8f45bbd7ddc556fd9e2dfe67cd8c75159363a4cc193c04b975",
+        "mutation_bundle_sha256": "e6aff098231228607102bcd693848e33892134972b85d6c86788056eac418bdf",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Reports a scaled-down offset estimate.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_direction/certification.json",
-        "certification_sha256": "1790e53b4c8c4ab4106e603dedd0ee070aeae979b0fa55df57ff6972b7a3ef12",
+        "certification_sha256": "93543674629c25b11ed39131be5e4f22bebe6b362d0925f9ef845d200dbf8986",
         "fault_class": "fault_002_wrong_direction",
-        "mutation_bundle_sha256": "7124cd24d21241b43ca3d3ce7199dfc2e9bfc309a849a0a7a9b8fc4fc310caff",
+        "mutation_bundle_sha256": "7cdc997607a5c4d23f00a3064cce7112877be4598662705fa0b88715d3889adc",
         "mutation_id": "neg_002_wrong_direction",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_direction/certification.json",
         "trigger_condition": "Moves the estimate in the opposite direction from comparator decisions.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "ecfd2e08a0ddb4e931fe7e618b3584b14e333b7d04ac8a453582f6bb1289282d",
       "score_deck_sha256": "f375c80f3344dd4ae1675d30292ef14c90701ef66eb6590036716a231d560d0b",
-      "task_certification_sha256": "7dde8fe146920c8a9dc5f30d74009bf3a43ab4a87aaa60b665462569ea14b47a",
-      "task_record_sha256": "215325703d0b23b0e498f0834f449eeb45ac43edb8e451320def39ae55991967"
+      "task_certification_sha256": "f0a4d09e66c0dcc5c472b2b9089eb88717c80e383d9f1b3070a5699deb359dd9",
+      "task_record_sha256": "e590ebbbdbf6babbcef724bb4ad67f13d4a7f3e037f3f32daa9be34688d07691"
     },
     "release_dir": "109-comparator-offset-calibration-loop"
   }

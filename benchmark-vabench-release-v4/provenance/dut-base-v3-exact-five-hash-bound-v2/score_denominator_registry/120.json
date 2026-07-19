@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "454c35c1f5bc101ebaf42a406968b30430b4770830bdda50847873c16217e254",
+        "certification_sha256": "cdec515b04e5031c75c8854c3b5ba51ac3941bdee8be112a692e1bdcd4c6550f",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "717c47c54ddc8949e1daa4e1b35891452f9fa7f5385df49a41c200cc4138edfa",
+        "mutation_bundle_sha256": "9068d49d9d505092a8deaa6365884efb3a160b9592e9fba7f47708acf94fa8fe",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_amplifies_by_db_factor/certification.json",
-        "certification_sha256": "a3ec80bd02ea523a72400bf9fc4f9ff98795cbcd7e4a215e2fe2c0af52f7dfb7",
+        "certification_sha256": "1ef19b7e633a165362dbc9f52bd7522d41ff198f3c6b4453803b2a67316b7865",
         "fault_class": "fault_003_amplifies_by_db_factor",
-        "mutation_bundle_sha256": "65120e4daafee07b24d5b2fb8a9eb2688b77f7a8f1ea6b62a6a617f4e175fa92",
+        "mutation_bundle_sha256": "5bb9b128c643e1c60afe9bf6124216203d5331a93d1765ac28bded3565496008",
         "mutation_id": "neg_003_amplifies_by_db_factor",
         "source_catalog_certification_path": "negative_variants/neg_003_amplifies_by_db_factor/certification.json",
         "trigger_condition": "Multiplies by dB gain factor instead of dividing.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_double_attenuation/certification.json",
-        "certification_sha256": "ceb8b6fc0d81ca41c05c233dfb5053db33feac97a5fbe51e50230dea30fe46ea",
+        "certification_sha256": "2c119d5b333dd5ad6874adc199c706a1b4192f98ed94e892d75f869d67ace232",
         "fault_class": "fault_004_double_attenuation",
-        "mutation_bundle_sha256": "beafd48fb956d43d616f98ccc6fbc77b3f315fcb6f8201ba971186788d1c8a18",
+        "mutation_bundle_sha256": "8e3fbbc7a8b071ad3e7c2d1609770bf69407f56901c582e6b73eaa1853a4f7b1",
         "mutation_id": "neg_004_double_attenuation",
         "source_catalog_certification_path": "negative_variants/neg_004_double_attenuation/certification.json",
         "trigger_condition": "Applies attenuation twice.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "1ba518d32ab41ad3761d5f2b118369f2059f26f8dd5bd0e9b8950d2c1938794a",
+        "certification_sha256": "7c9ad4b8b069e86079d753eb5bf7f90e0f62ce085e8908a3c664cfd5e75879c8",
         "fault_class": "fault_005_metric_scale_low",
-        "mutation_bundle_sha256": "b21aad22a61ce2651c358bb51f47e2045e5fcefb8676afb92dc2ce51b3547d84",
+        "mutation_bundle_sha256": "3a966bcbd5516ffc2b90a47fabd9333ee30aa812e6729162f01e9637ac2f2a09",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales the attenuated output too low while preserving the module/interface shape.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_attenuation/certification.json",
-        "certification_sha256": "fbfe45bfed12e768b9670a3106917d94d014cb481e857202ae420d64deaf55c9",
+        "certification_sha256": "1e911e4b8601dfb60ffd8b2a467a055dfc7733dae5976d1d5c0582724fd3c3fc",
         "fault_class": "fault_002_no_attenuation",
-        "mutation_bundle_sha256": "166267f5f29e0029408552f8ae02206a7b5ce929d5680f69f6999d513f092a69",
+        "mutation_bundle_sha256": "ce02832e99d9af019187f8920f4830a86e591af946f7f73e6cd76ac9dcc5b807",
         "mutation_id": "neg_002_no_attenuation",
         "source_catalog_certification_path": "negative_variants/neg_002_no_attenuation/certification.json",
         "trigger_condition": "Passes input without attenuation.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "425883de5ef59255b2765a71a7fcf28d51ea7c41994fc6e4321e8870e14feb01",
       "score_deck_sha256": "18a7daf22cd3ef46a6683b286b7f97d47ec16d6b8c5734233c420cc5c7012f36",
-      "task_certification_sha256": "7279f1b2ec6e7a010f69b02570562a37fb82c63f3fa0c280bfdc08a0fcbf1ac0",
-      "task_record_sha256": "160156f98ebc7b4c14e9374ff50326b7c0de534d98d56443c3ab6053b38143f5"
+      "task_certification_sha256": "eafa1ecd49dd69d698708be3fabd8ee8035c9965be3c321600fe44a79d0bfe02",
+      "task_record_sha256": "cd3f9ee8336229571ad44d2cc07b546e70c722c263086591af22f40dee0081f8"
     },
     "release_dir": "120-attenuator-gain"
   }

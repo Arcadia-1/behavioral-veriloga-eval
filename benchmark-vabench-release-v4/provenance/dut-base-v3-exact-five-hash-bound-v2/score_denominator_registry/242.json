@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "affce0c3c85d7f3ffa758e87736edc400900ab7b02cadbd118e48b3c0ddcc5df",
+        "certification_sha256": "4a0f6bb499f8a0fbc0de7aacbfb9ee409cb72c147167585151087b2cd1136fdd",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "3cf4fa24c1e8210a4f10893bbc2b9658fc5187649c66c9dec004ba8f8b58bba4",
+        "mutation_bundle_sha256": "f19998478a1877371e9d9d23b304d2ac7162a9658f86a6ca44dd88956e82844b",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Flash Folded DAC4: scales the metric output, preserving the main path while failing measurement checks.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "c2c22d4d7a4659d398b4d57aea56075172384cd016d6e8cd10a725c8c96f1b85",
+        "certification_sha256": "4cba8354ff271f4535d32df078d3a0d31084b7e5f1a0a6bd59958a87f093c3cb",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "be8a381e1b339b855cfe6576436f1f4f4310834721ba25525601b7e68a461943",
+        "mutation_bundle_sha256": "75e7219b9a65148222086db3fc31b672043696c89fdaef30bbd98072702611c2",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_binary_unfolded/certification.json",
-        "certification_sha256": "53ba4725bcd13b6d0803875a002cf9ded332b6e2024971b000a8d6b9d26862af",
+        "certification_sha256": "e8ca231e087d116e6c76a0d2cfbca887f39ae05f92ca2341766efbde76aefb52",
         "fault_class": "binary_unfolded",
-        "mutation_bundle_sha256": "5a03adc670cbbbfe2d54571f708011215c0558a771810abbf188a73d7cf7d7b3",
+        "mutation_bundle_sha256": "a0237d4dc7e547bc35d3aa8fb0a563f384789db793260981e0b44a037e4de42e",
         "mutation_id": "neg_002_binary_unfolded",
         "source_catalog_certification_path": "negative_variants/neg_002_binary_unfolded/certification.json",
         "trigger_condition": "Implements a plain binary DAC and misses the folded MSB behavior.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_inverted_fold/certification.json",
-        "certification_sha256": "a0bf1539f8b3d9480e53247023eb13115fa3e23e4e34e5625513a8b551b7dba3",
+        "certification_sha256": "5ce7de1aab567cf0fc4d519be37ef50af117c1e648fcd52260295773c9e28016",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "739a4d2f52777f57291c402559d7d5b9f6d197443097cf1d8a7b0f994300cfa4",
+        "mutation_bundle_sha256": "f59413b75faf7e24bc2779e440f1ec593d92acaa688f00505dc4645655b27f53",
         "mutation_id": "neg_004_inverted_fold",
         "source_catalog_certification_path": "negative_variants/neg_004_inverted_fold/certification.json",
         "trigger_condition": "Folds in the opposite direction for the MSB branch.",
@@ -57,9 +57,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_denominator/certification.json",
-        "certification_sha256": "9e058f66629f597756c8475097532282c9c363c4d425a3b5b195f3f49d775c41",
+        "certification_sha256": "0e963ca3fe87ceca424eff72a722a8e2b4fbc499974f150cbb337f5943802392",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "631b5e39702339db952c6a0df54e86c8272f6e43b46a2b11225ef701e948bdfa",
+        "mutation_bundle_sha256": "9fd63df5f64f15281d12313392322d33b18cdd7b38d94bcfc55460b94d5eb432",
         "mutation_id": "neg_003_wrong_denominator",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_denominator/certification.json",
         "trigger_condition": "Uses the wrong full-scale denominator.",
@@ -74,8 +74,8 @@
     "hashes": {
       "mutation_catalog_sha256": "da17e276fd73f68f0ade86062a3cd5962df5ec694fcd931f6e094249bf736f2b",
       "score_deck_sha256": "5a2b7fb446b21e1d36b98571824852dd6ec0b7229dda0eabdcbd8858de4e87e7",
-      "task_certification_sha256": "242bee00e5b68e122d7a60e72028c1db9f0a7edea0de1c42d74a40ddbeda04d1",
-      "task_record_sha256": "9332e470c98f87eb1c988a6cff842ab9d29794f1b1952869f0782305349b8d7a"
+      "task_certification_sha256": "caa25c6576a9011970e2e0efb1e9d380e90f209e1995a9a776b99f60ef59c923",
+      "task_record_sha256": "a0d86c410ed9828047414caddd68bfb1eb8885ba94edfc4fd2a0f10106baaced"
     },
     "release_dir": "242-flash-folded-dac4"
   }

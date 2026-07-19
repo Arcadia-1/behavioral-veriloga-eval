@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
@@ -28,6 +29,78 @@ def tree_sha_by_file_hash(path: Path, *, excluded_names: set[str] | None = None)
         digest.update(file_sha(item).encode("ascii"))
         digest.update(b"\0")
     return digest.hexdigest()
+
+
+def source_certification_definition_sha256(
+    source: Path,
+    source_rows: dict[str, dict[str, Any]],
+) -> str:
+    """Hash executable benchmark semantics without certification outputs.
+
+    The denominator registry contains hashes of certificates and task records,
+    so binding a report to that registry before rewriting certificates creates
+    a circular dependency.  This definition deliberately binds only inputs to
+    certification: static registry identity, task/checker/profile/deck inputs,
+    gold sources, public task inputs, catalog semantics, and mutation sources.
+    """
+    repository_root = source.parents[2]
+    families: list[dict[str, Any]] = []
+    for family, original_row in sorted(source_rows.items()):
+        row = deepcopy(original_row)
+        row.pop("hashes", None)
+        for mutation in row.get("active_mutations") or []:
+            mutation.pop("certification_sha256", None)
+            mutation.pop("mutation_bundle_sha256", None)
+
+        task = source / str(row.get("release_dir") or "")
+        evaluator = task / "evaluator"
+        public = task / "public" / "task"
+        checker_source = repository_root / "runners" / "checkers" / "v4" / f"task_{family}.py"
+        if not checker_source.is_file():
+            raise FileNotFoundError(f"missing checker source for family {family}: {checker_source}")
+        catalog = read_json(evaluator / "mutation_catalog.json")
+        catalog_semantics = deepcopy(catalog)
+        for mutation in catalog_semantics.get("mutations") or []:
+            certification = mutation.get("certification") or {}
+            mutation["certification"] = {
+                key: certification[key]
+                for key in ("activated_property_ids", "profile")
+                if key in certification
+            }
+
+        active_sources: dict[str, str] = {}
+        for mutation in original_row.get("active_mutations") or []:
+            mutation_id = str(mutation.get("mutation_id") or "")
+            bundle = evaluator / "mutation_bundles" / mutation_id
+            active_sources[mutation_id] = tree_sha_by_file_hash(
+                bundle, excluded_names={"certification.json"}
+            )
+
+        families.append(
+            {
+                "family_id": family,
+                "registry_row": row,
+                "task_inputs": {
+                    "checker_profile": file_sha(evaluator / "checker_profile.json"),
+                    "checker_source": file_sha(checker_source),
+                    "family_spec": file_sha(evaluator / "family_spec.json"),
+                    "feedback_profile": file_sha(evaluator / "profiles" / "feedback.json"),
+                    "gold_bundle": tree_sha_by_file_hash(evaluator / "solution"),
+                    "harness_spec": file_sha(evaluator / "harness_spec.json"),
+                    "score_deck": file_sha(evaluator / "score_tb.scs"),
+                    "score_profile": file_sha(evaluator / "profiles" / "score.json"),
+                    "public_task": tree_sha_by_file_hash(public),
+                },
+                "catalog_semantics": catalog_semantics,
+                "active_mutation_sources": active_sources,
+            }
+        )
+    canonical = json.dumps(
+        {"schema_version": "v4-source-certification-definition-v1", "families": families},
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(canonical).hexdigest()
 
 
 def _check_hash(

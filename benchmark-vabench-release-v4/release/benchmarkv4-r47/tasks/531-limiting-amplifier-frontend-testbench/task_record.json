@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "031-limiting-amplifier-frontend",
+  "checker_task_id": "v4_031_limiting_amplifier",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "b394f97703aae33290c34a4b7d50c1eb4ddd411eb39b9973e6c82708fd1287b5",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "67eb197cccda24f8cc07d047cfa17a0c47378449fd8e5f7753735164c3773462",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "031",
+  "family_spec_sha256": "580ab5ec568951003f9992f1df23ae64efc690d2d3417774c6f58a014f937415",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b95125915b655bcba1745a3ec931f96b4d9dc9b91905e4a8098953738b389776",
+  "public_contract": "tasks/531-limiting-amplifier-frontend-testbench/public_contract.json",
+  "public_contract_sha256": "d40c73c3b332d6160bd80cbeb37690cbf20b797ccd4531ecb0bafaabc0bd5916",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/531-limiting-amplifier-frontend-testbench",
+  "task_id": "v4-531"
+}

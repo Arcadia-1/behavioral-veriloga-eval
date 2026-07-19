@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_accumulator_modulus_15/certification.json",
-        "certification_sha256": "7439fceb289027fad30048a0f37c7e72333ce3b7a93c92729261d662e5124dcb",
+        "certification_sha256": "59dc72b8bb2f11e49f69892317e7786172325b131763aa3ca09bce219bf3bb10",
         "fault_class": "accumulator_modulus_error",
-        "mutation_bundle_sha256": "3cb9b2f32a95f1d9dcf556f621f43f119fda9a1fa6bb128a4dd803ae0904e1b2",
+        "mutation_bundle_sha256": "fc99b50d4e122ff042a72246d27d02e84e044a20d6f7db15c0de479ca188843a",
         "mutation_id": "neg_001_accumulator_modulus_15",
         "source_catalog_certification_path": "negative_variants/neg_001_accumulator_modulus_15/certification.json",
         "trigger_condition": "The fractional accumulator reaches an exact state-plus-code sum of 15 before a divider decision.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_fraction_mapping_reversed/certification.json",
-        "certification_sha256": "94b2edc15b99a093b0b7019a2fc7795df65cd365dd6a457b8253509e5d5881d8",
+        "certification_sha256": "00142ffc929848f2b075c41b598d2a4cfe481bae2bb786f13380ddeb0ce9fb50",
         "fault_class": "fraction_mapping_reversal",
-        "mutation_bundle_sha256": "d1d88d2fd9a74eea83d3f00996d9bbf5eae8713c4b38300339f7e3173c70a97a",
+        "mutation_bundle_sha256": "fb8b4c4348a6110ccdaf844f6cf701e4302385fa7ede23101a95e8b704d50deb",
         "mutation_id": "neg_004_fraction_mapping_reversed",
         "source_catalog_certification_path": "negative_variants/neg_004_fraction_mapping_reversed/certification.json",
         "trigger_condition": "Two or more distinct fractional commands complete equal-length ratio-monitor windows.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_divider_off_by_one/certification.json",
-        "certification_sha256": "b5aa53a25f9253e04c8b21331605b90ac23b0365a6a1811b2ea33b1d5ee64e2b",
+        "certification_sha256": "23ca77d7d50435dc680dd771241f10cd01c04d8a5aa5de9042c8c9712f6d74c8",
         "fault_class": "divider_count_error",
-        "mutation_bundle_sha256": "bef0e8747aae99eeb37e6bfa9c644ac1f6d60c7d646c8246befb226810539275",
+        "mutation_bundle_sha256": "2a87df987637f2c0775d6b9dab45fd81e53bbf5505c3fcea440698cee0323152",
         "mutation_id": "neg_003_divider_off_by_one",
         "source_catalog_certification_path": "negative_variants/neg_003_divider_off_by_one/certification.json",
         "trigger_condition": "Enabled rising DCO edges are counted.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_reset_valid_not_cleared/certification.json",
-        "certification_sha256": "c4ad2e30563b535f48d9a0cfde9215f1bf2ec2a2ce52f84260489705ba244296",
+        "certification_sha256": "03a8fda97baa9a4a109ba29c6aff9d516dc3b7addb78d098fa42ffd56a5f1e37",
         "fault_class": "reset_disable_clear_error",
-        "mutation_bundle_sha256": "efd035ee26b470b0629385e4bfa4624c6b1d32682d3d9f87259c9a270c44f6c3",
+        "mutation_bundle_sha256": "c23a4b66316e1f938425dd3e404efb42ae66887d33d9c1471241e3672baee38d",
         "mutation_id": "neg_005_reset_valid_not_cleared",
         "source_catalog_certification_path": "negative_variants/neg_005_reset_valid_not_cleared/certification.json",
         "trigger_condition": "Reset is asserted or enable is deasserted after monitor activity.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_divider_ignores_carry/certification.json",
-        "certification_sha256": "b9061c0fe16dc2da1e0f9eb184ea19d0c985d73fcece082c716862b03115e2eb",
+        "certification_sha256": "9c378c4fe0732a46899d20d449b43e858e90fd9aafd925e942d41121c96a15aa",
         "fault_class": "modulus_selection_error",
-        "mutation_bundle_sha256": "76f231fd088f1193bca2031e3cb777bd5b85214e36079da7ac768fed7f25a455",
+        "mutation_bundle_sha256": "47067a2b55378784a054557aeb29d77e8038db8c9f0e883af3427e516601d51c",
         "mutation_id": "neg_002_divider_ignores_carry",
         "source_catalog_certification_path": "negative_variants/neg_002_divider_ignores_carry/certification.json",
         "trigger_condition": "The accumulator produces a carry event.",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "60570bcc175c1064839a9551dfde654e4bd949c725e3274afb5e413e7bc8e111",
       "score_deck_sha256": "3228cc5e8b88e0b43a65b16a31dcdb69240427cca180ac9e10ffeac514105e1f",
-      "task_certification_sha256": "d548db3075237d586b34490c111bf4fbc33db65294c574a8e9a21369326c338e",
-      "task_record_sha256": "3840fb6df9239dabb474134e168ba5984990f983b9d93af0980210dc83a63046"
+      "task_certification_sha256": "5058abc7bc2b4ba510f769c220812acea068f7f7b4862462e964524274fb7fcc",
+      "task_record_sha256": "ebec485da2f1a4364b687078eb81d0f8592c792b28d3a42608da0ff2eb278780"
     },
     "release_dir": "363-fractional-n-synthesizer-mini-loop"
   }

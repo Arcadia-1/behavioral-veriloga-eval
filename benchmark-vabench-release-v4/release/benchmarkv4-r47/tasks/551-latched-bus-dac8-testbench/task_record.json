@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "051-latched-bus-dac8",
+  "checker_task_id": "v4_051_latched_bus_dac8",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "20b55c7c712d49597f398bc2d2a7ec282c80a4da3f31ba22cf6da39e3621202f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "86f05a7f7fe4d76ca1a9e908ed942b646cd1c249609a20d1ccdeb5c6e1d026c3",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "051",
+  "family_spec_sha256": "8fb0d2cd7b84adda9907600f92291d66852f487a2d20c232312c2531282d8d6e",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "15f70753a5d94c358fae85ed76f062e033502e79a703161ecc2b7aa774101beb",
+  "public_contract": "tasks/551-latched-bus-dac8-testbench/public_contract.json",
+  "public_contract_sha256": "3f42547fd14771838095d170c7287fd0965b5e3f99c95e47bd82c2fc79fac1e6",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/551-latched-bus-dac8-testbench",
+  "task_id": "v4-551"
+}

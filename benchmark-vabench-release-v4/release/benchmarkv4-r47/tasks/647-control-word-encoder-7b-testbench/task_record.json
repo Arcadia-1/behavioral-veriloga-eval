@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "147-control-word-encoder-7b",
+  "checker_task_id": "v4_147_control_word_encoder_7b",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "e4d8145013a3e58cd86744e37ad0caafb6a7a91df74f8bb475a5de8143412346",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "2c030e9997c7bf0fc2b436dce87af87ff96fc07366e24d6dacdeea3369d6ed47",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "147",
+  "family_spec_sha256": "5614cb5fcc7d38a0b758f1d29cb6f127c7269940e0cd2713c7bf0db8337991d1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "dbeab5d6f709532d56cf6c8ad857e414bfb4043f478cb6270817ce9de298e4c9",
+  "public_contract": "tasks/647-control-word-encoder-7b-testbench/public_contract.json",
+  "public_contract_sha256": "4ed917207a51ffa3c308177c15ae94319e62d2f8da64c3c368e4c836c604f553",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/647-control-word-encoder-7b-testbench",
+  "task_id": "v4-647"
+}

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "854b3020d69b80905f0bf1583383c4b6f4ebe7cd37ceade32989037bb3b968ed",
+        "certification_sha256": "d972580965b490a32417a338458b12bafd48f9874667e1c57d5d8bdaf7525aaf",
         "fault_class": "threshold_boundary_error",
-        "mutation_bundle_sha256": "4383b5a8cce55c8ddf00dfdfcf0e0cc23c692b423270f9c431a62b17dd6b041e",
+        "mutation_bundle_sha256": "c0cafb4125a0c97d84a2df8edfb43d01544a025b6a9e0d1642f27d37061f92d6",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "boundary stimulus crosses the public threshold conditions for ADPLL Ratio Hop Timer",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "2c43662ae151d11b34bc77d9bbde68e0a9a9f1240a1cd8e81e6e7651e794f45d",
+        "certification_sha256": "4f15369ddd8258a88bcbde6d63c23edd01b007124d790539bd5116d27b582048",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "41b905e68b8144959e993ebb8e570c9ca0f10f45d17120e7475afdc29864565b",
+        "mutation_bundle_sha256": "be62894a492a30505ddf433ab4dec5e6010518161cf20a8e4bf04790c5512738",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for ADPLL Ratio Hop Timer",
@@ -33,9 +33,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "551279d5397e1e0c712b9465452ebf5f3600127d4b58a1992ae150406e5828b3",
+        "certification_sha256": "cf920910bb95e83439785e92b541fe00c4c8593289d36ff9e5c4cb398ea1fc7a",
         "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "f1e857bfd6620a52d0c6dbf2627a72c0398dd89b81dc73da03893ffc13dcfadb",
+        "mutation_bundle_sha256": "515ec04c9e742d50bcea3347cf557a036e348246ad07b645fa206385567f4812",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "score stimulus observes the public metric/output scaling for ADPLL Ratio Hop Timer",
@@ -47,9 +47,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "1bf4ca46e6a3e1b1b8ac34372840288566a162e4aa5c33f47fab105e6874cad9",
+        "certification_sha256": "4004d17f9f4bca5023d3058578373b679b781ac1e521c54fd16ecf3d93865c67",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "e04bb6dd8f836aac5f71e73672c435653c621970d5420120fc4fd881b7a1c37f",
+        "mutation_bundle_sha256": "b9d32fc6b1ed2f4da2c96cb677f47d51e3af8fb2b2c0236849625b1d39aa6874",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "nonzero behavioral stimulus requires observable ADPLL Ratio Hop Timer outputs",
@@ -60,9 +60,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "f687809ef94964afc9264425b024e9222abe9fbf2f2a2eb58cc7835af0b6d7d5",
+        "certification_sha256": "d43907b12898767727e3ac09beadd40a384859013b12a3db0e8d7e6645e8c9c4",
         "fault_class": "reset_semantics_error",
-        "mutation_bundle_sha256": "0d97d20446fc9d3b5ade9e9dfabd7f2cc49c467ea5d70763b83a5264a62b4d35",
+        "mutation_bundle_sha256": "2eaf1b40a5882e6a5027aece49641439a9a701c63305d1606e7a92db8b9eb635",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "reset/recovery stimulus exercises ADPLL Ratio Hop Timer state override behavior",
@@ -77,8 +77,8 @@
     "hashes": {
       "mutation_catalog_sha256": "421ddb2bd55e49180c27ecf7970d6f50662754ae72d4e2ca388bcbe86ba587c2",
       "score_deck_sha256": "05e3cb1d2c284a1ee97719ab15a152c898e924408d90bc69d11461b685c22917",
-      "task_certification_sha256": "fe86078d37e793c4a3118bb7d365653890ebbe1927df96f3682cc7279e06b350",
-      "task_record_sha256": "4796064b2419d3518f092a0456016f27f5a1b323efd74e0d994610a06adba3ec"
+      "task_certification_sha256": "ef28ad453e1762f02b4659395d70a04c2288ac5e9765dae53fcb7163e590aa84",
+      "task_record_sha256": "89f226eec1f867dee7290d8c177c8c325b70c8c3f245c44fdb0213a8ac97f0ee"
     },
     "release_dir": "081-adpll-ratio-hop-timer"
   }

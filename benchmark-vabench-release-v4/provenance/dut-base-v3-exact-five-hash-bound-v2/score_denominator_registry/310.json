@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_droop_flag_missing/certification.json",
-        "certification_sha256": "35dbca7e9e8d235c98d472d291331da4616df1e8ca9db615dc8e4538f7da659f",
+        "certification_sha256": "669face1950176ef0a85b8f0506b32f710ce7f1ada5f41879311ed4e3157857b",
         "fault_class": "droop_flag_missing",
-        "mutation_bundle_sha256": "a941f7602eef75c65bf017c63792245fa8474072cc722cd2978652474958a4fb",
+        "mutation_bundle_sha256": "38e3d9dd1e94650fbf78da5cecbbb151f7f07fe95e95429f32b88a3244d1ad16",
         "mutation_id": "neg_002_droop_flag_missing",
         "source_catalog_certification_path": "negative_variants/neg_002_droop_flag_missing/certification.json",
         "trigger_condition": "droop_flag_missing",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_bootstrap_metric_missing/certification.json",
-        "certification_sha256": "394de178d0963700f58df15e32190709f0a5785a60d5785df4e0577cacab1f14",
+        "certification_sha256": "ce7c1a634168e8d8f866f79dd2a09cc3f66190e812a029668af30df0dc98e2cf",
         "fault_class": "bootstrap_metric_missing",
-        "mutation_bundle_sha256": "128f2d10d304d997ac6bc17288e32a6c8aee355c9a1ac2fdb0f678ed4a09853e",
+        "mutation_bundle_sha256": "d084135bf0f0a4e199e32d0a787a4eaa76a63af20179bc70b33825a89172f0c7",
         "mutation_id": "neg_001_bootstrap_metric_missing",
         "source_catalog_certification_path": "negative_variants/neg_001_bootstrap_metric_missing/certification.json",
         "trigger_condition": "bootstrap_metric_missing",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_enable_clear_ignored/certification.json",
-        "certification_sha256": "e90c83da5e2d94f0440330f84f99efa2b612f68adbca6c7476ea0bec6852a58e",
+        "certification_sha256": "25b8a766ddee3eab945a74c100e1d949f0258e01bae6461206b6307c4ba2d811",
         "fault_class": "reset_enable_clear_ignored",
-        "mutation_bundle_sha256": "5979371dd4f64afe9b00320e569a9b3c8e513af3c47060b90848b6138774e034",
+        "mutation_bundle_sha256": "379a3ec957b4beded60cdf82fe7bf604ebc116ef9d6da70f2533d888beaa95da",
         "mutation_id": "neg_004_reset_enable_clear_ignored",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_enable_clear_ignored/certification.json",
         "trigger_condition": "reset_enable_clear_ignored",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_held_output_stuck_common_mode/certification.json",
-        "certification_sha256": "19e15fdc5d4f628d7eb12200a82abf1f017ce4ad461ff452e0007ed0ac737e9e",
+        "certification_sha256": "d050a66ddf4a0ab406c76ec5875c429be2222bb574be3a9e95852fcb91a8dc17",
         "fault_class": "held_output_stuck_common_mode",
-        "mutation_bundle_sha256": "5e45bc95940eba3a62844cd074f8100a073c8197e66c80a9b4022a176d28b2bb",
+        "mutation_bundle_sha256": "ea31b83ccf0f3dd14f582e83d53de697df4b42952254788b44ba0e353809f319",
         "mutation_id": "neg_005_held_output_stuck_common_mode",
         "source_catalog_certification_path": "negative_variants/neg_005_held_output_stuck_common_mode/certification.json",
         "trigger_condition": "held_output_stuck_common_mode",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_held_sample_polarity_inverted/certification.json",
-        "certification_sha256": "fdc66c52d0bcd16377026f48794bff7375a9b715b604f2ea3c2b50f01e0b0f53",
+        "certification_sha256": "8b81e1768f452b40781c1730be1043c3beb4037bca4b2705d49019816cebc2aa",
         "fault_class": "held_sample_polarity_inverted",
-        "mutation_bundle_sha256": "ade567166f8880543278653361cfe5555293dc47498bb57fe981625e26b6e056",
+        "mutation_bundle_sha256": "33f8a4f6498db777f37d5ae1b34a311a41a02c7b3a3fca85a7bfa1b2f814119e",
         "mutation_id": "neg_003_held_sample_polarity_inverted",
         "source_catalog_certification_path": "negative_variants/neg_003_held_sample_polarity_inverted/certification.json",
         "trigger_condition": "held_sample_polarity_inverted",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "06aca106b7aa10a01697be1b9f5723d034c4b4e73556eca6cbe4ae13ee0b9d53",
       "score_deck_sha256": "dddc10d4cc24ecbb7814a648e556a7b94afeeb2b690dfd0d00fb0e7c2157151d",
-      "task_certification_sha256": "46589126bc51783f5a9a69460fa287163683a37a713e7de4aef4cc13f30b39cb",
-      "task_record_sha256": "e874daa678ef69441a9f6c59a999cce3b910025a862e5c5f002bcccdbf578c8b"
+      "task_certification_sha256": "d67cfb43d7a9bd60194aa34de2aa4d1c26036d2360e7c0da79234c575f060ef5",
+      "task_record_sha256": "86a419e642c4960cdd7eb9f9b86491a33b9e147fc2cf020c989c22acd05534d6"
     },
     "release_dir": "310-bootstrapped-sampler-charge-metric"
   }

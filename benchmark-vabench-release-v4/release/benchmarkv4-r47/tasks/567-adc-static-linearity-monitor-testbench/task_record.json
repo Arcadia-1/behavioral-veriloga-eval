@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "067-adc-static-linearity-monitor",
+  "checker_task_id": "v4_067_adc_static_linearity_monitor",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "783f938599d486d0e509c6695ee4dea41c2b67504f3ebea837b75cf64447467f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "2b777aae041acada42832e7e4c55a3f72260bbb73409b070816195655f4b43f6",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "067",
+  "family_spec_sha256": "d64c2848083e828a00735584905ebd7e28f5d5dbb1a4940bacedd17268d45749",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "56f5a6d5b256bf44d4c90850a1fd78119ee514d45c9a09a17533edb8b083ba4b",
+  "public_contract": "tasks/567-adc-static-linearity-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "2358deeb3b30e32f6e0d9c394164a2debd344f083ed2b504f6550db169073ad3",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/567-adc-static-linearity-monitor-testbench",
+  "task_id": "v4-567"
+}

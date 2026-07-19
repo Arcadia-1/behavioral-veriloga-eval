@@ -815,6 +815,7 @@ def write_valid_r47_evidence(tmp_path: Path) -> tuple[Path, str]:
     release.mkdir(parents=True)
     (release / "MANIFEST.json").write_text('{"release_revision":"r47"}\n', encoding="utf-8")
     source_sha = "a" * 64
+    source_definition_sha = "d" * 64
     manifest_sha = file_sha(release / "MANIFEST.json")
     runtime = {
         "evas_engine": "evas2",
@@ -824,11 +825,11 @@ def write_valid_r47_evidence(tmp_path: Path) -> tuple[Path, str]:
     }
     payloads = {
         "RUST_EVAS2_CERTIFICATION.json": {
-            "schema_version": "v4-r47-rust-evas2-certification-report-v1",
+            "schema_version": "v4-r47-rust-evas2-certification-report-v2",
             "status": "pass",
             "release_candidate": "r47",
             "certification_policy": "rust_evas2_only",
-            "source_score_denominator_registry_sha256": source_sha,
+            "source_certification_definition_sha256": source_definition_sha,
             "runtime": runtime,
             "input_report_sha256": [{"name": "raw.json", "sha256": "b" * 64}],
             "summary": {
@@ -893,6 +894,7 @@ def test_r47_evidence_requires_strict_provenance_bindings(tmp_path: Path) -> Non
         package_root=tmp_path,
         release=release,
         source_registry_sha256=source_sha,
+        source_definition_sha256="d" * 64,
     )
 
     assert problems == []

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_immediate_set_on_rise/certification.json",
-        "certification_sha256": "8c55a16bc0af2252dc9204cfbaab0c2a178d41e3b3c83e98c7da0cc30495e901",
+        "certification_sha256": "deb8b4e73ac02fa39888a31162e2891ec7be69da51f6889ed1cfea3da52b80aa",
         "fault_class": "qualification_delay_bypass",
-        "mutation_bundle_sha256": "60f3a466df3fd6b34c13eedcc605b3a707a5d1429583fdd5aa0fa6365219d663",
+        "mutation_bundle_sha256": "503ac7141cfd384f28d2f2f85fa2ff3ba9be6af55652a423a4dbe206400f2ea6",
         "mutation_id": "neg_002_immediate_set_on_rise",
         "source_catalog_certification_path": "negative_variants/neg_002_immediate_set_on_rise/certification.json",
         "trigger_condition": "sig rises while reset is released",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_does_not_cancel_timer/certification.json",
-        "certification_sha256": "bca361b2d34c4af4f9f5a1761bc46e42c48c65f4379d86d75bfdf5d37ceb0597",
+        "certification_sha256": "2b9f71ed4bd1c51f49126d184b085a404f3c4aa54b83cfe3abe053a7b3a5a743",
         "fault_class": "reset_timer_cancel_omission",
-        "mutation_bundle_sha256": "7cae89de17b1b6225534c1b9ded3dbe6428e7de49c997fe44f3484de6d84b08d",
+        "mutation_bundle_sha256": "26ba72a9d693997a453effdfead89c78a36381f11d753f52d0ef835a341f0e89",
         "mutation_id": "neg_004_reset_does_not_cancel_timer",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_does_not_cancel_timer/certification.json",
         "trigger_condition": "reset interrupts an armed qualification interval",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_007_missing_fall_clear/certification.json",
-        "certification_sha256": "959361b911a06d581b305dc12006794ddd904ff4e6012a0b4efdd408f24a0624",
+        "certification_sha256": "751f3012c209298b1f68b08a0cfc2575d69c406191d151ac862861f4cc02a195",
         "fault_class": "fall_clear_omission",
-        "mutation_bundle_sha256": "15c7004c23cbbf409e93d01bfba2be1627e63e6514db1941cf26b3d5f1c37fe5",
+        "mutation_bundle_sha256": "15f11b1e25f871b8092598ac2b44a132b02e5a4b48303ac99c328dddea673a18",
         "mutation_id": "neg_007_missing_fall_clear",
         "source_catalog_certification_path": "negative_variants/neg_007_missing_fall_clear/certification.json",
         "trigger_condition": "sig falls after out has qualified high",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_no_final_sig_recheck/certification.json",
-        "certification_sha256": "362eb686fbcf9578431fa5def16068777f59529005a3a6896e0b8bc681444277",
+        "certification_sha256": "5802d755b259bedbb4c71d211779b04d2f80d881df300a7028a90240d517cbf2",
         "fault_class": "qualification_recheck_omission",
-        "mutation_bundle_sha256": "d3ef200b370980a94614e668729e0ad07c4331476519c34f1072d9589f825c44",
+        "mutation_bundle_sha256": "edebbbb9853a27415d32ff25027f8f7547630c623c86b03de34f8982d2af6ec0",
         "mutation_id": "neg_001_no_final_sig_recheck",
         "source_catalog_certification_path": "negative_variants/neg_001_no_final_sig_recheck/certification.json",
         "trigger_condition": "sig falls before qualification expiry",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_never_qualifies_high/certification.json",
-        "certification_sha256": "6d8d8f2d72914b5cb5ab83c1a166c6e7b1815112d88979c93a4e6531eb42189b",
+        "certification_sha256": "56885e4407245bfdf87acce7bc79886661bed9849c0132eaf1f7f14f5944601f",
         "fault_class": "missing_qualification_commit",
-        "mutation_bundle_sha256": "5705898273b1a8831f009afce866231fd5e0bf830e8f2b3ef53534c579f1dd35",
+        "mutation_bundle_sha256": "729a934a506e6ef538ede17b552553b96caac70dc7b846d88892ea1352476100",
         "mutation_id": "neg_005_never_qualifies_high",
         "source_catalog_certification_path": "negative_variants/neg_005_never_qualifies_high/certification.json",
         "trigger_condition": "sig remains high beyond the qualification interval",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "3bde243bf1bbe3a5b21e975b72a62266a0c28f8f2dd2f7264ccfc94191c543c7",
       "score_deck_sha256": "5c5a64e3ac585062b98c526f1d6376b1cb8e3f907ed38555d17a630165a30eee",
-      "task_certification_sha256": "e984a012ef5d5628df28e07cd13021cdf3f2b56ebc80c5aec4d679828b9970bc",
-      "task_record_sha256": "e25eed7fa5f8625508a460e6e732fb0a1cc478897fc00d3982f7713bb07bbfaa"
+      "task_certification_sha256": "8ff23bebdc7af341933731dac23d43d3b1157addb416e6041d09978aa7e4c658",
+      "task_record_sha256": "61a062b68412549bd51e134de4a8427b8d76a4ffe77051b915854bafec7c4afd"
     },
     "release_dir": "005-debounce-latch"
   }

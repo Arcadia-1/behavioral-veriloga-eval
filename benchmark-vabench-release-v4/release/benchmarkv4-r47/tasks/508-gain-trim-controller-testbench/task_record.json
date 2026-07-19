@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "008-gain-trim-controller",
+  "checker_task_id": "v4_008_gain_trim_controller",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "9e1480c7b71b796962f70bc9321d95ba9c6aef11448a4b9070d3bbf5619b7784",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "f189e7951d9995e938199da8d62ea202eee4a0b75fa6c5e354d08fa79ab6220a",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "008",
+  "family_spec_sha256": "aea6623ab44ad6de1c689c766cf5f825777c81dead35a187355ad2025890f299",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7fd78ac15081f41d90f123b3ff39983b016cd5efcb16563a2761e6b7cf1c636e",
+  "public_contract": "tasks/508-gain-trim-controller-testbench/public_contract.json",
+  "public_contract_sha256": "a43ede9675a4ff0b289c105c2c4f85322244db563cc3099dacf59748976134d8",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/508-gain-trim-controller-testbench",
+  "task_id": "v4-508"
+}

@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_AT_INITIALIZATION_AND_ON_EACH_FALLING satisfy the public contract; fault class metric_or_observable_fault is rejected",
-    "observed": "EVAS: vres@0.5ns=0.1000 expected=0.2000 tol=0.0200",
+    "observed": "EVAS: v4_201 checked=7 mismatch_count=6 coverage=events=5 sample_events=1 controls=['dctrl2', 'dctrl3', 'dctrl4', 'dctrl5']; P_AT_INITIALIZATION_AND_ON_EACH_FALLING checked=7 mismatch_count=6 expected=initial_vres=0.2+/-0.03 observed=initial_vres=0.1 sample_time=8e-11 metric_gap=0.1",
     "violated_property_ids": [
       "P_AT_INITIALIZATION_AND_ON_EACH_FALLING"
     ]
@@ -17,16 +17,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_201_cdac_6b_stage1_up",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 399
   },
   "family_id": "201",
   "inputs": {
     "checker_profile_sha256": "26f1c76099515f2749d6de0b38c27abbec32d79c1286f19279029006b06536f1",
     "harness_spec_sha256": "5fed63076f1639423d3816f752326c6409080453045b79e55f6feb7e20ad454c",
+    "mutation_bundle_sha256": "87099f6cf5f00b54491a60b15ff807623618a23c177f96ab6d956429b7e9cbac",
     "profile_sha256": "48348ec9fb73ff0d5bdafb406ba65ee6e8471ec818e38ba57d76a9922a4fc66f"
   },
   "mutation_id": "neg_004_half_output",
@@ -35,8 +36,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

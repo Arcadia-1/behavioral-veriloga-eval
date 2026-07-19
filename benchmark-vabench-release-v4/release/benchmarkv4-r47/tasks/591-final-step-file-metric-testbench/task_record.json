@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "091-final-step-file-metric",
+  "checker_task_id": "v4_091_final_step_file_metric",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "5b44117249b8713af782a1681d514ac1f172aaca637c88a3b32372dff722c614",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "366c487b78970dfda6fe625cdab078b405cc0d5db115a4398ab266c90db54151",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "091",
+  "family_spec_sha256": "5eefb68a665acf099af7908fef05fd6628e6f27f7778a2a5dd9b1640cdf654e4",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ce0fba18529f6c15cad6145060f509d65e686c561be173c3928ac6251484fe94",
+  "public_contract": "tasks/591-final-step-file-metric-testbench/public_contract.json",
+  "public_contract_sha256": "a18dec98bf10ae258b582c76ecd2fd71e8e4d6842fe45747fb34c29019e51cd0",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/591-final-step-file-metric-testbench",
+  "task_id": "v4-591"
+}

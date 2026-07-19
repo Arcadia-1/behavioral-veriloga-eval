@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "dac_restore_10bit_offset.va"
+  ],
+  "canonical_dut_source_slug": "161-dac-restore-10bit-offset",
+  "checker_task_id": "v4_161_dac_restore_10bit_offset",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "76d54eb65877e05dcc50707458f8bbe520a73a12ad168794af5ada9970da554e",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "e9fe3d707f91c5b6840a037fad4717dc74f385e9d6c5525312d6addc3f806e23",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "f5a39937d7eb56af2e960f6c4d960cc4cf840018e5edc5b830b567544cf5e95d",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "161",
+  "family_spec_sha256": "6ca0061e4ba76f5cc3e2cd154dd4c514debcd81e61e5d258cc90e9a59c2b4ed1",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e374dd2972abadcc2ee7a4ba0df1b35f7c102d9129100695c43bf6d0665b8205",
+  "public_contract": "tasks/1161-dac-restore-10bit-offset-bugfix/public_contract.json",
+  "public_contract_sha256": "39fbe700862ad3572a5f0e7737f3d0b6eaca88c9f78946ff91d3a7e96daf6063",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1161-dac-restore-10bit-offset-bugfix",
+  "task_id": "v4-1161"
+}

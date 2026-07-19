@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero_code/certification.json",
-        "certification_sha256": "f7f55e7ab155a08aab4164131f6f9284d4b4b134dfbb4a11147960d31c415506",
+        "certification_sha256": "59866ba0c65744f22782d55992b58fed8a47b46ba441c10a9a65892e5e96cb2d",
         "fault_class": "zero_code",
-        "mutation_bundle_sha256": "4e67b6f0def0690f6c03776ff22143b7575c1b7c44618890ddde27823ed47ac6",
+        "mutation_bundle_sha256": "a256f9579f5bc0935ff65a2f05b361193f19d70fac6f56980bce0f0ba4ac79b7",
         "mutation_id": "neg_001_zero_code",
         "source_catalog_certification_path": "negative_variants/neg_001_zero_code/certification.json",
         "trigger_condition": "never reports interval",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_off_by_one/certification.json",
-        "certification_sha256": "81b2ca5ea783ac9a07f0018050a915207536357a1a62927f35ec62b1f188c4de",
+        "certification_sha256": "fa9e9f5fde38789f08e7ca99d2f0b228e1b917c39f8976d81fc84162bd21220b",
         "fault_class": "off_by_one",
-        "mutation_bundle_sha256": "abe7424ff0e863c98e56bb734d694e1bb8b74d142914c9f963761fd7c0ccf96b",
+        "mutation_bundle_sha256": "a450953cb741f8e6c30c00988de319695abec422b7c50dc9875fffd0caa1eb19",
         "mutation_id": "neg_002_off_by_one",
         "source_catalog_certification_path": "negative_variants/neg_002_off_by_one/certification.json",
         "trigger_condition": "adds one count",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_scale/certification.json",
-        "certification_sha256": "09837c08046c82a938b70175547e0bc5aeb96357b335d93823f0c3b356da7785",
+        "certification_sha256": "70ae87840de0df0a1c0d4610cbb416595fc537d5b338059141ec4f3bf94ba5a7",
         "fault_class": "half_scale",
-        "mutation_bundle_sha256": "65f8b265361731483604a72506df801aa253f77709b37a4866e56a3086b10815",
+        "mutation_bundle_sha256": "8f5fbfa18ee64b809481103964ef733ea7ecb4b4874ad1e9b21fcba8f584dfe1",
         "mutation_id": "neg_004_half_scale",
         "source_catalog_certification_path": "negative_variants/neg_004_half_scale/certification.json",
         "trigger_condition": "uses 2 ns LSB",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_stop_only/certification.json",
-        "certification_sha256": "06494448e294dcfe9740e2b0f73663efb8ca6a507840ec632d3e3cc7e0b1c505",
+        "certification_sha256": "c5f6bc28b9fa9c8d1715fce513931ac3455e502e82beafe75d0a787d74227eac",
         "fault_class": "stop_only",
-        "mutation_bundle_sha256": "c0a47eb469fbd4ff2b298ae0461cfdb1b2fc3214c33476367c4057b07fadda46",
+        "mutation_bundle_sha256": "38a64dc7d7ee649a18bca9477c20bd62f897af9fdd3bcbe44a0b0163bdab0b3c",
         "mutation_id": "neg_005_stop_only",
         "source_catalog_certification_path": "negative_variants/neg_005_stop_only/certification.json",
         "trigger_condition": "measures from time zero",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_valid/certification.json",
-        "certification_sha256": "faccd16460e08f65be919b720b7b8dabbc51a6188573354cb76496f0be1eacde",
+        "certification_sha256": "9700d796d3450e4bc1462d7b36a93cf20327b5da14a62eea1e88bb6ab3a7d987",
         "fault_class": "no_valid",
-        "mutation_bundle_sha256": "12dd1b3f914bbfbd7001174a151c55a1eeabab65fd9c0de802851d3f4085c39d",
+        "mutation_bundle_sha256": "ae92be3814533accbca36fbccc526bf78fa18c26347687fd3e94f8d97b72ab83",
         "mutation_id": "neg_003_no_valid",
         "source_catalog_certification_path": "negative_variants/neg_003_no_valid/certification.json",
         "trigger_condition": "does not assert valid",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "1c5318d8fb9a7e8bbda41de95494bb9a363eb9250be24d4f51f3553c03a3fea7",
       "score_deck_sha256": "1f5a0cb15809001a8d0f9e3a91a75501cb706301f00858683428a7d5c0f482ec",
-      "task_certification_sha256": "30b4e8d451f9c7251fff41dabb83f025f4ede487d0dd4b4ab4b7471afe0707f1",
-      "task_record_sha256": "7869fdff6e958fd6886934ee6bfad8be136fc84f5f22c175acae38d12d75c5ea"
+      "task_certification_sha256": "f25da7fe09c18d3f0920d934e99020172b08a3ba91e536969480681adb92829e",
+      "task_record_sha256": "06d48ef841c23c2382e6dc2d559929a88468f3701b14d244ba9be2402b3a1c13"
     },
     "release_dir": "059-edge-interval-tdc-8b"
   }

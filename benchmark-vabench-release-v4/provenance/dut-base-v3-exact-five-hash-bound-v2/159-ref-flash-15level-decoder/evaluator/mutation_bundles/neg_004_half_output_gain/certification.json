@@ -17,16 +17,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_159_ref_flash_15level_decoder",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 2028
   },
   "family_id": "159",
   "inputs": {
     "checker_profile_sha256": "4136693fe2fb0a1316f14489977dda36317b5c652aa481355b0e6e8b04bc37df",
     "harness_spec_sha256": "cf672585cbb8f357080a13bf330ad8201653cefb1d215cd44980bd7dc6e2c36c",
+    "mutation_bundle_sha256": "e67779ad8de8c13d783d33c268176299576d4de09cd356c9b19bcdd317fb9c76",
     "profile_sha256": "01e6e4ac47d9fc1520e6bdbae36fb9d9a2f06fdce1103182ae56366aa835316a"
   },
   "mutation_id": "neg_004_half_output_gain",
@@ -35,8 +36,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_invert_comparator/certification.json",
-        "certification_sha256": "c127e9d13c26445763d326687deef78eafe65ea43ef4cc6d08dc3c6c42094c60",
+        "certification_sha256": "d6096496b2874a3b6b856c3973b35c90d12284777be7a1e742e00e6f49a13793",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "05ac32f80d8bdaece5958bd728f76657ea46d83ecf5d0ace7e5807101f6a43e5",
+        "mutation_bundle_sha256": "6207bc2eb9d3798a3d3832013e18a983c48cd20026e9047f08ce1489ff527b9c",
         "mutation_id": "neg_002_invert_comparator",
         "source_catalog_certification_path": "negative_variants/neg_002_invert_comparator/certification.json",
         "trigger_condition": "Uses inverted comparator polarity for SAR decision updates.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_half_d6_level/certification.json",
-        "certification_sha256": "b4dfe1dae05e3bb16c763cb92dc34ccc691f0d5af33cea3e2dce59a771cae388",
+        "certification_sha256": "8af04b21de948421289d84c7f76229e753c6cad9d9e3ccfcf6e184423325284a",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "ef4708653f50c82da4b853cc78517839d44f34ec9bbc8d9a34782cc58e0f7b0b",
+        "mutation_bundle_sha256": "d65d1a420976cf726f2b8afe500370a1cf7b91157b269a046cfc2f1cd006d4d1",
         "mutation_id": "neg_003_half_d6_level",
         "source_catalog_certification_path": "negative_variants/neg_003_half_d6_level/certification.json",
         "trigger_condition": "Drives SAR output d6 at half logic amplitude.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_co_level/certification.json",
-        "certification_sha256": "8523134c0ec1a961444a903aa2612485f94524795a6547c41fa27d9e7bf8d9c2",
+        "certification_sha256": "57efc5011d460e990ca7e91a8b6dd62a1a504cf3fa82fee900176ff7da8775f1",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "bf37b4293002ead40ca876c3500087a487e4044294974be8df82a0f9ed794288",
+        "mutation_bundle_sha256": "02ed9a6dadb26e552fa60302790fc0381a9c8dacc1936a5f5a8b920e65019dbb",
         "mutation_id": "neg_004_half_co_level",
         "source_catalog_certification_path": "negative_variants/neg_004_half_co_level/certification.json",
         "trigger_condition": "Drives co at half logic level.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "076804c89478520bc2c26ae20a485f0e2ee922b091093234d787a49257bb7aa6",
+        "certification_sha256": "29d83c65f62074af706dc707fa39edb8c8b90fe5901ee6ac9e4fb46bffb8f002",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "8d0b73d376ef619ce8ffded8044ced9052ba2e68ea9b59114d9bcd69e3c6a979",
+        "mutation_bundle_sha256": "7eca72bec22d9df08416e50010098ff513a99e0a897dd349e24d34de509a0f82",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "c2bbf39debd57ef99699b51b06c6f20044d9e8c3b6bab138b046a298698e83d2",
+        "certification_sha256": "3f66665b1f90c9adb91de6b30a73d44332f8d54f15bee411c35fe9955fb89b41",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "68f35b551c227164908e4d699481af9f8b79f073defe724207ffaf0a41ed7f56",
+        "mutation_bundle_sha256": "6e821e82e589560619d7b4bd2262dd567cd4fc6d31c601eca89ca602c4f5e00e",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "SAR DAS Logic 6b: scales the metric output, preserving the main path while failing measurement checks.",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "718f6bb66627dcc5b43d71e28e2da971b3c65844554863ed375a0fcf70888588",
       "score_deck_sha256": "fe327b72c253644653f8b8a1477f299b5743044038fc208ad144725757784fc7",
-      "task_certification_sha256": "7f599687881c18cd8cb8350091e690f914404e3efe7bf4288e97d214039393ef",
-      "task_record_sha256": "496c0c078776305450be742599c74270abf1ea45ed32ba269d3fd45b38709586"
+      "task_certification_sha256": "0cb0044982cfd1b0c79436d175c89fd315b0deb8e99b2eb41afb62b510587336",
+      "task_record_sha256": "35a017eb30cd58fd0947cc9f32ade78dc36b5b09d14232d746bcc7e32742f1fa"
     },
     "release_dir": "191-sar-das-logic-6b"
   }

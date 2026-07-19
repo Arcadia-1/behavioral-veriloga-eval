@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_denominator/certification.json",
-        "certification_sha256": "90e9eac040c2a83da7747d1e375d78ab767cc73c214feb32e6c21393919c389e",
+        "certification_sha256": "1a0c7cbdc6f0d95f4d6e8fde40b7d92daee4a212132ff532bb8c1c06682753fa",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "17d09bfc675c72dfb58210c062a3192d2b3eaefb5c2868113f45c08eb5dba889",
+        "mutation_bundle_sha256": "34b1262f785d844f567400f13a7f3f7059033419de510109b305dfa0c2688674",
         "mutation_id": "neg_002_wrong_denominator",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_denominator/certification.json",
         "trigger_condition": "Halves the decoded amplitude before applying the midscale offset.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "08e200807923d2497d5d5e7703c101de5234a5d8cc3d742b581dc9103d266291",
+        "certification_sha256": "5ea98f2b4952d8e97f471fbb8bc883cc78ccefab8ae1b56b81698d3121e0437c",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "47293895605900f05902018d2700d7a7bb2e54f74a78cc7224af051304dd8dcb",
+        "mutation_bundle_sha256": "deed72a7ab922c395f2d0db917f37b515f25d7163917b8cb3633ebcfa7bffaa5",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_omit_dn_half_weight/certification.json",
-        "certification_sha256": "1379ddbc554c25805a3fba228b6d1f19228c96ebda2e1136fef768d67b47176f",
+        "certification_sha256": "ed0a73af16460a42c66bdc2454b3f78bed5ad1a86aba1c4360a715e7b5994410",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "2ac8a979c112d40f5665eba89ce98ff2459bff7efcb336d2d7319361db700b48",
+        "mutation_bundle_sha256": "86e67ab13a543510c0e118aac29bc2b2b11ea66723d81b2bed21a5d2a4f351dc",
         "mutation_id": "neg_003_omit_dn_half_weight",
         "source_catalog_certification_path": "negative_variants/neg_003_omit_dn_half_weight/certification.json",
         "trigger_condition": "Ignores the dn half-weight contribution for ternary-ready codes.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "e2ec88f7170a8f14f78d5129ca423ab22e354da438c0a94064a66d1fa7a8a329",
+        "certification_sha256": "fe0ce4ca51a45c468741a3e777082a0bd2a7f6d609dd02b30b7a8d5cb23937ae",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "68b79e7392166227914ffff25a1bab6ef6d782ef11158b67994a15dc8533bcc4",
+        "mutation_bundle_sha256": "27a5682faa27adc91a0d5e97e09ff31b77a434532c4a48288e6836a61c9bfc50",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Cyclic Decoder 10b: scales the metric output, preserving the main path while failing measurement checks.",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_missing_midscale_offset/certification.json",
-        "certification_sha256": "5d042b22ac9dd7582f27eaa5ce3aec02dabf31c2c8ce6942c70aee63b526aa3d",
+        "certification_sha256": "d12307f165cc7e94d57cc588ab7eacea9f0b939c8953e9d50d809fe6b991a281",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "f6ec4070e515d9f93b9a35f8a11e1e802466af657e2ca145cd8990cb34bbdb2a",
+        "mutation_bundle_sha256": "1e35d626b5c72e71682cc21ffecaa8b09f373b81c3cfed2e9017717ccf82de1d",
         "mutation_id": "neg_004_missing_midscale_offset",
         "source_catalog_certification_path": "negative_variants/neg_004_missing_midscale_offset/certification.json",
         "trigger_condition": "Omits the required minus-0.5 output centering.",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "c4d7718e6a22cff7f6020aa556b9fea2a78527b794c5d54c5b9bca7bfd3e055d",
       "score_deck_sha256": "cd271114e71ea5219866688be5a1adefce6a5881a22038a4400e85fd8800ed5c",
-      "task_certification_sha256": "04993915dc6a32ddf3790d79aac5e7ace2b3c2c022657b4d99729bf2fb9a0c16",
-      "task_record_sha256": "d05bf4a822ec97f67f6a071c2785e1d33afab49571093c3e9c075ae68cd5fd4c"
+      "task_certification_sha256": "849ac2fb9be23c646e54c11943fc627774b4671d7b1c6aa7179cfa49b76e01d9",
+      "task_record_sha256": "91cf924d607c9db7b9ff4467a44f9e1d0f2f25cb5f3b8ed242655c94f0a8a1d9"
     },
     "release_dir": "163-cyclic-decoder-10b"
   }

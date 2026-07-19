@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "255-reset-polarity-qualifier",
+  "checker_task_id": "v4_255_reset_polarity_qualifier",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "166d67639a5a333fd32c3f77ac2b32e8e1e3069887cc877e364d26e35a97b0c0",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "88d240a3baba8ca1072407a4c4141984431e8c8c286be7d7c876cf7a124990eb",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "255",
+  "family_spec_sha256": "3c4342be34d623919966602d49c091ef2ae57aa35676735fd971dd6dfdc17c83",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "cb81b8090aac9b25e10ee733e867aaf62d367f2639131b9fa3cb686bad4c88c4",
+  "public_contract": "tasks/755-reset-polarity-qualifier-testbench/public_contract.json",
+  "public_contract_sha256": "4383287f7e75aed37f2e9f2c9204388f1c12384ef0c1378cbc3fe4915a947330",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/755-reset-polarity-qualifier-testbench",
+  "task_id": "v4-755"
+}

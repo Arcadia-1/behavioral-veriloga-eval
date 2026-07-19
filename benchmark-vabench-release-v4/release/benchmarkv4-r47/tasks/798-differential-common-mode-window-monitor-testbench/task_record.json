@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "298-differential-common-mode-window-monitor",
+  "checker_task_id": "v4_298_differential_common_mode_window_monitor",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "46140a975ab9be0f1610d2b668cee9021f1e21525265c286fefca4ecd92649e6",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "c854a5a8f9a99be5f3f26d1a6c38f4b0ad5b7ff545405932790ea93bd06ebaf0",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "298",
+  "family_spec_sha256": "4b38185230f4ff48537c4c407796ce6ca06872c3a42928895f6ffc239f391eb1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "cb53b72ade4ec1dfb21e6e9bfdb56d376bc439a8a8e0bba06be9491f277433cb",
+  "public_contract": "tasks/798-differential-common-mode-window-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "a946c8120e190cdd23e366999d92cf42965e7903db2d003982bce3a0c29ace22",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/798-differential-common-mode-window-monitor-testbench",
+  "task_id": "v4-798"
+}

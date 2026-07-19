@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_falling_edge_sample/certification.json",
-        "certification_sha256": "2bd27f498749f568f32137e6edf143fbfdb1f822f24a29e17e3b5c059d6c6ea8",
+        "certification_sha256": "30381e213b5963bce780847889155c83e1f56881cdc6d7b5adc8c84d361f6079",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "3925057a38f4c87e2a424a8e3ec3656ab1279aac4eadbb8af3e90683d2e47d29",
+        "mutation_bundle_sha256": "2b8bc3bcc64a160046ee6569df62c3725fc46549ee574989576be07ac9a7adec",
         "mutation_id": "neg_002_falling_edge_sample",
         "source_catalog_certification_path": "negative_variants/neg_002_falling_edge_sample/certification.json",
         "trigger_condition": "Samples vin on falling clock edges instead of rising edges.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_track_input/certification.json",
-        "certification_sha256": "6c1232dfad160795d0a716a4e229d364e3deea58d73bb7611d66caea9aeced34",
+        "certification_sha256": "e6f0e653cd265c87ecd1101454c87221be31aafb06b5d8a6c38ff5955e84b5fb",
         "fault_class": "track_input",
-        "mutation_bundle_sha256": "b8f5dc8a71248d5119617b29471ddebfc0107c64866c5f7d95360dd82788262a",
+        "mutation_bundle_sha256": "39bad194e387bf748bf5c58eba92bc1d204f178935f195c11ecbdc9ccbb91f55",
         "mutation_id": "neg_003_track_input",
         "source_catalog_certification_path": "negative_variants/neg_003_track_input/certification.json",
         "trigger_condition": "Tracks vin continuously instead of holding the sampled value.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_output/certification.json",
-        "certification_sha256": "0379965e4802ae74b1bf857ceb1dd6b446f091aec20ec2fc40ca23f7056776f0",
+        "certification_sha256": "146ea183295c51358a0ae8bfbe530affcbdb5a08ddfa2e4206d3963b3a880a52",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "f8ffc2f304f7667ddfb356894172ed057c0c20df581ff55a719dc9437ee0ac68",
+        "mutation_bundle_sha256": "ade3a8b7b88911b92a9653839a7a3e983f2ce2537e2850bb9ca6ca722abb86f8",
         "mutation_id": "neg_004_half_output",
         "source_catalog_certification_path": "negative_variants/neg_004_half_output/certification.json",
         "trigger_condition": "Drives the held output at half amplitude.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "2849774dc4c906b4fce3b4acf1e553fdce83fa246e1dd6e552c96db97c983bed",
+        "certification_sha256": "77f69d2849fff186ee626e985a0fcb92b070854448ceea82c4255a8399f63a02",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "b7ac1f8fce9ca533e5fd44907a15387846bceedfd298a3d4e350403ccf15b8db",
+        "mutation_bundle_sha256": "0508e2eece771d06db2fe86518bb0be20eb8127f5733436a2343695bcab41aa6",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Sample Hold 5v Clock: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "0db2f9746d43c483f3c970f59a5198e61276c9e8d9c7ca283044f0e6d62c98c6",
+        "certification_sha256": "d146753a286b806422b32cbe404c3f7bed7e217a63dd853dd2635ec0dc37aaf3",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "dfe80a9df5dc84fbb81877881381670015f59fc7410d9e2559f8e20a92302a0c",
+        "mutation_bundle_sha256": "7e9e75b30c1d58528318732d5c9f92ea6d52ba8b48ccdac8e7fb294d8f8c42bc",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "e447f671949d11a55a964e941cab0354bb28b378c931477ecb4a47786861ad97",
       "score_deck_sha256": "0bff3e88bccb1898a9bd00da128968ce8a817b9ad58ab1b11fa7888a27debb8a",
-      "task_certification_sha256": "57e6d2e0fc3ec292046271b328fcb9be2f84f128c1b3f65f10800c026e369591",
-      "task_record_sha256": "19fff0d8d63e7182d29e1ab005d85d0735ae2f28f4a0546002f259e83e7b8e73"
+      "task_certification_sha256": "90cc12f82f9379dd23f3319f9eb24e7a309f0d149c7f2c916d700f0b74f63df4",
+      "task_record_sha256": "4c65d7a50142e1e4eb430ae49912e5890da45d499d87ef6f09a0e1338dc8b952"
     },
     "release_dir": "210-sample-hold-5v-clock"
   }

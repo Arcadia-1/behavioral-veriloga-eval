@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "205-offset-halving-search",
+  "checker_task_id": "v4_205_offset_halving_search",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "fb602282d560d838f6030bd55d2dcb15d244eaef6c6628abf1a4ed60982b7ab9",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "0c6395eecefa0034ae9849ee94e2b304c0ba7389aaaca9ce23dac99bc5008592",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "205",
+  "family_spec_sha256": "1b185feb9e582636429eb662263552a4eb9271b4a410f68c3222cbdfcb691a75",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "873c80524825e2ac7306ac23a1e96b655f6853935ae238768307d4a5903facfd",
+  "public_contract": "tasks/705-offset-halving-search-testbench/public_contract.json",
+  "public_contract_sha256": "2c495bc844b6d3cd471abdc0d3427f10597c92905a1b5e2beb06dc46e7ed7fb6",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/705-offset-halving-search-testbench",
+  "task_id": "v4-705"
+}

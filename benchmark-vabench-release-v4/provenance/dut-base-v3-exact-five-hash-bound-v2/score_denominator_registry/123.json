@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_lower_clamp/certification.json",
-        "certification_sha256": "812632f43c357a0b30c225ef292d404edd577a8e82eb3ad0b33a2f0839b5d900",
+        "certification_sha256": "fb215f646afa9fe98b144d2d678e2b373283e59ddae0dedadb050615b3ae1784",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "cd8d3f77ca37ef03b88572c72470d4fd280e9bc7ef034a9af7d4610e0da92923",
+        "mutation_bundle_sha256": "7f512e2255289f065c64d5fa1be29e8d7b8c5b72145f60e982724d8b59a0aabf",
         "mutation_id": "neg_002_no_lower_clamp",
         "source_catalog_certification_path": "negative_variants/neg_002_no_lower_clamp/certification.json",
         "trigger_condition": "Passes values below the lower clamp through.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "ea0b42fcf89ec254eeae1fd9ded43965c4411042fe8bdbc4d5965af478ee2211",
+        "certification_sha256": "7383778f925eea4b02e18e8f49b4fd869258ae48c7215debedca425f14dde808",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "6c455d35d9a782640885075656d885b2c502c08a04ab5aee59e4d6c3e9294259",
+        "mutation_bundle_sha256": "5f67469021c9fcda61440cc6a9841fe0d8771d3e61d496289392cf63be35e36b",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_swapped_clamp_rails/certification.json",
-        "certification_sha256": "b292f5a95e3f8cf45ea8cce1e6ad47ae3b490e77394b6fd9e7b28ccc47a13169",
+        "certification_sha256": "ec6fcd29e5b3d709d7a99fc62c0669ea6a492a90bf4db322ca09577b0012b6eb",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "6636fe7d08dea7cf8d1ac9059323e7b7bbdb8db38fb340ceeda5323d750f8f03",
+        "mutation_bundle_sha256": "e5a2194117d871068b413517b128143217a8c4a584fc9825ef0a2494d217ba0c",
         "mutation_id": "neg_004_swapped_clamp_rails",
         "source_catalog_certification_path": "negative_variants/neg_004_swapped_clamp_rails/certification.json",
         "trigger_condition": "Uses the opposite rail for each clamp condition.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "3162ce8bdaa439a1eb369c05aed5e226e2b3188b03b85575b1ea7828be5927e3",
+        "certification_sha256": "90701b6f1fdc0ee172b085345804a95189d22bd296133593efbbe7e96e778ab9",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "2d74319a0b593d02ca21a82ec2ea6c09ba82a2263b111b70d169815ec82f0740",
+        "mutation_bundle_sha256": "ba73a7c7d74836e692623abe10c3d56e28ed7d00a3629fdfdcfdf6efe1aacc82",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Hard Voltage Clamp: scales the metric output, preserving the main path while failing measurement checks.",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_upper_clamp/certification.json",
-        "certification_sha256": "238b0a7a1f16124677abb0483de28573f6814866cbf17fe9b55d201d1474e580",
+        "certification_sha256": "0035924b3177f2cb4c70c0e7f1ddef3d8e7cd4a753e73977191611abc654453f",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "cfd1793f79759284b0f8ff2b336d8c94bdc1433f23ed2d6c7c8155ee5d7b4240",
+        "mutation_bundle_sha256": "dd059065ed08db24b29c2475e0031debbe03260cf85c85e9f23eac9bd36aaf1f",
         "mutation_id": "neg_003_no_upper_clamp",
         "source_catalog_certification_path": "negative_variants/neg_003_no_upper_clamp/certification.json",
         "trigger_condition": "Passes values above the upper clamp through.",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "fed74b80d83d1c3124c13261f9b3eb519dcd34458aacf197864ea4744e1d6008",
       "score_deck_sha256": "90f4f27a8842db82831237c70eafff7eff97baae7b217d8f61cbe92217800a48",
-      "task_certification_sha256": "00e1b5b932f95125114990905a59ab1c8865e688ebd681c7073b80ca2be6c0ce",
-      "task_record_sha256": "01b002307deef6504176c10425d217deebb654695246790a13d787ec9d06f7b9"
+      "task_certification_sha256": "fa4ba4ad0f82f2bc1c8dacc58609a0b1ea804c59616ffbfeca36d24bd314dbd4",
+      "task_record_sha256": "3d790f811181df677ef2fd1501272d53086186fa0ea3cba14ff2d3c03a1d9d67"
     },
     "release_dir": "123-hard-voltage-clamp"
   }

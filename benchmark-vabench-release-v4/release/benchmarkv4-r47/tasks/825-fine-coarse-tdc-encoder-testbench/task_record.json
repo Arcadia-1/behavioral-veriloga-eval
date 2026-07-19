@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "325-fine-coarse-tdc-encoder",
+  "checker_task_id": "v4_325_fine_coarse_tdc_encoder",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "fbcdc480a6c20666edd77d07d40e0b3f64da4d0826430ff788a7490b360182b1",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "d5a9550e5a42ee5d478abcb4d3112c74df150485cce151f5dd1391cfe11ae7a5",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "325",
+  "family_spec_sha256": "e50e6d55bb6c814210717c272cc91684cdf22a849657658ab35a73c54e5aa698",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "44bf5c32b8a065bbb096867b2f472196f881f0a5f3a45f85e3ace73f79421804",
+  "public_contract": "tasks/825-fine-coarse-tdc-encoder-testbench/public_contract.json",
+  "public_contract_sha256": "be98dd2d0dd2c3cbedeb5b1f78305eb9f9dfa9681b9281873075aab393359c40",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/825-fine-coarse-tdc-encoder-testbench",
+  "task_id": "v4-825"
+}

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_floor_quantizer/certification.json",
-        "certification_sha256": "3a4c54854e022c038340cb1b0d45707226ce3ac1e2aec92bb012193ea492acab",
+        "certification_sha256": "92a9267a3793486b50876be6e0ddf1449a6d93668e5dede16777c189faef46be",
         "fault_class": "floor_quantizer",
-        "mutation_bundle_sha256": "a0f6f3abfe266fd53ad8203dcf5e9f967f870ea0edad0b0d95427f72eea5bb7c",
+        "mutation_bundle_sha256": "51130066db656c3f8309a50b69bb6499a311f77bec273bfaa17325c52a8286a3",
         "mutation_id": "neg_002_floor_quantizer",
         "source_catalog_certification_path": "negative_variants/neg_002_floor_quantizer/certification.json",
         "trigger_condition": "Uses floor quantization instead of rounding to nearest.",
@@ -21,9 +21,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_input_clip/certification.json",
-        "certification_sha256": "83eea07d839644eec5d8c71da7c614fdc9de54d0ff97ab1b37e442bfbc63f33d",
+        "certification_sha256": "22e3b8890fec64b5d931b387de826cca0af31b0a4b951c0319c069360a886b72",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "46cdbbfaa8d03d47626caf1cc7b04a974a8ca0c36d8205f23123ed1d4094a107",
+        "mutation_bundle_sha256": "faf69bc93bd0336451f9f67705a6b87562ebad62527062096b1ba64e0059ee8e",
         "mutation_id": "neg_003_no_input_clip",
         "source_catalog_certification_path": "negative_variants/neg_003_no_input_clip/certification.json",
         "trigger_condition": "Does not clip VIN before quantization and residue computation.",
@@ -35,9 +35,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "b458a14a9ac20a7e5b41601ffbacc2945d49e20d9600dbcee1c26ddba5b70791",
+        "certification_sha256": "2e220ab8e0f57ede43d5b1ace6e01d64c9dfab2db66ca61dd587a9f8e01e5eef",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "56b965ef480a035bd7f140b93005c5175d0bf8d70e887d223c9b074dadb4f45d",
+        "mutation_bundle_sha256": "e997c0ec8f0da8e2436f9fb91a098518ae6d82639733311cf8378a0f265f7544",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -49,9 +49,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_residue_sign_inverted/certification.json",
-        "certification_sha256": "39e9f2e973c1ed2ac753daca466540a3c02e95243d10cfe969d86f3d9f75328e",
+        "certification_sha256": "7704522cc220013747dfcc6c9223845baabac27a75562fb9ec3968626cd886e1",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "0da356a86d8e9d370d4f07b11e420bf1350c217ed55e85b2220c155796a89540",
+        "mutation_bundle_sha256": "97b80819efaa4ec3f99717cb17e63cd7989a8167f6baa28c183f63db589a58fc",
         "mutation_id": "neg_004_residue_sign_inverted",
         "source_catalog_certification_path": "negative_variants/neg_004_residue_sign_inverted/certification.json",
         "trigger_condition": "Reports quantized-minus-input residue instead of input-minus-quantized residue.",
@@ -61,9 +61,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "74f55ec9b2a4c282a52d650aba9a1e4e9bd29ee2e2a840e9b06925217f1bd36b",
+        "certification_sha256": "568bb894b77fc3f7168488026b7e790eebf51ac276be6752328d894d3892160c",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "293dc257ee12481399f068b122bc420a7df000c64ab406c47ba2abf77d17b5f2",
+        "mutation_bundle_sha256": "50f843466b97257c08da282ac5be5d65f71f29a364e41cb1377b7d122ac00019",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Coarse QTZ 3bit Residue: scales the metric output, preserving the main path while failing measurement checks.",
@@ -77,8 +77,8 @@
     "hashes": {
       "mutation_catalog_sha256": "8465824433175feed1dfed6456534c1e7606cb8d9e62332a8de9084dfe30ff39",
       "score_deck_sha256": "0b8a2fb2ae0cb711b2e249b6f4b37eebdef99d717d89601722f41c256d1276f4",
-      "task_certification_sha256": "d59e4c089f9f2475ef3a22325b147bc770ed4a4927bfdfdbc82540ff31029ddf",
-      "task_record_sha256": "baf1866f6e5217c8b5f64b2bdabd4b37045fd0ffc7ff807f487c05bffa5849b4"
+      "task_certification_sha256": "5062341a9d82216b8d67ddb6b5d8cb3d3e569021f5864c13bbcd399d802c2caa",
+      "task_record_sha256": "1b969d045e107192d7a17b43c4e5bdc1931e990f86edc4ef91994d6ad90b4934"
     },
     "release_dir": "224-coarse-qtz-3bit-residue"
   }

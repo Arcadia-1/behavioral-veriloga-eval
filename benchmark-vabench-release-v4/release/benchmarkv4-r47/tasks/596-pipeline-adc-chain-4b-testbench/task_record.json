@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "096-pipeline-adc-chain-4b",
+  "checker_task_id": "v4_096_pipeline_adc_chain_4b",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "06aaf671ca6480bbf9d1c32a36de3143311777cbc15042d678b73cbeb955ebc0",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "75b0142c34ba29bbf181f6241f336724f52d4db9828766209578d8679ee7811d",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "096",
+  "family_spec_sha256": "f7888a614cf9228f847722090002e2662e76994650f7f259497f23bbb6d6bb56",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7e8eb99391b4520de5a5999b44383e77aef2eef4998b30016e37c98774d9ffa3",
+  "public_contract": "tasks/596-pipeline-adc-chain-4b-testbench/public_contract.json",
+  "public_contract_sha256": "90f373bd6d441b28b61f7ffb0a3d4abb5194c66c67bea2ce3cc6a09458194c93",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/596-pipeline-adc-chain-4b-testbench",
+  "task_id": "v4-596"
+}

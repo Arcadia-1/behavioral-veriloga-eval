@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_missing_midscale_offset/certification.json",
-        "certification_sha256": "42bfbcbe06f41b16c481e31aa01fbebba12900e6a46fab39abc913eca7f83260",
+        "certification_sha256": "3d6124a62d8bd8d54db9033b96ce1ca6c0fd8e7d89a3310e00196bc8dd287023",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "21ca161caeadee232150f00e8a5ac94826da0a3e85f9a57e90d26da428c383ab",
+        "mutation_bundle_sha256": "1d2190c75f04650522ad0d4dad901f7131240cc958e92000bcf25bfd93f280b0",
         "mutation_id": "neg_004_missing_midscale_offset",
         "source_catalog_certification_path": "negative_variants/neg_004_missing_midscale_offset/certification.json",
         "trigger_condition": "Omits the -0.5 midscale offset.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_reversed_bit_weights/certification.json",
-        "certification_sha256": "6d18727df1a0a5c087c8ad7e72a8b8b2cfd0a6d7650c9f736a547ddd2d80aff5",
+        "certification_sha256": "6e5babac322d91dff2f9d1a4d23af222af45b2d1dc3e4b4a13f17a9eb330202e",
         "fault_class": "reversed_bit_weights",
-        "mutation_bundle_sha256": "fe5a0fff0eb4de7972f9f9fc9df0e27881efb2d7cbed752bfa11ca52eee8196a",
+        "mutation_bundle_sha256": "6a99ba8ce10502b5e152a0cf15af6d525016a5f5819ae5195a8376044306a89e",
         "mutation_id": "neg_003_reversed_bit_weights",
         "source_catalog_certification_path": "negative_variants/neg_003_reversed_bit_weights/certification.json",
         "trigger_condition": "Reverses LSB/MSB bit weights.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "43a1774e369f542a6c4bec48bed2a0e59d21c36d05a7820d953934659f38939e",
+        "certification_sha256": "522bc7be890567e728247e2066a2f500e35115dfd6876c126c9c215187f7e6e2",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "a64d1c44dcbb6f3e23c1149057d440ff33355e5a474a088b6d99266b46df4ef4",
+        "mutation_bundle_sha256": "13397aa82b09a4256843e2d1c51c9d9764f431e702d9762d3740318dcde47f73",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_half_output_scale/certification.json",
-        "certification_sha256": "21ed049b7b6ec791dcc89cbd283fa19733dfed4a9c8d2a4397c0da2a6f165140",
+        "certification_sha256": "2cfb98f09d52a9b6dfdd3ca50d7e036b2c9deed7057fe3a2d49cf93827567e63",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "2a782032cc1fd4f596ca16029feed54671439f5fb17ad0f10e3823d63b4d691c",
+        "mutation_bundle_sha256": "d217e3160aec990496e391f0339c7386c7e4d51e72b854a7bd94a41056a0ab26",
         "mutation_id": "neg_002_half_output_scale",
         "source_catalog_certification_path": "negative_variants/neg_002_half_output_scale/certification.json",
         "trigger_condition": "Compresses the decoded output by half.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "edfbb176956211e2b875b114b31e5fe2c261714853fb99f0f37fc181ff6f590d",
+        "certification_sha256": "9fffd6e6e926a05815a07ffad2487380f10a890938ded6f5266c9b3e61cabdcc",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "00654e58cdf8acc459c30ae45d5fc5ac2644f8f637c90474ff29b04f22d735ef",
+        "mutation_bundle_sha256": "0ffd7badf0b480ea2e6fd55bafa949317041542f6b20f0c7749e5857bd0bccef",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Cyclic Decoder 12bit: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "c3059ce0644784eabe7dc0d507eab911abd911994ec88e4061012b487da34792",
       "score_deck_sha256": "5f581b22b2df22eb130cf8d8dbde91ea8ca837c6ccc7bb547fdf47c60c2aab89",
-      "task_certification_sha256": "cce7a07c4a11e84909c70a4094aee3e8f391dd9cf1fb27467ad8c4fbac61c3f8",
-      "task_record_sha256": "0795f80adf5eedcaa6324d99fc73e37df0eab342ed0cbbb562d71e45e95edefe"
+      "task_certification_sha256": "a6af302567c4e1bf2f316feb3c720dcca385221c1a5117cc7f7174c4773dc5c3",
+      "task_record_sha256": "f493b775708666f5e34e359b285c6b2384af57542bb8d51fd04defdd05331956"
     },
     "release_dir": "150-cyclic-decoder-12bit"
   }

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "316-residue-amplifier-gain-calibration",
+  "checker_task_id": "v4_316_residue_amplifier_gain_calibration",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "d0d30a97b1d65abaa1b7c87d02ccb63ad541af6eed77eeb6d8bb1238eb4ef7a6",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "22c043a72f36378f2476cf55fac128fb34e905801465835d96c4f565df8cf3eb",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "316",
+  "family_spec_sha256": "e9d63ba269e34af42ec027761615e65bf49e85781f768886afdf8134c2bd742d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4db080e70121dbd663d35a5a3cead84facfb85dcd036271ee3bd77171194d48b",
+  "public_contract": "tasks/816-residue-amplifier-gain-calibration-testbench/public_contract.json",
+  "public_contract_sha256": "b6a98afac2202d18f3a876363bf95d0933c548656f3e0e62d777822358c23639",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/816-residue-amplifier-gain-calibration-testbench",
+  "task_id": "v4-816"
+}

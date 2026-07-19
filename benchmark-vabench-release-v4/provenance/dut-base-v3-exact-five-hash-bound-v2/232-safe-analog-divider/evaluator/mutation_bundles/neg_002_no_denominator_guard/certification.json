@@ -1,17 +1,14 @@
 {
-  "artifact_hashes": {
-    "safe_analog_divider.va": "fb4cfc4d63516ee64303d83c9d4c28d133c8b19b9fe08e0fab05764fc2ab5cee"
-  },
   "certification_policy": "rust_evas2_only",
   "checks": {
-    "behavior": "targeted_fail_as_expected",
-    "compile": "targeted_pass",
+    "behavior": "fail_as_expected",
+    "compile": "pass",
     "diagnostic": "present",
-    "trace_axis_metamorphic": "targeted_classification_invariant"
+    "trace_axis_metamorphic": "classification_invariant"
   },
   "diagnostics": {
-    "expected": "properties P_WHEN_V_SIGDENOM_IS_EXACTLY_ZERO, P_WHEN_V_SIGDENOM_IS_NEGATIVE_BUT, P_WHEN_V_SIGDENOM_IS_POSITIVE_BUT satisfy the public contract; a 20 mV guard is rejected",
-    "observed": "EVAS 0.8.3: safe_divider_error@1.560ns denom=0.0160 observed=40.0000 expected=4.0000 max_err=36.0000",
+    "expected": "properties P_WHEN_V_SIGDENOM_IS_EXACTLY_ZERO, P_WHEN_V_SIGDENOM_IS_NEGATIVE_BUT, P_WHEN_V_SIGDENOM_IS_POSITIVE_BUT satisfy the public contract; fault class omission_or_incomplete_behavior is rejected",
+    "observed": "EVAS: safe_divider_error@1.560ns denom=0.0160 observed=40.0000 expected=4.0000 max_err=36.0000",
     "violated_property_ids": [
       "P_WHEN_V_SIGDENOM_IS_EXACTLY_ZERO",
       "P_WHEN_V_SIGDENOM_IS_NEGATIVE_BUT",
@@ -19,14 +16,13 @@
     ]
   },
   "evaluators": {
-    "evas2": "targeted_compile_pass_behavior_fail",
-    "spectre": "infrastructure_blocked"
+    "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r47-family232-targeted-precertification",
+    "campaign": "r47-full400",
     "checker_id": "v4_232_safe_analog_divider",
-    "report_path": "reports/r47/FAMILY232_TARGETED_VALIDATION.json",
-    "report_sha256": "643747ddfc25a27cda902e669235ef9da061d8fd0eb893b84e087b87062b3dcd",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 761
   },
   "family_id": "232",
@@ -37,11 +33,7 @@
     "profile_sha256": "b2f54e1ae95dfe550f164df562642a10e223927125cde86d881bf354cf79ab51"
   },
   "mutation_id": "neg_002_no_denominator_guard",
-  "outcome": "targeted_kill_pending_certification",
-  "pending_requirements": [
-    "full r47 400-gold/2000-mutation EVAS certification",
-    "successful targeted Spectre correct-plus-five replay"
-  ],
+  "outcome": "killed_behaviorally",
   "runtime": {
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
@@ -49,5 +41,5 @@
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",
-  "status": "pending_full400"
+  "status": "pass"
 }

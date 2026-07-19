@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "323-programmable-clock-skew-aligner",
+  "checker_task_id": "v4_323_programmable_clock_skew_aligner",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "caf2dcb99b5fd12e9a9381e650a37b5ecd1ce2fc38031206b7cd4b36a02b678b",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "a74df2e2c4f9edf7701348824b636d4aabdd8b466598dd4285f7cb573b3fa030",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "323",
+  "family_spec_sha256": "ded7bed98d7463a76d4277355fe2827244148fc8cee63e302c4a7f5555c23abb",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "fad3dd12bd5e41e6c17ca913730fcde79fc0c44790f9381d7b91a9986e2bb7d2",
+  "public_contract": "tasks/823-programmable-clock-skew-aligner-testbench/public_contract.json",
+  "public_contract_sha256": "32b3da2f925fbcb9d1a1bed92ca8c917414dc648ddab49bdc5d3f1dc22acd4e1",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/823-programmable-clock-skew-aligner-testbench",
+  "task_id": "v4-823"
+}

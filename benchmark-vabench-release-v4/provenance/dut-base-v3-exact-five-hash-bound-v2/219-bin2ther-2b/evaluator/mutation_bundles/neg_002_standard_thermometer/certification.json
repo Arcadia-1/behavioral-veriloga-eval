@@ -17,16 +17,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_219_bin2ther_2b",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 766
   },
   "family_id": "219",
   "inputs": {
     "checker_profile_sha256": "d7f8e4a1deda8ce74e1fbc3aeb5b1d493775cf6db1d1e01c8e9c5e18fd370107",
     "harness_spec_sha256": "e8576f6c029c04fc8a415922330ce2a9b3fb6d984ffabc887724c90646139e99",
+    "mutation_bundle_sha256": "30983795275bd7bd28d39e44d3fb42622f36feed4537bbf047848d45fa2ac3f8",
     "profile_sha256": "5760494311f4d507b1200bc5c8df33b41fc6732c376144333a9bdb79204fb55d"
   },
   "mutation_id": "neg_002_standard_thermometer",
@@ -35,8 +36,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

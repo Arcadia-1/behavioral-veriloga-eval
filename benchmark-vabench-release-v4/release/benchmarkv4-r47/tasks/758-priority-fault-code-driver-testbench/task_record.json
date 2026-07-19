@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "258-priority-fault-code-driver",
+  "checker_task_id": "v4_258_priority_fault_code_driver",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "23645790ceba65fcdb4fd2ee1fdf706ab975f788e3506d5a615474f1d579e2c0",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "5fc935e17406260104b753a7d586232a9f41239054bad57cecc047ac9741dbae",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "258",
+  "family_spec_sha256": "e94eae316bc5ce20c1dbf2817843992f205c618a23ed9be21c068333feebc4ff",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "73ee227dc678763b86b3fb7c60f707faad56b6ea31bb8fbbd79f85f4d16d19f7",
+  "public_contract": "tasks/758-priority-fault-code-driver-testbench/public_contract.json",
+  "public_contract_sha256": "8a1e9b4e61295c12bc2f18b938da3066b6bb4856ede471f75daf4562236c926e",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/758-priority-fault-code-driver-testbench",
+  "task_id": "v4-758"
+}

@@ -17,16 +17,17 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-full400",
     "checker_id": "v4_048_bin_to_thermometer_decoder_8b",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
     "trace_row_count": 1451
   },
   "family_id": "048",
   "inputs": {
     "checker_profile_sha256": "5f50679e7a3a8405875004edf09a0f7254a276e7be899619a20db58f350fc5fc",
     "harness_spec_sha256": "1a2c2122a8f941576e2c805c893f406c4527f01a907a24abd55bff8d9f7da935",
+    "mutation_bundle_sha256": "62d47d3ee5798db46461610140b74a320068d921ad16af73a684e866b040f23d",
     "profile_sha256": "40a1ff2567f3929e327cf10cd982a58d80f562d0162189cebfa790446f2de1f5"
   },
   "mutation_id": "neg_002_reversed_thermometer_bus",
@@ -35,8 +36,8 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_version": "0.8.2"
+    "evas_version": "0.8.3"
   },
-  "schema_version": "v4-negative-certification-rust-evas2-v1",
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
   "status": "pass"
 }

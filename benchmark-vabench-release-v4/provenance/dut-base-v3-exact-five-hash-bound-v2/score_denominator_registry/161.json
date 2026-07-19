@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_missing_code_offset/certification.json",
-        "certification_sha256": "0bb709b470f730dbece46d2a8db825c5c9626e432553dc7898ad6bb9ab8eb034",
+        "certification_sha256": "bddc5a776745b7b8eea1aa7aa21fdeee0bba2b3a81137489e3a21a8fdd1abf98",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "771020a42bf9e1e3a846241870e26b539a27cdb93bc5fd5ff863ece33fec8ba8",
+        "mutation_bundle_sha256": "2a8b1a07efd67e710c39dfb57749a5f4b84c4afc699259a070975f3a46273f58",
         "mutation_id": "neg_002_missing_code_offset",
         "source_catalog_certification_path": "negative_variants/neg_002_missing_code_offset/certification.json",
         "trigger_condition": "Omits the -32 code offset.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_missing_duplicate_d6/certification.json",
-        "certification_sha256": "6e9c82a0839fbef78145444c29d80192be2e371964a568dc91255a305e5e9659",
+        "certification_sha256": "c2481cf4f8eb0c6830be0287cba968f2cc8fa545c2ff4a9283413c2a4c83b7b4",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "b98bf9e5955f5c40fa3d99a7a9da0305c8001cbecf28e0af92a7988fa3446ce2",
+        "mutation_bundle_sha256": "04260aaa99b76656d3ac5854343a8d6e1da5019f692ab12a9e14cfa4a77469c9",
         "mutation_id": "neg_003_missing_duplicate_d6",
         "source_catalog_certification_path": "negative_variants/neg_003_missing_duplicate_d6/certification.json",
         "trigger_condition": "Omits the duplicated D6 64-LSB contribution.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "7cddff2033bb635c2105f318e7b5beb264e7d891d216fba73cad4d488b2babee",
+        "certification_sha256": "e6dcfb8fc3884224d984a469c74cf4b5d4f8b3ff6906078e2bf6c4bfa554be67",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "58ca0a7af6f57f3bbe54b56320f00551412e930af0df900fb9111bb1ceaeb0b9",
+        "mutation_bundle_sha256": "eb34f1d86b23e08f6f496445d1c37229d1ba34fcd9af7b72f365bee0b08f8f6c",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_lsb/certification.json",
-        "certification_sha256": "bdd6f28aa7b87fb44574c93bf87a1102983716f4058a9f05d71be1b93afcd902",
+        "certification_sha256": "774822ce5ed8afe1853bb83caf68a3da06b9a8f9729b0ca91a1e89c65bad59c0",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "da848a1ef263390370c4960717b5c6c9ddd274785e6c72b9d762d89a946960bb",
+        "mutation_bundle_sha256": "ec27ebc973a86dedf17bd214a3d8b73486d3d6208ffaa8e6f47fe8ac752b2ce8",
         "mutation_id": "neg_004_wrong_lsb",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_lsb/certification.json",
         "trigger_condition": "Uses twice the intended LSB size.",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "c299696df5318881a52908ca1ee3bafe1824ccf7d1eec11fd0c475217cb35a1e",
+        "certification_sha256": "e1747ddfc7b7f1e0c33e614634a3b9860988b85ad03a1b147f2552cc540e40c7",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "286adef179030fe74110d91811d475ef69a51ebd9602e13ef713a92545fc17f5",
+        "mutation_bundle_sha256": "a6ee1b33e364057e276719d3adcd58bbd4af93265e961e54b95c9fa10e9aaaf4",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "DAC Restore 10bit Offset: scales the metric output, preserving the main path while failing measurement checks.",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "4f61e355d9b1d49fd68b8e623cc1ba9088fc16ea4df9210a17123168a5c19457",
       "score_deck_sha256": "16c057094d4d7d32c79e3bad7f40311c67361b5f0ef2ec9e665b7b1b5b8548a5",
-      "task_certification_sha256": "233696db3500d3543b4c41f3ce2392a63fe7690a38b7a7b6acc836aae9f327be",
-      "task_record_sha256": "0c493366d343a8e4e32196bced99e2f33652e3e205f2ee06f04c7e37155e4d2d"
+      "task_certification_sha256": "9d87c78c1d0cf3180aa110db0a592cf58710147dee2d4d057cfc54bdfa44f974",
+      "task_record_sha256": "35d6ac9e83372aa69d35dda371aade0898a6b064bf1ee8c38069b443d2d552c2"
     },
     "release_dir": "161-dac-restore-10bit-offset"
   }

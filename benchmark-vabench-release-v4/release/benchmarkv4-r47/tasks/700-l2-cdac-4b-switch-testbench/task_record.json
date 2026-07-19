@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "200-l2-cdac-4b-switch",
+  "checker_task_id": "v4_200_l2_cdac_4b_switch",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "c30e22dc1fdb5b6669274585f7b477be3bccca6689220dba1460575587e1f28e",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "32b508c5cb7b9c867b240c8c440fdffff19bc2740e4386f1b34102d6fdae9635",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "200",
+  "family_spec_sha256": "edabb7f416acf7ccb448edd0b448fc706c5c933db7365cf7bae9e9f915aceefa",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b3351717cc6e88dab8235e12d43fdb5ce2442339a632939698cd9c7c82b1c6c0",
+  "public_contract": "tasks/700-l2-cdac-4b-switch-testbench/public_contract.json",
+  "public_contract_sha256": "c78e785d115d96e91c61c10191f06b43c8faf4de3e4d0cd14ca014cd9cf6bccc",
+  "release_revision": "r47",
+  "schema_version": "r47-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/700-l2-cdac-4b-switch-testbench",
+  "task_id": "v4-700"
+}

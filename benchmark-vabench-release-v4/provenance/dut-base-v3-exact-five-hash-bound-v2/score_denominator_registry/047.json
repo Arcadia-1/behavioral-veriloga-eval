@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_inverted_output/certification.json",
-        "certification_sha256": "1ae0040c1442aec4c11bf0fcf55f2652e6283154ab2506fb26bd8037ad5e2ba4",
+        "certification_sha256": "e929d2f215683b5777a8a3a0c10d82d7e90f847da29798caab7fda5e36f34ee4",
         "fault_class": "inverted_output",
-        "mutation_bundle_sha256": "a7816984c03c371b5e28a2fb0ce69ef150e742f5b979f564d3e40d3a923e787b",
+        "mutation_bundle_sha256": "bee57979928f6199a4ef67d01927e14c9ea4f63fc443e544ab767e607644aa7f",
         "mutation_id": "neg_001_inverted_output",
         "source_catalog_certification_path": "negative_variants/neg_001_inverted_output/certification.json",
         "trigger_condition": "Drives the output rail high outside the window and low inside the window.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_narrow_window/certification.json",
-        "certification_sha256": "647e7f220444ee5e0df4fafba1122aa04a3bab9855e674282e35eb1306edd2c3",
+        "certification_sha256": "4213fcc16eb284f20534879ff35c800ff0b6bbee1637890ee0ff7bfc7bb8b73c",
         "fault_class": "narrow_window",
-        "mutation_bundle_sha256": "c6ce8b8be954dd9a839319105831478674151741e936958859679445c95ea042",
+        "mutation_bundle_sha256": "5ebf23ae1af9a2ea6f077d96c18ada61509400cae21cccf977aaa05c194f2332",
         "mutation_id": "neg_003_narrow_window",
         "source_catalog_certification_path": "negative_variants/neg_003_narrow_window/certification.json",
         "trigger_condition": "Uses a much narrower internal window than the public 0.3 V to 0.6 V function contract.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_stuck_low/certification.json",
-        "certification_sha256": "c450f5959316c26666332729bb2c0cbd6b784fa449c7daefa29360b6da317cc6",
+        "certification_sha256": "e949e9c1f6b49a9f0089fe0fdf6f4a05e3d8449ca50603be20012ab247c11608",
         "fault_class": "stuck_low",
-        "mutation_bundle_sha256": "e59f7d476da4d2df7633496993b3d0dbadca2440ed912f595a3a8226c6cb5787",
+        "mutation_bundle_sha256": "f8c8eff8c0b761d734ac23db150096e4536f67794164ac8db9b239c0cf7e0216",
         "mutation_id": "neg_004_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_004_stuck_low/certification.json",
         "trigger_condition": "Preserves the interface and transition contribution but never asserts the in-window output.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "4c0215e7b13c4609a6d818c885ecaab4d103347c7a842990e58c37768ae484d9",
+        "certification_sha256": "8f57837f9f248a417496ac84985278b2a3542143d16976597c50e47b6bde23e7",
         "fault_class": "metric_scale_low",
-        "mutation_bundle_sha256": "296c06124a4ed3cff1a4e7c1c0d38546338bbcab5b84050591439d7c065882a4",
+        "mutation_bundle_sha256": "712a732a731da11268f445d5133cfc8f2f2d821af843faf51e7b3ea371bf17d7",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Window Comparator Detector: preserves the threshold event logic but drives the opposite in-window decision.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_one_sided_lower/certification.json",
-        "certification_sha256": "3a16a2a280f3931626bdf2a6995b58f6c323255126a630fa07a69a5ee93358bb",
+        "certification_sha256": "c39f1c49a414aea77a9a82b69da1933e2de5315472dc3b96364b0f5165bb0ee7",
         "fault_class": "one_sided_lower",
-        "mutation_bundle_sha256": "a2b1620e2abdc5d7aa1d862d8395964da9752cbc1220d447d85dc8ddc75bb229",
+        "mutation_bundle_sha256": "9c87873a6abdc43fa55bdfad822ad77b275da82098c80a8b64137aeb869a741f",
         "mutation_id": "neg_002_one_sided_lower",
         "source_catalog_certification_path": "negative_variants/neg_002_one_sided_lower/certification.json",
         "trigger_condition": "Uses only the lower threshold, so above-window inputs remain high.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "94f023b28b9a540867913a0d9d2c0d1a95da81ea37b91ab8c3a67c3c07bceb08",
       "score_deck_sha256": "5a445bbf13c13825aabae28e99dcb5b2696347463216d0f591cf1ab0197533ef",
-      "task_certification_sha256": "25a37e0b5dda8b9668cc38273420f4c3b51a851e66be68ef7d2e96791c272574",
-      "task_record_sha256": "e8f91a6f102e9245082faa545262b726bbd132adb94f96a360a535eabace1229"
+      "task_certification_sha256": "7553a32d5e847ef9da3dab866befce75786a903f9c05bcf0a0bdb6f9ac832933",
+      "task_record_sha256": "d8bbc0c21ca4b3df4ee4090c8afd099d227ea8098cdbeba6f77ec10c68309929"
     },
     "release_dir": "047-window-comparator-detector"
   }

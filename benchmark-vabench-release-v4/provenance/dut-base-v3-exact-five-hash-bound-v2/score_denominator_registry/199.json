@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_denominator/certification.json",
-        "certification_sha256": "860ac5c309909ef8806537e8a61eeb35d06c3ab911b2844a6ab7eff507f342fb",
+        "certification_sha256": "eee9bfd34c2e82f37c39122560754a0a60d3035f09194372fd9a0a20aed19c73",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "765184370c128190576f94b0680266f44ffc0d69ed42143cb2e7cab292bcaf5a",
+        "mutation_bundle_sha256": "0de6835c8f5aa35170ccd9542421b9f7c1b86226b49315a60d6711b2e3032738",
         "mutation_id": "neg_003_wrong_denominator",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_denominator/certification.json",
         "trigger_condition": "Drives the ready-sampled DAC output at half amplitude.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_ready_skip/certification.json",
-        "certification_sha256": "4e6edf1cd7893054a21a8e8d3a015055adfb76b0972a8c69401402b6dd3fd8a6",
+        "certification_sha256": "3852cb536d67b8de27efdc45d133b257dfbb9e3488f332c52e2d2ccf99dce04e",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "56658e1306e1874a2c29ff68e7dd127bad9e46c4dcbedc6877830c0a3fce0b0b",
+        "mutation_bundle_sha256": "ef62a7a638b1f9cd94a2bd646ec1b015f87bf5aec3ffc899eeb09f7df282fca0",
         "mutation_id": "neg_002_no_ready_skip",
         "source_catalog_certification_path": "negative_variants/neg_002_no_ready_skip/certification.json",
         "trigger_condition": "Updates aout on the first ready edge instead of skipping it.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "2f73b5347925198b4729a52d002c652f30c9388299f4fb55661bda3e7d559afe",
+        "certification_sha256": "515c64e8de96d7b33b4352900e92c350ce0e2dd2dcd3f7b9eba4cad74282207e",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "0897b6b49b5214abbe6ff20bfd321770dd0825763509d539ecdf243ada7dd686",
+        "mutation_bundle_sha256": "b968f9554615c79808b20236ce200804d95a1cd55baa1b94a2441d1778978b6c",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_unipolar_output/certification.json",
-        "certification_sha256": "ed05685487ed98a3234b4b9fdc607c30aa3fd4487b57faaaa2085250c9486176",
+        "certification_sha256": "ba3ce1b33643e9ed2e48d61235dca6ddbfc1de7204d450fd6348c3a88f8ebbcd",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "7053894a36a7b608491e357ba47bf391360f90ed02f08dff7043f100f2d89f93",
+        "mutation_bundle_sha256": "c5f62be2e9ae60c616c1b89da65f31cf39f319ee3c9f824c1e67e55acd75ec36",
         "mutation_id": "neg_004_unipolar_output",
         "source_catalog_certification_path": "negative_variants/neg_004_unipolar_output/certification.json",
         "trigger_condition": "Omits the bipolar minus-vdd output offset.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "b72832a97d334ab31a796a9e5be9bea6ff5037fad59b295db83e63e7fe7ed28d",
+        "certification_sha256": "2ffb5bcaf1404ce06edc90aeee8c6631947217b3c5bde6a5766e90b18901a24e",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "5e97433bd8cca459f37a9d91380a245dc08c04a1b9df7150c9016b05074e3e6a",
+        "mutation_bundle_sha256": "63fd8549a91322717ceb0cd9e29e81b02ea74554aca9335321f65af5399c60be",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "L2 7b DAC Ready: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "4600850da47b467de58641ffaa4d15fb5352ab8245ffac81f10cab1314a6e478",
       "score_deck_sha256": "e650d89b4c979fda81732dc2a80746caf26b5c6d0827ffe0e368ff1f072b1e9d",
-      "task_certification_sha256": "890fb38204cb95450c20f5bd3e73aba31c66803b766fd26b408f09e69b150cbc",
-      "task_record_sha256": "c6153b9175e1903481c4f6783cad4adb8e04c2cd9e798191a58475356142c068"
+      "task_certification_sha256": "85df671e34f847946c7ffcced0ae62614237fd680128a337b31fa899fc28b406",
+      "task_record_sha256": "0bb79383785fe1917e6d34896f585596a2529c3ab4acee177f123460e3fa8e7e"
     },
     "release_dir": "199-l2-7b-dac-ready"
   }

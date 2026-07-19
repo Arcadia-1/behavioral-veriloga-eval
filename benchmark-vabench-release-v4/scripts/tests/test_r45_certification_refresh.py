@@ -83,8 +83,8 @@ def test_evidence_only_refresh_does_not_rewrite_source(
     )
     monkeypatch.setattr(
         refresh,
-        "score_denominator_registry_sha256",
-        lambda source: "a" * 64,
+        "source_certification_definition_sha256",
+        lambda source, rows: "a" * 64,
     )
     monkeypatch.setattr(
         refresh,
@@ -123,10 +123,10 @@ def test_evidence_only_refresh_does_not_rewrite_source(
     assert refresh.main() == 0
     payload = json.loads(output.read_text(encoding="utf-8"))
     assert payload["schema_version"] == (
-        f"v4-{release_revision}-rust-evas2-certification-report-v1"
+        f"v4-{release_revision}-rust-evas2-certification-report-v2"
     )
     assert payload["release_candidate"] == release_revision
-    assert payload["source_score_denominator_registry_sha256"] == "a" * 64
+    assert payload["source_certification_definition_sha256"] == "a" * 64
     assert payload["source_certifications_updated"] is False
     assert payload["runtime"]["evas_version"] == "0.8.3"
     assert payload["summary"] == {
