@@ -40,20 +40,22 @@ python3 operations/tri_form_derivation_prep/audit_tri_form_release.py \
   --output /tmp/benchmarkv4_audit.json
 ```
 
-Stage r45 in its separate `release/benchmarkv4-r45/` tree only after the
-three r45 certification artifacts exist under `evidence/r45/`:
+The active tracked release remains `release/benchmarkv4-r45/`. Stage an r47
+candidate in its separate `release/benchmarkv4-r47/` tree only after the three
+r47 certification artifacts exist under `evidence/r47/`:
 
 ```bash
 python3 operations/tri_form_derivation_prep/rebuild_tri_form_release.py \
-  --release-revision r45
+  --release-revision r47
 ```
 
-Every release command requires an explicit revision. The r44 materializer and
-rebuilder fail closed because rebuilding that tracked immutable tree would
-change its identity. The r45 auditor never falls back to `evidence/r44/`.
+Every release command requires an explicit revision. The tracked r44 and r45
+release trees are immutable: the materializer/rebuilder fail closed rather
+than overwrite them. The r47 auditor never falls back to prior evidence.
 
 The active tracked release package is `release/benchmarkv4-r45/`. The immutable
-r44 predecessor remains at `release/benchmarkv4/` for historical verification.
+r44 predecessor remains available for historical verification. R47 becomes
+active only after its revision-scoped evidence, audit, and seal are complete.
 The active package root contains the package manifest, task index, prompt
 components, and `tasks/`. There is no
 separate top-level `private_evaluator/` mirror and no top-level
@@ -96,10 +98,11 @@ needed:
 python3 operations/tri_form_derivation_prep/build_sync_prep.py
 ```
 
-The materialized release is structurally audited, but its status remains
-`materialized_gate3_audit_pending`. Runtime export evidence proves record
-ingestion and public/private bundle isolation only. It is not a model-run
-result, a fixed-toolchain EVAS/Spectre certification, or a final score.
+A newly materialized candidate remains `materialized_gate3_audit_pending`
+until its revision-scoped simulation evidence, audit, and seal are complete.
+Runtime export evidence alone proves record ingestion and public/private bundle
+isolation only. It is not a model-run result, a fixed-toolchain EVAS/Spectre
+certification, or a final score.
 
 The old `formal_derivatives/` front-20 packages are prototypes and are not the
 canonical 800 derivative tasks. The canonical public generated views live under

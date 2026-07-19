@@ -13,6 +13,7 @@ if str(PREP) not in sys.path:
 
 from materialize_tri_form_release import (  # noqa: E402
     COMPONENT_METADATA,
+    DEFAULT_OUTPUTS,
     MODES,
     REFERENCE_TOKENIZER,
     build_dut_view,
@@ -40,8 +41,13 @@ from export_tri_form_runtime import (  # noqa: E402
 )
 from audit_runtime_export import main as audit_runtime_export  # noqa: E402
 from record_runtime_ingestion_evidence import verified_audit  # noqa: E402
+from rebuild_tri_form_release import (  # noqa: E402
+    DEFAULT_RELEASES as REBUILD_DEFAULT_RELEASES,
+    main as rebuild_release,
+)
 from audit_tri_form_release import (  # noqa: E402
     RELEASE_SEAL_ARTIFACTS,
+    allowed_runtime_schemas,
     audit_release_evidence,
     audit_testbench_reference,
     build_release_seal,
@@ -50,6 +56,23 @@ from audit_tri_form_release import (  # noqa: E402
     file_sha,
     prompt_component_path,
 )
+
+
+def test_runtime_schema_compatibility_preserves_frozen_r45_and_requires_r47_v2() -> None:
+    assert allowed_runtime_schemas("r45", "dut") == {
+        "r45-direct-evas-runtime-v1",
+        "r45-direct-evas-runtime-v2",
+    }
+    assert allowed_runtime_schemas("r45", "testbench") == {
+        "r45-direct-evas-testbench-suite-v1",
+        "r45-direct-evas-testbench-suite-v2",
+    }
+    assert allowed_runtime_schemas("r47", "dut") == {
+        "r47-direct-evas-runtime-v2",
+    }
+    assert allowed_runtime_schemas("r47", "testbench") == {
+        "r47-direct-evas-testbench-suite-v2",
+    }
 
 
 def sample_spec() -> dict:
@@ -161,13 +184,19 @@ def test_reference_tb_prefers_explicit_independent_asset(tmp_path: Path) -> None
     assert source_kind == "independent_reference_tb"
 
 
-def test_dut_builder_binds_canonical_profile_to_identical_runtime_decks(
-    tmp_path: Path,
+@pytest.mark.parametrize("release_revision", ["r45", "r47"])
+def test_dut_builder_binds_selected_revision_to_identical_runtime_decks(
+    tmp_path: Path, release_revision: str,
 ) -> None:
     source_task, row, _ = sample_source_task(tmp_path, independent_reference=True)
     output = tmp_path / "release"
     record = build_dut_view(
-        output, source_task, row, sample_spec(), file_sha(source_task / "evaluator" / "family_spec.json")
+        output,
+        source_task,
+        row,
+        sample_spec(),
+        file_sha(source_task / "evaluator" / "family_spec.json"),
+        release_revision=release_revision,
     )
     task = output / record["task_dir"]
     task_record = json.loads((task / "task_record.json").read_text(encoding="utf-8"))
@@ -179,7 +208,10 @@ def test_dut_builder_binds_canonical_profile_to_identical_runtime_decks(
 
     assert visible.read_bytes() == trusted.read_bytes()
     assert profile["test_deck_sha256"] == file_sha(visible)
-    assert task_record["release_revision"] == "r45"
+    assert task_record["release_revision"] == release_revision
+    assert task_record["schema_version"].startswith(f"{release_revision}-")
+    runtime = json.loads((task / "public" / "evas_runtime.json").read_text(encoding="utf-8"))
+    assert runtime["schema_version"].startswith(f"{release_revision}-")
     assert task_record["evaluation_binding"]["profile_sha256"] == file_sha(
         task / "evaluator" / "canonical_test_profile.json"
     )
@@ -585,14 +617,22 @@ def test_export_mounts_declared_public_readonly_support(tmp_path: Path) -> None:
     assert (public / "task" / "public_support" / "helper.va").read_bytes() == helper.read_bytes()
 
 
+@pytest.mark.parametrize("release_revision", ["r45", "r47"])
 def test_g5_testbench_runtime_exports_direct_evas_visible_suite(
     tmp_path: Path,
     monkeypatch,
+    release_revision: str,
 ) -> None:
     source_task, row, seed_review = sample_source_task(tmp_path, independent_reference=True)
     release = tmp_path / "release"
     task_record = build_testbench_view(
-        release, source_task, row, sample_spec(), "a" * 64, seed_review
+        release,
+        source_task,
+        row,
+        sample_spec(),
+        "a" * 64,
+        seed_review,
+        release_revision=release_revision,
     )
     install_prompt_assets(release)
     (release / "TASK_INDEX.json").write_text(
@@ -707,7 +747,10 @@ def test_release_seal_binds_transitive_release_and_reused_certifications(tmp_pat
     assert set(seal["artifact_sha256"]) == set(RELEASE_SEAL_ARTIFACTS)
 
 
-def test_r45_release_seal_has_independent_revision_identity(tmp_path: Path) -> None:
+@pytest.mark.parametrize("release_revision", ["r45", "r47"])
+def test_post_r44_release_seal_has_independent_revision_identity(
+    tmp_path: Path, release_revision: str,
+) -> None:
     for relative in RELEASE_SEAL_ARTIFACTS:
         path = tmp_path / relative
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -718,11 +761,12 @@ def test_r45_release_seal_has_independent_revision_identity(tmp_path: Path) -> N
         tmp_path,
         "a" * 64,
         reuse,
-        release_revision="r45",
+        release_revision=release_revision,
     )
 
-    assert seal["release_revision"] == "r45"
-    assert seal["release_status"] == "r45_immutable_rust_evas2_certified"
+    assert seal["release_revision"] == release_revision
+    assert seal["release_status"] == f"{release_revision}_immutable_rust_evas2_certified"
+    assert seal["simulation_claim"].startswith("fresh full400")
 
 
 def test_r45_evidence_never_falls_back_to_r44(tmp_path: Path) -> None:
@@ -753,6 +797,131 @@ def test_r45_evidence_rejects_a_copied_r44_artifact(tmp_path: Path) -> None:
     assert any("byte-identical to r44 evidence" in problem for problem in problems)
 
 
+def test_r47_evidence_rejects_a_copied_r45_artifact(tmp_path: Path) -> None:
+    filename = "PROFILE_PARITY.json"
+    for revision in ("r45", "r47"):
+        path = tmp_path / "evidence" / revision / filename
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text('{"status":"pass"}\n', encoding="utf-8")
+    problems: list[str] = []
+
+    audit_release_evidence("r47", problems, package_root=tmp_path)
+
+    assert any("byte-identical to r45 evidence" in problem for problem in problems)
+
+
+def write_valid_r47_evidence(tmp_path: Path) -> tuple[Path, str]:
+    release = tmp_path / "release" / "benchmarkv4-r47"
+    release.mkdir(parents=True)
+    (release / "MANIFEST.json").write_text('{"release_revision":"r47"}\n', encoding="utf-8")
+    source_sha = "a" * 64
+    manifest_sha = file_sha(release / "MANIFEST.json")
+    runtime = {
+        "evas_engine": "evas2",
+        "evas_engine_used": "evas2",
+        "evas_version": "0.8.3",
+        "evas_backend": "evas-rust",
+    }
+    payloads = {
+        "RUST_EVAS2_CERTIFICATION.json": {
+            "schema_version": "v4-r47-rust-evas2-certification-report-v1",
+            "status": "pass",
+            "release_candidate": "r47",
+            "certification_policy": "rust_evas2_only",
+            "source_score_denominator_registry_sha256": source_sha,
+            "runtime": runtime,
+            "input_report_sha256": [{"name": "raw.json", "sha256": "b" * 64}],
+            "summary": {
+                "family_count": 400,
+                "gold_pass_count": 400,
+                "negative_case_count": 2000,
+                "mutation_kill_count": 2000,
+                "insufficient_excitation_rejection_count": 400,
+                "insufficient_excitation_not_applicable_count": 0,
+            },
+        },
+        "STIMULUS_METAMORPHIC.json": {
+            "schema_version": "v4-r47-stimulus-metamorphic-compact-v1",
+            "status": "pass",
+            "release": "release/benchmarkv4-r47",
+            "release_revision": "r47",
+            "certification_policy": "rust_evas2_only",
+            "source_score_denominator_registry_sha256": source_sha,
+            "release_manifest_sha256": manifest_sha,
+            "input_report_sha256": "c" * 64,
+            **runtime,
+            "summary": {
+                "task_count": 400,
+                "affine_gold_pass_count": 400,
+                "affine_mutation_kill_count": 2000,
+                "affine_infrastructure_error_count": 0,
+                "insufficient_excitation_rejection_count": 400,
+                "insufficient_excitation_not_applicable_count": 0,
+            },
+        },
+        "PROFILE_PARITY.json": {
+            "schema_version": "v4-profile-parity-evas2-smoke-v1",
+            "status": "pass",
+            "release": "release/benchmarkv4-r47",
+            "release_revision": "r47",
+            "source_score_denominator_registry_sha256": source_sha,
+            "release_manifest_sha256": manifest_sha,
+            "evas_engine": "evas2",
+            "evas_engine_used": "evas2",
+            "evas_version": "0.8.3",
+            "evas_backend_required": "evas-rust",
+            "runtime": runtime,
+            "task_count": 1200,
+            "pass_count": 1200,
+            "fail_count": 0,
+        },
+    }
+    for filename, payload in payloads.items():
+        path = tmp_path / "evidence" / "r47" / filename
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(payload, sort_keys=True) + "\n", encoding="utf-8")
+    return release, source_sha
+
+
+def test_r47_evidence_requires_strict_provenance_bindings(tmp_path: Path) -> None:
+    release, source_sha = write_valid_r47_evidence(tmp_path)
+    problems: list[str] = []
+
+    audit_release_evidence(
+        "r47",
+        problems,
+        package_root=tmp_path,
+        release=release,
+        source_registry_sha256=source_sha,
+    )
+
+    assert problems == []
+
+
+def test_r47_evidence_rejects_relabelled_payload_without_source_binding(tmp_path: Path) -> None:
+    release, source_sha = write_valid_r47_evidence(tmp_path)
+    profile = tmp_path / "evidence" / "r47" / "PROFILE_PARITY.json"
+    payload = json.loads(profile.read_text(encoding="utf-8"))
+    payload.pop("source_score_denominator_registry_sha256")
+    profile.write_text(json.dumps(payload, sort_keys=True) + "\n", encoding="utf-8")
+    problems: list[str] = []
+
+    audit_release_evidence(
+        "r47",
+        problems,
+        package_root=tmp_path,
+        release=release,
+        source_registry_sha256=source_sha,
+    )
+
+    assert "r47 profile evidence source registry binding mismatch" in problems
+
+
+def test_materializer_has_distinct_r47_default_output() -> None:
+    assert DEFAULT_OUTPUTS["r47"].name == "benchmarkv4-r47"
+    assert DEFAULT_OUTPUTS["r47"] != DEFAULT_OUTPUTS["r45"]
+
+
 def test_prompt_component_path_supports_immutable_r44_feedback_assets(tmp_path: Path) -> None:
     assert prompt_component_path(tmp_path, "feedback_core.md") == (
         tmp_path / "prompt_modes" / "feedback_guides" / "feedback_core.md"
@@ -774,6 +943,52 @@ def test_materializer_refuses_to_rebuild_immutable_r44(monkeypatch) -> None:
         assert "r44 is immutable" in str(exc)
     else:
         raise AssertionError("immutable r44 materialization was accepted")
+
+
+@pytest.mark.parametrize("release_revision", ["r45", "r47"])
+def test_materializer_refuses_to_replace_a_sealed_tracked_release(
+    tmp_path: Path,
+    monkeypatch,
+    release_revision: str,
+) -> None:
+    release = tmp_path / f"benchmarkv4-{release_revision}"
+    release.mkdir()
+    (release / "RELEASE_SEAL.json").write_text("{}\n", encoding="utf-8")
+    monkeypatch.setitem(DEFAULT_OUTPUTS, release_revision, release)
+    monkeypatch.setattr(sys, "argv", [
+        "materialize_tri_form_release.py",
+        "--release-revision",
+        release_revision,
+    ])
+    try:
+        materialize_release()
+    except SystemExit as exc:
+        assert f"{release_revision} is immutable" in str(exc)
+    else:
+        raise AssertionError(f"tracked immutable {release_revision} materialization was accepted")
+
+
+@pytest.mark.parametrize("release_revision", ["r45", "r47"])
+def test_rebuilder_refuses_to_replace_a_sealed_tracked_release(
+    tmp_path: Path,
+    monkeypatch,
+    release_revision: str,
+) -> None:
+    release = tmp_path / f"benchmarkv4-{release_revision}"
+    release.mkdir()
+    (release / "RELEASE_SEAL.json").write_text("{}\n", encoding="utf-8")
+    monkeypatch.setitem(REBUILD_DEFAULT_RELEASES, release_revision, release)
+    monkeypatch.setattr(sys, "argv", [
+        "rebuild_tri_form_release.py",
+        "--release-revision",
+        release_revision,
+    ])
+    try:
+        rebuild_release()
+    except SystemExit as exc:
+        assert f"{release_revision} is immutable" in str(exc)
+    else:
+        raise AssertionError(f"tracked immutable {release_revision} rebuild was accepted")
 
 
 def test_release_seal_refuses_to_claim_stale_certifications(tmp_path: Path) -> None:
