@@ -24,7 +24,9 @@ five candidate tasks have been absorbed into v3.
 The active benchmarkv4 release package lives at
 `benchmark-vabench-release-v4/release/benchmarkv4-r45/`. The frozen r44 package
 remains at `benchmark-vabench-release-v4/release/benchmarkv4/` only for
-historical reproduction and immutable release verification.
+historical reproduction and immutable release verification. An r47 candidate
+must remain explicitly selected until its certification artifacts and seal are
+complete.
 
 ## Stable Top-Level Directories
 
