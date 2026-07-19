@@ -1,6 +1,8 @@
 """Task-specific checker for canonical v4 DUT 007."""
 from __future__ import annotations
 
+import math
+
 from ..api import Checker
 
 
@@ -93,7 +95,20 @@ def check_first_order_lowpass(rows: list[dict[str, float]]) -> tuple[bool, str]:
             f"expected=response_span>0.1 observed={response_span:.6g} tolerance=0"
         )
 
-    sample_times = [step_time + fraction * response_window for fraction in (0.08, 0.22, 0.50, 0.92)]
+    update_period = 500e-12
+    settle_delay = 250e-12
+    update_counts = (1, 4, 10, 20)
+    first_update = math.ceil(step_time / update_period) * update_period
+    sample_times = [
+        first_update + (count - 1) * update_period + settle_delay
+        for count in update_counts
+    ]
+    if sample_times[-1] > end_time:
+        available_updates = max(0, math.floor((end_time - first_update - settle_delay) / update_period) + 1)
+        return False, (
+            "insufficient_excitation; first_mismatch=P_LOW_PASS_RESPONSE signal=time "
+            f"expected=at_least_20_updates_after_step observed={available_updates} tolerance=0"
+        )
     samples: list[float] = []
     for time_s in sample_times:
         value = sample_signal(rows, "vout", time_s)
@@ -102,13 +117,17 @@ def check_first_order_lowpass(rows: list[dict[str, float]]) -> tuple[bool, str]:
         samples.append(value)
 
     normalized = [(value - vout_pre) / response_span for value in samples]
+    expected_normalized = [1.0 - (1.0 - 0.025) ** count for count in update_counts]
+    response_tolerance = max(0.04, 0.04 / response_span)
+    response_matches = all(
+        abs(observed - expected) <= response_tolerance
+        for observed, expected in zip(normalized, expected_normalized)
+    )
     normalized_slack = max(0.01, 0.03 / response_span)
     monotonic = (
         normalized[0] < normalized[1] < normalized[2]
         and normalized[2] <= normalized[3] + normalized_slack
     )
-    response_fast_enough = normalized[1] > 0.6875 and normalized[2] > 0.875 and normalized[3] > 0.95
-    not_instant = normalized[0] < 0.5625
     post_rows = [
         r
         for r in rows
@@ -124,13 +143,14 @@ def check_first_order_lowpass(rows: list[dict[str, float]]) -> tuple[bool, str]:
         and min(vout_pre, input_floor) - bound_tolerance <= min_vout
         and max_vout <= input_ceiling + bound_tolerance
     )
-    ok = input_step and monotonic and response_fast_enough and not_instant and bounded
+    ok = input_step and monotonic and response_matches and bounded
     values = ",".join(f"{value:.3f}" for value in samples)
     normalized_values = ",".join(f"{value:.3f}" for value in normalized)
     note = (
         f"lowpass_samples={values} normalized_samples={normalized_values} "
+        f"expected_normalized={','.join(f'{value:.3f}' for value in expected_normalized)} "
         f"step_amplitude={step_amplitude:.6g} input_step={input_step} monotonic={monotonic} "
-        f"response_fast_enough={response_fast_enough} not_instant={not_instant} "
+        f"response_matches={response_matches} response_tolerance={response_tolerance:.6g} "
         f"bounded={bounded} input_ceiling={input_ceiling:.6g} max_vout={max_vout:.6g}"
     )
     if not input_step:
@@ -139,23 +159,17 @@ def check_first_order_lowpass(rows: list[dict[str, float]]) -> tuple[bool, str]:
             f"expected=stable_positive_step>=0.2 observed={step_amplitude:.6g} "
             f"tolerance={stimulus_tolerance:.6g}"
         )
-    elif not not_instant:
+    elif not response_matches:
         note += (
             "; first_mismatch=P_LOW_PASS_RESPONSE signal=vout "
-            "expected=normalized_sample0<0.5625 "
-            f"observed={normalized[0]:.6g} tolerance=0"
+            f"expected={','.join(f'{value:.6g}' for value in expected_normalized)} "
+            f"observed={normalized_values} tolerance={response_tolerance:.6g}"
         )
     elif not monotonic:
         note += (
             "; first_mismatch=P_STEP_MONOTONICITY signal=vout "
             f"expected=monotonic_normalized_response observed={normalized_values} "
             f"tolerance={normalized_slack:.6g}"
-        )
-    elif not response_fast_enough:
-        note += (
-            "; first_mismatch=P_LOW_PASS_RESPONSE signal=vout "
-            "expected=normalized_samples[1:]>0.6875,0.875,0.95 and sample0<0.5625 "
-            f"observed={normalized_values} tolerance=0"
         )
     elif not bounded:
         note += (

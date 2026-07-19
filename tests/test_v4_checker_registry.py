@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import subprocess
 import sys
@@ -63,22 +64,23 @@ def test_v4_checker_loader_fails_closed_for_unknown_or_malformed_ids() -> None:
     assert load_checker("../../task_044") is None
 
 
-def _lowpass_rows(*, vin_low: float, vin_high: float, passthrough: bool = False) -> list[dict[str, float]]:
+def _lowpass_rows(
+    *,
+    vin_low: float,
+    vin_high: float,
+    passthrough: bool = False,
+    end_time: float = 110e-9,
+) -> list[dict[str, float]]:
     step_time = 10e-9
-    end_time = 110e-9
     response_span = vin_high - vin_low
-    samples = [
-        (0.0, vin_low, 0.0),
-        (0.1e-9, vin_low, 0.0),
-        (0.3e-9, vin_low, 0.0),
-        (9.9e-9, vin_low, vin_low),
-        (step_time, vin_high, vin_high if passthrough else vin_low),
-        (step_time + 0.08 * (end_time - step_time), vin_high, vin_high if passthrough else vin_low + 0.20 * response_span),
-        (step_time + 0.22 * (end_time - step_time), vin_high, vin_high if passthrough else vin_low + 0.75 * response_span),
-        (step_time + 0.50 * (end_time - step_time), vin_high, vin_high if passthrough else vin_low + 0.90 * response_span),
-        (step_time + 0.92 * (end_time - step_time), vin_high, vin_high if passthrough else vin_low + 0.98 * response_span),
-        (end_time, vin_high, vin_high),
-    ]
+    samples = [(0.0, vin_low, 0.0), (0.3e-9, vin_low, 0.0), (9.9e-9, vin_low, vin_low)]
+    for index in range(0, 41):
+        time_s = step_time + index * 0.25e-9
+        update_count = max(0, math.floor((time_s - step_time) / 0.5e-9) + 1)
+        normalized = 1.0 if passthrough else 1.0 - 0.975**update_count
+        samples.append((time_s, vin_high, vin_low + normalized * response_span))
+    samples.append((end_time, vin_high, vin_high))
+    samples.sort()
     return [{"time": time_s, "vin": vin, "vout": vout} for time_s, vin, vout in samples]
 
 
@@ -94,6 +96,18 @@ def test_first_order_lowpass_checker_is_relative_to_observed_step_amplitude() ->
     passed, detail = checker(_lowpass_rows(vin_low=0.0, vin_high=0.5, passthrough=True))
     assert not passed
     assert "first_mismatch=P_LOW_PASS_RESPONSE" in detail
+
+
+def test_first_order_lowpass_checker_is_independent_of_tran_stop() -> None:
+    from checkers.v4.registry import load_checker
+
+    checker = load_checker("v4_007_first_order_lowpass")
+    assert checker is not None
+    for end_time in (25e-9, 160e-9, 500e-9):
+        passed, detail = checker(
+            _lowpass_rows(vin_low=0.0, vin_high=1.0, end_time=end_time)
+        )
+        assert passed, detail
 
 
 def test_bandgap_checker_reports_first_hold_mismatch(monkeypatch) -> None:
