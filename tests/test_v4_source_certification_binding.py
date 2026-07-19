@@ -241,3 +241,23 @@ def test_unshipped_hash_only_refresh_cannot_revalidate_a_negative(tmp_path: Path
     assert summary["source_negative_certification_count"] == 0
     assert summary["stale_gold_family_ids"] == ["001"]
     assert summary["stale_negative_case_ids"] == ["001/neg_001"]
+
+
+def test_bound_mutation_content_cannot_change_after_certification(tmp_path: Path) -> None:
+    source, rows = source_fixture(tmp_path)
+    mutation = source / "001-sample" / "evaluator" / "mutation_bundles" / "neg_001"
+
+    (mutation / "dut.va").write_text(
+        "module dut; // changed after certification\nendmodule\n", encoding="utf-8"
+    )
+    mutation_row = rows["001"]["active_mutations"][0]
+    mutation_row["mutation_bundle_sha256"] = tree_sha_by_file_hash(mutation)
+
+    summary, problems = inspect_source_certification_reuse(source, rows)
+
+    assert any(
+        "negative neg_001 input hash mismatch: mutation_bundle_sha256" in item
+        for item in problems
+    )
+    assert summary["source_negative_certification_count"] == 0
+    assert summary["stale_negative_case_ids"] == ["001/neg_001"]

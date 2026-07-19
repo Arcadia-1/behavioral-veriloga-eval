@@ -3,12 +3,12 @@
   "checker_task_id": "v4_232_safe_analog_divider",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "26ea8e47a07c5093317f0eba7b64164dd0b0fa2e7a4311b648180cf76cd5748d",
+    "certification.json": "3d1d02e6eefcc1251afa6b065c885886208a355769d3d362642ea56d8e8575cc",
     "checker_profile.json": "83c85b46343056c2c725ac39196201846efd3b62bad9f094a889cebff5ea9834",
     "derivation_manifest.json": "a64d5ff925791c19d82f17a2585bda9e53f73d3d893bd2f4c11e527a01836b25",
     "family_spec.json": "0bc7b119b0cd02dd316663f62042d00341863e8e3c0c7aede68e72b2fa7b379b",
     "harness_spec.json": "0d058661a7cffe287e0a94131a4524878b6390b5bfc49e875bf3e40547d49a56",
-    "mutation_catalog.json": "52f22885ece355cb0b12dc6c4cd5001cc49426da6ea4748301ad57c143dd95a7",
+    "mutation_catalog.json": "2fc0b5dd38358177165e1eb3fb8540337030671a1530935c52d971a93f47341c",
     "profiles/feedback.json": "b2f54e1ae95dfe550f164df562642a10e223927125cde86d881bf354cf79ab51",
     "profiles/score.json": "d3a41dfbe051c2e8d42a8d43ffc3a765cbab58a95872772b4e80525a6383072d",
     "score_tb.scs": "2f75709a0d04745a11f9d9d18a5909e99f1b0f7ce697e96ed4fc1d99fbd382e5",
@@ -22,9 +22,9 @@
     "public_contract.json": "b46ccaa8b4ea9a5bc6fa23f4028223accab21a82e5ccdef7e1c785e29e48155a"
   },
   "readiness_evidence": {
-    "kind": "task_certification",
+    "kind": "r47_certification_pending",
     "path": "evaluator/certification.json",
-    "sha256": "26ea8e47a07c5093317f0eba7b64164dd0b0fa2e7a4311b648180cf76cd5748d"
+    "sha256": "3d1d02e6eefcc1251afa6b065c885886208a355769d3d362642ea56d8e8575cc"
   },
   "release_dir": "232-safe-analog-divider",
   "schema_version": "v4-canonical-dut-release-task-v1",

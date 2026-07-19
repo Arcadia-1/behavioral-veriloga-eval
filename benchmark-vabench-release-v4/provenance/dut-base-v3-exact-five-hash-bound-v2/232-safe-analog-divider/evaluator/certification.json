@@ -2,11 +2,11 @@
   "certification_policy": "rust_evas2_only",
   "checks": {
     "active_negative_count": 5,
-    "active_negatives": "all_killed_behaviorally",
+    "active_negatives": "targeted_all_killed_behaviorally",
     "diagnostic": "present",
-    "gold_behavior": "pass",
-    "insufficient_excitation": "rejected",
-    "trace_axis_metamorphic": "classification_invariant"
+    "gold_behavior": "targeted_pass",
+    "insufficient_excitation": "targeted_rejected",
+    "trace_axis_metamorphic": "targeted_classification_invariant"
   },
   "component_fingerprints": {
     "task_inputs": {
@@ -25,15 +25,18 @@
       "evas_backend": "evas-rust",
       "evas_engine": "evas2",
       "evas_engine_used": "evas2",
-      "evas_version": "0.8.2",
-      "status": "pass"
+      "evas_version": "0.8.3",
+      "status": "targeted_pass"
+    },
+    "spectre": {
+      "status": "infrastructure_blocked"
     }
   },
   "evidence": {
-    "campaign": "r44-full400",
+    "campaign": "r47-family232-targeted-precertification",
     "checker_id": "v4_232_safe_analog_divider",
-    "report_path": "evidence/r44/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "0a70604db5bef10ca64f6fa32d8e3962a4d6054af3a5f825c944f51265e0c5f8",
+    "report_path": "reports/r47/FAMILY232_TARGETED_VALIDATION.json",
+    "report_sha256": "0cf1c1a5a227f3f9efadae6add4ac70899ac46ffc9e8085aab1bba688e865a44",
     "trace_row_count": 761
   },
   "family_id": "232",
@@ -45,6 +48,10 @@
     "harness_spec": "0d058661a7cffe287e0a94131a4524878b6390b5bfc49e875bf3e40547d49a56",
     "score_profile": "d3a41dfbe051c2e8d42a8d43ffc3a765cbab58a95872772b4e80525a6383072d"
   },
+  "pending_requirements": [
+    "full r47 400-gold/2000-mutation EVAS certification",
+    "successful targeted Spectre correct-plus-five replay"
+  ],
   "schema_version": "v4-task-certification-rust-evas2-v1",
-  "status": "gate2_pass"
+  "status": "pending_full400"
 }
