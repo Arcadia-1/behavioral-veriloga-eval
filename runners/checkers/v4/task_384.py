@@ -29,7 +29,7 @@ def _v4_settled_sparse_samples(
     *,
     settle_s: float = 0.5e-9,
     count: int = 450,
-    tol: float = 0.02,
+    tol: float = 0.002,
 ) -> list[dict[str, float]]:
     samples: list[dict[str, float]] = []
     for row in _v4_sparse_samples(rows, count=count):
