@@ -16,6 +16,90 @@ import run_gold_dual_suite as dual  # noqa: E402
 import run_gold_suite as gold_suite  # noqa: E402
 
 
+def test_write_spectre_psf_csv_ignores_saved_time_trace_collision(tmp_path: Path) -> None:
+    raw_dir = tmp_path / "score_tb.raw"
+    raw_dir.mkdir()
+    (raw_dir / "tran.tran.tran").write_text(
+        """HEADER
+TYPE
+SWEEP
+"time" "sweep" PROP(
+"sweep_direction" 0
+"units" "s"
+"plot" 1
+"grid" 1
+)
+TRACE
+"time" "param_real"
+"out" "V"
+VALUE
+"time" 0
+"time" 0
+"out" 0.25
+"time" 1e-9
+"time" 0
+"out" 0.75
+"time" 2e-9
+"time" 0
+"out" 1.25
+""",
+        encoding="utf-8",
+    )
+    csv_path = tmp_path / "tran_spectre.csv"
+
+    result = dual.write_spectre_psf_csv(raw_dir, csv_path)
+
+    assert dual.load_csv_rows(csv_path) == [
+        {"time": 0.0, "out": 0.25},
+        {"time": 1e-9, "out": 0.75},
+        {"time": 2e-9, "out": 1.25},
+    ]
+    assert result["rows"] == 3
+    assert result["duplicate_time_values_ignored"] == 3
+
+
+def test_write_spectre_psf_csv_preserves_ordinary_time_boundaries(tmp_path: Path) -> None:
+    raw_dir = tmp_path / "score_tb.raw"
+    raw_dir.mkdir()
+    (raw_dir / "tran.tran.tran").write_text(
+        """HEADER
+TYPE
+SWEEP
+"time" "sweep" PROP(
+"sweep_direction" 0
+"units" "s"
+"plot" 1
+"grid" 1
+)
+TRACE
+"out" "V"
+"aux" "V"
+VALUE
+"time" 0
+"out" 0.25
+"aux" 10.25
+"time" 1e-9
+"out" 0.75
+"aux" 10.75
+"time" 2e-9
+"out" 1.25
+"aux" 11.25
+""",
+        encoding="utf-8",
+    )
+    csv_path = tmp_path / "tran_spectre.csv"
+
+    result = dual.write_spectre_psf_csv(raw_dir, csv_path)
+
+    assert dual.load_csv_rows(csv_path) == [
+        {"time": 0.0, "out": 0.25, "aux": 10.25},
+        {"time": 1e-9, "out": 0.75, "aux": 10.75},
+        {"time": 2e-9, "out": 1.25, "aux": 11.25},
+    ]
+    assert result["rows"] == 3
+    assert result["duplicate_time_values_ignored"] == 0
+
+
 def test_direct_sui_ssh_base_cmd_disables_stale_controlmaster(monkeypatch) -> None:
     monkeypatch.setenv("VAEVAS_SUI_PROXY_JUMP", "thu-sui")
 
