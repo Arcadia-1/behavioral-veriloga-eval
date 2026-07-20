@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import shlex
 import subprocess
 import sys
 from pathlib import Path
@@ -37,6 +38,7 @@ MODES = tuple(f"G{i}" for i in range(6))
 if str(CALIBRATION) not in sys.path:
     sys.path.insert(0, str(CALIBRATION))
 from build_campaign import build_campaign  # noqa: E402
+import result_protocol as RESULT_PROTOCOL  # noqa: E402
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -46,6 +48,21 @@ def read_json(path: Path) -> dict[str, Any]:
 def write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def resolve_evas_command(command: str) -> tuple[str, dict[str, Any]]:
+    argv = shlex.split(command)
+    identity = RESULT_PROTOCOL.evas_identity(argv)
+    if not identity.get("available") or not identity.get("resolved_executable"):
+        raise SystemExit(
+            "configured --evas-command is unavailable or has no version identity: "
+            f"{identity.get('error') or identity.get('version_output') or command}"
+        )
+    argv[0] = str(Path(identity["resolved_executable"]).resolve())
+    identity = RESULT_PROTOCOL.evas_identity(argv)
+    if not identity.get("available"):
+        raise SystemExit("resolved --evas-command failed identity verification")
+    return shlex.join(argv), identity
 
 
 def command_for_metadata(command: list[str]) -> list[str]:
@@ -157,7 +174,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--tool-timeout-s", type=int, default=DEFAULT_TOOL_TIMEOUT_S)
     parser.add_argument("--judge-timeout-s", type=int, default=DEFAULT_JUDGE_TIMEOUT_S)
     parser.add_argument("--final-judge-command")
-    parser.add_argument("--evas-command", default="evas")
+    parser.add_argument(
+        "--evas-command",
+        help="Explicit EVAS command required for executable campaigns; omitted only for dry-run planning.",
+    )
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--stream", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
@@ -167,6 +187,11 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = build_parser().parse_args()
+    if not args.dry_run and not args.evas_command:
+        raise SystemExit("--evas-command is required for executable campaigns")
+    evas_identity = None
+    if args.evas_command:
+        args.evas_command, evas_identity = resolve_evas_command(args.evas_command)
     if args.per_turn_max_tokens <= 0:
         raise SystemExit("--per-turn-max-tokens must be positive")
     if args.repetitions <= 0:
@@ -224,7 +249,9 @@ def main() -> int:
         "base_url_sha256": text_sha256(args.base_url.rstrip("/")),
         "temperature": args.temperature,
         "stream": args.stream,
-        "evas_command_sha256": text_sha256(args.evas_command),
+        "evas_command_sha256": text_sha256(args.evas_command or ""),
+        "evas_command": args.evas_command,
+        "evas_identity": evas_identity,
     }
     campaign_path = output_root / "campaign.json"
     write_json(campaign_path, campaign)
@@ -259,9 +286,9 @@ def main() -> int:
         str(args.judge_timeout_s),
         "--workers",
         str(args.workers),
-        "--evas-command",
-        args.evas_command,
     ]
+    if args.evas_command:
+        command.extend(["--evas-command", args.evas_command])
     if args.api_key_file:
         command.extend(["--api-key-file", args.api_key_file])
     if args.final_judge_command:

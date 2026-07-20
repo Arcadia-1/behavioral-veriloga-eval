@@ -180,8 +180,17 @@ python3 benchmark-vabench-release-v4/runners/run_benchmarkv4_campaign.py \
   --model deepseek-v4-flash \
   --base-url https://api.deepseek.com/v1 \
   --api-key-env DEEPSEEK_API_KEY \
+  --evas-command "$(pwd)/.venv/bin/evas" \
   --output-root /tmp/benchmarkv4-api-smoke
 ```
+
+Executable campaigns require `--evas-command`; there is no PATH-derived
+default. Before the first model request, the wrapper resolves it to an absolute
+command and records the executable SHA-256, complete `--version` output
+(including version, ABI, and revision), and version-output SHA-256 in
+`campaign.json`. The cell runner rechecks that identity before loading provider
+credentials. Dry runs may omit EVAS because they execute neither model nor
+evaluator.
 
 The provider adapter uses the OpenAI-compatible chat-completions protocol.
 Changing providers requires only `--base-url`, the campaign model ID, and
@@ -202,7 +211,7 @@ remotely. Neither its command string nor evaluator directory is sent to the
 model. A formal pilot must configure the final adapter; a provider-only smoke
 may omit it only to test API transport and artifact handling.
 
-### R45 result protocol
+### Result protocol
 
 Every completed G0-G5 cell now writes an `experiment_result` object in
 `evidence/campaign_result.json` conforming to
@@ -215,8 +224,8 @@ change it. Trusted replay receives the snapshot path in both
 the replay to the snapshot tree hash.
 
 The final judge is a trusted replay, not another model-feedback turn. Before it
-runs, the runner hashes the exported evaluator tree and records
-`evas --version` (override the executable with `--evas-command`). The adapter
+runs, the runner hashes the exported evaluator tree and records the already
+pinned EVAS identity. The adapter
 must write JSON to `VABENCH_TRUSTED_REPLAY_RESULT` with one of these statuses:
 
 ```json

@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -13,6 +14,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 RELEASE = ROOT / "benchmark-vabench-release-v4" / "release" / "benchmarkv4"
+R49_RELEASE = ROOT / "benchmark-vabench-release-v4" / "release" / "benchmarkv4-r49"
 BUILD_CAMPAIGN = (
     ROOT
     / "benchmark-vabench-release-v4"
@@ -32,6 +34,13 @@ RUN_CAMPAIGN = (
     / "operations"
     / "calibration_pilot"
     / "run_campaign.py"
+)
+SCORE_CAMPAIGN = (
+    ROOT
+    / "benchmark-vabench-release-v4"
+    / "operations"
+    / "calibration_pilot"
+    / "score_campaign.py"
 )
 TESTBENCH_SECURITY = ROOT / "benchmark-vabench-release-v4" / "runners" / "testbench_security.py"
 DERIVED_TESTBENCH_ORACLE = (
@@ -1138,6 +1147,120 @@ def test_campaign_wrapper_dry_run_exports_agentic_cells(
     assert campaign["execution_config"]["token_accounting"] == "telemetry_only"
     summary = json.loads((output / "run" / "SUMMARY.json").read_text(encoding="utf-8"))
     assert summary["statuses"] == {"prepared": 3}
+
+
+def test_campaign_wrapper_requires_explicit_evas_for_executable_run(
+    tmp_path: Path,
+) -> None:
+    clean_env = {
+        key: value
+        for key, value in os.environ.items()
+        if key not in {"DEEPSEEK_API_KEY", "VAEVAS_API_KEY"}
+    }
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(RUN_CAMPAIGN_WRAPPER),
+            "--release",
+            str(tmp_path / "release-must-not-be-read"),
+            "--task-id",
+            "v4-006",
+            "--mode",
+            "G0",
+            "--output-root",
+            str(tmp_path / "campaign"),
+            "--model",
+            "test-model",
+        ],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+        env=clean_env,
+    )
+
+    assert completed.returncode != 0
+    assert "--evas-command is required for executable campaigns" in completed.stderr
+
+
+def test_campaign_wrapper_records_resolved_evas_identity(
+    tmp_path: Path,
+) -> None:
+    fake_evas = tmp_path / "fixed-evas"
+    fake_evas.write_text(
+        "#!/bin/bash\necho 'evas-sim 9.8.7 (ABI 20260721, revision test-rev)'\n",
+        encoding="utf-8",
+    )
+    fake_evas.chmod(0o755)
+    output = tmp_path / "campaign"
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(RUN_CAMPAIGN_WRAPPER),
+            "--release",
+            str(R49_RELEASE),
+            "--task-id",
+            "v4-006",
+            "--mode",
+            "G0",
+            "--output-root",
+            str(output),
+            "--model",
+            "test-model",
+            "--evas-command",
+            str(fake_evas),
+            "--dry-run",
+        ],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr + completed.stdout
+    execution = json.loads((output / "campaign.json").read_text())["execution_config"]
+    assert execution["evas_command"] == str(fake_evas.resolve())
+    assert execution["evas_identity"]["available"] is True
+    assert execution["evas_identity"]["resolved_executable"] == str(fake_evas.resolve())
+    assert execution["evas_identity"]["version_output"] == (
+        "evas-sim 9.8.7 (ABI 20260721, revision test-rev)"
+    )
+    assert len(execution["evas_identity"]["executable_sha256"]) == 64
+
+
+def test_runner_rejects_changed_evas_identity_before_execution(tmp_path: Path) -> None:
+    runner = load_run_campaign()
+    fake_evas = tmp_path / "fixed-evas"
+    fake_evas.write_text("#!/bin/bash\necho 'evas-sim 1.0 revision-a'\n")
+    fake_evas.chmod(0o755)
+    expected = runner.resolve_pinned_evas_identity(str(fake_evas))
+    fake_evas.write_text("#!/bin/bash\necho 'evas-sim 1.0 revision-b'\n")
+
+    with pytest.raises(SystemExit, match="EVAS identity mismatch"):
+        runner.validate_pinned_evas_identity(str(fake_evas), expected)
+
+
+def test_scorer_requires_explicit_evas_for_trusted_replay(tmp_path: Path) -> None:
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(SCORE_CAMPAIGN),
+            "--campaign-output",
+            str(tmp_path),
+            "--judge-kind",
+            "final_trusted_replay",
+            "--judge-command",
+            "/usr/bin/true",
+        ],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+
+    assert completed.returncode != 0
+    assert "--evas-command is required when replay executes" in completed.stderr
 
 
 def test_campaign_wrapper_task_id_filter_does_not_require_selection(

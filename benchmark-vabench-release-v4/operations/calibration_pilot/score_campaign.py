@@ -152,7 +152,7 @@ def evaluate_cell(
     result_path: Path,
     command: str | None,
     timeout_s: int,
-    evas_command: str = "evas",
+    evas_command: str | None = None,
 ) -> dict[str, Any]:
     result = read_json(result_path)
     cell = result["cell"]
@@ -199,6 +199,11 @@ def evaluate_cell(
         row["judge_status"] = "not_run"
         row["outcome"] = experiment.get("outcome", "not_scored")
     else:
+        if not evas_command:
+            raise ValueError("an explicit EVAS command is required for trusted replay")
+        expected_identity = result.get("evas_identity")
+        if expected_identity:
+            RUNNER.validate_pinned_evas_identity(evas_command, expected_identity)
         final_submission = RUNNER.RESULT_PROTOCOL.snapshot_submission(runtime, artifact_gate)
         replay = RUNNER.run_trusted_replay(
             runtime, command, timeout_s, evas_command, final_submission
@@ -288,7 +293,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--judge-command")
     parser.add_argument("--timeout-s", type=int, default=120)
     parser.add_argument("--workers", type=int, default=1)
-    parser.add_argument("--evas-command", default="evas")
+    parser.add_argument("--evas-command")
     parser.add_argument("--output", type=Path)
     return parser.parse_args()
 
@@ -302,6 +307,8 @@ def main() -> int:
         raise SystemExit("--workers must be at least 1")
     if args.judge_kind in {"final_trusted_replay", "final_spectre"} and not args.judge_command:
         raise SystemExit(f"--judge-kind {args.judge_kind} requires --judge-command")
+    if args.judge_command and not args.evas_command:
+        raise SystemExit("--evas-command is required when replay executes")
     result_paths = sorted(args.campaign_output.glob("v4-*/evidence/campaign_result.json"))
     if not result_paths:
         raise SystemExit(f"no campaign results under {args.campaign_output}")

@@ -31,11 +31,18 @@ python3 benchmark-vabench-release-v4/runners/run_benchmarkv4_campaign.py \
   --model deepseek-v4-flash \
   --base-url https://api.deepseek.com/v1 \
   --api-key-file /path/to/key.txt \
+  --evas-command "$(pwd)/.venv/bin/evas" \
   --agent-timeout-s 5400 \
   --per-turn-max-tokens 65536 \
   --workers 12 \
   --output-root /tmp/benchmarkv4-deepseek-campaign
 ```
+
+`--evas-command` is mandatory for executable campaigns. The wrapper resolves
+the executable to an absolute path and stores its binary hash and complete
+version identity in the campaign manifest; the runner refuses a changed
+identity before any API request. Formal runs never fall back to a PATH-derived
+`evas`.
 
 The runner uses wall-clock time as the primary episode stopping rule. The
 `--per-turn-max-tokens` value is passed to the provider as a per-call
@@ -60,6 +67,7 @@ Final trusted replay for a completed campaign:
 python3 benchmark-vabench-release-v4/operations/calibration_pilot/score_campaign.py \
   --campaign-output /tmp/benchmarkv4-deepseek-campaign/run \
   --judge-kind final_trusted_replay \
+  --evas-command "$(pwd)/.venv/bin/evas" \
   --judge-command \
     "python3 /path/to/trusted_replay_adapter.py"
 ```

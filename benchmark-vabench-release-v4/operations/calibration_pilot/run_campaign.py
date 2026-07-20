@@ -131,6 +131,40 @@ def write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def resolve_pinned_evas_identity(command: str) -> dict[str, Any]:
+    argv = shlex.split(command)
+    if not argv or not Path(argv[0]).is_absolute():
+        raise SystemExit("--evas-command must start with an absolute executable path")
+    identity = RESULT_PROTOCOL.evas_identity(argv)
+    if not identity.get("available"):
+        raise SystemExit(
+            "configured EVAS is unavailable or has no version identity: "
+            f"{identity.get('error') or identity.get('version_output') or command}"
+        )
+    return identity
+
+
+def validate_pinned_evas_identity(
+    command: str, expected: dict[str, Any] | None
+) -> dict[str, Any]:
+    if not isinstance(expected, dict) or not expected.get("available"):
+        raise SystemExit("campaign is missing its pinned EVAS identity")
+    observed = resolve_pinned_evas_identity(command)
+    fields = (
+        "command",
+        "resolved_executable",
+        "executable_sha256",
+        "version_output",
+        "sha256",
+    )
+    mismatches = [
+        field for field in fields if observed.get(field) != expected.get(field)
+    ]
+    if mismatches:
+        raise SystemExit("EVAS identity mismatch: " + ", ".join(mismatches))
+    return observed
+
+
 def file_digest_summary(path: Path) -> dict[str, Any]:
     data = path.read_bytes()
     return {
@@ -1669,6 +1703,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         "termination_policy": "wall_time",
         "agent_timeout_s": args.agent_timeout_s,
         "agent_scaffold": MINI_SWE_SCAFFOLD_ID if mini_swe_agentic else "native-v4-loop",
+        "evas_identity": getattr(args, "evas_identity", None),
     }
     if args.dry_run:
         result["finished_at"] = now()
@@ -2001,18 +2036,28 @@ def main() -> int:
     parser.add_argument("--final-judge-command")
     parser.add_argument(
         "--evas-command",
-        default="evas",
-        help="Pinned EVAS executable exposed directly to mini-SWE agents and recorded for trusted replay identity.",
+        help="Explicit pinned EVAS command; required unless --dry-run is used.",
     )
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--stream", action="store_true", help="Use OpenAI-compatible SSE streaming responses.")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
+    if not args.dry_run and not args.evas_command:
+        raise SystemExit("--evas-command is required for executable campaigns")
     args.campaign = args.campaign.resolve()
     args.release = args.release.resolve()
     args.output = args.output.resolve()
     campaign = read_json(args.campaign)
+    expected_evas_identity = (campaign.get("execution_config") or {}).get(
+        "evas_identity"
+    )
+    if args.evas_command:
+        args.evas_identity = validate_pinned_evas_identity(
+            args.evas_command, expected_evas_identity
+        )
+    else:
+        args.evas_identity = None
     expected_release_hash = str(campaign.get("release_manifest_sha256") or "")
     observed_release_hash = hashlib.sha256((args.release / "MANIFEST.json").read_bytes()).hexdigest()
     if expected_release_hash != observed_release_hash:
@@ -2062,7 +2107,7 @@ def main() -> int:
         with ThreadPoolExecutor(max_workers=args.workers) as pool:
             results = list(pool.map(lambda cell: run_cell_preserving_failure(cell, args, client), cells))
     all_results = stored_results(args.output)
-    summary = {"schema_version": "v4-calibration-run-summary-v1", "campaign": str(args.campaign), "dry_run": args.dry_run, "result_count": len(all_results), "statuses": {}}
+    summary = {"schema_version": "v4-calibration-run-summary-v1", "campaign": str(args.campaign), "dry_run": args.dry_run, "evas_identity": args.evas_identity, "result_count": len(all_results), "statuses": {}}
     for row in all_results:
         status = row["status"]
         summary["statuses"][status] = summary["statuses"].get(status, 0) + 1
