@@ -97,9 +97,9 @@ def test_mini_swe_bash_episode_runs_feedback_reads_output_and_submits(tmp_path: 
     module = load_module()
     runtime = tmp_path / "runtime"
     (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "task" / "instruction.md").write_text("public task")
     (runtime / "public" / "submission").mkdir(parents=True)
     (runtime / "evaluator").mkdir(parents=True)
-    (runtime / "public" / "task" / "instruction.md").write_text("public task")
     (runtime / "evaluator" / "secret.txt").write_text("sealed")
     provider = FakeProvider(
         [
@@ -155,6 +155,7 @@ def test_sandbox_cannot_read_sibling_evaluator(tmp_path: Path) -> None:
     module = load_module()
     runtime = tmp_path / "runtime"
     (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "task" / "instruction.md").write_text("public task")
     (runtime / "public" / "submission").mkdir(parents=True)
     (runtime / "evaluator").mkdir(parents=True)
     (runtime / "evaluator" / "secret.txt").write_text("sealed")
@@ -166,6 +167,7 @@ def test_sandbox_cannot_read_sibling_evaluator(tmp_path: Path) -> None:
         submission_gate=artifact_gate,
     )
 
+    environment.preflight()
     result = environment.execute({"command": "cat ../evaluator/secret.txt"})
 
     assert result["returncode"] != 0

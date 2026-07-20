@@ -115,21 +115,27 @@ def _safe_command_words(command: str) -> list[str]:
 
 def _sandbox_profile(workspace: Path) -> str:
     escaped = str(workspace).replace('"', '\\"')
+    runtime = str(workspace.parent).replace('"', '\\"')
+    home = str(Path.home().resolve()).replace('"', '\\"')
     submission = str(workspace / "submission").replace('"', '\\"')
     temporary = str(workspace / ".tmp").replace('"', '\\"')
     return "\n".join(
         [
             "(version 1)",
-            "(deny default)",
-            "(allow process*)",
-            "(allow sysctl-read)",
-            "(allow mach-lookup)",
-            "(allow file-read* (subpath \"/System\") (subpath \"/usr\") "
-            "(subpath \"/bin\") (subpath \"/sbin\") (subpath \"/Library\") "
-            "(subpath \"/private/etc\") (subpath \"/dev\"))",
-            f'(allow file-read* (subpath "{escaped}"))',
-            f'(allow file-write* (subpath "{submission}") (subpath "{temporary}"))',
+            # Recent macOS releases abort some system binaries under a strict
+            # file-read allowlist because their runtime dependencies are not a
+            # stable public interface.  Retain system execution capability, then
+            # seal user data, temporary data, and the private runtime explicitly.
+            "(allow default)",
             "(deny network*)",
+            f'(deny file-read* (subpath "{home}"))',
+            '(deny file-read* (subpath "/private/tmp") '
+            '(subpath "/private/var/folders"))',
+            f'(deny file-read* (subpath "{runtime}"))',
+            f'(allow file-read* (subpath "{escaped}"))',
+            "(deny file-write*)",
+            f'(allow file-write* (subpath "{submission}") (subpath "{temporary}") '
+            '(literal "/dev/null") (literal "/dev/tty"))',
         ]
     )
 
@@ -269,7 +275,13 @@ class VaBenchBashEnvironment:
         """Fail before the first model call if the requested isolation is unusable."""
         if self.config.sandbox_backend == "none":
             return
-        argv = self._sandbox_argv("test -r task && test ! -r ../evaluator")
+        # ``test -r`` checks Unix permission bits and can still report a path as
+        # readable when sandbox-exec would deny the actual filesystem access.
+        # Probe a real directory read so macOS and namespace-based backends are
+        # validated against the isolation property we rely on.
+        argv = self._sandbox_argv(
+            "test -r task/instruction.md && ! /bin/ls ../evaluator >/dev/null 2>&1"
+        )
         probe = subprocess.run(
             argv,
             cwd=self.workspace,
@@ -285,7 +297,7 @@ class VaBenchBashEnvironment:
             check=False,
         )
         if probe.returncode != 0:
-            diagnostic = probe.stdout.strip()[:2000]
+            diagnostic = probe.stdout.strip()[:2000] or f"returncode={probe.returncode}"
             if "RTM_NEWADDR" in diagnostic or "unprivileged user namespaces" in diagnostic:
                 diagnostic += (
                     " | Linux host policy blocked secure user/network namespaces. "
