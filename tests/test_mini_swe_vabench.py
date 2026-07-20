@@ -292,7 +292,9 @@ def test_bubblewrap_isolates_evaluator_and_allows_direct_evas_output(
 
     environment.preflight()
     hidden = environment.execute({"command": "cat ../evaluator/secret.txt"})
-    direct_evas = environment.execute({"command": "which evas && evas --version"})
+    direct_evas = environment.execute(
+        {"command": "command -v evas && evas --version"}
+    )
     scratch = environment.execute(
         {"command": "printf waveform > public/evas-output/model-created.log"}
     )

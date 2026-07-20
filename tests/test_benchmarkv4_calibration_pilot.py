@@ -865,6 +865,7 @@ def test_agentic_run_cell_uses_mini_swe_bash_scaffold_by_default_path(
     args = run_args(tmp_path / "run", r45_release)
     args.agent_scaffold = "mini-swe"
     args.mini_swe_sandbox = "none"
+    args.evas_command = fake_evas_command(tmp_path)
     client = MiniSweFakeClient(
         [
             "printf 'module bbpd_ref; endmodule\\n' > public/submission/bbpd_ref.va",
