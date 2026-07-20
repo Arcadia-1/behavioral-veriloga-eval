@@ -26,9 +26,14 @@ REPO = PACKAGE.parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 import result_protocol as RESULT_PROTOCOL  # noqa: E402
+from mini_swe_vabench import (  # noqa: E402
+    MINI_SWE_SCAFFOLD_ID,
+    default_sandbox_backend,
+    run_mini_swe_episode,
+)
 
 EXPORTER = PACKAGE / "operations" / "tri_form_derivation_prep" / "export_tri_form_runtime.py"
-DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r45"
+DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r49"
 DEFAULT_BASE_URL = "https://www.cun.ai/v1"
 DEFAULT_API_KEY_ENV = "VAEVAS_API_KEY"
 DEFAULT_AGENT_TIMEOUT_S = 5400
@@ -101,8 +106,8 @@ PUBLIC_ESCAPE_RE = re.compile(
 )
 
 
-class AgentTimeoutError(TimeoutError):
-    """The model endpoint exhausted the per-request wall-clock allowance."""
+class ProviderRequestTimeout(TimeoutError):
+    """One provider request exhausted its infrastructure timeout."""
 
 
 class ProviderContextWindowExceeded(RuntimeError):
@@ -394,7 +399,7 @@ class OpenAICompatible:
                 break
         assert completed is not None
         if completed.returncode == 28:
-            raise AgentTimeoutError(
+            raise ProviderRequestTimeout(
                 f"provider request exceeded {self.timeout_s}s after 3 attempts"
             )
         if completed.returncode != 0:
@@ -456,7 +461,7 @@ class OpenAICompatible:
                 break
         assert completed is not None
         if completed.returncode == 28:
-            raise AgentTimeoutError(
+            raise ProviderRequestTimeout(
                 f"provider streaming request exceeded {self.timeout_s}s after 3 attempts"
             )
         if completed.returncode != 0:
@@ -664,6 +669,58 @@ def confined_path(root: Path, relative: str) -> Path:
     return path
 
 
+def submission_source_diagnostics(runtime: Path) -> list[str]:
+    """Reject candidate filesystem/include escapes before trusted execution."""
+    submission = runtime / "public" / "submission"
+    expected = set(expected_candidate_artifacts(runtime))
+    diagnostics: list[str] = []
+    if not submission.is_dir():
+        return diagnostics
+    for path in sorted(submission.rglob("*")):
+        relative = path.relative_to(submission).as_posix()
+        if path.is_symlink():
+            diagnostics.append(f"symlink_not_allowed:{relative}")
+            continue
+        if not path.is_file() or path.suffix.lower() not in {".va", ".scs"}:
+            continue
+        if path.stat().st_size > 1_000_000:
+            diagnostics.append(f"source_too_large:{relative}")
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            diagnostics.append(f"source_not_utf8:{relative}")
+            continue
+        uncommented = re.sub(r"/\*.*?\*/", "", text, flags=re.DOTALL)
+        uncommented = "\n".join(
+            line.split("//", 1)[0] for line in uncommented.splitlines()
+        )
+        for raw in PUBLIC_INCLUDE_RE.findall(uncommented):
+            normalized = raw.replace("\\", "/")
+            include = Path(normalized)
+            if normalized in {"constants.vams", "disciplines.vams"}:
+                continue
+            if (
+                path.name == "testbench.scs"
+                and not include.is_absolute()
+                and ".." not in include.parts
+                and include.parts
+                and include.parts[0] == "dut"
+            ):
+                continue
+            if include.is_absolute() or ".." in include.parts:
+                diagnostics.append(f"unsafe_source_include:{relative}:{raw}")
+                continue
+            try:
+                target = safe_relative((Path(relative).parent / include).as_posix()).as_posix()
+            except ValueError:
+                diagnostics.append(f"unsafe_source_include:{relative}:{raw}")
+                continue
+            if target not in expected:
+                diagnostics.append(f"undeclared_source_include:{relative}:{raw}")
+    return diagnostics
+
+
 def validate_public_testbench(candidate: Path) -> None:
     if candidate.is_symlink() or candidate.stat().st_size > 1_000_000:
         raise ValueError("candidate testbench must be a regular file no larger than 1 MB")
@@ -686,10 +743,20 @@ def validate_public_testbench(candidate: Path) -> None:
 def run_public_evas(
     runtime: Path,
     arguments: dict[str, Any],
-    timeout_s: int,
+    timeout_s: float,
     evas_command: str,
 ) -> dict[str, Any]:
     """Execute only the fixed public EVAS contract, never an agent-supplied command."""
+    source_diagnostics = submission_source_diagnostics(runtime)
+    if source_diagnostics:
+        return {
+            "execution_status": "candidate_rejected",
+            "returncode": 2,
+            "stdout": "",
+            "stderr": "candidate source rejected: " + "; ".join(source_diagnostics),
+            "elapsed_s": 0.0,
+            "status": "fail",
+        }
     public = runtime / "public"
     task = public / "task"
     submission = public / "submission"
@@ -719,12 +786,7 @@ def run_public_evas(
         ):
             raise ValueError("unrecognized public EVAS command contract")
         deck = confined_path(runtime, "public/task/visible_test.scs")
-        output = confined_path(
-            runtime,
-            ".vabench-visible/evas-output"
-            if schema_version.endswith("-v2")
-            else "public/submission/evas-output",
-        )
+        output = confined_path(runtime, ".vabench-visible/evas-output")
         if not deck.is_file():
             raise FileNotFoundError("visible_test.scs is missing")
         argv = [*executable, "simulate", str(deck), "-o", str(output), "--spectre-strict"]
@@ -764,9 +826,7 @@ def run_public_evas(
     if not fixture.is_dir():
         raise FileNotFoundError(f"public fixture is missing for {case}")
 
-    scratch_root = runtime / (
-        ".vabench-visible" if schema_version.endswith("-v2") else "public/submission"
-    )
+    scratch_root = runtime / ".vabench-visible"
     run_dir = confined_path(scratch_root, f"runs/{case}")
     if run_dir.exists():
         shutil.rmtree(run_dir)
@@ -1363,6 +1423,11 @@ def submission_artifact_gate(runtime: Path) -> dict[str, Any]:
     diagnostics.extend(
         f"undeclared_artifact_path:{relative}" for relative in sorted(actual - expected_set)
     )
+    diagnostics.extend(
+        diagnostic
+        for diagnostic in submission_source_diagnostics(runtime)
+        if diagnostic not in diagnostics
+    )
     passed = not diagnostics
     artifacts = {
         relative: hashlib.sha256((submission / relative).read_bytes()).hexdigest()
@@ -1416,6 +1481,162 @@ def export_runtime(cell: dict[str, Any], release: Path, output: Path, *, timeout
     ], cwd=REPO, check=True, stdout=subprocess.DEVNULL, timeout=timeout_s)
 
 
+def run_mini_swe_agentic_cell(
+    *,
+    cell: dict[str, Any],
+    args: argparse.Namespace,
+    client: OpenAICompatible,
+    runtime: Path,
+    prompt: str,
+    result: dict[str, Any],
+) -> dict[str, Any]:
+    trajectory_path = runtime / "evidence" / "mini_swe_trajectory.json"
+    if args.resume and trajectory_path.is_file():
+        raise ValueError(
+            "resuming an unfinished mini-SWE-agent trajectory is not supported; "
+            "reuse only terminal campaign results"
+        )
+
+    def trajectory_messages() -> list[dict[str, Any]]:
+        trajectory = read_json(trajectory_path) if trajectory_path.is_file() else {}
+        return list(trajectory.get("messages") or [])
+
+    def feedback_runner(
+        active_runtime: Path, timeout_s: float, case: str | None
+    ) -> dict[str, Any]:
+        arguments = {"case": case} if case is not None else {}
+        return run_public_evas(active_runtime, arguments, timeout_s, args.evas_command)
+
+    started = time.monotonic()
+    try:
+        episode = run_mini_swe_episode(
+            runtime=runtime,
+            prompt=prompt,
+            client=client,
+            per_turn_max_tokens=cell_per_turn_max_tokens(cell),
+            agent_timeout_s=float(args.agent_timeout_s),
+            request_timeout_s=float(args.request_timeout_s),
+            tool_timeout_s=float(args.tool_timeout_s),
+            sandbox_backend=args.mini_swe_sandbox,
+            feedback_runner=feedback_runner,
+            submission_gate=submission_artifact_gate,
+            usage_parser=provider_output_usage,
+            response_metadata=provider_response_metadata,
+            trajectory_path=trajectory_path,
+        )
+    except ProviderContextWindowExceeded as exc:
+        result.update(
+            {
+                "status": "context_window_exceeded",
+                "termination_reason": "provider_context_window_exceeded",
+                "provider_error": str(exc)[:4000],
+                "finished_at": now(),
+                "agent_elapsed_s": time.monotonic() - started,
+            }
+        )
+        attach_experiment_result(
+            result, runtime, trajectory_messages(), args, "provider_failure"
+        )
+        write_json(runtime / "evidence" / "campaign_result.json", result)
+        return result
+    except (subprocess.TimeoutExpired, ProviderRequestTimeout) as exc:
+        elapsed_s = time.monotonic() - started
+        if elapsed_s < float(args.agent_timeout_s):
+            raise
+        result.update(
+            {
+                "status": "agent_timeout",
+                "termination_reason": "agent_timeout",
+                "provider_error": str(exc)[:4000],
+                "finished_at": now(),
+                "agent_elapsed_s": elapsed_s,
+            }
+        )
+        attach_experiment_result(
+            result, runtime, trajectory_messages(), args, "agent_timeout"
+        )
+        write_json(runtime / "evidence" / "campaign_result.json", result)
+        return result
+
+    complete = bool(episode["artifact_complete"])
+    explicit_submission = bool(episode["submitted"])
+    exit_status = str(episode.get("exit_status") or "")
+    feedback_commands = [
+        row
+        for row in episode["commands"]
+        if row.get("kind") == "vabench-feedback-run"
+    ]
+    feedback_statuses = [
+        "pass" if row.get("returncode") == 0 else "fail"
+        for row in feedback_commands
+    ]
+    result.update(
+        {
+            "status": (
+                "submitted"
+                if complete
+                else "agent_timeout"
+                if exit_status == "TimeExceeded"
+                else "invalid_submission"
+            ),
+            "termination_reason": (
+                "agent_timeout"
+                if exit_status == "TimeExceeded"
+                else "completed"
+                if explicit_submission
+                else "mini_swe_agent_exit"
+            ),
+            "finished_at": now(),
+            "termination_policy": "wall_time",
+            "output_tokens": episode["output_tokens"],
+            "working_tokens": episode["output_tokens"],
+            "output_token_budget": None,
+            "per_turn_max_tokens": cell_per_turn_max_tokens(cell),
+            "events": episode["events"],
+            "agent_elapsed_s": episode["agent_elapsed_s"],
+            "artifact_gate": episode["artifact_gate"],
+            "artifact_sha256": episode["artifact_sha256"],
+            "submission_protocol_compliant": explicit_submission,
+            "agent_scaffold": {
+                key: episode[key]
+                for key in (
+                    "scaffold",
+                    "scaffold_version",
+                    "bash_tool_schema_sha256",
+                    "system_prompt_sha256",
+                    "bash_contract_sha256",
+                    "trajectory_format",
+                    "sandbox_backend",
+                    "network",
+                    "evaluator_mounted",
+                )
+            },
+            "mini_swe_exit_status": exit_status,
+            "model_calls": episode["model_calls"],
+            "bash_commands": episode["commands"],
+            "public_feedback": {
+                "schema_version": "v4-public-feedback-summary-v1",
+                "calls_executed": len(feedback_commands),
+                "calls_blocked": 0,
+                "last_status": feedback_statuses[-1] if feedback_statuses else None,
+                "pass_observed": "pass" in feedback_statuses,
+                "auto_finalized": False,
+                "stop_policy": "model_controlled_vabench_feedback_run-v1",
+                "redundant_call_policy": "none",
+            },
+        }
+    )
+    attach_experiment_result(
+        result,
+        runtime,
+        episode["messages"],
+        args,
+        "completed" if complete else result["status"],
+    )
+    write_json(runtime / "evidence" / "campaign_result.json", result)
+    return result
+
+
 def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompatible | None) -> dict[str, Any]:
     runtime = args.output / cell["cell_id"]
     result_path = runtime / "evidence" / "campaign_result.json"
@@ -1442,6 +1663,8 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         export_runtime(cell, args.release, runtime, timeout_s=args.setup_timeout_s)
     prompt_path = runtime / ("agent_prompt.txt" if cell["mode"] in AGENTIC else "direct_prompt.txt")
     prompt = prompt_path.read_text(encoding="utf-8")
+    agent_scaffold = getattr(args, "agent_scaffold", "native")
+    mini_swe_agentic = cell["mode"] in AGENTIC and agent_scaffold == "mini-swe"
     agent_started_monotonic = time.monotonic()
     resumed_agent_elapsed_s = 0.0
     result: dict[str, Any] = {
@@ -1451,12 +1674,22 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         "status": "prepared",
         "termination_policy": "wall_time",
         "agent_timeout_s": args.agent_timeout_s,
+        "agent_scaffold": MINI_SWE_SCAFFOLD_ID if mini_swe_agentic else "native-v4-loop",
     }
     if args.dry_run:
         result["finished_at"] = now()
         write_json(runtime / "evidence" / "campaign_result.json", result)
         return result
     assert client is not None
+    if mini_swe_agentic:
+        return run_mini_swe_agentic_cell(
+            cell=cell,
+            args=args,
+            client=client,
+            runtime=runtime,
+            prompt=prompt,
+            result=result,
+        )
     if args.resume and conversation_path.is_file():
         checkpoint = read_json(conversation_path)
         if checkpoint.get("cell_id") != cell["cell_id"]:
@@ -1603,7 +1836,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
                 "provider_error": str(exc)[:4000],
             })
             break
-        except subprocess.TimeoutExpired as exc:
+        except (subprocess.TimeoutExpired, ProviderRequestTimeout) as exc:
             if agent_time_expired():
                 complete = gate_agentic_submission(runtime, result) if cell["mode"] in AGENTIC else False
                 set_terminal_submission_status(
@@ -1710,7 +1943,7 @@ def run_cell_preserving_failure(
             trace = client._redact(trace)
         failure = {
             "cell": cell,
-            "status": "agent_timeout" if isinstance(exc, AgentTimeoutError) else "runner_error",
+            "status": "runner_error",
             "error_type": type(exc).__name__,
             "error": error,
             "traceback": trace,
@@ -1718,15 +1951,19 @@ def run_cell_preserving_failure(
         }
         checkpoint_path = runtime / "evidence" / "conversation_checkpoint.json"
         checkpoint = read_json(checkpoint_path) if checkpoint_path.is_file() else {}
+        trajectory_path = runtime / "evidence" / "mini_swe_trajectory.json"
+        trajectory = read_json(trajectory_path) if trajectory_path.is_file() else {}
+        failure_messages = list(
+            checkpoint.get("messages") or trajectory.get("messages") or []
+        )
         model_status = (
-            "agent_timeout"
-            if isinstance(exc, AgentTimeoutError)
-            else "provider_failure"
-            if isinstance(exc, RuntimeError) and "provider" in str(exc).lower()
+            "provider_failure"
+            if isinstance(exc, ProviderRequestTimeout)
+            or (isinstance(exc, RuntimeError) and "provider" in str(exc).lower())
             else "runner_failure"
         )
         attach_experiment_result(
-            failure, runtime, list(checkpoint.get("messages") or []), args, model_status
+            failure, runtime, failure_messages, args, model_status
         )
         write_json(runtime / "evidence" / "campaign_result.json", failure)
         return failure
@@ -1750,6 +1987,18 @@ def main() -> int:
     parser.add_argument("--cell")
     parser.add_argument("--limit", type=int)
     parser.add_argument("--temperature", type=float, default=0.0)
+    parser.add_argument(
+        "--agent-scaffold",
+        choices=("mini-swe", "native"),
+        default="mini-swe",
+        help="Agent controller for G2-G5. G0/G1 remain direct-generation conditions.",
+    )
+    parser.add_argument(
+        "--mini-swe-sandbox",
+        choices=("auto", "sandbox-exec", "none"),
+        default="auto",
+        help="Shell isolation backend. 'none' is for tests only and is not paper-valid.",
+    )
     parser.add_argument("--agent-timeout-s", type=int, default=DEFAULT_AGENT_TIMEOUT_S)
     parser.add_argument("--setup-timeout-s", type=int, default=DEFAULT_SETUP_TIMEOUT_S)
     parser.add_argument("--request-timeout-s", type=int, default=DEFAULT_REQUEST_TIMEOUT_S)
@@ -1785,6 +2034,16 @@ def main() -> int:
         cells = cells[:args.limit]
     if not cells:
         raise SystemExit("no matching campaign cells")
+    uses_mini_swe = args.agent_scaffold == "mini-swe" and any(
+        cell["mode"] in AGENTIC for cell in cells
+    )
+    if uses_mini_swe and args.mini_swe_sandbox == "auto" and not args.dry_run:
+        args.mini_swe_sandbox = default_sandbox_backend()
+    if uses_mini_swe and args.mini_swe_sandbox == "none" and not args.dry_run:
+        raise SystemExit(
+            "--mini-swe-sandbox none is test-only; use a supported secure sandbox "
+            "for executable G2-G5 campaigns"
+        )
     if args.workers < 1:
         raise SystemExit("--workers must be at least 1")
     if min(

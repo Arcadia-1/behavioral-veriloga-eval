@@ -101,6 +101,16 @@ def load_run_campaign():
     return module
 
 
+def load_run_campaign_wrapper():
+    spec = importlib.util.spec_from_file_location(
+        "run_benchmarkv4_campaign_test", RUN_CAMPAIGN_WRAPPER
+    )
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def load_testbench_security():
     spec = importlib.util.spec_from_file_location("testbench_security", TESTBENCH_SECURITY)
     assert spec is not None
@@ -212,6 +222,40 @@ class UnexpectedClientCall:
         raise AssertionError("resume should finish checkpointed tool calls before another model call")
 
 
+class MiniSweFakeClient:
+    model = "test-model"
+
+    def __init__(self, commands: list[str]) -> None:
+        self.commands = list(commands)
+
+    def complete(self, _messages, _max_tokens, _tools, **_kwargs):
+        command = self.commands.pop(0)
+        return {
+            "id": f"mini-{len(self.commands)}",
+            "model": self.model,
+            "choices": [
+                {
+                    "finish_reason": "tool_calls",
+                    "message": {
+                        "role": "assistant",
+                        "content": "",
+                        "tool_calls": [
+                            {
+                                "id": f"call-{len(self.commands)}",
+                                "type": "function",
+                                "function": {
+                                    "name": "bash",
+                                    "arguments": json.dumps({"command": command}),
+                                },
+                            }
+                        ],
+                    },
+                }
+            ],
+            "usage": {"completion_tokens": 7},
+        }
+
+
 def fake_evas_command(tmp_path: Path) -> str:
     script = tmp_path / "fake_evas.py"
     script.write_text(
@@ -232,6 +276,15 @@ def test_active_agent_tools_expose_restricted_evas_not_feedback() -> None:
     runner = load_run_campaign()
     names = [tool["function"]["name"] for tool in runner.TOOLS]
     assert names == ["list_files", "read_file", "write_file", "run_evas", "finalize"]
+
+
+def test_campaign_runner_defaults_to_latest_r49_release() -> None:
+    runner = load_run_campaign()
+    wrapper = load_run_campaign_wrapper()
+
+    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r49"
+    assert runner.DEFAULT_RELEASE.is_dir()
+    assert wrapper.DEFAULT_RELEASE == runner.DEFAULT_RELEASE
 
 
 @pytest.mark.parametrize(
@@ -262,16 +315,58 @@ def test_run_evas_dut_uses_fixed_public_contract(
     result = runner.run_public_evas(runtime, {}, 30, fake_evas_command(tmp_path))
 
     assert result["status"] == "pass"
-    output = (
-        runtime / ".vabench-visible" / "evas-output"
-        if runtime_version == 2
-        else submission / "evas-output"
-    )
+    output = runtime / ".vabench-visible" / "evas-output"
     invocation = json.loads((output / "invocation.json").read_text(encoding="utf-8"))
     assert invocation["cwd"] == str(runtime)
     assert invocation["argv"][0] == "simulate"
     assert Path(invocation["argv"][1]) == task / "visible_test.scs"
     assert Path(invocation["argv"][invocation["argv"].index("-o") + 1]) == output
+
+
+@pytest.mark.parametrize("attack", ["symlink", "private_include"])
+def test_run_evas_rejects_candidate_source_escape_before_execution(
+    tmp_path: Path, attack: str
+) -> None:
+    runner = load_run_campaign()
+    runtime = tmp_path / "runtime"
+    task = runtime / "public" / "task"
+    submission = runtime / "public" / "submission"
+    evaluator = runtime / "evaluator" / "solution"
+    task.mkdir(parents=True)
+    submission.mkdir(parents=True)
+    evaluator.mkdir(parents=True)
+    private = evaluator / "private.va"
+    private.write_text("PRIVATE_GOLD_MARKER", encoding="utf-8")
+    (task / "visible_test.scs").write_text("tran tran stop=1n\n", encoding="utf-8")
+    (task / "evas_runtime.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "r47-direct-evas-runtime-v2",
+                "command": (
+                    "evas simulate public/task/visible_test.scs -o "
+                    "/tmp/vabench-visible/evas-output --spectre-strict"
+                ),
+                "working_directory": "runtime_package_root",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    candidate = submission / "model.va"
+    if attack == "symlink":
+        candidate.symlink_to(private)
+    else:
+        candidate.write_text(
+            '`include "../../evaluator/solution/private.va"\nmodule model; endmodule\n',
+            encoding="utf-8",
+        )
+
+    result = runner.run_public_evas(runtime, {}, 30, fake_evas_command(tmp_path))
+
+    assert result["execution_status"] == "candidate_rejected"
+    assert result["returncode"] != 0
+    assert "PRIVATE_GOLD_MARKER" not in json.dumps(result)
+    assert not (runtime / ".vabench-visible" / "evas-output" / "invocation.json").exists()
 
 
 @pytest.mark.parametrize(
@@ -311,10 +406,12 @@ def test_run_evas_testbench_uses_candidate_and_public_case_only(
     )
 
     assert result["status"] == "pass"
-    scratch_root = runtime / ".vabench-visible" if runtime_version == 2 else submission
+    scratch_root = runtime / ".vabench-visible"
     run_dir = scratch_root / "runs" / "reference"
     assert (run_dir / "testbench.scs").read_bytes() == (submission / "testbench.scs").read_bytes()
     assert (run_dir / "dut" / "dut.va").read_bytes() == (fixture / "dut.va").read_bytes()
+    write_runtime_policy(runtime, ["testbench.scs"])
+    assert runner.submission_artifact_gate(runtime)["passed"] is True
     try:
         runner.run_public_evas(
             runtime, {"case": "../../evaluator"}, 30, fake_evas_command(tmp_path)
@@ -327,14 +424,11 @@ def test_run_evas_testbench_uses_candidate_and_public_case_only(
     (submission / "testbench.scs").write_text(
         'ahdl_include "/etc/passwd"\n', encoding="utf-8"
     )
-    try:
-        runner.run_public_evas(
-            runtime, {"case": "reference"}, 30, fake_evas_command(tmp_path)
-        )
-    except ValueError as exc:
-        assert "escapes the public DUT fixture" in str(exc)
-    else:
-        raise AssertionError("run_evas accepted an absolute candidate include")
+    rejected = runner.run_public_evas(
+        runtime, {"case": "reference"}, 30, fake_evas_command(tmp_path)
+    )
+    assert rejected["execution_status"] == "candidate_rejected"
+    assert "unsafe_source_include" in rejected["stderr"]
 
 
 def test_r47_runtime_rejects_legacy_v1_schema(tmp_path: Path) -> None:
@@ -691,6 +785,32 @@ def test_provider_context_window_is_a_cell_status_not_runner_error(
     assert "context length exceeded" in result["provider_error"]
 
 
+def test_provider_request_timeout_is_not_mislabeled_as_agent_walltime(
+    tmp_path: Path, r45_release: Path
+) -> None:
+    runner = load_run_campaign()
+    cell = campaign_cell("G2", r45_release)
+
+    class RequestTimeoutClient:
+        def complete(self, *_args, **_kwargs):
+            raise runner.ProviderRequestTimeout("provider request exceeded 30s")
+
+        @staticmethod
+        def _redact(value: str) -> str:
+            return value
+
+    result = runner.run_cell_preserving_failure(
+        cell,
+        run_args(tmp_path / "run", r45_release),
+        RequestTimeoutClient(),
+    )
+
+    assert result["status"] == "runner_error"
+    assert result["error_type"] == "ProviderRequestTimeout"
+    assert result["experiment_result"]["model_execution"]["status"] == "provider_failure"
+    assert result.get("termination_reason") != "agent_timeout"
+
+
 def test_agentic_run_cell_rejects_an_undeclared_file_at_finalize(
     tmp_path: Path, r45_release: Path
 ) -> None:
@@ -735,6 +855,145 @@ def test_agentic_run_cell_rejects_an_undeclared_file_at_finalize(
     assert result["status"] == "invalid_submission"
     assert result["submission_protocol_compliant"] is False
     assert "undeclared_artifact_path:extra.va" in result["artifact_gate"]["diagnostics"]
+
+
+def test_agentic_run_cell_uses_mini_swe_bash_scaffold_by_default_path(
+    tmp_path: Path, r45_release: Path
+) -> None:
+    runner = load_run_campaign()
+    cell = campaign_cell("G2", r45_release)
+    args = run_args(tmp_path / "run", r45_release)
+    args.agent_scaffold = "mini-swe"
+    args.mini_swe_sandbox = "none"
+    client = MiniSweFakeClient(
+        [
+            "printf 'module bbpd_ref; endmodule\\n' > submission/bbpd_ref.va",
+            "vabench-submit",
+        ]
+    )
+
+    result = runner.run_cell(cell, args, client)
+
+    assert result["status"] == "submitted"
+    assert result["agent_scaffold"]["scaffold"] == (
+        "mini-swe-agent-2.4.5-vabench-bash-v1"
+    )
+    assert result["agent_scaffold"]["evaluator_mounted"] is False
+    assert result["output_token_budget"] is None
+    assert result["experiment_result"]["final_submission"]["status"] == "available"
+
+
+def test_mini_swe_r45_feedback_then_submit_keeps_runner_scratch_outside_submission(
+    tmp_path: Path, r45_release: Path
+) -> None:
+    runner = load_run_campaign()
+    cell = campaign_cell("G2", r45_release)
+    args = run_args(tmp_path / "run", r45_release)
+    args.agent_scaffold = "mini-swe"
+    args.mini_swe_sandbox = "none"
+    args.evas_command = fake_evas_command(tmp_path)
+    client = MiniSweFakeClient(
+        [
+            "printf 'module bbpd_ref; endmodule\\n' > submission/bbpd_ref.va",
+            "vabench feedback run",
+            "vabench-submit",
+        ]
+    )
+
+    result = runner.run_cell(cell, args, client)
+
+    submission = args.output / cell["cell_id"] / "public" / "submission"
+    assert result["status"] == "submitted"
+    assert result["artifact_gate"]["passed"] is True
+    assert sorted(path.name for path in submission.iterdir()) == ["bbpd_ref.va"]
+    assert (
+        args.output
+        / cell["cell_id"]
+        / ".vabench-visible"
+        / "evas-output"
+        / "invocation.json"
+    ).is_file()
+
+
+def test_mini_swe_time_exceeded_preserves_walltime_reason_with_complete_artifact(
+    tmp_path: Path, r45_release: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    runner = load_run_campaign()
+    cell = campaign_cell("G2", r45_release)
+    args = run_args(tmp_path / "run", r45_release)
+    args.agent_scaffold = "mini-swe"
+    args.mini_swe_sandbox = "none"
+
+    def fake_episode(**kwargs):
+        runtime = kwargs["runtime"]
+        (runtime / "public" / "submission" / "bbpd_ref.va").write_text(
+            "module bbpd_ref; endmodule\n", encoding="utf-8"
+        )
+        gate = runner.submission_artifact_gate(runtime)
+        return {
+            "scaffold": runner.MINI_SWE_SCAFFOLD_ID,
+            "scaffold_version": "2.4.5",
+            "bash_tool_schema_sha256": "bash-schema",
+            "system_prompt_sha256": "system-prompt",
+            "bash_contract_sha256": "bash-contract",
+            "exit_status": "TimeExceeded",
+            "submitted": False,
+            "artifact_complete": True,
+            "artifact_gate": gate,
+            "artifact_sha256": gate["artifact_sha256"],
+            "output_tokens": 17,
+            "events": [],
+            "commands": [],
+            "model_calls": 1,
+            "messages": [{"role": "assistant", "content": "partial answer"}],
+            "agent_elapsed_s": 5400.0,
+            "trajectory_format": "mini-swe-agent-trajectory-v1",
+            "sandbox_backend": "none",
+            "network": False,
+            "evaluator_mounted": False,
+        }
+
+    monkeypatch.setattr(runner, "run_mini_swe_episode", fake_episode)
+    result = runner.run_cell(cell, args, FakeClient({"role": "assistant", "content": ""}))
+
+    assert result["status"] == "submitted"
+    assert result["termination_reason"] == "agent_timeout"
+    assert result["submission_protocol_compliant"] is False
+    assert result["artifact_gate"]["passed"] is True
+
+
+def test_mini_swe_provider_failure_keeps_partial_trajectory(
+    tmp_path: Path, r45_release: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    runner = load_run_campaign()
+    cell = campaign_cell("G2", r45_release)
+    args = run_args(tmp_path / "run", r45_release)
+    args.agent_scaffold = "mini-swe"
+    args.mini_swe_sandbox = "none"
+
+    def failing_episode(**kwargs):
+        trajectory_path = kwargs["trajectory_path"]
+        trajectory_path.parent.mkdir(parents=True, exist_ok=True)
+        trajectory_path.write_text(
+            json.dumps(
+                {
+                    "messages": [
+                        {"role": "user", "content": "task"},
+                        {"role": "assistant", "content": "partial diagnosis"},
+                    ]
+                }
+            ),
+            encoding="utf-8",
+        )
+        raise runner.ProviderContextWindowExceeded("context length exceeded")
+
+    monkeypatch.setattr(runner, "run_mini_swe_episode", failing_episode)
+    result = runner.run_cell(cell, args, FakeClient({"role": "assistant", "content": ""}))
+
+    assert result["status"] == "context_window_exceeded"
+    raw = result["experiment_result"]["model_execution"]["raw_final_output"]
+    assert raw["available"] is True
+    assert raw["message"]["content"] == "partial diagnosis"
 
 
 def test_agentic_resume_finishes_pending_checkpointed_tool_calls(
@@ -870,6 +1129,8 @@ def test_campaign_wrapper_dry_run_exports_agentic_cells(
     assert campaign["cell_count"] == 3
     assert {cell["mode"] for cell in campaign["cells"]} == {"G2"}
     assert {cell["process"] for cell in campaign["cells"]} == {"agentic"}
+    assert campaign["execution_config"]["agent_scaffold"] == "mini-swe"
+    assert campaign["execution_config"]["token_accounting"] == "telemetry_only"
     summary = json.loads((output / "run" / "SUMMARY.json").read_text(encoding="utf-8"))
     assert summary["statuses"] == {"prepared": 3}
 

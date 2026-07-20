@@ -2,13 +2,13 @@
 """Build and run a benchmarkv4 model campaign with direct and agentic modes.
 
 This is the operator-facing entry point for API experiments.  It builds a
-campaign from ``release/benchmarkv4-r45`` and delegates execution to the v4
+campaign from ``release/benchmarkv4-r49`` and delegates execution to the v4
 calibration runner:
 
 * G0/G1 use direct one-shot artifact extraction.
-* G2-G5 use real OpenAI-compatible tool calling over the exported runtime:
-  list/read/write submission files, run the task-local visible EVAS test, then
-  finalize.
+* G2-G5 run in a pinned mini-SWE-agent scaffold with one bash tool. The public
+  workspace exposes task/, submission/, and EVAS diagnostics; evaluator and
+  trusted-replay assets stay outside the model shell.
 
 The result is still an experiment runner, not the final Spectre scorer.
 """
@@ -26,7 +26,7 @@ from typing import Any
 PACKAGE = Path(__file__).resolve().parents[1]
 REPO = PACKAGE.parent
 CALIBRATION = PACKAGE / "operations" / "calibration_pilot"
-DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r45"
+DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r49"
 DEFAULT_AGENT_TIMEOUT_S = 5400
 DEFAULT_SETUP_TIMEOUT_S = 1800
 DEFAULT_REQUEST_TIMEOUT_S = 1800
@@ -139,6 +139,18 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--repetitions", type=int, default=1)
     parser.add_argument("--temperature", type=float, default=0.0)
+    parser.add_argument(
+        "--agent-scaffold",
+        choices=("mini-swe", "native"),
+        default="mini-swe",
+        help="Use pinned mini-SWE-agent for G2-G5; native is a legacy sensitivity path.",
+    )
+    parser.add_argument(
+        "--mini-swe-sandbox",
+        choices=("auto", "sandbox-exec", "none"),
+        default="auto",
+        help="Isolation backend for mini-SWE bash. 'none' is test-only.",
+    )
     parser.add_argument("--agent-timeout-s", type=int, default=DEFAULT_AGENT_TIMEOUT_S)
     parser.add_argument("--setup-timeout-s", type=int, default=DEFAULT_SETUP_TIMEOUT_S)
     parser.add_argument("--request-timeout-s", type=int, default=DEFAULT_REQUEST_TIMEOUT_S)
@@ -169,6 +181,16 @@ def main() -> int:
         args.judge_timeout_s,
     ) <= 0:
         raise SystemExit("all timeout values must be positive")
+    if (
+        args.agent_scaffold == "mini-swe"
+        and args.mini_swe_sandbox == "none"
+        and any(mode in {"G2", "G3", "G4", "G5"} for mode in (args.mode or MODES))
+        and not args.dry_run
+    ):
+        raise SystemExit(
+            "--mini-swe-sandbox none is test-only; use a supported secure sandbox "
+            "for executable G2-G5 campaigns"
+        )
     release = args.release.expanduser().resolve()
     output_root = args.output_root.expanduser().resolve()
     output_root.mkdir(parents=True, exist_ok=True)
@@ -197,6 +219,8 @@ def main() -> int:
         "judge_timeout_s": args.judge_timeout_s,
         "per_turn_max_tokens": args.per_turn_max_tokens,
         "token_accounting": "telemetry_only",
+        "agent_scaffold": args.agent_scaffold,
+        "mini_swe_sandbox": args.mini_swe_sandbox,
         "base_url_sha256": text_sha256(args.base_url.rstrip("/")),
         "temperature": args.temperature,
         "stream": args.stream,
@@ -219,6 +243,10 @@ def main() -> int:
         args.api_key_env,
         "--temperature",
         str(args.temperature),
+        "--agent-scaffold",
+        args.agent_scaffold,
+        "--mini-swe-sandbox",
+        args.mini_swe_sandbox,
         "--agent-timeout-s",
         str(args.agent_timeout_s),
         "--setup-timeout-s",

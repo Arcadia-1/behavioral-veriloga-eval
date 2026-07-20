@@ -1,7 +1,7 @@
 # V4 Calibration Pilot
 
 The default release target is
-`benchmark-vabench-release-v4/release/benchmarkv4-r45`. Tools that support
+`benchmark-vabench-release-v4/release/benchmarkv4-r49`. Tools that support
 historical inspection require the frozen r44 path explicitly; the active
 direct-EVAS runner never falls back to it.
 Use `--sample-families N --seed S` for reproducible random complete-family
@@ -89,6 +89,19 @@ rejected cells start fresh.
 
 ## Dry Run
 
+Install the pinned agent scaffold before executing G2--G5:
+
+```bash
+uv sync --extra agentic --group dev
+```
+
+G2--G5 use `mini-swe-agent==2.4.5` with its `DefaultAgent` controller and one
+`bash` tool. The benchmark runner still owns campaign construction, runtime
+export, credentials, wall-time enforcement, telemetry, trusted replay, and
+final scoring; it does not implement a second model-control loop. Mini-SWE
+step, cost, and consecutive-format-error limits are disabled. Accumulated
+tokens are recorded but never terminate an episode.
+
 Dry-run exports isolated runtime packages without contacting a model:
 
 ```bash
@@ -98,13 +111,22 @@ python3 benchmark-vabench-release-v4/operations/calibration_pilot/run_campaign.p
   --dry-run --limit 18
 ```
 
-Each runtime exposes only `public/task` and `public/submission` to an agentic
-model. Evaluator assets remain outside the model mount. G0/G1 parse exact
-artifact blocks into the submission directory. G2-G5 expose bounded file
-tools, restricted `run_evas`, and `finalize`. `run_evas` accepts no command
-string: DUT/bugfix tasks run the fixed visible deck, while testbench tasks may
-select only the reference or five public mutation fixtures declared by the
-task-local `evas_runtime.json`.
+The mini-SWE shell starts in `public/` and exposes `task/`, `submission/`, and
+`evas-output/`. Form skills and the EVAS guide remain part of the frozen G0--G5
+prompt treatments. The model runs `vabench feedback capabilities`,
+`vabench feedback run [case]`, and `vabench-submit` through bash. Evaluator,
+gold, and trusted-replay assets remain outside the model-visible sandbox. A
+production G2--G5 run requires a supported OS sandbox; `none` is allowed only
+for unit tests and dry runs. Before public EVAS or trusted replay starts, the
+runner also rejects submission symlinks and candidate source includes that can
+escape the declared artifact set.
+
+G0/G1 parse exact artifact blocks into the submission directory. In the
+mini-SWE path, `vabench feedback run [case]` delegates to the same restricted
+`run_evas` implementation used by the legacy native sensitivity path. It
+accepts no model-provided command string: DUT/bugfix tasks run the fixed visible
+deck, while testbench tasks may select only the reference or five public
+mutation fixtures declared by task-local `evas_runtime.json`.
 
 Direct responses must use the exact artifact envelope contract. The live runner
 rejects filename-only markers, input-artifact markers, Markdown fences,
