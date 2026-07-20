@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "001-bang-bang-phase-detector",
+  "checker_task_id": "v4_001_bang_bang_phase_detector",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "a2b821b96bbd47e209f6a4ca3f15eb71c26ae0ddd85ad6ca3070a028ac1326b3",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "70cdb5bc5dc69f81c7f4fa97ea60341e1a70163a6282d871122fa354cc729e28",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "001",
+  "family_spec_sha256": "13229e77d6dc98c42efa103a9fe57f38d8cd4c3ff130114783667c0a36585a19",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a60ab6cfae9bf330a021c9fefeae4f1d0d3b550b6ffa5ffa347da25c82e4e007",
+  "public_contract": "tasks/501-bang-bang-phase-detector-testbench/public_contract.json",
+  "public_contract_sha256": "4dde104e012a887c4db8b31838c2cd2853497c7f37adffc9f320e5e874513290",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/501-bang-bang-phase-detector-testbench",
+  "task_id": "v4-501"
+}

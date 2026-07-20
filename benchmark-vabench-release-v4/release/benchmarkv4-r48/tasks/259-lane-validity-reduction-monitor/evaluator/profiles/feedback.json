@@ -1,0 +1,25 @@
+{
+  "corners": [],
+  "deck_overrides": {},
+  "deterministic_seed": 0,
+  "generated_from": {
+    "script": "render_v4_harness.py",
+    "version": "v4-harness-renderer-v1"
+  },
+  "harness_spec_sha256": "17f9500609ec788f7ebdce2579fc2d875531051df28e5f9c284ea9e1726c696d",
+  "parameters": {},
+  "profile_name": "feedback",
+  "property_ids": [
+    "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE",
+    "P_COUNT_HOW_MANY_OF_X0_X1",
+    "P_BUILD_A_VOLTAGE_DOMAIN_ANALOG_MIXED",
+    "P_VTH_0_45_V_LOGIC_THRESHOLD",
+    "P_VHI_0_9_V_HIGH_LEVEL",
+    "P_SPAN_MIN_0_62_V_SPAN"
+  ],
+  "public_visible": true,
+  "schema_version": "v4-harness-profile-v1",
+  "simulatorOptions": {
+    "evas_profile": "balanced"
+  }
+}

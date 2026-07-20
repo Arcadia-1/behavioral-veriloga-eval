@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "364-iq-upconversion-mixer-chain",
+  "checker_task_id": "v4_364_iq_upconversion_mixer_chain",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "7ce3385fd205f9b14b2e08023bf0f5ee884c4b126eae5898866caf04636f426c",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "847d578e7628c48ae77c9851689d08a265231e03e143928fd23eabf4682d1e21",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "364",
+  "family_spec_sha256": "d551441562506417127fc437556f348c6d60a70db3e9ac456ccdc7c8b6b4757c",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "fa8e39d7b4178be2363a53b3b02cfc7a44981a03cda0e6302d3eee7444ae3562",
+  "public_contract": "tasks/864-iq-upconversion-mixer-chain-testbench/public_contract.json",
+  "public_contract_sha256": "e80866a7f7b9fd2ec0fc60481c5c2c7b17ce50a967a3f7bac208a1a7354184e4",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/864-iq-upconversion-mixer-chain-testbench",
+  "task_id": "v4-864"
+}

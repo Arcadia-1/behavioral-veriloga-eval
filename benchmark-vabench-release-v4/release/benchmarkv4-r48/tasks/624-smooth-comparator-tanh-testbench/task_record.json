@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "124-smooth-comparator-tanh",
+  "checker_task_id": "v4_124_smooth_comparator_tanh",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "44f986044d203d3b912e1cf93aa1dff3eb1e9fa22ededd42c0d6998d70e52945",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "90b058b185c18514da1015e21cd8ef379ec0a8fd52a7cc0792213362eae23a51",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "124",
+  "family_spec_sha256": "b585b0e56e896ae761c013c365b94a5c1665582d730aeef42cfb97ba0e7a9ed8",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7b388cd8335c27ee5c5c191e32e74011c89a80724b4d06cd0c6adb4f2ed97b3c",
+  "public_contract": "tasks/624-smooth-comparator-tanh-testbench/public_contract.json",
+  "public_contract_sha256": "32923046ba9f864e5b5eea43616e1dccd8ccf1901bd9c1cbe2dd264157993bcb",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/624-smooth-comparator-tanh-testbench",
+  "task_id": "v4-624"
+}

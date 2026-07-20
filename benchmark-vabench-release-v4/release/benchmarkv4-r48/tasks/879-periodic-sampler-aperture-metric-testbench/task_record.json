@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "379-periodic-sampler-aperture-metric",
+  "checker_task_id": "v4_379_periodic_sampler_aperture_metric",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "4a93d035f4525226b815c9859a01caaedb7b6e4fbbef9a6d1625c176984af6c8",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "a2e77f47926ee1f30e49d3807d7eb65c98bddb9a3eab77d37ccf495b17ad56fa",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "379",
+  "family_spec_sha256": "0825ff8a997b659120122472e67c77f70df8418e3053bab9e13d5efad8e4665a",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ec5357f61f4b7e9f5d75f2da1d7398727da80cb92f9b833381b8debda579824f",
+  "public_contract": "tasks/879-periodic-sampler-aperture-metric-testbench/public_contract.json",
+  "public_contract_sha256": "a37ddc71d5750a3bdaf670657382ef8110c7873e131dbe20e6553879fec44fe1",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/879-periodic-sampler-aperture-metric-testbench",
+  "task_id": "v4-879"
+}

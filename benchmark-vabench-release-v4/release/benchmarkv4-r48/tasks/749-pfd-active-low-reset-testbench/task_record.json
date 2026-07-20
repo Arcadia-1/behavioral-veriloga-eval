@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "249-pfd-active-low-reset",
+  "checker_task_id": "v4_249_pfd_active_low_reset",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "c8a514c51db0b725aa1683005753d5a70f9ff9175e644e80d84f1cda4061f5ae",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "00856022a6361c608a4ccd2f49c6b674640c35bcb1ef005fcf0757acc184c49d",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "249",
+  "family_spec_sha256": "1129f0892cbdf88b24b306744e3acf71918b65eb613ada62c3e0d41baa185af7",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1fdc919de46f8279de2fc3e786eced19f3875b86f0a1d9f94522ac84a0e44390",
+  "public_contract": "tasks/749-pfd-active-low-reset-testbench/public_contract.json",
+  "public_contract_sha256": "d815fb2e6148498d6ba8895968710bdd91473c2f2a3dddf25f3247847ec9d948",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/749-pfd-active-low-reset-testbench",
+  "task_id": "v4-749"
+}

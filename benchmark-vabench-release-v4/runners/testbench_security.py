@@ -146,6 +146,13 @@ def _entry_modules(contract: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return result
 
 
+def _public_parameter_names(contract: dict[str, Any], module_name: str) -> set[str]:
+    module = _entry_modules(contract).get(module_name)
+    if module is None:
+        return set()
+    return {str(item["name"]) for item in module.get("parameters") or [] if item.get("name")}
+
+
 def _declared_bindings(contract: dict[str, Any]) -> list[dict[str, Any]]:
     legacy = list((contract.get("supplied_inputs") or {}).get("dut_instances") or [])
     if legacy:
@@ -302,7 +309,26 @@ def validate_testbench(
     expected_bindings = [_binding_signature(item) for item in _declared_bindings(contract)]
     entry_modules = {name.lower() for name in _entry_modules(contract)}
     actual_bindings = [item for item in instances if item[1] in entry_modules]
-    if Counter(actual_bindings) != Counter(expected_bindings):
+    expected_base = Counter(item[:3] for item in expected_bindings)
+    actual_base = Counter(item[:3] for item in actual_bindings)
+    parameters_valid = True
+    if expected_base == actual_base:
+        expected_parameters = {item[:3]: item[3] for item in expected_bindings}
+        for name, module_name, nodes, parameters in actual_bindings:
+            parameter_names = [parameter_name for parameter_name, _value in parameters]
+            if len(parameter_names) != len(set(parameter_names)):
+                parameters_valid = False
+                break
+            required = dict(expected_parameters[(name, module_name, nodes)])
+            actual = dict(parameters)
+            if any(actual.get(key) != value for key, value in required.items()):
+                parameters_valid = False
+                break
+            public_names = _public_parameter_names(contract, module_name)
+            if set(actual) - set(required) - public_names:
+                parameters_valid = False
+                break
+    if expected_base != actual_base or not parameters_valid:
         findings.append(SecurityFinding("declared_dut_binding", "DUT instance name, module, or ordered terminals differ"))
 
     if not tran_lines:

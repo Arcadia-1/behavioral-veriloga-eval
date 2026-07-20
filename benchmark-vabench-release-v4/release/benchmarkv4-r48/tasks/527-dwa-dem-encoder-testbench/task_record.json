@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "027-dwa-dem-encoder",
+  "checker_task_id": "v4_027_dwa_dem_encoder",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "5a4d2696e44d15eed19a9119f5abe187b36dec18da0a5c2e3a4352ee67551e14",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "5e757e5e8bc9733ef2401726149f158b7c5648e531e9e205e6d20b8afba5af36",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "027",
+  "family_spec_sha256": "0deb18b2ae541cb3267fef8a9510bbcf73456a5287796acca034eddad3e54d7d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "673d5957c1ee7eb64b765ed6c813f170174acce970770004ee9afa89312790e3",
+  "public_contract": "tasks/527-dwa-dem-encoder-testbench/public_contract.json",
+  "public_contract_sha256": "ca3629e098853a125ed92a71aa0926da85c9983312e1c4c1f21d1d7bc27f25e9",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/527-dwa-dem-encoder-testbench",
+  "task_id": "v4-527"
+}

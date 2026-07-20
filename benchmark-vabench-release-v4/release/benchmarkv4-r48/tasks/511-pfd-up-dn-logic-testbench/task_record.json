@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "011-pfd-up-dn-logic",
+  "checker_task_id": "v4_011_pfd_up_dn_logic",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "0e0518bd66e20ec060571ca0a0ae2fcfaac5d657b8ba1f5f5f51418722c51703",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "d846034c3d4264ca9e1c5ddd7432ca5bbb5da2915d3dd831ad3b8400fa39b8d4",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "011",
+  "family_spec_sha256": "e8f6e89675c1ee3b70fafbac899267440606007c4b1a88a55305894ebcdb65ff",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "bf8f829a2e621501a33f48ed2ae48ffa7f367a484aa354fb8e35c203ca1b1e2a",
+  "public_contract": "tasks/511-pfd-up-dn-logic-testbench/public_contract.json",
+  "public_contract_sha256": "e718c0bf115739c3b934672dee66239336c9fb6da471c51d0677e5147645a4a6",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/511-pfd-up-dn-logic-testbench",
+  "task_id": "v4-511"
+}

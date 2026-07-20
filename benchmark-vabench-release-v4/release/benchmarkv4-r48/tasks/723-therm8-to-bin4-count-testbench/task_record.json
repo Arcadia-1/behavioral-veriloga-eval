@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "223-therm8-to-bin4-count",
+  "checker_task_id": "v4_223_therm8_to_bin4_count",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "be403ad04bbcf1861342e0b90ca4d414f597b4203de30954fc3418cabe23e9ce",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "038b111b778aa9ad39f68d6e73818e374ac0640ca09c5ae9cb20eb7210fd3589",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "223",
+  "family_spec_sha256": "492ad18136b552d6f700fccae07ea0d6d97a3a7bdc20fc6e4e17ed98f61a10ff",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "67afd97dcc5f9462a9ec0d35b0a9bd08eacb3d0fa02a192cf5c7fb9dfa5c52b8",
+  "public_contract": "tasks/723-therm8-to-bin4-count-testbench/public_contract.json",
+  "public_contract_sha256": "2e829c3301ac44bd7f09b2bb545689ad0be5e923fa3ca261298b2dec3236be55",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/723-therm8-to-bin4-count-testbench",
+  "task_id": "v4-723"
+}

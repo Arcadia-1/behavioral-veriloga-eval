@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "329-ctle-adaptation-loop",
+  "checker_task_id": "v4_329_ctle_adaptation_loop",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "a47c6f52c0504bfc678f480d7cf993d9e6e190d9d298d4e40bc3de42d2958441",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "4caa27f715d02868392af7bcbf6054fd55b9371158468ef9330d737f5930f993",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "329",
+  "family_spec_sha256": "dba1323267d6a4300c62cbdd99da6569100aecd8270111de945154dcc443d616",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "235b7fe4ef877b1660eb47ce8a87b875f2ec5d15d9397828f8488c2401a7c1a2",
+  "public_contract": "tasks/829-ctle-adaptation-loop-testbench/public_contract.json",
+  "public_contract_sha256": "3c22ee3e939de6007895680e5a6fa72c6b9a24554d4fd0d2e2555a65881896cf",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/829-ctle-adaptation-loop-testbench",
+  "task_id": "v4-829"
+}

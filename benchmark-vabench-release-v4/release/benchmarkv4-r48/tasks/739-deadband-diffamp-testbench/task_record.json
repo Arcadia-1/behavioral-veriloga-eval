@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "239-deadband-diffamp",
+  "checker_task_id": "v4_239_deadband_diffamp",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "410174cf85edfdc8d7fe83d427fa8db31689b16480202a2a725d5289b6e60581",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "ab24b48a7f1a66ad476e2649735586bc540c5548db608b37ecadaaf5214cfb44",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "239",
+  "family_spec_sha256": "c5f6f01b1af7c36ad41346f07eb246d5a3884f08550b1c2df7558dcfcad59df5",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8c6d8c95a16e24538a324c19f1ec0fe85e5974adeae40d590d4c4ecf6c9f4a7b",
+  "public_contract": "tasks/739-deadband-diffamp-testbench/public_contract.json",
+  "public_contract_sha256": "979438b8130859dda1b1c3dbfe1db9ca52ffd9686f39ccd6c9d5c1204fccad63",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/739-deadband-diffamp-testbench",
+  "task_id": "v4-739"
+}

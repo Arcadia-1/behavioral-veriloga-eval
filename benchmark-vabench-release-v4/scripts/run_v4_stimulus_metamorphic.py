@@ -76,7 +76,7 @@ _SCALE = {
 
 
 def compact_evidence_identity(release_revision: str) -> tuple[str, str]:
-    if release_revision not in {"r44", "r45", "r47"}:
+    if release_revision not in {"r44", "r45", "r47", "r48"}:
         raise ValueError(f"unsupported release revision: {release_revision}")
     release_label = (
         "release/benchmarkv4"
@@ -106,7 +106,7 @@ def release_provenance(release: Path, release_revision: str) -> dict[str, str]:
     )
     if re.fullmatch(r"[0-9a-f]{64}", source_registry_sha) is None:
         raise SystemExit("release manifest lacks a valid source denominator binding")
-    if release_revision == "r47":
+    if int(release_revision.removeprefix("r")) >= 47:
         current_source_sha = score_denominator_registry_sha256(SOURCE_ROOT)
         if source_registry_sha != current_source_sha:
             raise SystemExit("release manifest is not bound to the current source denominator")
@@ -419,7 +419,7 @@ def main() -> int:
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument(
         "--release-revision",
-        choices=("r44", "r45", "r47"),
+        choices=("r44", "r45", "r47", "r48"),
         default=DEFAULT_RELEASE_REVISION,
         help="release identity written into evidence (default: r45)",
     )

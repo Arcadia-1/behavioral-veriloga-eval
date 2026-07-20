@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "092-fixed-gain-amplifier",
+  "checker_task_id": "v4_092_fixed_gain_amplifier",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "8b9b58e60e14860ff2565c384d273356351d6cc27dabc17e6af3c52e5639a995",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "84dc1e9882cb62143ed402372d8eee9f6c25dc95995f83c8d5f0870d2a16d25e",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "092",
+  "family_spec_sha256": "bf6a5060f836788bb12cf54a0e13f97baf44133f520195dfd3e854977403bd24",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2ed392d82cc40c714c21a13de177af84cdadf3d54a385b3bea4b84ffc59a48f5",
+  "public_contract": "tasks/592-fixed-gain-amplifier-testbench/public_contract.json",
+  "public_contract_sha256": "5ea713be0302a65576d996b0c5c367bfefd940849099fae1bad71925d11c11a1",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/592-fixed-gain-amplifier-testbench",
+  "task_id": "v4-592"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "137-variable-gain-differential-amplifier",
+  "checker_task_id": "v4_137_variable_gain_differential_amplifier",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "2dad0436028216f3b02ee84ff68648156e8ef8e6a93f1488822a5e5c2e793f25",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "bab3874f0a696ad231118999af4bbf45e517d44b5a6cd304c0f532d86df9093e",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "137",
+  "family_spec_sha256": "99e22b16ceea6fd6db2d03748f4cd91375a301b81ffe9913b5a274e6b3f153aa",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7933cc4c80b27781ec6daebd7446b4cd9f2ce6d77089cf65e341af341c3ea04b",
+  "public_contract": "tasks/637-variable-gain-differential-amplifier-testbench/public_contract.json",
+  "public_contract_sha256": "2f26a5426db75599274ca5d3826c94a6d458507ea628ef37e20473336bf9a55b",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/637-variable-gain-differential-amplifier-testbench",
+  "task_id": "v4-637"
+}

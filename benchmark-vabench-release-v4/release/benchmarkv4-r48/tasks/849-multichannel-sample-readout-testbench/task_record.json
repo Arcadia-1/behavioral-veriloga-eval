@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "349-multichannel-sample-readout",
+  "checker_task_id": "v4_349_multichannel_sample_readout",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "0d4c06a7bf02dda289def575164312be006caefff85009b25c66bee4dfdd063a",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "a6ca83edf16247d0c5c812826888b2f334b7d95cb1f594c36d8fe9a551b12568",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "349",
+  "family_spec_sha256": "6953452553b858267d8c95197d7d18a614698ea4d2ff55b207cf980a38b72132",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e359397a91c7ab30a8c590d0290be4b71f34d0febf80c0fc271d75677d801f5d",
+  "public_contract": "tasks/849-multichannel-sample-readout-testbench/public_contract.json",
+  "public_contract_sha256": "2faf99706512f0d6132b5fd9b2d092efe3d4c2b375e231e2129b122d7b275fd6",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/849-multichannel-sample-readout-testbench",
+  "task_id": "v4-849"
+}

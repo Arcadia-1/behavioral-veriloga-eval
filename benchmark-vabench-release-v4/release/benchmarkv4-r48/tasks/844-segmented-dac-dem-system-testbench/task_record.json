@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "344-segmented-dac-dem-system",
+  "checker_task_id": "v4_344_segmented_dac_dem_system",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "1b48fdfc595a92ea3651c39ef0ffd2c6cdfa6b963ea069e0d4b0e4b5025df30f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "dd00b9c5c05c789e9f4bb5303e0a5c98eff34befef19d4b3c2af14894d52f2ed",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "344",
+  "family_spec_sha256": "d3d9a8a6771967e8ec6d4fa7ea04d7a2d66641760ab1372f8b37835dc2195b06",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a8548955d16e2f538f194dea71b79c5aa410a965460b82fe81c8111b73b40660",
+  "public_contract": "tasks/844-segmented-dac-dem-system-testbench/public_contract.json",
+  "public_contract_sha256": "08d839f771ba49167d247322a7d0478cdb5576b937993bff2ad1e3550e7b02e5",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/844-segmented-dac-dem-system-testbench",
+  "task_id": "v4-844"
+}

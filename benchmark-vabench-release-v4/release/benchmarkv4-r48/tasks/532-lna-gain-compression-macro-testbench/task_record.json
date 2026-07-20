@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "032-lna-gain-compression-macro",
+  "checker_task_id": "v4_032_lna_gain_compression_macro",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "e66e1412ee55be15c50d32449814ca65c25ecd24da23faccccfb0877f33d7ef2",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "e96aa33318c69ac3e93cb6d0f6bc7bf56862d46c682d39384a4ee8accc849d1c",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "032",
+  "family_spec_sha256": "32bcce191186b6cee39ae08d20c751915ff3917d6a3b30719b8a60b996601b5c",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "01b606d71f7ba0906f84d8dedab702bfd6772b76cf3a14f45af457f9f64d4d89",
+  "public_contract": "tasks/532-lna-gain-compression-macro-testbench/public_contract.json",
+  "public_contract_sha256": "3c69a034d18ea9b7836c9156c1b73005a931f8f616472c5070179ebace01ad50",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/532-lna-gain-compression-macro-testbench",
+  "task_id": "v4-532"
+}

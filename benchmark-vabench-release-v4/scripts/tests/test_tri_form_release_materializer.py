@@ -73,6 +73,12 @@ def test_runtime_schema_compatibility_preserves_frozen_r45_and_requires_r47_v2()
     assert allowed_runtime_schemas("r47", "testbench") == {
         "r47-direct-evas-testbench-suite-v2",
     }
+    assert allowed_runtime_schemas("r48", "dut") == {
+        "r48-direct-evas-runtime-v2",
+    }
+    assert allowed_runtime_schemas("r48", "testbench") == {
+        "r48-direct-evas-testbench-suite-v2",
+    }
 
 
 def sample_spec() -> dict:
@@ -919,9 +925,11 @@ def test_r47_evidence_rejects_relabelled_payload_without_source_binding(tmp_path
     assert "r47 profile evidence source registry binding mismatch" in problems
 
 
-def test_materializer_has_distinct_r47_default_output() -> None:
+def test_materializer_has_distinct_revision_default_outputs() -> None:
     assert DEFAULT_OUTPUTS["r47"].name == "benchmarkv4-r47"
     assert DEFAULT_OUTPUTS["r47"] != DEFAULT_OUTPUTS["r45"]
+    assert DEFAULT_OUTPUTS["r48"].name == "benchmarkv4-r48"
+    assert DEFAULT_OUTPUTS["r48"] != DEFAULT_OUTPUTS["r47"]
 
 
 def test_prompt_component_path_supports_immutable_r44_feedback_assets(tmp_path: Path) -> None:

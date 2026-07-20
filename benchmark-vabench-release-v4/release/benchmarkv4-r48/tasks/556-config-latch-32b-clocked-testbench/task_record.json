@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "056-config-latch-32b-clocked",
+  "checker_task_id": "v4_056_config_latch_32b_clocked",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "a31f454a7ed668e19f19fc385dd600d545d3094edb31567641af548f04389e0f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "039d0014db1a099fd96475f1d6917c84bf3d71e3d7a9c35f7e90c00b05151c87",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "056",
+  "family_spec_sha256": "465ed8723cde1935125b42094a0bdf02c7ad2373b9e6e6df2ee833ec2e5dbcf0",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ae49726012a685beb85b51584c2412a1b50e629592c78c4db9c6b832c85b6869",
+  "public_contract": "tasks/556-config-latch-32b-clocked-testbench/public_contract.json",
+  "public_contract_sha256": "159e3aa1ca79b43d5d7bf610f84f2aeaa71583b1a4f0795eac5aa8edc60abd3b",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/556-config-latch-32b-clocked-testbench",
+  "task_id": "v4-556"
+}

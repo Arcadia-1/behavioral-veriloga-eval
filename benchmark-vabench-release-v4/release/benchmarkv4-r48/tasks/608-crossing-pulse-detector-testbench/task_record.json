@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "108-crossing-pulse-detector",
+  "checker_task_id": "v4_108_crossing_pulse_detector",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "2273100db554485f8a9dd2230c0e225cbc0b1467908b0abe06d53705bb33d6dd",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "d5b810e4215f88dcbde19f4c6c6aa35e5a9759ba508a7af2233b635c3e623627",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "108",
+  "family_spec_sha256": "1ce5ad15308a750941790f01950acc2a04ab9337b71a3c36d0afda006fa744de",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b66b5720d23da01159be02832e71d0cc5a81b1e15bb2e5da4c45fef88e356f18",
+  "public_contract": "tasks/608-crossing-pulse-detector-testbench/public_contract.json",
+  "public_contract_sha256": "37153bbb18cc3bf9fee41915dfa1f8c841f48a14a535b8cd28e7174d6bb8af2c",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/608-crossing-pulse-detector-testbench",
+  "task_id": "v4-608"
+}

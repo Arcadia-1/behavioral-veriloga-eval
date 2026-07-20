@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "276-bounded-tail-dither-shaper",
+  "checker_task_id": "v4_276_bounded_tail_dither_shaper",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "db60134aab36fb2c2e8ea06afd5539e983c920a435b54b0176b1e1b44513a596",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "c56abc88a1e3c6ff9963306856c1629eaba779608592a9c18d7eb2285a11f9dd",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "276",
+  "family_spec_sha256": "447d8b290b4399b108f347213da88745e9a37ddafa2a81a9769f34f0145701dd",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d751b3b90b38f0a109b8b29b77d154aab28f55f7bb6d59d09d0c24f8388fc088",
+  "public_contract": "tasks/776-bounded-tail-dither-shaper-testbench/public_contract.json",
+  "public_contract_sha256": "cd538548b5648ecbb7716bc076e6796981f4f0a4a1d378e81f0b73aa0b8d7a77",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/776-bounded-tail-dither-shaper-testbench",
+  "task_id": "v4-776"
+}

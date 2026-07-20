@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "source_single_shot.va"
+  ],
+  "canonical_dut_source_slug": "105-single-shot-pulse",
+  "checker_task_id": "v4_105_single_shot_pulse",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "c1d6f530716891e6a47c98632fd89b3421cadf0dc1497b8367257f85a573542d",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "76f62fd79e926368f8e84eb50bd927d656d4953c2abcf839fc3787c55ad77592",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "36f5224436965f0042c3fc5ae20bef1b5e2d89f1023904f1c90333c45d66f262",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "105",
+  "family_spec_sha256": "c0e105c64eeababe7a964807753465f3fa9fb9154360b5ab5a63dad02ab18c25",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a2001726aef80ac37aa064fd6d9bba14a1fcba6b1af72c47053b2823f8a83f8b",
+  "public_contract": "tasks/1105-single-shot-pulse-bugfix/public_contract.json",
+  "public_contract_sha256": "a151a6a9cfd0f9f096a463d82cbbbecb99e2604bda5336a4f65598fcbc8b1ced",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1105-single-shot-pulse-bugfix",
+  "task_id": "v4-1105"
+}

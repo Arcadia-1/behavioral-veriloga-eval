@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "353-ffe-transmitter-3tap",
+  "checker_task_id": "v4_353_ffe_transmitter_3tap",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "0326dc41b4f04e553b6bc50f6c827c3687ad4ca9a499586bf907cd8a00d95f8d",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "7a3d88d7d256468c86653a55805657f7e0d5e805244788cb7606b790a10de720",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "353",
+  "family_spec_sha256": "48070b562efbe38ed280971493ce0b86418d0f9ef0fe0eaabaac5bd55acb7e91",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "15f2ff28dc82c066965190eb6180720de2774528a22b44ba5b3f7be24c5a5def",
+  "public_contract": "tasks/853-ffe-transmitter-3tap-testbench/public_contract.json",
+  "public_contract_sha256": "7f8bc8da597a8e6910ae987814f8515bc5618953c02c2c2d514963f19467cca8",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/853-ffe-transmitter-3tap-testbench",
+  "task_id": "v4-853"
+}
