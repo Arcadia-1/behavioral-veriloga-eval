@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "220-pfd-up-down-state",
+  "checker_task_id": "v4_220_pfd_up_down_state",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "61b0424108d60ecd2cd1e980cca09e747842b612c8182dac7888ceba2284c1d6",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "fcff901c9026fc925488326a443b705fa9de2eeda326763580001f1fc23fd57c",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "220",
+  "family_spec_sha256": "d5c3ac084084fd103499d96ccc90d759ca3abc4af842745fb6e0de45f4472499",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "25162a4b8b79ed117787b5e5152fa5f618800626fe43c98881fe7ede676274bd",
+  "public_contract": "tasks/720-pfd-up-down-state-testbench/public_contract.json",
+  "public_contract_sha256": "74bd18d3070efeb77466b9cf9907dbafb79c5d12a8d9d6cf98801765af04004c",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/720-pfd-up-down-state-testbench",
+  "task_id": "v4-720"
+}

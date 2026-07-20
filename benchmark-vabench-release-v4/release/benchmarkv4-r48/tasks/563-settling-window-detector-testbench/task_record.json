@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "063-settling-window-detector",
+  "checker_task_id": "v4_063_settling_window_detector",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "44ce3a78d87ba2dab49e860e013b7900363cbb8713f415801239c8c5fc0f5f7c",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "3f2689d52e8c6557e5c5b9ce52082b197b49dd0bf448cd73621338901c9169cc",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "063",
+  "family_spec_sha256": "53f746f228722228727bd0f717df19e2c3d00e4bb08e9a1871b4fb69a14c7be8",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5b045efac608a4461588306dedf17c3d70055c8cd51aa1fec496c51b02214425",
+  "public_contract": "tasks/563-settling-window-detector-testbench/public_contract.json",
+  "public_contract_sha256": "802b242ffac59eb9466f532c8c34ebc2b4d14a8402c61a1305f5421564900da7",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/563-settling-window-detector-testbench",
+  "task_id": "v4-563"
+}

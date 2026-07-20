@@ -1,0 +1,52 @@
+{
+  "active_mutations_per_family": 5,
+  "certification_evaluator": "rust_evas2",
+  "certification_reuse": {
+    "evaluators": [
+      "rust_evas2"
+    ],
+    "policy": "source_transitive_input_hash_bound",
+    "simulation_rerun_required_for_materialization": false,
+    "source_dut_gold_certification_count": 400,
+    "source_dut_gold_certification_total": 400,
+    "source_negative_certification_count": 2000,
+    "source_negative_certification_total": 2000,
+    "stale_certification_family_ids": [],
+    "stale_gold_family_ids": [],
+    "stale_negative_case_ids": []
+  },
+  "family_count": 400,
+  "materialized_artifact_sha256": {
+    "TASK_INDEX.json": "88c143f2c01fa7fa5ec9532e605bb60840ebb3de6031422d327541df9a4ef4d1",
+    "prompt_modes/manifest.json": "c3433fa27671539c2c0a4c9a5e7fb41a7fdf7a2cb27b08f8ff4865d3cd2f7da3",
+    "prompt_modes/modes.json": "c29b0c4f957a430b4a767510089e19649d313c8af3dee3164b42570c9d7483af"
+  },
+  "package_layout": {
+    "task_contract": "tasks/<task>/public_contract.json",
+    "task_evaluator_assets": "tasks/<task>/evaluator",
+    "task_form": "tasks/<task>/task_record.json:form",
+    "task_public_inputs": "tasks/<task>/public"
+  },
+  "prompt_record_count": 7200,
+  "public_surface": {
+    "prompt_modes": "prompt_modes",
+    "task_index": "TASK_INDEX.json",
+    "tasks": "tasks"
+  },
+  "release_revision": "r48",
+  "release_status": "r48_materialized_rust_evas2_audit_pending",
+  "release_surface": "benchmarkv4_package",
+  "schema_version": "r48-benchmarkv4-release-manifest-v1",
+  "simulation_rerun_count_for_materialization": 0,
+  "simulation_rerun_required_for_materialization": false,
+  "source_active_mutation_count": 2000,
+  "source_release_label": "dut-base-v3-exact-five-hash-bound-v2",
+  "source_score_denominator_registry_sha256": "f291a049fb76e0cc0a1ae38f31a96783ab4d992ba6017ecf1a9e69eb30014198",
+  "task_count": 1200,
+  "task_counts": {
+    "bugfix": 400,
+    "dut": 400,
+    "testbench": 400
+  },
+  "tasks_index": "TASK_INDEX.json"
+}

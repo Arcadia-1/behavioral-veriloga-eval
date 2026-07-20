@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "119-sar-cdac-residue",
+  "checker_task_id": "v4_119_sar_cdac_residue",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "fb622ad1ad013179cbbb81c0ba73759d19a1037aff54d502e2cce74dd06d633d",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "08cbaf4a17d025779d2ccea1532539d09f147ef2bd2fd20691b45dd4563604a2",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "119",
+  "family_spec_sha256": "bbe7f990d9a65e136d24c295e26771a36eddd884540de39c3c56de5be8599a09",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1a8dfb237cde3add3305eff89066e56a6238beb78e2fedd4ab5091b52c394a8a",
+  "public_contract": "tasks/619-sar-cdac-residue-testbench/public_contract.json",
+  "public_contract_sha256": "236be3d613412dfc04a4bc344cb4af7d4ed751d14c972a3de489ac60b6548bb3",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/619-sar-cdac-residue-testbench",
+  "task_id": "v4-619"
+}

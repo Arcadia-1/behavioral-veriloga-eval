@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "372-buck-converter-controller-macro",
+  "checker_task_id": "v4_372_buck_converter_controller_macro",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "1db2d7b4a6ffe5948b8464696f9df0f633ed941bf1390d8cfec13e386d9df08e",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "70f647ed55ad735711d6c41ef2522f964a28e72692ef8f16fac55bbedcc29690",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "372",
+  "family_spec_sha256": "a1f12e8c81d89222f8d25131fc6cb64dd7c960e44655dc3ce5325341da9006c4",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d3b3da0eeb260da55ba1d502c9637b2ae6901de26cc83cbb8ebc9a15e8919690",
+  "public_contract": "tasks/872-buck-converter-controller-macro-testbench/public_contract.json",
+  "public_contract_sha256": "3fc969a960b1d701724cf3892a758f4ea487447f70512b1ae2af4eefcd587422",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/872-buck-converter-controller-macro-testbench",
+  "task_id": "v4-872"
+}

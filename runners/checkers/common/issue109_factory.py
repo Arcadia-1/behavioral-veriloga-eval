@@ -214,15 +214,26 @@ def check_continuous_factory(rows: list[Row], *, mode: str, task_name: str) -> C
     return True, f"{task_name}: samples={checked} max_error={worst[0]:.5f}"
 
 
-def check_clocked_factory(rows: list[Row], *, mode: str, edge: int, task_name: str) -> CheckResult:
+def check_clocked_factory(
+    rows: list[Row],
+    *,
+    mode: str,
+    edge: int,
+    task_name: str,
+    min_edges: int = 8,
+    asynchronous_reset: bool = False,
+) -> CheckResult:
     missing = _missing_columns(rows, CLOCK_REQUIRED)
     if missing:
         return False, f"{task_name}: {missing}"
     times = _times(rows)
     direction = "rising" if edge > 0 else "falling"
     edges = _threshold_crossings([row["clk"] for row in rows], times, VTH, direction)
-    if len(edges) < 8:
-        return False, f"{task_name}: too_few_clock_edges={len(edges)} direction={direction}"
+    if len(edges) < min_edges:
+        return False, (
+            f"{task_name}: too_few_clock_edges={len(edges)} "
+            f"required={min_edges} direction={direction}"
+        )
     min_period = min((b - a for a, b in zip(edges, edges[1:])), default=1.0e-9)
     delay = min(0.12e-9, 0.12 * min_period)
     core_state = 0.0
@@ -234,6 +245,24 @@ def check_clocked_factory(rows: list[Row], *, mode: str, edge: int, task_name: s
     metric_expected: list[float] = []
     saw_reset = False
     saw_enable_low = False
+    if asynchronous_reset:
+        reset_assertions = _threshold_crossings(
+            [row["rst"] for row in rows], times, VTH, "rising"
+        )
+        for reset_t in reset_assertions:
+            output_t = reset_t + delay
+            if output_t >= times[-1] - 0.05e-9:
+                continue
+            outputs = _values_at(rows, ("out", "flag", "metric"), output_t)
+            if outputs is None:
+                continue
+            worst = _worst_error(
+                outputs,
+                {"out": 0.0, "flag": 0.0, "metric": 0.0},
+                output_t,
+                worst,
+            )
+            saw_reset = True
     for edge_t in edges:
         output_t = edge_t + delay
         if output_t >= times[-1] - 0.05e-9:
@@ -275,8 +304,10 @@ def check_clocked_factory(rows: list[Row], *, mode: str, edge: int, task_name: s
         flag_expected.append(expected["flag"])
         metric_expected.append(expected["metric"])
         checked += 1
-    if checked < 8:
-        return False, f"{task_name}: insufficient_clock_samples={checked}"
+    if checked < min_edges:
+        return False, (
+            f"{task_name}: insufficient_clock_samples={checked} required={min_edges}"
+        )
     if not (saw_reset and saw_enable_low):
         return False, f"{task_name}: missing_reset_or_enable_low_coverage reset={saw_reset} enable_low={saw_enable_low}"
     if max(out_expected) - min(out_expected) < 0.16:

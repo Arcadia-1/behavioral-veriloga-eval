@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "037-precision-rectifier-envelope-detector",
+  "checker_task_id": "v4_037_precision_rectifier_envelope_detector",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "78ab58ad7d6f41e66581449bf2d932c8ed581ded4d6018f68fe50124f1386f70",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "7de1e0c027ed2653f386cfb3defc387732c0eee2023527d3482df97da7371639",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "037",
+  "family_spec_sha256": "85474ce75c3decf9096201486fe0dbcb5b1c5da429071610ab37ba03d535044c",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "139dcac11052d07add9e3239a3c782d6ce8ac0320a4baabe7d49e24c3b88e622",
+  "public_contract": "tasks/537-precision-rectifier-envelope-detector-testbench/public_contract.json",
+  "public_contract_sha256": "b5583f5c5b945bdfb562f809a3105de719ac68afb5a04826cbdbf6b0a578919b",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/537-precision-rectifier-envelope-detector-testbench",
+  "task_id": "v4-537"
+}

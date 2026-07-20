@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "146-flash-thermometer-centered-sum",
+  "checker_task_id": "v4_146_flash_thermometer_centered_sum",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "926dc7629b27c0d4bcde98a7c4d829ada97be80a682f8bd1432db6bafe05e69a",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "aae93c54035e1553d39ea1ec1d6f86731be84e170f28ca63a51b5a7638e9dbe0",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "146",
+  "family_spec_sha256": "760c4352437eab416022b040ff623fcdfdd40a41cf08b90acc88361255389683",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "74be671bb699c02272f4d14fcd9c362d06b8ea0a65e46354cd1f62358dcdc08c",
+  "public_contract": "tasks/646-flash-thermometer-centered-sum-testbench/public_contract.json",
+  "public_contract_sha256": "3520cec59eb18fcba28465e58f53615b9b015cff687363fe3a9bf4a81d00b20b",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/646-flash-thermometer-centered-sum-testbench",
+  "task_id": "v4-646"
+}

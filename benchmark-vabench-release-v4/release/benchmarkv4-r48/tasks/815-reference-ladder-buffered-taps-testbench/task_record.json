@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "315-reference-ladder-buffered-taps",
+  "checker_task_id": "v4_315_reference_ladder_buffered_taps",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "078bb374785c918f671f691889efd4df8f919d7e2ab1ad1401d8526d4e4df2b8",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "33ca717dce405b9d76315598484f8f2f50371310bdb58eae5ad10926a3ca2b4c",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "315",
+  "family_spec_sha256": "d3f729206c0bfa7cf043257225dd0972a2043fd8cf7b9dd1f68aef386b736ac5",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2de00d94e810741fc8314de75ede49526512a47f5aa8117aaff54d4ed6f0b7fd",
+  "public_contract": "tasks/815-reference-ladder-buffered-taps-testbench/public_contract.json",
+  "public_contract_sha256": "563a7559ade6f078bcd7253d457746c21a3448e12455d5a61cbd7518696d57ee",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/815-reference-ladder-buffered-taps-testbench",
+  "task_id": "v4-815"
+}

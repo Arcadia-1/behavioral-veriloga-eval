@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "297-rail-ramp-rate-startup-monitor",
+  "checker_task_id": "v4_297_rail_ramp_rate_startup_monitor",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "a1a8f4ee77a3494044aa67d09d5367ecd6a1fdf60fba61ca4f935c26ad51fbc4",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "f63ca377bc1c939bd6770931fb38b01ee57d5b02270425caaa49c0768f47929f",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "297",
+  "family_spec_sha256": "292130ad04bc4ce59b643070005c279f7435183da759b9fcfd84388ca947bef1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ded04a33028d2dbea087410aa4369f51fc51c568eb77b683b0738ceb61688634",
+  "public_contract": "tasks/797-rail-ramp-rate-startup-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "0e52ce97874072bda41f8af97b952db724fdd2af855223900f49ad5212a55dfd",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/797-rail-ramp-rate-startup-monitor-testbench",
+  "task_id": "v4-797"
+}

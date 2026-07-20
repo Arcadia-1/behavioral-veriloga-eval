@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "304-common-gate-tia-front-end",
+  "checker_task_id": "v4_304_common_gate_tia_front_end",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "eba3638a161f487e8b7af1c6ed844fdcb4c780f8d388d3eb66c2c1a746073a33",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "af530f86c0b1d8e1a14d9c0194cc545cdf971be8ea038e0f8ad467eaba0f56f6",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "304",
+  "family_spec_sha256": "9c147b2a95c6cea4d8172bedce299b8ab64abf828fd2ba75cc53e5bef5918eba",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "cad7f8d1e63e330d5fddd7e6b4ad6cdc7eced5e57efa8ccd29c6404c3a433398",
+  "public_contract": "tasks/804-common-gate-tia-front-end-testbench/public_contract.json",
+  "public_contract_sha256": "00c0e660d388c81ccee97e4ee431bc43ea35e988c0d5a8c79514d05e40b1a848",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/804-common-gate-tia-front-end-testbench",
+  "task_id": "v4-804"
+}

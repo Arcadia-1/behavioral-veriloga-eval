@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "226-level-shifter-offset",
+  "checker_task_id": "v4_226_level_shifter_offset",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "ee899ea73a3f474deea9a3d134e02361e63bf800b58446e2c7344256ce0f22c6",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "4c689a48c805b79c9e84b8fe64f61debb13c2e06eac9153b5cfafd502f66fa45",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "226",
+  "family_spec_sha256": "47624e41abddb35f89a1c1e342272e40aadf385818e915d77bcb82544ccd2348",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "74ac2fea5cb67e6b3071ab4adc1ffdce4b4ca5b8bb1a80cfafdf28a083d9ef31",
+  "public_contract": "tasks/726-level-shifter-offset-testbench/public_contract.json",
+  "public_contract_sha256": "32569555ca21e3ad62ced6045002805864b2a46f9cd6f8f1d782e842be65ea38",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/726-level-shifter-offset-testbench",
+  "task_id": "v4-726"
+}

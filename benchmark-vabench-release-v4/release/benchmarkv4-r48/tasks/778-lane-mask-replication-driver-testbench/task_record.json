@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "278-lane-mask-replication-driver",
+  "checker_task_id": "v4_278_lane_mask_replication_driver",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "686518cac37beea2ca962083334e8a4fe29de7f54412539a7b749c5cbf0d1a93",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "319af9dd52a39dfb4f4186f15b41470985f41ee3d1f863ed0b7f49fb96a054e6",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "278",
+  "family_spec_sha256": "f1559e7e1fe7a4a464e8ef338f865dab270f26f87e4021c04c4a1bf60193de3f",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ae22ae7775efc9f370d563115c020d3f72c2f99f85b82c9f5fe490a6f74cb2df",
+  "public_contract": "tasks/778-lane-mask-replication-driver-testbench/public_contract.json",
+  "public_contract_sha256": "1b4747e79ac114b63e38e21852e36abc58399ef8e85afebde695a7d9cac56f6b",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/778-lane-mask-replication-driver-testbench",
+  "task_id": "v4-778"
+}

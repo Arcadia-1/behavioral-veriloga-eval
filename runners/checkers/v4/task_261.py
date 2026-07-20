@@ -12,7 +12,14 @@ LEGACY_SYMBOL = '352-falling-edge-calibration-sampler'
 
 def check_v4_261_falling_edge_calibration_sampler(rows: list[Row]) -> CheckResult:
     """Check v4_261_falling_edge_calibration_sampler: Falling Edge Calibration Sampler clocked sample_fall behavior."""
-    return check_clocked_factory(rows, mode='sample_fall', edge=-1, task_name=TASK_LABEL)
+    return check_clocked_factory(
+        rows,
+        mode='sample_fall',
+        edge=-1,
+        task_name=TASK_LABEL,
+        min_edges=7,
+        asynchronous_reset=True,
+    )
 
 
 CHECKS = {

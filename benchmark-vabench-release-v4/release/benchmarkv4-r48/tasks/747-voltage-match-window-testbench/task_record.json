@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "247-voltage-match-window",
+  "checker_task_id": "v4_247_voltage_match_window",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "480af8cffb639982cec4d55a3be7b4be9e8ac5abfcdca048e64003726c6e71c0",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "488b3c2d889f39ce8be6082ccfdabaad463409d27a41e0abaaa8797d7e6f1933",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "247",
+  "family_spec_sha256": "1acd01f3bfffab52be6b8225841958f4f813c49cdbd8ee104f436d37dcb28866",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4c7f409fa88bee356d29fa4490691d36cc33642fcfbb26837620a21ef3b9cffe",
+  "public_contract": "tasks/747-voltage-match-window-testbench/public_contract.json",
+  "public_contract_sha256": "ca9ea41ce453534b6318be7cdf7b8932faaa7a691ae2e3cd4d6c8f60c8acaad0",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/747-voltage-match-window-testbench",
+  "task_id": "v4-747"
+}

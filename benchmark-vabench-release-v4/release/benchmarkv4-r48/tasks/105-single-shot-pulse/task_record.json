@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "source_single_shot.va"
+  ],
+  "canonical_dut_source_slug": "105-single-shot-pulse",
+  "checker_task_id": "v4_105_single_shot_pulse",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "c1d6f530716891e6a47c98632fd89b3421cadf0dc1497b8367257f85a573542d",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "76f62fd79e926368f8e84eb50bd927d656d4953c2abcf839fc3787c55ad77592",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "36f5224436965f0042c3fc5ae20bef1b5e2d89f1023904f1c90333c45d66f262",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "105",
+  "family_spec_sha256": "c0e105c64eeababe7a964807753465f3fa9fb9154360b5ab5a63dad02ab18c25",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "37ff78ce8bf5b5f8ca7ab4967b5119d4f7b3df5f8672a9a78e5a1fdef8b1c192",
+  "public_contract": "tasks/105-single-shot-pulse/public_contract.json",
+  "public_contract_sha256": "27f613fc43ba80e79f056a1129645fb3e69284164b39927523784203205dccf8",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/105-single-shot-pulse",
+  "task_id": "v4-105"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "file_metric_writer.va"
+  ],
+  "canonical_dut_source_slug": "074-crossing-metric-writer",
+  "checker_task_id": "v4_074_crossing_metric_writer",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "098e1337406a2d78b877c53ce0579ebb2e15df4d0b19e357a1b1659600e62200",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "d3d37aece39e74542314769b3ec83f9357a5c3ee090ee3c01030a5ecda850579",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "565e99d285234d560f2f7d11ea45f2956953a032dc524a580053aa2ba32a7a1f",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "074",
+  "family_spec_sha256": "639e709a70ef90f6876494c440ad60ba5effbf10f808324193c4e3fc6f1be278",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "25b80ab24e41528c537c07fee0e08145d4e97ea25be6e130783e0262282c82f4",
+  "public_contract": "tasks/074-crossing-metric-writer/public_contract.json",
+  "public_contract_sha256": "c035205b2dd8df60f6a890bc9df8e9cfe0c3eabf53867e9bc1f905081c930ba3",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/074-crossing-metric-writer",
+  "task_id": "v4-074"
+}

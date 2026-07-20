@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "045-threshold-comparator",
+  "checker_task_id": "v4_045_threshold_comparator",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "59bf5a474f3596de95ff7c0865a428518da821ade5e1a6a69e781d205d3823ab",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "074705203f57f5899d0c41256f6db6c7905c89646b82aaecab446ad93fd126c2",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "045",
+  "family_spec_sha256": "7ae5aef2511a37e9cdb8cc5d6be1a50f5bf4a574076e4eb12c42279e4a9ad591",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "64f38e933b569086c21624be132adda73ed91655dc91cc2d4a7ff160fcd7c23d",
+  "public_contract": "tasks/545-threshold-comparator-testbench/public_contract.json",
+  "public_contract_sha256": "81b78f8c32991257e2e4b6309924943d773dd47df952e6390b4ffb50d4932403",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/545-threshold-comparator-testbench",
+  "task_id": "v4-545"
+}

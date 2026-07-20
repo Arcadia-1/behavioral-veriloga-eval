@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "098-reference-step-clock",
+  "checker_task_id": "v4_098_reference_step_clock",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "703f088dd52b7bdb65e90f2ae83088e63911fe5b6f5ca1c20cd92deeb5a24512",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "8c8f1028cc93022ad448f6325d08d7206b31c56fe4a9687fc4e4d1954b4f1b7a",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "098",
+  "family_spec_sha256": "aca76c923fdb167ce229163f6d2c819f9b7d52c87b5ff009f8304bbf21c35aef",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "28d06c334b9fd1d8830a577e30564fb08339aec6f1f258dff37e23add1322f26",
+  "public_contract": "tasks/598-reference-step-clock-testbench/public_contract.json",
+  "public_contract_sha256": "54db522dd29efded9ff9e17a676c0969960f44f309abd4d9386dd31b12640223",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/598-reference-step-clock-testbench",
+  "task_id": "v4-598"
+}

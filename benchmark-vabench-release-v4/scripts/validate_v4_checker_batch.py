@@ -131,6 +131,13 @@ def source_binding(task: Path, mutation_ids: list[str]) -> dict[str, Any]:
         ROOT / "runners" / "checkers" / "v4" / "stimulus_relative.py",
         ROOT / "runners" / "checkers" / "v4" / f"task_{family_id}.py",
     ]
+    checker_files.extend(
+        sorted((ROOT / "runners" / "checkers" / "common").glob("*.py"))
+    )
+    checker_files.extend(
+        sorted((ROOT / "runners" / "checkers" / "v4").glob("family_*.py"))
+    )
+    checker_files = sorted(set(checker_files))
     checker_records = [
         {"path": path.relative_to(ROOT).as_posix(), "sha256": file_sha(path)}
         for path in checker_files

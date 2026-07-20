@@ -1041,6 +1041,78 @@ def test_benchmarkv4_testbench_security_enforces_instance_parameters_and_uniquen
     assert valid.valid, valid.diagnostics
 
 
+def test_benchmarkv4_testbench_security_allows_public_parameter_overrides(
+    tmp_path: Path,
+) -> None:
+    security = load_testbench_security()
+    task = RELEASE / "tasks" / "578-lfsr-prbs-generator-testbench"
+    contract = json.loads((task / "public_contract.json").read_text(encoding="utf-8"))
+    policy = json.loads(
+        (task / "evaluator" / "testbench_security_policy.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    candidate = tmp_path / "testbench.scs"
+    common = [
+        "simulator lang=spectre",
+        'ahdl_include "./dut/prbs7_ref.va"',
+        "tran tran stop=20n",
+        "save clk rst_n en serial_out state_0 state_1 state_2 state_3 state_4 state_5 state_6",
+    ]
+
+    candidate.write_text(
+        "\n".join(
+            common[:2]
+            + [
+                "XDUT (clk rst_n en serial_out state_0 state_1 state_2 state_3 "
+                "state_4 state_5 state_6) prbs7_ref seed=0"
+            ]
+            + common[2:]
+        ),
+        encoding="utf-8",
+    )
+    allowed = security.validate_testbench(candidate, contract, policy)
+    assert allowed.valid, allowed.diagnostics
+
+    candidate.write_text(
+        candidate.read_text(encoding="utf-8").replace("seed=0", "private_seed=0"),
+        encoding="utf-8",
+    )
+    unknown = security.validate_testbench(candidate, contract, policy)
+    assert not unknown.valid
+    assert any("declared_dut_binding" in item for item in unknown.diagnostics)
+
+
+def test_benchmarkv4_testbench_security_accepts_sample_threshold_override(
+    tmp_path: Path,
+) -> None:
+    security = load_testbench_security()
+    task = RELEASE / "tasks" / "604-sample-and-hold-ideal-testbench"
+    contract = json.loads((task / "public_contract.json").read_text(encoding="utf-8"))
+    policy = json.loads(
+        (task / "evaluator" / "testbench_security_policy.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    candidate = tmp_path / "testbench.scs"
+    candidate.write_text(
+        "\n".join(
+            [
+                "simulator lang=spectre",
+                'ahdl_include "./dut/source_sample_hold.va"',
+                "XDUT (vin vout vclk) source_sample_hold vtrans_clk=0.8",
+                "tran tran stop=8n",
+                "save vclk vin vout",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    result = security.validate_testbench(candidate, contract, policy)
+
+    assert result.valid, result.diagnostics
+
+
 def test_testbench_security_allows_declared_read_only_support() -> None:
     security = load_testbench_security()
     contract = {

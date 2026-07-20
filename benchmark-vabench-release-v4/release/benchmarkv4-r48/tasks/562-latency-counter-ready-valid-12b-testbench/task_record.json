@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "062-latency-counter-ready-valid-12b",
+  "checker_task_id": "v4_062_latency_counter_ready_valid_12b",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "f5e3cc8f6fb0093d80bb5aa371773c18c79e44562edb6411a396fcc8a1233383",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "e2d7660e6e1ea0471fa14a6f5cda04e4deca48428e1ca78f6e330db6a09373d3",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "062",
+  "family_spec_sha256": "58cbb197268acec1b599a1c218d7292aee395080c1b2e39b0bddefc4fe569405",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7ab008e7b015df0400d743fdf2ebcc15e34fb14fb304138bd0698555aee28c52",
+  "public_contract": "tasks/562-latency-counter-ready-valid-12b-testbench/public_contract.json",
+  "public_contract_sha256": "d3d2f28dce2aacac235f0a4a927f4d1fc731f0aa84acdcee307c0f2d841c7604",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/562-latency-counter-ready-valid-12b-testbench",
+  "task_id": "v4-562"
+}

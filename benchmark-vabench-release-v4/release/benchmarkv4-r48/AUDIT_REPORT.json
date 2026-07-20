@@ -1,0 +1,46 @@
+{
+  "certification_problems": [],
+  "certification_reuse": {
+    "evaluators": [
+      "rust_evas2"
+    ],
+    "policy": "source_transitive_input_hash_bound",
+    "simulation_rerun_required_for_materialization": false,
+    "source_dut_gold_certification_count": 400,
+    "source_dut_gold_certification_total": 400,
+    "source_negative_certification_count": 2000,
+    "source_negative_certification_total": 2000,
+    "stale_certification_family_ids": [],
+    "stale_gold_family_ids": [],
+    "stale_negative_case_ids": []
+  },
+  "certification_status": "rust_evas2_certified",
+  "family_count": 400,
+  "input_hashes": {
+    "TASK_INDEX.json": "88c143f2c01fa7fa5ec9532e605bb60840ebb3de6031422d327541df9a4ef4d1",
+    "manifest_sha256": "a4e90f3da87de78a7cfa1bf1283492a889920eaa3dd03a1a951560cb9aeb358b",
+    "prompt_modes/manifest.json": "c3433fa27671539c2c0a4c9a5e7fb41a7fdf7a2cb27b08f8ff4865d3cd2f7da3",
+    "prompt_modes/modes.json": "c29b0c4f957a430b4a767510089e19649d313c8af3dee3164b42570c9d7483af",
+    "r48_evidence_sha256": {
+      "evidence/r48/PROFILE_PARITY.json": "5e2a5ebaefbc10ef199b177fb2b1e6fc71e2acd887d95d39acb8e5ff0c034037",
+      "evidence/r48/RUST_EVAS2_CERTIFICATION.json": "0dcf3bcfe27fd01cb710bce178ad7a0ed58eb439ea38485027b1001c5c97edae",
+      "evidence/r48/STIMULUS_METAMORPHIC.json": "268291368fa508e4ce3c08cffe76e890214162c95d0297427665aa830b14f0d6"
+    },
+    "source_score_denominator_registry_sha256": "f291a049fb76e0cc0a1ae38f31a96783ab4d992ba6017ecf1a9e69eb30014198"
+  },
+  "problems": [],
+  "prompt_record_count": 7200,
+  "release_revision": "r48",
+  "schema_version": "v4-benchmarkv4-release-audit-v1",
+  "status": "pass",
+  "task_count": 1200,
+  "task_counts": {
+    "bugfix": 400,
+    "dut": 400,
+    "testbench": 400
+  },
+  "testbench_reference_source_counts": {
+    "independent_reference_tb": 49,
+    "legacy_score_tb_fallback": 351
+  }
+}

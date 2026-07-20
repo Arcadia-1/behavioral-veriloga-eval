@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "331-dfe-error-proxy-loop",
+  "checker_task_id": "v4_331_dfe_error_proxy_loop",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "b1ca3e82ed68582e7f182df8383dfd3f095d4d06709c473959923454ead44a93",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "703e4c67ff5a74c2468c6d5479d1667799aea0d7dfbf4558803bfcf25e0cab67",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "331",
+  "family_spec_sha256": "acff9921226d6d19244892b04af3ad7102071a7deb6ed0b486a340ad2004d7d8",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5584da2f64d1334670a1ad3deeef5257ed2ca8a2d39210ba6429e40a58fec78c",
+  "public_contract": "tasks/831-dfe-error-proxy-loop-testbench/public_contract.json",
+  "public_contract_sha256": "4505160f6c647f738b70ee2a5464b79dcca588435171fe763864760677b1aec8",
+  "release_revision": "r48",
+  "schema_version": "r48-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/831-dfe-error-proxy-loop-testbench",
+  "task_id": "v4-831"
+}
