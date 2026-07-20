@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "095-ldo-load-step-recovery",
+  "checker_task_id": "v4_095_ldo_load_step_recovery",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "95ab4bb44fdff6a1070e52c78eaaff6b6d3d7d8b4ec21c64b0a1219cfb68301a",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "589cddf5e7f322f591e138dced0fd4f604f479bfaf156bf0129c6d253ae18233",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "095",
+  "family_spec_sha256": "7362212daea43e322cc9f9a6eaf4837b3852431ad750a540603a6d5ae32f494d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9b061971677fd7445b8fef1d49a571029597d352c40ec6a43a38a55f5d5dc50f",
+  "public_contract": "tasks/595-ldo-load-step-recovery-testbench/public_contract.json",
+  "public_contract_sha256": "4e7076ad3ebaa92328c437573c48a067339c9499153786663ca29bf61887fc12",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/595-ldo-load-step-recovery-testbench",
+  "task_id": "v4-595"
+}

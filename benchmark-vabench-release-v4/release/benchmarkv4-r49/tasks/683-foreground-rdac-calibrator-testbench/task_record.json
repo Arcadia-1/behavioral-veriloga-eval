@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "183-foreground-rdac-calibrator",
+  "checker_task_id": "v4_183_foreground_rdac_calibrator",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "696cd98e9f611b844f05af7c9f521e176004d142692f3d47c5be5f192795f242",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "5ab71da0de3249b899ca49775eeb811644efa7de49487cc18e7c6559d1e7bb16",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "183",
+  "family_spec_sha256": "ee168792c0a08fb56b729917e7ada5d9d3272c01185f41efc9e2278fdba35082",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e9cea9806e0d7b8dc152aeecff1418ef60562beb9b4f5431b770a05dbdce62a4",
+  "public_contract": "tasks/683-foreground-rdac-calibrator-testbench/public_contract.json",
+  "public_contract_sha256": "4dccf7e08f14ebf0ea366ceba05617eb34e8a059e4c46a2e7687e8fb990705d2",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/683-foreground-rdac-calibrator-testbench",
+  "task_id": "v4-683"
+}

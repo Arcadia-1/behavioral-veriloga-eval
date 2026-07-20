@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_missing_phase_increment/certification.json",
-        "certification_sha256": "ae302416e5cfcae59495f4729496f9261c48e6b2c54ba57d25a41d9bd2d94da7",
+        "certification_sha256": "4fef8a89fc907a2a94b0eadbf6f8aa3e053ac9e21c1172f9a564092252541d38",
         "fault_class": "missing_phase_increment",
-        "mutation_bundle_sha256": "57230945b18be2cbd19dd75cbb17e00599d8cb28d61258ed843851df9dce694c",
+        "mutation_bundle_sha256": "70fca0f80a8e742878c86309ef318158265358eb6ed887396be0d87fba2a432c",
         "mutation_id": "neg_001_missing_phase_increment",
         "source_catalog_certification_path": "negative_variants/neg_001_missing_phase_increment/certification.json",
         "trigger_condition": "the first periodic 1 ns update occurs",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_missing_phase_wrap/certification.json",
-        "certification_sha256": "82992f9d032d513fe6898ddc853520c7aceb3fa59367d601084d66fb5ea1af3c",
+        "certification_sha256": "090b3b46f26b75a7fe7a18236e46e52946f832285f1a8e1c724e9398121f906f",
         "fault_class": "phase_wrap_omission",
-        "mutation_bundle_sha256": "3fbf0dd84e75dcc7880db9867da9ed776e7b78a1d2275003bdfedde24b44e77d",
+        "mutation_bundle_sha256": "92cd62d6092bda3d7210a380a9bac6f074cc0c2030b4e44a54cb2dfc80d060c5",
         "mutation_id": "neg_004_missing_phase_wrap",
         "source_catalog_certification_path": "negative_variants/neg_004_missing_phase_wrap/certification.json",
         "trigger_condition": "the accumulated phase reaches one normalized cycle",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_phase_increment_too_small/certification.json",
-        "certification_sha256": "7ff4ffa201da3d293f65c5ddb791ee4f22a590592aecc27e9517f414cb5a1e43",
+        "certification_sha256": "2cff1de4098aa0b6c7252007c93c673be318bb7d7c0af5af17340aa402808232",
         "fault_class": "phase_increment_gain_error",
-        "mutation_bundle_sha256": "2ec32e7fc7fa3be010efcacc01f1aa5415aec8f89ed471a6e7d687b816f4e11f",
+        "mutation_bundle_sha256": "b494d1691567a648e68fed8047060fa7abf2cae541509f205ffacf6d867a6950",
         "mutation_id": "neg_002_phase_increment_too_small",
         "source_catalog_certification_path": "negative_variants/neg_002_phase_increment_too_small/certification.json",
         "trigger_condition": "a nonzero vctrl is sampled by successive periodic updates",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_control_direction_inverted/certification.json",
-        "certification_sha256": "d6a88f94d7a20ef0f9920234f52f9182b713dab149552e8dc14e6f0a23b9d3f4",
+        "certification_sha256": "cf9ae333ef40cb4ca032491c39609051e55d33d3be7a9535dd11a23999e45887",
         "fault_class": "control_direction_inversion",
-        "mutation_bundle_sha256": "002ade047dba884a59b3dbe2fcf64ed604746370fa1b0be8df791cecab6d3246",
+        "mutation_bundle_sha256": "ea566b870464d08844a5a075d0272ae26a1b0b9a491afc8c56c071f58bbc9ee4",
         "mutation_id": "neg_006_control_direction_inverted",
         "source_catalog_certification_path": "negative_variants/neg_006_control_direction_inverted/certification.json",
         "trigger_condition": "vctrl steps from the low to the high public stimulus region",
@@ -57,9 +57,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_wrap_does_not_toggle_clock/certification.json",
-        "certification_sha256": "965ffe4ec14b677efd6c1e22b8571dc9eec024efaeaf115f168acbbd8e4ce99b",
+        "certification_sha256": "95432136fc96e57dc6898dfbd118fe3dd7b28b3f6688ea7865b4af02e6eae82d",
         "fault_class": "wrap_clock_toggle_omission",
-        "mutation_bundle_sha256": "baa36b5b3de997cd1439f0a96e1fe1c34859f055b18fde08e621731fce4c46f2",
+        "mutation_bundle_sha256": "27d0df2483bc9edc30d0a6660cd90d63f60292f92e3b305dee349f28def4e841",
         "mutation_id": "neg_005_wrap_does_not_toggle_clock",
         "source_catalog_certification_path": "negative_variants/neg_005_wrap_does_not_toggle_clock/certification.json",
         "trigger_condition": "the accumulated phase wraps by one cycle",
@@ -73,8 +73,8 @@
     "hashes": {
       "mutation_catalog_sha256": "b81dda62b828b9ac3ff71eeda6a3d930a99c91b61f576552ef761f257e702cc2",
       "score_deck_sha256": "b9e172133fef75a94d08b56f26fe6768b0c16e27e08e6759b3432741723c5a16",
-      "task_certification_sha256": "50235ecc54d8132ae024cf030a036f1783d8e070242750aa43607cd16903ecf2",
-      "task_record_sha256": "d8ca1f9ca6c1639515775ace2f374682c090af72bf7d824e1a144a468349d5ea"
+      "task_certification_sha256": "8e8eafdbca5693e73fd2b3870fffbd5e23f1a32720ff5a52f3f89dc884c708bb",
+      "task_record_sha256": "634a9b31a2ba69df4004321b83f0dd63228352bbcdf892bc8031db6adb7a8106"
     },
     "release_dir": "019-vco-phase-integrator"
   }

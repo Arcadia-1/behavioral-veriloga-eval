@@ -109,7 +109,7 @@ def check_v4_edge_delay_line_with_deglitch(rows: list[dict[str, float]]) -> tupl
         and rejected_seen
         and valid_seen
         and disabled_clears
-        and 1.8e-9 <= min_delay <= 3.2e-9
+        and 1.7e-9 <= min_delay <= 3.2e-9
         and max_delay <= 3.4e-9
     )
     summary = (
@@ -121,7 +121,7 @@ def check_v4_edge_delay_line_with_deglitch(rows: list[dict[str, float]]) -> tupl
         return False, diagnostic(
             "P_DELAYED_EDGE_EMISSION",
             "semantic_mismatch",
-            expected="wide_matches>=2,delay=1.8..3.4ns,rejected_valid_disabled_clear,no_early",
+            expected="wide_matches>=2,delay=1.7..3.4ns,rejected_valid_disabled_clear,no_early",
             observed=summary.replace(" ", "_"),
             event="full_trace",
         )

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_normalization/certification.json",
-        "certification_sha256": "83c7402053884d6904f79fddad1c17cf50b5dcf92bbee3e932506d1002c9f0be",
+        "certification_sha256": "8cd6576c5d165e259c6463c342832d4145cf9eda2ec2b535da11ef0d07100cfe",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "094b8c73cc8d197bb1d0adc5fb19a6d346b9d31661980078686e094945a85a55",
+        "mutation_bundle_sha256": "e1f08ab53e219a4e3b53c46467fe573c2aecc8414eff6a09328ed4417ca80ce5",
         "mutation_id": "neg_002_wrong_normalization",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_normalization/certification.json",
         "trigger_condition": "Normalizes by eight instead of fifteen.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "da10dde0d7d734aae636156da90ab7a413d6d7dbc2c131f6d91ee8b8075d2557",
+        "certification_sha256": "bb5fb9905dc18d6245ba24cbfb28a205ffb750fa4f4d466c23b7339295620102",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "465dee9e298697b4dcce58ecef85a3659058809bd20a2a89108ee5a3922a4878",
+        "mutation_bundle_sha256": "fbb213ca1e56b4f1e86d48290c5b19b45a52c8626941d7bf1595c614a460f891",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_output_gain/certification.json",
-        "certification_sha256": "6478d55d8e854e10c1b5c5991bf943367c75f6bf1c5e81b0138a76c5a62c4d95",
+        "certification_sha256": "6a032254a34a54eb81c288d8bef203da4939af838388108dc056713b4cb6d3ca",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "98db2ed11a636b9d2a2e56e9aeb1aec1617e13b2ba4ff66e37e0d7ac9ee7c246",
+        "mutation_bundle_sha256": "c3bdb8b7d1458d4b0e8ca318a1076a0509bbd3eb6fce1f958424bff2be13cff8",
         "mutation_id": "neg_004_half_output_gain",
         "source_catalog_certification_path": "negative_variants/neg_004_half_output_gain/certification.json",
         "trigger_condition": "Outputs half of the normalized fraction.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_ignore_upper_taps/certification.json",
-        "certification_sha256": "32365dc16442cce6098bf6796a8b1cedf9d3191f8d22654ea2652e6f6400c102",
+        "certification_sha256": "cf55d81c1eb5467371e35530b1b12d3593c313dd8becf6ab1e1f5037dfa9ce6f",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "e71964597ab33bcc75585baff8800ae69983eb73995dfb5f0a8be4e52214af1b",
+        "mutation_bundle_sha256": "8d4e6f85aeb4c5264baab551b94dd2c6482be3e7debaea2ae3c6c6a0774ffb31",
         "mutation_id": "neg_003_ignore_upper_taps",
         "source_catalog_certification_path": "negative_variants/neg_003_ignore_upper_taps/certification.json",
         "trigger_condition": "Counts only the first ten taps.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "bccd99d3e7c6cbc0e1a654ad5b24c3343acef08c854924192ee9c3f38c984942",
+        "certification_sha256": "aeebadd5a12e9c0746ea9c49fe0bad62a47fd1d69d44088a3477c95eb73cbf6c",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "5fac32dbd11615d3db779f4ff4ead08299eaaa5eab0fb5c526134dffcd1d917e",
+        "mutation_bundle_sha256": "42e174aa6ca4069ce22c25d532307761938bfb0c78fec6c72653c31387f8cd23",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Ref Flash 15level Decoder: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "0436978050ec26f81ae58d2ce6782dd0fc122776dd7dc2e534a3d5a72c2ce85e",
       "score_deck_sha256": "860d297ce841d8401537ef2c3bdd564bb297ad365b6ff07a71dd5b295261ab5a",
-      "task_certification_sha256": "216b99c151080562ed2d01dce51ba4de9cd3f6efa597bc56da1411eac8c1bbc8",
-      "task_record_sha256": "522425f8ca614323d930a9c95ed7c218aeb7335ae118d3ad25daef58f7087007"
+      "task_certification_sha256": "36490f907b158a5c67771a7c9617d8db2503d3627ec314276612d06c94ce4adb",
+      "task_record_sha256": "9f2d85c712ea326307fdf3787d1a84206468355c4a938e9b1ee4c1dbb20d4120"
     },
     "release_dir": "159-ref-flash-15level-decoder"
   }

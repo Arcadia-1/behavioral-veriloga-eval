@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "8649f03d3b08fde625cdd02b43ae2dca9da0a6624f4aa784eb1987f0ea8cf7c5",
+        "certification_sha256": "197d75aa40b6a1b76ab18d3c92a583c45bcada4002df1ea07e81e56b92415d39",
         "fault_class": "threshold_boundary_error",
-        "mutation_bundle_sha256": "ec59d8321096af496a33f7b44766de10e609e07549ee040ed6eb13674fe1ddba",
+        "mutation_bundle_sha256": "0d94b1c112700db23f8804b0364e58a24c66a2b4b3b6b068101d94022ae7e6d6",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "boundary stimulus crosses the public threshold conditions for Sample Hold Droop Front End",
@@ -20,9 +20,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "139d338bafd4a0edfe8734073ab146998c1e8e9ae9985bc4ec349d9e85a6b1f4",
+        "certification_sha256": "a507a68d04aa999c98968ea99232ce465c66117a63acd207ab6da6db68c764ed",
         "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "0340f675dcc705fcbe65f849dc4e2c70f3bff18ae52c8ee7269185a6d03e4d7a",
+        "mutation_bundle_sha256": "3d59df8b829358454d085c48e4275611b5b4f28e433d5d24a0c2cd7ceb2ee761",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "score stimulus observes the public metric/output scaling for Sample Hold Droop Front End",
@@ -33,9 +33,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "0c67d5ce3ad180cc95cdb6f355181b11025e9e8b61c35b1e11205b8c8c08b452",
+        "certification_sha256": "7ad4f39076dfb86c8663761eab8f591730d4552f4a204697688ff0e58ab801a6",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "5a533cfc4fce7e7393afb033c6908f9218c6747ac0b6db31a73401c6f17ec151",
+        "mutation_bundle_sha256": "3fe6fce0f514aa35cc668928a16d400dd0883ce99fd74bcea3eb224f3ff1a559",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for Sample Hold Droop Front End",
@@ -48,9 +48,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "dd9c8704ebf2728920406a28feb32f089aa0fce53ca529db8e8ce4ab7c5ffc5e",
+        "certification_sha256": "f3e708230a77efa58be99858b85258d43558b721f43ff8c628cb76377f040595",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "f30b3a3b4091f70d921f8291a33305222394852b00da67d015815fcb922de70c",
+        "mutation_bundle_sha256": "8838ea84be5c77e1bac62af0bff221ae2723de8ccf3c4119b99cbec2f7f93f7b",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "nonzero behavioral stimulus requires observable Sample Hold Droop Front End outputs",
@@ -61,9 +61,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_aperture_delay_removed/certification.json",
-        "certification_sha256": "de2af7e1e38cd07ff8b628d95828c32bef3508935f4878539f6cdc192e7c15fa",
+        "certification_sha256": "bd601c1626bfdc2dde7ed49502cc9757b1828475306508da4f7ccee89dedca93",
         "fault_class": "aperture_delay_removed",
-        "mutation_bundle_sha256": "6af43cec5871acd09f466b8eb4fc1ef5e4fec59b810ba1b46a7b9fde1874507b",
+        "mutation_bundle_sha256": "eb50e0f374007c86d3be3eeeaa0c426a8ab649a436ebffe23db1e16230115566",
         "mutation_id": "neg_004_aperture_delay_removed",
         "source_catalog_certification_path": "negative_variants/neg_004_aperture_delay_removed/certification.json",
         "trigger_condition": "the input changes between the active clock edge and the configured aperture instant",
@@ -77,8 +77,8 @@
     "hashes": {
       "mutation_catalog_sha256": "a4a53ff9ad5286b0e5ef415752cadb04aceb9e9270263c6c6191e567d94869ac",
       "score_deck_sha256": "6dae81024dd305fd2c4dfc5fdaa2e96d7eb695fff0fed21a9060e577dbdb9f38",
-      "task_certification_sha256": "385de435d7ac2fd3f171e9e17e328174899ba5918c863dd247b4c4821ce42a1a",
-      "task_record_sha256": "08a9218e30b30bcdf0cdca9057c180093f5f92383334c3eeaab8eb5aa6883698"
+      "task_certification_sha256": "6921e9bfb5619e55121e1ea8efb946fee08d7f3abb8eb2b25fe45ae37c46a739",
+      "task_record_sha256": "a012b2007d0869b92092792ecff16cf13e3aa7ac256f1e0876fcb98313267855"
     },
     "release_dir": "100-sample-hold-droop-front-end"
   }

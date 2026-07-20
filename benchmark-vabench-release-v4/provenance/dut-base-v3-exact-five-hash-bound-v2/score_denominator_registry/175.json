@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_step_halving/certification.json",
-        "certification_sha256": "8340da12040251937226f4c2b882d7827f2a608e4d52578c7991d8f457453875",
+        "certification_sha256": "b2f99200c9339befaf4ce710f041d0f1c1c6f05d0867c8037a0636bd1e1b4552",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "4590328fd03e74dd1b7e7f6c831246c9c1f0cc6eeefa9b75c6f8ad25ce34162c",
+        "mutation_bundle_sha256": "c4824d25e50f486e11a80db8a7f28d0adad4293d00afae3551380ce2d8287615",
         "mutation_id": "neg_002_no_step_halving",
         "source_catalog_certification_path": "negative_variants/neg_002_no_step_halving/certification.json",
         "trigger_condition": "Keeps the bisection step fixed after sign changes.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "172e8613cbd85f1272dcc6a942ed88f9e746e1d634e197b302eb9ef57c3e4172",
+        "certification_sha256": "abb5bd03fb57aeee95264d90ea9f4e98711015afd7d7833cd48abe821ca070d6",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "3a41a839f6481eb070396353c10b4fdde7f1dc3b4f6afe4350f882ab7f6afa35",
+        "mutation_bundle_sha256": "8a0ba22b8142b096677705975c8481697bec6f9e58d7b2e2226ff4475703e510",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_inverted_sign_sense/certification.json",
-        "certification_sha256": "7e25572b9ded3b4155a8f67300cfdf0df3f75f87208c62710fed84a28e7729aa",
+        "certification_sha256": "9900924dba308507ff9becd340a742a5c9ca9d582b230e920c7dba6e85d4806c",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "28d33873ff4798701122196198fec9c1b02246f0d4e343d42da8eedb14503a19",
+        "mutation_bundle_sha256": "60c7e6ef0b132cab47fce90b362e5fb861e3b2405014910153f59431e4b12060",
         "mutation_id": "neg_003_inverted_sign_sense",
         "source_catalog_certification_path": "negative_variants/neg_003_inverted_sign_sense/certification.json",
         "trigger_condition": "Uses the opposite comparator polarity for offset updates.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_full_diff_scale/certification.json",
-        "certification_sha256": "c6212b19108f2b1a94e0e8f190929a1017a7ad0020b2906485803192ec7575b7",
+        "certification_sha256": "a02f7a28080995045495e6cbf4b941a304d72e34c9e619b4a02bd2c85cbad874",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "c6f58ce9703573a5afaeca698dc94a89b4e632c85827664db854b4be2f87ec19",
+        "mutation_bundle_sha256": "19fcb3f7b44da7e214aaf9435e6cb9cf5e62c82ff98d6419f8a8ec6aa4186cee",
         "mutation_id": "neg_004_full_diff_scale",
         "source_catalog_certification_path": "negative_variants/neg_004_full_diff_scale/certification.json",
         "trigger_condition": "Drives the differential pair with full vin instead of half-scale around vcm.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "c7462ce2b075a5fe71b03a757aa0a838d18b7d344ba94f14c0af355172200fd9",
+        "certification_sha256": "ada76a9eb7b01167d4a13177d63354813e0b96d90da9c93aae7f9422b95cd6ad",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "b827ad342f606a1f70090ee7dc3c6eb1d31bd9585b4499629c711720bcb69077",
+        "mutation_bundle_sha256": "2bce0b53922b752bc5daef6151055c024f5053c06406d304375076428ff1d7b6",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Offset Bisection Driver: scales the metric output, preserving the main path while failing measurement checks.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "ea6c42362edaf0d492d3ef3cd9629f568ef5770705225c815d3191ae9f516fdc",
       "score_deck_sha256": "af8a004f0ce86a83b42f52c506d381e0c7be9107ea096856a27a795ce4b6c5af",
-      "task_certification_sha256": "67e00e9b754c6a5f66f2d66ab793d5b60386296ec336719f28c442585bee80fa",
-      "task_record_sha256": "c1e6d306dd924ca9458ffb87b286c63f0f92501193d4960a9286d690d7db85c4"
+      "task_certification_sha256": "13098f91c654db93d0004d387a9bca52ee7beb985058fb56b00a7bcc1519625f",
+      "task_record_sha256": "9167b1324de5f971be2278564eeead8ef9a297dcdb7adad48781dbf3191573a9"
     },
     "release_dir": "175-offset-bisection-driver"
   }

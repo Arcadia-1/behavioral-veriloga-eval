@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "288-calibration-quadrant-mapper",
+  "checker_task_id": "v4_288_calibration_quadrant_mapper",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "dcf31849ffb9253963c19ecd11287a56ebe94476d6d00ec7f4cbfb387906992a",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "17a897df430170b29abbc6e8f00377e7ce661e04414338049084b1b350b532df",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "288",
+  "family_spec_sha256": "6ba90dbd73ccaab5779427a3f715022aa350a95141fe0304e5a132db4f7bb3f5",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a4414e69b24c1ca6419eb36b4c3776372765e6ae447cf52e560808a62c0f30dc",
+  "public_contract": "tasks/788-calibration-quadrant-mapper-testbench/public_contract.json",
+  "public_contract_sha256": "4b8f47fdcc0cdd2f38b5991b0860d7f9106594a0d1f6f7b09772dfccee1ac9f3",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/788-calibration-quadrant-mapper-testbench",
+  "task_id": "v4-788"
+}

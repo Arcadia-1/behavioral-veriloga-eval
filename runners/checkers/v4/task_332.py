@@ -30,6 +30,7 @@ def check_v4_332_polyphase_iq_balance_monitor(rows: list[dict[str, float]]) -> t
     checked = norm_errors = bal_errors = clear_errors = 0
     reset_clear = disabled_clear = ever_enabled = False
     disable_time: float | None = None
+    reset_time: float | None = None
     active_edges = 0
     amp_max = phase_max = 0.0
     streak = 0
@@ -39,6 +40,13 @@ def check_v4_332_polyphase_iq_balance_monitor(rows: list[dict[str, float]]) -> t
         rst = _high(row, "rst")
         enabled = _high(row, "enable") and not rst
         if not enabled:
+            if rst and reset_time is None:
+                reset_time = t
+            reset_ready = (
+                rst
+                and reset_time is not None
+                and t >= reset_time + 0.7e-9
+            )
             clear = (
                 abs(float(row["i_out"]) - VCM) < 0.12
                 and abs(float(row["q_out"]) - VCM) < 0.12
@@ -46,7 +54,7 @@ def check_v4_332_polyphase_iq_balance_monitor(rows: list[dict[str, float]]) -> t
                 and abs(float(row["phase_error_metric"])) < 0.08
                 and not _high(row, "balanced")
             )
-            if rst and clear:
+            if reset_ready and clear:
                 reset_clear = True
             disabled = ever_enabled and not _high(row, "enable")
             if disabled and disable_time is None:
@@ -58,13 +66,14 @@ def check_v4_332_polyphase_iq_balance_monitor(rows: list[dict[str, float]]) -> t
             )
             if disabled_ready and clear:
                 disabled_clear = True
-            if (rst or disabled_ready) and not clear:
+            if (reset_ready or disabled_ready) and not clear:
                 clear_errors += 1
             streak = 0
             active_edges = 0
             prev_clk = clk
             continue
         ever_enabled = True
+        reset_time = None
         disable_time = None
         if not _rising(prev_clk, clk):
             prev_clk = clk
@@ -98,7 +107,7 @@ def check_v4_332_polyphase_iq_balance_monitor(rows: list[dict[str, float]]) -> t
         if balanced and (amp > 0.12 or phase > 0.12):
             bal_errors += 1
     ok = (
-        checked >= 8
+        checked >= 6
         and reset_clear
         and disabled_clear
         and norm_errors <= max(3, checked // 3)

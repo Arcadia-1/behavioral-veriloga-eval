@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_trim_direction_reversed/certification.json",
-        "certification_sha256": "baa36aceda015dad718726cbd3c3244e902de2265e06590f24c7dcb158d0803a",
+        "certification_sha256": "8a608ce2a16bde9032ff20313fb7b49c6f0ee1f75a7d8451966468d00f44aa77",
         "fault_class": "trim_direction_reversed",
-        "mutation_bundle_sha256": "c973e95bca0af6a30f5201703bbc32814d37cc133f3a840bd4083566ed06b91e",
+        "mutation_bundle_sha256": "a0186fb4b979ba7a58667970e4593d99c7de912335876c06b321d35f7cfa1a9d",
         "mutation_id": "neg_002_trim_direction_reversed",
         "source_catalog_certification_path": "negative_variants/neg_002_trim_direction_reversed/certification.json",
         "trigger_condition": "reference error requires increasing trim code",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_ready_asserts_too_early/certification.json",
-        "certification_sha256": "5516ca95eeac1123add1503094cf9ffc4b15bcadc3730c6f3ae0c624ec380e40",
+        "certification_sha256": "206ffa997c9169cde0d4124220b15fcdf2c8747cb2a081d4f75401daa84768e7",
         "fault_class": "premature_ready",
-        "mutation_bundle_sha256": "aec33458febddc8604d978c87a77c94c67ceb02e06a38cdc2af7060e82d276a7",
+        "mutation_bundle_sha256": "1ebdbb4a5f1c0a07a8403f810d52ba293fcffa4f916b1143245a98bfa62fad10",
         "mutation_id": "neg_003_ready_asserts_too_early",
         "source_catalog_certification_path": "negative_variants/neg_003_ready_asserts_too_early/certification.json",
         "trigger_condition": "first in-tolerance enabled update before three stable updates",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_core_reference_wrong/certification.json",
-        "certification_sha256": "e35c756b9c13c6f92a2cb0d958a25580ed2381e78a555faa738454c0a9b5154c",
+        "certification_sha256": "1831cabee31a5429e9883327cd2e18ec00282b1e61bb5c0722f37a64d4a28d1b",
         "fault_class": "core_reference_wrong",
-        "mutation_bundle_sha256": "9b89c49730c10009f4d55bd4fe3acbb1fd39588c54f2713a466e80b5962e192c",
+        "mutation_bundle_sha256": "4abeb25316cce0d2c141df4e4da418f3c80d701417794e37b7051db866ac54be",
         "mutation_id": "neg_004_core_reference_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_core_reference_wrong/certification.json",
         "trigger_condition": "temperature proxy sweep should produce the declared PTAT/CTAT reference metric",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_reset_does_not_clear_outputs/certification.json",
-        "certification_sha256": "2e0b65ca703ac2d66cc7ae4df8a5a00bc973f8f6577fdbfdf3fe0db7b21dd8e1",
+        "certification_sha256": "d176a1b98c50ca0722ac8c19a3cb421222318c0248c30f2a86cb433371ac4155",
         "fault_class": "reset_state_not_cleared",
-        "mutation_bundle_sha256": "a707bf099aa07b20793a2c6b9f8e71bd345518adff1ef41f6247e423636b1ee2",
+        "mutation_bundle_sha256": "e569a7d810d99d77a158fa10a69e2f8555c747dad6dfb96b8c6356fcfd9d26cd",
         "mutation_id": "neg_005_reset_does_not_clear_outputs",
         "source_catalog_certification_path": "negative_variants/neg_005_reset_does_not_clear_outputs/certification.json",
         "trigger_condition": "reset or POR occurs after nonzero trim and ready state",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_startup_enables_immediately/certification.json",
-        "certification_sha256": "a4a8cb9e758b4f80e322a18d27126c55dbc823abe77396b7c27f3513e281bbd7",
+        "certification_sha256": "7c97d4a0265ffac227ca16c80bd152fe06f62587fd7b8ec56bc9f9b676a8d760",
         "fault_class": "startup_delay_bypassed",
-        "mutation_bundle_sha256": "422567391e54e3566ea5ada0485710f06d3b3741d79c1e9a44938b410f508576",
+        "mutation_bundle_sha256": "7cd997a2b7e1dd5228ebc0407abee7c30139b80a4ef11abd3b14235c5f2785f8",
         "mutation_id": "neg_001_startup_enables_immediately",
         "source_catalog_certification_path": "negative_variants/neg_001_startup_enables_immediately/certification.json",
         "trigger_condition": "first valid rising clock edge after vdd_sense crosses vpor",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "fdf50b9fc6d155219150a1ae9beeb1e37bbbb8ad607d91b8426e4d93073ad7ab",
       "score_deck_sha256": "df62f0b645615df92a5e9d2ffb9bd4f61a2747f61bb38c7c87cf74b51ccb3e8a",
-      "task_certification_sha256": "5ebc90787ac02a423f4f1ff51d7b808bda05288947c065a86ef57974153ceef8",
-      "task_record_sha256": "dba9ed56438d8d269e9f4917b0c057bb505d19dd7fe77452204ed29caabbbf9c"
+      "task_certification_sha256": "e5651ebd9fbbffdc0ed6131ec1a51e1fc3f752df02a69b5b161088cda589d061",
+      "task_record_sha256": "f2873b71a4a28a2aa6a243b2ab3805421b1da310a10c651d904856290566f1f5"
     },
     "release_dir": "371-bandgap-startup-trim-system"
   }

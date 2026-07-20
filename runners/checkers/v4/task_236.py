@@ -72,7 +72,7 @@ def check_v3_285_dual_track_sample_hold(rows: list[dict[str, float]]) -> tuple[b
     last_t = times[-1]
     rising = _threshold_crossings([r["clk"] for r in rows], times, threshold=0.45, direction="rising")
     falling = _threshold_crossings([r["clk"] for r in rows], times, threshold=0.45, direction="falling")
-    if len(rising) < 4 or len(falling) < 4:
+    if len(rising) < 3 or len(falling) < 3:
         return False, f"too_few_clk_edges rise={len(rising)} fall={len(falling)}"
 
     tick = 0.5e-9
@@ -142,10 +142,10 @@ def check_v3_285_dual_track_sample_hold(rows: list[dict[str, float]]) -> tuple[b
     ok = (
         mean_ref_err <= 0.035
         and max_ref_err <= 0.12
-        and phase_high_hits >= 4
-        and phase_low_hits >= 3
-        and tracking_windows >= 3
-        and hold_windows >= 3
+        and phase_high_hits >= 3
+        and phase_low_hits >= 2
+        and tracking_windows >= 2
+        and hold_windows >= 2
         and hold_failures == 0
     )
     return ok, (

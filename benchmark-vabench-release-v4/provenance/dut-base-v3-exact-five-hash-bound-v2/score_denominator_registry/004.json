@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_inverted_error_direction/certification.json",
-        "certification_sha256": "21d36878598c03d90f6cc6141d7b6f3b29c0ac69805dd212bfb71886984d1ee2",
+        "certification_sha256": "4c5a4f7bf1e2ad30b40c6f74643acc500712a845b4e9dfc21882a1daa25f402b",
         "fault_class": "step_direction_inversion",
-        "mutation_bundle_sha256": "2b57a316c56d8ec9155f9c3bdae9a51fb3146eaf87813cd9d43f082844ceeace",
+        "mutation_bundle_sha256": "366e64cc4c38fdf42da9b8738a8fa9d9152fb339037c1375425c1607412eec9f",
         "mutation_id": "neg_002_inverted_error_direction",
         "source_catalog_certification_path": "negative_variants/neg_002_inverted_error_direction/certification.json",
         "trigger_condition": "a nonzero error is clocked",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_missing_lower_clamp/certification.json",
-        "certification_sha256": "966c94ae292e412e7fdeec8ea6a46b6c7eea0fb500e48d40ef73c2c18c130261",
+        "certification_sha256": "9a5bd06ff2cb4d38d49d04946e8af6ac1071dd7233c6862e3f97ae0573d5e476",
         "fault_class": "missing_lower_clamp",
-        "mutation_bundle_sha256": "66df068e699f7044a5c00de14f458bba83f7f2f3a407b83d9d718c50070064e9",
+        "mutation_bundle_sha256": "d048c3e96e8cb4041ede3183d08c925f585b1df517aeebcad95f4d77c4fef903",
         "mutation_id": "neg_005_missing_lower_clamp",
         "source_catalog_certification_path": "negative_variants/neg_005_missing_lower_clamp/certification.json",
         "trigger_condition": "repeated negative steps reach the lower rail",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_reset_level/certification.json",
-        "certification_sha256": "00334ca9eb867079c70172f64e4ecb1380ecf0ab70176b381509e7323d4ac769",
+        "certification_sha256": "17b0fe00f37c6a4da55f0b90e7d7b36d5308840363f6ebf7b4f2ed740b608022",
         "fault_class": "reset_level_error",
-        "mutation_bundle_sha256": "5520a48a937f9a76e9d940a9c42ebe178c572275bafe104b29d45a58e5feeaf2",
+        "mutation_bundle_sha256": "7fd2bd86b8fcafe8bf1519fda2409bf9559c6b3952098650e6a4d3550554a450",
         "mutation_id": "neg_004_wrong_reset_level",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_reset_level/certification.json",
         "trigger_condition": "reset is asserted",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_asynchronous_error_update/certification.json",
-        "certification_sha256": "86c9578e5b1dc632528f17186e5c52d4cadfcf4013a678666ee1c1fde44e9945",
+        "certification_sha256": "4a618e769ef7bb895a9d4e09f2ed20a637de185dc398d3056a050851fb00a0d5",
         "fault_class": "asynchronous_update",
-        "mutation_bundle_sha256": "b39e82a30ddaeac1d4a0828b5c79edc1f680b93caa2879cae928dabb89a49100",
+        "mutation_bundle_sha256": "2fd4525743929104d17cac5a615982892a4b5e23fc21fa3c2e0fbc1bbf8e3bef",
         "mutation_id": "neg_006_asynchronous_error_update",
         "source_catalog_certification_path": "negative_variants/neg_006_asynchronous_error_update/certification.json",
         "trigger_condition": "error changes between rising clock edges",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_stuck_midscale/certification.json",
-        "certification_sha256": "0f0d9b3309e5688f058da5a224e061d99b9d9b7c364a37f30bb099328736e777",
+        "certification_sha256": "ed4f1d8fa9c0f894b1893412aac07439ff0540f927f9f477a7ddda1aaa76f820",
         "fault_class": "stuck_control",
-        "mutation_bundle_sha256": "5b8b755caff62e2623ebd6870d4fbe3259fd832339c2c2ea35418d70542922a7",
+        "mutation_bundle_sha256": "833aa3cb9b0498f809c280e5dbbc1357fc38f5daa2fe5a5bffd75584095f93ae",
         "mutation_id": "neg_001_stuck_midscale",
         "source_catalog_certification_path": "negative_variants/neg_001_stuck_midscale/certification.json",
         "trigger_condition": "a nonzero error is clocked",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "2cdfc559faf971b969a2f8f2f3be5282a8b316d95fd942061948b61aa26328d0",
       "score_deck_sha256": "ffd73e7f2b50059a5e1648be9f75d05c9cefa69e026c3973af127c5d78230217",
-      "task_certification_sha256": "4a149402edae6ab0ed1d49d77e1b8940dbd532238dbf37e670d9bb4da448370f",
-      "task_record_sha256": "bb064454407e937c5eba862f73fb1d93921f04522b598b9604068cc29536ca4b"
+      "task_certification_sha256": "d3781e7faaab3b6b2899d032ff8d387e2beb2ec3d1d704ad43f61f18a66bf3f4",
+      "task_record_sha256": "6bbd70669a2de601301796b8f879e53f3da8cd17de37f1785db1a841acfbebe6"
     },
     "release_dir": "004-trim-calibration-controller"
   }

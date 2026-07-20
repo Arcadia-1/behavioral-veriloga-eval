@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "135-logarithmic-amplifier",
+  "checker_task_id": "v4_135_logarithmic_amplifier",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "a6d376b5b472a38e5b6196cd3be1c2c87bafd1e97353e9930ef543534ddd2874",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "567cd36671e00315b0cea0fe3254b33e8040c2ed0102b5f84c3d2c659f0fa881",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "135",
+  "family_spec_sha256": "5167db504b93186000791fdbc91d719d97dd1e2f454f6b0c41c43f795a4f7159",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ca1b2ea73e24e045a5b1bf020a653991c917a5d640df9e0e23206cef20d97c68",
+  "public_contract": "tasks/635-logarithmic-amplifier-testbench/public_contract.json",
+  "public_contract_sha256": "94e9721aab7905a888109268ffe9af27e901dcb3cc1be8cb2937bdbf3e78f4f7",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/635-logarithmic-amplifier-testbench",
+  "task_id": "v4-635"
+}

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "05fdcee93fb13576055a6694e809680bdb023588edf112d4b55a0ee8754c5ef9",
+        "certification_sha256": "796ec1305230439beb48090660b42c38b0bec55b7df43351324d8a84c5d67f46",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "91f303a29a411fa11fd4794a6249fdbb0e747bf79620785348692f781fb568c6",
+        "mutation_bundle_sha256": "c2c4d98f72bfa120676fae00f0c4d3f6ec9510dbf3ba9cf49243faf8c6f40415",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Subradix DAC10: scales the metric output, preserving the main path while failing measurement checks.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_binary_weights/certification.json",
-        "certification_sha256": "e655de29b1f540889fa3967279c44b4d57a6348ba6cc97fc16fc1fb6102e5067",
+        "certification_sha256": "38d9bfba514c9e22752744bd67e2ca7d5469f69b09015df0ecfa2077def3255f",
         "fault_class": "binary_weights",
-        "mutation_bundle_sha256": "9f4ff8acc2145fb6fb2c5107286c3748f2d0585d592ee2562557255f9f3046a4",
+        "mutation_bundle_sha256": "8e72014f6060fe0d79b0ab1d1dba79a145e7f3dec1baf65978b34a78f842a871",
         "mutation_id": "neg_002_binary_weights",
         "source_catalog_certification_path": "negative_variants/neg_002_binary_weights/certification.json",
         "trigger_condition": "Uses ordinary binary weights instead of the sub-radix sequence.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reverse_msb_lsb/certification.json",
-        "certification_sha256": "760e897f7e1a79487f919eabed53cfa7cb8aaba8c3e066352a77852ec41c9b26",
+        "certification_sha256": "9d6a818da7a34d05d461f6990ded1227d4c8c0867c9a559eecb2cca6c4cd6fd3",
         "fault_class": "reverse_msb_lsb",
-        "mutation_bundle_sha256": "e1a63b3fb16bd3842224770209a1493246d828008d51798d558a389a9c537d1b",
+        "mutation_bundle_sha256": "ac35ed78364517172a6ed8454b0d82ec586de08f91f97606568ea73978a0d4f0",
         "mutation_id": "neg_004_reverse_msb_lsb",
         "source_catalog_certification_path": "negative_variants/neg_004_reverse_msb_lsb/certification.json",
         "trigger_condition": "Reverses the MSB/LSB weight order.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "814e259914716ca347de42a8b51cea99b5c1518c45708fb83456656d0e4bbd27",
+        "certification_sha256": "418ae508634d4f96cd9eef9646da56e15840599956e1784c530ba1a751142157",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "37a3ea6e654f87a02f156617127e9a0f5b2040915fc52047cd9f4aaaec4099cb",
+        "mutation_bundle_sha256": "0de070d13ccd1ad0b17c5a091d23d208cd1118450af77adb5f0cc8e220af98ad",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -57,9 +57,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_scale/certification.json",
-        "certification_sha256": "97450cfa0f54abc2b35b6eec51a325f22647d9f6d560839fa1b231fa5753dc4c",
+        "certification_sha256": "1f221213b5b677c5e576c2e604f55844d92f5d86d9aea4e9190b7126a20b1f1f",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "7dfa17efe842bcc1e5a6b05f14431c32a872851ead04ab33721152458cf7db7c",
+        "mutation_bundle_sha256": "c1c4e687c59591cbaedce7ae55a73b0534876e21ce1681f5364d084f10a2457e",
         "mutation_id": "neg_003_wrong_scale",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_scale/certification.json",
         "trigger_condition": "Uses the correct weights with the wrong full-scale normalization.",
@@ -74,8 +74,8 @@
     "hashes": {
       "mutation_catalog_sha256": "919cd287b2a6726a7507e296a5b3dd1b621c2e345bca276f3d0af6191dfea896",
       "score_deck_sha256": "fb7bae6529bf6ef0091755a72ebd3845ededc6dad6d6600954f4d51329ebe1fd",
-      "task_certification_sha256": "2a3cce6f4fcf4c36201908b036479f51a0f9d9dcc7a1d5679ca44c096856058d",
-      "task_record_sha256": "51d535323e7e274c554be3b8d025ec291fb3df2cbe1d057dc8d1ca721505629e"
+      "task_certification_sha256": "bdfeba81b5bd59160b5350266c7768176ec62f692f88315212c9de0074ac6fb4",
+      "task_record_sha256": "0b7b2bd6f9a08794bac8496846a20c70e3d0fc41485dbc8a3049976b352b9511"
     },
     "release_dir": "243-subradix-dac10"
   }

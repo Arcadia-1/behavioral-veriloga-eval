@@ -3,9 +3,9 @@
   "checker_task_id": "v4_250_rail_referenced_gain_buffer",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "1e0072762755338846baf47f937826a589703fee33de81075a8c436d2ff7e110",
+    "certification.json": "97864607252a6222f55fb104339a4ca585f50ae8db1a2dd1746a9830f28e2dd8",
     "checker_profile.json": "a80e6c0f5c631d70f92a25ebc0937b014f360be0c03dc876b50d2baa4bd33c53",
-    "derivation_manifest.json": "e912d5b120d7d48ca3e096e1eb11264da0ba8b5d4e7331ffd517449f432fe839",
+    "derivation_manifest.json": "6786ecec72682fd98536c036f0ba0414ad8f670936e3bc1de5d27d2b4682e302",
     "family_spec.json": "63d418ccb6185e398c22c408af30b27392d5b44adbdf72c6da282bb130082805",
     "harness_spec.json": "764f9d260415b2bcf1e846fcfa0ea4647eb52e14d391c9593fc67ab245c894c2",
     "mutation_catalog.json": "baa1e1643d6f9f28c275f6d84154ceb02218feabf4df7cbf4b63f62613175efa",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "1e0072762755338846baf47f937826a589703fee33de81075a8c436d2ff7e110"
+    "sha256": "97864607252a6222f55fb104339a4ca585f50ae8db1a2dd1746a9830f28e2dd8"
   },
   "release_dir": "250-rail-referenced-gain-buffer",
   "schema_version": "v4-canonical-dut-release-task-v1",

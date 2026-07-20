@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "060-duty-cycle-meter-8b",
+  "checker_task_id": "v4_060_duty_cycle_meter_8b",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "be29185585c9e44dae11165646f533b3c2f7703a273875deea74c36fccb73998",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "1f15b49c9eb0660072e40c32fe7b6463ec74f10d8054b86841fb830bbb463b84",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "060",
+  "family_spec_sha256": "2b627ad1391d0cf9fa84a4dd8cb3ff3b3c92fc3cb10662f7697ccb093eec5628",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8c67c97ac6eee077c038133c9ec3be4c41950fd914f0e92652a2931b504a447d",
+  "public_contract": "tasks/560-duty-cycle-meter-8b-testbench/public_contract.json",
+  "public_contract_sha256": "b1ad83b2023e1a532b0db9bbeba338b84a5838e8637f3c5498033aac06310e15",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/560-duty-cycle-meter-8b-testbench",
+  "task_id": "v4-560"
+}

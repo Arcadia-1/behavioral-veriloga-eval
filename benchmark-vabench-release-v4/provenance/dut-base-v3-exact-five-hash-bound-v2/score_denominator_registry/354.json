@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_slicer_polarity/certification.json",
-        "certification_sha256": "e5241eafe6e0403e6fcd409ed47a91d6c95cddd43ea52fccc9d14f663e7ed2d9",
+        "certification_sha256": "b3bd4dea4931a820beb2cd31932510fa7f39c2294a2ac4ab27a9d6bb47e13993",
         "fault_class": "wrong_polarity",
-        "mutation_bundle_sha256": "090b18f4ceadf6e89006a43467b84382143dc3b56d1dd1a1ea296068bd884d49",
+        "mutation_bundle_sha256": "0a2404a8cd6e68bdc4051d3f153df0aeabc64774a7760342be7eba237b2b8129",
         "mutation_id": "neg_001_slicer_polarity",
         "source_catalog_certification_path": "negative_variants/neg_001_slicer_polarity/certification.json",
         "trigger_condition": "corrected input crosses VCM",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_reset_preserves_history/certification.json",
-        "certification_sha256": "15f43221557f93f774f59ce5765dbe11cb61c3cf7d89b2909822d255eddc15f6",
+        "certification_sha256": "c26e3c0a38c6dfdb6db663d5a0bd9c8c4222e7511de0c7ee4edcfb777dcf5150",
         "fault_class": "missing_reset",
-        "mutation_bundle_sha256": "262468289a9cf534c8114a09ecef3a7fa32b49274f66d00cd395f49292aa2405",
+        "mutation_bundle_sha256": "386a1899d31c66353569557559a8b30d65d7319c6f913145c01a4932033efc23",
         "mutation_id": "neg_005_reset_preserves_history",
         "source_catalog_certification_path": "negative_variants/neg_005_reset_preserves_history/certification.json",
         "trigger_condition": "reset is asserted after decisions",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_second_tap_ignored/certification.json",
-        "certification_sha256": "3a569dff0cc936c799354f1bb7424e7caef54487e67cb872b7a7cb334ab3e11e",
+        "certification_sha256": "4037403bc1261401f2463ca7b1ea04656b619c9f38d1d75ad9e77b552a4c6681",
         "fault_class": "missing_tap",
-        "mutation_bundle_sha256": "dcefe762ba84e17bdd62e8cf446e15fae232173254211689cc80aee25e5af463",
+        "mutation_bundle_sha256": "51508ef54636078dfb6a94e4a9a17a632d17f32d6a49126686be9997ed2551ed",
         "mutation_id": "neg_003_second_tap_ignored",
         "source_catalog_certification_path": "negative_variants/neg_003_second_tap_ignored/certification.json",
         "trigger_condition": "tap2 code and second history bit are nonzero",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_clock_edge/certification.json",
-        "certification_sha256": "7cd3ba990e97644ed9476f6dbdeae21cab21f3ffb97bb1b01a2fab5e9608826a",
+        "certification_sha256": "85ae5a1d31b00055ca322904f104f84ba9ef6dad96c6cd01800fade516bcc103",
         "fault_class": "wrong_edge",
-        "mutation_bundle_sha256": "475283b2a3702606404e83b70c012ba84c5c10cd567987c31de0f72818c0d3c6",
+        "mutation_bundle_sha256": "80a44f40978f8c974b6713c304c8e7aedf243518ae920666e1b8300862aa5e86",
         "mutation_id": "neg_004_wrong_clock_edge",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_clock_edge/certification.json",
         "trigger_condition": "clock toggles with changing VIN",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_feedback_sign/certification.json",
-        "certification_sha256": "786c5198174518451ea280e6f19d47a7551266037b671838c890899188fdf4a0",
+        "certification_sha256": "d3cad900b622e0f7c0278e2280df2c361cef3b348fcc6b99200a8f9b76991213",
         "fault_class": "wrong_polarity",
-        "mutation_bundle_sha256": "19adc4ec5fbf8f37ef69ab1428b84838cd12ba289559679b4ae5d9ebee6b57e4",
+        "mutation_bundle_sha256": "57196f243590a3abba989dca79b82d9054282ba07ba02338d62b831e0f2361e8",
         "mutation_id": "neg_002_feedback_sign",
         "source_catalog_certification_path": "negative_variants/neg_002_feedback_sign/certification.json",
         "trigger_condition": "nonzero decision history and tap code",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "21b06b1d9786f5e8e292d02c98ebbeb81af6f9b6d28d68d323bd3996926e44a6",
       "score_deck_sha256": "c68fd06994a49f38757b7ff2aa0b5a6b7102c1794e6417a55c692b2083d20140",
-      "task_certification_sha256": "f8c6cd765c4a54678c6ac9dbe719d79570d5ebd29dffce72cdd7e92cc178a7b7",
-      "task_record_sha256": "87de6a363eedabfd0b32548ed46e0c8e545b76ca55fb4697e76a86bd4c22dc74"
+      "task_certification_sha256": "924d787dff864b6e0099838bbcc378af765fca0fa098e3ee66530b0e365f51da",
+      "task_record_sha256": "720ee1d1bde1050be877c60140a5d28aa1789f64f7a2839af8c48611f496bb3a"
     },
     "release_dir": "354-dfe-receiver-2tap"
   }

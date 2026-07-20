@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "080-sine-periodic-voltage-source",
+  "checker_task_id": "v4_080_sine_periodic_voltage_source",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "fc611f3a96774c4f3f5b871ea96fce2e12d8e04be31abcf06d05c75e6f15c19e",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "f947fa8627e4279927665061b2ef6d258497d68846172763c889613949eea3d0",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "080",
+  "family_spec_sha256": "fff541e9299fa2a25e9d24fe350ec1884bf90b083c3d2e39e7cb1cc4f55c8421",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "78828efca0a5ccb031224c47efcd3676d22a8584f92fc55ec151ba969dc56029",
+  "public_contract": "tasks/580-sine-periodic-voltage-source-testbench/public_contract.json",
+  "public_contract_sha256": "20cf64cce078c3055787ca11be2a707ab77bde2ee37380632f5a49afb84d196c",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/580-sine-periodic-voltage-source-testbench",
+  "task_id": "v4-580"
+}

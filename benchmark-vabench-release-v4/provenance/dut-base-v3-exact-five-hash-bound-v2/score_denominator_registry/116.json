@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "80f02c0f5c3d26dcf8dc3237fe18eb404b880ebd60f4d119faf9395842be2c18",
+        "certification_sha256": "2de4a39b077925358463110aa274b90fde2437f10cde3caae9d7de6812ef551f",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "7a7ea42ab5fb4eff7a6a6de147603996a6dd30816171ee56df03cef094370375",
+        "mutation_bundle_sha256": "0b6cb77b5aed817d3e74f88a32db91debb110ea7c10d048d1ce860be443a048f",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero outputs and therefore fails the semantic contract.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_min_detector/certification.json",
-        "certification_sha256": "d49a5f127d506a5946e10a18ff0808f9e1778d481b9e2b304ae5b8335e3cf90e",
+        "certification_sha256": "39f16e943ed6fdcf344582f9f5c163af1ab2ce9abe8cea2e809e8dc6ffbe8d6d",
         "fault_class": "fault_003_min_detector",
-        "mutation_bundle_sha256": "7c2f9524931edf593d9aff21cab688754459bee0d2f99cdbbe91d70b0f57c524",
+        "mutation_bundle_sha256": "cf5b4f6d7356b17817545bab7e1f2c64a7dc15f73873d330f621691b4d91de17",
         "mutation_id": "neg_003_min_detector",
         "source_catalog_certification_path": "negative_variants/neg_003_min_detector/certification.json",
         "trigger_condition": "Holds the minimum instead of the maximum.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_initial_only/certification.json",
-        "certification_sha256": "634f61d6525fd591bf31c83a759076a6000e7fd1af7b06f5eea0a2e07982c2f9",
+        "certification_sha256": "cf6970ac8710caec4304ce67fc26eaa58e4ea7a7388dbbf3736aa8a789ec7dd8",
         "fault_class": "fault_004_initial_only",
-        "mutation_bundle_sha256": "426f4cf9fee5a24b991c37744c36ccf2aa647434dc943943db39897c609a7670",
+        "mutation_bundle_sha256": "5032551e592209d8adb18ac0173f2a46c91b7fac9381c1e73f0c4f97cc5070ae",
         "mutation_id": "neg_004_initial_only",
         "source_catalog_certification_path": "negative_variants/neg_004_initial_only/certification.json",
         "trigger_condition": "Never updates after initial sampling.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "3eca9e7510b6057c639cbb5734e17ced4aecf60847cf232e41a33fbdfb09e663",
+        "certification_sha256": "707442beb4a8ccadc5178c31443eea7dfd896636b2983e04ec77f7cbb6e92040",
         "fault_class": "fault_005_metric_scale_low",
-        "mutation_bundle_sha256": "68499ce5dc9fb575ba4a3889cb11bf7f29546e299db518cb790d2f9050c2883e",
+        "mutation_bundle_sha256": "bb189f62f819168deac18a48a280869002fa23b5b1814aa64fdcbaaacab9311a",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Max Detector Hold: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_tracks_input/certification.json",
-        "certification_sha256": "08deafbec92d6b7d959d363ecbc1f21ed148e0f34fe2394fb8e424372c9531c7",
+        "certification_sha256": "4e61b7668497bf7e72d285c4971b91c290259691fd90479882607c6684307fb9",
         "fault_class": "fault_002_tracks_input",
-        "mutation_bundle_sha256": "7d151c2dae9d852087fdefbc72d1e53e99834357d004a050c1e8d493016af2a2",
+        "mutation_bundle_sha256": "5f7ea25b490672f457c3fc1a56c839d1e65f4b4c8f90194d8a3d517cec20c282",
         "mutation_id": "neg_002_tracks_input",
         "source_catalog_certification_path": "negative_variants/neg_002_tracks_input/certification.json",
         "trigger_condition": "Tracks input directly instead of holding the maximum.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "ba8b3d1351bd41f30287a675041066cb272198508afdfd842ae4967203287054",
       "score_deck_sha256": "650ad94d1b7b6d0eb9d0c4e1fae2152824ce6b4a7632e235ffebe63834920ccc",
-      "task_certification_sha256": "c571e969b97261309d1b334ba7c51ac0fec63f5a0a9d394ae036cd67530062ca",
-      "task_record_sha256": "bc84d3ce3b2670c59afad159165a5924dd925bb357dc6ebe3624503b02613116"
+      "task_certification_sha256": "bcfd983ef134bc7f64ea81d96ee88f39b92af013e456aa1314890394e207ee91",
+      "task_record_sha256": "b98836f4e547d640710fbb89807ee833e4ac093d04962af1c630680f4f597852"
     },
     "release_dir": "116-max-detector-hold"
   }

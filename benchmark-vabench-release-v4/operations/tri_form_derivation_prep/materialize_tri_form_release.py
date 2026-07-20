@@ -43,6 +43,7 @@ DEFAULT_OUTPUTS = {
     "r45": PACKAGE_ROOT / "release" / "benchmarkv4-r45",
     "r47": PACKAGE_ROOT / "release" / "benchmarkv4-r47",
     "r48": PACKAGE_ROOT / "release" / "benchmarkv4-r48",
+    "r49": PACKAGE_ROOT / "release" / "benchmarkv4-r49",
 }
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
 MODES = {

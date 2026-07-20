@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "017-strongarm-style-latch-comparator",
+  "checker_task_id": "v4_017_strongarm_style_latch_comparator",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "6e42665452ad58ee4fbd6fafc3958e6e19c75ce5881110db1faaf4dfcfa68a11",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "a988f1ac09ec8da7cc7895a3d0094fd77751154db878dbf9e51d59192f85d9c3",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "017",
+  "family_spec_sha256": "294806ffa2413d7314fa1272929956805bd1254c1126236537b0984ed23aa9f1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a58769d5a163ad79e2c54fe747986682d852c6aa9a9418718a7e646ffbfee936",
+  "public_contract": "tasks/517-strongarm-style-latch-comparator-testbench/public_contract.json",
+  "public_contract_sha256": "05449600fdacb205a05117b048669462fb2e2c0f131ddb7d868f33fc587767be",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/517-strongarm-style-latch-comparator-testbench",
+  "task_id": "v4-517"
+}

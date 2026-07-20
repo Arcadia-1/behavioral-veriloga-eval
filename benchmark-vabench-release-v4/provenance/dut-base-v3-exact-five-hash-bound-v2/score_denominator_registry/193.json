@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_short_reset_window/certification.json",
-        "certification_sha256": "e08b904b6aba916f17e21f3412382dca560f0e600a0f5e45d6e4b214a236d076",
+        "certification_sha256": "ae631e8137cdcede5b6141b0a66808269816190e98182186cc0aca96ef1b63b1",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "4e4d7640a193ad2505de733f6985c0179869f2698cbcf40b41bdc56b17120979",
+        "mutation_bundle_sha256": "d81b830654e64f3bceeffd61283ee98101c71f9260a99e6da833a50aedd33c9d",
         "mutation_id": "neg_002_short_reset_window",
         "source_catalog_certification_path": "negative_variants/neg_002_short_reset_window/certification.json",
         "trigger_condition": "Clears hide_state on timer expiry but leaves directional state latched, so overlap reset does not fully clear outputs.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "bf60fda4fb5a58a1b590bb50010b406a7b94cbe8baebd14d6a51cd3bd9805615",
+        "certification_sha256": "0453b654221690619713de4200d24c460f71022d129e13eca88d2b74e1447b87",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "8201a9f8596d36a4ab314c682cbc5cee0d83b5725e36330955c1b6fe4dcf9173",
+        "mutation_bundle_sha256": "41bdb7139b9d4166f17cfd9b5337d326579bdc15e38deff29151b5b9dd6e6961",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_invert_up_down_outputs/certification.json",
-        "certification_sha256": "2b255eba6cd6cfb020a79d78b89244dd7800dc72883fa36b31a893ac1f52fe36",
+        "certification_sha256": "c1e2af0b79189a92dfbeb07a3e54184fe68d05f5350b74368c93dd05682390e9",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "cda5992c3f448e082854bc075316033f171a1ce90728015d3e67354abbc88f1a",
+        "mutation_bundle_sha256": "f16697574b710a608cf91acfb7196af2edb497b6d56ceb59791a0bf5ac3c7598",
         "mutation_id": "neg_004_invert_up_down_outputs",
         "source_catalog_certification_path": "negative_variants/neg_004_invert_up_down_outputs/certification.json",
         "trigger_condition": "Swaps up and dn output state meanings.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_hide_state/certification.json",
-        "certification_sha256": "aa8a3811eeedc5b337b1cb7a09d753439335c690b5276be844380ee3356dde0f",
+        "certification_sha256": "c875465a2b51b89462f90a000a6011677fffa6bf9260c8d636ec56ab84770fb5",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "7b8a74a847de7fa4d035091438376b1be58129a0f7d3e347d07be1f782150413",
+        "mutation_bundle_sha256": "114d1862e5e2e49a2105dce313b79ab20b8d3f237c66c7577d331c5173a2beb1",
         "mutation_id": "neg_003_no_hide_state",
         "source_catalog_certification_path": "negative_variants/neg_003_no_hide_state/certification.json",
         "trigger_condition": "Does not assert both outputs during the reset/hide window.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "452eb281481486e4cf92690b4e1a5928dfedded7c2d5cefeab37c72b20579b66",
+        "certification_sha256": "1011aa7ef564ce9e7d59f33033b13d7973e51b8cd24beedb58e03a3b542b1413",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "a2e11f83b96f2695eb19469e5e5ee0e6b4caf60259a0168ce60953e9f81eff89",
+        "mutation_bundle_sha256": "a4c3f1b09aa96cfcd8c23d90ca17f4aba2db73eee954ff437713e2b7ae4d8886",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "PFD Tdomain Reset Window: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "a3de000e0488d8e18cf3a5e7be19ae1aa176dd6cb06b50d13dcd0e0b314e6748",
       "score_deck_sha256": "f4a60de72d810b82960ba49de4c2208135e3cbe4c8449e75139254fc2f94b9a6",
-      "task_certification_sha256": "4b46096d29a0e17e9581a0e258f2ab9f8dc7c558231726b1ad09c95c79e040a6",
-      "task_record_sha256": "b14aaa6384d6714b3395c9a58d3799e5d6b9b27f49715d3c516f9063f31a91ae"
+      "task_certification_sha256": "048a1f4504b886c5da25bde0b4e4ecb8f7a7fa45158d9522120cfada99d654cd",
+      "task_record_sha256": "1161e8b6a9da94004f686a6f9f7026df2fba99da39a77119705e1c7f2f40599c"
     },
     "release_dir": "193-pfd-tdomain-reset-window"
   }

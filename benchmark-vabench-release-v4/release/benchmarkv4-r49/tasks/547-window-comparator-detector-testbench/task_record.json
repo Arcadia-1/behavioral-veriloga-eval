@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "047-window-comparator-detector",
+  "checker_task_id": "v4_047_window_comparator_detector",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "9d25a52a40734d8e65bc0fd3d96e43f9e2b552a8a1e076fffc7ff87ba151da6d",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "1939b4f596b9755542049d6f39f5e124fa93ac2fe95d6d904cdb4e13d85a2977",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "047",
+  "family_spec_sha256": "4d9104674d180465df2340a8a887383268ad3ac63582a8d7b3d2de1ea1461af7",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "61bbf173546c7b9632b08d7c98f0c95e1e73a01ce3881961d09f165840f3a4e8",
+  "public_contract": "tasks/547-window-comparator-detector-testbench/public_contract.json",
+  "public_contract_sha256": "4e418fd707afb6a4e001432b8f5e0f72fb08a7ba3d6ef7ffd5cf57519ab72099",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/547-window-comparator-detector-testbench",
+  "task_id": "v4-547"
+}

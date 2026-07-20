@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001/certification.json",
-        "certification_sha256": "ce5938d55341f793aed947ead35e6e6a2ded60f50b7dfe10d6cc9e5496d6a0c9",
+        "certification_sha256": "b65dee9e78ee4755a279dc8214f335082337eecbda69f572ec840914c8520633",
         "fault_class": "inverts_the_static_differential_decision_polarit",
-        "mutation_bundle_sha256": "3c6d7b1266948777e48906663840e9308726551bfcdc9ad588a97ccdd1ac5b37",
+        "mutation_bundle_sha256": "f39739d865c2393f0c3c44f0de61da9bde5a2a7cf88cb931869cf3477d1a38db",
         "mutation_id": "neg_001",
         "source_catalog_certification_path": "negative_variants/neg_001/certification.json",
         "trigger_condition": "Inverts the static differential decision polarity.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003/certification.json",
-        "certification_sha256": "5a4682acb233db5fb8ed0781c8e9333d9e7bf172b3ee08a40720ed9b664f3d06",
+        "certification_sha256": "3833e979add8a3f9090b3733ce3e80ceed63016c2cf4db85f434ab8cbac65f39",
         "fault_class": "misses_one_transition_direction_across_the_compa",
-        "mutation_bundle_sha256": "b8810f1b4dcf4c5a2eeccaf6528ef08bff182809060708f5b62c38c6ce3992a0",
+        "mutation_bundle_sha256": "ffd224d0b5f31f0da4c17e8b08e7b43858e602720158c57cfd87a613d44bc688",
         "mutation_id": "neg_003",
         "source_catalog_certification_path": "negative_variants/neg_003/certification.json",
         "trigger_condition": "Misses one transition direction across the comparator threshold.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004/certification.json",
-        "certification_sha256": "a8eb68eb06876f705db077e54ef4b5062f6be221bcb85d805cca782f7fae3322",
+        "certification_sha256": "0854c6117f0d9d7ee08a6bf94d2e6f444d0142f4024077cf204955ad20fd3acd",
         "fault_class": "produces_a_stuck_or_one_sided_output_instead_of_",
-        "mutation_bundle_sha256": "9adb7f07a2b384f706c9db585c8734d4d40f198875aad02e4555c1af5775b2da",
+        "mutation_bundle_sha256": "5d4effa7d910218c4713fcd1eb2b1903be1c8bb3340d543681e23f1681bfe6bb",
         "mutation_id": "neg_004",
         "source_catalog_certification_path": "negative_variants/neg_004/certification.json",
         "trigger_condition": "Produces a stuck or one-sided output instead of rail-referenced decisions.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005/certification.json",
-        "certification_sha256": "3f47ca6b7e3f63f026c5e88daea5a6079d35704a979150f76aa05c066ef07feb",
+        "certification_sha256": "4eed113388ca7797809c12165b90b1ee99288aacf4c59351fac9003686682588",
         "fault_class": "fails_to_respond_to_the_falling_differential_cro",
-        "mutation_bundle_sha256": "b4234719d65ececcb5a35b9ffef8201181d9a57e1f8527f6821fe26e89d00568",
+        "mutation_bundle_sha256": "12d7d31b6eaf9e99c19c3bd16859f78a639c456bb7205f2d85a17d3a45781b40",
         "mutation_id": "neg_005",
         "source_catalog_certification_path": "negative_variants/neg_005/certification.json",
         "trigger_condition": "Fails to respond to the falling differential crossing.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002/certification.json",
-        "certification_sha256": "af1812e57d724aeaf6d0ae27efad5396e0f69baca40d252ad9d9fcd1011aaa85",
+        "certification_sha256": "8af0c2cf88e736d63a8e52c9539b6d20fb31f568ceedad8e18e4ed0d4f355be1",
         "fault_class": "shifts_the_effective_threshold_away_from_the_zer",
-        "mutation_bundle_sha256": "2fffe64d1d253910150ce03d6b26c3e044f3c6c82c3ba5e0e20e71ad04c4cef8",
+        "mutation_bundle_sha256": "482b85d78127e148f41058effe5be71de24ab0cd4e6dee1d14c1794ea619b527",
         "mutation_id": "neg_002",
         "source_catalog_certification_path": "negative_variants/neg_002/certification.json",
         "trigger_condition": "Shifts the effective threshold away from the zero-differential crossing.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "aa1f93b5264bcf7e16a0693299f3b653ab7c9ab01f0e13c5a9cd22bba1a9f842",
       "score_deck_sha256": "33bdb4a7614ce01bc2255158c9e0c403475b72cd65290d1c6305aa9c5907e4b9",
-      "task_certification_sha256": "d3d73c0ba4de50e8272479c8989354d7bf6f48c61539715a7800597ff2162d07",
-      "task_record_sha256": "97381984696f2f602ee02ca7647f72346c754a8f6a84d799b78573e9ca212032"
+      "task_certification_sha256": "1e0888947bfa02bdde72cda1e13d78dacb0a14720efded056015f0a487923b40",
+      "task_record_sha256": "cce0444dee0d1fded9d4de3a73c91354cfc425e340598648d8616e4d4feab512"
     },
     "release_dir": "045-threshold-comparator"
   }

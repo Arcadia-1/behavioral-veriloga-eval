@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "388-source-follower-buffer-macro",
+  "checker_task_id": "v4_388_source_follower_buffer_macro",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "16560b8e711d04710bbc286d78f01e2719c5153723f93ae16da17728eb5cf25f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "7254706ac49a2271c444b863f2345b580979fd100f63a1ae1ff0b7a9e21a9631",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "388",
+  "family_spec_sha256": "3b7f91d0b1e9b73c0a61cbf62ce7ec855c5d69bd94710500ae1136bee5c63d28",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "57045ead69dda657d3420ae0436628c1c51642d9d3003e332715304cbc1dbd13",
+  "public_contract": "tasks/888-source-follower-buffer-macro-testbench/public_contract.json",
+  "public_contract_sha256": "b94088c231c37f61cd820cb04433d7abf5058b7bb80d4907219e19f7f93b9b09",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/888-source-follower-buffer-macro-testbench",
+  "task_id": "v4-888"
+}

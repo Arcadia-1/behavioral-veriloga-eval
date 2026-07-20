@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "437fd8bc61c85a325fbac592d18497539b568bdcb80e275b3714b34b28563367",
+        "certification_sha256": "865dec6c6a23e33a1698fc7c83b09b4a132c540105389052125152a7c532e6cf",
         "fault_class": "zero",
-        "mutation_bundle_sha256": "f876e476a20fa274ed63dcf3c7516a7fb59238274f44bba5367d1905986c93f4",
+        "mutation_bundle_sha256": "9cae5b9cc2be6ef6069cd2093e8a9f9edf7195692faf4643eab59f69f31a1f3a",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "never reports duty",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_period_code/certification.json",
-        "certification_sha256": "f3937e46037cfbdece613506f384b4b4f51d8712c23550da06180c0155a0a542",
+        "certification_sha256": "9bab49b9d17c0dd736778fbdd11971d092624c87337bba9466610a419b090c92",
         "fault_class": "period_code",
-        "mutation_bundle_sha256": "6499c1f0b4af6a316a571b0bb9b65d11f0969d93ef7db1fbe8d433d582f28a10",
+        "mutation_bundle_sha256": "419489a912d1795e55466c6e946f464cebbd74d29219d35cfe2705afe6518141",
         "mutation_id": "neg_002_period_code",
         "source_catalog_certification_path": "negative_variants/neg_002_period_code/certification.json",
         "trigger_condition": "reports period instead of duty",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_valid/certification.json",
-        "certification_sha256": "645d790410acd35e21a0a186f564fbdbf25e8c1e4782ae680b6ab3e2e9b4b0f3",
+        "certification_sha256": "75d43647f7bfce7228f5e1023f5036655e4ad33f17d8264924fda69d3a250ead",
         "fault_class": "no_valid",
-        "mutation_bundle_sha256": "3707d32d8e7fa961a2989db8a573d3a0b17e254de8ccf0d942da88376a2e0b4a",
+        "mutation_bundle_sha256": "1c58dd4802b268c3ea54ca58db14a17ba58c479926022f2ccf3de8beee8e4646",
         "mutation_id": "neg_004_no_valid",
         "source_catalog_certification_path": "negative_variants/neg_004_no_valid/certification.json",
         "trigger_condition": "does not assert valid",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_constant_half/certification.json",
-        "certification_sha256": "2ee41e99b2b6efc11139b369dafa0d7519977a1599833731dcf5a1c03b4b27bf",
+        "certification_sha256": "ec468f81a3f301145b901eb7d82c09f26dfc306b17d7b8f56a33563ee8601c83",
         "fault_class": "constant_half",
-        "mutation_bundle_sha256": "9665852f03751b0ccd7a0076441e182f1ffe10870ecf27bc89dd41d9afe5db54",
+        "mutation_bundle_sha256": "d86f0095adfa09579e5f998ce3966a275445eb2cba002ae91ee5e5031a7ea126",
         "mutation_id": "neg_005_constant_half",
         "source_catalog_certification_path": "negative_variants/neg_005_constant_half/certification.json",
         "trigger_condition": "always reports half duty",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_inverted/certification.json",
-        "certification_sha256": "5a42b8d8186a51f09a2e6495e2a838e6bd3ce364f095e5153dc6a408192af270",
+        "certification_sha256": "6f42953e1a25ac6edf5b6a94b8787dbb8178811652172690caf87b123769559c",
         "fault_class": "inverted",
-        "mutation_bundle_sha256": "a9113ee736d63ef2549f8f83d12bcb0eef2e8b55ab9749714eb5d1d5a9f20300",
+        "mutation_bundle_sha256": "7ac7afd31465d96d09218ae2ebac9d558ee3142c5d368ec80752703c424d9de8",
         "mutation_id": "neg_003_inverted",
         "source_catalog_certification_path": "negative_variants/neg_003_inverted/certification.json",
         "trigger_condition": "reports low-time ratio",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "fda5bb961033e4daae7089565658e4bfb2f8f4629d2c3de2e10eee0b1985365e",
       "score_deck_sha256": "89638420e8b1d299ef8830315e7bef569f52a0e05db95d51e1facc006cb3e72c",
-      "task_certification_sha256": "98eb24025352b34534ffc229c9393561d7b13db5038e211f0602ee0d99f50137",
-      "task_record_sha256": "6b5389f978d99a54b468016392e78928a839130bacad296e70a87e31d76b7220"
+      "task_certification_sha256": "d9a6a85a6ec21b8a0078dd0a33b677e61dd47cd16b8d089ea51f63f8c904e8a5",
+      "task_record_sha256": "e642e24ec03bab9d76d7c61290c131ea0231e9804aca5809e699d313013a778e"
     },
     "release_dir": "060-duty-cycle-meter-8b"
   }

@@ -249,6 +249,32 @@ def refresh_mutation_summary(task: Path, mutation_ids: list[str]) -> None:
         write_json(path, payload)
 
 
+def refresh_mutation_artifact_hashes(task: Path, mutation_ids: list[str]) -> None:
+    """Bind catalogs to the certified gold and mutation source bytes."""
+    evaluator = task / "evaluator"
+    gold_sha = tree_sha_by_file_hash(evaluator / "solution")
+    for relative in ("mutation_catalog.json", "mutation_bundles/manifest.json"):
+        path = evaluator / relative
+        payload = read_json(path)
+        payload["gold_bundle_sha256"] = gold_sha
+        rows = {str(item.get("id") or ""): item for item in payload.get("mutations") or []}
+        for mutation_id in mutation_ids:
+            row = rows[mutation_id]
+            bundle = evaluator / "mutation_bundles" / mutation_id
+            row["artifact_hashes"] = {
+                artifact: file_sha(bundle / artifact)
+                for artifact in row.get("changed_artifacts") or []
+            }
+        write_json(path, payload)
+    derivation = evaluator / "derivation_manifest.json"
+    if derivation.is_file():
+        payload = read_json(derivation)
+        payload["mutation_catalog_sha256"] = file_sha(
+            evaluator / "mutation_catalog.json"
+        )
+        write_json(derivation, payload)
+
+
 def update_registry_row(source: Path, family: str, row: dict[str, Any], task: Path) -> None:
     evaluator = task / "evaluator"
     row["hashes"] = {
@@ -271,7 +297,7 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument(
         "--release-revision",
-        choices=("r44", "r45", "r47", "r48"),
+        choices=("r44", "r45", "r47", "r48", "r49"),
         required=True,
         help="labels the evidence; revisions never share a certification report",
     )
@@ -297,6 +323,14 @@ def main() -> int:
             f"evidence coverage mismatch: missing={sorted(set(rows) - set(family_cases))} "
             f"extra={sorted(set(family_cases) - set(rows))}"
         )
+    if args.update_source_certifications:
+        for family, row in sorted(rows.items()):
+            task = source / str(row["release_dir"])
+            mutation_ids = [
+                str(item["mutation_id"])
+                for item in row.get("active_mutations") or []
+            ]
+            refresh_mutation_artifact_hashes(task, mutation_ids)
     source_definition_sha256 = source_certification_definition_sha256(source, rows)
 
     compact_cases: list[dict[str, Any]] = []

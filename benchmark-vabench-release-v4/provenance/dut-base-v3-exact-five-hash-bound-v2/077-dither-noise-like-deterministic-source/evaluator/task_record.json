@@ -3,7 +3,7 @@
   "checker_task_id": "v4_077_dither_noise_like_deterministic_source",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "36f358f33cbd7d2c6202ddff42093b42b1f29aff76a4f3ec7f613598ba1f0196",
+    "certification.json": "f39c1a0a489acbf4be4312c5cf5ac6a19bdbb8bcd13703a1051a6507da3d2454",
     "checker_profile.json": "e1d5aae1f685d6eb083c6cd7eabe7d2694b003995b37c8708c94c7f3ba6a1a4c",
     "derivation_manifest.json": "389aab997c193296db3e9962ad5f7ab67dfb58b03a87fd7ba6c49bf3c65f56ae",
     "family_spec.json": "5e50fbaad6fb906f8523500f90e4ddeca0860ca09405e73ed9cdb0359974534c",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "36f358f33cbd7d2c6202ddff42093b42b1f29aff76a4f3ec7f613598ba1f0196"
+    "sha256": "f39c1a0a489acbf4be4312c5cf5ac6a19bdbb8bcd13703a1051a6507da3d2454"
   },
   "release_dir": "077-dither-noise-like-deterministic-source",
   "schema_version": "v4-canonical-dut-release-task-v1",

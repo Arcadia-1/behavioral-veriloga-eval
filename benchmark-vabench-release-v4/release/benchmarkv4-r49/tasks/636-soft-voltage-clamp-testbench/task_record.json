@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "136-soft-voltage-clamp",
+  "checker_task_id": "v4_136_soft_voltage_clamp",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "8dbbe040da364ac8287ee7f96bf209c2e7105cd74b6e6ceb31cf4e5eeceba52c",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "4c0f0856667b0e715a0a7b4da62b01ba22b1b77349ad39ba5d05d647c2d125cf",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "136",
+  "family_spec_sha256": "18b6b25e8003f6cf90102b35c724b2b7da8a088e267099364001d84da64ccf2b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "75256eb00bc2a0340337242572dfc56b66c035634c7d9b773bc847a9c88e0a4b",
+  "public_contract": "tasks/636-soft-voltage-clamp-testbench/public_contract.json",
+  "public_contract_sha256": "42b3edb3eb7cf2a94912b421e1acd084908c0f9fad508c8df1b4b1d91e30d849",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/636-soft-voltage-clamp-testbench",
+  "task_id": "v4-636"
+}

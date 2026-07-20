@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "229-accum3-pulse",
+  "checker_task_id": "v4_229_accum3_pulse",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "701ba601cc3c4874108c5bc099ee9a4ee5da9dca84eef3babda1caa2030e3a7f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "135082aacc0b0edea74fcdb577fcbded4817e160a5564872ab129f7337edb239",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "229",
+  "family_spec_sha256": "0b29b2d49c5e3d523e54e65874aa0dfc13e461d6ea3f832b40132dfdcc837718",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3e708eb475cbd2b7c37f8cb27bfcebdeebc1c7e814674aec3e1c0865d86143eb",
+  "public_contract": "tasks/729-accum3-pulse-testbench/public_contract.json",
+  "public_contract_sha256": "7ec9a14ab9e01009471f8c6f53f662866c30bff75ae22627251734a515b05044",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/729-accum3-pulse-testbench",
+  "task_id": "v4-729"
+}

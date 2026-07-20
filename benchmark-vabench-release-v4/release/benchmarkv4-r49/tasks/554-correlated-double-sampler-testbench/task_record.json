@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "054-correlated-double-sampler",
+  "checker_task_id": "v4_054_correlated_double_sampler",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "705753659412401fa8e8196f5ae18a78cc386af1ac66f90d47575f062653dcd4",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "f79a8192cf3293a7c37a1e853fb08a8872e586f488cfa5d03be4e564445db845",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "054",
+  "family_spec_sha256": "541c0b453fafa43eee5f79ba73bb4d8acfa326df6ed23d63373eeaa9771d2513",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b41bc12b6f55b365cbdf248cbcaccf60e2e991ca775e783bf5bc0a9adab7515d",
+  "public_contract": "tasks/554-correlated-double-sampler-testbench/public_contract.json",
+  "public_contract_sha256": "878615f17657f8fdedb1d8e76d7fe99a800bf62be0c1aef9040ab35c6880d9f9",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/554-correlated-double-sampler-testbench",
+  "task_id": "v4-554"
+}

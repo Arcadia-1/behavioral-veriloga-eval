@@ -95,6 +95,8 @@ def check_v4_foreground_rdac_calibrator(rows: list[dict[str, float]]) -> tuple[b
             iteration -= 1
             primary = polarity
         else:
+            if not decision_low:
+                codes[0] = 0
             active = False
             primary = completion
         probe_time = edge + settle

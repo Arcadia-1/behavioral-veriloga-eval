@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "flash_adc_threshold_taps.va"
+  ],
+  "canonical_dut_source_slug": "154-flash-adc-threshold-taps",
+  "checker_task_id": "v4_154_flash_adc_threshold_taps",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "730d2cf6d8af42a22145e925abfc039e09eb725713af5b2dd3d3fbed1ed58b04",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "a40ef1032515cdc1b1902068996eb1b67a299374859fcbe4055d3d99d26d6c63",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "23e0a077bbf135cc8247750a4b5ce8cd99ba10ad0fe5743716a66ca96f1ef998",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "154",
+  "family_spec_sha256": "c6ca1c452ddd07e7eb0ddbbbfa4511c0b1983abcc21893ea0ca20b119d95d04c",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a4aadebcd88f3025f11884ba12786b0a8ede66a786d290a5292d07f3ae12ef0f",
+  "public_contract": "tasks/1154-flash-adc-threshold-taps-bugfix/public_contract.json",
+  "public_contract_sha256": "0d5716ff80f612b5692fb42e64fa3b422651d071cde4069d45b71d40891d03b8",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1154-flash-adc-threshold-taps-bugfix",
+  "task_id": "v4-1154"
+}

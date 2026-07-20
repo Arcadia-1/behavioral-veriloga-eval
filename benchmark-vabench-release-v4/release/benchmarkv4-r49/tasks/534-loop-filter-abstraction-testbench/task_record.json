@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "034-loop-filter-abstraction",
+  "checker_task_id": "v4_034_loop_filter_abstraction",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "9d800e385d5f2655fa816abbad7d6c27c3ea105453c93abeb0ae35610e9c52fa",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "fcd8446bcf820d117dbc27f4e4582a59847d77967ba9ff80f9d60fae361bf203",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "034",
+  "family_spec_sha256": "d2a9cbf828ac5c369dacbc1deea2daac348979070bac443a25d51875b859b7f9",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "fae7e16eca5fde3f8956261040925162315c9ce90de75ee4601c816acbeb96eb",
+  "public_contract": "tasks/534-loop-filter-abstraction-testbench/public_contract.json",
+  "public_contract_sha256": "56338b67f5c0649b8b3dd9418b04dd6a3ac6c256df0bf2887124be9138bf6365",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/534-loop-filter-abstraction-testbench",
+  "task_id": "v4-534"
+}

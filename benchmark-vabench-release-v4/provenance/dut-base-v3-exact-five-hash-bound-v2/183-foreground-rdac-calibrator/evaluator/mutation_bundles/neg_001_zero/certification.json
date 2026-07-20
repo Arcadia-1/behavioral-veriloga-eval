@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_RDAC_OUTPUT_LEVELS satisfy the public contract; fault class zero_stub_output is rejected",
-    "observed": "EVAS: v4_183 checked=147 mismatch_count=47 coverage=clock_rises=7 decisions=[0, 1] active=False; P_INITIAL_MSB_TRIAL_CODE checked=7 mismatch_count=1 expected=dc6=1+/-0.08 observed=dc6=0 sample_time=2.6e-10 metric_gap=1; P_CLOCKED_RDAC_DECISION_SEQUENCE checked=17 mismatch_count=16 expected=cvinp_tracks_vrefp=0.78+/-0.02 observed=cvinp_tracks_vrefp=0 sample_time=2.6e-10 metric_gap=0.78; P_DECISION_POLARITY checked=43 mismatch_count=18 expected=dc5=1+/-0.08 observed=dc5=0 sample_time=1.265e-09 metric_gap=1; P_CALIBRATION_COMPLETION checked=24 mismatch_count=12 expected=en=1+/-0.08 observed=en=0 sample_time=2.6e-10 metric_gap=1; P_RDAC_OUTPUT_LEVELS checked=56 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0",
+    "observed": "EVAS: v4_183 checked=147 mismatch_count=46 coverage=clock_rises=7 decisions=[0, 1] active=False; P_INITIAL_MSB_TRIAL_CODE checked=7 mismatch_count=1 expected=dc6=1+/-0.08 observed=dc6=0 sample_time=2.6e-10 metric_gap=1; P_CLOCKED_RDAC_DECISION_SEQUENCE checked=17 mismatch_count=16 expected=cvinp_tracks_vrefp=0.78+/-0.02 observed=cvinp_tracks_vrefp=0 sample_time=2.6e-10 metric_gap=0.78; P_DECISION_POLARITY checked=43 mismatch_count=18 expected=dc5=1+/-0.08 observed=dc5=0 sample_time=1.265e-09 metric_gap=1; P_CALIBRATION_COMPLETION checked=24 mismatch_count=11 expected=en=1+/-0.08 observed=en=0 sample_time=2.6e-10 metric_gap=1; P_RDAC_OUTPUT_LEVELS checked=56 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0",
     "violated_property_ids": [
       "P_RDAC_OUTPUT_LEVELS"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r47-full400",
+    "campaign": "r49-full400",
     "checker_id": "v4_183_foreground_rdac_calibrator",
-    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
+    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
     "trace_row_count": 765
   },
   "family_id": "183",

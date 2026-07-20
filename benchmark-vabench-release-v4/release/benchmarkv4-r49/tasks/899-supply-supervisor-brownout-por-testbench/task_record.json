@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "399-supply-supervisor-brownout-por",
+  "checker_task_id": "v4_399_supply_supervisor_brownout_por",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "cbad3da7cec8534c461efaae5c355da981e595428b565de09a4514e06d7cff91",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "0fd97c18b89b1ea7f00e9d3a3bb5141ac49d66f965e990dd4d847d12bf2540fa",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "399",
+  "family_spec_sha256": "580af84d460031e716a40619030de213e358ced1769c98a6971b26e1b1265956",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a5307d59860cc9509dd02eab83a8048541d5ba61da7e448c781d90f33455535a",
+  "public_contract": "tasks/899-supply-supervisor-brownout-por-testbench/public_contract.json",
+  "public_contract_sha256": "dbc810b0b91f24d6fe4595d5792ac23cfab0e5c353687ec4790ec517294ac4d9",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/899-supply-supervisor-brownout-por-testbench",
+  "task_id": "v4-899"
+}

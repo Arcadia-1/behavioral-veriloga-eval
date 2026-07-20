@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "003-pipeline-adc-stage",
+  "checker_task_id": "v4_003_pipeline_adc_stage",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "8d4838ae01e29aa71a3335cdde2706e93be524e7d4af0d4e9fe1f2f29009b42c",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "664417b4736251a2aaf650f9138de43ce26382db938e50a8e5624f45dac205bf",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "003",
+  "family_spec_sha256": "337a0786f2f86c0dbbf62f8ef666fab878ed3f0a9a9dc47f2b1690d955245fa2",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1b06ac3676096230609cf153af6e33ecc823340c562d2180fa6c1408024a4b1e",
+  "public_contract": "tasks/503-pipeline-adc-stage-testbench/public_contract.json",
+  "public_contract_sha256": "06c142f1f6fc068901f0151ac64eef078937fa2beb0c7244a48929b3296104bf",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/503-pipeline-adc-stage-testbench",
+  "task_id": "v4-503"
+}

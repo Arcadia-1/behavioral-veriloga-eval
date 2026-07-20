@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "138-voltage-controlled-gain-amplifier",
+  "checker_task_id": "v4_138_voltage_controlled_gain_amplifier",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "e09aff21b45696bb844e64f5d6e2f37dda0ffc9524d21664192957f0f2da87b0",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "a165db3f3c64bee12f2a4fbaef92622aead7c79e20f984a34ebf7c465be9ec50",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "138",
+  "family_spec_sha256": "7bfc808d5d32d05fe2786844112f3b6027625c21aec7ed71c21e22f97e09faaa",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "886758dcbbd4030e7c6fd9236ad87f915a6ab752318aa98ecac1d2a26f0cccef",
+  "public_contract": "tasks/638-voltage-controlled-gain-amplifier-testbench/public_contract.json",
+  "public_contract_sha256": "bd4ec853589c452e31fe46328defc37e6735a0b11896eda22dcad2ab43ceb1ee",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/638-voltage-controlled-gain-amplifier-testbench",
+  "task_id": "v4-638"
+}

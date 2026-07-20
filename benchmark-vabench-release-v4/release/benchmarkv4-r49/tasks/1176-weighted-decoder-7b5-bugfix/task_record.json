@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "weighted_decoder_7b5.va"
+  ],
+  "canonical_dut_source_slug": "176-weighted-decoder-7b5",
+  "checker_task_id": "v4_176_weighted_decoder_7b5",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "913d1f7d463041506b0525c0dc8a49d8ab5b829a1d76c45f71a0f820097c05db",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "514b9fe44da90333d68db581ebc00d9d0db6d6419fb32ee017899c4ba611a49a",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "216ff74a030d73aec02e2915e9ade859dc1268268baf535a6224033ad5cf33fe",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "176",
+  "family_spec_sha256": "9f12dffffcd5a8760bbfab45382bb15165792d0381a8f735d4fbf45bd6237d68",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5cd70fa048e9eb97688bbb66b3ea1af280c8b036b6de5417547b7b7bd2d8b186",
+  "public_contract": "tasks/1176-weighted-decoder-7b5-bugfix/public_contract.json",
+  "public_contract_sha256": "b5ed41928c2653d612096ca31590f3b26581a0d8ab6cd6ee37e3146d4f1f7917",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1176-weighted-decoder-7b5-bugfix",
+  "task_id": "v4-1176"
+}

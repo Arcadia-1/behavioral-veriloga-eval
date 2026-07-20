@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "cac5b5fc44ee6f6eb13a290aec00b3b79a6c0a27379dd2bef6fabba9aae9d968",
+        "certification_sha256": "0276cbe832d6def359c652e24e7183b6470a77e2ccf08c54ba7213096e0dcfe7",
         "fault_class": "never_reports_latency",
-        "mutation_bundle_sha256": "528af44f7fdf3ddf15249e60ffa34f1bae0a59f101ad4460e326ac6c49b11dbe",
+        "mutation_bundle_sha256": "d66392341249793a2c16effd95e8d332feb421d92fb8f01d2a38a4cc68dce3b5",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "stimulus exercises never reports latency against the public observable contract",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_count_ready_cycle/certification.json",
-        "certification_sha256": "8f804d1a11c0069a7eb0e130afe24495bcb84bceea3dff6a38306a8d3eb44365",
+        "certification_sha256": "aaa9cd520e4cc8bc03e58ae87ffdf72b22c7861b6b28d9af501aa8a5b3ae5065",
         "fault_class": "counts_ready_cycle_too",
-        "mutation_bundle_sha256": "4a31709e605a31e50db7a3a3e468dd9ecd130abff77fc62bd8fc3390c500c3cc",
+        "mutation_bundle_sha256": "2ecdb53c809031ab1e818270219b2e932296341d01789266b17f68e00c27e395",
         "mutation_id": "neg_003_count_ready_cycle",
         "source_catalog_certification_path": "negative_variants/neg_003_count_ready_cycle/certification.json",
         "trigger_condition": "stimulus exercises counts ready cycle too against the public observable contract",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_done/certification.json",
-        "certification_sha256": "9d4cab0c5c139b32dd04a83d873b4892b9b51fabcc767e8e51226be0d267703d",
+        "certification_sha256": "f21fa97f5ff018d1b09e715ee7d3bb325e33ee5f7ae9d5b03d519fa49068f319",
         "fault_class": "does_not_assert_done",
-        "mutation_bundle_sha256": "8984fa8b7de08dad0d16b521029f4a5c47c5b8dea4c3bbc7be5fa83d57d009cb",
+        "mutation_bundle_sha256": "fb88132abf2c43c1f7d367f374728748c1f518106788fd2a781b53013ac45a85",
         "mutation_id": "neg_004_no_done",
         "source_catalog_certification_path": "negative_variants/neg_004_no_done/certification.json",
         "trigger_condition": "stimulus exercises does not assert done against the public observable contract",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_ignore_valid/certification.json",
-        "certification_sha256": "a1fd96bf67e3307797787d41d1e6147e64302c4f6c58bfb1bd4a82357da4dce4",
+        "certification_sha256": "3905d769f8ebd43efcb6579c3ee292e654d33019affffe70256ac59d9e850e0c",
         "fault_class": "starts_immediately",
-        "mutation_bundle_sha256": "3f4cc52447c6758e23ced4a07c419eddd8d223c30342b62b5c070baee1097a9d",
+        "mutation_bundle_sha256": "d87fc150c3b70b220be2cb93416f447d3fe7c4b9c2e915e25f6b499a7cce276f",
         "mutation_id": "neg_005_ignore_valid",
         "source_catalog_certification_path": "negative_variants/neg_005_ignore_valid/certification.json",
         "trigger_condition": "stimulus exercises starts immediately against the public observable contract",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_off_by_one/certification.json",
-        "certification_sha256": "7f82d6bb2f606ee78c1a4ad0364b8db91fb413eb3cb18cb6094d06448465a764",
+        "certification_sha256": "310489c4496cbc1d013a514b9044bd16648731268561a6c2a3ffa470f2aecfe0",
         "fault_class": "starts_at_one",
-        "mutation_bundle_sha256": "13025c89463ef67d04cc9c9040ca434dbf3f2d403cec746e4cfd6e40f5d6699a",
+        "mutation_bundle_sha256": "4d523be6394d44b8029845be402ceae64cb33337ea6469c839695e11b42c6059",
         "mutation_id": "neg_002_off_by_one",
         "source_catalog_certification_path": "negative_variants/neg_002_off_by_one/certification.json",
         "trigger_condition": "stimulus exercises starts at one against the public observable contract",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "6d29c188bc31469723201abcbf390c8dfe935059fac7368bab58bf5d74b84f30",
       "score_deck_sha256": "f5b3744568c4ef863eac457b6b4f5c85ce766b3f0d1b68938dc19e4667c74a24",
-      "task_certification_sha256": "5cb13ef266675df1dab692ee89305757d2c3f042f203f69fb75c2629b95c6efd",
-      "task_record_sha256": "19c93142dab2e1f9a20128daba2b6764404867c8ab374569868a783a71f42255"
+      "task_certification_sha256": "7c491a55c9421184e3c446606f3aa4e5479bc1e743fb48d2725fa9c6cd2c3416",
+      "task_record_sha256": "b5dd16c7eac5867d6e9e27a5369fdf387bc8f2a566db75292d4955d1ce902702"
     },
     "release_dir": "062-latency-counter-ready-valid-12b"
   }

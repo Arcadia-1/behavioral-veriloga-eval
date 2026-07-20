@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_wrong_mask/certification.json",
-        "certification_sha256": "c48c754c28290c81eb08f2dbfed7b3e817b15b8535f08ef997ca848bf660e9fa",
+        "certification_sha256": "0928931227f1dce8471c79c639b5a04842ba7305470188046191a1f42953d520",
         "fault_class": "mask_ignored",
-        "mutation_bundle_sha256": "856f068660ccf2a22fb9d22f4336dd2e776f7fcf01a9cc67e8b4f92668a4e4f1",
+        "mutation_bundle_sha256": "180584466812d512f122c9cd0b040c0e8d0f714f7be0a2699dfcd1f9b4f49121",
         "mutation_id": "neg_001_wrong_mask",
         "source_catalog_certification_path": "negative_variants/neg_001_wrong_mask/certification.json",
         "trigger_condition": "wrong masked update",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_mask/certification.json",
-        "certification_sha256": "89e572af9955a1080e807eb423a0d586aac96b0da6356a5efb2087fbdcf5b6be",
+        "certification_sha256": "0ca55a23036c0ebd51d34a54012c88561227dbc098c00c3abbf0a907dcf15ebf",
         "fault_class": "mask_polarity_inverted",
-        "mutation_bundle_sha256": "6ae8b69968258bc21602150817580bc058f9bf7ccd20f82ef91b1807f8bde502",
+        "mutation_bundle_sha256": "666ea9bc61c5139436c0abd9e47cc62847a5bdf671d022e6890f8f02ffe7b832",
         "mutation_id": "neg_002_wrong_mask",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_mask/certification.json",
         "trigger_condition": "wrong masked update",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_mask/certification.json",
-        "certification_sha256": "8cb02ded7590c4841cff42c8f6757c8d2e20936299d3c3611e41bd7985ccce7d",
+        "certification_sha256": "7b7c2bc5248b8b2f8b61270d2bd1a099c228665d7e0ebb18759bdb2fb1a8e069",
         "fault_class": "mux_replaced_by_and",
-        "mutation_bundle_sha256": "0c6b58960512b02ddeec6c2ab243a0334c1c6362106d5d12224294dd81129146",
+        "mutation_bundle_sha256": "560a590a45486cff50c7ee189f635c8761866f77459a71c0d3847d38192d1324",
         "mutation_id": "neg_004_wrong_mask",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_mask/certification.json",
         "trigger_condition": "wrong masked update",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_wrong_mask/certification.json",
-        "certification_sha256": "5e03c5fa1e373c9ab7d6e85e7aa4cc5a82a1826b79d147dffe8ecc625c24f4f0",
+        "certification_sha256": "a6569f12a664ae8e032c66a31dd1994fe80ff5e65814e14243940a3b0fa2679b",
         "fault_class": "output_stuck_low",
-        "mutation_bundle_sha256": "0efbde56648f0232e6d3b17b2dcbd75a02ddc4337415e71382165a0723984886",
+        "mutation_bundle_sha256": "c5b7ba2f610acfc2a0f0bec727d3b9c1a003060fc246a9c0151003bf3821d0fa",
         "mutation_id": "neg_005_wrong_mask",
         "source_catalog_certification_path": "negative_variants/neg_005_wrong_mask/certification.json",
         "trigger_condition": "wrong masked update",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_mask/certification.json",
-        "certification_sha256": "8b6b368f7da391e0f2aa3ef104de2c45ae0c93f83852dc510204568fa2805250",
+        "certification_sha256": "b70336d0e63e832a113f08c93fe1675022197cfe1b69c3702797ef304e8d6b34",
         "fault_class": "bus_bit_order_reversed",
-        "mutation_bundle_sha256": "c3e4d36c74ea608509c76d996c65c13189a31863397b503afc465078905f1558",
+        "mutation_bundle_sha256": "7416e8976182acf1bc3d5671f2f01c6fe487531e4b09a229e656644be72be260",
         "mutation_id": "neg_003_wrong_mask",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_mask/certification.json",
         "trigger_condition": "wrong masked update",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "fc56e9fac5ba2ac15a621b9bfafd41f1d41387105c4505c36bee132b311dee11",
       "score_deck_sha256": "be1f691af4b6abd9f4f846494678e0ca5c260d7d852239982c95df46b61907d8",
-      "task_certification_sha256": "db12fa64db53f58662930ca7a0d8eb4610d3db0fd50ae38c2b21198ec369601a",
-      "task_record_sha256": "2dc33cbc9817317c2dfb992a254e970be9a236b90c60bd2b64fb218cd1d87313"
+      "task_certification_sha256": "087973ee41a9a2c9d5731727b0d9f7f46a7eff197a976ae20d031b3d852c1765",
+      "task_record_sha256": "43bf2133edba7eb54e9f20225d4afdd2a01ff4ac6c6f660be21e827cb2b8c2a0"
     },
     "release_dir": "058-masked-config-update-32b"
   }

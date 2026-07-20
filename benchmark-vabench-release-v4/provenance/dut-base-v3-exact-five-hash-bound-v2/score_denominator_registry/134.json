@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_missing_offset/certification.json",
-        "certification_sha256": "0ac2de0a0ee438be0d0972a732d0f7e6fe7c95aaacaf56b4cc1345cbfc20c5d5",
+        "certification_sha256": "fd6e8e4f61b7ed78e7ba571113cfdf2b9d1f4533905a31235be2082779474e91",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "520f4d8832592241d2c8126f830b2a69620664b88f50a07908f998b53016f9b7",
+        "mutation_bundle_sha256": "eefb5e8921464c1e5a9ff5da136ca85770172789042ddcef8dbe03493c80a842",
         "mutation_id": "neg_003_missing_offset",
         "source_catalog_certification_path": "negative_variants/neg_003_missing_offset/certification.json",
         "trigger_condition": "Does not subtract the 0.05 input offset.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_single_ended_input/certification.json",
-        "certification_sha256": "6f89f6cf6ad90e0efa217b2396143452d0c3e76bd93faa93ce9ddb9ab724f5d6",
+        "certification_sha256": "2b454774509179a94d194914cbf649c81384c19d5375d736b44ac5ad1ae68920",
         "fault_class": "single_ended_input",
-        "mutation_bundle_sha256": "1c39d472e145fcf664a75c9cb938ea3f1587a255cb9035a6e25f72fc03a3f736",
+        "mutation_bundle_sha256": "02c98871344b4cfc4b076e5c8207ca4094c68dc36cef4c1fdbaf67046ba64ef9",
         "mutation_id": "neg_002_single_ended_input",
         "source_catalog_certification_path": "negative_variants/neg_002_single_ended_input/certification.json",
         "trigger_condition": "Uses sigin_p single-ended instead of the differential input.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_gain/certification.json",
-        "certification_sha256": "c9cdb12c781ee36caa418b9f7324367eaac412d8a14c2c50c494e978cab874c9",
+        "certification_sha256": "b2b008f422a411725efe03ba3eae849dcf5eb74ff7a0ebef49fa5bc1c0e1d6cd",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "32cffda0c1a46611a62ed3a84e4a164a39696ce9abd338fac7f25ec8e8597e0d",
+        "mutation_bundle_sha256": "af6ce1a09de1dd706b8c49888b6e5bd0a8a6d659bbc1cea088b29541980bc511",
         "mutation_id": "neg_004_wrong_gain",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_gain/certification.json",
         "trigger_condition": "Uses gain 1 instead of gain 2.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "d2b62b1d4993d438e6a7a889dd11450c55c86e2d11efbd94f640af75da708039",
+        "certification_sha256": "791f4ea3b979e9beb2ff82599ff264ecc75d89a118bdc94f2cb641972d491620",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "378ed9cfec6975c9798fef46847e60d0fd5f7a868fb2b596e29d20e0663a4abc",
+        "mutation_bundle_sha256": "63b83129f06b40d0eda1877b474f98143f08e133333c5443e4be55612c7bd6ee",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "2caa2b1c4bc2a7dc9e28a0d137619f40326465fbb2a33ba5b193401f3f51c9f8",
+        "certification_sha256": "3a6adb4c61409d1ba1d8c0afa952171e971340de7f1fd54787b2e9860fd55f8d",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "92d1ab56c1db5a40dd337de49218ebf8e97452180e1e8aa13cef1d8c3e180cc3",
+        "mutation_bundle_sha256": "eea8a6654ccce9c16457c4893363e3968e9fa9d855e897c9cb247e1f3e1b5d37",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales the amplified differential output too low while preserving the module/interface shape.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "607f7fde8bb70945799d9b1a1850e15fef1886647900f562020db9d711ade3c6",
       "score_deck_sha256": "a1835c69cdd0344fe64b5beec2f170083d06275b9441708bf49eabc0f2e41c1f",
-      "task_certification_sha256": "c4c877327d9279e7088495d9a588172ec4750b2dafb6d970f6c39b1713a583a5",
-      "task_record_sha256": "99efa4ff8ce39b1fbb8305175ec540d1caeaf04db4c6985636bc4e71800a8ea4"
+      "task_certification_sha256": "7212cc8b41b9d192447aa6e1fa6fdd3ed39fc9356297b4b3c7429315a0619161",
+      "task_record_sha256": "aaea1386a525e1cc11f419864494e45868791c5fa5d906f0c8126cfe0bd9c349"
     },
     "release_dir": "134-differential-amplifier-core"
   }

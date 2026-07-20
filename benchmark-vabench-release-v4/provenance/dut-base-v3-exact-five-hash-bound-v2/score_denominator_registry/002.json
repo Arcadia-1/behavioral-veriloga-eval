@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_ignore_calibration/certification.json",
-        "certification_sha256": "cadff9a9763684b6f1831a08301ce2bd206df2f0e064b57a9005be9b8fd9826f",
+        "certification_sha256": "0ef43768c58fe77f636bdaa556a89f4ff4dc64d417019ea88af45b40834c380d",
         "fault_class": "calibration_omission",
-        "mutation_bundle_sha256": "00bd1664beb4a7e6190285fc5ba26befe0b12802c71b6ee8d073b6ad84aedb4f",
+        "mutation_bundle_sha256": "cba79d452ee8d9ee365865e77f71f8bd6e17d3a4383eb9be5d9c3820baf03c6e",
         "mutation_id": "neg_001_ignore_calibration",
         "source_catalog_certification_path": "negative_variants/neg_001_ignore_calibration/certification.json",
         "trigger_condition": "nonzero calibration code is clocked",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_reversed_polarity/certification.json",
-        "certification_sha256": "a6eeebbf7276658c965496015f919643f8836ac5456e0a703c13fadd1e0eb606",
+        "certification_sha256": "b48ef05541fba8f3f80d716d40589818c068304125867fba2347b9bff6c01730",
         "fault_class": "differential_polarity_swap",
-        "mutation_bundle_sha256": "2214eee7d935ff898a79c9f83fe7c9b5f741992ac730bacaf93d4a8c87fe5dec",
+        "mutation_bundle_sha256": "9057256b85ff0fe86fe1b353ad3decfd4de6b0407b6b43031738829ccfa0cd82",
         "mutation_id": "neg_002_reversed_polarity",
         "source_catalog_certification_path": "negative_variants/neg_002_reversed_polarity/certification.json",
         "trigger_condition": "code moves above or below midscale",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_common_mode_error/certification.json",
-        "certification_sha256": "4b25741ba742768478c84ade15fe9a0e8e2981699d033804d8f3fdd0d91b8d6b",
+        "certification_sha256": "7e02792aacb4c63d5ce10d5f510120cc36a186996ead46a1fee39071674396f1",
         "fault_class": "common_mode_offset",
-        "mutation_bundle_sha256": "d6bf7b1e99ad82578ecb5f9350d8f171676145bb6c22c62d2417e0823b4e1c76",
+        "mutation_bundle_sha256": "4757817a4c8cd3cf1ea0b21db44793855c54435a7efe22e9348af7d60a5960f1",
         "mutation_id": "neg_005_common_mode_error",
         "source_catalog_certification_path": "negative_variants/neg_005_common_mode_error/certification.json",
         "trigger_condition": "any code is clocked",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_asynchronous_code_update/certification.json",
-        "certification_sha256": "c56f6182563e359bf8549aad5d1ab62705adc68243bb4c918df56e99ad7e9fc7",
+        "certification_sha256": "f23a5ac7b6d47c9c24d8abb6a4f57382762fc81d3d26cb12569e34576b64d0d3",
         "fault_class": "asynchronous_update",
-        "mutation_bundle_sha256": "df19f957406c0a412321d65b2dae9a20510ecdca70da44d3bb5c592249537bac",
+        "mutation_bundle_sha256": "d90e0d66f83b8a05a7e87dcc4693fca7c8f56a994afb2ba1efffd0810b5874ec",
         "mutation_id": "neg_006_asynchronous_code_update",
         "source_catalog_certification_path": "negative_variants/neg_006_asynchronous_code_update/certification.json",
         "trigger_condition": "code changes between rising clock edges",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_bit_weight_swap/certification.json",
-        "certification_sha256": "a5d0c7e4ddf4c44f48b21f7140bff28f5601cc64c6a8e2df0420463cf3cc22d7",
+        "certification_sha256": "5ea7e0f98bdc2629c92b463d199e172d76fdbecf6e44bceec809547fa8282326",
         "fault_class": "bit_weight_permutation",
-        "mutation_bundle_sha256": "96418d4601c2c3df8866c1c87e6875d0412c3b41bd082eded931eaf07afa390e",
+        "mutation_bundle_sha256": "69eded9d966bf30c7c1a83dc7346780802e595fbf976fb3068a2754642c2e67f",
         "mutation_id": "neg_003_bit_weight_swap",
         "source_catalog_certification_path": "negative_variants/neg_003_bit_weight_swap/certification.json",
         "trigger_condition": "codes distinguish the swapped bit weights",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "7f96ed0d9916bbf219e8e8d6d5e1aadee4944e2a8f066e45011ba866d7ba6a69",
       "score_deck_sha256": "a9e5927498e36d431389ccc696354e93e1e2043820e4b5dfbf6bc375b2ce2e7d",
-      "task_certification_sha256": "75ae4e4e45de42d545630a3e17e94b9bc02ca2957553c20f6040ee0434279e8c",
-      "task_record_sha256": "39ca840e0739bd899e3c77b558d0c389d896dedd981c1300d2c6b6ce026a3e52"
+      "task_certification_sha256": "16f9737754a396cb43f76e8326584d6a1b2ab699dc4d1dcd6d2bae81b0510394",
+      "task_record_sha256": "af2c7d1aee7ab2726e6c0b07a44a4db152f0de0192178b9c3b58d9b2745f7eba"
     },
     "release_dir": "002-capacitive-sar-feedback-dac"
   }

@@ -136,6 +136,27 @@ def _allowed_includes(contract: dict[str, Any]) -> set[str]:
     return result
 
 
+def _required_includes(contract: dict[str, Any]) -> set[str]:
+    """Return DUT sources that must be bound, excluding optional support files."""
+    supplied = contract.get("supplied_inputs") or {}
+    legacy_dut = {
+        str(item["testbench_include_path"])
+        for item in supplied.get("read_only_dut_artifacts") or []
+        if item.get("testbench_include_path")
+    }
+    if legacy_dut:
+        return legacy_dut
+
+    artifact_contract = contract.get("artifact_contract") or {}
+    binding = contract.get("testbench_binding") or {}
+    template = str(binding.get("source_path_template") or "./dut/{artifact_path}")
+    return {
+        template.format(artifact_path=str(file_record["path"]))
+        for file_record in artifact_contract.get("files") or []
+        if file_record.get("path")
+    }
+
+
 def _entry_modules(contract: dict[str, Any]) -> dict[str, dict[str, Any]]:
     result: dict[str, dict[str, Any]] = {}
     artifact_contract = contract.get("artifact_contract") or {}
@@ -264,7 +285,7 @@ def validate_testbench(
             findings.append(SecurityFinding("path_traversal", "parent traversal is forbidden"))
         if include not in allowed:
             findings.append(SecurityFinding("undeclared_include", f"include is not declared: {include}"))
-    missing_includes = sorted(allowed - set(includes))
+    missing_includes = sorted(_required_includes(contract) - set(includes))
     if missing_includes:
         findings.append(SecurityFinding("declared_dut_binding", "missing declared DUT include(s)"))
     if len(includes) != len(set(includes)):

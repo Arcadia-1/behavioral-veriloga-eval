@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "367-baseband-agc-filter-chain",
+  "checker_task_id": "v4_367_baseband_agc_filter_chain",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "9c3c8662dc054a9b5439af16246a2a19c8e159babe34a0b1311c59fcc22bc378",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "6ca7dd06c3ae1ccb4c89dcbd15a5f9dfcd46ead9b43d66f1a0787a6d45623212",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "367",
+  "family_spec_sha256": "7bfab1749d3b72a78df4d5e31a0251afc44f1292fed9dccc522da21ca3ed80f6",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6939578b310f34d09e2dff333044c6497993b59f1968940c9fdb9ae3deb5bb7b",
+  "public_contract": "tasks/867-baseband-agc-filter-chain-testbench/public_contract.json",
+  "public_contract_sha256": "f0523483e7c223e8ef6e04d0773b8f15faff0635bdb7c594c03db8e17d4aef65",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/867-baseband-agc-filter-chain-testbench",
+  "task_id": "v4-867"
+}

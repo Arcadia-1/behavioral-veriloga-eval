@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_gain_direction_reversed/certification.json",
-        "certification_sha256": "7b6eeff41afee388a22b6190240fd0e0667e0499cbc759338f6631566ecd86bf",
+        "certification_sha256": "e74169011b06b4364c914c8fc24cc63b730f46e438954b2278140a1b67ae5602",
         "fault_class": "gain_control_polarity",
-        "mutation_bundle_sha256": "487e3c5ca8e4f4062b17866e800850a1bebbac4bebc44f3b8f8a02d756de16f8",
+        "mutation_bundle_sha256": "f7416f6fbc5b6a844efe7ab41ea8f15398bf02b8ea027ef556ac35c98e8f2586",
         "mutation_id": "neg_001_gain_direction_reversed",
         "source_catalog_certification_path": "negative_variants/neg_001_gain_direction_reversed/certification.json",
         "trigger_condition": "peak lies below target",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_gain_lsb_double/certification.json",
-        "certification_sha256": "61d9e9d57da59c5ba6055837418136ddb8bcab49980f220189d084f32e333f36",
+        "certification_sha256": "c31fee56a38ac049a44c81700572d1ebd67ce0a2cc93e550c44e720322bc097b",
         "fault_class": "gain_mapping_error",
-        "mutation_bundle_sha256": "58f1add71c84a89d5cba3a656559cf3254bff616d950347cd2885b6f3d2bb50a",
+        "mutation_bundle_sha256": "8f67da7331412d3000192caa686567d0a6d19645ffc4ce184cdeee4238305ffa",
         "mutation_id": "neg_003_gain_lsb_double",
         "source_catalog_certification_path": "negative_variants/neg_003_gain_lsb_double/certification.json",
         "trigger_condition": "gain code is nonzero",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_lock_one_cycle/certification.json",
-        "certification_sha256": "b06f584f51be44acddd374cd4c7c0231ec06e9d9b91efb7c76f45405a73fc021",
+        "certification_sha256": "ac6e566fc14b8c25b11b9fee57176142ed6987b7e33ceeb44c4299cc9567513b",
         "fault_class": "lock_qualification_error",
-        "mutation_bundle_sha256": "0a408b846d071fb72cfa7b3fde9fec6d92f753eeb2f420af8de4318a6a17da7f",
+        "mutation_bundle_sha256": "d031cdd31adc97e20a902da68a1bbf3c4eefa593261db00232932f1299aa4eb9",
         "mutation_id": "neg_004_lock_one_cycle",
         "source_catalog_certification_path": "negative_variants/neg_004_lock_one_cycle/certification.json",
         "trigger_condition": "peak lies within tolerance for one update",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_peak_not_absolute/certification.json",
-        "certification_sha256": "1a720c3f855e6f5abfc9397681fb8242dafb15c4f3045802bcbb009d665b1e04",
+        "certification_sha256": "d0d2d59b63d23f6f4b7d1fa4c25324c54de3ec4db117a95620e9fb0698d4accf",
         "fault_class": "peak_polarity_error",
-        "mutation_bundle_sha256": "45d9b5e73f140265d776a9e625ef4694b44e9056556b9fb3db6bf96deb092236",
+        "mutation_bundle_sha256": "3f225b02a08d377c435d064103de563901d0022558d83412635fb264fd516575",
         "mutation_id": "neg_005_peak_not_absolute",
         "source_catalog_certification_path": "negative_variants/neg_005_peak_not_absolute/certification.json",
         "trigger_condition": "vin is negative",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_reset_gain_zero/certification.json",
-        "certification_sha256": "ea55ca8e34fa5fab20b6a3873f8e4aa4e51270506d29b2e209737e6fe4f20a1b",
+        "certification_sha256": "1cfc84c64a0b677c65b55c9af752243181ade94f7f37ffc3e2266373f9504e5e",
         "fault_class": "reset_state_error",
-        "mutation_bundle_sha256": "818fee9fd729aca213400a5bce33fca5d6a9d82e6a87c26dd74b1dd47f8df1e1",
+        "mutation_bundle_sha256": "d21536d0b55f6e78c5671bc830a1539617c33def048a41fdcddd15e015756df8",
         "mutation_id": "neg_002_reset_gain_zero",
         "source_catalog_certification_path": "negative_variants/neg_002_reset_gain_zero/certification.json",
         "trigger_condition": "reset is asserted",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "32bddc961e65705acdd8a2c782f8b00f2eba89bc9f8f483f7042e02171af2979",
       "score_deck_sha256": "c99ecf42077a98c47805fe1f2d3f4194b6a708734d0b68353507b786ee593bd2",
-      "task_certification_sha256": "5bfd38323fd749db048fa60bc0b814c72fbeab6341a9957f97ec2d5808533129",
-      "task_record_sha256": "09383d3e132e24532eca598cef9a32fa2ae06b5985f8d4a28afde340f004a220"
+      "task_certification_sha256": "735e14eb336b12251664fd016a07e9ce60531fabff20113c6ba2f5cdbe3e2111",
+      "task_record_sha256": "e1e6be5c4020bd6d58b4630c3c955575803ed110748d648f739edac2131ad9a1"
     },
     "release_dir": "348-vga-gain-calibration-loop"
   }

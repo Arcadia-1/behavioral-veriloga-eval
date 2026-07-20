@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "deserializer_demux_alignment_macro.va"
+  ],
+  "canonical_dut_source_slug": "393-deserializer-demux-alignment-macro",
+  "checker_task_id": "v4_393_deserializer_demux_alignment_macro",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "b5128cdbe2c4bbbd14710b17cf883522f7a93dc5da86741e106dfa4b350843e2",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "da7476e07e59f8d4cd0b8db5d4ad81cff6225d549e5a20e037fbd17fab18c07a",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "a09c343906a671eec82aa4d095f38eaacccfff9409157ca3a09703749d8296ea",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "393",
+  "family_spec_sha256": "2b3f498f27a1f73c2f67c79ce2d9d77d089cc799abfe852286df34b3d74958b6",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4c02c15f106296ec019348a3da95b8ba5d34708ea1e50d8b784f1cfd1e66c466",
+  "public_contract": "tasks/393-deserializer-demux-alignment-macro/public_contract.json",
+  "public_contract_sha256": "a39a5a1d9eddac40e286c880329f40bc71f5bd31d31b485a39543e05d103c3ba",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/393-deserializer-demux-alignment-macro",
+  "task_id": "v4-393"
+}

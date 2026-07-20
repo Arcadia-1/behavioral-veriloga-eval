@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "257-phase-mismatch-qualifier",
+  "checker_task_id": "v4_257_phase_mismatch_qualifier",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "1b8f088e703a69af55b6beb92e06484aafacbaf931b6c737fa14119fb0edfa23",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "b42a1c055d241522b4a6f5b34029bb61a331e6ae423842a1f2376065fc3d6ab2",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "257",
+  "family_spec_sha256": "2a147ef1b29a28b9e5728a025d30c841534a0f13242080bad8c36b13576a0c36",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "073551670756caa2cd12c5ff4811768c9335b8bac66996d466480f766924a436",
+  "public_contract": "tasks/757-phase-mismatch-qualifier-testbench/public_contract.json",
+  "public_contract_sha256": "1d801a2ceaf0577425dada742062aff48f1c725e7248b3a76265008a7ca7d4d9",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/757-phase-mismatch-qualifier-testbench",
+  "task_id": "v4-757"
+}

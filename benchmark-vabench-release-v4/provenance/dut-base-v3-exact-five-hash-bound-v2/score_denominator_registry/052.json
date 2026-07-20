@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_force_zero/certification.json",
-        "certification_sha256": "ef89fee5416ecc19a775c86d7df324bafb14e93acbe2863617ad41b5c573a421",
+        "certification_sha256": "7571792a2af068ade70f3073c00d608e9e671438beba907584881f468bdad7e7",
         "fault_class": "force_zero",
-        "mutation_bundle_sha256": "4592e3b81a88705d74bc20f699f4900ce50a6758472ca2e51bdedbb983e4808f",
+        "mutation_bundle_sha256": "d3a8821e290064b81f75e84d79b0880ba75450f7f6a2a907f0fd88d4dd9fe1ad",
         "mutation_id": "neg_001_force_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_force_zero/certification.json",
         "trigger_condition": "Thermometer Bus Encoder: leaves every thermometer output low, so it compiles but fails all nonzero input levels.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reversed_thermometer_order/certification.json",
-        "certification_sha256": "f089cfde2382b0b7ec5ee49f68e175f1c7408ac273d76d2f30f6530a2431575c",
+        "certification_sha256": "91171b80832b3d559b0cf1c4e274c503854eba5614a7253ea7e4cce615355f1c",
         "fault_class": "reversed_thermometer_order",
-        "mutation_bundle_sha256": "0bd78af55ce242b6cb7cf5cf79a885bed2dd091a9be286ffc76bdc3d71d8cf44",
+        "mutation_bundle_sha256": "f8c02660d468bb8075d5e23fe0a0fe7157492e8f12fb62a250f92d83e44af971",
         "mutation_id": "neg_004_reversed_thermometer_order",
         "source_catalog_certification_path": "negative_variants/neg_004_reversed_thermometer_order/certification.json",
         "trigger_condition": "Thermometer Bus Encoder: builds the active prefix from t15 downward, preserving segment count while violating bus order.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_round_to_nearest/certification.json",
-        "certification_sha256": "168b943542a59307aa069fd4fdcde6c196ed3218fee6c22d022a8dcade84d663",
+        "certification_sha256": "21e8be46d35d0137f4fc14700e4152bbbe2843493cd957bf730db2fe5fae86d2",
         "fault_class": "weak_high_output_level",
-        "mutation_bundle_sha256": "18d964ecb2577c0b0cbb6e721da2420c7800431508dfdb96e2d9fdeee827b90c",
+        "mutation_bundle_sha256": "2abfa32bdd2551dece3a20369b25059c95ca7768f9701ee111fc1c0981856687",
         "mutation_id": "neg_005_round_to_nearest",
         "source_catalog_certification_path": "negative_variants/neg_005_round_to_nearest/certification.json",
         "trigger_condition": "Thermometer Bus Encoder: drives asserted thermometer segments below the public logic-high threshold.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_off_by_one/certification.json",
-        "certification_sha256": "8c543daad1bc18467b349f8831781b2b367a47a69def5351422ce55fa1473e5d",
+        "certification_sha256": "5d282771cf8e3fd68dbf041f6fff9a8d41d90d0464a56b4f32810e09b51b5338",
         "fault_class": "off_by_one",
-        "mutation_bundle_sha256": "5df9c1c9a007934cad1057dca515450b4631b09abff7b094689443c987fc2819",
+        "mutation_bundle_sha256": "acfb6bcd826ddcd9660256f76416cbbc5e7ecc193d06c3ca3f87f7b912a06c0d",
         "mutation_id": "neg_002_off_by_one",
         "source_catalog_certification_path": "negative_variants/neg_002_off_by_one/certification.json",
         "trigger_condition": "Thermometer Bus Encoder: turns on one extra segment for nonzero inputs, passing prefix shape while failing exact segment counts.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_binary_code_outputs/certification.json",
-        "certification_sha256": "a2d23447a3eb7d4066f485eeab6121951c96c81233eaf4d09f1b7d0f4c13ec4f",
+        "certification_sha256": "f3f63ffd04267c1c0c7abcc27370a30eb84c5b3a99709f1185f42441c2b2a5c3",
         "fault_class": "binary_code_outputs",
-        "mutation_bundle_sha256": "bb2785ef00275234fa448f792cb399c140049a5ade7fe2c166d7bf6225d6e9f0",
+        "mutation_bundle_sha256": "fbc8deeed0cd8f8d95354531176d53079caf49e3df9ccc1948d4021420e865b9",
         "mutation_id": "neg_003_binary_code_outputs",
         "source_catalog_certification_path": "negative_variants/neg_003_binary_code_outputs/certification.json",
         "trigger_condition": "Thermometer Bus Encoder: emits binary-style bit values instead of a prefix thermometer word, so sparse smoke can look active but bus semantics fail.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "2cce54b4d21e8cd68074b38a80e9d0155d2d2f32ab4de89c403f1261c64fb7e5",
       "score_deck_sha256": "ee9dc6baf7ca7f2d9ee2314aca31b5a66c82f0c7f40f8507318369f385919a85",
-      "task_certification_sha256": "2862df4add4748f3f71f57ce601dd92ea914c311760193cefd77a47b34c6dbe3",
-      "task_record_sha256": "7e08354efd79f4226352b4ec9e7ac1b7e589a80b5df9c368f7c9ec85bd41bd16"
+      "task_certification_sha256": "62a52788f94d22be775ef94d5d68e047aa09bcccd92132ee59fa1f4e888306fe",
+      "task_record_sha256": "d3f59580c10b6640c46f61d399c6c53214484a966a05c91e4fc69d2e6e97b398"
     },
     "release_dir": "052-thermometer-bus-encoder"
   }

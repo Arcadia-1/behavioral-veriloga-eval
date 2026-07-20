@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "117-time-diff-detector",
+  "checker_task_id": "v4_117_time_diff_detector",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "e48a22b19766f76db00e89cfe4c402dd98ba59e28514fb1041dfbe7795ff7295",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "013cd84a3ba115e8a6b07a0e90ee6c704e70dc1ac68fed7c80d1a85f7f85e373",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "117",
+  "family_spec_sha256": "298a47bd335bf0143cda50b424f6396da6f83344220476573bc1d0c40c0af1ae",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4eceed6d33e5d1033ee901b2d4439c731db91c51c0976f820813ef6ad1c05c5c",
+  "public_contract": "tasks/617-time-diff-detector-testbench/public_contract.json",
+  "public_contract_sha256": "f52ee40f5fe4b7b086cf5a2a6b98b482e815646ff1833484d9f57e678889ec73",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/617-time-diff-detector-testbench",
+  "task_id": "v4-617"
+}

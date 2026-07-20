@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "166-l2-cdac-4b-residue",
+  "checker_task_id": "v4_166_l2_cdac_4b_residue",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "85f3e7c2bebecdb98e36e042c552921ea7d848025d1f8c6b0a99d7511987574f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "d0905448ec70fdfafee202f9a380f1a780fd17cb5177eff0a56dec9b0a76c2e5",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "166",
+  "family_spec_sha256": "c29230e402be77dfddfce10aff5e0c932c2a862742c4a8e5d885eeb9f0f7cc5b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9718fbf9a6639298e671462d41784295b03cebd363a4a5a307cbfc19b29dfb5e",
+  "public_contract": "tasks/666-l2-cdac-4b-residue-testbench/public_contract.json",
+  "public_contract_sha256": "2924b05ab8591bbb1265f925f586453cc8e32622d056d8e036b97fbdc50533c0",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/666-l2-cdac-4b-residue-testbench",
+  "task_id": "v4-666"
+}

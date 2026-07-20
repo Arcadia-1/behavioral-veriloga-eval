@@ -23,9 +23,11 @@ def check_v4_374_crystal_oscillator_startup_monitor(rows: list[dict[str, float]]
     checked = amp_errors = done_errors = valid_errors = osc_errors = clear_errors = 0
     reset_clear = disabled_clear = ramp_seen = done_seen = valid_seen = osc_activity = False
     reset_seen = enabled_seen = False
+    reset_time: float | None = None
     osc_vals: list[float] = []
     expected_osc_high = False
     for row in rows:
+        t = float(row["time"])
         rst = _v4_topup_logic_high(row, "rst")
         enabled = _v4_topup_logic_high(row, "enable") and not rst
         if not enabled:
@@ -34,8 +36,11 @@ def check_v4_374_crystal_oscillator_startup_monitor(rows: list[dict[str, float]]
             clear = row["osc_out"] < 0.12 and row["amp_metric"] < 0.08 and row["valid"] < 0.10 and row["startup_done"] < 0.10
             if rst:
                 reset_seen = True
-                reset_clear = reset_clear or clear
-                if not clear:
+                if reset_time is None:
+                    reset_time = t
+                reset_ready = t >= reset_time + 0.7e-9
+                reset_clear = reset_clear or (reset_ready and clear)
+                if reset_ready and not clear:
                     clear_errors += 1
             elif enabled_seen:
                 # The first low-enable sample is the observed disable event;
@@ -45,6 +50,7 @@ def check_v4_374_crystal_oscillator_startup_monitor(rows: list[dict[str, float]]
             prev_clk = float(row["clk_ref"])
             continue
         enabled_seen = True
+        reset_time = None
         osc_vals.append(float(row["osc_out"]))
         if _v4_rising(prev_clk, float(row["clk_ref"])):
             old_amp = amp

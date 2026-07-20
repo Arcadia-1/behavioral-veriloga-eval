@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_top_group_three_delay/certification.json",
-        "certification_sha256": "32ec6506f30173dbbbf8d59b0902aab04194b90b59eebe8a1965e047f36e7bba",
+        "certification_sha256": "51bc441a99c1a0e59554ccd4220239142513f133ea7060f0ae3e11a465306811",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "4a7a0a2a5b30ab0b84bbcc5736af196a0a0d916f5e2b349ea9c1bd855cc0325f",
+        "mutation_bundle_sha256": "e4af0d4c6d141eb2df07da1bc2ea488df2248ac42b107b4a5738477b195cf409",
         "mutation_id": "neg_002_top_group_three_delay",
         "source_catalog_certification_path": "negative_variants/neg_002_top_group_three_delay/certification.json",
         "trigger_condition": "Uses the third delay stage for bits 11-14 instead of the fourth.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "d34b012db43d8705a0235bd0bbf57c5ecf777ae1993d70342bae2eda2eae2d9f",
+        "certification_sha256": "274c68c2aa738f53e5f5281803d9f32a9301fdbd0e44b3b78ba62e52c810aee7",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "0adac041688cc38871dc64d8c5308fbae13360579033e759c559ff8c51ca4e62",
+        "mutation_bundle_sha256": "a0f99d32ed460b0ac295f1037c788cff4b4a5075e601f96ed5bb992f39cb756c",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Pipe15 Data Align: scales the metric output, preserving the main path while failing measurement checks.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_swap_low_outputs/certification.json",
-        "certification_sha256": "18e6db92b7bea0390ed5634c05ad0c7fd10ca51a49233deff9c42d24ece2a334",
+        "certification_sha256": "cf2d827fa1e3328fd2de5fc47864d090f7913c2dce36136bf31eedb21ceaf158",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "0f44a547a5c002554a2e41c6e048acd7bd38c6105aa4d36e9f88725093b2f807",
+        "mutation_bundle_sha256": "0b2e75c1762eefbc909b60cae1e52c813338b8a8d96680c53413650627e551d0",
         "mutation_id": "neg_004_swap_low_outputs",
         "source_catalog_certification_path": "negative_variants/neg_004_swap_low_outputs/certification.json",
         "trigger_condition": "Forces traced aligned output do14 low.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "e8259be230210e1837e9f0a143d875511e59caf706c874b7b457c0e3b0f5a958",
+        "certification_sha256": "39083ed395bbd9ce4968d77f08a75426f3f8ad3a2e1bccd8e0dafea9c1e9858d",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "3e80fe174fd4b9a7b792871672012bcddf3e1e553700cfdd5abb49a88298b3a9",
+        "mutation_bundle_sha256": "b01da007e7b9590f1a58929822f2d88f02e52b7b09d71524df5f60a7700d0257",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_middle_group_one_delay/certification.json",
-        "certification_sha256": "740147d4a27fc006d946e56ad2bc3ed48929c4cbc405b76cb8cf5efda31d0fd1",
+        "certification_sha256": "0b59e2751579dbb9502b42a60cc3e72914c05589ca30bb6ecb55ef3346747ae1",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "27c015d3dcb61c9c331fed9578144d32363786e94e4519612a86ce824d55ef75",
+        "mutation_bundle_sha256": "d88a49a16d32ec1ea53a0a2195bf5ef855c4acffc5fc15da9b86bfcc8d8a3421",
         "mutation_id": "neg_003_middle_group_one_delay",
         "source_catalog_certification_path": "negative_variants/neg_003_middle_group_one_delay/certification.json",
         "trigger_condition": "Uses only one delay stage for bits 7-10 instead of three.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "47fe24dc234e650738110f2d3f0670abc1f992a7c1d66cb0cc0783c79ac30b08",
       "score_deck_sha256": "a25267a464c166e52bf8390822dc2e8171c9bc7357786d910d3b7619391e6f94",
-      "task_certification_sha256": "41c8ef597a6fbcb4533499c4c62731a7f8147bbe946be682b384be73dfc46a44",
-      "task_record_sha256": "ff666c9b737da984ee6566c5430ad1cfb6edec2ba5ed861913fa5961add391e9"
+      "task_certification_sha256": "d0d2cd26a3ea1fc3b64698419994805858015ccaea8738606493fe5b742eb86f",
+      "task_record_sha256": "60028ff1dbac9b1bc29f7a91bf51faf85544f828dec9b4157afd6427c3aa5d3b"
     },
     "release_dir": "181-pipe15-data-align"
   }

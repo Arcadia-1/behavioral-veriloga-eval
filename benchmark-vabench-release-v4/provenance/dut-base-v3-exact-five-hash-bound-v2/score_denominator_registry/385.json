@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_overlapping_phases/certification.json",
-        "certification_sha256": "20eeac7235e921f6ef7974d8571150a553322807dfc0f38c197f3aa23a8fef4b",
+        "certification_sha256": "5cbee0344ce239a1932cd910441964322dd3d467afb27db7a55ac4693c21019f",
         "fault_class": "phase_overlap",
-        "mutation_bundle_sha256": "d86100f496bb9c581a644fb10fb309268109b82252ff2a057cad39ab0d8718ad",
+        "mutation_bundle_sha256": "e2103ff18391d29d4f3bf4f1dc232a1286c72e2b4af8ab4cbb5ec16fd1c3005f",
         "mutation_id": "neg_001_overlapping_phases",
         "source_catalog_certification_path": "negative_variants/neg_001_overlapping_phases/certification.json",
         "trigger_condition": "the generator selects phase zero",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_swapped_sample_hold/certification.json",
-        "certification_sha256": "f78c082b64f2a308af9f38bdaa5bbf2a6ab13b69db6c0ce584cf0bbf797e2353",
+        "certification_sha256": "a6eb5d45067fce274aacab19c0dd2a953f9751137b157f9b86b2381bf6c5ac3e",
         "fault_class": "wrong_command_mapping",
-        "mutation_bundle_sha256": "d912d4bcf9d7e85433830ecc6910bd88be3fbd20199f6e0035ef1c54f8031100",
+        "mutation_bundle_sha256": "25d0542fc9033a7a036bd8fd84d70790aefa2c8c5de9ebfd9997b251499a2735",
         "mutation_id": "neg_003_swapped_sample_hold",
         "source_catalog_certification_path": "negative_variants/neg_003_swapped_sample_hold/certification.json",
         "trigger_condition": "a sample phase is active",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_phase_code_lsb_stuck/certification.json",
-        "certification_sha256": "6d8dd38d17d0290911827132f991d4569dbb578648d82a567620cdf3a6441d52",
+        "certification_sha256": "797242e1f15b353f7c52aed3bd41ea523d10fa0a3209791ebb5c5ef227e1fba9",
         "fault_class": "stuck_output",
-        "mutation_bundle_sha256": "a97afa30d9ef0335ca252ac20c8951ec9cc32aa0066d8c4a639da71938044aa7",
+        "mutation_bundle_sha256": "9cda007cfdb893fef313b02a80567a421d29baa13874c6a8864e68025c740a4a",
         "mutation_id": "neg_004_phase_code_lsb_stuck",
         "source_catalog_certification_path": "negative_variants/neg_004_phase_code_lsb_stuck/certification.json",
         "trigger_condition": "phase one or phase three is active",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_valid_asserts_early/certification.json",
-        "certification_sha256": "578f3ef686d3c4d61e88d2e4789bae700d4d313afc6f9d40e1e0b36e71a7607b",
+        "certification_sha256": "e23cb1f3427c08313b49618b709be9f98188d7acfd167bd2ed74a06b67ccf810",
         "fault_class": "qualification_count_error",
-        "mutation_bundle_sha256": "493be94d5c16ee8f8cd1e735822ee862a7c7e37a0a7b338761af182bd8cebe1f",
+        "mutation_bundle_sha256": "d2f0628fa3941bb650c76158ac147b17a7d9a975142a61b363e20ec9f673e250",
         "mutation_id": "neg_005_valid_asserts_early",
         "source_catalog_certification_path": "negative_variants/neg_005_valid_asserts_early/certification.json",
         "trigger_condition": "phase one is observed before a complete sequence",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_reset_not_cleared/certification.json",
-        "certification_sha256": "208c976db6008695984aeb345f1e850403613cae211c59531d41ecf39cecd9e3",
+        "certification_sha256": "99574dcdb0df22376d1aff2ccfac0be9af71417884f0c9141a91585e849e201d",
         "fault_class": "missing_reset",
-        "mutation_bundle_sha256": "ffb7ef170b73f5781b5871e335ff6671d71375c74f783bbaa2c7e841238f8fef",
+        "mutation_bundle_sha256": "ebae43cc70466fa462c0e8edd1ccd7c046b0a4c4d26dd4f7725c2c5583c34676",
         "mutation_id": "neg_002_reset_not_cleared",
         "source_catalog_certification_path": "negative_variants/neg_002_reset_not_cleared/certification.json",
         "trigger_condition": "rst is asserted while enable remains high",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "5cbc7a73c8f2845cbdfc1528f5f89fe527bf3e15078d9215257eb27fca8a4f23",
       "score_deck_sha256": "dbe103bc15d1c54ce74a9a2b7791c66b0b6b0226ed59aba7af9e9706ffea57ac",
-      "task_certification_sha256": "92c07853e2a2ab667e0c5bad739e28789e7f5cf27c467e55a56f0e63fdf59edc",
-      "task_record_sha256": "3a88f2ef3e550cc9f0c5b9a9ab6b8318d7f6fe538c6355baec1a9618f5a58d2f"
+      "task_certification_sha256": "0f5f1d380cf82b7d9fb31fb6822df9abc8e8bd7838048db1cfb148c151717973",
+      "task_record_sha256": "1bcb5c55216f01702f5e9d0f3a79addd456aa2d5c9250e4caf0880fba064fa4b"
     },
     "release_dir": "385-switched-cap-phase-sequencer"
   }

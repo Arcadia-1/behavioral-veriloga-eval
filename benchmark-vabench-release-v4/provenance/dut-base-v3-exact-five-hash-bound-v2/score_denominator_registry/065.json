@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "0ebe9034eb51baa4a18dc99ef1149eb8e509b287371a07e7656f72d2aeaea844",
+        "certification_sha256": "8bd9927638a566e27413e8aa1e6b666fb5efde19bc11d0c05235a25aaa552486",
         "fault_class": "no_pulse",
-        "mutation_bundle_sha256": "d8ee41e7ead2cbdea8233b9548cd4b919f9fafb8ffc5088192e8b45471fcf89c",
+        "mutation_bundle_sha256": "f6cb50dc7718e0aadb2e21ef5b09b944ce81a735a21bf35e366ad47f7e0f2467",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "stimulus exercises no pulse against the public observable contract",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_ignore_clock/certification.json",
-        "certification_sha256": "9963258d3b6efc0ba2dc3bf9f5415e1557690812062e0589d14fb323955b34a9",
+        "certification_sha256": "45980f91b3ebfd98ceadd5d8463913f0db21a6350d841c4bc691e40ef4f62777",
         "fault_class": "passes_enable_level",
-        "mutation_bundle_sha256": "715ce1585fa04b378b85e448201a558fbe78e3ed56080eb05334074e5bfe897d",
+        "mutation_bundle_sha256": "66b2389304583497d463d7c7e59c9bb7467a7775f24286e40cb2351f5002b242",
         "mutation_id": "neg_003_ignore_clock",
         "source_catalog_certification_path": "negative_variants/neg_003_ignore_clock/certification.json",
         "trigger_condition": "stimulus exercises passes enable level against the public observable contract",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_invert_enable/certification.json",
-        "certification_sha256": "abdffb13b9196baa52d3087a87baf8906a725c8a3d0bd137c46f8671209765d0",
+        "certification_sha256": "d2d8514b79b1a727ba7bcf3b3c00381494fd262ebf178ebb17f09e8af6d19f85",
         "fault_class": "uses_inverted_enable",
-        "mutation_bundle_sha256": "c7dc15d5ce8100bd510d589050ab1048877b1309e38b3aeb8f063fb5ee151cb4",
+        "mutation_bundle_sha256": "3c063f90f469a63ad9d2cc2154788081acee527b7c85818c8a6856ab88f7fe23",
         "mutation_id": "neg_004_invert_enable",
         "source_catalog_certification_path": "negative_variants/neg_004_invert_enable/certification.json",
         "trigger_condition": "stimulus exercises uses inverted enable against the public observable contract",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_ignore_enable/certification.json",
-        "certification_sha256": "be181ffd6cccfad2e186ca85a2cb6bbb5c9462a0695dd7c960e5f72f1538c666",
+        "certification_sha256": "944ab2f368b1b37fba829b3394b654785b4ed95ce4505e12dd235c9497dbeaca",
         "fault_class": "passes_clock_regardless_of_enable",
-        "mutation_bundle_sha256": "7ea7c0bfa42fd49882631cb044c167d4e923ed218a6a804dc7d6ce78443fb4c5",
+        "mutation_bundle_sha256": "b7f79e4395d9a4c303180bf2b9472de6684cb69f55bfdefdb33cf1ea30632376",
         "mutation_id": "neg_002_ignore_enable",
         "source_catalog_certification_path": "negative_variants/neg_002_ignore_enable/certification.json",
         "trigger_condition": "stimulus exercises passes clock regardless of enable against the public observable contract",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_invert_output/certification.json",
-        "certification_sha256": "ca59d99ec2ae37d00795d7dba84b9276a19d5c16f8283bec8d63d2ea2ab8a67f",
+        "certification_sha256": "e3ba08bd0fb031f43bdb7809af2143c11f6b5f0ba4b2132d30ad5fe9945d0bfa",
         "fault_class": "inverts_output",
-        "mutation_bundle_sha256": "afc9a4e006e7aad8e8df9763754e4a1f9b76e6f28c0788bef902ba7eb1ba1a4f",
+        "mutation_bundle_sha256": "48cd83a7053098c05ffc244bad4bce7594e806be2044de3a9599a5ecfffe68de",
         "mutation_id": "neg_005_invert_output",
         "source_catalog_certification_path": "negative_variants/neg_005_invert_output/certification.json",
         "trigger_condition": "stimulus exercises inverts output against the public observable contract",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "f4045e7848f9d6d83ac6132394386867ea6c26b34a3f3f7ccf27ae8e58c9943d",
       "score_deck_sha256": "e0ee1c7c397a10cea137d69de308033b48bc77a0a514dca01a7ae018c1438b6e",
-      "task_certification_sha256": "bdcf4507a572b8345ebc664210005d796b7840e8a0b2cb92bc55be69bbb61add",
-      "task_record_sha256": "8ed2458f901e81a0bbb1d3e2cd5f113d3104b801e77d4326acde6639d2b7e623"
+      "task_certification_sha256": "233a2f06542178f8970eda8364d25ff96d0147c94ccb220fba2536a3a0838333",
+      "task_record_sha256": "a1bbbcce37c1d5ac3bad3456a07af55ea398d499246b49bb4f007465fc7a1fc0"
     },
     "release_dir": "065-enable-gated-clock-pulse"
   }
