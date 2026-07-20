@@ -1501,12 +1501,6 @@ def run_mini_swe_agentic_cell(
         trajectory = read_json(trajectory_path) if trajectory_path.is_file() else {}
         return list(trajectory.get("messages") or [])
 
-    def feedback_runner(
-        active_runtime: Path, timeout_s: float, case: str | None
-    ) -> dict[str, Any]:
-        arguments = {"case": case} if case is not None else {}
-        return run_public_evas(active_runtime, arguments, timeout_s, args.evas_command)
-
     started = time.monotonic()
     try:
         episode = run_mini_swe_episode(
@@ -1518,7 +1512,7 @@ def run_mini_swe_agentic_cell(
             request_timeout_s=float(args.request_timeout_s),
             tool_timeout_s=float(args.tool_timeout_s),
             sandbox_backend=args.mini_swe_sandbox,
-            feedback_runner=feedback_runner,
+            evas_command=args.evas_command,
             submission_gate=submission_artifact_gate,
             usage_parser=provider_output_usage,
             response_metadata=provider_response_metadata,
@@ -2008,7 +2002,7 @@ def main() -> int:
     parser.add_argument(
         "--evas-command",
         default="evas",
-        help="EVAS executable used by the restricted visible-test tool and recorded for trusted replay identity.",
+        help="Pinned EVAS executable exposed directly to mini-SWE agents and recorded for trusted replay identity.",
     )
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--stream", action="store_true", help="Use OpenAI-compatible SSE streaming responses.")

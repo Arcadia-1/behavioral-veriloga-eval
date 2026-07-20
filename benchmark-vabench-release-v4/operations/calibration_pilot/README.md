@@ -120,24 +120,38 @@ python3 benchmark-vabench-release-v4/operations/calibration_pilot/run_campaign.p
   --dry-run --limit 18
 ```
 
-The mini-SWE shell starts in `public/` and exposes `task/`, `submission/`, and
-`evas-output/`. Form skills and the EVAS guide remain part of the frozen G0--G5
-prompt treatments. The model runs `vabench feedback capabilities`,
-`vabench feedback run [case]`, and `vabench-submit` through bash. Evaluator,
-gold, and trusted-replay assets remain outside the model-visible sandbox. A
-production G2--G5 run requires a supported OS sandbox; `none` is allowed only
-for unit tests and dry runs. Both supported backends deny network access and
-mount only the public workspace, with writes limited to `submission/` and
-`.tmp/`. Before public EVAS or trusted replay starts, the
-runner also rejects submission symlinks and candidate source includes that can
-escape the declared artifact set.
+The mini-SWE shell starts in `public/` and exposes the exported public runtime
+through both `task/` and its contract-compatible `public/task/` alias. Form
+skills and the EVAS guide remain part of the frozen G0--G5 prompt treatments.
+All agentic modes receive the same minimal tool contract: a pinned, real `evas`
+executable is discoverable in `PATH`, `evas --help` works, and the task-local
+`evas_runtime.json` gives the public command. Skill-enabled modes additionally
+receive task-agnostic EVAS debugging guidance; tool discovery itself is not a
+skill treatment.
+
+The model invokes EVAS directly through ordinary bash, including pipes,
+redirection, and compound commands, and inspects the resulting logs and
+`tran.csv` itself. The sandbox launcher only pins the executable and confines
+the release's `/tmp/vabench-visible/evas-output` destination to
+`public/evas-output/`; it does not run a feedback broker, checker, gold
+comparison, or property diagnosis. `vabench-submit` is likewise a real,
+discoverable shell command that requests runner validation of the final
+artifact set.
+
+Evaluator, gold, and trusted-replay assets remain outside the model-visible
+sandbox. A production G2--G5 run requires a supported OS sandbox; `none` is
+allowed only for unit tests and dry runs. Both supported backends deny network
+access and mount only the public workspace, with writes limited to
+`public/submission/`, `public/evas-output/`, and `public/.tmp/`. Before trusted
+replay starts, the runner also rejects submission symlinks and candidate source
+includes that can escape the declared artifact set.
 
 G0/G1 parse exact artifact blocks into the submission directory. In the
-mini-SWE path, `vabench feedback run [case]` delegates to the same restricted
-`run_evas` implementation used by the legacy native sensitivity path. It
-accepts no model-provided command string: DUT/bugfix tasks run the fixed visible
-deck, while testbench tasks may select only the reference or five public
-mutation fixtures declared by task-local `evas_runtime.json`.
+mini-SWE path, the model controls direct EVAS invocations over the public
+runtime package. DUT/bugfix tasks expose their visible deck; testbench tasks
+expose the reference and five public mutation fixtures declared by task-local
+`evas_runtime.json`. The legacy native scaffold retains its restricted
+`run_evas` tool only as a sensitivity path and is not the default G2--G5 agent.
 
 Direct responses must use the exact artifact envelope contract. The live runner
 rejects filename-only markers, input-artifact markers, Markdown fences,

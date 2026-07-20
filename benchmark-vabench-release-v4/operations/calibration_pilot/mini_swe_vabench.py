@@ -22,7 +22,7 @@ from typing import Any, Callable
 
 
 MINI_SWE_AGENT_VERSION = "2.4.5"
-MINI_SWE_SCAFFOLD_ID = "mini-swe-agent-2.4.5-vabench-bash-v1"
+MINI_SWE_SCAFFOLD_ID = "mini-swe-agent-2.4.5-vabench-direct-evas-v2"
 BASH_TOOL = {
     "type": "function",
     "function": {
@@ -42,7 +42,8 @@ BASH_TOOL = {
 SYSTEM_PROMPT = (
     "You are a behavioral Verilog-A engineer operating in an isolated shell. "
     "Use the bash tool to inspect the public task, create or edit only declared "
-    "artifacts under submission/, run public EVAS feedback when useful, and submit."
+    "artifacts under public/submission/, invoke the pinned EVAS executable directly "
+    "when useful, inspect its public output yourself, and submit."
 )
 
 BASH_CONTRACT = r"""
@@ -51,24 +52,25 @@ This is an interactive bash-only episode. Every assistant turn must contain at
 least one bash tool call.
 
 Workspace:
-- task/ is read-only public task material.
-- skill/ is an optional read-only reusable skill/reference tree in skill-enabled modes.
-- submission/ is the only writable candidate directory.
-- evas-output/ contains public diagnostics from earlier EVAS runs and is readable.
+- public/task/ is read-only public task material.
+- public/skill/ is an optional read-only reusable skill/reference tree in skill-enabled modes.
+- public/submission/ is the only writable candidate-artifact directory.
+- public/evas-output/ is writable simulator scratch and is never scored.
 - evaluator, gold implementations, checker source, private mutations, and final
   score cases are not mounted in this shell.
 
 Commands:
-- Use ordinary non-interactive shell commands to inspect task/ and edit submission/.
-- Run `vabench feedback capabilities` to inspect the public feedback surface.
-- Run `vabench feedback run [case]` as a standalone command to execute public
-  feedback. DUT and bugfix tasks omit the case. Testbench tasks pass one public
-  case from tool_manifest.json. The command prints a run directory; inspect the
-  files there with later bash calls.
-- Run `vabench-submit` as a standalone command only after every declared artifact
+- Use ordinary non-interactive shell commands to inspect public/task/ and edit
+  public/submission/.
+- `evas` is a real, pinned executable in PATH. `evas --help`, pipes, redirection,
+  and compound shell commands behave normally.
+- Follow public/task/evas_runtime.json and invoke `evas` directly. The sandboxed
+  launcher confines its documented `/tmp/vabench-visible/evas-output` destination
+  to public/evas-output/; inspect logs and tran.csv there yourself.
+- `vabench-submit` is a real command in PATH. Run it after every declared artifact
   is complete. A rejected submission returns diagnostics and the episode continues.
 
-Do not access the network, leave the workspace, create symlinks, or modify task/.
+Do not access the network, leave the workspace, create symlinks, or modify public/task/.
 </vabench_bash_contract>
 """.strip()
 
@@ -106,38 +108,42 @@ def _json_digest(value: Any) -> str:
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
-def _safe_command_words(command: str) -> list[str]:
-    try:
-        return shlex.split(command)
-    except ValueError:
-        return []
-
-
-def _sandbox_profile(workspace: Path) -> str:
+def _sandbox_profile(
+    workspace: Path, extra_read_roots: list[Path] | None = None
+) -> str:
     escaped = str(workspace).replace('"', '\\"')
     runtime = str(workspace.parent).replace('"', '\\"')
     home = str(Path.home().resolve()).replace('"', '\\"')
     submission = str(workspace / "submission").replace('"', '\\"')
     temporary = str(workspace / ".tmp").replace('"', '\\"')
-    return "\n".join(
-        [
-            "(version 1)",
-            # Recent macOS releases abort some system binaries under a strict
-            # file-read allowlist because their runtime dependencies are not a
-            # stable public interface.  Retain system execution capability, then
-            # seal user data, temporary data, and the private runtime explicitly.
-            "(allow default)",
-            "(deny network*)",
-            f'(deny file-read* (subpath "{home}"))',
-            '(deny file-read* (subpath "/private/tmp") '
-            '(subpath "/private/var/folders"))',
-            f'(deny file-read* (subpath "{runtime}"))',
-            f'(allow file-read* (subpath "{escaped}"))',
-            "(deny file-write*)",
-            f'(allow file-write* (subpath "{submission}") (subpath "{temporary}") '
-            '(literal "/dev/null") (literal "/dev/tty"))',
-        ]
-    )
+    rules = [
+        "(version 1)",
+        # Recent macOS releases abort some system binaries under a strict
+        # file-read allowlist because their runtime dependencies are not a
+        # stable public interface. Retain system execution capability, then
+        # seal user data, temporary data, and the private runtime explicitly.
+        "(allow default)",
+        "(deny network*)",
+        f'(deny file-read* (subpath "{home}"))',
+        '(deny file-read* (subpath "/private/tmp") '
+        '(subpath "/private/var/folders"))',
+        f'(deny file-read* (subpath "{runtime}"))',
+        f'(allow file-read* (subpath "{escaped}"))',
+        # Traversal metadata is required for executing a pinned interpreter
+        # below denied home/tmp trees. File contents and directory enumeration
+        # remain denied outside explicit roots.
+        f'(allow file-read-metadata (subpath "{home}") '
+        '(subpath "/private/tmp") (subpath "/private/var/folders"))',
+        "(deny file-write*)",
+        f'(allow file-write* (subpath "{submission}") (subpath "{temporary}") '
+        f'(subpath "{escaped}/evas-output") '
+        '(literal "/dev/null") (literal "/dev/tty"))',
+    ]
+    for root in extra_read_roots or []:
+        readable = str(root).replace('"', '\\"')
+        selector = "literal" if root.is_file() else "subpath"
+        rules.insert(-2, f'(allow file-read* ({selector} "{readable}"))')
+    return "\n".join(rules)
 
 
 def _bubblewrap_system_mounts() -> list[str]:
@@ -151,7 +157,37 @@ def _bubblewrap_system_mounts() -> list[str]:
     return mounts
 
 
-def _bubblewrap_argv(executable: str, workspace: Path, command: str) -> list[str]:
+def _bubblewrap_parent_dirs(path: Path) -> list[str]:
+    parents: list[Path] = []
+    current = path.parent
+    while current != current.parent:
+        if str(current) in {"/usr", "/bin", "/sbin", "/lib", "/lib64"}:
+            break
+        parents.append(current)
+        current = current.parent
+    argv: list[str] = []
+    for parent in reversed(parents):
+        argv.extend(["--dir", str(parent)])
+    return argv
+
+
+def _bubblewrap_argv(
+    executable: str,
+    runtime: Path,
+    extra_read_roots: list[Path],
+    command: str,
+) -> list[str]:
+    workspace = runtime / "public"
+    extra_mounts: list[str] = []
+    created: set[str] = set()
+    for root in extra_read_roots:
+        parent_dirs = _bubblewrap_parent_dirs(root)
+        for index in range(0, len(parent_dirs), 2):
+            parent_args = parent_dirs[index : index + 2]
+            if parent_args[1] not in created:
+                extra_mounts.extend(parent_args)
+                created.add(parent_args[1])
+        extra_mounts.extend(["--ro-bind", str(root), str(root)])
     return [
         executable,
         "--die-with-parent",
@@ -166,29 +202,39 @@ def _bubblewrap_argv(executable: str, workspace: Path, command: str) -> list[str
         "--dev",
         "/dev",
         *_bubblewrap_system_mounts(),
+        *extra_mounts,
         "--dir",
         "/workspace",
         "--ro-bind",
         str(workspace),
-        "/workspace",
+        "/workspace/public",
         "--bind",
         str(workspace / "submission"),
-        "/workspace/submission",
+        "/workspace/public/submission",
+        "--bind",
+        str(workspace / "evas-output"),
+        "/workspace/public/evas-output",
         "--bind",
         str(workspace / ".tmp"),
-        "/workspace/.tmp",
+        "/workspace/public/.tmp",
         "--chdir",
-        "/workspace",
+        "/workspace/public",
         "--clearenv",
         "--setenv",
         "PATH",
-        "/usr/bin:/bin:/usr/sbin:/sbin",
+        "/workspace/public/.tools:/usr/bin:/bin:/usr/sbin:/sbin",
         "--setenv",
         "HOME",
-        "/workspace",
+        "/workspace/public",
         "--setenv",
         "TMPDIR",
-        "/workspace/.tmp",
+        "/workspace/public/.tmp",
+        "--setenv",
+        "VABENCH_EVAS_OUTPUT_ROOT",
+        "/workspace/public/evas-output",
+        "--setenv",
+        "VABENCH_SUBMIT_SENTINEL",
+        "/workspace/public/.tmp/submission-request",
         "--setenv",
         "LANG",
         "C.UTF-8",
@@ -211,9 +257,8 @@ class BashEnvironmentConfig:
 class VaBenchBashEnvironment:
     """One bash tool over the model-visible public workspace.
 
-    The two vaBench commands are intercepted and executed by benchmark-owned
-    callbacks.  All other commands execute in an OS sandbox with no network and
-    no read access to the sibling evaluator directory.
+    EVAS and submission are exposed as discoverable shell executables. Commands
+    execute in an OS sandbox with no network and no read access to evaluator data.
     """
 
     def __init__(
@@ -222,13 +267,12 @@ class VaBenchBashEnvironment:
         *,
         timeout_s: float,
         sandbox_backend: str,
+        evas_command: str,
         deadline_monotonic: float | None = None,
-        feedback_runner: Callable[[Path, float, str | None], dict[str, Any]],
         submission_gate: Callable[[Path], dict[str, Any]],
     ) -> None:
         self.runtime = runtime.resolve()
         self.workspace = (self.runtime / "public").resolve()
-        self.feedback_runner = feedback_runner
         self.submission_gate = submission_gate
         self.deadline_monotonic = deadline_monotonic
         self.config = BashEnvironmentConfig(
@@ -237,9 +281,102 @@ class VaBenchBashEnvironment:
         self.workspace.joinpath("submission").mkdir(parents=True, exist_ok=True)
         self.workspace.joinpath("evas-output").mkdir(parents=True, exist_ok=True)
         self.workspace.joinpath(".tmp").mkdir(parents=True, exist_ok=True)
-        self._feedback_index = len(list((self.workspace / "evas-output").glob("run-*")))
+        self.tools_dir = self.workspace / ".tools"
+        self.tools_dir.mkdir(parents=True, exist_ok=True)
+        public_alias = self.workspace / "public"
+        if not public_alias.exists() and not public_alias.is_symlink():
+            public_alias.symlink_to(".", target_is_directory=True)
+        self.submit_sentinel = self.workspace / ".tmp" / "submission-request"
+        self.evas_command = evas_command
+        self._install_shell_tools()
         self.commands: list[dict[str, Any]] = []
         self._submitted_exception: type | None = None
+
+    def _install_shell_tools(self) -> None:
+        base = shlex.split(self.evas_command)
+        if not base:
+            raise ValueError("empty EVAS executable command")
+        executable = shutil.which(base[0])
+        if executable is None:
+            raise ValueError(f"EVAS executable is unavailable: {base[0]}")
+        base[0] = str(Path(executable).resolve())
+        self.evas_read_roots = self._evas_read_roots(Path(base[0]), base[1:])
+        if any(
+            root == self.runtime or self.runtime in root.parents
+            for root in self.evas_read_roots
+        ):
+            raise ValueError("EVAS executable runtime is inside the private task runtime")
+        evas_wrapper = self.tools_dir / "evas"
+        evas_wrapper.write_text(
+            "#!/bin/bash\n"
+            "set -e\n"
+            "args=()\n"
+            "while (($#)); do\n"
+            "  if [[ $1 == -o ]]; then\n"
+            "    shift\n"
+            "    [[ $# -gt 0 ]] || { echo 'evas: -o requires a path' >&2; exit 2; }\n"
+            "    output=$1\n"
+            "    if [[ $output == /tmp/vabench-visible/evas-output* ]]; then\n"
+            "      suffix=${output#/tmp/vabench-visible/evas-output}\n"
+            "      output=${VABENCH_EVAS_OUTPUT_ROOT}${suffix}\n"
+            "      echo \"VABENCH_EVAS_OUTPUT=$output\" >&2\n"
+            "    elif [[ $output == public/submission/evas-output* ]]; then\n"
+            "      suffix=${output#public/submission/evas-output}\n"
+            "      output=${VABENCH_EVAS_OUTPUT_ROOT}${suffix}\n"
+            "      echo \"VABENCH_EVAS_OUTPUT=$output\" >&2\n"
+            "    fi\n"
+            "    args+=(\"-o\" \"$output\")\n"
+            "  else\n"
+            "    args+=(\"$1\")\n"
+            "  fi\n"
+            "  shift\n"
+            "done\n"
+            f"exec {shlex.join(base)} \"${{args[@]}}\"\n",
+            encoding="utf-8",
+        )
+        evas_wrapper.chmod(0o755)
+        submit = self.tools_dir / "vabench-submit"
+        submit.write_text(
+            "#!/bin/bash\n"
+            "set -e\n"
+            ": > \"${VABENCH_SUBMIT_SENTINEL:?}\"\n",
+            encoding="utf-8",
+        )
+        submit.chmod(0o755)
+
+    @staticmethod
+    def _evas_read_roots(executable: Path, arguments: list[str]) -> list[Path]:
+        system_roots = tuple(
+            Path(root) for root in ("/usr", "/bin", "/sbin", "/lib", "/lib64")
+        )
+
+        def system_path(path: Path) -> bool:
+            return any(path == root or root in path.parents for root in system_roots)
+
+        roots: list[Path] = []
+        venv = executable.parent.parent
+        roots.append(venv if (venv / "pyvenv.cfg").is_file() else executable)
+        roots.extend(
+            path
+            for argument in arguments
+            if (path := Path(argument)).is_absolute() and path.is_file()
+        )
+        try:
+            first_line = executable.read_text(encoding="utf-8", errors="ignore").splitlines()[0]
+        except (OSError, IndexError):
+            first_line = ""
+        if first_line.startswith("#!"):
+            interpreter = Path(first_line[2:].strip().split()[0])
+            if interpreter.is_absolute():
+                resolved = interpreter.resolve()
+                if not system_path(resolved):
+                    roots.append(resolved.parent.parent)
+        unique: list[Path] = []
+        for root in roots:
+            resolved = root.resolve()
+            if not system_path(resolved) and resolved not in unique:
+                unique.append(resolved)
+        return unique
 
     def bind_submitted_exception(self, exception_type: type) -> None:
         self._submitted_exception = exception_type
@@ -280,16 +417,15 @@ class VaBenchBashEnvironment:
         # Probe a real directory read so macOS and namespace-based backends are
         # validated against the isolation property we rely on.
         argv = self._sandbox_argv(
-            "test -r task/instruction.md && ! /bin/ls ../evaluator >/dev/null 2>&1"
+            "test -r public/task/instruction.md "
+            "&& command -v evas >/dev/null "
+            "&& evas --version >/dev/null "
+            "&& ! /bin/ls ../evaluator >/dev/null 2>&1"
         )
         probe = subprocess.run(
             argv,
             cwd=self.workspace,
-            env={
-                "PATH": "/usr/bin:/bin:/usr/sbin:/sbin",
-                "HOME": str(self.workspace),
-                "TMPDIR": str(self.workspace / ".tmp"),
-            },
+            env=self._shell_env(),
             text=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -318,7 +454,7 @@ class VaBenchBashEnvironment:
             return [
                 executable,
                 "-p",
-                _sandbox_profile(self.workspace),
+                _sandbox_profile(self.workspace, self.evas_read_roots),
                 "/bin/bash",
                 "-c",
                 command,
@@ -327,62 +463,12 @@ class VaBenchBashEnvironment:
             executable = shutil.which("bwrap")
             if not executable:
                 raise RuntimeError("bubblewrap backend requested but bwrap is unavailable")
-            return _bubblewrap_argv(executable, self.workspace, command)
+            return _bubblewrap_argv(
+                executable, self.runtime, self.evas_read_roots, command
+            )
         if backend == "none":
             return ["/bin/bash", "-c", command]
         raise RuntimeError(f"unsupported mini-SWE sandbox backend: {backend}")
-
-    def _run_feedback(self, case: str | None) -> dict[str, Any]:
-        self._feedback_index += 1
-        run_id = f"run-{self._feedback_index:04d}"
-        run_dir = self.workspace / "evas-output" / run_id
-        run_dir.mkdir(parents=True, exist_ok=False)
-        started = time.monotonic()
-        try:
-            result = self.feedback_runner(
-                self.runtime, self._remaining_command_timeout_s(), case
-            )
-        except Exception as exc:
-            result = {
-                "returncode": -1,
-                "stdout": "",
-                "stderr": str(exc),
-                "elapsed_s": time.monotonic() - started,
-                "exception_type": type(exc).__name__,
-            }
-        raw_returncode = result.get("returncode")
-        try:
-            returncode = int(raw_returncode) if raw_returncode is not None else -1
-        except (TypeError, ValueError):
-            returncode = -1
-        stdout = str(result.get("stdout") or "")
-        stderr = str(result.get("stderr") or "")
-        (run_dir / "stdout.log").write_text(stdout, encoding="utf-8")
-        (run_dir / "stderr.log").write_text(stderr, encoding="utf-8")
-        summary = {
-            "schema_version": "vabench-public-evas-run-v1",
-            "run_id": run_id,
-            "returncode": returncode,
-            "elapsed_s": result.get("elapsed_s", time.monotonic() - started),
-            "status": "pass" if returncode == 0 else "fail",
-            "case": case,
-            "stdout_chars": len(stdout),
-            "stderr_chars": len(stderr),
-        }
-        (run_dir / "summary.json").write_text(
-            json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-        )
-        output = (
-            f"EVAS_RUN_ID={run_id}\nSTATUS={summary['status']}\n"
-            f"RETURN_CODE={summary['returncode']}\nOUTPUT_DIR=evas-output/{run_id}\n"
-            "Inspect summary.json, stdout.log, and stderr.log with later bash commands."
-        )
-        return {"output": output, "returncode": returncode, "exception_info": ""}
-
-    def _feedback_capabilities(self) -> dict[str, Any]:
-        manifest = self.workspace / "tool_manifest.json"
-        output = manifest.read_text(encoding="utf-8") if manifest.is_file() else "{}\n"
-        return {"output": output, "returncode": 0, "exception_info": ""}
 
     def _submit(self) -> dict[str, Any]:
         gate = self.submission_gate(self.runtime)
@@ -409,14 +495,19 @@ class VaBenchBashEnvironment:
             }
         )
 
-    def _run_sandboxed(self, command: str) -> dict[str, Any]:
-        env = {
-            "PATH": "/usr/bin:/bin:/usr/sbin:/sbin",
+    def _shell_env(self) -> dict[str, str]:
+        return {
+            "PATH": f"{self.tools_dir}:/usr/bin:/bin:/usr/sbin:/sbin",
             "HOME": str(self.workspace),
             "TMPDIR": str(self.workspace / ".tmp"),
             "LANG": "C.UTF-8",
             "LC_ALL": "C.UTF-8",
+            "VABENCH_EVAS_OUTPUT_ROOT": str(self.workspace / "evas-output"),
+            "VABENCH_SUBMIT_SENTINEL": str(self.submit_sentinel),
         }
+
+    def _run_sandboxed(self, command: str) -> dict[str, Any]:
+        env = self._shell_env()
         argv = self._sandbox_argv(command)
         started = time.monotonic()
         try:
@@ -448,35 +539,24 @@ class VaBenchBashEnvironment:
     def execute(self, action: dict[str, Any], cwd: str = "") -> dict[str, Any]:
         del cwd
         command = str(action.get("command") or "")
-        words = _safe_command_words(command)
         started = time.monotonic()
-        if words == ["vabench", "feedback", "capabilities"]:
-            output = self._feedback_capabilities()
-            kind = "vabench-feedback-capabilities"
-        elif (
-            words[:3] == ["vabench", "feedback", "run"]
-            and len(words) in {3, 4}
-        ) or words == ["vabench-evas"]:
-            case = words[3] if len(words) == 4 else None
-            output = self._run_feedback(case)
-            kind = "vabench-feedback-run"
-        elif words == ["vabench-submit"]:
-            kind = "vabench-submit"
-            try:
-                output = self._submit()
-            except Exception:
-                self.commands.append(
-                    {
-                        "command": command,
-                        "kind": kind,
-                        "returncode": 0,
-                        "elapsed_s": time.monotonic() - started,
-                    }
-                )
-                raise
-        else:
-            kind = "bash"
+        kind = "bash"
+        try:
             output = self._run_sandboxed(command)
+            if self.submit_sentinel.is_file():
+                self.submit_sentinel.unlink(missing_ok=True)
+                kind = "bash-submit"
+                output = self._submit()
+        except Exception:
+            self.commands.append(
+                {
+                    "command": command,
+                    "kind": kind,
+                    "returncode": 0 if kind == "bash-submit" else -1,
+                    "elapsed_s": time.monotonic() - started,
+                }
+            )
+            raise
         self.commands.append(
             {
                 "command": command,
@@ -656,7 +736,7 @@ def run_mini_swe_episode(
     request_timeout_s: float,
     tool_timeout_s: float,
     sandbox_backend: str,
-    feedback_runner: Callable[[Path, float, str | None], dict[str, Any]],
+    evas_command: str,
     submission_gate: Callable[[Path], dict[str, Any]],
     usage_parser: Callable[..., dict[str, Any]],
     response_metadata: Callable[[dict[str, Any]], dict[str, Any]],
@@ -669,8 +749,8 @@ def run_mini_swe_episode(
         runtime,
         timeout_s=min(float(tool_timeout_s), float(agent_timeout_s)),
         sandbox_backend=sandbox_backend,
+        evas_command=evas_command,
         deadline_monotonic=deadline,
-        feedback_runner=feedback_runner,
         submission_gate=submission_gate,
     )
     environment.preflight()

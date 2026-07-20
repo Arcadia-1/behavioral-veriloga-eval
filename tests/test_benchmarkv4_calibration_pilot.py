@@ -867,7 +867,7 @@ def test_agentic_run_cell_uses_mini_swe_bash_scaffold_by_default_path(
     args.mini_swe_sandbox = "none"
     client = MiniSweFakeClient(
         [
-            "printf 'module bbpd_ref; endmodule\\n' > submission/bbpd_ref.va",
+            "printf 'module bbpd_ref; endmodule\\n' > public/submission/bbpd_ref.va",
             "vabench-submit",
         ]
     )
@@ -876,14 +876,14 @@ def test_agentic_run_cell_uses_mini_swe_bash_scaffold_by_default_path(
 
     assert result["status"] == "submitted"
     assert result["agent_scaffold"]["scaffold"] == (
-        "mini-swe-agent-2.4.5-vabench-bash-v1"
+        "mini-swe-agent-2.4.5-vabench-direct-evas-v2"
     )
     assert result["agent_scaffold"]["evaluator_mounted"] is False
     assert result["output_token_budget"] is None
     assert result["experiment_result"]["final_submission"]["status"] == "available"
 
 
-def test_mini_swe_r45_feedback_then_submit_keeps_runner_scratch_outside_submission(
+def test_mini_swe_r45_direct_evas_then_submit_keeps_scratch_outside_submission(
     tmp_path: Path, r45_release: Path
 ) -> None:
     runner = load_run_campaign()
@@ -894,8 +894,12 @@ def test_mini_swe_r45_feedback_then_submit_keeps_runner_scratch_outside_submissi
     args.evas_command = fake_evas_command(tmp_path)
     client = MiniSweFakeClient(
         [
-            "printf 'module bbpd_ref; endmodule\\n' > submission/bbpd_ref.va",
-            "vabench feedback run",
+            "printf 'module bbpd_ref; endmodule\\n' > public/submission/bbpd_ref.va",
+            (
+                "evas simulate public/task/visible_test.scs "
+                "-o public/submission/evas-output --spectre-strict"
+            ),
+            "cat public/evas-output/invocation.json",
             "vabench-submit",
         ]
     )
@@ -909,7 +913,7 @@ def test_mini_swe_r45_feedback_then_submit_keeps_runner_scratch_outside_submissi
     assert (
         args.output
         / cell["cell_id"]
-        / ".vabench-visible"
+        / "public"
         / "evas-output"
         / "invocation.json"
     ).is_file()

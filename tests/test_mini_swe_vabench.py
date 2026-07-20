@@ -93,20 +93,39 @@ def artifact_gate(runtime: Path) -> dict:
     }
 
 
-def test_mini_swe_bash_episode_runs_feedback_reads_output_and_submits(tmp_path: Path) -> None:
+def test_mini_swe_bash_episode_runs_direct_evas_reads_output_and_submits(
+    tmp_path: Path,
+) -> None:
     module = load_module()
     runtime = tmp_path / "runtime"
     (runtime / "public" / "task").mkdir(parents=True)
     (runtime / "public" / "task" / "instruction.md").write_text("public task")
+    (runtime / "public" / "task" / "visible_test.scs").write_text("tran tran stop=1n")
     (runtime / "public" / "submission").mkdir(parents=True)
     (runtime / "evaluator").mkdir(parents=True)
     (runtime / "evaluator" / "secret.txt").write_text("sealed")
+    fake_evas = tmp_path / "fake-evas"
+    fake_evas.write_text(
+        "#!/bin/bash\n"
+        "if [[ $1 == --version || $1 == --help ]]; then echo 'evas-test 1.0'; exit 0; fi\n"
+        "while (($#)); do\n"
+        "  if [[ $1 == -o ]]; then shift; output=$1; fi\n"
+        "  shift\n"
+        "done\n"
+        "mkdir -p \"$output\"\n"
+        "printf 'time,vout\\n0,0\\n' > \"$output/tran.csv\"\n"
+    )
+    fake_evas.chmod(0o755)
     provider = FakeProvider(
         [
-            "vabench feedback run",
-            "cat evas-output/run-0001/summary.json",
-            "printf 'module model; endmodule\\n' > submission/model.va",
-            "vabench-submit",
+            "which evas && evas --help",
+            "printf 'module model; endmodule\\n' > public/submission/model.va",
+            (
+                "evas simulate public/task/visible_test.scs "
+                "-o /tmp/vabench-visible/evas-output --spectre-strict"
+            ),
+            "cat public/evas-output/tran.csv",
+            "which vabench-submit && vabench-submit",
         ]
     )
 
@@ -119,12 +138,7 @@ def test_mini_swe_bash_episode_runs_feedback_reads_output_and_submits(tmp_path: 
         request_timeout_s=10,
         tool_timeout_s=10,
         sandbox_backend="none",
-        feedback_runner=lambda _runtime, _timeout, _case: {
-            "returncode": 1,
-            "stdout": "FEEDBACK_BEHAVIOR_FAIL\nP_DELAY expected=2 observed=3\n",
-            "stderr": "",
-            "elapsed_s": 0.1,
-        },
+        evas_command=str(fake_evas),
         submission_gate=artifact_gate,
         usage_parser=usage_parser,
         response_metadata=response_metadata,
@@ -133,19 +147,20 @@ def test_mini_swe_bash_episode_runs_feedback_reads_output_and_submits(tmp_path: 
 
     assert result["submitted"] is True
     assert result["exit_status"] == "Submitted"
-    assert result["output_tokens"] == 28
-    assert result["model_calls"] == 4
+    assert result["output_tokens"] == 35
+    assert result["model_calls"] == 5
     assert [row["kind"] for row in result["commands"]] == [
-        "vabench-feedback-run",
         "bash",
         "bash",
-        "vabench-submit",
+        "bash",
+        "bash",
+        "bash-submit",
     ]
-    assert result["scaffold"] == "mini-swe-agent-2.4.5-vabench-bash-v1"
+    assert result["scaffold"] == "mini-swe-agent-2.4.5-vabench-direct-evas-v2"
     assert (runtime / "public" / "submission" / "model.va").is_file()
-    run_dir = runtime / "public" / "evas-output" / "run-0001"
-    assert json.loads((run_dir / "summary.json").read_text())["status"] == "fail"
-    assert "P_DELAY" in (run_dir / "stdout.log").read_text()
+    assert "time,vout" in (
+        runtime / "public" / "evas-output" / "tran.csv"
+    ).read_text()
     assert (runtime / "evidence" / "trajectory.json").is_file()
 
 
@@ -163,7 +178,7 @@ def test_sandbox_cannot_read_sibling_evaluator(tmp_path: Path) -> None:
         runtime,
         timeout_s=5,
         sandbox_backend="sandbox-exec",
-        feedback_runner=lambda _runtime, _timeout, _case: {},
+        evas_command="/usr/bin/true",
         submission_gate=artifact_gate,
     )
 
@@ -174,7 +189,36 @@ def test_sandbox_cannot_read_sibling_evaluator(tmp_path: Path) -> None:
     assert "sealed" not in result["output"]
 
 
-def test_sandbox_profile_keeps_evas_output_read_only(tmp_path: Path) -> None:
+def test_macos_sandbox_executes_pinned_external_evas(tmp_path: Path) -> None:
+    if shutil.which("sandbox-exec") is None:
+        pytest.skip("sandbox-exec is only available on supported macOS runners")
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "task" / "instruction.md").write_text("public task")
+    external = tmp_path / "tool-runtime" / "evas"
+    external.parent.mkdir()
+    external.write_text("#!/bin/bash\necho 'evas-external 1.0'\n")
+    external.chmod(0o755)
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=5,
+        sandbox_backend="sandbox-exec",
+        evas_command=str(external),
+        submission_gate=artifact_gate,
+    )
+
+    environment.preflight()
+    result = environment.execute({"command": "which evas && evas --version"})
+
+    assert result["returncode"] == 0
+    assert "public/.tools/evas" in result["output"]
+    assert "evas-external 1.0" in result["output"]
+
+
+def test_sandbox_profile_allows_only_candidate_and_evas_scratch_writes(
+    tmp_path: Path,
+) -> None:
     module = load_module()
     workspace = tmp_path / "runtime" / "public"
     profile = module._sandbox_profile(workspace)
@@ -184,25 +228,29 @@ def test_sandbox_profile_keeps_evas_output_read_only(tmp_path: Path) -> None:
     )
     assert str(workspace / "submission") in write_rule
     assert str(workspace / ".tmp") in write_rule
-    assert str(workspace / "evas-output") not in write_rule
+    assert str(workspace / "evas-output") in write_rule
 
 
 def test_bubblewrap_argv_mounts_only_the_public_workspace(tmp_path: Path) -> None:
     module = load_module()
     runtime = tmp_path / "runtime"
     workspace = runtime / "public"
-    argv = module._bubblewrap_argv("/usr/bin/bwrap", workspace, "pwd")
+    argv = module._bubblewrap_argv("/usr/bin/bwrap", runtime, [], "pwd")
 
     assert "--unshare-net" in argv
-    assert [str(workspace), "/workspace"] == argv[
+    assert [str(workspace), "/workspace/public"] == argv[
         argv.index("--ro-bind", argv.index("--dir")) + 1 :
         argv.index("--ro-bind", argv.index("--dir")) + 3
     ]
     assert str(runtime / "evaluator") not in argv
-    assert [str(workspace / "submission"), "/workspace/submission"] == argv[
+    assert [str(workspace / "submission"), "/workspace/public/submission"] == argv[
         argv.index("--bind") + 1 : argv.index("--bind") + 3
     ]
-    assert str(workspace / "evas-output") not in argv
+    assert [str(workspace / "evas-output"), "/workspace/public/evas-output"] in [
+        argv[index + 1 : index + 3]
+        for index, word in enumerate(argv)
+        if word == "--bind"
+    ]
 
 
 def test_auto_selects_bubblewrap_on_linux(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -217,7 +265,9 @@ def test_auto_selects_bubblewrap_on_linux(monkeypatch: pytest.MonkeyPatch) -> No
     assert module.default_sandbox_backend() == "bubblewrap"
 
 
-def test_bubblewrap_isolates_evaluator_and_feedback_output(tmp_path: Path) -> None:
+def test_bubblewrap_isolates_evaluator_and_allows_direct_evas_output(
+    tmp_path: Path,
+) -> None:
     if shutil.which("bwrap") is None:
         pytest.skip("bubblewrap is not installed on this host")
     module = load_module()
@@ -228,79 +278,100 @@ def test_bubblewrap_isolates_evaluator_and_feedback_output(tmp_path: Path) -> No
     (runtime / "public" / "evas-output").mkdir(parents=True)
     (runtime / "evaluator").mkdir(parents=True)
     (runtime / "evaluator" / "secret.txt").write_text("sealed")
+    external = tmp_path / "tool-runtime" / "evas"
+    external.parent.mkdir()
+    external.write_text("#!/bin/bash\necho 'evas-external 1.0'\n")
+    external.chmod(0o755)
     environment = module.VaBenchBashEnvironment(
         runtime,
         timeout_s=5,
         sandbox_backend="bubblewrap",
-        feedback_runner=lambda _runtime, _timeout, _case: {},
+        evas_command=str(external),
         submission_gate=artifact_gate,
     )
 
     environment.preflight()
     hidden = environment.execute({"command": "cat ../evaluator/secret.txt"})
-    readonly = environment.execute(
-        {"command": "printf tampered > evas-output/model-created.log"}
+    direct_evas = environment.execute({"command": "which evas && evas --version"})
+    scratch = environment.execute(
+        {"command": "printf waveform > public/evas-output/model-created.log"}
     )
     writable = environment.execute(
-        {"command": "printf candidate > submission/model.va"}
+        {"command": "printf candidate > public/submission/model.va"}
     )
 
     assert hidden["returncode"] != 0
     assert "sealed" not in hidden["output"]
-    assert readonly["returncode"] != 0
-    assert not (runtime / "public" / "evas-output" / "model-created.log").exists()
+    assert direct_evas["returncode"] == 0
+    assert "evas-external 1.0" in direct_evas["output"]
+    assert scratch["returncode"] == 0
+    assert (runtime / "public" / "evas-output" / "model-created.log").read_text() == "waveform"
     assert writable["returncode"] == 0
     assert (runtime / "public" / "submission" / "model.va").read_text() == "candidate"
 
 
-def test_sandbox_cannot_modify_evas_output(tmp_path: Path) -> None:
+def test_sandbox_can_write_direct_evas_output_but_not_task(tmp_path: Path) -> None:
     if shutil.which("sandbox-exec") is None:
         pytest.skip("sandbox-exec is only available on supported macOS runners")
     module = load_module()
     runtime = tmp_path / "runtime"
     (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "task" / "instruction.md").write_text("public task")
     (runtime / "public" / "submission").mkdir(parents=True)
     (runtime / "public" / "evas-output").mkdir(parents=True)
     environment = module.VaBenchBashEnvironment(
         runtime,
         timeout_s=5,
         sandbox_backend="sandbox-exec",
-        feedback_runner=lambda _runtime, _timeout, _case: {},
+        evas_command="/usr/bin/true",
         submission_gate=artifact_gate,
     )
 
-    result = environment.execute(
-        {"command": "printf tampered > evas-output/model-created.log"}
+    scratch = environment.execute(
+        {"command": "printf waveform > public/evas-output/model-created.log"}
+    )
+    task_write = environment.execute(
+        {"command": "printf tampered > public/task/instruction.md"}
     )
 
-    assert result["returncode"] != 0
-    assert not (runtime / "public" / "evas-output" / "model-created.log").exists()
+    assert scratch["returncode"] == 0
+    assert task_write["returncode"] != 0
+    assert (runtime / "public" / "evas-output" / "model-created.log").read_text() == "waveform"
+    assert (runtime / "public" / "task" / "instruction.md").read_text() == "public task"
 
 
-def test_missing_feedback_returncode_is_a_failure(tmp_path: Path) -> None:
+def test_direct_evas_must_exist_before_the_first_model_call(tmp_path: Path) -> None:
     module = load_module()
     runtime = tmp_path / "runtime"
     (runtime / "public" / "task").mkdir(parents=True)
     (runtime / "public" / "submission").mkdir(parents=True)
-    environment = module.VaBenchBashEnvironment(
-        runtime,
-        timeout_s=5,
-        sandbox_backend="none",
-        feedback_runner=lambda _runtime, _timeout, _case: {
-            "stdout": "unavailable",
-            "stderr": "",
-        },
-        submission_gate=artifact_gate,
-    )
+    with pytest.raises(ValueError, match="EVAS executable is unavailable"):
+        module.VaBenchBashEnvironment(
+            runtime,
+            timeout_s=5,
+            sandbox_backend="none",
+            evas_command="definitely-not-an-evas-executable",
+            submission_gate=artifact_gate,
+        )
 
-    result = environment.execute({"command": "vabench feedback run"})
 
-    summary = json.loads(
-        (runtime / "public" / "evas-output" / "run-0001" / "summary.json").read_text()
-    )
-    assert result["returncode"] == -1
-    assert summary["returncode"] == -1
-    assert summary["status"] == "fail"
+def test_direct_evas_runtime_cannot_mount_private_task_assets(tmp_path: Path) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    private_tool = runtime / "evaluator" / "evas"
+    private_tool.parent.mkdir()
+    private_tool.write_text("#!/bin/bash\nexit 0\n")
+    private_tool.chmod(0o755)
+
+    with pytest.raises(ValueError, match="inside the private task runtime"):
+        module.VaBenchBashEnvironment(
+            runtime,
+            timeout_s=5,
+            sandbox_backend="none",
+            evas_command=str(private_tool),
+            submission_gate=artifact_gate,
+        )
 
 
 def test_mini_swe_reprompts_after_missing_bash_call_and_counts_telemetry(
@@ -313,7 +384,7 @@ def test_mini_swe_reprompts_after_missing_bash_call_and_counts_telemetry(
     provider = FakeProvider(
         [
             None,
-            "printf 'module model; endmodule\\n' > submission/model.va",
+            "printf 'module model; endmodule\\n' > public/submission/model.va",
             "vabench-submit",
         ]
     )
@@ -327,7 +398,7 @@ def test_mini_swe_reprompts_after_missing_bash_call_and_counts_telemetry(
         request_timeout_s=10,
         tool_timeout_s=10,
         sandbox_backend="none",
-        feedback_runner=lambda _runtime, _timeout, _case: {},
+        evas_command="/usr/bin/true",
         submission_gate=artifact_gate,
         usage_parser=usage_parser,
         response_metadata=response_metadata,
