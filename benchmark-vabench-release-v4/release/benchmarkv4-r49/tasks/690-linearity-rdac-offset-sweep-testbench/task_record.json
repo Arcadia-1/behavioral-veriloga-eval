@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "190-linearity-rdac-offset-sweep",
+  "checker_task_id": "v4_190_linearity_rdac_offset_sweep",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "759a1acde08ac54cae6bfaec3a79d5706a363ff895f0f8644a2436fcceafc0f0",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "5ec9977dc8b111062b2998c56a4618b75a5b8a933b723df42936ce35442114fb",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "190",
+  "family_spec_sha256": "53804768aef762e26cb45c57b668c05c897970dfac8972e049ea863d98a4c9b6",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5ba17ed35949d5fdee56a09571e2e13f03a5e79a08b979861b4881f6bdda1d5b",
+  "public_contract": "tasks/690-linearity-rdac-offset-sweep-testbench/public_contract.json",
+  "public_contract_sha256": "0fecf7bb7429a0cb1a416920643976ad3317d0e2e685cf69bb60b53d2dd2e7ed",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/690-linearity-rdac-offset-sweep-testbench",
+  "task_id": "v4-690"
+}

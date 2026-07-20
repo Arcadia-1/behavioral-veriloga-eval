@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_only_channel0_captured/certification.json",
-        "certification_sha256": "c5b55d180f90b6cc5d67f3629a77e882cccedb1fa2be7392e4f9f124867226e4",
+        "certification_sha256": "f39f03053ea253284c34a48dc2fa0d242c0d6da74d87f21b3d7125e4ebb9d17c",
         "fault_class": "sample_bank_failure",
-        "mutation_bundle_sha256": "00359c6a6bcdcc8089019e011d2b1bfeeb11f9919a14402b2537d7813527224f",
+        "mutation_bundle_sha256": "b01a67edae3ae777a9572abcaeb71de83fe3cd97971186d41e3ca77692955c4d",
         "mutation_id": "neg_001_only_channel0_captured",
         "source_catalog_certification_path": "negative_variants/neg_001_only_channel0_captured/certification.json",
         "trigger_condition": "a sample captures distinct channel values",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_valid_stuck_low/certification.json",
-        "certification_sha256": "c5367e95c5c5009b7587f8b6b820ed7b757ebe5e230c77214bd217ea13e2cd4d",
+        "certification_sha256": "797f29bef2b8b036877607e634ad85074172e40d0803039553b5e79569948eb4",
         "fault_class": "valid_flag_stuck",
-        "mutation_bundle_sha256": "46ea586324e6ac0b31b1e236eb0076a2b80f69ce85c723f3840f665a54d47120",
+        "mutation_bundle_sha256": "1bda0f937ffcd18bc01779c5516fd66f2d3017c6bbae432d4c00804a0b5d7773",
         "mutation_id": "neg_003_valid_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_003_valid_stuck_low/certification.json",
         "trigger_condition": "a read cycle occurs",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_reset_does_not_clear_out/certification.json",
-        "certification_sha256": "cefec389b8607c0502282553f17a8539ec9fcdbc44d1f1c0c3121c91749b15c4",
+        "certification_sha256": "928f943c960e95632a51464854ec6874cd36e7411759fb30b69440c002ef814d",
         "fault_class": "missing_reset",
-        "mutation_bundle_sha256": "31c63cae5e170f78943c8cb2b4ac6172e43efcc5b68341fa97be58b17f21ad8c",
+        "mutation_bundle_sha256": "627f82339d49f75a8098d2877a9194ba290b4be58684f1817549ece258c717d5",
         "mutation_id": "neg_005_reset_does_not_clear_out",
         "source_catalog_certification_path": "negative_variants/neg_005_reset_does_not_clear_out/certification.json",
         "trigger_condition": "reset is asserted after a nonzero read",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_pointer_skips_channels/certification.json",
-        "certification_sha256": "35b4b053c0d311af9b9449ab46efd62a5a42e724f49a814aa59aca6e59eeeba4",
+        "certification_sha256": "2b3f7184eefe51ba5957e6188e978536c8a59f580a657b5c773bf57d88a06089",
         "fault_class": "pointer_step_error",
-        "mutation_bundle_sha256": "23c95b50f3d911395657bec8c18ba913fc79a7d571b61be1d4650334dde9d404",
+        "mutation_bundle_sha256": "638383576449e9c1913527a8a282df0caf7845bf247823832f38943c4bbb71ee",
         "mutation_id": "neg_002_pointer_skips_channels",
         "source_catalog_certification_path": "negative_variants/neg_002_pointer_skips_channels/certification.json",
         "trigger_condition": "consecutive read cycles occur",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_selector1_reads_hold2/certification.json",
-        "certification_sha256": "a835bc9cafb449105b841b9663b3320f6b72201379fda450e08327dee0a576cc",
+        "certification_sha256": "3371982162c2df8a5d183e08a8491ad2ba02bcd9fb086db9b18a35b0fa09c886",
         "fault_class": "mux_mapping_error",
-        "mutation_bundle_sha256": "9c31f435d1a7682e6a129e2cc9965c682613821b54ad1c9e66727e36b6da7f1a",
+        "mutation_bundle_sha256": "09ace0e85cca418a6b3cdc208557e5e0318655b770c0625da29bbeee648063b8",
         "mutation_id": "neg_004_selector1_reads_hold2",
         "source_catalog_certification_path": "negative_variants/neg_004_selector1_reads_hold2/certification.json",
         "trigger_condition": "channel one is selected",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "04b9918c4779b362a680270198264988d1faa005ee1043a22da7b49243729128",
       "score_deck_sha256": "6a9bf4bb8d249de70a6959d1f335319a47e66b572ac5749fca912aafcae03955",
-      "task_certification_sha256": "105720c7f83f0bc01a5eb9e5bdcf393eea3c3927f9e5b06aee5939988ef5d63b",
-      "task_record_sha256": "38ae7c6a61987df03e2f8a6e70204552b7d015251191553d2733fab3ec5ae153"
+      "task_certification_sha256": "1b47f4ce5d854744873fc43cd5a50ffd2987f06598f18cdfd4821a18bebbb2cb",
+      "task_record_sha256": "10abbfcb87c9d6adb7793f7c60a0bd4b46d0922774ac5b5e0f2076ada65afdc8"
     },
     "release_dir": "349-multichannel-sample-readout"
   }

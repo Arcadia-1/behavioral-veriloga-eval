@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "076-burst-clock-source",
+  "checker_task_id": "v4_076_burst_clock_source",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "c4f40bde98fee1b422cac87abd0fd6a8bcb4f4bc4f3c4dad1cb2ec47ad79def5",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "c5be18b08ecd8ea39877a3b5a686fdc2d10a37714b4e89aa810fc8cdc9b8f60d",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "076",
+  "family_spec_sha256": "2cdcf130fae1994b993d95e1cec56b2690854819e08edb1765649daeac716f68",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1c9217934765454f5b1fbefa98e5a521ccdc7ebcc2702d0de44abffcb5b4f62d",
+  "public_contract": "tasks/576-burst-clock-source-testbench/public_contract.json",
+  "public_contract_sha256": "cd40139742587559a10e9fb113195736a1e81f72fefb8ec065bf1c1855467b43",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/576-burst-clock-source-testbench",
+  "task_id": "v4-576"
+}

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_shift_conv_early/certification.json",
-        "certification_sha256": "743628cdf0bb010729e5c07d0fbdb95b28b5b07ce74f2f11538ed18562be0af1",
+        "certification_sha256": "e9533639716b831b8bde13754ce5a018630fff43df72aa40439027b5c2a7c3d0",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "2f08d00155476200b59804d9284185bb00a9ee7a361c575fab4a2081f8cd398b",
+        "mutation_bundle_sha256": "44311f4dc20407a7ec770caaf5673920acec05d1d9c2dea05b568fab2f26e38c",
         "mutation_id": "neg_002_shift_conv_early",
         "source_catalog_certification_path": "negative_variants/neg_002_shift_conv_early/certification.json",
         "trigger_condition": "Drives conv pulses at half amplitude.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "39e5922cd7402f70e2a3cd18ed9cdc8cff8f5bc755dffa31bf6da07e60a589db",
+        "certification_sha256": "da8d67bf039c521551bda47f487227a2ce52a5fb2c24cca4a7cf87d7ebc3faa6",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "d6d2b5bb13adadbc25fe04f80a5eaad55ce1c12f051bcf032a6f9f45411d5d0b",
+        "mutation_bundle_sha256": "b0951da282ff2435c2d8706ea5b2f09a369251a298c45fe94dd62e14272335c7",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "ADC Sample Clock Sequencer: scales the metric output, preserving the main path while failing measurement checks.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_swap_nc_outputs/certification.json",
-        "certification_sha256": "134f7e7042d307dfcf0aae3bcf4c65080f8b3da30f79775d047f7a816f9157b9",
+        "certification_sha256": "e98eb349e99e96acadbdba1c33ea44e1f1ef800a6dbe83bd6e21a0c17a90c5e1",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "346eb6389c39c8e4bfe3e91e03f2ced87ebcc2587915ca135a3817879e2e2f72",
+        "mutation_bundle_sha256": "bedd020f34e3c8bd8271273199dea938882a9fb8ed300555b0e64b7f4adf99c1",
         "mutation_id": "neg_004_swap_nc_outputs",
         "source_catalog_certification_path": "negative_variants/neg_004_swap_nc_outputs/certification.json",
         "trigger_condition": "Swaps nc and nc_az output routing.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "466196eb6799ffc2ce145805ab5a92f3f06d876c1aee241b6f8ed27e444c1c6a",
+        "certification_sha256": "94e8c04791521eecd348e5775de748b1d56c015fe87dcd76dbd3c358c1142593",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "48e2ea807b1e348552c077d485b8041751c9037ae2c0e05c298e3fa2402951fb",
+        "mutation_bundle_sha256": "8d2ba1b52a84764ceaa31052bb93607722830fb7c7a4f8f3f269a930cd6c5f97",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_short_sample_pulse/certification.json",
-        "certification_sha256": "a2d115327a447a64c7e49a3625c72bfa6ada27e35d08f7f6715517c98e6298e2",
+        "certification_sha256": "9bf4e97a379f5806a375f6454af96e3e5e6de1e21157f389ccd465cb502db30f",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "61e67d8e855d7bd06eb635d81780ddc2f35a134487b66c7322819b145a150423",
+        "mutation_bundle_sha256": "e7f6a343d95bbaa4bd933fd8090d91c7a8dc73451aff05b675881a261a3ef14d",
         "mutation_id": "neg_003_short_sample_pulse",
         "source_catalog_certification_path": "negative_variants/neg_003_short_sample_pulse/certification.json",
         "trigger_condition": "Drives sample pulses at half amplitude.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "16925895b808fc8412a9817daf3f82480d313dda3e7c10a75c9a45878fef6184",
       "score_deck_sha256": "a19e107e4106636166534e4c2e9478a528ca5bba8035700ba28c27389b938529",
-      "task_certification_sha256": "e3f8b1d2cc4156969ef1288fa7bfc52526c8b9a9914bdecf43820fdaabd6b115",
-      "task_record_sha256": "d377b884867b2143ce1bb4850d543e1bc48bbfc389acd0a4ed098378cd1044b6"
+      "task_certification_sha256": "fa98d535758c1ea3791cdadd163c9a74b979422f980ea151d02554068a9f077b",
+      "task_record_sha256": "afb28912df0bcfb26f3e8628d70192ad7f68fa326d9803ef3d757a5f0f435d6e"
     },
     "release_dir": "187-adc-sample-clock-sequencer"
   }

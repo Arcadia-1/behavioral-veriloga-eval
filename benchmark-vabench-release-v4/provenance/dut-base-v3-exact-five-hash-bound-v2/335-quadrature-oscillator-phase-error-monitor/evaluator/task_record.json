@@ -3,12 +3,12 @@
   "checker_task_id": "v4_335_quadrature_oscillator_phase_error_monitor",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "b2cfbbb83d9509b68bee40ad421eae2d16542b74eb244a720fd0aaef92dec3a1",
+    "certification.json": "80e9a524c7dd533fb9b822f5967ea93d2d85981722866f9cbef0f7e4302b0fb0",
     "checker_profile.json": "54dfed0a7873bb736f771902025fb838ce65bf3a2660d1f14ac39ac4cc625402",
-    "derivation_manifest.json": "947125d7fa2512d8f7f2fe1bf50009e847790e1a9154d7515d0aa7a6689cf48c",
+    "derivation_manifest.json": "df9cbfc646780678315e3155ffa7651abdb5d26880a03048c32cf80dc2a12661",
     "family_spec.json": "88cb9113b178500df3b08cda05a30e2c696f9d9ab7528684c4f2a42a1f7c59c1",
     "harness_spec.json": "da943bd969336fc1f4f5a53d012ffb1cf1c449e099bdf50607a4e88cf2810c87",
-    "mutation_catalog.json": "c1500fdbdbf7d09e36fd80825895628192a9ff4faa9cc750ebbcf0cd04a44024",
+    "mutation_catalog.json": "44996b93b5f417ded31d37c2a4d830b9ebd649bf388f44d2b0aa446e7e8b38b2",
     "profiles/feedback.json": "cde7e07dad219a49bc65539e48f84e571556838a25c2d6b431faf33101e39a7f",
     "profiles/score.json": "6fd5e84b97679b031e49d3ab1bfe9453802e88ab71ec545812de46be10e55a69",
     "score_tb.scs": "5612f00c6e5cbf793eec0f742f45b76c5dbe02a8987e89989d0fc2cb49023fcc",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "b2cfbbb83d9509b68bee40ad421eae2d16542b74eb244a720fd0aaef92dec3a1"
+    "sha256": "80e9a524c7dd533fb9b822f5967ea93d2d85981722866f9cbef0f7e4302b0fb0"
   },
   "release_dir": "335-quadrature-oscillator-phase-error-monitor",
   "schema_version": "v4-canonical-dut-release-task-v1",

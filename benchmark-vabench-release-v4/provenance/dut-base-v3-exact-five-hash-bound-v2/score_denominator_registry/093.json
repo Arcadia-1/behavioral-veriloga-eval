@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "945fbd729aca2101affa13a652db6da5c709878fdabaa5dbbf9cc1b05a3de3ed",
+        "certification_sha256": "2eca87d7a1874b64805e03b1c1c2c362a58fa4c6704460f757931108065791cf",
         "fault_class": "threshold_boundary_error",
-        "mutation_bundle_sha256": "acac58663bb3e215fbb84c0d8a9f776282e66a8e43f212327bd3781e3e6fa82b",
+        "mutation_bundle_sha256": "11e16c7473b31aa4bc89c9378d5ef3a20b05d8760fe040d0a28ed1281113605b",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "boundary stimulus crosses the public threshold conditions for Gain Estimator",
@@ -20,9 +20,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "85550c2806da0391b2caf5ac360f4b0f5472d703a91e9d4da690a434685cd522",
+        "certification_sha256": "89bc0d86174afa65e09be38403b7243ff571fdc306cf3f57edaeeb71780cb5dc",
         "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "12bf7c3bfb2051cd759b081f51fb9e5f7a850a3abe09fb3d535013a27624f085",
+        "mutation_bundle_sha256": "a12b1f05923bb1bc2f7468faab8c0cf2776d79876580e88b42fa3de1b25b5044",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "score stimulus observes the public metric/output scaling for Gain Estimator",
@@ -35,9 +35,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "e62da83d1fa0f82ae7ffee11266e3947943f3d944105a83c152f5131debce50b",
+        "certification_sha256": "d0ed5736a730fc6d6d277b7c5a5753683088d6138943ca1a83d7140909ed4804",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "6f60510454a805e4362b4d8868cd8a039b05dfa5e9655236e8fdfa71727a9f48",
+        "mutation_bundle_sha256": "8082d2dff11474625cdeeb0adaca4caf4d314ee568b752169a7d57fbb6b8e34f",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for Gain Estimator",
@@ -49,9 +49,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "ccdd4a32f422a3eb582d610041496940f14ec6398e61b431064ce622b0672885",
+        "certification_sha256": "63e4a83125f14ea479aa43b9ba88f1b95322bdfd316f53c90048799e84a65793",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "117afa6b5e7a649296c3ccd16a76770032b817a53da7a3d16a8c6ea35d84bb33",
+        "mutation_bundle_sha256": "03843b4f630471d6d2fdf09f6e2c9620be7294d2f0717fc25c34716dc9fbaa4c",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "nonzero behavioral stimulus requires observable Gain Estimator outputs",
@@ -62,9 +62,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "82f888fa3eafbb8ffd4efabe10f9db23229f40e2daacfedefdc8b4a395fb0b92",
+        "certification_sha256": "bfea57d71cfb0b8aecf1611568bc3dda2462c9a93c610deaccc68976f02bf8fb",
         "fault_class": "reset_semantics_error",
-        "mutation_bundle_sha256": "43a86a6f929bc419aca80888101b8a8ba58c6b4de970254fed2e56e6e187e65b",
+        "mutation_bundle_sha256": "04256df1669fcaa24ffec2bd01b112df2a6b67bf60ab5640d3caf2f70bf036ee",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "reset/recovery stimulus exercises Gain Estimator state override behavior",
@@ -79,8 +79,8 @@
     "hashes": {
       "mutation_catalog_sha256": "9df86941b1d8ac3a7129604847c7ad9b841256b7ac220d42eb726cf06f169e42",
       "score_deck_sha256": "14939050be63a3a73219c1df6671b63792ebe054a53657147c86dfeb1c7f460b",
-      "task_certification_sha256": "467310fbad8a419a4de372683beb3f067ed325863070127aed03f6e53614f41b",
-      "task_record_sha256": "853f260335754427e89d05f6282c12b6fbd2873a7c701e6108ceeb27377f87b2"
+      "task_certification_sha256": "fa6be321998ec3d20c97654eb482716dd623a8f9d46c394ce2e73859f5b0f8bc",
+      "task_record_sha256": "d5bf532d3379a1459802bfa3bf0297e7f86af65f702714d0a9d761748b45fdc3"
     },
     "release_dir": "093-gain-estimator"
   }

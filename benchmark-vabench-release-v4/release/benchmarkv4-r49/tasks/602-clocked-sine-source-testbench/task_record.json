@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "102-clocked-sine-source",
+  "checker_task_id": "v4_102_clocked_sine_source",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "2a918a19eb862d4ec64db0dc60b8f7292948b6c83d0e10e78ba1a8f31c2a8a10",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "c8ce07542710a1525041e6db8f5cd7b86e2234d4ff4bbbab69225b9c84902214",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "102",
+  "family_spec_sha256": "bb97d3e27e2b374578a8ccbdef291d3f69e090493e2101a12ab02e43247c646a",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2f706783c313509da91d55809ea687443a1fdcead4d17d860043268c9cec7843",
+  "public_contract": "tasks/602-clocked-sine-source-testbench/public_contract.json",
+  "public_contract_sha256": "2885c2f29844ffce49fc78527bbb91b3e0b116d9e2b76fb17843f852ee117171",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/602-clocked-sine-source-testbench",
+  "task_id": "v4-602"
+}

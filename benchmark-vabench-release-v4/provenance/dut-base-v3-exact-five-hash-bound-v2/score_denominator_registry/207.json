@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_denominator/certification.json",
-        "certification_sha256": "639ef64433bcfe7a409fff0680ef92079190235788248eb2225cda0937c9bc4e",
+        "certification_sha256": "6a1ebca85ccbf3848b03865e149221967ec5e0065376ebae8a4155f1381d225e",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "dce095bc78b86d3363520aed9b88875b02895183dfcecda1475bec20df0c7df2",
+        "mutation_bundle_sha256": "92413e97eb744399dafe5303f14c178b0773b3048d3bf669ecb43e3df53f1e07",
         "mutation_id": "neg_003_wrong_denominator",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_denominator/certification.json",
         "trigger_condition": "Normalizes by 15 instead of 16.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_omit_half_lsb/certification.json",
-        "certification_sha256": "075e00824b49d76288a596e4f9689c4506a2f21c5a1ddecff7fdb9e824badecb",
+        "certification_sha256": "93fdbcce784aea9e7380a51a3a7b3b3ceb4f127213a239ff9c3605a8b54c6bd0",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "ad19c4db6f7568f7d8415888325b3e01dc5f115fd278969fd7d63e5899ab88d0",
+        "mutation_bundle_sha256": "557b70a114c1e3d844b9507e17eb563b03ae9a90a3e972a04298fb0e36ee5654",
         "mutation_id": "neg_002_omit_half_lsb",
         "source_catalog_certification_path": "negative_variants/neg_002_omit_half_lsb/certification.json",
         "trigger_condition": "Omits the 0.5 restore offset before scaling.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "4c12899e904524fadaf1567d8d3f053adb5623e2b758ba7891feb4dbe8acdb54",
+        "certification_sha256": "616118d1f26ce68eab4a9a391da6c820c2e03524ebb542db536dc0038760b694",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "4670a3d7b5196304e175b71afc4b012081eb1534f2713020b8cef1f99047d379",
+        "mutation_bundle_sha256": "d514e185e336556bbdd46365603ff128ac23fa72aa7e12984fbe27c93eeb1a0c",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "DAC Restore 4bit Clocked: scales the metric output, preserving the main path while failing measurement checks.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "46a31ec6f7d10c3fdb87c75cd5c86eef9310ca3a6ccbd652d5f6b399ed23de55",
+        "certification_sha256": "2b57ef9b7f3e5bce59c1a3ccb9c746469c34af5a13043d5e0ee030c29f970f36",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "bc9c88f287045e9faa3eda293bc85d214677003ac277efc39918ba3f09ff9cf5",
+        "mutation_bundle_sha256": "0cfdeb263163389961fc509d3783b29abed6d81a7e3455e8645ca34c5ef6649a",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_unipolar_output/certification.json",
-        "certification_sha256": "d3d32ee5697f4fa643802dba3c50846be6f3f57e9538c287e3331888376d54ce",
+        "certification_sha256": "0f580af162bd759ac0ecf6e48022a1b195e9486d0379207b0a7854c85a5557dd",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "49a06568598334916b45e75e9a53a537754df62f9d805c66078d6e269e2ef1b6",
+        "mutation_bundle_sha256": "369453b8d267c3423c73ef8ca4c9d16722d6b7c22d6928cb51d9f21e275c5d53",
         "mutation_id": "neg_004_unipolar_output",
         "source_catalog_certification_path": "negative_variants/neg_004_unipolar_output/certification.json",
         "trigger_condition": "Omits the bipolar -0.9 offset.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "8337764f3bd60eff1f2877829d11c7a6216b7ba33e5ea4417b31645746640fdc",
       "score_deck_sha256": "2de6b985d3614cd07421c75c5e4e36402164b3a369234910ddc63163f21bd118",
-      "task_certification_sha256": "db36ef5381ca6a17f1c3bebc5d817872311b71259dc8b32c50176e98359a1a9e",
-      "task_record_sha256": "0d285743af517d9f54be9c656a81144764c26d77927f551b2ad4397cae30f5a4"
+      "task_certification_sha256": "5a7031a00424b48513637916eccb1e097fd7052c38116468ba1a2ac786a94a12",
+      "task_record_sha256": "2162df33c3ea50102d268673cd80ba254b782afb5a44d952692fbb7a2f1b055c"
     },
     "release_dir": "207-dac-restore-4bit-clocked"
   }

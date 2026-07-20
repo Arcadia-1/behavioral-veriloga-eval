@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "fractional_delay_dtc_macro.va"
+  ],
+  "canonical_dut_source_slug": "326-fractional-delay-dtc-macro",
+  "checker_task_id": "v4_326_fractional_delay_dtc_macro",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "fa5b36f02120d405bb44cf76279a40138f9e22d5829cc8e7e201dfa2013314c1",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "94fbd594a6c137055283c6ed8f99ff2e0ed3345892193c477f43906d9f245b5d",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "327220401aa133920a322d7124846d5749e85da5a67cbb3ae04000b5ebd2784b",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "326",
+  "family_spec_sha256": "3b237519d82f987e0f7462deeb64099cb5ef342eba65837a237ef19c87754cd1",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e1638c855c1d3deeee9e9d35a9e2415eb93abaa81667993c17d276ba1ca7a096",
+  "public_contract": "tasks/326-fractional-delay-dtc-macro/public_contract.json",
+  "public_contract_sha256": "d0b60adc44ac82c6583b91508f6b875078072dc9e4ac671f9b9e840caccd6e24",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/326-fractional-delay-dtc-macro",
+  "task_id": "v4-326"
+}

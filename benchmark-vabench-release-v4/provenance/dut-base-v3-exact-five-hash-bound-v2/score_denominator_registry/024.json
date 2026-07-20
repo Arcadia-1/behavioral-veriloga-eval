@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_absolute_ground_reference/certification.json",
-        "certification_sha256": "5c9c6f99307c8afeab5d2d3b36c18e92f2d96d0b9be6ec2bb1db360962ceb1ae",
+        "certification_sha256": "37346e1319e4e42d37cc9d5c419992867a82ac9b00eb3bd252907ee79ed8673d",
         "fault_class": "local_rail_reference_error",
-        "mutation_bundle_sha256": "be754cf731c73619c61a10d74ccc99a9c3226a1b494af5ca890eb461258d4702",
+        "mutation_bundle_sha256": "09938d102873349b81d48dadd7b6d26f8f0aaf72a3a1d5ab6ae6214ffd077585",
         "mutation_id": "neg_004_absolute_ground_reference",
         "source_catalog_certification_path": "negative_variants/neg_004_absolute_ground_reference/certification.json",
         "trigger_condition": "A nonzero VSS rail is used while IN is sampled and held.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_high_phase_transparent/certification.json",
-        "certification_sha256": "f1176412eb2fc5f05ba4840e7e0a748e98efede83721bfd736eefe41379723c8",
+        "certification_sha256": "2c29bc2a66d079d66fe85640101d91786e7aa3e5ad0171a2f859de3aea84726e",
         "fault_class": "high_phase_tracking_error",
-        "mutation_bundle_sha256": "ece5f3b1500faf0e10064a531b48eb1772a81dcf5a7a1e30c068800062f1335c",
+        "mutation_bundle_sha256": "c384916e252fa8a90ccec4a84ee188e662a28600523fe4bb79090404e7df9f8c",
         "mutation_id": "neg_002_high_phase_transparent",
         "source_catalog_certification_path": "negative_variants/neg_002_high_phase_transparent/certification.json",
         "trigger_condition": "IN changes while CLK stays above vth after a rising sample event.",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_falling_edge_sample/certification.json",
-        "certification_sha256": "1571fdc5a8c4a4a145cd028a3dfcfa94601c68ebc0a0fab364049ba8cb7cd02d",
+        "certification_sha256": "de0baadbfd236b2b417d3c5925adf2fef691ebef1c9b13735d3ab5f6e8b01b4b",
         "fault_class": "sampling_edge_polarity_error",
-        "mutation_bundle_sha256": "e1eb3049ca778db5a039b99049baa0ced0dc815839a33d7549d444b139f13d32",
+        "mutation_bundle_sha256": "895ceed610ff13a5c6f18a0021f612fc1b29d5d4f5de0a12f6b18eb74238f955",
         "mutation_id": "neg_001_falling_edge_sample",
         "source_catalog_certification_path": "negative_variants/neg_001_falling_edge_sample/certification.json",
         "trigger_condition": "IN changes between a rising and the following falling CLK crossing.",
@@ -45,9 +45,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_initial_state/certification.json",
-        "certification_sha256": "6f511c382becf4fbd0c6d717f250d59d907fc36249ec68b34a788eea3c4a9677",
+        "certification_sha256": "38095568fe93dfb5028901c55c278b90949132b99bb70238ddab28b03dc61f2d",
         "fault_class": "initial_held_state_error",
-        "mutation_bundle_sha256": "719db6e3e0e534e908700df4add17daad08172f6c67971979b5f65d597d66699",
+        "mutation_bundle_sha256": "e5fdef938fc4d84acae38d9291ce44f86cafd743e986024c3428234d3df373dd",
         "mutation_id": "neg_003_wrong_initial_state",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_initial_state/certification.json",
         "trigger_condition": "The interval before the first rising CLK crossing begins with the documented local-rail output state.",
@@ -57,9 +57,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_slow_output_transition/certification.json",
-        "certification_sha256": "847fba93c8eacb790f219246ddb3b23382a078f6db3a9bd625d958e624e4057f",
+        "certification_sha256": "c569fec4feabe21d367061584661c1096b2e771732a950bb3bcd49ddbd32b6c7",
         "fault_class": "transition_time_error",
-        "mutation_bundle_sha256": "24c99f404320a09faaeeeb984d3cd18969bbe0bfb451543fbf73efcf703f5c04",
+        "mutation_bundle_sha256": "4013499c1579b50cbe5033cd516edd528fd6be508882e5609f0606ab85bca0a6",
         "mutation_id": "neg_005_slow_output_transition",
         "source_catalog_certification_path": "negative_variants/neg_005_slow_output_transition/certification.json",
         "trigger_condition": "OUT must settle after a rising CLK sample using the public tedge parameter.",
@@ -73,8 +73,8 @@
     "hashes": {
       "mutation_catalog_sha256": "bfd5f99c440a268f942a78e8d7e6fdfdbbdb71f85f23e3124d7a77d0ff864668",
       "score_deck_sha256": "945b7d7912d48938397e01fe8257e90601b96e2d956263de17f7719744acf573",
-      "task_certification_sha256": "7710401853da4558d0bbca0e1e306cdd85e0efe711e69833ad71888319860179",
-      "task_record_sha256": "db3efd9d217904933e129a33225821224cd30e7d4a2268913f6f95aa4d2521af"
+      "task_certification_sha256": "3962c37b6a4cd2bf4536db734405f0cf312f9bbd492020df13afe69fcedd070e",
+      "task_record_sha256": "c67c6c1c848e92c290458c0d154ec716912f1ba5ffd4e05925a6d51c1f2246f4"
     },
     "release_dir": "024-clocked-sample-and-hold"
   }

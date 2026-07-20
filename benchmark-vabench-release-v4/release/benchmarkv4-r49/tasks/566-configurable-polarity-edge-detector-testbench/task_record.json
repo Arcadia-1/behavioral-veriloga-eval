@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "066-configurable-polarity-edge-detector",
+  "checker_task_id": "v4_066_configurable_polarity_edge_detector",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "9c8e055d6eaf9f94d92a75d1fae61a5a8cbe70c34560ca9678c7bb953878376d",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "1e2ecd6e2774d0af111b759b6ba85b9796ad674f58571c86bf616421c0123c76",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "066",
+  "family_spec_sha256": "d75f325184c7a96cf2ad68a520284cf91fedea7402c330bb681d6dcd310d70a4",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6e9507dfc3e60ae5be3704252f892636fedfaadf2c71a716bb797eae845b1dff",
+  "public_contract": "tasks/566-configurable-polarity-edge-detector-testbench/public_contract.json",
+  "public_contract_sha256": "b85d9e5761c897727b1e0d420b03893a4b91c5d0ae14de2dae203b76e0f9902d",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/566-configurable-polarity-edge-detector-testbench",
+  "task_id": "v4-566"
+}

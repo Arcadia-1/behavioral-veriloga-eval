@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "0563059bcf1f8fb9f5148c2eaba8dd46287f3dfcc9887dd2460854e620b4a301",
+        "certification_sha256": "5bbf3db31192ea6042297c68a7fe4115a297f0b4c3ee6a118d9389584f5900f1",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "109847b71e5a76fe8ebc680b33d0d0ce37a3d32483ad442070f4e37b2e93a6b8",
+        "mutation_bundle_sha256": "6495fd0ab7e0172daac6df35d8b447675f47260221f27555c8819172e06fa880",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Existing concrete negative.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_short_pulse/certification.json",
-        "certification_sha256": "b91501577f02013981686d0ec246b00f5e4ffa43fd734505848793b603b9a9b8",
+        "certification_sha256": "e1088b68558e0a5c49523250a575bddecd8df6a60b762d61e444bee81c51444f",
         "fault_class": "fault_002_short_pulse",
-        "mutation_bundle_sha256": "8d14de8b4c00f14aeb06365d86bd76838dfa1f155b5116d98cf60b9cc1567d17",
+        "mutation_bundle_sha256": "f5d1d8959d8523818caad07d510453e73943803298b55a90645659fc9b61ac27",
         "mutation_id": "neg_002_short_pulse",
         "source_catalog_certification_path": "negative_variants/neg_002_short_pulse/certification.json",
         "trigger_condition": "Uses a pulse width that is too short.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_falling_edge_trigger/certification.json",
-        "certification_sha256": "e9a1ef7fc62c24624ac5cbe158d526f9014f82c72b743a297e9e6360f8547a2e",
+        "certification_sha256": "0fda2b9960a36eb6c950ad4a5e253c814c61900029c6bad1f26f24ec4ab9f5ab",
         "fault_class": "fault_003_falling_edge_trigger",
-        "mutation_bundle_sha256": "a3c84376c926419247d88e6e9e81e244e138dfc5036e24c29dad777efb663919",
+        "mutation_bundle_sha256": "b6670b5ebf8292473a1d691125b5d1502b0d1c274eead5da2c21b7647b761a45",
         "mutation_id": "neg_003_falling_edge_trigger",
         "source_catalog_certification_path": "negative_variants/neg_003_falling_edge_trigger/certification.json",
         "trigger_condition": "Triggers pulses on falling input crossings.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_stuck_high_after_first/certification.json",
-        "certification_sha256": "021bb324dbe90439d505893845a4e12ebc3bdcaf43c1d5bd01a490bf397461bd",
+        "certification_sha256": "1b6b626716ea3f23f0019156e4d6f4a00ab39e8112b6974d068752a541d3ffdb",
         "fault_class": "fault_004_stuck_high_after_first",
-        "mutation_bundle_sha256": "b1830bc6d5d7949bfe4122a9322bef300f4dec4f02141f56b2196108fd6bcde4",
+        "mutation_bundle_sha256": "f5998d1a47501393668f1292e49a25a7363123d473935fec0bdb62f9501c929b",
         "mutation_id": "neg_004_stuck_high_after_first",
         "source_catalog_certification_path": "negative_variants/neg_004_stuck_high_after_first/certification.json",
         "trigger_condition": "Never turns the pulse off after a trigger.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_no_output_delay/certification.json",
-        "certification_sha256": "cabe13ca6c29623beac92d2b8ffeeb7127449725f21608c71ed7bd35fc4e7293",
+        "certification_sha256": "49a653bd37fc74685c5756aef319ccaf588f509b2252048ed888eb1fad5f08a8",
         "fault_class": "missing_output_delay",
-        "mutation_bundle_sha256": "4fe727793df8a914afd9394131c9a5c7c1de107e1bfd55288b1382f05b9a2e78",
+        "mutation_bundle_sha256": "23df92ded050ead24b55954422c52b98c12c232899ee498a533eb09b5e362af3",
         "mutation_id": "neg_006_no_output_delay",
         "source_catalog_certification_path": "negative_variants/neg_006_no_output_delay/certification.json",
         "trigger_condition": "An input threshold crossing exposes an immediate output edge instead of the declared delayed transition.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "b03d577db8c847405ed9fe74692daeb1a5b67e80509d7acd9cf9aa38bbb6ef8f",
       "score_deck_sha256": "df013a9038164fca58ed112d6ef20b0115ab00ef7611837bd89d15ec6cf7a3d1",
-      "task_certification_sha256": "167378f79060f7112dffae54b871860cff5cf5c354b103958724e1fe82a481ca",
-      "task_record_sha256": "55e1ca61801f483d2805b7cd01acb827c250e5128eb955a25bd866f8d0405403"
+      "task_certification_sha256": "4e9226e55fe6b51a777682e19e109e921fbf91811cd3c89c7eb1e1a914c89431",
+      "task_record_sha256": "3dbea9786da52fd56ba5f7111e16d0d2c56b5c5c0636f98c98b447aaa4cdd8a4"
     },
     "release_dir": "105-single-shot-pulse"
   }

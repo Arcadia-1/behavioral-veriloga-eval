@@ -37,12 +37,14 @@ DIRECT_DUT_RUNTIME_SCHEMAS = {
     "r45-direct-evas-runtime-v2",
     "r47-direct-evas-runtime-v2",
     "r48-direct-evas-runtime-v2",
+    "r49-direct-evas-runtime-v2",
 }
 DIRECT_TESTBENCH_RUNTIME_SCHEMAS = {
     "r45-direct-evas-testbench-suite-v1",
     "r45-direct-evas-testbench-suite-v2",
     "r47-direct-evas-testbench-suite-v2",
     "r48-direct-evas-testbench-suite-v2",
+    "r49-direct-evas-testbench-suite-v2",
 }
 ARTIFACT_RE = re.compile(
     r'(?m)^<<<VABENCH_ARTIFACT path="([^"\r\n]+)">>>\r?\n'

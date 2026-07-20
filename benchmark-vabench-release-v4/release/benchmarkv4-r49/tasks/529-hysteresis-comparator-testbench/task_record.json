@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "029-hysteresis-comparator",
+  "checker_task_id": "v4_029_hysteresis_comparator",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "8d7c2ab319a88bb7a92fd610dd3d16d7d0f98bb1a74e4fd6113bf5d36af7b9e4",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "0ea239070b141efe3eb4f25a5f1cdfe0a84433bcbc10c67b5cc1a32e867d528b",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "029",
+  "family_spec_sha256": "60f87f0d13d172df40ef8ebd07ef219e1de9632b6652706c47736ea5bdf16871",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "71e247e100526ccc99518c2175090819380a87ef64993993ab04a0bd79812ced",
+  "public_contract": "tasks/529-hysteresis-comparator-testbench/public_contract.json",
+  "public_contract_sha256": "c80e429e8dfa2b80fd6bca702de1d6f1e51dcaccdf1618a17663bf9bab87746a",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/529-hysteresis-comparator-testbench",
+  "task_id": "v4-529"
+}

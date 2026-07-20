@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_ON_EACH_ENABLED_RISING_CLK_EDGE satisfy the public contract; fault class q_channel_sample_held_at_common_mode is rejected",
-    "observed": "EVAS: v4_332 checked=10 amp_max=0.270 phase_max=0.270 norm_errors=4 bal_errors=0 reset_clear=True disabled_clear=True clear_errors=6; P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count=6; P_ON_EACH_ENABLED_RISING_CLK_EDGE mismatch_count=4; P_DRIVE_CORRECTED_I_Q_OUTPUTS_WITH mismatch_count=4; P_EXPOSE_AMPLITUDE_AND_PHASE_ERROR_PROXIES mismatch_count=4; P_ASSERT_BALANCED_ONLY_WHEN_BOTH_METRICS mismatch_count=0; diagnostic_schema=v4-checker-diagnostic-v1 status=fail category=behavior_mismatch event=stimulus_relative event_context=stimulus_relative expected=public_contract observed=trace",
+    "observed": "EVAS: v4_332 checked=10 amp_max=0.270 phase_max=0.270 norm_errors=4 bal_errors=0 reset_clear=True disabled_clear=True clear_errors=0; P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count=0; P_ON_EACH_ENABLED_RISING_CLK_EDGE mismatch_count=4; P_DRIVE_CORRECTED_I_Q_OUTPUTS_WITH mismatch_count=4; P_EXPOSE_AMPLITUDE_AND_PHASE_ERROR_PROXIES mismatch_count=4; P_ASSERT_BALANCED_ONLY_WHEN_BOTH_METRICS mismatch_count=0; diagnostic_schema=v4-checker-diagnostic-v1 status=fail category=behavior_mismatch event=stimulus_relative event_context=stimulus_relative expected=public_contract observed=trace",
     "violated_property_ids": [
       "P_ON_EACH_ENABLED_RISING_CLK_EDGE"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r47-full400",
+    "campaign": "r49-full400",
     "checker_id": "v4_332_polyphase_iq_balance_monitor",
-    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
+    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
     "trace_row_count": 999
   },
   "family_id": "332",

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "2ff96137035dc5eb862953c73bb4227cdee8b3cfcd638eb842e80ec25d8f8601",
+        "certification_sha256": "5500915d25daab30ed0c2cb2128e6c18042c2830985b693a5f4825fbf5cd204b",
         "fault_class": "zero_stub_output_implementation_copied_from_starter_must_not_satisfy_hidden_beha",
-        "mutation_bundle_sha256": "beaeade5cc544ddee1e9b3206b78fb72cd05f2d3a4297d67740f7c9bceb0eeee",
+        "mutation_bundle_sha256": "77d661415eec198f84e8763cd5df7d3e73e6d7431182fc6c1884fb258d2197c2",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "stimulus exercises zero/stub output implementation copied from starter must not satisfy hidden behavior checker against the public observable contract",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "c61996c7e92260ba065973a7da1cbeb0ef5e0e45b378db8e3631ceb4afd13b2b",
+        "certification_sha256": "4796dfabf4e8ff20e85d155b2983776fb547f345b891d6affef39691a27b9aaa",
         "fault_class": "trim_update_gain_too_low_under_settles_bias",
-        "mutation_bundle_sha256": "895ff2ee5fb4f328c6ee9f65b2ba8dbb23a7009bf058b3708ee5bb0c0711b53d",
+        "mutation_bundle_sha256": "79875ab65e3017f59c08d44f4268e01ec01bd1df6aef4aeab9085713285020c5",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "Uses the correct clock/reset contract but an under-relaxed trim update coefficient, so the bias does not reach the low-trim target window.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "088ae6a8f3111de88fc03700261a67b6182898155a667e00b6cac35898effe74",
+        "certification_sha256": "2c0165189da3abbbda5ae237e1302a0bc75b0676ec46ec5598e845607d7edd8e",
         "fault_class": "reset_polarity_inverted_holds_bias_disabled_when_active",
-        "mutation_bundle_sha256": "7df15c094478f9adc3bd0a2b2740913d2f9a61d14b0ff3b3f7a509b6ed6d49c6",
+        "mutation_bundle_sha256": "75ade799e8cad2dbfb914a2b239e3d2f5534cae8db9892591254a07683816918",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "Treats reset polarity as active-low, keeping the bias disabled during the valid trim window.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "0095ca05a7ab23e69b1fe5bf471b12fdda37a23d6538ae29e003aa5aee9376ae",
+        "certification_sha256": "6759859c2b15d175a4440a2d15b1161c5930c1c2875b763e56ad959818e53280",
         "fault_class": "metric_output_scaled_low_while_bias_path_is_correct",
-        "mutation_bundle_sha256": "f76a1433d66a1cfd46bc875da2f58ef508c98f633f16e93794b5ff7f2650291d",
+        "mutation_bundle_sha256": "e4c686fc992da5daf9642cb77a3a7b51a4f34883fdfb5995c54feae4cc3797e2",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales only the metric output low while preserving the bias voltage path.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_nonmonotonic_upper_trim/certification.json",
-        "certification_sha256": "393bbaf9874a538fb2a14863aa23c4a2c4b7dbb4fb9f6d743042dbe3861f7e5b",
+        "certification_sha256": "bddcfbedf58cc26de839e1e05318a6823ba6609a6fdd0723aeae28748466f909",
         "fault_class": "upper_trim_target_falls_below_lower_trim_target",
-        "mutation_bundle_sha256": "378b38f029469cbd661259a5376a22a1ceac181c82b6dfb217bb453b12e0c71c",
+        "mutation_bundle_sha256": "f28ad3cdc972d6bd199a8bf02a5e6b33f6248c6521d9b8843347ee4dd5a30990",
         "mutation_id": "neg_006_nonmonotonic_upper_trim",
         "source_catalog_certification_path": "negative_variants/neg_006_nonmonotonic_upper_trim/certification.json",
         "trigger_condition": "increasing the enabled trim control must increase the settled bias target",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "5f9b334266e2649e9c3ca3fbefffad8b020b7bf2bb021aef530061444fbfaae9",
       "score_deck_sha256": "e26be8e98fe137c4726cec898901a8e2878df107183ae9d22c388c8e292904b7",
-      "task_certification_sha256": "744cb6543a08c3e35d62d2ead5ad953ad70182a36535814b47dac4554eab033f",
-      "task_record_sha256": "a31386d221326b6ddc241a73cf86a15544ef12a8b430841cda9fc4dcd128dd25"
+      "task_certification_sha256": "8244994dbda4c0c453c426ebf14f578fbfe31df81fca866f869ee5928f375d75",
+      "task_record_sha256": "f501e68f2423bd8845b69aab3fbeb8ae3d9e524957188a26a41e50ee85767ac6"
     },
     "release_dir": "073-bias-voltage-generator-with-enable-trim"
   }

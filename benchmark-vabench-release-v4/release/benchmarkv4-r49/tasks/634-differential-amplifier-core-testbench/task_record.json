@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "134-differential-amplifier-core",
+  "checker_task_id": "v4_134_differential_amplifier_core",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "274d10b17177a394f09475c8785c5c008c63c5fcdcd745fe3d3abb3372af3cde",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "e077d6b3eefa3b280d9b85c27900499ebcd625611b3b5a92e9dddd80f92d053a",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "134",
+  "family_spec_sha256": "f3cb58a47b0561c23f5edfe2bcc120964672afe102e665637232aa502b4eb797",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "87c60ffa092aa2fccd6ce3514007db4fc1369d194e1f9e64bda563741f008ca0",
+  "public_contract": "tasks/634-differential-amplifier-core-testbench/public_contract.json",
+  "public_contract_sha256": "831cc234a2787a1304df02e57edb72d47f1a8ceefb76e7b40bb6b89638c1bef7",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/634-differential-amplifier-core-testbench",
+  "task_id": "v4-634"
+}

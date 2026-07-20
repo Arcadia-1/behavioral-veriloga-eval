@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_half_output_gain/certification.json",
-        "certification_sha256": "f64bd0e6ef37374a587b486e50a4771adf76e1779114157b0dc68bd5a4cd2ed5",
+        "certification_sha256": "e1af023d93abde5276d34d8f1b7f5c78b46c13589131c87a7b4ef087a2482593",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "1c906bbe0a822328a177825a3e9f4999c47ad45c4b5f32dd98f68f8765cb675e",
+        "mutation_bundle_sha256": "24438a30c1dca3deebd5edf5f1ef0df806e73057bcd1dcc6e71ef0eac727ae51",
         "mutation_id": "neg_002_half_output_gain",
         "source_catalog_certification_path": "negative_variants/neg_002_half_output_gain/certification.json",
         "trigger_condition": "Samples correctly but drives half-amplitude outputs.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_swapped_channels/certification.json",
-        "certification_sha256": "4f2a23d8d6ab25280e8ce9e012452a7390eb5ff9bfbea244e4e77c67e9269456",
+        "certification_sha256": "b24ffd48bfb5d5ff47214a709b69522c8b0401138840f907e9575d4fa60041ce",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "f0807cf1c5dc88628cf83625979ca934850106c5a1eb3c15b68da995142227c1",
+        "mutation_bundle_sha256": "5b849a08a1f625818df2c2b4865ca40c61091492e5cf2e81a06c2a2b79ccfcdd",
         "mutation_id": "neg_003_swapped_channels",
         "source_catalog_certification_path": "negative_variants/neg_003_swapped_channels/certification.json",
         "trigger_condition": "Swaps sampled channel outputs.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_channel3_stuck_initial/certification.json",
-        "certification_sha256": "a02b71fd0e637c17c1e21b6ecce8d71c5994045585aeac88cd3f1072bf890abe",
+        "certification_sha256": "164262d4c04016828cc046ce7105a5fbce045a345a65417d8d5f74122c6edcfe",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "970bc7ea5cd89da6556ec3914b5e6aa32234114bd732a4b1632a60ef21ad023c",
+        "mutation_bundle_sha256": "4314821f227b000eb811688a6a2a5ccb5df25e1f86578d9758751dcd523d9020",
         "mutation_id": "neg_004_channel3_stuck_initial",
         "source_catalog_certification_path": "negative_variants/neg_004_channel3_stuck_initial/certification.json",
         "trigger_condition": "Leaves channel 3 stuck at its initial value.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "e3aea41ab5ae6649dd6c60ee9c9f7ad6d35b112af4dad653db01b06f8d2b8236",
+        "certification_sha256": "f7d0e0ab4433e3c109db20fe5424057973f022e8a05c7dca0eb9d5aeec82bf4d",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "188274c53947b1e757f5a289b59a79b004d5730f55b6d28f30463e919931a497",
+        "mutation_bundle_sha256": "c0f8b553b183c87f358a42bdece322bd5a7f63986f634b6fc0a3d46a193e1d22",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "2665d0d9e5984149ad4f1f276dd71eb9fc69a7852180de5545846501d875a551",
+        "certification_sha256": "0b73b081a90d7f6f7e6d4d979803b135db16d5215ef2b24fc528573e064869f6",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "f319d45309471b78b6c4df1d6292e36b5346ad54d26b31e567429ef04dab2c79",
+        "mutation_bundle_sha256": "329f954602e738b4790a104b6a8d02642f8cec8a62b544a975f1825342966d01",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Four Channel Edge Sampler: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "055e44eb6f7118a7bc01eacce2d0330dbfecdb5d7c0d6d6525b7250ff256a859",
       "score_deck_sha256": "31690465a71bf2e414ee5d7788276f9ab3502015ffdcc421168999540b3428a6",
-      "task_certification_sha256": "e516ff3a50a7495fcf4e8ab55805a1b2faa917848abfb92eaeb7dc814c984250",
-      "task_record_sha256": "7e0f110e72046124d31b4a6cd4ec93a90cabda8a2b00a30d0df9d539f4daa010"
+      "task_certification_sha256": "bb6b2dc954762cf735c1b79d76ed3f76e8ec286a4123d4cd781c0067af321f56",
+      "task_record_sha256": "2f7d3bded376595c7dd68c06f0cf34b6e6e3c2c554c9b8a1a2b5369eee320bb7"
     },
     "release_dir": "148-four-channel-edge-sampler"
   }

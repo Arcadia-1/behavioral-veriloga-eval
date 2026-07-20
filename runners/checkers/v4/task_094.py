@@ -50,6 +50,10 @@ def check_iq_downconversion_chain(rows: list[dict[str, float]]) -> tuple[bool, s
             continue
         probe = row_at_or_after(rows, probe_time)
         if stimulus["rst"] > 0.45:
+            # The reset may release between the clock edge and the normal
+            # post-edge probe. Do not grade post-reset outputs as reset state.
+            if probe["rst"] <= 0.45:
+                continue
             phase = 3
             i_state = q_state = 0.45
             reset_edges += 1

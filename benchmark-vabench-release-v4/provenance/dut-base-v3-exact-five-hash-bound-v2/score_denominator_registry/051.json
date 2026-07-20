@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_force_zero/certification.json",
-        "certification_sha256": "825da500ac6eb543b1e46e27a0ce6e96d3559ecb6cee851959e4813b26df6325",
+        "certification_sha256": "c0304910e5ab4dcaaba6b9a831d5520f37ac0afb1ba19f2b4b0065e3eb9df88d",
         "fault_class": "force_zero",
-        "mutation_bundle_sha256": "842c60e36d7290afe364b57196836f66b1e6d3e963c343f89bb4cc51a02d0ddd",
+        "mutation_bundle_sha256": "0ea58890e905aa9cb54a066bca8ed547333f9a575cbe32c2f29c081cc64021aa",
         "mutation_id": "neg_001_force_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_force_zero/certification.json",
         "trigger_condition": "Latched Bus DAC8: forces the output to zero instead of decoding the latched bus.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_falling_edge_update/certification.json",
-        "certification_sha256": "9fa028d3824ae2e521d9081af8a11242ee0349484d9ecb6253379d0603a4e864",
+        "certification_sha256": "a51fe1411445de94cb6d8c95f651e62bc81e08202dd39f3a725a239607c83448",
         "fault_class": "falling_edge_update",
-        "mutation_bundle_sha256": "7047f05050ebf9aea631658117f0f691c71489ec07882925a546964af88450e2",
+        "mutation_bundle_sha256": "605654d5e74e17b6e8680f9a231b08f11ded876862bf6b56cba2ef61d2802e21",
         "mutation_id": "neg_003_falling_edge_update",
         "source_catalog_certification_path": "negative_variants/neg_003_falling_edge_update/certification.json",
         "trigger_condition": "Latched Bus DAC8: samples on falling clock edges instead of rising update edges.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reversed_bit_order/certification.json",
-        "certification_sha256": "4553ddbb732daa9756efa21d591ea82e4316a5d0bb9f314d233e602866eea9dd",
+        "certification_sha256": "618fdaebdbc79d95747b64a3e7755680956af640c4ca9397998b7573590d595d",
         "fault_class": "reversed_bit_order",
-        "mutation_bundle_sha256": "b164a42ca1d23d1bc2467bae4ce1e76c3758a40376da79664b21c409faf7924c",
+        "mutation_bundle_sha256": "94d6fa3834941e46f028466ec8f2505c21bd9e4a26522c03f7dcc5c09be587bb",
         "mutation_id": "neg_004_reversed_bit_order",
         "source_catalog_certification_path": "negative_variants/neg_004_reversed_bit_order/certification.json",
         "trigger_condition": "Latched Bus DAC8: treats b0 as the MSB and b7 as the LSB.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_wrong_denominator/certification.json",
-        "certification_sha256": "454f0a902365d4e6b8e87696df23caf0c52210c0aca996fe5f7752b2331d9459",
+        "certification_sha256": "d940095c79d321cf96aaf4f86b90feef4a1f164e08df4fd715a0c3370b66379a",
         "fault_class": "wrong_denominator",
-        "mutation_bundle_sha256": "d77f368c6812c0c2599223d79e5906a1e785ec79663dd1bcc9527866991c3177",
+        "mutation_bundle_sha256": "b753b92c7089fbe966034193bf10ec8fec2b76b2e3f2f7ffae2d3cae31efc766",
         "mutation_id": "neg_005_wrong_denominator",
         "source_catalog_certification_path": "negative_variants/neg_005_wrong_denominator/certification.json",
         "trigger_condition": "Latched Bus DAC8: uses a 7-bit full-scale span for an 8-bit code, so the decoded output gain and endpoint mapping are wrong.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_transparent_bus/certification.json",
-        "certification_sha256": "67638835b257e58f5996892e12cfd0bb36851975e7970edd7d7e5c47a54008bc",
+        "certification_sha256": "8a490fb518edef61d9f37b8c100686e0f210ae5ca844a93365182e8ba401675a",
         "fault_class": "transparent_bus",
-        "mutation_bundle_sha256": "814468267bf2a065b3822fb65837c6d56048b45eeb8982281f8f9c5ef5ea5f6e",
+        "mutation_bundle_sha256": "be7588f27bb561aa45eff99cdf08f5cebadcd8ff7f42669406a865ccbecaeffb",
         "mutation_id": "neg_002_transparent_bus",
         "source_catalog_certification_path": "negative_variants/neg_002_transparent_bus/certification.json",
         "trigger_condition": "Latched Bus DAC8: updates from the input bus continuously, so it fails hold-between-clock-edge behavior.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "ab672b71d35765307a26c649e83125d831d65331c622a037fcecc43d3fece008",
       "score_deck_sha256": "cbd4ffbec27c9d4b1919ada227168f78dff145033e7450fc645261c9ec67b339",
-      "task_certification_sha256": "9b643bbcc9bfe0ca4d76eba2093c29b8c2c1a979aa10e268a43142af04c7b3c0",
-      "task_record_sha256": "581f6c510e87da41d0b3be7aed7721278a06b51f73f332cb5b704de706459b53"
+      "task_certification_sha256": "b6b849a749d10e3d5707591ab06838ea95dff9bd51a8c3d398dd47600e8f1028",
+      "task_record_sha256": "0a71a951d9608e7956de7466176310730080aee1ea14d8e9b19687442887d428"
     },
     "release_dir": "051-latched-bus-dac8"
   }

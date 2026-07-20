@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_threshold_too_high/certification.json",
-        "certification_sha256": "94e9d1596a90fb658977c1372d862f650c974ff77efd11081bacd1cd408bd4e2",
+        "certification_sha256": "f51a1713c9a517b85fedf0114086c4e234efa14f02a5a06cc0c17accab73de6f",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "16b56c133fdf536fa4a18dce01aad2b33b32fbb8175c72a90c2b1c372a6b0a64",
+        "mutation_bundle_sha256": "01c0b7e0340f7ddfc02d2142863e41bbe67274f520d61e06385e4ea2274324bc",
         "mutation_id": "neg_003_threshold_too_high",
         "source_catalog_certification_path": "negative_variants/neg_003_threshold_too_high/certification.json",
         "trigger_condition": "Uses a threshold above the stimulus high level, so asserted thermometer inputs are missed.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_count_lower_half_only/certification.json",
-        "certification_sha256": "4bc0693ed81ce42a94da1f9b880e2e59c3bf47125d898b8a6cc1bb1b93370d08",
+        "certification_sha256": "685fc04ae8ec388a21e39534ce79325b9ac3432bb9ed1f0d11948e38386afc76",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "984302c0a977b7053cb6a399942e32b03fc9be6076004bafc31acf621172b5f3",
+        "mutation_bundle_sha256": "c9b469f47f307e37c693c97d69fe18343167cda0c459986be739580efde03596",
         "mutation_id": "neg_002_count_lower_half_only",
         "source_catalog_certification_path": "negative_variants/neg_002_count_lower_half_only/certification.json",
         "trigger_condition": "Counts only TH0..TH3 and ignores the upper thermometer inputs.",
@@ -33,9 +33,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reversed_bit_order/certification.json",
-        "certification_sha256": "6efa6bdd34920d68ce84d0e2c18b0c98e70d7f1c772e3789998061b35b9d3ff8",
+        "certification_sha256": "30abfe563aa1223e09325900b39da62b8eeb903a00d9d763ba2ad879b3f0d81d",
         "fault_class": "reversed_bit_order",
-        "mutation_bundle_sha256": "8bb13e1acdbd29a4dc8f1083f8cc2733611e294f0ca2f59b084db1ef4faf8df9",
+        "mutation_bundle_sha256": "7c3241613029d706758241586c44df4ab150b3526c4a9d33ba3902a78ee32669",
         "mutation_id": "neg_004_reversed_bit_order",
         "source_catalog_certification_path": "negative_variants/neg_004_reversed_bit_order/certification.json",
         "trigger_condition": "Outputs the popcount bits in reversed order.",
@@ -46,9 +46,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "ace560f0e4032d5d71d5f449c833bf406e2b05e7638403a46cee5d3c779f8c87",
+        "certification_sha256": "2ca9173b93c05137e904c996eded20a543aa30f8dd6c819c0852aea13085382e",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "fe4045b2ebc0d985b03e932d8ca3a2c6a01c7877c043ea19e0bedd2a512f99ce",
+        "mutation_bundle_sha256": "82e59fd3f137a0c390f81b92f1281e1c4f3d6780ce45546d8f208d2e2f2cecab",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Therm8 To Bin4 Count: scales the metric output, preserving the main path while failing measurement checks.",
@@ -58,9 +58,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "fe77e8795c1d8581efd41ca728e8d46e9cbd9231435aaa50994d2d1b72e12e9c",
+        "certification_sha256": "6b42ad68026771df41feb8d908444921d040d31edbfa6c5c913f974859ff07b0",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "e7924e6fac627dd2177f4870637f3566c63d78e996fe6534abd2e3f9b54866c1",
+        "mutation_bundle_sha256": "81b0c6c951ce427961a65bdaba1670d4d493118dd963b7eb9b741a06302f7ce7",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -76,8 +76,8 @@
     "hashes": {
       "mutation_catalog_sha256": "73213badf9a31ee84263c0b075ee5dc2c73925fe1165ac9a59ae2ea57a088298",
       "score_deck_sha256": "2685f1135d9ab670a56d6994e1c4f94606494bf4facaf49a9a64cda506b0d5d1",
-      "task_certification_sha256": "51faf397d72b46e2a845c7b0ca4828d9e76bc9ce58122570ba523926ac57b43a",
-      "task_record_sha256": "7f2a74a8f17d1fa6780b1e7b7a20044035ead89309bfb36bf218ea0ae301f538"
+      "task_certification_sha256": "d0f3297bdfafa8bcb40661e86a0b71a9071a175e284082338a9920d8e7af7874",
+      "task_record_sha256": "1a56d4f90495402b7e01b194e6951f3418381851ff6f9c61acbf3228dd28efd2"
     },
     "release_dir": "223-therm8-to-bin4-count"
   }

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "149-dual-modulus-divider-16-17",
+  "checker_task_id": "v4_149_dual_modulus_divider_16_17",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "9253251d003203b8e64b280f5b7ce0d125b70d67e18a02d2444fe4b185351b1b",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "60fa7651aa4e1197ac459ed4bbc8efeeb1d4253c22493cc393b9c824b73cb221",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "149",
+  "family_spec_sha256": "fe676501bb228010d8c63cd0c5e7d8127d8165d758aaa69e2024d0ce1f7406f5",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ab56ea689701688549f75ac8676fac74fa5aefbfbfdebd88deb1d9b8c76e4977",
+  "public_contract": "tasks/649-dual-modulus-divider-16-17-testbench/public_contract.json",
+  "public_contract_sha256": "370aeaa1926d8dce6157fe4b34ba648b0e28aa721505fa9175ae2810c988a84c",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/649-dual-modulus-divider-16-17-testbench",
+  "task_id": "v4-649"
+}

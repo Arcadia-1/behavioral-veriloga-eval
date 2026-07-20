@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "multi_condition_enable_combiner.va"
+  ],
+  "canonical_dut_source_slug": "256-multi-condition-enable-combiner",
+  "checker_task_id": "v4_256_multi_condition_enable_combiner",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "bcb80b71d719e03c44727c50b8ca63fb0538db584acc7f62f875bae77d0ac42c",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "388d925d43b44222c043eb52fbaac078650df14f9b3f82fbe8cd09030ae501cc",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "8289949e11888cd97f5f01d432c508d3494dfedacf74504bcb726ed42741f850",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "256",
+  "family_spec_sha256": "45371d926a961c087e208fe099e14e22a6a2c7ac1d7d2fd67e5caad14ab3a276",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "674dfe65fb35c8913b5ad4252e75b6313dca8aa60313b8830b02d3cf429a4f17",
+  "public_contract": "tasks/256-multi-condition-enable-combiner/public_contract.json",
+  "public_contract_sha256": "bcab23a75c8324d5ec74c103bd988388fbe93908e2d0ba090be1ebf8784869ed",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/256-multi-condition-enable-combiner",
+  "task_id": "v4-256"
+}

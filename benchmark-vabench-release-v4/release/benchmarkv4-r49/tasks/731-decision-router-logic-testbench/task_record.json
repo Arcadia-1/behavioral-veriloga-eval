@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "231-decision-router-logic",
+  "checker_task_id": "v4_231_decision_router_logic",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "e766a74c6ab5c2dd4ccda44b8a6d5a1f81a4a5671bf20e6c9b41c24e84d17863",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "c8d54795ebea76fbe26070a937dd49402c259572dc47265548702b0bff1e9a1e",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "231",
+  "family_spec_sha256": "875c27c0a2e52b1eac586a8d8a4111813ccf72efb157acb8c9b6f3c547c0c219",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1b883d8c8bf5e0a04ec00077cefa714e89e6d5e8da6a3b8dfacd79ee35aaf3d2",
+  "public_contract": "tasks/731-decision-router-logic-testbench/public_contract.json",
+  "public_contract_sha256": "31ba9e0fa758c556e3b8784584568da5b65dd63d1ea76dda0d3b27abd5165882",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/731-decision-router-logic-testbench",
+  "task_id": "v4-731"
+}

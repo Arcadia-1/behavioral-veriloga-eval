@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "5ea392586b97d9f9b3487d5e42537fe03633b3ee0b9eb95e102227b46c1f4d1e",
+        "certification_sha256": "dd9cadf57d6a6facd40f48687bc200676e9f2d4e94eee275df426b800633e43b",
         "fault_class": "threshold_boundary_error",
-        "mutation_bundle_sha256": "d5d00773e2a33da1a30ca7086457d6505c0fb7262416ddfc372f0946e85068a0",
+        "mutation_bundle_sha256": "25fdff9c0e5c4c9df5f3bc209edb54af68ac671f5bfb147cbb8f54822fb06284",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "boundary stimulus crosses the public threshold conditions for Final Step File Metric",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "c4c2a38a3aa0574a578e371c4d6a43adc043373ac08cc479d5bb8c9c6f0c9b8c",
+        "certification_sha256": "c1888e25aa7d548cf628d7734c66fb233dd90f0fc6dc0ff29d7707bb63cd67fa",
         "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "88e91ef69492ba13fad114e1494923fa9a3d56d96dbae3f7f365e2ef27246492",
+        "mutation_bundle_sha256": "029c7deaefc1f353a1beaaf2bad238f711200e1e66f32e9803b96137ff200dd3",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "score stimulus observes the public metric/output scaling for Final Step File Metric",
@@ -33,9 +33,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "d2c1a1c82289dc19e88a64e08fd782d931aee237933fb0d9197a2f2174fe5fe8",
+        "certification_sha256": "06bf31d1ad1a0c32126a0db5107428789c7ba957c7359347e705b94e11f367dc",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "ee6c214bb8bd2d25d2a75b802ad14c637d0d614021cae900ada34d5c7a58e2e0",
+        "mutation_bundle_sha256": "c797bcd177091ddda33092292284c50db397a3cbbceab29c13b552487ffee2a7",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "nonzero behavioral stimulus requires observable Final Step File Metric outputs",
@@ -46,9 +46,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "d1cf072a783574e719f1b4da7d5fa40b1e36c69313339db77b61a618aff3f591",
+        "certification_sha256": "f000e424f273dc27d56bba7b8fa5cb3ee1d4638cdf392d4d399b9511df5c9310",
         "fault_class": "reset_semantics_error",
-        "mutation_bundle_sha256": "44f1d1f729b55acfe4242bdb608eeb173bd5cf9a62a888f3f2d7980b2688a630",
+        "mutation_bundle_sha256": "685bc5cc41f9f1aa91e947fbd8b4e1048f6ce096111af7bfbcf911c863b7799e",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "reset/recovery stimulus exercises Final Step File Metric state override behavior",
@@ -58,9 +58,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "a4ded45bfd244abcd71170790a1ff66805e22870daf47277aa667d72bf04377f",
+        "certification_sha256": "2bb2d8f7a1459f0d853baaad302cbd69a4d621e7217137a5dc5ff33161bed6f6",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "202e79c436d4573c3e7f17bbbd2b6dd6aa572e9c360632dbacc294cb91a9dc2a",
+        "mutation_bundle_sha256": "e40cad2fb8b48829b6b3bcb12447960e47b917a229cf76fc49c245f5222e4d84",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for Final Step File Metric",
@@ -76,8 +76,8 @@
     "hashes": {
       "mutation_catalog_sha256": "3dd0a26ea7444914483444da7004f283069d42e9381a81221bc3195f936cdae5",
       "score_deck_sha256": "1f5ca7b68297351b08813a8c89b65b05c105e0b5380c99c3a51d660df50c7ffb",
-      "task_certification_sha256": "6b7972c90caff337c912fb8093853f7f451a0a55b88b921828008b626b603499",
-      "task_record_sha256": "42fa59c5f5aba4c2c98ca87633906dffb73ca3b3d530f553b8dcdcb50a4a787a"
+      "task_certification_sha256": "94ea42c7a4aa02905cfdfedaf5e51b6f5c3f86b2735bee3da66b7d2686c79ba1",
+      "task_record_sha256": "d4fc345e8946e81f956c09618faa72d1c7fe0ce21a046b5277468ec8e76730d6"
     },
     "release_dir": "091-final-step-file-metric"
   }

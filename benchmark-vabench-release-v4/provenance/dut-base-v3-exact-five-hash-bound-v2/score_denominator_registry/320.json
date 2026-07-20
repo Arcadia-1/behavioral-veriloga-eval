@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_clock_edge/certification.json",
-        "certification_sha256": "a9fc73dce4775ee0c9c39b00418e27e3d7df16cb5832f91216b0af3b4c3f3a5f",
+        "certification_sha256": "cd2cf812e3a334a84d839ecad54cc76479d247cd40c2a5d4f475fa9091d0693d",
         "fault_class": "wrong_clock_edge",
-        "mutation_bundle_sha256": "5e52c1fbca00f9a1acb7070d4826e17b6e32999a56c241e70bfaabf573e1a1ef",
+        "mutation_bundle_sha256": "58ee459572bf8e9d25373dd513462c677a126783051a9b973fec1502817e31dc",
         "mutation_id": "neg_002_wrong_clock_edge",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_clock_edge/certification.json",
         "trigger_condition": "enabled rising and falling clock phases are both exercised",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_msb_weight/certification.json",
-        "certification_sha256": "bb7894bc6aaaa7dd4ef7464980afd2d2422ddc4254de6fba212740a683472ad6",
+        "certification_sha256": "ed66001dcbdae7d64c3ac9c68fce3da3abea910bd8946e82480b5a2c0ff73cad",
         "fault_class": "wrong_msb_weight",
-        "mutation_bundle_sha256": "2bec820c4db3a05c7f5000d065264f419c5697224e21454ce7c219635cd24613",
+        "mutation_bundle_sha256": "f3093d9eb5db1813e82a9ba9588baa4948ce83bf819394a9a6ecc8352df8a872",
         "mutation_id": "neg_003_wrong_msb_weight",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_msb_weight/certification.json",
         "trigger_condition": "stimulus exercises codes with code_3 asserted",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_unbounded_settling_jump/certification.json",
-        "certification_sha256": "9681804d5ea791e8ad2e021a24c6d565c5a1f60b85a8b3b03a789de41564fb87",
+        "certification_sha256": "7f1733b4113caafceb2f785ddf773ebfe0487262708738c6a7617cb3050242b4",
         "fault_class": "unbounded_settling_jump",
-        "mutation_bundle_sha256": "de223d3914bcd4662e4adf598e76da82cedb652d02f4f708b376379c3f6a2f4d",
+        "mutation_bundle_sha256": "dc71ccf8bcbd0d25bc35e9f274c2d9a2a226bf99b9e5d5896a79b395b7d34b33",
         "mutation_id": "neg_004_unbounded_settling_jump",
         "source_catalog_certification_path": "negative_variants/neg_004_unbounded_settling_jump/certification.json",
         "trigger_condition": "large code jumps require multiple bounded updates",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_single_update_settled/certification.json",
-        "certification_sha256": "b41a98db3eae1cffc15ca73a302dcab8f86b2e19891857f7798382c56f268c71",
+        "certification_sha256": "70a6774c8cf535c709861a60c306163faa0530bdb7db39c0b92a251eb466395b",
         "fault_class": "single_update_settled",
-        "mutation_bundle_sha256": "52ca0312d086b3e46b9a51388e384f8fcccfda08da938d93ee6463b0b8784b34",
+        "mutation_bundle_sha256": "d094f86317c6b7d3946bc2bd74c35c0550e75abc01ae5eee2a6b3dc1e03ec124",
         "mutation_id": "neg_005_single_update_settled",
         "source_catalog_certification_path": "negative_variants/neg_005_single_update_settled/certification.json",
         "trigger_condition": "the final constant-code interval contains two low-error updates",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_wrong_clear_level/certification.json",
-        "certification_sha256": "aff61e791410aa73625bd0d39b40c5a91b4d38c3ffb7a6bb81a8da11e27d1ef3",
+        "certification_sha256": "b954b2c1d0a4f44b36455b2d142d6b9267ea7e7294bfb363c7d7951631836d41",
         "fault_class": "wrong_clear_level",
-        "mutation_bundle_sha256": "83e6a94efd58470e3db09aacf3a2eacf9c8fd1671be94b9836703b24d6dd3443",
+        "mutation_bundle_sha256": "3cd7ef0df67c32ac0cc876bbf35969cc981c5eca3a2ac30aee82af27c58471bd",
         "mutation_id": "neg_001_wrong_clear_level",
         "source_catalog_certification_path": "negative_variants/neg_001_wrong_clear_level/certification.json",
         "trigger_condition": "reset or disabled interval must return vout to vcm",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "2a099e98ec2de17e5691c9afe273ed42926b33c0b91af2ef15c46b1c700dd191",
       "score_deck_sha256": "091b7870f85d232c97e5b9b9cc42570a012ff72850f110fe2c0f4193359e01f8",
-      "task_certification_sha256": "9eb7631f6a4e7371192a832595d1ab46826cf69ddd77d16c755ee752bdaed803",
-      "task_record_sha256": "35e11a4eaed2387958b98a0f1360dc25027fe2f5a53f923469566e83f8958b10"
+      "task_certification_sha256": "76eacba347a21e0d019802922119ae105d1340f77e89200ee5682ac44a25611e",
+      "task_record_sha256": "33c61e95426c4ec42751c341f4ef57f6b958a765b8b78a79ee451a83f65d8ab3"
     },
     "release_dir": "320-code-dependent-dac-buffer-settling"
   }

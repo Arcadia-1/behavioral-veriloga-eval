@@ -1,0 +1,77 @@
+{
+  "access_auditor": "operations/tri_form_derivation_prep/audit_runtime_export.py",
+  "claim_boundary": "proves record ingestion and bundle isolation; does not claim model execution or final score",
+  "runner": "operations/tri_form_derivation_prep/export_tri_form_runtime.py",
+  "sample_count": 3,
+  "samples": [
+    {
+      "audit_report_sha256": "1c1b417e62cf8fab0ef42d1525a073a75d8af39053b353e7eb01aa58c0d05b0f",
+      "audit_status": "pass",
+      "audit_summary": {
+        "problems": [],
+        "schema_version": "v4-runtime-export-audit-v1",
+        "status": "pass"
+      },
+      "auditor_sha256": "37804837abfd45671b1f635e7f77b1292bceddc9bb39ee2878a1ada4edd53b33",
+      "evaluator_bundle_sha256": "6407009bebcf8006396380aab7a3e69096426df4514e93fa31c78f6785d48ee6",
+      "evaluator_mounted": false,
+      "family_id": "001",
+      "form": "bugfix",
+      "mode": "G5",
+      "model_mounts": [
+        "public/task:ro",
+        "public/submission:rw"
+      ],
+      "network": false,
+      "public_bundle_sha256": "3a84e57fba4d12fd37156a3993b67ba74ff610496f92d3825c9cc92a76771e5b",
+      "runtime_tree_sha256": "29f063c40cb04f0065eef29bc2d5c63697d3866ff97be7f761a216fa6a9e72a3",
+      "task_id": "v4-1001"
+    },
+    {
+      "audit_report_sha256": "1c1b417e62cf8fab0ef42d1525a073a75d8af39053b353e7eb01aa58c0d05b0f",
+      "audit_status": "pass",
+      "audit_summary": {
+        "problems": [],
+        "schema_version": "v4-runtime-export-audit-v1",
+        "status": "pass"
+      },
+      "auditor_sha256": "37804837abfd45671b1f635e7f77b1292bceddc9bb39ee2878a1ada4edd53b33",
+      "evaluator_bundle_sha256": "f9a874c3ff91d1b99e4b099e08fb2229066445581423953b04382b80d1506f6d",
+      "evaluator_mounted": false,
+      "family_id": "001",
+      "form": "dut",
+      "mode": "G1",
+      "model_mounts": [],
+      "network": false,
+      "public_bundle_sha256": "821988db829957f67f49b7b4dd8f846bb7ea6e16b1bdb7d9c178a9818f825af9",
+      "runtime_tree_sha256": "f45dc2943fda1a1cc1f8eef921e62d504e083bf6981a11f3a56a9e593c0c8e42",
+      "task_id": "v4-001"
+    },
+    {
+      "audit_report_sha256": "1c1b417e62cf8fab0ef42d1525a073a75d8af39053b353e7eb01aa58c0d05b0f",
+      "audit_status": "pass",
+      "audit_summary": {
+        "problems": [],
+        "schema_version": "v4-runtime-export-audit-v1",
+        "status": "pass"
+      },
+      "auditor_sha256": "37804837abfd45671b1f635e7f77b1292bceddc9bb39ee2878a1ada4edd53b33",
+      "evaluator_bundle_sha256": "58cfa86283025890906209cde0210ac85e627e17a0b8aca87b0cd0af0b620179",
+      "evaluator_mounted": false,
+      "family_id": "001",
+      "form": "testbench",
+      "mode": "G2",
+      "model_mounts": [
+        "public/task:ro",
+        "public/submission:rw"
+      ],
+      "network": false,
+      "public_bundle_sha256": "1ff35f9b983ae028a5f911983aa0f61c72844358fb42b57bdf7d3bfd661d793e",
+      "runtime_tree_sha256": "31d7cb6f6a61cc7090eb9a3ef43777eed06f58e93bd89eb9cb0aaaf2eedb9bf4",
+      "task_id": "v4-501"
+    }
+  ],
+  "schema_version": "v4-runtime-ingestion-evidence-v1",
+  "scope": "representative direct and agentic exports covering prompt-surface isolation",
+  "status": "pass"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "334-baseband-anti-alias-filter-macro",
+  "checker_task_id": "v4_334_baseband_anti_alias_filter_macro",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "a43a8c7a640b2a1c0be7c877df0d77fce5d8d5721d879e7eb1fcb2c92e905e69",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "d51008b7b8bd7a632e7f64470b9f80bcba19fa7b1669756c14b93931122b1489",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "334",
+  "family_spec_sha256": "b4922591200dd1a708a73a8d123d584cf82e003eb63e4bef84fe1348c0382f27",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a9a8c3479d947376db96dea170113007af512adfa8f37eb1abf8adc4dca9a103",
+  "public_contract": "tasks/834-baseband-anti-alias-filter-macro-testbench/public_contract.json",
+  "public_contract_sha256": "b975faf2bcce4a0a7460f84318074978d39ca1275c4b095a3680ac995d5fd245",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/834-baseband-anti-alias-filter-macro-testbench",
+  "task_id": "v4-834"
+}

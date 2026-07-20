@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "24f21a84b6e5323ecd77b898c6b4addc5a63c885789c9461e9060c9103cf4b42",
+        "certification_sha256": "509acd08ff9b7ad1a2c9b7fc750cca35505621a12d3658cbe3e203aff26dd129",
         "fault_class": "threshold_boundary_error",
-        "mutation_bundle_sha256": "33d586f6d6baf08e06d68b4f2d789e6178cac9a8c1ab49cb23173e5492a9f8c0",
+        "mutation_bundle_sha256": "c793a763a1b0c7d8905ec9dc444fb4269aec74b0b5f08f9df3353be4ee9d35a9",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "boundary stimulus crosses the public threshold conditions for Complete Calibration Loop",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "8727ffaac18a739b390d9637e8ea80ba91abf7add7319b85080674813be84cf3",
+        "certification_sha256": "f6defd53eb545e74641e97c6f085db18b4d77dd04ab581ec8c47a2e722c63f57",
         "fault_class": "reset_semantics_error",
-        "mutation_bundle_sha256": "d866fdfd1aa654dd51aa113fa3d28ab88fcf862865521c29a48c9ea9680cecfe",
+        "mutation_bundle_sha256": "76548e6a8402bb3aac8c3adcde543aeae95d0bde302c0fa2992b5389535f1afb",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "reset/recovery stimulus exercises Complete Calibration Loop state override behavior",
@@ -33,9 +33,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "53c73cad8013bb83963fa0d4ade9b56c1410d9f5a3490956dc3f591c9e3b95ba",
+        "certification_sha256": "0eb9acd5891eda2e090a432f7d2f65fc1e16232802406c0b69739aa8a3f2ae84",
         "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "b617caa3723853412b7d3f00d16a004ffb68354098caa924d41bcd63742b0fb9",
+        "mutation_bundle_sha256": "7a5c6b7b03ce59d68599de55231ebb65e10ecb358796b15e1406e50dd57c4a67",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "score stimulus observes the public metric/output scaling for Complete Calibration Loop",
@@ -46,9 +46,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "2e37b9daded58f8369e8c200123e3716f41d67c89037c3caec40a25d9a0a7433",
+        "certification_sha256": "db9329f98bac5aae5e157ef5fe38a846ce899daf24234f11cacc66902d123837",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "cec344fd4d6d887560d3b04c6d3879ea5f33429352f8f006589e27f9dcb8697f",
+        "mutation_bundle_sha256": "a5c82ce469c0b0a9ee18a467baa004d5796f0530a6590655f7dbb572270c33b4",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for Complete Calibration Loop",
@@ -59,9 +59,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "c737c8b0763966df1fea9b0198486d38f70f567244cbb17de7aa8f544982291a",
+        "certification_sha256": "7ed1d7589dacf8a14ca9cb98d8f23221bb5541ce002b8207bdf68d29c71ab983",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "25839f04f4ebe14647b5ba8d7b40270213fce0d7c3c1c2ece20d511900dc371c",
+        "mutation_bundle_sha256": "f398b2cd94428edaf5e4885c7131184912ad0bd7eca012e1a57a9f31cfc749a2",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "nonzero behavioral stimulus requires observable Complete Calibration Loop outputs",
@@ -76,8 +76,8 @@
     "hashes": {
       "mutation_catalog_sha256": "113ea9de5daedc4f3ee57160f909ef2bd3b58b1a096104f2aa9c7109fc403d30",
       "score_deck_sha256": "05b4851c8f006acbc1f56156447fbfedbca376db72d7106f485494b8f553c50c",
-      "task_certification_sha256": "b2814a8d3df59853c5fc9394555df0182cc73379ca54c30bc58a1793017faf31",
-      "task_record_sha256": "a3b26a4bd3b1331b4a1f10926c864361e7b182b84af716d31c647033bc762e62"
+      "task_certification_sha256": "3de6390571d20a93982f1ad3ffb0a0f95b3fc631cf2c92eee69025aa59681ffd",
+      "task_record_sha256": "f70f119f1e5fb05ac115952e59c7aac025cfc1420ab13cf318410f2a6192af91"
     },
     "release_dir": "086-complete-calibration-loop"
   }

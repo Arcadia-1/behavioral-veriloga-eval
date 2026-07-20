@@ -23,15 +23,23 @@ def check_v4_951_serializer_mux_timing_macro(rows: list[dict[str, float]]) -> tu
     reset_clear = disabled_clear = valid_seen = slot3_seen = one_seen = zero_seen = False
     ever_enabled = False
     disable_time: float | None = None
+    reset_time: float | None = None
     times = [float(row["time"]) for row in rows]
     for row in rows:
         t = float(row["time"])
         rst = _v4_topup_logic_high(row, "rst")
         enabled = _v4_topup_logic_high(row, "enable") and not rst
         if not enabled:
+            if rst and reset_time is None:
+                reset_time = t
+            reset_ready = (
+                rst
+                and reset_time is not None
+                and t >= reset_time + 0.7e-9
+            )
             slot = 0; frame_count = 0
             clear = row["serial_out"] < 0.10 and row["slot_0"] < 0.10 and row["slot_1"] < 0.10 and row["valid"] < 0.10
-            reset_clear = reset_clear or (rst and clear)
+            reset_clear = reset_clear or (reset_ready and clear)
             disabled = ever_enabled and not _v4_topup_logic_high(row, "enable")
             if disabled and disable_time is None:
                 disable_time = t
@@ -41,11 +49,12 @@ def check_v4_951_serializer_mux_timing_macro(rows: list[dict[str, float]]) -> tu
                 and t >= disable_time + 0.7e-9
             )
             disabled_clear = disabled_clear or (disabled_ready and clear)
-            if (rst or disabled_ready) and not clear:
+            if (reset_ready or disabled_ready) and not clear:
                 clear_errors += 1
             prev_clk = float(row["clk"])
             continue
         ever_enabled = True
+        reset_time = None
         disable_time = None
         if _v4_rising(prev_clk, float(row["clk"])):
             selected_name = ["d0", "d1", "d2", "d3"][slot]

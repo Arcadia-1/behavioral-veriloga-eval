@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "a499f4f47ea02c80484af82fc233e5c85d000fcc212697c3f89b9da6e380de1d",
+        "certification_sha256": "2e581859c65ad7b0f35334d4528f1d28ba0c9a9f2bf127ad8413f8aedac4c997",
         "fault_class": "never_pulses",
-        "mutation_bundle_sha256": "5182ef26fbea79e61571ac35d9fec3eb0cc492d9918a11bfc14cec088f336a71",
+        "mutation_bundle_sha256": "b085da400c84b8489ceffcc3bdf87bb438f70785f754c29eccf96e684cd71246",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "stimulus exercises never pulses against the public observable contract",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_polarity/certification.json",
-        "certification_sha256": "127d57f3e3880fff8783fa3becef452b469866d069ea7cce93dfce9bec0a77cd",
+        "certification_sha256": "ae99c0a38160e2dbf7910b830f23901fb0f02bea316aa6af13854ab40c81265c",
         "fault_class": "swaps_selected_polarity",
-        "mutation_bundle_sha256": "7da669b08a1ad5785a6eb1ea64cbe1e72cbdf80beaff379c4aad820684a2a016",
+        "mutation_bundle_sha256": "a4ff7a6781373c0eaf48ed0fe5fbdf24da0992e79e24545a28b9550e5c4940cb",
         "mutation_id": "neg_003_wrong_polarity",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_polarity/certification.json",
         "trigger_condition": "stimulus exercises swaps selected polarity against the public observable contract",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_stuck_high/certification.json",
-        "certification_sha256": "fb4b82e5df18156f4fa073fb2ebde741d8781f04d511e0cc36f3f62a9b1d6921",
+        "certification_sha256": "ac36888965eaee24702ad4f2f7056bd1639c89aa373e0962ad1117b6d9247661",
         "fault_class": "never_clears_pulse",
-        "mutation_bundle_sha256": "1a8130e56f5c6451a809695ef43030a7a26ad053b0c9678a41991f53329deaeb",
+        "mutation_bundle_sha256": "22cad2c52bf510a187fa43f54267c1cbaf3bba6929fcce11cdf691d1461be39d",
         "mutation_id": "neg_004_stuck_high",
         "source_catalog_certification_path": "negative_variants/neg_004_stuck_high/certification.json",
         "trigger_condition": "stimulus exercises never clears pulse against the public observable contract",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_long_pulse/certification.json",
-        "certification_sha256": "d91eceafe5548c43005e88efdf57199e1e7db1a8eff27c9010d86b412ff479b8",
+        "certification_sha256": "d5dbd1518c4e5d4dc973d3a4f387a83ab18fc92f7c0b1702f75b2620f919f479",
         "fault_class": "uses_too_long_pulse",
-        "mutation_bundle_sha256": "55cadd78bcef1cade9e40a8d7ee7c00eb2310f53fc756c988b1883c0f351f3b7",
+        "mutation_bundle_sha256": "232fe6d917df9da5f3d858a9789c332cb5dd3e276dacf9b012fc7f0d5eaffae1",
         "mutation_id": "neg_005_long_pulse",
         "source_catalog_certification_path": "negative_variants/neg_005_long_pulse/certification.json",
         "trigger_condition": "stimulus exercises uses too long pulse against the public observable contract",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_all_edges/certification.json",
-        "certification_sha256": "8b2128c00f384a3de0c785ae3634270be7767401de4774342ef3d1c9cc45cb7b",
+        "certification_sha256": "372763be491a095fa2e64e52099a506d62d340f6b97d8922169fce2cf407943b",
         "fault_class": "pulses_on_both_polarities",
-        "mutation_bundle_sha256": "96d318e657e8468b8d2ce485b8a66a108dfb3d0a0843c66dd7161c3ba57ac0ad",
+        "mutation_bundle_sha256": "ee90871dbe4001b638ca2d8eb5b7a5dfbe9d00bfe3c2b482bc555021df63ce31",
         "mutation_id": "neg_002_all_edges",
         "source_catalog_certification_path": "negative_variants/neg_002_all_edges/certification.json",
         "trigger_condition": "stimulus exercises pulses on both polarities against the public observable contract",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "461031d341279a70faed20f949d1c7fdfec11c3ba9dfb0bc43de8f3558024774",
       "score_deck_sha256": "c7731ccc09b4ddf658d416f52fa98c14b5ee88be400376947ca4744d2fecaf5b",
-      "task_certification_sha256": "eeafa1af33dc4f09aa91676c0357feac7ccfa04e54ce82cd49c64e2c5d0f6500",
-      "task_record_sha256": "700c2c1febf2892980d5be7117861756a648e5e7612972e5ff539f62f78217e4"
+      "task_certification_sha256": "180c14bb74b8d7659be4c14a5ccec4d6c0a0780713715094239b946ca6d84424",
+      "task_record_sha256": "0cc7965951ff20ca4660615b5986223c59aea7ceffa8b25d755e08cb267d73c8"
     },
     "release_dir": "066-configurable-polarity-edge-detector"
   }

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_denominator/certification.json",
-        "certification_sha256": "05015daf716e33ee2835c38ee1c8d65f4bc2deca0faa6ec02a84c2fdefc27fe7",
+        "certification_sha256": "5f2ef95b54bacc441ac054f2c83e27a54d7ba89b7dd5d4a342275ff964ff4c4b",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "63cd08c3573e5216842c616fc9b9a6b32d75dd7ea9c5b65a8a02c6cd2c933be5",
+        "mutation_bundle_sha256": "74baf32743e9c8a65a8de4f1165ef16dd813a55c9d2da931373f22dc789ac974",
         "mutation_id": "neg_002_wrong_denominator",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_denominator/certification.json",
         "trigger_condition": "Uses the old MSB-normalized scale instead of the all-ones full-scale code.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_threshold_too_high/certification.json",
-        "certification_sha256": "8e53a596f861c9772c5469e678f9b22d604c768e53aefc10b6e32ab1a3947ff9",
+        "certification_sha256": "8b8be75dea32871c3727b94734fead361b7b2941d2354ce1588124b44fbbba7e",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "b4117f30f83d1ffe5089f18ac0defe6578c7e7e088903527858008d81a5b1b92",
+        "mutation_bundle_sha256": "6666ea37949784fa6ada56ea9b0b5872e42ae466f3096dfd4b50f2920d075b7f",
         "mutation_id": "neg_004_threshold_too_high",
         "source_catalog_certification_path": "negative_variants/neg_004_threshold_too_high/certification.json",
         "trigger_condition": "Uses a threshold above the input high level.",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "46501dfb85b0ffa0ade575aed7129fb75050731ceefa321386f7666668bbf956",
+        "certification_sha256": "e832e6e1d23f8b789bdaa13a8e5190e490e6f2459783e03e15475fbadeb09e8c",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "70843a799e45cef255c240ac0fca1f890bff0a5ee736bec3fd08a5fa867a8fc9",
+        "mutation_bundle_sha256": "811643fd0824e0beb451214bf44e69aca932eee382d918371d07adc47f83f9e9",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -47,9 +47,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_half_scale/certification.json",
-        "certification_sha256": "75f1b3ae02ae958ff71b42f1cfa015430fea3e120b02a9d090dcaa13871bb900",
+        "certification_sha256": "bb3386a317e0e25838e7763bbbb55ac69c7deb458918afc06b79f70441b73dd2",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "92cfd1c7b62912ab8c6eaf0a9b28b0781a2609c9abf1593b39b04d81c5321e2a",
+        "mutation_bundle_sha256": "88d336d07372858ba5ef8ef88241887a57316c1ed88219ebea1d671813a53f2b",
         "mutation_id": "neg_003_half_scale",
         "source_catalog_certification_path": "negative_variants/neg_003_half_scale/certification.json",
         "trigger_condition": "Scales the decoded weighted output to half of the full-scale response.",
@@ -60,9 +60,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "8ea5454fe8a66d7c23aeb543206487b5ea61e047011600fa4a5920ff28b14757",
+        "certification_sha256": "8937d908161063bd94777891a6e74577649b6f31781e401c77cfde83ddddef99",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "38a49e051bc6de92e7ee7f45d6b27157c9636ce79a089da1d7365b8b7864d2b8",
+        "mutation_bundle_sha256": "cd3d9cd3eba5cb1bcc3acb94cbfdf819f5f2b9f28237c8ddec3616ac7b7caac0",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Weighted Decoder 6bit: scales the metric output, preserving the main path while failing measurement checks.",
@@ -76,8 +76,8 @@
     "hashes": {
       "mutation_catalog_sha256": "c9c56e3d83cc856f988b2b1e832082031e4c320af1749c807b9dc57461f6d336",
       "score_deck_sha256": "88e37623ec6d588a767f534ae2c9ae00fcc3550923919fde8a65119381a38612",
-      "task_certification_sha256": "ad1ec86729f3d77de6c4436df2871ca17ac3ad3bccccc32d77ca93cb9c0c7497",
-      "task_record_sha256": "a6b3e7ec4ef6d8603731cecfbf7d7cb80bc0727f02c4d3a2ceb47bae22f2ba9f"
+      "task_certification_sha256": "adb3cf2aeadc9cbb2802eb31029f61f792988b02050f38eec7be4a7efe1c4caf",
+      "task_record_sha256": "3187236fa0338c48129fbef35924fcbc91ffc31b767de9e2d3c91af3502266f0"
     },
     "release_dir": "227-weighted-decoder-6bit"
   }

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_enable_ignored/certification.json",
-        "certification_sha256": "10280fb42563bbd1c1c976590c98c21df350ae187aad9e532280d0cfa7a69da7",
+        "certification_sha256": "dd47530834b3f7efa3300465f0529212ee01f337bec8a788995b33c76d7cade4",
         "fault_class": "enable_ignored",
-        "mutation_bundle_sha256": "99f4d2244ab249f77cd40f607370f7e72693a863cf09557d871ff448f66f05fe",
+        "mutation_bundle_sha256": "f7a51f2122d1e386c6a3f49506f1e608665c028fc659e4a1be1ee8c6829ba304",
         "mutation_id": "neg_001_enable_ignored",
         "source_catalog_certification_path": "negative_variants/neg_001_enable_ignored/certification.json",
         "trigger_condition": "enable ignored",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_reversed_bus/certification.json",
-        "certification_sha256": "5fcc111b634e20096ad99bf28dc61127c9236c291c2b5408ed8c74d508bfea67",
+        "certification_sha256": "ddbbf474f8d5c6c1875ac9b9e2e796b84c12eaddd1fa805af5f0b46a2c374a62",
         "fault_class": "reversed_bus",
-        "mutation_bundle_sha256": "d05a8e9e873d6c80f951440c4bb2fc651d3c3bef0c2f280f65b42558f35b99d8",
+        "mutation_bundle_sha256": "95fe393b13bbf5be63e2db6b25282591e0d196786dcc4fe36ed828a1aa28d63a",
         "mutation_id": "neg_002_reversed_bus",
         "source_catalog_certification_path": "negative_variants/neg_002_reversed_bus/certification.json",
         "trigger_condition": "bus reversed",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_all_zero/certification.json",
-        "certification_sha256": "7199b282b138baf5a09b144dc70ccf0216924eb5cff6c704ad78b38a1da4b30d",
+        "certification_sha256": "e7d5d44e9e5557c947efbd1571b14031ebaabc808e055cd6843b1394a5c66e76",
         "fault_class": "all_zero",
-        "mutation_bundle_sha256": "d2a20b13a597ecfb3facc6c4d45ceedaaca923e0f7f61fc19a4b6e17c635ff27",
+        "mutation_bundle_sha256": "01c712e007661079fd3b304a01abafd7a66120db98b25bfe480754f14a87e628",
         "mutation_id": "neg_004_all_zero",
         "source_catalog_certification_path": "negative_variants/neg_004_all_zero/certification.json",
         "trigger_condition": "all outputs low",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_shifted_bus/certification.json",
-        "certification_sha256": "62f8933b94af5b30df844444f51cc3fccbb0da32b834e58577f43d9d0d015063",
+        "certification_sha256": "7a348af52fa6a06748879683d7ae1b275eb126dad49dc43d7ccc64b88aa8283e",
         "fault_class": "shifted_bus",
-        "mutation_bundle_sha256": "8fc3662e416dd050c932f6cd2090c8f834313e849954a135024364accc042681",
+        "mutation_bundle_sha256": "be3741c77e8747927d18ad4834ab77d44b5ad527a7f158cafa40783566fa6a33",
         "mutation_id": "neg_005_shifted_bus",
         "source_catalog_certification_path": "negative_variants/neg_005_shifted_bus/certification.json",
         "trigger_condition": "bus shifted",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_inverted_outputs/certification.json",
-        "certification_sha256": "58b380983dd38f0367f52abee5a225e533356b5e3f49ef24887789bfcc6826db",
+        "certification_sha256": "8710cc4e334aaa41c7cca35a0f2773ebc8ed9a96f99128370547362ea628a68e",
         "fault_class": "inverted_outputs",
-        "mutation_bundle_sha256": "ffebd133e5334668823447e79846b679cce5f8c721968c7011eb3ec59de5664d",
+        "mutation_bundle_sha256": "064fff74168ebac791ca726fa2ff9011b4f9c90b572513782868b205b5fa2e2a",
         "mutation_id": "neg_003_inverted_outputs",
         "source_catalog_certification_path": "negative_variants/neg_003_inverted_outputs/certification.json",
         "trigger_condition": "outputs inverted",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "3edc71ac00a4ff293dcb25ddb0f6bb31501faf8e238c3bda2018ace7d995f5f4",
       "score_deck_sha256": "286450ea1cd063c405b1bb7e2e2676a60d83896a055ad2dd52ade4fad79b0687",
-      "task_certification_sha256": "9638183f4ca0b1d46a673ed663075804379deae489ce2b880a7fccde96b52366",
-      "task_record_sha256": "a6eb40e87294aabb5b4711d8d9e6d3ee73c1d0276ce9a14c9de4b558c708d6a3"
+      "task_certification_sha256": "2497556b6a51bbe5d046b46b57b3a46224941a8618f381367c5f2a7cc5ae9143",
+      "task_record_sha256": "186f3e2126167e3c1a2e3759663eaa747c9c62cc9825bae7e8639d9acec61061"
     },
     "release_dir": "056-config-latch-32b-clocked"
   }

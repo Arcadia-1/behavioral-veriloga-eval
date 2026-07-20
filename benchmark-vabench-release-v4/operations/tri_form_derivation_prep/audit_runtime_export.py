@@ -12,6 +12,7 @@ ALLOWED_DUT_RUNTIME_SCHEMAS = {
     "r45": {"r45-direct-evas-runtime-v1", "r45-direct-evas-runtime-v2"},
     "r47": {"r47-direct-evas-runtime-v2"},
     "r48": {"r48-direct-evas-runtime-v2"},
+    "r49": {"r49-direct-evas-runtime-v2"},
 }
 ALLOWED_TESTBENCH_RUNTIME_SCHEMAS = {
     "r45": {
@@ -20,6 +21,7 @@ ALLOWED_TESTBENCH_RUNTIME_SCHEMAS = {
     },
     "r47": {"r47-direct-evas-testbench-suite-v2"},
     "r48": {"r48-direct-evas-testbench-suite-v2"},
+    "r49": {"r49-direct-evas-testbench-suite-v2"},
 }
 
 

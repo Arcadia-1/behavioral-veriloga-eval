@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "366-polyphase-quadrature-filter-macro",
+  "checker_task_id": "v4_366_polyphase_quadrature_filter_macro",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "a8444215e29b2839cae2a6a03face35f7e29b8b0f14557979ff7ad585b08009f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "a05aafe1f9b001bdda6a0dae4bc79eeb8e96ddb80f9c769956486a3968034b74",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "366",
+  "family_spec_sha256": "44e105505409bbaaada97d9f01a60057247e5ada72b4eb36f09ddf93277c576c",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1bbb902bab65b5032ffd721bd2a74d89439b8f79a16d5f280069ecd59e72d1d7",
+  "public_contract": "tasks/866-polyphase-quadrature-filter-macro-testbench/public_contract.json",
+  "public_contract_sha256": "080ed5885846f09a4ceabfbaefe2c5f05d22b0c56d9ee40782f4b969ae3f2332",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/866-polyphase-quadrature-filter-macro-testbench",
+  "task_id": "v4-866"
+}

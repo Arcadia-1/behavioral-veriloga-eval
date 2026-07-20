@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "5faef4dea23808b09088be2efd65affa3d351a38794cd8488547b93e07ff13e1",
+        "certification_sha256": "2b40fcc0e6a1245403e3447b8ec1e38091506de2ac8cb499c6a8cc9f5a33ecd4",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "af946e9c1b3fbbed9fcf037a7f9e0a952b5a46736727bbae8cde4fadf226784b",
+        "mutation_bundle_sha256": "b7f826779afbeef768a90169c6a2cf88fea716894532b0ef64ed645b6596e512",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_half_scale/certification.json",
-        "certification_sha256": "1bdb51415e80f50a759b14b32b487f9a756a5dbcf8c2d54e7c0bb59962527d69",
+        "certification_sha256": "aff491964b8f8bd54d5f07b68712cbee3383b9e0909006aaf0e3b4bf6287491e",
         "fault_class": "fault_003_half_scale",
-        "mutation_bundle_sha256": "ff1749d01278cf1773949b9a7fbe9c8f803a77b94c5f9892ffa834dcb8da486e",
+        "mutation_bundle_sha256": "cd2c5c0085da08bc15b4d7714600860ef20d6e6d2ebd68d3c1fac354542ec9b4",
         "mutation_id": "neg_003_half_scale",
         "source_catalog_certification_path": "negative_variants/neg_003_half_scale/certification.json",
         "trigger_condition": "Uses one quarter of the requested time-to-voltage scale, avoiding the intended rail clipping.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_rearm_after_cycle/certification.json",
-        "certification_sha256": "f313f6881d18a673127e55d61e107e79eaf09e99b4c725355a80695b8e662e7d",
+        "certification_sha256": "333458498515393c9b7d27a583d9f633ab9d952d6bcbbaa30607398dfe970ebb",
         "fault_class": "fault_004_no_rearm_after_cycle",
-        "mutation_bundle_sha256": "47a38dd9098dd49a921f92fb153a781134ef8ca9b662f46503a55f25f3f41f43",
+        "mutation_bundle_sha256": "b35599d6ddcc9447699fc0d8a1f88fb67cc7c26684406efb803bc4a3977c23ab",
         "mutation_id": "neg_004_no_rearm_after_cycle",
         "source_catalog_certification_path": "negative_variants/neg_004_no_rearm_after_cycle/certification.json",
         "trigger_condition": "Fails to re-arm edge detection after each clock cycle.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "f956281385a24b0cffba9431896a520f3358b7e14274ed56ce562e4ffc39ee86",
+        "certification_sha256": "cc22dc16da10469f138a586684adacfa403df076f47ba4f1b8fc29fcbca01828",
         "fault_class": "fault_005_metric_scale_low",
-        "mutation_bundle_sha256": "920b07222b6da2c2ffb4c25487e3ba00eb9083cafef77aa60f3683c7efb9b657",
+        "mutation_bundle_sha256": "842006e413e504fa7633012ec7f39f48896cc5f4bf67958689d3a8e1d32f3d59",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Time Diff Detector: scales the metric output, preserving the main path while failing measurement checks.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_inverted_time_difference/certification.json",
-        "certification_sha256": "a9fc2bb6b933e2d74d37f6bc18b4816a2767e326f55696e5741612d073d0070d",
+        "certification_sha256": "90b8437195a209dd81cb10233c1703292c6d19fabb699a9f6038a73692ed1b87",
         "fault_class": "fault_002_inverted_time_difference",
-        "mutation_bundle_sha256": "5866938fc2218ff6d45e637d9a6b15eb82f3fe697992d91113d19a9f6f2ecfca",
+        "mutation_bundle_sha256": "16b9dc2b58a9aa38c8ba8933d28a069ad02333f3a07a1e2d5db4da8418ff7a03",
         "mutation_id": "neg_002_inverted_time_difference",
         "source_catalog_certification_path": "negative_variants/neg_002_inverted_time_difference/certification.json",
         "trigger_condition": "Computes vinn time minus vinp time.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "7defd18a08b6bc88f099bd53bb3bc369309adb285ecf8e5ee4b6c6f41064e2c9",
       "score_deck_sha256": "4fbf74b28b78ddfd224cdb75f94c55943ca4e22f5dfb5a8ff3486298f42270e7",
-      "task_certification_sha256": "2b73a41878037de1f720f0f2f42c2469db9a3fdeafe264cb7548c37c81ff6f56",
-      "task_record_sha256": "d7aa4dc2634bd913a0b4645ec0a812193ad0c767ab9dc86a2db991be7d3b9380"
+      "task_certification_sha256": "c7080b432b2033b93844c5fb55986569675a89b229fec036098dd45ea549bd33",
+      "task_record_sha256": "3b5c6066a76463b7743a8a7dcbb275cb9ae2dcdd779a6825ae9d474a903b7ea7"
     },
     "release_dir": "117-time-diff-detector"
   }

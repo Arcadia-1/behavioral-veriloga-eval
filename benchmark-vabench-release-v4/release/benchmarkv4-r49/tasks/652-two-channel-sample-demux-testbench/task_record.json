@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "152-two-channel-sample-demux",
+  "checker_task_id": "v4_152_two_channel_sample_demux",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "a54f37a533e86e620a08e45a9e6af4afa97648f291b9cb4821842c17af0e0779",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "47b77c070e566472cf341c38e18d08a95bfaec377954289bef022835d7236622",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "152",
+  "family_spec_sha256": "6ded92d71cae912035cd715fb957eaa845a5ad60efd4a8a9a3ac17d7410d41bf",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5921eb8691b41357e98c5bbeab0efc473634b5d825d52253acaf45cc3a4cc186",
+  "public_contract": "tasks/652-two-channel-sample-demux-testbench/public_contract.json",
+  "public_contract_sha256": "fb68d2b0d2538ce712009d1300458ee6639602d461c24582add0c59e3e3892f8",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/652-two-channel-sample-demux-testbench",
+  "task_id": "v4-652"
+}

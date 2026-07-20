@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_gain_direction_reversed/certification.json",
-        "certification_sha256": "05d49e5b79d5595712bbe0d04455de14b050eac8c789644cb8d064e80030607d",
+        "certification_sha256": "1ee7560d7781388bf8896eec38dd894e0daec3a15aa4270c757655499717de33",
         "fault_class": "gain_trim_polarity_error",
-        "mutation_bundle_sha256": "e21db2b8926cde3bdcbae9c613a0bca7f5345058523a5b79623f340ab2a170e3",
+        "mutation_bundle_sha256": "843b4028e446528fa20338db1ebc30d395846f64fdfef7a65fe8d34a43d21b40",
         "mutation_id": "neg_001_gain_direction_reversed",
         "source_catalog_certification_path": "negative_variants/neg_001_gain_direction_reversed/certification.json",
         "trigger_condition": "I and Q amplitudes have a persistent imbalance.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_corrector_ignores_codes/certification.json",
-        "certification_sha256": "fedb634c4dee2f0522b64f33350d9bbb4954fdbe71c2e4aa7e5e823473accc50",
+        "certification_sha256": "12488f8e68ef88c4924934cb608926fae823b73b6a081b6e4123e72f4fc4d5e3",
         "fault_class": "correction_application_error",
-        "mutation_bundle_sha256": "39bf0e30c39d24914f11cde610e00da82e4656cf858d9fb847cd29897a8b0529",
+        "mutation_bundle_sha256": "8c4ab0cf82a12680bf1ed2f2024833d6d01bc6720d8c958d0070d9b692481954",
         "mutation_id": "neg_003_corrector_ignores_codes",
         "source_catalog_certification_path": "negative_variants/neg_003_corrector_ignores_codes/certification.json",
         "trigger_condition": "At least one trim code becomes nonzero.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_lock_after_one/certification.json",
-        "certification_sha256": "15314a0674fbe1665218693c7111ef6f00d255a92e2eeb7ed005e40673066601",
+        "certification_sha256": "9763148f480d913140a8fcc32df42ad1cd95bbf3cc0d802a7b58ab3819bd287f",
         "fault_class": "lock_qualification_error",
-        "mutation_bundle_sha256": "c8e70e599bd094cb42c20cfdbd7853425b37b2c889bc9cc64392087bc3c809d2",
+        "mutation_bundle_sha256": "0b893c478fff5c986db79e20fd44fb23b3870f60b8a5ee9b4c0900e6b39cffa0",
         "mutation_id": "neg_004_lock_after_one",
         "source_catalog_certification_path": "negative_variants/neg_004_lock_after_one/certification.json",
         "trigger_condition": "The first in-tolerance calibration update occurs.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_reset_outputs_not_cleared/certification.json",
-        "certification_sha256": "18514808a69d2aee07cdaa0ce3eeca6c5e153c7a64b506a68de7f749faef1a89",
+        "certification_sha256": "73cd029f0a06dc4533644cad6f8ffd8c11f267b68af7c995390c7809a384989f",
         "fault_class": "reset_clear_error",
-        "mutation_bundle_sha256": "a044f8782faa300045932aaec78e9e86c2952c5d4e7d51d928dd62718b391199",
+        "mutation_bundle_sha256": "47d78bc2be06dae61ca1982dca47061d3c99bc88e0aeecc19277357577be459b",
         "mutation_id": "neg_005_reset_outputs_not_cleared",
         "source_catalog_certification_path": "negative_variants/neg_005_reset_outputs_not_cleared/certification.json",
         "trigger_condition": "Reset is asserted after nonzero calibration activity.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_phase_direction_reversed/certification.json",
-        "certification_sha256": "35f48764abe0cbc057bfccd7a6167d7b6fcf65df7922b7dcbd2c2a4e2e41d7db",
+        "certification_sha256": "ec1ea8ea0d4ad887efc9d16ea0aeadaa79c2332a3d22520857b2bf10663ee394",
         "fault_class": "phase_trim_polarity_error",
-        "mutation_bundle_sha256": "1c6884f96164d31651e488d5edbe83c480e56c58e6f7d006918b39a27632833a",
+        "mutation_bundle_sha256": "ec46b3b10c023e4676eec6681f9830638215d59459bf1491d564a844842c4067",
         "mutation_id": "neg_002_phase_direction_reversed",
         "source_catalog_certification_path": "negative_variants/neg_002_phase_direction_reversed/certification.json",
         "trigger_condition": "The public quadrature error exceeds the positive tolerance.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "0170d97687807e2dcb1e7bc983d7c751ff2d9b406bb042d5cac1e0d53634c744",
       "score_deck_sha256": "742edea88202000e3bda420dc44dcf9961afea55e77835af3d8aed41b0f6f8df",
-      "task_certification_sha256": "1eebc13d14a869f5da441d5d366f54afb66ee1f6f2286a5e3232644f62a9bf4f",
-      "task_record_sha256": "976f709b1ebd2d7de3959720285cd44f80fde2698762c37d4976f51b06b9d0cc"
+      "task_certification_sha256": "592c85bd39fdd7623652fe85c73e65e38c62d6fe7e2b8b5c69682eb291510670",
+      "task_record_sha256": "f3e2807218ff8cd9b846d069a8591e695e590ebfb226c6e9ac6e8db730c43252"
     },
     "release_dir": "365-quadrature-correction-loop"
   }

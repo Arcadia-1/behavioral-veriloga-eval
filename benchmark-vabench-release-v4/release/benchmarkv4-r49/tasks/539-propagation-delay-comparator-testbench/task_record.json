@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "039-propagation-delay-comparator",
+  "checker_task_id": "v4_039_propagation_delay_comparator",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "168bb2d19569e469f9034c6c9bcd63c7b256d57b4b097ea75b7af5d89a116885",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "248c63af9fe750f51dfa89c3e4645bbda2896362cf2b88b3bceb2584492e6786",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "039",
+  "family_spec_sha256": "96aac52b93c76f5969d1baef21fbd871bf90993df6c20a90d8b8906c02749673",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b212002afc59701a499cbe501fcbff511a84e9a477fed0a747263b648667a7fc",
+  "public_contract": "tasks/539-propagation-delay-comparator-testbench/public_contract.json",
+  "public_contract_sha256": "d533ad953faf734557e6e73a7f5612ecfe05da6ac59c578b62e69295baef8fd4",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/539-propagation-delay-comparator-testbench",
+  "task_id": "v4-539"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "priority_fault_code_driver.va"
+  ],
+  "canonical_dut_source_slug": "258-priority-fault-code-driver",
+  "checker_task_id": "v4_258_priority_fault_code_driver",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "83db343301de23662a4086bd8062ca306fe3ee98ba6ef80fb4c0dfac2b824bf0",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "03a4a9a9226765f126aace48663d42bf92449076d4a5b5a8828088e3bf2fd631",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "2c20c346075e096d19f6f433c7d8656fa9503ef6975c1a2358b608e0594e886e",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "258",
+  "family_spec_sha256": "e94eae316bc5ce20c1dbf2817843992f205c618a23ed9be21c068333feebc4ff",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3ec4aca8b693b49bdc76ce51ac719a4daf15b7a653d69a0d474825c4b5f3dc32",
+  "public_contract": "tasks/1258-priority-fault-code-driver-bugfix/public_contract.json",
+  "public_contract_sha256": "d7c664e9f02c175720bf7888c155ffa7e3c5193670bc0cb2ffed8544288f3c81",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1258-priority-fault-code-driver-bugfix",
+  "task_id": "v4-1258"
+}

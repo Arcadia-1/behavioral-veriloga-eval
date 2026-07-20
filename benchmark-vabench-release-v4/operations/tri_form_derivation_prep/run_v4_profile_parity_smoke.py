@@ -188,7 +188,7 @@ def main() -> int:
     parser.add_argument("--release", type=Path, default=DEFAULT_RELEASE)
     parser.add_argument(
         "--release-revision",
-        choices=("r44", "r45", "r47", "r48"),
+        choices=("r44", "r45", "r47", "r48", "r49"),
         default=DEFAULT_RELEASE_REVISION,
     )
     parser.add_argument("--output", type=Path, required=True)

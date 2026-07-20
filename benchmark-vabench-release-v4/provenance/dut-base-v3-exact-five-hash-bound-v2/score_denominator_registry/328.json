@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_pam4_level_spacing_wrong/certification.json",
-        "certification_sha256": "1482da8908c141c23787d019833b067eefd477aed6407683d8e9fc2d38975f92",
+        "certification_sha256": "6aa68dd98831cf9582d1d8054f7315d25af46cc969b2481fc30cae1749ec6321",
         "fault_class": "pam4_level_spacing_wrong",
-        "mutation_bundle_sha256": "aba85ed77feaceec7c05f8320ad6f373efe492ed4facd40659cfa47ccb51c2b2",
+        "mutation_bundle_sha256": "c349a74a045ddf749151ad07d2c67bbad00905838ca21112b3930bed3af5c00f",
         "mutation_id": "neg_002_pam4_level_spacing_wrong",
         "source_catalog_certification_path": "negative_variants/neg_002_pam4_level_spacing_wrong/certification.json",
         "trigger_condition": "pam4_level_spacing_wrong",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_linearity_metric_missing/certification.json",
-        "certification_sha256": "a2abb0b11a049719a7ab0fd9c647ba568a2db15c7069942edf8eb0272c6387dd",
+        "certification_sha256": "c4206597b64f57e214bea5346009d7c1f643b9b849bfca8885e031ad90052120",
         "fault_class": "linearity_metric_missing",
-        "mutation_bundle_sha256": "cbaaa688005f80c7884743cec971b10899dbc0a101520febbe4c71d3206d4205",
+        "mutation_bundle_sha256": "93201e36a012e101ab1537d5f9585ee8122132ca90efe7ae20c3c81e1516355c",
         "mutation_id": "neg_003_linearity_metric_missing",
         "source_catalog_certification_path": "negative_variants/neg_003_linearity_metric_missing/certification.json",
         "trigger_condition": "linearity_metric_missing",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_disable_clear_missing/certification.json",
-        "certification_sha256": "4a937de2645157311aa3a51229db49df03811d47d62ac67fb0d86dce0402102b",
+        "certification_sha256": "3f8fc4b4fbcee70f91703e0756f237bef9cf887bf47cdd59065464161afabae5",
         "fault_class": "reset_disable_clear_missing",
-        "mutation_bundle_sha256": "9cbb868dc873bca96cfc71eea0b1c29229ff5cae95e4bcf3c28bc3bbc10f95eb",
+        "mutation_bundle_sha256": "524b19cd3a721e4eaad4ebd9c2d15d71e71ea13ce3164d465a6868ef4c03d3da",
         "mutation_id": "neg_004_reset_disable_clear_missing",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_disable_clear_missing/certification.json",
         "trigger_condition": "reset_disable_clear_missing",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_valid_flag_missing/certification.json",
-        "certification_sha256": "0881071970d936fd70b61ee32b866ea1821bbfc2163a637b2715c1513bf4e15f",
+        "certification_sha256": "dec01601fb8a52b6dc010142e666b4ddcff5dca0f93698624b0e572eb8bba040",
         "fault_class": "valid_flag_missing",
-        "mutation_bundle_sha256": "6dcbfa85007fac7209676b4a536b6337ff589fb8154227b4ed2b4e72ad21044d",
+        "mutation_bundle_sha256": "71dcb3e2e0974072c2836d71ca30e2437680a98f79de2ca1a1441bbe9deb8f80",
         "mutation_id": "neg_005_valid_flag_missing",
         "source_catalog_certification_path": "negative_variants/neg_005_valid_flag_missing/certification.json",
         "trigger_condition": "valid_flag_missing",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_pam4_symbol_mapping_reversed/certification.json",
-        "certification_sha256": "a1845439a1cfa86f51313edd5e81f6f910a35c2f70859fc67b7a4361c50d1ec6",
+        "certification_sha256": "8316f3b40da9124a71448c1fb9348639f66938d42ed3ef21c1f070f69bba2cb9",
         "fault_class": "pam4_symbol_mapping_reversed",
-        "mutation_bundle_sha256": "da78c7b59f4f8378eae0f6f84722862b2c57471ec1485f80fcc99866fade4eb4",
+        "mutation_bundle_sha256": "eb2cd3bf563f9fe122606566f71bb881a3e6ef8d98b70e32bc4a5c43143d6475",
         "mutation_id": "neg_001_pam4_symbol_mapping_reversed",
         "source_catalog_certification_path": "negative_variants/neg_001_pam4_symbol_mapping_reversed/certification.json",
         "trigger_condition": "pam4_symbol_mapping_reversed",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "664350c13e34915433aca62dbbcba34796e324fb3f34389bedfe1ea3217e7ee8",
       "score_deck_sha256": "c888edeca298f16039a0fcef3d61144983ca4c977900e27526e391bd6bf2fe2f",
-      "task_certification_sha256": "883546ae6129c4764f006b4a089f1daf4a68191771f02f42eeccf6e705b22362",
-      "task_record_sha256": "dd54adf79d2a944f103d11dd1c41bd61b618cf6b0f75f7c5c6ac4d044ff01027"
+      "task_certification_sha256": "7a34c1d699ff0c182500b9665948d5d048a61801d58d8addedfbb079009b9bf4",
+      "task_record_sha256": "cabe4c7da715880ea57fc8871613a8ba9081e1be368185b5196859676b0e895f"
     },
     "release_dir": "328-pam4-linearity-monitor"
   }

@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_BASEBAND_UPDATES, P_RESET_COMMON_MODE satisfy the public contract; fault class metric_scaling_error is rejected",
-    "observed": "EVAS: v4_094 checked=265 mismatch_count=171 coverage=clock_rises=33 reset_edges=2 phases=[0, 1, 2, 3] vin_regions=['high', 'mid']; P_RESET_COMMON_MODE checked=15 mismatch_count=12 expected=out=0.45+/-0.08 observed=out=0.189 sample_time=2.65e-10 metric_gap=0.261; P_QUADRATURE_SEQUENCE checked=32 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0; P_LO_MONITORS checked=62 mismatch_count=47 expected=lo_i=0.85+/-0.08 observed=lo_i=0.357 sample_time=4.265e-09 metric_gap=0.493; P_MIXER_MONITORS checked=62 mismatch_count=50 expected=mix_i=0.45+/-0.08 observed=mix_i=0.189 sample_time=4.265e-09 metric_gap=0.261; P_BASEBAND_UPDATES checked=63 mismatch_count=62 expected=i_state=0.45+/-0.08 observed=i_state=0.189 sample_time=4.265e-09 metric_gap=0.261; P_PHASE_MONITOR checked=31 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0",
+    "observed": "EVAS: v4_094 checked=258 mismatch_count=165 coverage=clock_rises=33 reset_edges=1 phases=[0, 1, 2, 3] vin_regions=['high', 'mid']; P_RESET_COMMON_MODE checked=8 mismatch_count=6 expected=out=0.45+/-0.08 observed=out=0.189 sample_time=2.65e-10 metric_gap=0.261; P_QUADRATURE_SEQUENCE checked=32 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0; P_LO_MONITORS checked=62 mismatch_count=47 expected=lo_i=0.85+/-0.08 observed=lo_i=0.357 sample_time=4.265e-09 metric_gap=0.493; P_MIXER_MONITORS checked=62 mismatch_count=50 expected=mix_i=0.45+/-0.08 observed=mix_i=0.189 sample_time=4.265e-09 metric_gap=0.261; P_BASEBAND_UPDATES checked=63 mismatch_count=62 expected=i_state=0.45+/-0.08 observed=i_state=0.189 sample_time=4.265e-09 metric_gap=0.261; P_PHASE_MONITOR checked=31 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0",
     "violated_property_ids": [
       "P_BASEBAND_UPDATES",
       "P_RESET_COMMON_MODE"
@@ -18,10 +18,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r47-full400",
+    "campaign": "r49-full400",
     "checker_id": "v4_094_iq_downconversion_chain",
-    "report_path": "evidence/r47/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "ee98cda9142155cc94ae47cb5e48080146374d73a5b2620f9b1a4a3d27f96871",
+    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
     "trace_row_count": 425
   },
   "family_id": "094",

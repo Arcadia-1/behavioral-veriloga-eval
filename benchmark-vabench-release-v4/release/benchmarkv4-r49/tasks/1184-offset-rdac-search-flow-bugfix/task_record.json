@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "offset_rdac_search_flow.va"
+  ],
+  "canonical_dut_source_slug": "184-offset-rdac-search-flow",
+  "checker_task_id": "v4_184_offset_rdac_search_flow",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "347cb3d3b84a7c330d6eb8885da17196d1818e84651b5ba0c3986bb69520a488",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "2620b058af72c0fb7da8b38a78537e98f74310537b8bba8346d29fd9b6eefd0c",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "94f0993345a0f591befb63afeb949b2f5c4e616c26d8e859ce2b0d3b01535b66",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "184",
+  "family_spec_sha256": "03ee1f041a7dc9e6df6a957e5ed30e34f054883cdab2ab3be90eadd1fa3a7544",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "986dbda7e3e1492637ddde259d7e9728a9193c0124ffbdfb05639d091932730d",
+  "public_contract": "tasks/1184-offset-rdac-search-flow-bugfix/public_contract.json",
+  "public_contract_sha256": "717dbbcb75fddad9a3929993ba770abdf7e2567a72b9518a413148bb777dfb78",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1184-offset-rdac-search-flow-bugfix",
+  "task_id": "v4-1184"
+}

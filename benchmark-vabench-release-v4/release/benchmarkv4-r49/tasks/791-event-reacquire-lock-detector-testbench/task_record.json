@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "291-event-reacquire-lock-detector",
+  "checker_task_id": "v4_291_event_reacquire_lock_detector",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "44bb431c30f72b32965b3f493e82a5e26ac5d6fba5ff1e1a208a1ff0c0b52495",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "7355468e22901fac0925ad03c58dbfc1c9647b4836d1ca8c0b92ab6a266ef779",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "291",
+  "family_spec_sha256": "6b4ff64724902d338780b6b19a613582b98a4b275fcc428af10169112bd15420",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7ec7c400ba41e988f4d2cef588262d730fbd31601d9b7af31d7c3f4c12682475",
+  "public_contract": "tasks/791-event-reacquire-lock-detector-testbench/public_contract.json",
+  "public_contract_sha256": "2b253e15ca08f4b22afbb97a78c7d1c263039043e17a9d6e25370a9f37cbbdf4",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/791-event-reacquire-lock-detector-testbench",
+  "task_id": "v4-791"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "167-ideal-clkmux-8channel",
+  "checker_task_id": "v4_167_ideal_clkmux_8channel",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "cf8036882147da849dcf2f55009bcaf98da349b617ad43914f1b4951da1346fa",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "c2916f58e7c147f15bac03679452f9afe066fbaddd4d1c3c1344d6280149e1f9",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "167",
+  "family_spec_sha256": "b5f628f7b51beb1e56da5d3484f0ef3fd17f16ff7b6d82097201dfc5f61881bd",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b04a539eef9ee4cb9ee6371f1e5c132e0549dd5759eacebd8d6f9ea7614d905a",
+  "public_contract": "tasks/667-ideal-clkmux-8channel-testbench/public_contract.json",
+  "public_contract_sha256": "949be9f903971b3f5702ca14b4d0562e25bd0215f315ae8a7f0cbe7df0ea07f5",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/667-ideal-clkmux-8channel-testbench",
+  "task_id": "v4-667"
+}

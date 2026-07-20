@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_passes_inside_deadband/certification.json",
-        "certification_sha256": "2b3330979f28641b245e6b76459590661946f933ce8a6967216341760b9b2c7f",
+        "certification_sha256": "848fce059743b1634bfbed666e5a91a77e33d900d4a7ca6d63a3ffbd8400e260",
         "fault_class": "deadband_omission",
-        "mutation_bundle_sha256": "e47c29a8e6a42137922eb21ab9bf7554d6c602fc8b1235acb5ae519766384e25",
+        "mutation_bundle_sha256": "988cb7e4c90eed435f52307d7bfc03ba2a265fc2c1e117d080131073659dce9b",
         "mutation_id": "neg_002_passes_inside_deadband",
         "source_catalog_certification_path": "negative_variants/neg_002_passes_inside_deadband/certification.json",
         "trigger_condition": "Passes input inside the deadband instead of zeroing it.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "f7718db6702e48af5dc58f37c80cb765352377028ffef46e88b934b1d2eb0f9f",
+        "certification_sha256": "2d13f0fed49383da579d1ce4d3c53e98c2573c95d719cde8ff4477ba491f94fc",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "8e55bfa31356fb02e2f4f9641e5d301f51a0ccfe8df8dcc1d3a139638ceb2a30",
+        "mutation_bundle_sha256": "aefd578c4839d57663b66b16daa86a19c07cc0760ffae041e2d7d3f2b11ec78f",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_offsets/certification.json",
-        "certification_sha256": "4e1ca5a287e6a515aa11aba84fbd7adb03d3ece7cbb9ba852eef7d2c32a05dd6",
+        "certification_sha256": "cf3a327ad3bad8dbd67e3c51aee6626169cee2419724ad7a8c9e15e57508bc4c",
         "fault_class": "deadband_boundary_offset_error",
-        "mutation_bundle_sha256": "f19e2d67d7b88ee700e22474e8d76810e0bc9dd95e5445db27bc96b608d8eda3",
+        "mutation_bundle_sha256": "6f15dd72719e7e106cb1497f72c0a3c01d6c2b774827b1b478294e214ca65645",
         "mutation_id": "neg_003_wrong_offsets",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_offsets/certification.json",
         "trigger_condition": "Uses the wrong deadband edge offset outside the window.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "5c2d1028cbf7708f62d25b3eec32f0e2daab74b6039491a4177b36faa4dae374",
+        "certification_sha256": "6591f7a6bc6c863f1036dc1b88e58d95aa2659e0be379dbf124df88dc14446ca",
         "fault_class": "output_scale_error",
-        "mutation_bundle_sha256": "80945d04dcb6475d803b969797455cf9c3bb32b56dbcf63bdfc6205733fea2a2",
+        "mutation_bundle_sha256": "5e78dee1a3e1cdb0b0dd8c8d2eedef9cab1d970df0834b4e5fc31da440d73da3",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Deadband Window: scales the metric output, preserving the main path while failing measurement checks.",
@@ -57,9 +57,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_clips_outside_deadband/certification.json",
-        "certification_sha256": "499291ce4e63cbb6a34601ace97db14dfba18a1c9907e340feb62f4205292e9f",
+        "certification_sha256": "677c70213e74c6deb54d409028acfe0c50116608714b6928cd989db783c2d04f",
         "fault_class": "residue_transfer_clipped",
-        "mutation_bundle_sha256": "9a65d56ac9e4fe5f6ac03c0d66195899665cb7bced7c7163a99a79a00ff93ca4",
+        "mutation_bundle_sha256": "5430aa4da95a9872f7a49eabda92063ea05985c3abdd96e8d4615cf08293baf2",
         "mutation_id": "neg_004_clips_outside_deadband",
         "source_catalog_certification_path": "negative_variants/neg_004_clips_outside_deadband/certification.json",
         "trigger_condition": "Clips outside the window instead of subtracting the edge.",
@@ -74,8 +74,8 @@
     "hashes": {
       "mutation_catalog_sha256": "0fca32d60e521b8173c9d9f269c9f1b7eca4605fde274240828f0cd79f1bc0f2",
       "score_deck_sha256": "fb8be8b998f74cb124fbc9bc25f18ab8da79043f482fb803f660251212d4e17e",
-      "task_certification_sha256": "26fa7550f5b04603bd00b54e8335870365f9f8bcc0be216d3c7f74a5ae3d3427",
-      "task_record_sha256": "2bfe0d62e8b1a63c8965a2f937baf32ccc9aaba232e8356686683d08adc2d213"
+      "task_certification_sha256": "dc667e7f29e9e20dcd008c866648c54d03223c1ce18e551c54fe2ad068ae8a63",
+      "task_record_sha256": "5c57b5e59b174229917b6c79099be5840d15f990df57383f9a1d8a7f58ebc488"
     },
     "release_dir": "121-deadband-window"
   }

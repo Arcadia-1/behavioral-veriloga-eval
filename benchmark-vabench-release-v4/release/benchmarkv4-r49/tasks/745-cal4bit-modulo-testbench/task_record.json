@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "245-cal4bit-modulo",
+  "checker_task_id": "v4_245_cal4bit_modulo",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "2451466ead8a4723d9488d0600164b9c6967611df36c87e70a773a513090b945",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "3ee3e77d4a5808e62f27642827b995f15abaa0ac5a221a436ca13a064c7716b8",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "245",
+  "family_spec_sha256": "d5f6f732b066902c4c7a4a66f6388fb84cf8698255418b65c009ae5d05c9d940",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4a0821094d1f853231ef8e1f24d5dcca06632b6a2d0aef6c918b2d53e687d3d9",
+  "public_contract": "tasks/745-cal4bit-modulo-testbench/public_contract.json",
+  "public_contract_sha256": "07f3d0efec4b339af96752278f5727aec3080143fba83df4f216b77130ceb5fa",
+  "release_revision": "r49",
+  "schema_version": "r49-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/745-cal4bit-modulo-testbench",
+  "task_id": "v4-745"
+}
