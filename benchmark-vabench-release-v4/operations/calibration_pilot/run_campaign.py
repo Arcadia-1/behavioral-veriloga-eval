@@ -1995,7 +1995,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--mini-swe-sandbox",
-        choices=("auto", "sandbox-exec", "none"),
+        choices=("auto", "sandbox-exec", "bubblewrap", "none"),
         default="auto",
         help="Shell isolation backend. 'none' is for tests only and is not paper-valid.",
     )

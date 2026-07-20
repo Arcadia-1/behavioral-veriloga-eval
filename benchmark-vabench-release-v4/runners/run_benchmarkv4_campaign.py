@@ -147,9 +147,9 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--mini-swe-sandbox",
-        choices=("auto", "sandbox-exec", "none"),
+        choices=("auto", "sandbox-exec", "bubblewrap", "none"),
         default="auto",
-        help="Isolation backend for mini-SWE bash. 'none' is test-only.",
+        help="Use sandbox-exec on macOS or Bubblewrap on Linux/WSL2; 'none' is test-only.",
     )
     parser.add_argument("--agent-timeout-s", type=int, default=DEFAULT_AGENT_TIMEOUT_S)
     parser.add_argument("--setup-timeout-s", type=int, default=DEFAULT_SETUP_TIMEOUT_S)

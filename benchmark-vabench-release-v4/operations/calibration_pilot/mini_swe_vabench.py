@@ -134,6 +134,67 @@ def _sandbox_profile(workspace: Path) -> str:
     )
 
 
+def _bubblewrap_system_mounts() -> list[str]:
+    mounts: list[str] = []
+    for raw in ("/usr", "/bin", "/sbin", "/lib", "/lib64"):
+        path = Path(raw)
+        if path.is_symlink():
+            mounts.extend(["--symlink", os.readlink(path), raw])
+        elif path.exists():
+            mounts.extend(["--ro-bind", raw, raw])
+    return mounts
+
+
+def _bubblewrap_argv(executable: str, workspace: Path, command: str) -> list[str]:
+    return [
+        executable,
+        "--die-with-parent",
+        "--new-session",
+        "--unshare-user",
+        "--unshare-ipc",
+        "--unshare-pid",
+        "--unshare-net",
+        "--unshare-uts",
+        "--proc",
+        "/proc",
+        "--dev",
+        "/dev",
+        *_bubblewrap_system_mounts(),
+        "--dir",
+        "/workspace",
+        "--ro-bind",
+        str(workspace),
+        "/workspace",
+        "--bind",
+        str(workspace / "submission"),
+        "/workspace/submission",
+        "--bind",
+        str(workspace / ".tmp"),
+        "/workspace/.tmp",
+        "--chdir",
+        "/workspace",
+        "--clearenv",
+        "--setenv",
+        "PATH",
+        "/usr/bin:/bin:/usr/sbin:/sbin",
+        "--setenv",
+        "HOME",
+        "/workspace",
+        "--setenv",
+        "TMPDIR",
+        "/workspace/.tmp",
+        "--setenv",
+        "LANG",
+        "C.UTF-8",
+        "--setenv",
+        "LC_ALL",
+        "C.UTF-8",
+        "/bin/bash",
+        "-c",
+        command,
+    ]
+
+
 @dataclass
 class BashEnvironmentConfig:
     cwd: str
@@ -208,22 +269,9 @@ class VaBenchBashEnvironment:
         """Fail before the first model call if the requested isolation is unusable."""
         if self.config.sandbox_backend == "none":
             return
-        if self.config.sandbox_backend != "sandbox-exec":
-            raise RuntimeError(
-                f"unsupported mini-SWE sandbox backend: {self.config.sandbox_backend}"
-            )
-        executable = shutil.which("sandbox-exec")
-        if not executable:
-            raise RuntimeError("sandbox-exec backend requested but unavailable")
+        argv = self._sandbox_argv("test -r task && test ! -r ../evaluator")
         probe = subprocess.run(
-            [
-                executable,
-                "-p",
-                _sandbox_profile(self.workspace),
-                "/bin/bash",
-                "-c",
-                "test -r task && test ! -r ../evaluator",
-            ],
+            argv,
             cwd=self.workspace,
             env={
                 "PATH": "/usr/bin:/bin:/usr/sbin:/sbin",
@@ -237,10 +285,40 @@ class VaBenchBashEnvironment:
             check=False,
         )
         if probe.returncode != 0:
+            diagnostic = probe.stdout.strip()[:2000]
+            if "RTM_NEWADDR" in diagnostic or "unprivileged user namespaces" in diagnostic:
+                diagnostic += (
+                    " | Linux host policy blocked secure user/network namespaces. "
+                    "On Ubuntu 24.04, use the distro system /usr/bin/bwrap with its "
+                    "targeted AppArmor userns profile; do not disable network isolation."
+                )
             raise RuntimeError(
                 "mini-SWE sandbox preflight failed before the first model call: "
-                + probe.stdout.strip()[:2000]
+                + diagnostic
             )
+
+    def _sandbox_argv(self, command: str) -> list[str]:
+        backend = self.config.sandbox_backend
+        if backend == "sandbox-exec":
+            executable = shutil.which("sandbox-exec")
+            if not executable:
+                raise RuntimeError("sandbox-exec backend requested but unavailable")
+            return [
+                executable,
+                "-p",
+                _sandbox_profile(self.workspace),
+                "/bin/bash",
+                "-c",
+                command,
+            ]
+        if backend == "bubblewrap":
+            executable = shutil.which("bwrap")
+            if not executable:
+                raise RuntimeError("bubblewrap backend requested but bwrap is unavailable")
+            return _bubblewrap_argv(executable, self.workspace, command)
+        if backend == "none":
+            return ["/bin/bash", "-c", command]
+        raise RuntimeError(f"unsupported mini-SWE sandbox backend: {backend}")
 
     def _run_feedback(self, case: str | None) -> dict[str, Any]:
         self._feedback_index += 1
@@ -320,7 +398,6 @@ class VaBenchBashEnvironment:
         )
 
     def _run_sandboxed(self, command: str) -> dict[str, Any]:
-        backend = self.config.sandbox_backend
         env = {
             "PATH": "/usr/bin:/bin:/usr/sbin:/sbin",
             "HOME": str(self.workspace),
@@ -328,15 +405,7 @@ class VaBenchBashEnvironment:
             "LANG": "C.UTF-8",
             "LC_ALL": "C.UTF-8",
         }
-        if backend == "sandbox-exec":
-            executable = shutil.which("sandbox-exec")
-            if not executable:
-                raise RuntimeError("sandbox-exec backend requested but unavailable")
-            argv = [executable, "-p", _sandbox_profile(self.workspace), "/bin/bash", "-c", command]
-        elif backend == "none":
-            argv = ["/bin/bash", "-c", command]
-        else:
-            raise RuntimeError(f"unsupported mini-SWE sandbox backend: {backend}")
+        argv = self._sandbox_argv(command)
         started = time.monotonic()
         try:
             completed = subprocess.run(
@@ -650,7 +719,10 @@ def run_mini_swe_episode(
 def default_sandbox_backend() -> str:
     if platform.system() == "Darwin" and shutil.which("sandbox-exec"):
         return "sandbox-exec"
+    if platform.system() == "Linux" and shutil.which("bwrap"):
+        return "bubblewrap"
     raise RuntimeError(
-        "no supported secure bash sandbox found; use macOS sandbox-exec or explicitly "
-        "select --mini-swe-sandbox none only for local tests"
+        "no supported secure bash sandbox found; install bubblewrap on Linux/WSL2, "
+        "use macOS sandbox-exec, or explicitly select --mini-swe-sandbox none only "
+        "for local tests"
     )

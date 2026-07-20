@@ -120,3 +120,24 @@ jobs:
           diff -qr \
             /tmp/benchmarkv4-r47 \
             benchmark-vabench-release-v4/release/benchmarkv4-r47
+
+  linux-sandbox:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Bubblewrap test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap
+          python -m pip install pytest
+
+      - name: Exercise the Linux Bubblewrap security boundary
+        run: python -m pytest -q tests/test_mini_swe_vabench.py -k bubblewrap

@@ -95,6 +95,15 @@ Install the pinned agent scaffold before executing G2--G5:
 uv sync --extra agentic --group dev
 ```
 
+Linux and WSL2 hosts also require Bubblewrap (for example,
+`sudo apt-get install bubblewrap` on Ubuntu/Debian). `auto` selects
+`sandbox-exec` on macOS and `bubblewrap` on Linux/WSL2. Native Windows should
+run the campaign inside WSL2; it is not a supported Bash execution host.
+Bubblewrap additionally requires unprivileged user and network namespaces.
+Ubuntu 24.04 hosts with restrictive AppArmor defaults must enable the distro's
+targeted system-Bubblewrap user-namespace profile; the runner fails before the
+first API call rather than silently dropping network isolation.
+
 G2--G5 use `mini-swe-agent==2.4.5` with its `DefaultAgent` controller and one
 `bash` tool. The benchmark runner still owns campaign construction, runtime
 export, credentials, wall-time enforcement, telemetry, trusted replay, and
@@ -117,7 +126,9 @@ prompt treatments. The model runs `vabench feedback capabilities`,
 `vabench feedback run [case]`, and `vabench-submit` through bash. Evaluator,
 gold, and trusted-replay assets remain outside the model-visible sandbox. A
 production G2--G5 run requires a supported OS sandbox; `none` is allowed only
-for unit tests and dry runs. Before public EVAS or trusted replay starts, the
+for unit tests and dry runs. Both supported backends deny network access and
+mount only the public workspace, with writes limited to `submission/` and
+`.tmp/`. Before public EVAS or trusted replay starts, the
 runner also rejects submission symlinks and candidate source includes that can
 escape the declared artifact set.
 

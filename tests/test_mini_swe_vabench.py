@@ -185,6 +185,71 @@ def test_sandbox_profile_keeps_evas_output_read_only(tmp_path: Path) -> None:
     assert str(workspace / "evas-output") not in write_rule
 
 
+def test_bubblewrap_argv_mounts_only_the_public_workspace(tmp_path: Path) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    workspace = runtime / "public"
+    argv = module._bubblewrap_argv("/usr/bin/bwrap", workspace, "pwd")
+
+    assert "--unshare-net" in argv
+    assert [str(workspace), "/workspace"] == argv[
+        argv.index("--ro-bind", argv.index("--dir")) + 1 :
+        argv.index("--ro-bind", argv.index("--dir")) + 3
+    ]
+    assert str(runtime / "evaluator") not in argv
+    assert [str(workspace / "submission"), "/workspace/submission"] == argv[
+        argv.index("--bind") + 1 : argv.index("--bind") + 3
+    ]
+    assert str(workspace / "evas-output") not in argv
+
+
+def test_auto_selects_bubblewrap_on_linux(monkeypatch: pytest.MonkeyPatch) -> None:
+    module = load_module()
+    monkeypatch.setattr(module.platform, "system", lambda: "Linux")
+    monkeypatch.setattr(
+        module.shutil,
+        "which",
+        lambda name: "/usr/bin/bwrap" if name == "bwrap" else None,
+    )
+
+    assert module.default_sandbox_backend() == "bubblewrap"
+
+
+def test_bubblewrap_isolates_evaluator_and_feedback_output(tmp_path: Path) -> None:
+    if shutil.which("bwrap") is None:
+        pytest.skip("bubblewrap is not installed on this host")
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "submission").mkdir(parents=True)
+    (runtime / "public" / "evas-output").mkdir(parents=True)
+    (runtime / "evaluator").mkdir(parents=True)
+    (runtime / "evaluator" / "secret.txt").write_text("sealed")
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=5,
+        sandbox_backend="bubblewrap",
+        feedback_runner=lambda _runtime, _timeout, _case: {},
+        submission_gate=artifact_gate,
+    )
+
+    environment.preflight()
+    hidden = environment.execute({"command": "cat ../evaluator/secret.txt"})
+    readonly = environment.execute(
+        {"command": "printf tampered > evas-output/model-created.log"}
+    )
+    writable = environment.execute(
+        {"command": "printf candidate > submission/model.va"}
+    )
+
+    assert hidden["returncode"] != 0
+    assert "sealed" not in hidden["output"]
+    assert readonly["returncode"] != 0
+    assert not (runtime / "public" / "evas-output" / "model-created.log").exists()
+    assert writable["returncode"] == 0
+    assert (runtime / "public" / "submission" / "model.va").read_text() == "candidate"
+
+
 def test_sandbox_cannot_modify_evas_output(tmp_path: Path) -> None:
     if shutil.which("sandbox-exec") is None:
         pytest.skip("sandbox-exec is only available on supported macOS runners")
