@@ -223,6 +223,7 @@ def test_bubblewrap_isolates_evaluator_and_feedback_output(tmp_path: Path) -> No
     module = load_module()
     runtime = tmp_path / "runtime"
     (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "task" / "instruction.md").write_text("public task")
     (runtime / "public" / "submission").mkdir(parents=True)
     (runtime / "public" / "evas-output").mkdir(parents=True)
     (runtime / "evaluator").mkdir(parents=True)
