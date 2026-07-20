@@ -178,6 +178,8 @@ def evaluate_cell(
         "working_tokens": result.get("working_tokens", result.get("output_tokens", 0)),
         "provider_usage": provider_usage(result.get("events") or []),
         "telemetry": telemetry,
+        "evas_usage": result.get("evas_usage") or {},
+        "incidents": list(result.get("incidents") or []),
         "episode_elapsed_s": elapsed_seconds(result),
     }
     experiment = result.get("experiment_result") or {}
@@ -249,6 +251,22 @@ def summarize(rows: list[dict[str, Any]], judge_kind: str) -> dict[str, Any]:
             "model_calls_total": sum(int(row.get("telemetry", {}).get("model_calls", 0)) for row in selected),
             "tool_calls_total": sum(int(row.get("telemetry", {}).get("tool_calls_total", 0)) for row in selected),
             "evas_calls_total": sum(int(row.get("telemetry", {}).get("evas_calls", 0)) for row in selected),
+            "direct_evas_calls_total": sum(
+                int(row.get("evas_usage", {}).get("calls_executed", 0))
+                for row in selected
+            ),
+            "direct_evas_successes_total": sum(
+                int(row.get("evas_usage", {}).get("calls_succeeded", 0))
+                for row in selected
+            ),
+            "direct_evas_failures_total": sum(
+                int(row.get("evas_usage", {}).get("calls_failed", 0))
+                for row in selected
+            ),
+            "direct_evas_timeouts_total": sum(
+                int(row.get("evas_usage", {}).get("calls_timed_out", 0))
+                for row in selected
+            ),
             "legacy_feedback_calls_total": sum(
                 int(row.get("telemetry", {}).get("legacy_feedback_calls", 0))
                 for row in selected
@@ -274,6 +292,15 @@ def summarize(rows: list[dict[str, Any]], judge_kind: str) -> dict[str, Any]:
         "cell_count": len(rows),
         "submission_statuses": dict(Counter(row["submission_status"] for row in rows)),
         "judge_statuses": dict(Counter(row["judge_status"] for row in rows)),
+        "incident_categories": dict(
+            sorted(
+                Counter(
+                    str(incident.get("category") or "unknown")
+                    for row in rows
+                    for incident in row.get("incidents") or []
+                ).items()
+            )
+        ),
         "breakdown": {key: dict(value) for key, value in sorted(grouped.items())},
         "telemetry_by_mode": telemetry_by_mode,
         "rows": rows,

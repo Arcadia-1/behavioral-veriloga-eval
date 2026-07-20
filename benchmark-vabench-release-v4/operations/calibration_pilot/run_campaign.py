@@ -247,6 +247,101 @@ def model_event_hit_limit(event: dict[str, Any]) -> bool:
     )
 
 
+def summarize_evas_invocations(invocations: list[dict[str, Any]]) -> dict[str, Any]:
+    statuses = [str(row.get("status") or "unknown") for row in invocations]
+    return {
+        "schema_version": "v4-direct-evas-usage-v1",
+        "calls_executed": len(invocations),
+        "calls_succeeded": statuses.count("succeeded"),
+        "calls_failed": statuses.count("failed"),
+        "calls_timed_out": statuses.count("timed_out"),
+        "calls_interrupted": statuses.count("interrupted"),
+        "last_status": statuses[-1] if statuses else None,
+    }
+
+
+def evas_invocation_incidents(invocations: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    incidents: list[dict[str, Any]] = []
+    for row in invocations:
+        status = str(row.get("status") or "unknown")
+        if status == "succeeded":
+            continue
+        incidents.append(
+            {
+                "phase": "tool",
+                "component": "evas",
+                "category": (
+                    "evas_command_timeout"
+                    if status == "timed_out"
+                    else "evas_command_interrupted"
+                    if status == "interrupted"
+                    else "evas_command_failure"
+                ),
+                "responsibility": "candidate_or_model",
+                "retryable": True,
+                "invocation_id": row.get("invocation_id"),
+                "returncode": row.get("returncode"),
+            }
+        )
+    return incidents
+
+
+def classify_execution_exception(exc: Exception) -> dict[str, Any]:
+    error_type = type(exc).__name__
+    message = str(exc).lower()
+    if isinstance(exc, ProviderRequestTimeout):
+        return {
+            "status": "provider_timeout",
+            "termination_reason": "provider_request_timeout",
+            "model_status": "provider_failure",
+            "incident": {
+                "category": "provider_request_timeout",
+                "component": "provider",
+                "error_type": error_type,
+                "phase": "model",
+                "responsibility": "infrastructure",
+                "retryable": True,
+            },
+        }
+    if isinstance(exc, ProviderAPIError) or (
+        isinstance(exc, RuntimeError) and "provider" in message
+    ):
+        return {
+            "status": "provider_error",
+            "termination_reason": "provider_api_error",
+            "model_status": "provider_failure",
+            "incident": {
+                "category": "provider_api_error",
+                "component": "provider",
+                "error_type": error_type,
+                "phase": "model",
+                "responsibility": "infrastructure",
+                "retryable": True,
+            },
+        }
+    if "sandbox" in message:
+        category, component = "sandbox_failure", "sandbox"
+    elif "evas" in message:
+        category, component = "evas_infrastructure_failure", "evas"
+    elif isinstance(exc, subprocess.TimeoutExpired):
+        category, component = "runner_subprocess_timeout", "runner"
+    else:
+        category, component = "runner_failure", "runner"
+    return {
+        "status": "infrastructure_failure" if category != "runner_failure" else "runner_error",
+        "termination_reason": category,
+        "model_status": "runner_failure",
+        "incident": {
+            "category": category,
+            "component": component,
+            "error_type": error_type,
+            "phase": "setup" if component in {"sandbox", "evas"} else "runner",
+            "responsibility": "infrastructure" if component != "runner" else "runner",
+            "retryable": isinstance(exc, subprocess.TimeoutExpired),
+        },
+    }
+
+
 def provider_error_is_context_window(error: Any) -> bool:
     text = json.dumps(error, sort_keys=True) if isinstance(error, dict) else str(error)
     lowered = text.lower()
@@ -1558,6 +1653,16 @@ def run_mini_swe_agentic_cell(
                 "status": "context_window_exceeded",
                 "termination_reason": "provider_context_window_exceeded",
                 "provider_error": str(exc)[:4000],
+                "incidents": [
+                    {
+                        "category": "provider_context_window_exceeded",
+                        "component": "provider",
+                        "error_type": type(exc).__name__,
+                        "phase": "model",
+                        "responsibility": "experiment_configuration",
+                        "retryable": False,
+                    }
+                ],
                 "finished_at": now(),
                 "agent_elapsed_s": time.monotonic() - started,
             }
@@ -1576,6 +1681,16 @@ def run_mini_swe_agentic_cell(
                 "status": "agent_timeout",
                 "termination_reason": "agent_timeout",
                 "provider_error": str(exc)[:4000],
+                "incidents": [
+                    {
+                        "category": "agent_walltime_exhausted",
+                        "component": "mini_swe_agent",
+                        "error_type": type(exc).__name__,
+                        "phase": "agent",
+                        "responsibility": "experiment_limit",
+                        "retryable": True,
+                    }
+                ],
                 "finished_at": now(),
                 "agent_elapsed_s": elapsed_s,
             }
@@ -1589,15 +1704,28 @@ def run_mini_swe_agentic_cell(
     complete = bool(episode["artifact_complete"])
     explicit_submission = bool(episode["submitted"])
     exit_status = str(episode.get("exit_status") or "")
-    feedback_commands = [
-        row
-        for row in episode["commands"]
-        if row.get("kind") == "vabench-feedback-run"
-    ]
-    feedback_statuses = [
-        "pass" if row.get("returncode") == 0 else "fail"
-        for row in feedback_commands
-    ]
+    evas_invocations = list(episode.get("evas_invocations") or [])
+    incidents = evas_invocation_incidents(evas_invocations)
+    if exit_status == "TimeExceeded":
+        incidents.append(
+            {
+                "category": "agent_walltime_exhausted",
+                "component": "mini_swe_agent",
+                "phase": "agent",
+                "responsibility": "experiment_limit",
+                "retryable": True,
+            }
+        )
+    if not complete and exit_status != "TimeExceeded":
+        incidents.append(
+            {
+                "category": "artifact_submission_failure",
+                "component": "submission",
+                "phase": "artifact",
+                "responsibility": "model",
+                "retryable": False,
+            }
+        )
     result.update(
         {
             "status": (
@@ -1653,16 +1781,9 @@ def run_mini_swe_agentic_cell(
             "mini_swe_exit_status": exit_status,
             "model_calls": episode["model_calls"],
             "bash_commands": episode["commands"],
-            "public_feedback": {
-                "schema_version": "v4-public-feedback-summary-v1",
-                "calls_executed": len(feedback_commands),
-                "calls_blocked": 0,
-                "last_status": feedback_statuses[-1] if feedback_statuses else None,
-                "pass_observed": "pass" in feedback_statuses,
-                "auto_finalized": bool(complete and not explicit_submission),
-                "stop_policy": "explicit-submit-or-final-workspace-v1",
-                "redundant_call_policy": "none",
-            },
+            "evas_invocations": evas_invocations,
+            "evas_usage": summarize_evas_invocations(evas_invocations),
+            "incidents": incidents,
         }
     )
     attach_experiment_result(
@@ -1985,12 +2106,15 @@ def run_cell_preserving_failure(
         if client is not None:
             error = client._redact(error)
             trace = client._redact(trace)
+        classification = classify_execution_exception(exc)
         failure = {
             "cell": cell,
-            "status": "runner_error",
+            "status": classification["status"],
+            "termination_reason": classification["termination_reason"],
             "error_type": type(exc).__name__,
             "error": error,
             "traceback": trace,
+            "incidents": [classification["incident"]],
             "finished_at": now(),
         }
         checkpoint_path = runtime / "evidence" / "conversation_checkpoint.json"
@@ -2000,14 +2124,8 @@ def run_cell_preserving_failure(
         failure_messages = list(
             checkpoint.get("messages") or trajectory.get("messages") or []
         )
-        model_status = (
-            "provider_failure"
-            if isinstance(exc, ProviderRequestTimeout)
-            or (isinstance(exc, RuntimeError) and "provider" in str(exc).lower())
-            else "runner_failure"
-        )
         attach_experiment_result(
-            failure, runtime, failure_messages, args, model_status
+            failure, runtime, failure_messages, args, classification["model_status"]
         )
         write_json(runtime / "evidence" / "campaign_result.json", failure)
         return failure

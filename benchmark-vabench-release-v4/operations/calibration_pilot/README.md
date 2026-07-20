@@ -138,6 +138,13 @@ comparison, or property diagnosis. `vabench-submit` is likewise a real,
 discoverable shell command that requests runner validation of the final
 artifact set.
 
+The shell wrapper records each actual `evas` process invocation independently
+of the surrounding bash spelling, so pipes, redirections, and compound commands
+do not disappear from telemetry. Campaign results expose the raw invocation
+records and a `v4-direct-evas-usage-v1` summary with succeeded, failed, timed
+out, and interrupted counts. These records describe tool use only; an EVAS
+nonzero exit is not promoted to a hidden-checker or behavioral verdict.
+
 An explicit `vabench-submit` ends the episode early and records
 `submission_mode=explicit`. It is not a score-eligibility gate: when wall time
 expires with a complete declared artifact set, the runner snapshots that final
@@ -256,10 +263,18 @@ reported as a hidden-test or behavior zero. Trusted replay timeouts are
 `runtime_failure`, while launch and malformed-result failures remain
 `infrastructure_failure`.
 
+Operational failures are also recorded on an orthogonal `incidents` axis.
+Each incident identifies its phase, component, category, responsibility, and
+retryability. This separates provider request timeouts, sandbox/preflight
+failures, runner failures, and direct EVAS command failures without replacing
+the final artifact/checker outcome. In particular, a failed exploratory EVAS
+call can coexist with a later passing final submission.
+
 The historical `feedback_adapter.py` remains only to reproduce old experiments.
 It reads evaluator assets and must never be configured as an active G2-G5 model
-tool. New runs use `run_evas`, which returns only raw public simulation output
-from the fixed task-local contract and never invokes a checker or score oracle.
+tool. The legacy native sensitivity scaffold retains `run_evas`; current
+mini-SWE runs invoke the pinned `evas` executable directly and receive only its
+raw public simulation output, never a checker or score oracle.
 
 Generated campaign manifests, runtime workspaces, API responses, simulator
 outputs, and credentials belong outside the repository. Only runner source,

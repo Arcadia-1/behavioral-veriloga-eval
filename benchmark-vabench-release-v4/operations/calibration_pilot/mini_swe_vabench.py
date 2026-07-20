@@ -13,6 +13,8 @@ import json
 import os
 from pathlib import Path
 import platform
+import re
+import secrets
 import shlex
 import shutil
 import subprocess
@@ -288,6 +290,8 @@ class VaBenchBashEnvironment:
             public_alias.symlink_to(".", target_is_directory=True)
         self.submit_sentinel = self.workspace / ".tmp" / "submission-request"
         self.evas_command = evas_command
+        self._evas_telemetry_token = secrets.token_hex(16)
+        self.evas_invocations: list[dict[str, Any]] = []
         self._install_shell_tools()
         self.commands: list[dict[str, Any]] = []
         self._submitted_exception: type | None = None
@@ -307,9 +311,18 @@ class VaBenchBashEnvironment:
         ):
             raise ValueError("EVAS executable runtime is inside the private task runtime")
         evas_wrapper = self.tools_dir / "evas"
+        telemetry_prefix = f"VABENCH_EVAS:{self._evas_telemetry_token}"
         evas_wrapper.write_text(
             "#!/bin/bash\n"
             "set -e\n"
+            "invocation_id=\"${BASHPID:-$$}-${RANDOM}\"\n"
+            f"telemetry_prefix={shlex.quote(telemetry_prefix)}\n"
+            "printf '\\036%s:%s:START\\n' \"$telemetry_prefix\" \"$invocation_id\" >&9\n"
+            "finish_telemetry() {\n"
+            "  rc=$?\n"
+            "  printf '\\036%s:%s:END:%s\\n' \"$telemetry_prefix\" \"$invocation_id\" \"$rc\" >&9\n"
+            "}\n"
+            "trap finish_telemetry EXIT\n"
             "args=()\n"
             "while (($#)); do\n"
             "  if [[ $1 == -o ]]; then\n"
@@ -331,7 +344,9 @@ class VaBenchBashEnvironment:
             "  fi\n"
             "  shift\n"
             "done\n"
-            f"exec {shlex.join(base)} \"${{args[@]}}\"\n",
+            "set +e\n"
+            f"{shlex.join(base)} \"${{args[@]}}\"\n"
+            "exit $?\n",
             encoding="utf-8",
         )
         evas_wrapper.chmod(0o755)
@@ -446,6 +461,7 @@ class VaBenchBashEnvironment:
             )
 
     def _sandbox_argv(self, command: str) -> list[str]:
+        command = "exec 9>&1\n" + command
         backend = self.config.sandbox_backend
         if backend == "sandbox-exec":
             executable = shutil.which("sandbox-exec")
@@ -521,20 +537,73 @@ class VaBenchBashEnvironment:
                 timeout=self._remaining_command_timeout_s(),
                 check=False,
             )
+            elapsed_s = time.monotonic() - started
+            output = self._record_evas_invocations(
+                completed.stdout,
+                command=command,
+                elapsed_s=elapsed_s,
+                command_timed_out=False,
+            )
             return {
-                "output": completed.stdout,
+                "output": output,
                 "returncode": completed.returncode,
                 "exception_info": "",
-                "elapsed_s": time.monotonic() - started,
+                "elapsed_s": elapsed_s,
             }
         except subprocess.TimeoutExpired as exc:
             output = exc.stdout.decode(errors="replace") if isinstance(exc.stdout, bytes) else (exc.stdout or "")
+            elapsed_s = time.monotonic() - started
+            output = self._record_evas_invocations(
+                output,
+                command=command,
+                elapsed_s=elapsed_s,
+                command_timed_out=True,
+            )
             return {
                 "output": output,
                 "returncode": -1,
                 "exception_info": "bash command timed out within the episode wall-time limit",
-                "elapsed_s": time.monotonic() - started,
+                "elapsed_s": elapsed_s,
             }
+
+    def _record_evas_invocations(
+        self,
+        output: str,
+        *,
+        command: str,
+        elapsed_s: float,
+        command_timed_out: bool,
+    ) -> str:
+        marker = re.compile(
+            rf"\x1eVABENCH_EVAS:{re.escape(self._evas_telemetry_token)}:"
+            r"(?P<invocation_id>[^:\r\n]+):(?P<event>START|END)(?::(?P<returncode>-?\d+))?\r?\n?"
+        )
+        active: dict[str, dict[str, Any]] = {}
+        order: list[str] = []
+        for match in marker.finditer(output):
+            invocation_id = match.group("invocation_id")
+            if match.group("event") == "START":
+                if invocation_id not in active:
+                    active[invocation_id] = {
+                        "invocation_id": invocation_id,
+                        "shell_command": command,
+                        "shell_elapsed_s": elapsed_s,
+                    }
+                    order.append(invocation_id)
+                continue
+            row = active.get(invocation_id)
+            if row is None:
+                continue
+            returncode = int(match.group("returncode") or 0)
+            row["returncode"] = returncode
+            row["status"] = "succeeded" if returncode == 0 else "failed"
+        for invocation_id in order:
+            row = active[invocation_id]
+            if "status" not in row:
+                row["returncode"] = None
+                row["status"] = "timed_out" if command_timed_out else "interrupted"
+            self.evas_invocations.append(row)
+        return marker.sub("", output)
 
     def execute(self, action: dict[str, Any], cwd: str = "") -> dict[str, Any]:
         del cwd
@@ -798,6 +867,7 @@ def run_mini_swe_episode(
         "output_tokens": model.total_output_tokens,
         "events": model.events,
         "commands": environment.commands,
+        "evas_invocations": environment.evas_invocations,
         "model_calls": len(model.events),
         "messages": list(serialized.get("messages") or []),
         "agent_elapsed_s": time.monotonic() - started,

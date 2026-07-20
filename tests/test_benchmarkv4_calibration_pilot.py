@@ -803,10 +803,10 @@ def test_provider_context_window_is_a_cell_status_not_runner_error(
 
 
 def test_provider_request_timeout_is_not_mislabeled_as_agent_walltime(
-    tmp_path: Path, r45_release: Path
+    tmp_path: Path,
 ) -> None:
     runner = load_run_campaign()
-    cell = campaign_cell("G2", r45_release)
+    cell = campaign_cell("G2", R49_RELEASE)
 
     class RequestTimeoutClient:
         def complete(self, *_args, **_kwargs):
@@ -818,12 +818,23 @@ def test_provider_request_timeout_is_not_mislabeled_as_agent_walltime(
 
     result = runner.run_cell_preserving_failure(
         cell,
-        run_args(tmp_path / "run", r45_release),
+        run_args(tmp_path / "run", R49_RELEASE),
         RequestTimeoutClient(),
     )
 
-    assert result["status"] == "runner_error"
+    assert result["status"] == "provider_timeout"
+    assert result["termination_reason"] == "provider_request_timeout"
     assert result["error_type"] == "ProviderRequestTimeout"
+    assert result["incidents"] == [
+        {
+            "category": "provider_request_timeout",
+            "component": "provider",
+            "error_type": "ProviderRequestTimeout",
+            "phase": "model",
+            "responsibility": "infrastructure",
+            "retryable": True,
+        }
+    ]
     assert result["experiment_result"]["model_execution"]["status"] == "provider_failure"
     assert result.get("termination_reason") != "agent_timeout"
 
@@ -966,6 +977,15 @@ def test_mini_swe_time_exceeded_preserves_walltime_reason_with_complete_artifact
             "output_tokens": 17,
             "events": [],
             "commands": [],
+            "evas_invocations": [
+                {
+                    "invocation_id": "fake-1",
+                    "shell_command": "evas simulate public/task/visible_test.scs",
+                    "shell_elapsed_s": 1.5,
+                    "returncode": 1,
+                    "status": "failed",
+                }
+            ],
             "model_calls": 1,
             "messages": [{"role": "assistant", "content": "partial answer"}],
             "agent_elapsed_s": 5400.0,
@@ -984,6 +1004,11 @@ def test_mini_swe_time_exceeded_preserves_walltime_reason_with_complete_artifact
     assert result["submission_protocol_compliant"] is False
     assert result["artifact_gate"]["passed"] is True
     assert result["experiment_result"]["model_execution"]["status"] == "agent_timeout"
+    assert result["evas_usage"]["calls_executed"] == 1
+    assert result["evas_usage"]["calls_failed"] == 1
+    assert result["evas_usage"]["last_status"] == "failed"
+    assert result["incidents"][0]["category"] == "evas_command_failure"
+    assert "public_feedback" not in result
 
 
 def test_complete_workspace_can_pass_even_when_agent_reaches_walltime() -> None:
@@ -1025,6 +1050,22 @@ def test_scorer_accepts_complete_workspace_without_explicit_submit(
                 "submission_protocol_compliant": False,
                 "output_tokens": 10,
                 "events": [],
+                "evas_usage": {
+                    "schema_version": "v4-direct-evas-usage-v1",
+                    "calls_executed": 2,
+                    "calls_succeeded": 1,
+                    "calls_failed": 1,
+                    "calls_timed_out": 0,
+                    "calls_interrupted": 0,
+                    "last_status": "succeeded",
+                },
+                "incidents": [
+                    {
+                        "category": "evas_command_failure",
+                        "component": "evas",
+                        "phase": "tool",
+                    }
+                ],
             }
         )
     )
@@ -1033,6 +1074,12 @@ def test_scorer_accepts_complete_workspace_without_explicit_submit(
 
     assert row["judge_status"] == "not_run"
     assert row["submission_mode"] == "workspace_at_deadline"
+    assert row["evas_usage"]["calls_executed"] == 2
+    assert row["incidents"][0]["category"] == "evas_command_failure"
+
+    report = scorer.summarize([row], "legacy_feedback_evas")
+    assert report["incident_categories"] == {"evas_command_failure": 1}
+    assert report["telemetry_by_mode"]["G2"]["direct_evas_calls_total"] == 2
 
 
 def test_mini_swe_provider_failure_keeps_partial_trajectory(

@@ -122,7 +122,7 @@ def test_mini_swe_bash_episode_runs_direct_evas_reads_output_and_submits(
             "printf 'module model; endmodule\\n' > public/submission/model.va",
             (
                 "evas simulate public/task/visible_test.scs "
-                "-o /tmp/vabench-visible/evas-output --spectre-strict"
+                "-o /tmp/vabench-visible/evas-output --spectre-strict 2>&1 | tail -20"
             ),
             "cat public/evas-output/tran.csv",
             "which vabench-submit && vabench-submit",
@@ -149,6 +149,12 @@ def test_mini_swe_bash_episode_runs_direct_evas_reads_output_and_submits(
     assert result["exit_status"] == "Submitted"
     assert result["output_tokens"] == 35
     assert result["model_calls"] == 5
+    assert [row["returncode"] for row in result["evas_invocations"]] == [0, 0]
+    assert [row["status"] for row in result["evas_invocations"]] == [
+        "succeeded",
+        "succeeded",
+    ]
+    assert "VABENCH_EVAS:" not in json.dumps(result["messages"])
     assert [row["kind"] for row in result["commands"]] == [
         "bash",
         "bash",
@@ -214,6 +220,32 @@ def test_macos_sandbox_executes_pinned_external_evas(tmp_path: Path) -> None:
     assert result["returncode"] == 0
     assert "public/.tools/evas" in result["output"]
     assert "evas-external 1.0" in result["output"]
+
+
+def test_direct_evas_timeout_is_recorded_without_leaking_control_markers(
+    tmp_path: Path,
+) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    slow_evas = tmp_path / "slow-evas"
+    slow_evas.write_text("#!/bin/bash\nsleep 2\n", encoding="utf-8")
+    slow_evas.chmod(0o755)
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=1.0,
+        sandbox_backend="none",
+        evas_command=str(slow_evas),
+        submission_gate=artifact_gate,
+    )
+
+    result = environment.execute({"command": "evas 2>&1 | tail -20"})
+
+    assert result["returncode"] == -1
+    assert "VABENCH_EVAS:" not in result["output"]
+    assert len(environment.evas_invocations) == 1
+    assert environment.evas_invocations[0]["status"] == "timed_out"
+    assert environment.evas_invocations[0]["returncode"] is None
 
 
 def test_sandbox_profile_allows_only_candidate_and_evas_scratch_writes(
