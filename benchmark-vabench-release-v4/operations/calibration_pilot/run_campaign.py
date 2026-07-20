@@ -1602,6 +1602,8 @@ def run_mini_swe_agentic_cell(
         {
             "status": (
                 "submitted"
+                if complete and explicit_submission
+                else "workspace_ready"
                 if complete
                 else "agent_timeout"
                 if exit_status == "TimeExceeded"
@@ -1625,6 +1627,15 @@ def run_mini_swe_agentic_cell(
             "artifact_gate": episode["artifact_gate"],
             "artifact_sha256": episode["artifact_sha256"],
             "submission_protocol_compliant": explicit_submission,
+            "submission_mode": (
+                "explicit"
+                if explicit_submission
+                else "workspace_at_deadline"
+                if complete and exit_status == "TimeExceeded"
+                else "workspace_at_termination"
+                if complete
+                else "unavailable"
+            ),
             "agent_scaffold": {
                 key: episode[key]
                 for key in (
@@ -1648,8 +1659,8 @@ def run_mini_swe_agentic_cell(
                 "calls_blocked": 0,
                 "last_status": feedback_statuses[-1] if feedback_statuses else None,
                 "pass_observed": "pass" in feedback_statuses,
-                "auto_finalized": False,
-                "stop_policy": "model_controlled_vabench_feedback_run-v1",
+                "auto_finalized": bool(complete and not explicit_submission),
+                "stop_policy": "explicit-submit-or-final-workspace-v1",
                 "redundant_call_policy": "none",
             },
         }
@@ -1659,7 +1670,11 @@ def run_mini_swe_agentic_cell(
         runtime,
         episode["messages"],
         args,
-        "completed" if complete else result["status"],
+        "agent_timeout"
+        if exit_status == "TimeExceeded"
+        else "completed"
+        if complete
+        else result["status"],
     )
     write_json(runtime / "evidence" / "campaign_result.json", result)
     return result

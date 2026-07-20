@@ -138,6 +138,15 @@ comparison, or property diagnosis. `vabench-submit` is likewise a real,
 discoverable shell command that requests runner validation of the final
 artifact set.
 
+An explicit `vabench-submit` ends the episode early and records
+`submission_mode=explicit`. It is not a score-eligibility gate: when wall time
+expires with a complete declared artifact set, the runner snapshots that final
+workspace as `status=workspace_ready` and
+`submission_mode=workspace_at_deadline`, then sends the snapshot to the same
+trusted judge. `termination_reason=agent_timeout` remains visible, so artifact
+correctness and the agent's ability to recognize completion are reported
+separately.
+
 Evaluator, gold, and trusted-replay assets remain outside the model-visible
 sandbox. A production G2--G5 run requires a supported OS sandbox; `none` is
 allowed only for unit tests and dry runs. Both supported backends deny network

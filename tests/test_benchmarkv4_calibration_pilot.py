@@ -110,6 +110,14 @@ def load_run_campaign():
     return module
 
 
+def load_score_campaign():
+    spec = importlib.util.spec_from_file_location("score_campaign_test", SCORE_CAMPAIGN)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def load_run_campaign_wrapper():
     spec = importlib.util.spec_from_file_location(
         "run_benchmarkv4_campaign_test", RUN_CAMPAIGN_WRAPPER
@@ -930,11 +938,11 @@ def test_mini_swe_r45_direct_evas_then_submit_keeps_scratch_outside_submission(
 
 
 def test_mini_swe_time_exceeded_preserves_walltime_reason_with_complete_artifact(
-    tmp_path: Path, r45_release: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     runner = load_run_campaign()
-    cell = campaign_cell("G2", r45_release)
-    args = run_args(tmp_path / "run", r45_release)
+    cell = campaign_cell("G2", R49_RELEASE)
+    args = run_args(tmp_path / "run", R49_RELEASE)
     args.agent_scaffold = "mini-swe"
     args.mini_swe_sandbox = "none"
 
@@ -970,10 +978,61 @@ def test_mini_swe_time_exceeded_preserves_walltime_reason_with_complete_artifact
     monkeypatch.setattr(runner, "run_mini_swe_episode", fake_episode)
     result = runner.run_cell(cell, args, FakeClient({"role": "assistant", "content": ""}))
 
-    assert result["status"] == "submitted"
+    assert result["status"] == "workspace_ready"
     assert result["termination_reason"] == "agent_timeout"
+    assert result["submission_mode"] == "workspace_at_deadline"
     assert result["submission_protocol_compliant"] is False
     assert result["artifact_gate"]["passed"] is True
+    assert result["experiment_result"]["model_execution"]["status"] == "agent_timeout"
+
+
+def test_complete_workspace_can_pass_even_when_agent_reaches_walltime() -> None:
+    runner = load_run_campaign()
+
+    outcome = runner.RESULT_PROTOCOL.terminal_outcome(
+        "agent_timeout",
+        {"status": "available"},
+        {"status": "passed"},
+    )
+
+    assert outcome == "passed"
+
+
+def test_scorer_accepts_complete_workspace_without_explicit_submit(
+    tmp_path: Path,
+) -> None:
+    scorer = load_score_campaign()
+    runtime = tmp_path / "v4-001-G2-r0"
+    submission = runtime / "public" / "submission"
+    submission.mkdir(parents=True)
+    (submission / "model.va").write_text("module model; endmodule\n")
+    write_runtime_policy(runtime, ["model.va"])
+    result_path = runtime / "evidence" / "campaign_result.json"
+    result_path.parent.mkdir(parents=True)
+    result_path.write_text(
+        json.dumps(
+            {
+                "cell": {
+                    "cell_id": "v4-001-G2-r0",
+                    "family_id": "001",
+                    "task_id": "v4-001",
+                    "form": "dut",
+                    "mode": "G2",
+                },
+                "status": "workspace_ready",
+                "termination_reason": "agent_timeout",
+                "submission_mode": "workspace_at_deadline",
+                "submission_protocol_compliant": False,
+                "output_tokens": 10,
+                "events": [],
+            }
+        )
+    )
+
+    row = scorer.evaluate_cell(result_path, None, 30)
+
+    assert row["judge_status"] == "not_run"
+    assert row["submission_mode"] == "workspace_at_deadline"
 
 
 def test_mini_swe_provider_failure_keeps_partial_trajectory(

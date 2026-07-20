@@ -198,8 +198,6 @@ def terminal_outcome(
     submission: dict[str, Any],
     replay: dict[str, Any],
 ) -> str:
-    if model_status == "agent_timeout":
-        return "agent_timeout"
     if model_status in {"provider_failure", "runner_failure"}:
         return "infrastructure_failure"
     if submission.get("status") != "available":

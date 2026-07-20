@@ -21,7 +21,7 @@ assert SPEC and SPEC.loader
 RUNNER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(RUNNER)
 
-SUBMITTED = {"submitted", "submitted_at_budget"}
+ARTIFACT_READY = {"submitted", "submitted_at_budget", "workspace_ready"}
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -170,6 +170,8 @@ def evaluate_cell(
         "form": cell["form"],
         "mode": cell["mode"],
         "submission_status": result["status"],
+        "termination_reason": result.get("termination_reason"),
+        "submission_mode": result.get("submission_mode"),
         "submission_protocol_compliant": result.get("submission_protocol_compliant"),
         "artifact_gate": artifact_gate,
         "output_tokens": output_tokens,
@@ -180,9 +182,7 @@ def evaluate_cell(
     }
     experiment = result.get("experiment_result") or {}
     if (
-        result["status"] not in SUBMITTED
-        or result.get("submission_protocol_compliant") is False
-        or not artifact_gate["passed"]
+        result["status"] not in ARTIFACT_READY or not artifact_gate["passed"]
     ):
         outcome = str(experiment.get("outcome") or "no_submission")
         row["judge_status"] = (
@@ -190,9 +190,7 @@ def evaluate_cell(
             if outcome in {"agent_timeout", "no_submission", "infrastructure_failure"}
             else "no_submission"
         )
-        if result.get("submission_protocol_compliant") is False:
-            row["judge_status_reason"] = "submission_protocol_noncompliant"
-        elif not artifact_gate["passed"]:
+        if not artifact_gate["passed"]:
             row["judge_status_reason"] = "artifact_gate_failed"
         row["outcome"] = outcome
     elif not command:
