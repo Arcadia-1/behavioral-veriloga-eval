@@ -92,6 +92,48 @@ def _period_samples(
     return samples
 
 
+def _cadence_for_anchors(
+    anchors: list[tuple[float, bool, float, str | None, int]],
+    marker_events: list[tuple[float, bool, float, str | None, int]],
+) -> tuple[int, int, int]:
+    marker_rises = [event for event in marker_events if event[1]]
+    unaligned_rises = sum(
+        1
+        for marker_time, _rising, _mod_in, marker_bucket, marker_segment in marker_rises
+        if not any(
+            anchor_segment == marker_segment
+            and anchor_bucket == marker_bucket
+            and abs(marker_time - anchor_time) <= 2.0e-9
+            for anchor_time, _anchor_rising, _anchor_mod, anchor_bucket, anchor_segment in anchors
+        )
+    )
+    marker_counts = [
+        sum(
+            marker_segment == anchor_segment
+            and marker_bucket == anchor_bucket
+            and abs(marker_time - anchor_time) <= 2.0e-9
+            for marker_time, _marker_rising, _marker_mod, marker_bucket, marker_segment in marker_events
+        )
+        for anchor_time, _anchor_rising, _anchor_mod, anchor_bucket, anchor_segment in anchors
+    ]
+    missing = sum(count == 0 for count in marker_counts)
+    extra_rises = sum(
+        max(
+            0,
+            sum(
+                marker_segment == anchor_segment
+                and marker_bucket == anchor_bucket
+                and marker_rising
+                and abs(marker_time - anchor_time) <= 2.0e-9
+                for marker_time, marker_rising, _marker_mod, marker_bucket, marker_segment in marker_events
+            )
+            - 1,
+        )
+        for anchor_time, _anchor_rising, _anchor_mod, anchor_bucket, anchor_segment in anchors
+    )
+    return unaligned_rises, missing, extra_rises
+
+
 def check_v4_940_fm_vco_modulation_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, _property_note("P_TRACE_CONTRACT", 1, "non_empty_trace", "empty_trace")
@@ -187,43 +229,25 @@ def check_v4_940_fm_vco_modulation_source(rows: list[dict[str, float]]) -> tuple
 
     marker_events = _active_edge_events(rows, "phase_marker")
     osc_events = _active_edge_events(rows, "osc_out")
-    completed_cycles = [event for event in osc_events if not event[1]]
     marker_rises = [event for event in marker_events if event[1]]
-    marker_alignment_errors = sum(
-        1
-        for marker_time, _rising, _mod_in, marker_bucket, marker_segment in marker_rises
-        if not any(
-            cycle_segment == marker_segment
-            and cycle_bucket == marker_bucket
-            and abs(marker_time - cycle_time) <= 2.0e-9
-            for cycle_time, _cycle_rising, _cycle_mod, cycle_bucket, cycle_segment in completed_cycles
-        )
+    phase_models = []
+    for phase_name, rising in (("rising", True), ("falling", False)):
+        anchors = [event for event in osc_events if event[1] is rising]
+        unaligned, missing, extra = _cadence_for_anchors(anchors, marker_events)
+        phase_models.append((unaligned + missing + extra, phase_name, anchors, unaligned, missing, extra))
+    (
+        _phase_error_total,
+        marker_phase,
+        completed_cycles,
+        marker_alignment_errors,
+        missing_marker_cycles,
+        extra_marker_rises,
+    ) = min(phase_models, key=lambda model: model[0])
+    alignment_errors = (
+        marker_alignment_errors
+        + int(not marker_rises)
+        + int(not completed_cycles)
     )
-    cycle_marker_counts = [
-        sum(
-            marker_segment == cycle_segment
-            and marker_bucket == cycle_bucket
-            and abs(marker_time - cycle_time) <= 2.0e-9
-            for marker_time, _marker_rising, _marker_mod, marker_bucket, marker_segment in marker_events
-        )
-        for cycle_time, _cycle_rising, _cycle_mod, cycle_bucket, cycle_segment in completed_cycles
-    ]
-    missing_marker_cycles = sum(count == 0 for count in cycle_marker_counts)
-    extra_marker_rises = sum(
-        max(
-            0,
-            sum(
-                marker_segment == cycle_segment
-                and marker_bucket == cycle_bucket
-                and marker_rising
-                and abs(marker_time - cycle_time) <= 2.0e-9
-                for marker_time, marker_rising, _marker_mod, marker_bucket, marker_segment in marker_events
-            )
-            - 1,
-        )
-        for cycle_time, _cycle_rising, _cycle_mod, cycle_bucket, cycle_segment in completed_cycles
-    )
-    alignment_errors = marker_alignment_errors + int(not marker_rises) + int(not completed_cycles)
     cadence_errors = missing_marker_cycles + extra_marker_rises
 
     period_samples = _period_samples(completed_cycles)
@@ -285,8 +309,8 @@ def check_v4_940_fm_vco_modulation_source(rows: list[dict[str, float]]) -> tuple
         _property_note("P_LOWER_CLAMP", max(0, lower_clamp_errors - 18), "freq_metric_tracks_1MHz_lower_clamp", f"raw_errors={lower_clamp_errors}"),
         _property_note("P_OSCILLATOR_ACTIVITY", int(not osc_activity), "osc_out_has_low_high_activity", str(osc_activity)),
         _property_note("P_PHASE_MARKER_ACTIVITY", int(not marker_activity), "phase_marker_has_low_high_activity", str(marker_activity)),
-        _property_note("P_PHASE_MARKER_ALIGNMENT", alignment_errors, "marker_rise_aligned_with_completed_osc_cycle", f"marker_rises={len(marker_rises)},completed_cycles={len(completed_cycles)},misaligned={marker_alignment_errors}"),
-        _property_note("P_PHASE_MARKER_CADENCE", cadence_errors, "one_marker_event_per_completed_osc_cycle", f"completed_cycles={len(completed_cycles)},missing={missing_marker_cycles},extra_rises={extra_marker_rises}"),
+        _property_note("P_PHASE_MARKER_ALIGNMENT", alignment_errors, "marker_rise_aligned_with_stable_osc_cycle_phase", f"phase={marker_phase},marker_rises={len(marker_rises)},cycle_anchors={len(completed_cycles)},misaligned={marker_alignment_errors}"),
+        _property_note("P_PHASE_MARKER_CADENCE", cadence_errors, "one_marker_event_per_cycle_at_stable_rising_or_falling_phase", f"phase={marker_phase},cycle_anchors={len(completed_cycles)},missing={missing_marker_cycles},extra_rises={extra_marker_rises}"),
         _property_note("P_PERIOD_ORDERING", period_order_errors, "high_mod_period<nominal_period<clamp_period", f"high={high_period},nominal={nominal_period},clamp={clamp_period}"),
         _property_note("P_PERIOD_MODEL", period_model_errors, "measured_over_expected_period_scale_consistent_across_modulation", f"measured={measured_periods},expected={expected_periods},scales={period_scales}"),
         _property_note("P_VALID_AFTER_ENABLE", valid_errors, "valid_low_until_first_cycle_then_continuously_high", f"seen={valid_seen},early={valid_early_errors},hold={valid_hold_errors},late={valid_late_errors}"),
