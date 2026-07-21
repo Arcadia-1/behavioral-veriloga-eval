@@ -78,16 +78,6 @@ def _check_parameter_case(
     sigma: float,
     dt: float,
 ) -> tuple[bool, str]:
-    noises = []
-    for row_index, row in enumerate(rows):
-        noise = row[output] - row["vin_i"]
-        if not _finite(noise):
-            return _invalid_trace(
-                "nonfinite_derived_noise",
-                f"row={row_index},signal={output}",
-            )
-        noises.append(noise)
-
     horizon_ratio = rows[-1]["time"] / dt
     if not _finite(horizon_ratio):
         return _invalid_trace("nonfinite_derived_horizon", f"case={label}")
@@ -113,6 +103,7 @@ def _check_parameter_case(
     interval_levels: list[float] = []
     max_level_error = 0.0
     max_hold_span = 0.0
+    sample_cursor = 0
     for interval in range(complete_intervals):
         start = interval * dt
         stable_start = start + TRANSITION_GUARD_FRACTION * dt
@@ -123,11 +114,28 @@ def _check_parameter_case(
                 f"case={label},interval={interval}",
             )
 
+        while (
+            sample_cursor + 1 < len(rows)
+            and rows[sample_cursor + 1]["time"] <= start + 1e-15
+        ):
+            sample_cursor += 1
+        sampled_vin = rows[sample_cursor]["vin_i"]
+        if not _finite(sampled_vin):
+            return _invalid_trace(
+                "nonfinite_derived_sampled_vin",
+                f"case={label},interval={interval}",
+            )
+
         stable = [
-            (row_index, row["time"], noises[row_index])
+            (row_index, row["time"], row[output] - sampled_vin)
             for row_index, row in enumerate(rows)
             if stable_start <= row["time"] < stop
         ]
+        if any(not _finite(value) for _, _, value in stable):
+            return _invalid_trace(
+                "nonfinite_derived_noise",
+                f"case={label},interval={interval}",
+            )
         if len(stable) < MIN_STABLE_ROWS:
             return False, diagnostic(
                 "P_PERIODIC_UPDATE",

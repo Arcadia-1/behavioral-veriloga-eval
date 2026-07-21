@@ -21,6 +21,11 @@ FAMILY = (
     / "077-dither-noise-like-deterministic-source"
 )
 SEQUENCE = (-1.0, -0.5, 0.0, 0.5, 1.0, 0.5, 0.0, -0.5)
+VIN_PWL_LINE = (
+    "Vvin (vin_i 0) vsource type=pwl wave=[0 0.62 4n 0.62 4.05n 0.81 "
+    "8n 0.81 8.05n 0.54 12n 0.54 12.05n 0.73 16n 0.73 "
+    "16.05n 0.66 20n 0.66]"
+)
 
 
 def _sample(
@@ -43,23 +48,42 @@ def _sample(
     return previous + (current - previous) * phase / 0.10
 
 
+def _vin_at_time_ns(time_ns: float) -> float:
+    if time_ns < 4.0:
+        return 0.62
+    if time_ns < 8.0:
+        return 0.81
+    if time_ns < 12.0:
+        return 0.54
+    if time_ns < 16.0:
+        return 0.73
+    return 0.66
+
+
 def _dual_parameter_rows(
     *,
     override_ignores_parameters: bool = False,
+    ignores_vin: bool = False,
     delay_fraction: float = 0.0,
     transition: bool = False,
 ) -> list[dict[str, float]]:
     rows = []
     for index in range(801):
         time_ns = index * 0.025
-        vin = 0.7
+        vin = _vin_at_time_ns(time_ns)
         override_sigma = 0.01 if override_ignores_parameters else 0.037
         override_dt_ns = 0.5 if override_ignores_parameters else 0.8
+        default_sample_time_ns = int((time_ns + 1e-10) / 0.5) * 0.5
+        override_sample_time_ns = (
+            int((time_ns + 1e-10) / override_dt_ns) * override_dt_ns
+        )
+        default_dut_vin = 0.7 if ignores_vin else _vin_at_time_ns(default_sample_time_ns)
+        override_dut_vin = 0.7 if ignores_vin else _vin_at_time_ns(override_sample_time_ns)
         rows.append(
             {
                 "time": time_ns * 1e-9,
                 "vin_i": vin,
-                "vout_default": vin
+                "vout_default": default_dut_vin
                 + _sample(
                     time_ns,
                     sigma=0.01,
@@ -67,7 +91,7 @@ def _dual_parameter_rows(
                     delay_fraction=delay_fraction,
                     transition=transition,
                 ),
-                "vout_override": vin
+                "vout_override": override_dut_vin
                 + _sample(
                     time_ns,
                     sigma=override_sigma,
@@ -87,6 +111,12 @@ def test_077_checker_requires_default_and_override_parameter_behavior() -> None:
     passed, detail = check_077(_dual_parameter_rows(override_ignores_parameters=True))
     assert not passed
     assert "override" in detail
+
+
+def test_077_checker_rejects_dut_that_ignores_input_voltage() -> None:
+    passed, detail = check_077(_dual_parameter_rows(ignores_vin=True))
+    assert not passed
+    assert "level" in detail or "hold" in detail
 
 
 def test_077_checker_scans_stable_rows_between_nominal_probe_phases() -> None:
@@ -124,7 +154,7 @@ def test_077_checker_rejects_nonfinite_trace_values(signal: str, value: float) -
 
 def test_077_checker_rejects_nonfinite_derived_noise() -> None:
     rows = _dual_parameter_rows()
-    rows[173]["vin_i"] = -1e308
+    rows[160]["vin_i"] = -1e308
     rows[173]["vout_default"] = 1e308
     passed, detail = check_077(rows)
     assert not passed
@@ -136,6 +166,7 @@ def test_077_public_and_score_decks_exercise_the_same_two_parameter_sets() -> No
     score = (FAMILY / "evaluator/score_tb.scs").read_text(encoding="utf-8")
     reference = (FAMILY / "evaluator/reference_tb.scs").read_text(encoding="utf-8")
     shared_lines = [
+        VIN_PWL_LINE,
         "IDUT_DEFAULT (vin_i vout_default) noise_gen",
         "IDUT_OVERRIDE (vin_i vout_override) noise_gen sigma=0.037 dt=0.8n",
         "save vin_i vout_default vout_override",

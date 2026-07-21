@@ -4,6 +4,7 @@ from __future__ import annotations
 from ..common.issue109_factory import (
     CLOCK_REQUIRED,
     CONT_REQUIRED,
+    TRANSITION_INPUT_DELTA,
     VHI,
     VTH,
     _clip01,
@@ -63,6 +64,11 @@ def append_continuous_property_diagnostics(
                 min(float(rows[-1]["time"]), time_s + 0.12e-9),
             )
             if before is not None and after is not None:
+                if any(
+                    abs(before[name] - after[name]) > TRANSITION_INPUT_DELTA
+                    for name in names[:9]
+                ):
+                    continue
                 before_expected = _cont_expected(mode, before)
                 after_expected = _cont_expected(mode, after)
                 if any(

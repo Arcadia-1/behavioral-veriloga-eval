@@ -16,6 +16,7 @@ VTH = 0.45
 VHI = 0.9
 SPAN_MIN = 0.62
 SPAN_MAX = 1.28
+TRANSITION_INPUT_DELTA = 0.025
 
 CONT_REQUIRED = {"time", "in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en", "out", "flag", "metric"}
 CLOCK_REQUIRED = CONT_REQUIRED | {"clk", "rst"}
@@ -181,10 +182,16 @@ def check_continuous_factory(rows: list[Row], *, mode: str, task_name: str) -> C
         values = _values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en", "out", "flag", "metric"), time_s)
         if values is None:
             continue
+        saw_enable_low = saw_enable_low or values["en"] <= VTH
         expected = _cont_expected(mode, values)
         before = _values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), max(float(rows[0]["time"]), time_s - 0.12e-9))
         after = _values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), min(float(rows[-1]["time"]), time_s + 0.12e-9))
         if before is not None and after is not None:
+            if any(
+                abs(before[name] - after[name]) > TRANSITION_INPUT_DELTA
+                for name in ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en")
+            ):
+                continue
             before_expected = _cont_expected(mode, before)
             after_expected = _cont_expected(mode, after)
             if any(
@@ -197,7 +204,6 @@ def check_continuous_factory(rows: list[Row], *, mode: str, task_name: str) -> C
         out_expected.append(expected["out"])
         flag_expected.append(expected["flag"])
         metric_expected.append(expected["metric"])
-        saw_enable_low = saw_enable_low or values["en"] <= VTH
         checked += 1
     if checked < 10:
         return False, f"{task_name}: insufficient_samples={checked}"
