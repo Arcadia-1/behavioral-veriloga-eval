@@ -23,7 +23,10 @@ def check_v4_314_hysteretic_window_comparator(rows: list[dict[str, float]]) -> t
     toggle_seen: list[bool] = []
     pending_toggle: int | None = None
     last_semantic_change_time = float(ordered[0]["time"])
-    settle_window_s = 0.8e-9
+    # The canonical implementation emits a one-tick pulse and smooths both
+    # pulse edges.  Allow that bounded pulse to decay before treating a high
+    # level as a stuck-toggle violation.
+    settle_window_s = 1.2e-9
     checked = state_errors = metric_errors = clear_errors = toggle_width_errors = 0
     reset_samples = disabled_samples = 0
     inside_seen = outside_seen = False
