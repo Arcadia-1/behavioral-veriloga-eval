@@ -13,102 +13,129 @@ PROPERTY_IDS = (
     "P_ZERO_MEAN_DITHER",
 )
 
+SEQUENCE = (-1.0, -0.5, 0.0, 0.5, 1.0, 0.5, 0.0, -0.5)
+TRACE_CASES = (
+    ("default", "vout_default", 0.01, 0.5e-9),
+    ("override", "vout_override", 0.037, 0.8e-9),
+)
 
-def check_noise_gen(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    missing = require_signals(rows, {"time", "vin_i", "vout_o"}, "P_ADDITIVE_OUTPUT")
-    if missing is not None:
-        return False, missing
-    noises = [r["vout_o"] - r["vin_i"] for r in rows]
-    amplitude = max(abs(value) for value in noises)
-    if amplitude <= 1e-6:
+
+def _sample_near(
+    rows: list[dict[str, float]],
+    noises: list[float],
+    target_time: float,
+    dt: float,
+) -> tuple[float, float] | None:
+    index = min(range(len(rows)), key=lambda item: abs(rows[item]["time"] - target_time))
+    distance = abs(rows[index]["time"] - target_time)
+    if distance > 0.12 * dt:
+        return None
+    return noises[index], distance
+
+
+def _check_parameter_case(
+    rows: list[dict[str, float]],
+    *,
+    label: str,
+    output: str,
+    sigma: float,
+    dt: float,
+) -> tuple[bool, str]:
+    noises = [row[output] - row["vin_i"] for row in rows]
+    early: list[float] = []
+    late: list[float] = []
+    max_sample_distance = 0.0
+    for interval in range(24):
+        pair = []
+        for phase in (0.30, 0.70):
+            sampled = _sample_near(rows, noises, (interval + phase) * dt, dt)
+            if sampled is None:
+                return False, diagnostic(
+                    "P_PERIODIC_UPDATE",
+                    f"{label}_insufficient_time_resolution",
+                    expected=f"samples_within_0.12_dt_for_{output}",
+                    observed=f"interval={interval} phase={phase:.2f}",
+                    event=label,
+                )
+            value, distance = sampled
+            pair.append(value)
+            max_sample_distance = max(max_sample_distance, distance)
+        early.append(pair[0])
+        late.append(pair[1])
+
+    amplitude = max(abs(value) for value in early + late)
+    amplitude_tolerance = max(1e-6, 0.06 * sigma)
+    if abs(amplitude - sigma) > amplitude_tolerance:
         return False, diagnostic(
-            "P_DETERMINISTIC_SEQUENCE",
-            "zero_amplitude",
-            expected="nonzero_sigma_sequence",
-            observed=f"max_abs={amplitude:.4g}",
-            event="full_trace",
+            "P_ADDITIVE_OUTPUT",
+            f"{label}_sigma_mismatch",
+            expected=f"sigma={sigma:.6g}",
+            observed=f"amplitude={amplitude:.6g}",
+            event=label,
         )
 
-    # Compress the trace into held levels. This recovers sigma and dt from the
-    # public outputs, so legal parameter overrides are not mistaken for an
-    # incorrect implementation.
-    level_tolerance = max(1e-7, 0.10 * amplitude)
-    levels: list[tuple[float, float]] = [(rows[0]["time"], noises[0])]
-    for row, noise in zip(rows[1:], noises[1:]):
-        if abs(noise - levels[-1][1]) > level_tolerance:
-            levels.append((row["time"], noise))
-    if len(levels) < 17:
-        return False, diagnostic(
-            "P_PERIODIC_UPDATE",
-            "insufficient_coverage",
-            expected="at_least_two_complete_eight_level_periods",
-            observed=f"held_levels={len(levels)}",
-            event="full_trace",
-        )
-
-    expected = (-1.0, -0.5, 0.0, 0.5, 1.0, 0.5, 0.0, -0.5)
-    normalized = [value / amplitude for _, value in levels[:17]]
+    normalized = [value / sigma for value in late]
     sequence_error = max(
-        abs(value - expected[index % len(expected)])
+        abs(value - SEQUENCE[index % len(SEQUENCE)])
         for index, value in enumerate(normalized)
     )
-    if sequence_error > 0.12:
+    if sequence_error > 0.08:
         return False, diagnostic(
             "P_DETERMINISTIC_SEQUENCE",
-            "sequence_mismatch",
-            expected="[-1,-.5,0,.5,1,.5,0,-.5]_times_sigma_repeated",
+            f"{label}_sequence_or_dt_mismatch",
+            expected=f"public_sequence_at_dt={dt:.4e}",
             observed=f"max_normalized_error={sequence_error:.4f}",
-            event="first_seventeen_held_levels",
+            event=label,
         )
 
-    update_intervals = [
-        later[0] - earlier[0]
-        for earlier, later in zip(levels[1:16], levels[2:17])
-    ]
-    sorted_intervals = sorted(update_intervals)
-    inferred_dt = sorted_intervals[len(sorted_intervals) // 2]
-    if inferred_dt <= 0 or max(abs(value - inferred_dt) for value in update_intervals) > 0.15 * inferred_dt:
-        return False, diagnostic(
-            "P_PERIODIC_UPDATE",
-            "irregular_update_interval",
-            expected="stable_parameterized_dt",
-            observed=f"inferred_dt={inferred_dt:.4e}",
-            event="first_two_sequence_periods",
-        )
-
-    max_hold_error = 0.0
-    for index, (start, level) in enumerate(levels[:16]):
-        stop = levels[index + 1][0]
-        interior = [
-            noise
-            for row, noise in zip(rows, noises)
-            if start <= row["time"] < stop
-        ]
-        if interior:
-            max_hold_error = max(max_hold_error, max(abs(value - level) for value in interior))
-    if max_hold_error > level_tolerance:
+    hold_error = max(abs(first - second) for first, second in zip(early, late))
+    if hold_error > amplitude_tolerance:
         return False, diagnostic(
             "P_SAMPLE_HOLD",
-            "interinterval_variation",
+            f"{label}_interinterval_variation",
             expected="piecewise_constant_between_updates",
-            observed=f"max_hold_error={max_hold_error:.4g}",
-            event="first_sixteen_intervals",
+            observed=f"max_hold_error={hold_error:.6g}",
+            event=label,
         )
 
-    cycle_means = [sum(normalized[start : start + 8]) / 8 for start in (0, 8)]
-    if max(abs(value) for value in cycle_means) > 0.06:
+    cycle_means = [sum(normalized[start : start + 8]) / 8 for start in (0, 8, 16)]
+    if max(abs(value) for value in cycle_means) > 0.04:
         return False, diagnostic(
             "P_ZERO_MEAN_DITHER",
-            "cycle_mean_mismatch",
+            f"{label}_cycle_mean_mismatch",
             expected="each_eight_sample_mean=0",
-            observed=f"cycle_means={cycle_means[0]:.4f},{cycle_means[1]:.4f}",
-            event="complete_sequence_periods",
+            observed="cycle_means=" + ",".join(f"{value:.4f}" for value in cycle_means),
+            event=label,
         )
-    note = (
-        f"levels={len(levels)} inferred_sigma={amplitude:.4g} inferred_dt={inferred_dt:.4e} "
-        f"max_sequence_error={sequence_error:.4f} max_hold_error={max_hold_error:.4g}"
+
+    detail = (
+        f"{label}:sigma={amplitude:.6g},dt={dt:.4e},"
+        f"sequence_error={sequence_error:.4f},hold_error={hold_error:.6g},"
+        f"sample_distance={max_sample_distance:.3e}"
     )
-    return True, pass_note(PROPERTY_IDS, note)
+    return True, detail
+
+
+def check_noise_gen(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin_i", *(output for _, output, _, _ in TRACE_CASES)}
+    missing = require_signals(rows, required, "P_ADDITIVE_OUTPUT")
+    if missing is not None:
+        return False, missing
+
+    details = []
+    for label, output, sigma, dt in TRACE_CASES:
+        passed, detail = _check_parameter_case(
+            rows,
+            label=label,
+            output=output,
+            sigma=sigma,
+            dt=dt,
+        )
+        if not passed:
+            return False, detail
+        details.append(detail)
+    return True, pass_note(PROPERTY_IDS, " ".join(details))
+
 
 CHECKER_ID = "v4_077_dither_noise_like_deterministic_source"
 CHECKER: Checker = check_noise_gen

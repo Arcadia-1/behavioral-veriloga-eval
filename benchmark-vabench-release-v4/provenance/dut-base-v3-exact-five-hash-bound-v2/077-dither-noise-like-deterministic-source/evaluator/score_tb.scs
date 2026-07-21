@@ -3,11 +3,10 @@ global 0
 
 ahdl_include "./dut/noise_gen_ref.va"
 
-// noise_gen gold smoke testbench
-// DC input at 1.0V; noise_gen adds deterministic sampled dither (sigma=0.1V, dt=0.5ns).
-// Runs 500ns. Check: std(noise) > 0.01V, max|noise| > 0.05V.
-Vvin (vin_i 0) vsource type=dc dc=1.0
-IDUT (vin_i vout_o) noise_gen sigma=0.1 dt=0.5n
+// Exercise both the public defaults and one legal parameter override.
+Vvin (vin_i 0) vsource type=dc dc=0.7
+IDUT_DEFAULT (vin_i vout_default) noise_gen
+IDUT_OVERRIDE (vin_i vout_override) noise_gen sigma=0.037 dt=0.8n
 
-tran tran stop=500n maxstep=1n
-save vin_i vout_o
+tran tran stop=20n maxstep=0.05n
+save vin_i vout_default vout_override
