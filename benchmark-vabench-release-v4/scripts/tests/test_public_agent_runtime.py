@@ -3,18 +3,20 @@ import unittest
 
 
 RUNTIME_DIR = Path(__file__).resolve().parents[2] / "public-agent-runtime"
+REPO_ROOT = Path(__file__).resolve().parents[3]
+ENVIRONMENT_DIR = REPO_ROOT / "environment"
 
 
 class PublicAgentRuntimeTest(unittest.TestCase):
     def test_docker_build_context_is_allowlisted(self) -> None:
-        dockerignore = (RUNTIME_DIR / ".dockerignore").read_text(encoding="utf-8")
+        dockerignore = (ENVIRONMENT_DIR / ".dockerignore").read_text(encoding="utf-8")
         self.assertEqual(dockerignore.splitlines()[0], "*")
         self.assertIn("!Dockerfile", dockerignore)
         self.assertIn("!requirements.lock", dockerignore)
         self.assertIn("!runtime/entrypoint.sh", dockerignore)
 
     def test_runtime_image_is_pinned_and_non_root(self) -> None:
-        dockerfile = (RUNTIME_DIR / "Dockerfile").read_text(encoding="utf-8")
+        dockerfile = (ENVIRONMENT_DIR / "Dockerfile").read_text(encoding="utf-8")
         self.assertIn("FROM python:3.10.14-slim-bookworm@sha256:", dockerfile)
         self.assertIn("pip install --no-cache-dir --require-hashes", dockerfile)
         self.assertIn('"package_version"] == "0.8.3"', dockerfile)
@@ -36,7 +38,7 @@ class PublicAgentRuntimeTest(unittest.TestCase):
         self.assertNotIn("evaluator", launcher.lower())
 
     def test_evas_and_all_dependencies_are_hash_locked(self) -> None:
-        lock = (RUNTIME_DIR / "requirements.lock").read_text(encoding="utf-8")
+        lock = (ENVIRONMENT_DIR / "requirements.lock").read_text(encoding="utf-8")
         self.assertIn("evas-sim==0.8.3", lock)
         packages = [
             line

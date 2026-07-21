@@ -2,8 +2,10 @@
 
 中文操作说明见 [`README.zh-CN.md`](README.zh-CN.md)。
 
-This directory builds a public, task-agnostic Docker image for running a
-Verilog-A agent with Bash and EVAS. The image contains no benchmark task,
+The repository-level [`environment/`](../../environment/) directory is the
+single shared Harbor-compatible Docker build source. The helpers in this
+directory build and run that public, task-agnostic environment for a Verilog-A
+agent with Bash and EVAS. The image contains no benchmark task,
 checker, evaluator, gold solution, hidden test, mutation catalog, credential,
 or internal registry configuration. One sanitized public task is mounted
 read-only at runtime; only the submission and working directories are writable.
@@ -24,8 +26,9 @@ cd benchmark-vabench-release-v4/public-agent-runtime
 ./build.sh
 ```
 
-`requirements.lock` pins EVAS and every Python dependency by version and
-SHA-256. The Dockerfile pins the base image by digest. Record the image ID
+`environment/requirements.lock` pins EVAS and every Python dependency by
+version and SHA-256. `environment/Dockerfile` pins the base image by digest.
+Record the image ID
 printed by `build.sh`; campaign records should use that immutable identity.
 
 ## Verify
@@ -108,3 +111,7 @@ open development benchmark because its evaluator assets are present in this
 public repository. A blind external evaluation requires new held-out tasks
 whose private evaluator assets have never been committed publicly, with only
 their sanitized public bundles supplied to this launcher.
+
+For Harbor exports, use the top-level `environment/` directory as the shared
+source and materialize it as `<task>/environment/`. Do not maintain a separate
+Dockerfile per benchmark task.

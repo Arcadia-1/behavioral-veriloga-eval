@@ -4,12 +4,14 @@ on:
   pull_request:
     paths:
       - ".github/workflows/public-agent-runtime.yml"
+      - "environment/**"
       - "benchmark-vabench-release-v4/public-agent-runtime/**"
       - "benchmark-vabench-release-v4/scripts/tests/test_public_agent_runtime.py"
   push:
     branches: [main]
     paths:
       - ".github/workflows/public-agent-runtime.yml"
+      - "environment/**"
       - "benchmark-vabench-release-v4/public-agent-runtime/**"
 
 permissions:
