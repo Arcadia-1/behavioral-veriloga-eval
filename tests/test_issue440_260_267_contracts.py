@@ -129,6 +129,54 @@ def _state_sequence(*, include_invalid_spans: bool) -> list[dict[str, float]]:
     ]
 
 
+def _async_recovery_sequence(mode: str) -> list[dict[str, float]]:
+    common_prefix = [
+        {"rst": 0.90, "en": 0.90, "x0": 0.20, "x1": 0.80},
+        {"rst": 0.00, "en": 0.00, "x0": 0.90, "x1": 0.10},
+        {"rst": 0.00, "en": 0.90, "x0": 0.62, "x1": 0.20, "c0": 0.90, "span": 0.42},
+        {"rst": 0.00, "en": 0.90, "x0": 0.76, "x1": 0.22, "c0": 0.90, "span": 1.48},
+    ]
+    if mode in {"edge", "sample_fall"}:
+        tail = [
+            {"rst": 0.00, "en": 0.90, "x0": 0.86, "x1": 0.16, "c0": 0.90, "x2": 0.20},
+            {"rst": 0.00, "en": 0.90, "x0": 0.18, "x1": 0.78, "c0": 0.10, "x2": 0.80},
+            {"rst": 0.00, "en": 0.90, "x0": 0.82, "x1": 0.30, "c0": 0.90, "x2": 0.35},
+            {"rst": 0.00, "en": 0.90, "x0": 0.24, "x1": 0.72, "c0": 0.10, "x2": 0.65},
+            {"rst": 0.00, "en": 0.90, "x0": 0.90, "x1": 0.28, "c0": 0.90, "x2": 0.15},
+            {"rst": 0.00, "en": 0.90, "x0": 0.34, "x1": 0.80, "c0": 0.10, "x2": 0.85},
+        ]
+    elif mode == "toggle":
+        tail = [
+            {"rst": 0.00, "en": 0.90, "x0": 0.86, "x1": 0.16, "c0": 0.90, "x2": 0.20},
+            {"rst": 0.00, "en": 0.90, "x0": 0.22, "x1": 0.78, "c0": 0.10, "x2": 0.80},
+            {"rst": 0.00, "en": 0.90, "x0": 0.84, "x1": 0.26, "c0": 0.90, "x2": 0.35},
+            {"rst": 0.00, "en": 0.90, "x0": 0.88, "x1": 0.34, "c0": 0.90, "x2": 0.65},
+            {"rst": 0.00, "en": 0.90, "x0": 0.20, "x1": 0.74, "c0": 0.10, "x2": 0.15},
+            {"rst": 0.00, "en": 0.90, "x0": 0.92, "x1": 0.28, "c0": 0.90, "x2": 0.85},
+        ]
+    elif mode == "counter":
+        tail = [
+            {"rst": 0.00, "en": 0.90, "x0": 0.86, "x1": 0.46, "c0": 0.90, "x2": 0.20},
+            {"rst": 0.00, "en": 0.90, "x0": 0.78, "x1": 0.36, "c0": 0.10, "x2": 0.80},
+            {"rst": 0.00, "en": 0.90, "x0": 0.82, "x1": 0.42, "c0": 0.90, "x2": 0.35},
+            {"rst": 0.00, "en": 0.90, "x0": 0.80, "x1": 0.40, "c0": 0.90, "x2": 0.65},
+            {"rst": 0.00, "en": 0.90, "x0": 0.76, "x1": 0.34, "c0": 0.10, "x2": 0.15},
+            {"rst": 0.00, "en": 0.90, "x0": 0.92, "x1": 0.28, "c0": 0.90, "x2": 0.85},
+        ]
+    elif mode == "latch":
+        tail = [
+            {"rst": 0.00, "en": 0.90, "x0": 0.86, "x1": 0.16, "c0": 0.90, "x2": 0.20},
+            {"rst": 0.00, "en": 0.90, "x0": 0.22, "x1": 0.78, "c0": 0.10, "x2": 0.80},
+            {"rst": 0.00, "en": 0.90, "x0": 0.84, "x1": 0.26, "c0": 0.90, "x2": 0.35},
+            {"rst": 0.00, "en": 0.90, "x0": 0.20, "x1": 0.74, "c0": 0.10, "x2": 0.65},
+            {"rst": 0.00, "en": 0.90, "x0": 0.90, "x1": 0.28, "c0": 0.90, "x2": 0.15},
+            {"rst": 0.00, "en": 0.90, "x0": 0.34, "x1": 0.80, "c0": 0.10, "x2": 0.85},
+        ]
+    else:
+        raise AssertionError(f"unsupported mode {mode}")
+    return common_prefix + tail
+
+
 def _clocked_rows(
     mode: str,
     edge: int,
@@ -178,6 +226,53 @@ def _clocked_rows(
     return sorted(rows, key=lambda row: row["time"])
 
 
+def _async_recovery_rows(mode: str, edge: int) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    state = {"core": 0.0, "out": 0.0}
+    previous = {"out": 0.0, "flag": 0.0, "metric": 0.0}
+    start_s = 101.0e-9
+    period_s = 4.0e-9
+    high_before_edge = edge < 0
+
+    for index, item in enumerate(_async_recovery_sequence(mode)):
+        edge_s = start_s + index * period_s
+        values = _inputs(item)
+        expected = _expected(mode, values, state)
+        pre_clk = VHI if high_before_edge else 0.0
+        post_clk = 0.0 if high_before_edge else VHI
+        idle_clk = 0.0
+        rows.extend(
+            [
+                _clocked_row(edge_s - 10.0e-12, pre_clk, values, previous),
+                _clocked_row(edge_s, post_clk, values, previous),
+                _clocked_row(edge_s + 1.0e-12, post_clk, values, previous),
+                _clocked_row(edge_s + 0.12e-9, post_clk, values, expected),
+                _clocked_row(edge_s + 0.45 * period_s, post_clk, values, expected),
+                _clocked_row(edge_s + 0.55 * period_s, idle_clk, values, expected),
+            ]
+        )
+        previous = expected
+
+        if index == 5:
+            reset_t = edge_s + 0.68 * period_s
+            reset_values = {**values, "rst": VHI}
+            cleared = {"out": 0.0, "flag": 0.0, "metric": 0.0}
+            rows.extend(
+                [
+                    _clocked_row(reset_t - 10.0e-12, idle_clk, {**values, "rst": 0.0}, previous),
+                    _clocked_row(reset_t, idle_clk, reset_values, previous),
+                    _clocked_row(reset_t + 1.0e-12, idle_clk, reset_values, previous),
+                    _clocked_row(reset_t + 0.12e-9, idle_clk, reset_values, cleared),
+                    _clocked_row(reset_t + 0.36e-9, idle_clk, {**values, "rst": 0.0}, cleared),
+                ]
+            )
+            state["core"] = 0.0
+            state["out"] = 0.0
+            previous = cleared
+
+    return sorted(rows, key=lambda row: row["time"])
+
+
 @pytest.mark.parametrize(("checker_id", "mode", "edge"), CHECKER_CASES)
 def test_issue440_260_267_accepts_span_and_async_reset_covered_trace(
     checker_id: str,
@@ -188,6 +283,20 @@ def test_issue440_260_267_accepts_span_and_async_reset_covered_trace(
     assert checker is not None
 
     passed, note = checker(_clocked_rows(mode, edge))
+
+    assert passed, note
+
+
+@pytest.mark.parametrize(("checker_id", "mode", "edge"), CHECKER_CASES)
+def test_issue440_260_267_accepts_async_reset_recovery_from_cleared_state(
+    checker_id: str,
+    mode: str,
+    edge: int,
+) -> None:
+    checker = load_checker(checker_id)
+    assert checker is not None
+
+    passed, note = checker(_async_recovery_rows(mode, edge))
 
     assert passed, note
 
