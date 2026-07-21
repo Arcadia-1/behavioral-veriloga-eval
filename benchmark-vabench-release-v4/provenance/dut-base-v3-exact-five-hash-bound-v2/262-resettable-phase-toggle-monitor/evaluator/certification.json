@@ -12,12 +12,12 @@
     "task_inputs": {
       "checker_profile_sha256": "0957b31952c578f28ef6bae4359ab81913dba5faf79ec593f43edc14760c11b9",
       "family_spec_sha256": "58c7f5145462f2f379c8772e080c86fb79aaeeff1bc41f927309dad10fde7f4f",
-      "feedback_deck_sha256": "6cd6b02c637a5f31c0f8e5c0fc38125042b800bd1078397bba72e074b3c2e6ab",
-      "feedback_profile_sha256": "20595446725a552710564e527b9ddd301d353fa58e16100448512eb610327c9f",
+      "feedback_deck_sha256": "3685d11dcac92068f0c4fdbd8f7ba63888214c77911ddf7f0da199b0a2d6940d",
+      "feedback_profile_sha256": "78fa8a9d4b9909fd25d1f51d85fc31ec9ba6b08854ab9cac7806289505142f20",
       "gold_bundle_sha256": "2b50e9bf814121e3a1501091cabeb71f067120a60d7c1700a6559400588a4c56",
-      "harness_spec_sha256": "cfc828fadd6c39821ea94a9e8e3a09353b5c85b6fe29e04c3c49326eff43d8a7",
-      "score_deck_sha256": "afa6005f453d772522766a4c776558d1ff7c73f937a29ad46fbcf0fe44d81740",
-      "score_profile_sha256": "054a7bd56106bf2ba1e649dd4cc133ad382fa5f1ac17f1b6309b5774e0fae9a1"
+      "harness_spec_sha256": "baf652e4ea9c0688c33230e277d5cec4c79ded240edc283312fdb60970210398",
+      "score_deck_sha256": "062fc6900ba5e204886468303d0d436bd3199638152005a0abfd135f174f1bfc",
+      "score_profile_sha256": "f862430915ca4ef2543f026980e1cb693be78ea61c1dabc59b0ebf5084a60cc9"
     }
   },
   "evaluators": {
@@ -40,10 +40,10 @@
   "input_hashes": {
     "checker_profile": "0957b31952c578f28ef6bae4359ab81913dba5faf79ec593f43edc14760c11b9",
     "family_spec": "58c7f5145462f2f379c8772e080c86fb79aaeeff1bc41f927309dad10fde7f4f",
-    "feedback_profile": "20595446725a552710564e527b9ddd301d353fa58e16100448512eb610327c9f",
+    "feedback_profile": "78fa8a9d4b9909fd25d1f51d85fc31ec9ba6b08854ab9cac7806289505142f20",
     "gold_bundle": "2b50e9bf814121e3a1501091cabeb71f067120a60d7c1700a6559400588a4c56",
-    "harness_spec": "cfc828fadd6c39821ea94a9e8e3a09353b5c85b6fe29e04c3c49326eff43d8a7",
-    "score_profile": "054a7bd56106bf2ba1e649dd4cc133ad382fa5f1ac17f1b6309b5774e0fae9a1"
+    "harness_spec": "baf652e4ea9c0688c33230e277d5cec4c79ded240edc283312fdb60970210398",
+    "score_profile": "f862430915ca4ef2543f026980e1cb693be78ea61c1dabc59b0ebf5084a60cc9"
   },
   "schema_version": "v4-task-certification-rust-evas2-v1",
   "status": "gate2_pass"
