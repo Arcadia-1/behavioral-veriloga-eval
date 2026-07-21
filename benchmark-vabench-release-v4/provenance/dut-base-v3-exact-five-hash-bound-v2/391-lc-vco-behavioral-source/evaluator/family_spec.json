@@ -161,7 +161,22 @@
     },
     {
       "id": "P_CONTROL_FREQUENCY_MAP",
-      "observable_contract": "Enabled edge periods follow the linear clamped vctrl mapping from fmin to fmax without retiming an already pending edge.",
+      "observable_contract": "Enabled edge periods follow the linear clamped vctrl mapping from fmin to fmax.",
+      "required_signals": [
+        "time",
+        "vctrl",
+        "enable",
+        "rst",
+        "osc_p",
+        "osc_n",
+        "freq_metric",
+        "amp_metric",
+        "valid"
+      ]
+    },
+    {
+      "id": "P_NO_RETIME_PENDING_TRANSITION",
+      "observable_contract": "A control-voltage change affects the next half-period and does not retime a transition that was already pending.",
       "required_signals": [
         "time",
         "vctrl",
