@@ -224,14 +224,20 @@ def test_task383_checker_rejects_old_pass_split_restart_offsets() -> None:
 def test_task383_harness_metadata_matches_extended_score_deck() -> None:
     task = (
         ROOT
-        / "benchmark-vabench-release-v4/release/benchmarkv4/tasks"
+        / "benchmark-vabench-release-v4/provenance/dut-base-v3-exact-five-hash-bound-v2"
         / "383-fixed-frequency-oscillator-source/evaluator"
     )
     harness_path = task / "harness_spec.json"
     harness = json.loads(harness_path.read_text())
     score_deck = task / "score_tb.scs"
+    feedback_deck = task.parent / "public" / "task" / "feedback_tb.scs"
     assert harness["deck"]["analyses"] == ["tran tran stop=195n maxstep=200p"]
     assert harness["deck"]["body_lines"][:2] == score_deck.read_text().splitlines()[5:7]
+    assert harness["deck"]["body_lines"][:2] == feedback_deck.read_text().splitlines()[5:7]
+    assert harness["migration"]["legacy_feedback_deck"] == "public/task/feedback_tb.scs"
+    assert harness["migration"]["legacy_feedback_deck_sha256"] == hashlib.sha256(
+        feedback_deck.read_bytes()
+    ).hexdigest()
     assert harness["migration"]["legacy_score_deck_sha256"] == hashlib.sha256(
         score_deck.read_bytes()
     ).hexdigest()
