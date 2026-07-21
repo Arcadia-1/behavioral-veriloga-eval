@@ -33,10 +33,10 @@ Provide these overrideable public parameters on the top module and propagate com
 
 - On reset or when disabled, drive `osc_out`, `freq_metric`, `phase_marker`, and `valid` low.
 - When enabled, generate a deterministic behavioral oscillator whose frequency increases monotonically with `mod_in`.
-- Clamp the commanded frequency to a nonnegative range and expose the normalized command on `freq_metric`.
+- Clamp the commanded frequency to a minimum of 1 MHz and expose the normalized command on `freq_metric`.
 - `osc_out` must toggle between `vss` and `vdd` according to the commanded oscillator state.
 - `phase_marker` must pulse or toggle once per oscillator cycle so cycle period order is observable from public behavior.
-- Assert `valid` only after the first completed oscillator cycle following enable or reset recovery.
+- Assert `valid` only after the first completed oscillator cycle following enable or reset recovery, then hold it high until reset or disable.
 
 ## Modeling Constraints
 

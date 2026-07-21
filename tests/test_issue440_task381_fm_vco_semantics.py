@@ -73,17 +73,27 @@ def _legacy_weak_accepts(rows: list[dict[str, float]]) -> bool:
     )
 
 
-def _rows(*, constant_period_ns: float | None = None, immediate_valid: bool = False) -> list[dict[str, float]]:
-    marker_edges_ns = [125.0, 225.0, 325.0, 525.0, 605.0, 685.0, 765.0, 1855.0, 2855.0]
+def _rows(
+    *,
+    clamp_period_ns: float = 1000.0,
+    constant_period_ns: float | None = None,
+    immediate_valid: bool = False,
+    marker_mode: str = "toggle",
+    one_shot_valid: bool = False,
+) -> list[dict[str, float]]:
+    nominal_edges_ns = [125.0, 225.0, 325.0]
+    high_edges_ns = [525.0, 605.0, 685.0, 765.0]
+    clamp_edges_ns = [855.0 + clamp_period_ns * index for index in range(1, 4)]
+    marker_edges_ns = nominal_edges_ns + high_edges_ns + clamp_edges_ns
     if constant_period_ns is not None:
-        marker_edges_ns = [105.0 + constant_period_ns * index for index in range(31)]
-        marker_edges_ns += [855.0 + constant_period_ns * index for index in range(24)]
+        marker_edges_ns = [105.0 + constant_period_ns * index for index in range(7)]
+        marker_edges_ns += [855.0 + constant_period_ns * index for index in range(1, 34)]
     osc_edges_ns = sorted(marker_edges_ns + [edge - 50.0 for edge in marker_edges_ns if edge < 500.0] + [edge - 40.0 for edge in marker_edges_ns if 500.0 <= edge < 900.0] + [edge - 500.0 for edge in marker_edges_ns if edge > 900.0])
     rows: list[dict[str, float]] = []
-    for step in range(0, 3221, 5):
+    for step in range(0, 4221, 5):
         time_ns = float(step)
         rst = 0.9 if time_ns <= 3.0 or 805.0 <= time_ns <= 830.0 else 0.0
-        enable = 0.9 if 5.0 <= time_ns <= 3200.0 else 0.0
+        enable = 0.9 if 5.0 <= time_ns < 4200.0 else 0.0
         active = enable > 0.45 and rst <= 0.45
         if time_ns < 420.0:
             mod_in = 0.45
@@ -96,10 +106,16 @@ def _rows(*, constant_period_ns: float | None = None, immediate_valid: bool = Fa
         else:
             segment_floor = 0.0 if time_ns < 805.0 else 830.0
             osc_out = 0.9 if sum(segment_floor < edge <= time_ns for edge in osc_edges_ns) % 2 else 0.0
-            phase_marker = 0.9 if sum(segment_floor < edge <= time_ns for edge in marker_edges_ns) % 2 else 0.0
+            if marker_mode == "pulse":
+                phase_marker = 0.9 if any(edge <= time_ns < edge + 5.0 for edge in marker_edges_ns) else 0.0
+            else:
+                phase_marker = 0.9 if sum(segment_floor < edge <= time_ns for edge in marker_edges_ns) % 2 else 0.0
             freq_metric = _metric(mod_in)
             first_cycle_done = (time_ns >= 125.0 and time_ns < 805.0) or time_ns >= 1855.0
-            valid = 0.9 if (immediate_valid or first_cycle_done) else 0.0
+            if one_shot_valid:
+                valid = 0.9 if (125.0 <= time_ns < 135.0 or 1855.0 <= time_ns < 1865.0) else 0.0
+            else:
+                valid = 0.9 if (immediate_valid or first_cycle_done) else 0.0
         rows.append({
             "time": time_ns * 1e-9,
             "mod_in": mod_in,
@@ -128,6 +144,11 @@ def test_task381_period_checks_are_timing_metamorphic() -> None:
     assert ok, detail
 
 
+def test_task381_accepts_narrow_pulse_phase_marker() -> None:
+    ok, detail = check_v4_940_fm_vco_modulation_source(_rows(marker_mode="pulse"))
+    assert ok, detail
+
+
 def test_task381_rejects_old_pass_constant_frequency_oscillator() -> None:
     rows = _rows(constant_period_ns=100.0)
     assert _legacy_weak_accepts(rows)
@@ -142,3 +163,15 @@ def test_task381_rejects_old_pass_immediate_valid() -> None:
     ok, detail = check_v4_940_fm_vco_modulation_source(rows)
     assert not ok
     assert "P_VALID_AFTER_ENABLE" in detail
+
+
+def test_task381_rejects_one_shot_valid() -> None:
+    ok, detail = check_v4_940_fm_vco_modulation_source(_rows(one_shot_valid=True))
+    assert not ok
+    assert "P_VALID_AFTER_ENABLE" in detail
+
+
+def test_task381_rejects_500ns_lower_clamp_period() -> None:
+    ok, detail = check_v4_940_fm_vco_modulation_source(_rows(clamp_period_ns=500.0))
+    assert not ok
+    assert "P_PERIOD_MODEL" in detail
