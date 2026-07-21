@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "025-dac-mismatch-unit-weighting-model",
+  "checker_task_id": "v4_025_dac_mismatch_unit_weighting_model",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "2f34736e7d0ea68323a72faae320b0275806f135a6220f1697a4daa1e22be302",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "36c144fd9e65d8029e5af06f22479904aa531a4c8c17258a9d1ffd71efe1bd9c",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "025",
+  "family_spec_sha256": "1acdd25464a0149d401d5d678772da49ab86763afebd8c9867bbb9767643b3d5",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a3523cef347217eae01b0766ec46d5451bce8612d107d2b476c90fafbb6d4274",
+  "public_contract": "tasks/525-dac-mismatch-unit-weighting-model-testbench/public_contract.json",
+  "public_contract_sha256": "faf9e430a62f08d670dc4e1c9d3992be990f312252e68152b6614d9bfc88dee1",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/525-dac-mismatch-unit-weighting-model-testbench",
+  "task_id": "v4-525"
+}

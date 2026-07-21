@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "068-multiphase-clock-generator-4ph",
+  "checker_task_id": "v4_068_multiphase_clock_generator_4ph",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "d4e15e6672eb32bfb445d5f7e3b9ceb84a0864d07fc0e325e45b8903c61c82fc",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "a74a86f53656355d1bdfc24bab504cf11f8bcacfdc831ac2d6f4c2fc089b7fb8",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "068",
+  "family_spec_sha256": "75b86ba63b010056ec23087ae5e251b59196aff7f4941c10b27a2a422bbc89f4",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "01b8eae6c1ccd0e62bc8795ad03fba457b8f7e39838704f44ffc3c118e122b1b",
+  "public_contract": "tasks/568-multiphase-clock-generator-4ph-testbench/public_contract.json",
+  "public_contract_sha256": "58a7eabd300b20fbae983a79116c69eedd875a07ccfdc6edc63e53f0b7e06ac2",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/568-multiphase-clock-generator-4ph-testbench",
+  "task_id": "v4-568"
+}

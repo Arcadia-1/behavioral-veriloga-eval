@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_threshold_too_high/certification.json",
-        "certification_sha256": "f20a626651c392533c92e437e9b2671d85334d4bbfc72bdf373e799fc76b2cc2",
+        "certification_sha256": "1f60e34490f235f2d574731031369d3689754efbaab7b3fa679ca9da32fae87d",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "eee9bb6ff5bf4e3b4798e191499bd885079c2f3958f17582fef3169af78e491d",
+        "mutation_bundle_sha256": "b6117b9feda5e3c5a505ed16b7a5bf83a3c272d3eee72a88d02003bf919df0ad",
         "mutation_id": "neg_003_threshold_too_high",
         "source_catalog_certification_path": "negative_variants/neg_003_threshold_too_high/certification.json",
         "trigger_condition": "Uses a clock threshold above the high level, so the divider never counts edges.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "3aef215d299224c4d46f285c0ad11c2bf9ee325f828c7450f24c13d6beb21bb9",
+        "certification_sha256": "8873f7e3369ab1a5cafac6ecc5714e858febb8b849cc80d3e791cff1b299b6da",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "bd1f0a3aad049178eecb056e7842c7806c05ed07cbfa6da962e2697bcb025ead",
+        "mutation_bundle_sha256": "71b852a82496bcdff7212117b1b55eb015a9d97e87e7ec9ba4feb03901cb74d8",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_floor_minus_one_ratio/certification.json",
-        "certification_sha256": "450beffec20886d8e3f5bf593dc50ff82c0053fd73d97d6025f1497bccbd68b9",
+        "certification_sha256": "fc1116a45852e9073057e277d0de600e2bf20b4bbfd8fb7d2311db139298b309",
         "fault_class": "floor_minus_one_ratio",
-        "mutation_bundle_sha256": "a73c91e3ae55039f1b35e8e407783d39dc4b30ab1d4a55ec35cd370c0f8128e6",
+        "mutation_bundle_sha256": "267df327aa9b3bcf87738b0fcbcaf5c05124c500abccc27c449ac88b00c293eb",
         "mutation_id": "neg_002_floor_minus_one_ratio",
         "source_catalog_certification_path": "negative_variants/neg_002_floor_minus_one_ratio/certification.json",
         "trigger_condition": "Uses DIVCTRL-1 as the divider ratio.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "917ffe2c9724d0c43769d54135dab7ef9f275b0b1b29017a85481472172285e7",
+        "certification_sha256": "28cb800c994e18dc9229f44fbebbbe21da604a130dae62a99bee5d8c755c621d",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "952350c6cf1764076a459f69ab61f66a8af8d71635f5728a6ba01754790606bc",
+        "mutation_bundle_sha256": "4dd09c7a6669d34ed6d0289435cf88122a998ea2cb6d3e1921404bfe571d2f96",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Programmable Divider By N: scales the metric output, preserving the main path while failing measurement checks.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_output_when_one/certification.json",
-        "certification_sha256": "2b037af1eef75f3829ea2f3ea7df096368deacc55be005ac9fe3ef9828c7692d",
+        "certification_sha256": "e37cb173f4acd789474b2a28f05a8233aaedfbd6e4c7cb2cbc592d3fe0d54fc4",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "eecb73d844428e24976cd291ed8c8f2864ae1a4f75b80b540ba15c2a11375d9c",
+        "mutation_bundle_sha256": "11e3326545e5c85c4a007f73114a2d23c8a1eb4ea83ccb75a24c71dec85fbd3d",
         "mutation_id": "neg_004_output_when_one",
         "source_catalog_certification_path": "negative_variants/neg_004_output_when_one/certification.json",
         "trigger_condition": "Asserts OUT when the counter is one rather than zero.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "9780180881b5b694f6aa13271e85e22191d8f9f53548fa11c8057b6f6090e82a",
       "score_deck_sha256": "66686fd677ab5e94e3b2bff865e15e291e11dcf263d2a4d3269d6eae4ec2e3bf",
-      "task_certification_sha256": "e59e30f657e8934408657e70e2c6921afd23b23ae06d36f09cd18d1a460a1e72",
-      "task_record_sha256": "665e5dc2a19c9af12b3bf2a29779a8441141e7c83050d15405b5ccb6f95583b1"
+      "task_certification_sha256": "40e8da6b75deb2cdda2c2a475004cf98b2c324e2fcf0d79a9837b704a5cc4d72",
+      "task_record_sha256": "a1097880d2f80d7c36fd20309dfc1cb181cc642b29ffce3d78b4a38e28219c4e"
     },
     "release_dir": "234-programmable-divider-by-n"
   }

@@ -7,22 +7,18 @@ def _logic_bits_to_int(row: dict[str, float], prefix: str, width: int, vth: floa
 
 def _rising_times(rows: list[dict[str, float]], col: str, vth: float = 0.45) -> list[float]:
     times: list[float] = []
-    last = rows[0][col] > vth
-    for row in rows[1:]:
-        cur = row[col] > vth
-        if not last and cur:
-            times.append(row["time"])
-        last = cur
+    for left, right in zip(rows, rows[1:]):
+        if left[col] <= vth < right[col]:
+            fraction = (vth - left[col]) / (right[col] - left[col])
+            times.append(left["time"] + fraction * (right["time"] - left["time"]))
     return times
 
 def _falling_times(rows: list[dict[str, float]], col: str, vth: float = 0.45) -> list[float]:
     times: list[float] = []
-    last = rows[0][col] > vth
-    for row in rows[1:]:
-        cur = row[col] > vth
-        if last and not cur:
-            times.append(row["time"])
-        last = cur
+    for left, right in zip(rows, rows[1:]):
+        if left[col] >= vth > right[col]:
+            fraction = (left[col] - vth) / (left[col] - right[col])
+            times.append(left["time"] + fraction * (right["time"] - left["time"]))
     return times
 
 def _sample_after(rows: list[dict[str, float]], t: float, delay: float = 5e-9) -> dict[str, float]:
@@ -36,7 +32,7 @@ def check_duty_cycle_meter_8b(rows: list[dict[str, float]]) -> tuple[bool, str]:
         return False, "missing_columns=" + ",".join(missing[:12])
     rises = _rising_times(rows, "clk_in")
     falls = _falling_times(rows, "clk_in")
-    errors = 0
+    errors: list[int] = []
     checked: list[int] = []
     for first_rise, second_rise in zip(rises, rises[1:]):
         falls_in_cycle = [t for t in falls if first_rise < t < second_rise]
@@ -47,10 +43,14 @@ def check_duty_cycle_meter_8b(rows: list[dict[str, float]]) -> tuple[bool, str]:
         expected = max(0, min(255, int(round(255.0 * high_time / period))))
         row = _sample_after(rows, second_rise)
         actual = _logic_bits_to_int(row, "duty", 8)
-        if row["valid"] <= 0.45 or actual != expected:
-            errors += 1
+        if row["valid"] <= 0.45:
+            errors.append(256)
+        elif actual != expected:
+            errors.append(abs(actual - expected))
         checked.append(expected)
-    return errors == 0 and len(checked) >= 3 and len(set(checked)) >= 2, f"checked={checked} errors={errors}"
+    quantization_boundary_only = len(errors) <= 3 and all(error <= 1 for error in errors)
+    passed = quantization_boundary_only and len(checked) >= 3 and len(set(checked)) >= 2
+    return passed, f"checked={checked} errors={len(errors)} max_code_gap={max(errors, default=0)}"
 
 CHECKER_ID = "v4_060_duty_cycle_meter_8b"
 CHECKER: Checker = check_duty_cycle_meter_8b

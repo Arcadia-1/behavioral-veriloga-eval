@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "fm_vco_modulation_source.va"
+  ],
+  "canonical_dut_source_slug": "381-fm-vco-modulation-source",
+  "checker_task_id": "v4_381_fm_vco_modulation_source",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "870cecd67e33ba9e30724b25b749d6ba467abe65e8f009c45bc73c198169440a",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "87b60e37ed0f177ef84fdea651024bf9d626500f2c78508381e2edb69c61e2cd",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "a3a9c268bc1cd0254985072544d0925b992350fdca5d34999627e6321a278d32",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "381",
+  "family_spec_sha256": "f2451f43e5f762418f1748235736da9e22edfd3b6fc5a778dfb1da6eea61e2f6",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "fbc2bfbc21ee7d82d20c3f860f8c2e6263b6172fdb71eb064f57814a9dd103b2",
+  "public_contract": "tasks/1381-fm-vco-modulation-source-bugfix/public_contract.json",
+  "public_contract_sha256": "611b97fe9a4c86a1747a32b782b6d4bfaecf10b949ce6a119226ea5fa0f759d7",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1381-fm-vco-modulation-source-bugfix",
+  "task_id": "v4-1381"
+}

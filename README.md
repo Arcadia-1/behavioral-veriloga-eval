@@ -69,15 +69,16 @@ be committed.
 
 ## Validation
 
-Use EVAS as the fast local evaluator and debugger. Use Spectre as the final
-judge for gold promotion and paper-facing parity claims.
+Use pinned strict EVAS as the formal evaluator for gold promotion and scoring.
+Spectre may be used for optional paper-facing parity studies, but it is not a
+benchmark certification or release requirement.
 
 For benchmark changes, prefer:
 
 1. static/source integrity checks;
 2. EVAS AHDL-like lint preflight for changed v3 tasks;
 3. EVAS gold validation for changed tasks;
-4. Spectre or dual EVAS/Spectre validation for promoted/paper-facing evidence.
+4. optional EVAS/Spectre validation when making a simulator-parity claim.
 
 For a quick repository sanity check:
 

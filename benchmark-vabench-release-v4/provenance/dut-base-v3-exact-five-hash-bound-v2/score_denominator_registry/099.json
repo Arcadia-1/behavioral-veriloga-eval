@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "5904e3a9619335b058710f945bddfd0849e5670ff5b89d164483de9115e8f6ab",
+        "certification_sha256": "ad96502d6b54ef8938789c6135bd8b95512a5e233bf80589f924b6d6757b722a",
         "fault_class": "threshold_boundary_error",
-        "mutation_bundle_sha256": "5d51ed784e4b14efa13b7abaee3dc1ffc5161bfdb920922fc1ef1af53115b88a",
+        "mutation_bundle_sha256": "02eb01d24b1b476f0e5197d18e65801bfb27bf9414f2bb01d3638a7d53327b06",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "boundary stimulus crosses the public threshold conditions for Reference Startup Enable Flow",
@@ -20,9 +20,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "ec03f09ebd16345120a5761872a07fb1abc881c65720763561556871dd5694ce",
+        "certification_sha256": "ca2d0d1933db8a52787e066e6a8563be02e76df7ce3b011b6a3312fd24599e06",
         "fault_class": "reset_semantics_error",
-        "mutation_bundle_sha256": "4bf4b0d8440015a0f36b7425bdfb8dd86901469247450c4ac61250f777129744",
+        "mutation_bundle_sha256": "0cfaa2ff29a5aa832b6100f3e8db1a43c2994d6cb75643355f67594410156015",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "reset/recovery stimulus exercises Reference Startup Enable Flow state override behavior",
@@ -34,9 +34,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "af48fcbc7c60e812f162178b7da09d2f539d6ef52b4d4ca667467c2b8b9bbc68",
+        "certification_sha256": "8d83d7342eec1a9e07c82cfa2299910b36a73276fa3135b036dc5e9a6240c57e",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "784c9e3cf4214d9a188a5612a36257d2242f51517d5107a26f02d7fa8137a57f",
+        "mutation_bundle_sha256": "6190d6e11f14bafe9035b191175bad0acff6e180bb902ed76e091d84f388f38e",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "nonzero behavioral stimulus requires observable Reference Startup Enable Flow outputs",
@@ -47,9 +47,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "97c655d37b4fd8d952c5942dd0a4f075fa1389b94578ecb2c68090d40cb8e369",
+        "certification_sha256": "a322ea4f7ca95aec5c12431e272fb84fb567971fd8b7d020a5ef8ce866d3927e",
         "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "8a9f76aa011556283fd38213ca74bb7a51f7ebf36b28a06cec3ee7f9a09c1c45",
+        "mutation_bundle_sha256": "20fc1ed02c531990c91ecb0f46c60c75cb0ea7b8cc729c890afd760790e5996c",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "score stimulus observes the public metric/output scaling for Reference Startup Enable Flow",
@@ -61,9 +61,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "92990b23508cbc358b89dfdeb8f1715fcc68b40379684e5cf1a9bf37436e7809",
+        "certification_sha256": "cfcbe0d941162cdaa591f927f8238abbd3d919c4be9943beeea003804b8804e5",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "8cab7ea638146bed206f1cf7fa061d96de6e67bcfd0418a3bff4e4fb94f6e392",
+        "mutation_bundle_sha256": "1ac2fcc90b3fb30e2985da1941c3c2d69a2856997139489e6e745bbe139496fe",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for Reference Startup Enable Flow",
@@ -78,8 +78,8 @@
     "hashes": {
       "mutation_catalog_sha256": "642e0cbc28b8372804089a19e3b9e69cf945f82e0be36c7c623520e2783f4a00",
       "score_deck_sha256": "eab68179d0e8d6870f8c7e5842ff3e803e226b5e948bee4bb4c9661d0b0b5372",
-      "task_certification_sha256": "13f1bc024d8a4491412aa5586602547aa1d3b3684fb92af7af3845f4c6e9b8b1",
-      "task_record_sha256": "a940b18af41baa741034d087443cc3ad325972d8efacb666213b328ae64a147a"
+      "task_certification_sha256": "954914237a6c65530ef5aa3dc236ef0b9576f494b94799fc5709fe19290cbf2b",
+      "task_record_sha256": "c7a270737eb7b23312b7c1b449bc18f38d62293ceda79ae39d7e57b11509afe3"
     },
     "release_dir": "099-reference-startup-enable-flow"
   }

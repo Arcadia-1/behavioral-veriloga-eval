@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_BIDIRECTIONAL_STEP_LIMIT, P_EVENTUAL_TRACKING satisfy the public contract; fault class response_direction_inversion is rejected",
-    "observed": "EVAS: property_id=P_PERIODIC_UPDATE category=semantic_mismatch expected=public_slew_contract_satisfied observed=mismatch_count=4 event=primary_excursion@2.500000e-08s; rise=2.500e-08 fall=9.303e-08 slopes=None/None high=0.0 final=0.0 insufficient_excitation=2; P_INITIAL_ZERO mismatch_count=0; P_PERIODIC_UPDATE mismatch_count=4; P_BIDIRECTIONAL_STEP_LIMIT mismatch_count=2; P_NEAR_TARGET_SETTLE mismatch_count=2; P_EVENTUAL_TRACKING mismatch_count=2",
+    "observed": "EVAS: property_id=P_PERIODIC_UPDATE category=semantic_mismatch expected=public_slew_contract_satisfied observed=mismatch_count=6 event=primary_excursion@2.500000e-08s; rise=2.500e-08 fall=9.303e-08 slopes=None/None hold_fractions=0.000/0.000 high=0.0 final=0.0 insufficient_excitation=2; P_INITIAL_ZERO mismatch_count=0; P_PERIODIC_UPDATE mismatch_count=6; P_BIDIRECTIONAL_STEP_LIMIT mismatch_count=4; P_NEAR_TARGET_SETTLE mismatch_count=2; P_EVENTUAL_TRACKING mismatch_count=2",
     "violated_property_ids": [
       "P_BIDIRECTIONAL_STEP_LIMIT",
       "P_EVENTUAL_TRACKING"
@@ -18,10 +18,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_016_slew_rate_limiter",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 325
   },
   "family_id": "016",

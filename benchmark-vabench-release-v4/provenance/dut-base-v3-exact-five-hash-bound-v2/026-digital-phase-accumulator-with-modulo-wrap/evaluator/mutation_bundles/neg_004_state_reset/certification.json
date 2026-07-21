@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_PHASE_DERIVED_CLOCK satisfy the public contract; fault class state_reset_or_enable_error is rejected",
-    "observed": "EVAS: v4_026_digital_phase_accumulator_with_modulo_wrap checked=2 mismatch_count=5 coverage=timer_events=0 wraps=0 inferred_step=0 cadence_s=0; P_TIMER_INCREMENT checked=0 mismatch_count=1 expected=checked>=1 observed=checked=0 sample_time=0 metric_gap=1; P_MODULO_WRAP checked=1 mismatch_count=1 expected=at_least_2_bounded_wraps observed=wraps=0 sample_time=0 metric_gap=2; P_PHASE_RAIL_SCALING checked=0 mismatch_count=1 expected=checked>=1 observed=checked=0 sample_time=0 metric_gap=1; P_PHASE_DERIVED_CLOCK checked=0 mismatch_count=1 expected=checked>=1 observed=checked=0 sample_time=0 metric_gap=1; P_PARAMETERIZED_PERIOD checked=1 mismatch_count=1 expected=stable_positive_timer_cadence_and_step observed=events=0,cadence=0,max_gap_error=inf,step=0 sample_time=0 metric_gap=inf",
+    "observed": "EVAS: v4_026_digital_phase_accumulator_with_modulo_wrap checked=2 mismatch_count=5 coverage=timer_events=0 wraps=0 inferred_step=0 cadence_s=0; P_TIMER_INCREMENT checked=0 mismatch_count=1 expected=checked>=1 observed=checked=0 sample_time=0 metric_gap=1; P_MODULO_WRAP checked=1 mismatch_count=1 expected=at_least_2_bounded_wraps observed=wraps=0 sample_time=0 metric_gap=2; P_PHASE_RAIL_SCALING checked=0 mismatch_count=1 expected=checked>=1 observed=checked=0 sample_time=0 metric_gap=1; P_PHASE_DERIVED_CLOCK checked=0 mismatch_count=1 expected=checked>=1 observed=checked=0 sample_time=0 metric_gap=1; P_PARAMETERIZED_PERIOD checked=1 mismatch_count=1 expected=supported_public_or_score_timer_cadence_and_step observed=events=0,cadence=0,max_gap_error=inf,step=0 sample_time=0 metric_gap=inf",
     "violated_property_ids": [
       "P_PHASE_DERIVED_CLOCK"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_026_digital_phase_accumulator_with_modulo_wrap",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 1801
   },
   "family_id": "026",

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_level_metric_signed/certification.json",
-        "certification_sha256": "cb36c600303fa7ac891494924f88cfd67a7305063af5eeb6c4311c9d5e269b4d",
+        "certification_sha256": "bb3a8a5d386fc7e5bbf279f7ea97a54aca4741f075ed60eaff5bceb67053ccb5",
         "fault_class": "level_measurement_error",
-        "mutation_bundle_sha256": "f93ab2c98021a632159790cfdec229e379cc50464388f7b12ee6f7e1d8b4008a",
+        "mutation_bundle_sha256": "7b0102efadba89b7425b8c9391b69751641c3f2094006c264e2e6c036721d7e6",
         "mutation_id": "neg_001_level_metric_signed",
         "source_catalog_certification_path": "negative_variants/neg_001_level_metric_signed/certification.json",
         "trigger_condition": "vin is below vcm at a sampling edge.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_filter_no_smoothing/certification.json",
-        "certification_sha256": "65fbc16d51af1644522a0b2e6e9cce2e7d6d3e803269c559f79e29a6dabeaebf",
+        "certification_sha256": "93fc5bfd8d74514e4c40d203c3f4b8a7eba5dd9ea38fc66784dda3cc5f10da8d",
         "fault_class": "filter_response_error",
-        "mutation_bundle_sha256": "064fbafe97cdeb11bcb5993dc15bbc792f0c48475dadf3d0ac629b2507292c6e",
+        "mutation_bundle_sha256": "76a9ff11dcdfe221aa788eb041fc2afd9dd2f430cec6d8fc8e73a7e5d9db4139",
         "mutation_id": "neg_003_filter_no_smoothing",
         "source_catalog_certification_path": "negative_variants/neg_003_filter_no_smoothing/certification.json",
         "trigger_condition": "The VGA output steps away from the current filter state.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_clip_flag_stuck_low/certification.json",
-        "certification_sha256": "744b0a7c6a90767609fcd4d4c978532c2e0d80fda535820ec1ad314d520e0b76",
+        "certification_sha256": "0f8cbd607f4c45d020c263d27f79d7f5ac8d0d4ee9b0ee8ef96e9a2e8768c268",
         "fault_class": "clip_status_error",
-        "mutation_bundle_sha256": "3055908811c9508dc624d4dda43798f4e5bf207c0806021c1e3ca04a13e6c64a",
+        "mutation_bundle_sha256": "cc2aa9c50e5c741659989d1565e33b6b86a49a6f2afb80d965341134c712b2cc",
         "mutation_id": "neg_004_clip_flag_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_004_clip_flag_stuck_low/certification.json",
         "trigger_condition": "The unclamped filtered output exceeds a supply rail.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_reset_gain_not_cleared/certification.json",
-        "certification_sha256": "febcedf6b6be156b00cef5d9e07e83e60ef9be8f23156b474347d9b09fd79c0f",
+        "certification_sha256": "9f38f0d3c263d4aee40cede3fd75e84969167a0c78be79b35975892332802e80",
         "fault_class": "reset_disable_clear_error",
-        "mutation_bundle_sha256": "dbb7982be09d3e11d4dc9a7098fffcfa732d5970eb0b8ba4fb75f83f3694ea21",
+        "mutation_bundle_sha256": "b521475fb0b5f68ac80db30e4188b748550e8264c1ddd55445e3920383b8b314",
         "mutation_id": "neg_005_reset_gain_not_cleared",
         "source_catalog_certification_path": "negative_variants/neg_005_reset_gain_not_cleared/certification.json",
         "trigger_condition": "Reset is asserted or enable is deasserted after the gain code has moved.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_gain_direction_reversed/certification.json",
-        "certification_sha256": "48fef3b9a0474d6e3462551905539e6dd6d0320110c2542d4d58fce17252fb7a",
+        "certification_sha256": "3ab07e93c6ea4186e93bcc553fcb4115aadfd37609d3ced0e9ce0e6b15d29f10",
         "fault_class": "gain_control_polarity_error",
-        "mutation_bundle_sha256": "66b2d4b9748cc62ec357ca055fab6eadda886ec3b7a820adefe5e7621bda6a3c",
+        "mutation_bundle_sha256": "d70caa19d0a3169fca8eb926aa98cb5db3efa19939cf56941c3f799f3d868831",
         "mutation_id": "neg_002_gain_direction_reversed",
         "source_catalog_certification_path": "negative_variants/neg_002_gain_direction_reversed/certification.json",
         "trigger_condition": "The measured level is below the target deadband.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "d9272f52533abd2ef0f50eb1552d28fea8d71cc12197b90d5250c0b1676473fa",
       "score_deck_sha256": "96794019a24126d575ccb1ba27a217e5db96da042269150eab1b9b1115d6c0db",
-      "task_certification_sha256": "d3f6b1a4fcb080d7c7ca55d58f7bfc241776cede1e71bb09e73f33615f752c41",
-      "task_record_sha256": "fb10dc1d90a60d0c6854d103c8660773d3fb599bb4b099575397cb11710b0e88"
+      "task_certification_sha256": "704e874da3041f05e10b0c809acbd3273ac561076005e714c26da105b06e9246",
+      "task_record_sha256": "fa49aa18c341fecc1ea6aa7d9697d7f3e96c00ed1c6198ac13636b411f437bc9"
     },
     "release_dir": "367-baseband-agc-filter-chain"
   }

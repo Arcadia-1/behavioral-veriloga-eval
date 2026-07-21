@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_inverted_difference/certification.json",
-        "certification_sha256": "da1fd42cfb404f0ba4d6bd35a24f7755b76adee4e9e05349fd4f841fcda01c99",
+        "certification_sha256": "cbaf6406c7a3c46644c17566935dbe10e7744e553a94f5be3f09974256ea51aa",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "9065c801191358a3af12b83203552aa1bdaa1278d8b9442e935e387087525eec",
+        "mutation_bundle_sha256": "87313e650e66451890e7ab1a466602c1bdbe63c53666a5da325d75b33fe08807",
         "mutation_id": "neg_002_inverted_difference",
         "source_catalog_certification_path": "negative_variants/neg_002_inverted_difference/certification.json",
         "trigger_condition": "Uses sigref minus sigin in the tanh comparator.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_half_slope/certification.json",
-        "certification_sha256": "ce25553972a0b76e4e9532cac3dd500d655e170d41a30da352101237da256d9a",
+        "certification_sha256": "6193d62afcc25a37bdc826823b1db07a45e265cd714b23bae5441ed2f7a52d1c",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "05d535b43ad549502f9c4bf3dc1810d719922ef2cfbec5dabb2d4850163007ba",
+        "mutation_bundle_sha256": "5a7c0bda84924e81bb695a05a30d46da8170c35c9a99e61a4e8caa021081a228",
         "mutation_id": "neg_003_half_slope",
         "source_catalog_certification_path": "negative_variants/neg_003_half_slope/certification.json",
         "trigger_condition": "Uses half of the requested tanh comparator slope.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "9ce7cbf57579dbb2012a166e84e318a5fa46a0f013e7cd51a26e7eca0de2663f",
+        "certification_sha256": "25542e335e96741ad1e0cccd54078c2ef1d4707ae37aa61c5606f6c09912de78",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "eebf03ffe60def8365265edd3388c4eab3513880b51a4d4c91277f34b6b22ffd",
+        "mutation_bundle_sha256": "6e628100a789fae3ba5f7f110792770eb8d1b1de2d9defdef96e780868e35102",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales the tanh output and therefore violates the public smooth-transfer contract.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "2674d87f81f13f7fa823b3f4548c133af6f1c600bc3ba82cfc7ff5ddbd61c35e",
+        "certification_sha256": "9d25cdded00c15975c0e3aa12fb1624209e1eb0d10ba97d27f728964ab70ef88",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "8f12c1dd67be51bbf5c31f6aa50ebafdb7b49425fb9e5a2d2c769e70f9aa3921",
+        "mutation_bundle_sha256": "ce6c06c98971e7bcd8822595b376d29cb14f34164499d42ba63ed10d74fd3527",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_output_span/certification.json",
-        "certification_sha256": "4093e9000e4fccc379348f4920086ebf7485660aafc733927763bcc360a396db",
+        "certification_sha256": "75f94deaece4c793bede26b25020393d67a45839004a593322363c8e6714626c",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "417d8681ac7b75189831891da1133c8a845044c69d91f179d4376d6118bf16a2",
+        "mutation_bundle_sha256": "0aa3d67f3edfb5a15f7ce22b347bfbcd3990c0916fe8f7166e45cd8213a3723d",
         "mutation_id": "neg_004_half_output_span",
         "source_catalog_certification_path": "negative_variants/neg_004_half_output_span/certification.json",
         "trigger_condition": "Uses half of the requested output span.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "a2fe74c4bd3668b8ff5c215a0a104da411375663e36d30ed54ec20b6e8784d4e",
       "score_deck_sha256": "ad2cda9566424b24cb03068ab3a8df4544aef2b474e30cf85daf27fe598be71e",
-      "task_certification_sha256": "e2e7b35b8c2a3fbe65cc7c1cc6a5ef61b913ce7bf7f85421aaf8a140ba9cb5a8",
-      "task_record_sha256": "8a63084b4db60128cc1ab65178767a00f3f3b2b4040a70039f134c90741ebfdf"
+      "task_certification_sha256": "b05148288dafee637a9241f89ae694b7f98edd2710df54959c81af82ba100c89",
+      "task_record_sha256": "67fad1e67d3af5f612ee87b922b1db73a18bd943dbb66a112b4b6b698a45f1a5"
     },
     "release_dir": "124-smooth-comparator-tanh"
   }

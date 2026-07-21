@@ -3,28 +3,28 @@
   "checker_task_id": "v4_062_latency_counter_ready_valid_12b",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "7c491a55c9421184e3c446606f3aa4e5479bc1e743fb48d2725fa9c6cd2c3416",
+    "certification.json": "d1cd7bca16bfe6a06667845d4ddc236e73d53d94199742cf68096efae968f6d2",
     "checker_profile.json": "c9891bec6c33695348fa9ba926b2d7241d7b613256893cf41790a99b7fdb39bf",
     "derivation_manifest.json": "c12c4873f0f16116050235ffa3f84bbb323ece57c4520cd8869c9e117532e875",
     "family_spec.json": "58cbb197268acec1b599a1c218d7292aee395080c1b2e39b0bddefc4fe569405",
-    "harness_spec.json": "1f73d511571fee329befbdbb05ef1c71f0e2f19edbccf03105395df929fe5218",
+    "harness_spec.json": "3f56449bda0b274da7fc231b10abad477d4199ea9f826afb6ca76e5c60ac0cad",
     "mutation_catalog.json": "6d29c188bc31469723201abcbf390c8dfe935059fac7368bab58bf5d74b84f30",
-    "profiles/feedback.json": "0ba259dfbdb22561d892807c4c131e6bf5ecb6b52e983d678706618dbf279374",
-    "profiles/score.json": "b8ead8d8da84e7b201ec2300f601ef36c54a99fce36ae0abd4836fd31e22dd7c",
-    "score_tb.scs": "f5b3744568c4ef863eac457b6b4f5c85ce766b3f0d1b68938dc19e4667c74a24",
+    "profiles/feedback.json": "b884b256fcea36c2ca78f4616473477b46770ec2e5ea8ab0e68269cc093704d7",
+    "profiles/score.json": "402dffb3dd6b0b8a9913ca62f75709b38bb3f07a856faf9e70b7ba65605e9b90",
+    "score_tb.scs": "cc5e021769f276ec79714d011df287009857361ab3287e6d0e3922e3e3c59792",
     "solution_tree": "a794e1a7b758fa07184b9e944108d5683027b3ac3c2c3e03b1afe32aba511821",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
   "form": "dut",
   "public_hashes": {
-    "feedback_tb.scs": "a46e8e06611ecfca020958d437c3509966d02cd1117e6a758e58afd56380f3ec",
+    "feedback_tb.scs": "da928faf6755220a6d6458b96511ef7736cba0a078e0e082ca6a137dcd1d9cf8",
     "instruction.md": "925c0f238126786fe5c173750e02c6045a18c83c513362812a6e98dbc1256631",
     "public_contract.json": "36677fe6f6fc6031e5c0582b45666bef0ff15cad8c7a846ea7be9842faae1578"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "7c491a55c9421184e3c446606f3aa4e5479bc1e743fb48d2725fa9c6cd2c3416"
+    "sha256": "d1cd7bca16bfe6a06667845d4ddc236e73d53d94199742cf68096efae968f6d2"
   },
   "release_dir": "062-latency-counter-ready-valid-12b",
   "schema_version": "v4-canonical-dut-release-task-v1",

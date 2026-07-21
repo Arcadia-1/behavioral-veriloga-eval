@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "216-sar-13bit-serial-decoder",
+  "checker_task_id": "v4_216_sar_13bit_serial_decoder",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "ae3e9967718d3ede81f5ea973ce90fc50c35fab817f245fbd55039b2e24aaf76",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "86dcd608c81bbf7eeb0499bfcee04b46c647d563a67f85e114dd157fefd4f55c",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "216",
+  "family_spec_sha256": "b2cc0614235afc6b0dea7fd9169768dc2bcb5f2330677f0659d9535759f8207c",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c339bd195ba70c308951475b41099da5e765d0c673859a10aed34b64d53b5455",
+  "public_contract": "tasks/716-sar-13bit-serial-decoder-testbench/public_contract.json",
+  "public_contract_sha256": "833db83ece167f48e5deac472f4c47393b317413055168b016185603d65a0f11",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/716-sar-13bit-serial-decoder-testbench",
+  "task_id": "v4-716"
+}

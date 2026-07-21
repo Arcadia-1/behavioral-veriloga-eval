@@ -1,0 +1,21 @@
+{
+  "corners": [],
+  "deck_overrides": {},
+  "deterministic_seed": 0,
+  "generated_from": {
+    "script": "render_v4_harness.py",
+    "version": "v4-harness-renderer-v1"
+  },
+  "harness_spec_sha256": "e7991617d22aa5b6e76c6de7d92048950fbbe26b09a991c894443b0aee88a8b6",
+  "parameters": {},
+  "profile_name": "score",
+  "property_ids": [
+    "P_CLOCKED_CODE_SAMPLING",
+    "P_WEIGHTED_REDUNDANT_CODE",
+    "P_OFFSET_MIDRISE_OUTPUT",
+    "P_OUTPUT_SMOOTH_HOLD"
+  ],
+  "public_visible": false,
+  "schema_version": "v4-harness-profile-v1",
+  "simulatorOptions": {}
+}

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_count_normalization/certification.json",
-        "certification_sha256": "dd2c71d3f8cd163da9d2080149d3cc2913115f00120cc44efa348535835af9f4",
+        "certification_sha256": "e2c9b009ac6bd68f35c43a5e96d6aeb542d8b6b9eb57741a3fd3b43d94163b7a",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "fa1160e3119a580bc709ae77b81463283e7805c9049e7b7d714404a5de690a80",
+        "mutation_bundle_sha256": "77d67fd25d01a0868c37f024513a67b55dc70dc2ffe7812f674c11c2548a7746",
         "mutation_id": "neg_002_wrong_count_normalization",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_count_normalization/certification.json",
         "trigger_condition": "Normalizes flash count by four instead of eight.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_uncentered_residue/certification.json",
-        "certification_sha256": "601c1d472ebf7ebb5e6a29d680d2dc16566ae69931a6c0a4a9081af74d6db799",
+        "certification_sha256": "4a71da79fd6201ead1330ed3b37c8db9e61142089f4e19b6dc4c2d411c3040c1",
         "fault_class": "uncentered_residue",
-        "mutation_bundle_sha256": "30ac09a7fac7b35c384d3059b2e8a8e74287b5f74078fd83d490dff598ab51f2",
+        "mutation_bundle_sha256": "08cfd49da068d5914e5e1d57ebe987e5f2ea3b6fd10b2858409362d70b48fc72",
         "mutation_id": "neg_003_uncentered_residue",
         "source_catalog_certification_path": "negative_variants/neg_003_uncentered_residue/certification.json",
         "trigger_condition": "Computes residue without subtracting mid-code four.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "3c66a888f8ac43c9fa6d0946cbcb2b20e7af94723e24d4d981c3fc254b424e8f",
+        "certification_sha256": "9ef3c22746c9c0ceab5338ee20d174171aac7010db312ba458e181c2f3c5f6c8",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "466ae8ba15be1e4929cc138d55d5eaa16c060272363e807fbc1ee2ce27d9f1d7",
+        "mutation_bundle_sha256": "5af3f66db3b7cddb7377e18e30b20543089cf1f218a81e1bf88722b30981fbe0",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Ref Flash 8level Decoder: scales the metric output, preserving the main path while failing measurement checks.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "841769543c8473ffbcb2233e6a1f5ea33cfd4aa234bfcd9ec232080052b0c436",
+        "certification_sha256": "4afa8bcf2d0675a3a5ebeedb96f8992dd337e1d3a3d423548ca1237c45f1c324",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "e315eccff380fa1a03f05d939105a5c24c3b956f9374a85f066e7ac5c8fee772",
+        "mutation_bundle_sha256": "733669805ff75317c1df91a1609fb97079f93cb6d16392e5b5a1daee8078c5ce",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_ignore_upper_taps/certification.json",
-        "certification_sha256": "969e227715baf2deebb9df968570492bf365022d0251ab3335945a2866c0086e",
+        "certification_sha256": "79bc623a5f21462a1235240f2a41e77c11527e978ab4533cec15589eabcb8040",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "e2b679846c65ec1fe63410095c0d8bd68d75ef8133c8044e19d65b32b19f6b3c",
+        "mutation_bundle_sha256": "8edc0e15548f8dbf57e80b709676a311b969cb502eff6567f44ea85fd59915d8",
         "mutation_id": "neg_004_ignore_upper_taps",
         "source_catalog_certification_path": "negative_variants/neg_004_ignore_upper_taps/certification.json",
         "trigger_condition": "Ignores upper four thermometer taps.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "689c49910b11710f67f5192748ab55f40200633f290acf7db6734207f544a0f5",
       "score_deck_sha256": "39912db5d344ba066d6b59c97ce24a1f44e636753ae6e61eaff0af5ec7ffeea7",
-      "task_certification_sha256": "7a0352de377c89a613c0fc8d9bed1e1ef31566c21ff3e7f5c8e3c0faebe4aa02",
-      "task_record_sha256": "ee54e835659ffa2f2c1a6c10344cc193d574216b4989086771623c0745166c69"
+      "task_certification_sha256": "a260f4db85b8b38f8495b61859f2a210bff0e68ac843f06fc752bfb3445b44c9",
+      "task_record_sha256": "7af7345d7a63c0b6025b01f063edfc95f4fbccc426e44cd31738482ff0e2ec40"
     },
     "release_dir": "158-ref-flash-8level-decoder"
   }

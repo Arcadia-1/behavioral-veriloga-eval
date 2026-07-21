@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_ON_EACH_RISING_CROSSING_OF_VCLK, P_VCLK_TH_0_45_V_RISING satisfy the public contract; fault class polarity_or_direction_error is rejected",
-    "observed": "EVAS: edges=4 high=2 low=2 max_err=2.0000",
+    "observed": "EVAS: bipolar_dff_hold@1.080ns=-1.0000/-1.0000 expected=-1.0000/1.0000",
     "violated_property_ids": [
       "P_ON_EACH_RISING_CROSSING_OF_VCLK",
       "P_VCLK_TH_0_45_V_RISING"
@@ -18,10 +18,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_248_bipolar_dff_sample",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 621
   },
   "family_id": "248",

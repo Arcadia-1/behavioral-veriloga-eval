@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "248-bipolar-dff-sample",
+  "checker_task_id": "v4_248_bipolar_dff_sample",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "54e46dca7296ba3b99f77dca4c74fffcfe21494ac3a605ea6ef441e7e4852dde",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "4e09aaa4be3c19e014d9ed4d268744abf994126a7867e31cc19df922e5d2b1dd",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "248",
+  "family_spec_sha256": "d4f6a91ab92b996dbd17b7730c65dfebe03c5f5feaac769217c54272b4d998ab",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d048e6eb0bfa76771528cd71cf28fa953209da32195da68afd26c1821983a1b0",
+  "public_contract": "tasks/748-bipolar-dff-sample-testbench/public_contract.json",
+  "public_contract_sha256": "6027bb0081ba6f7120249aed0a4856aabb37967d73b139b794e11f8ef449719e",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/748-bipolar-dff-sample-testbench",
+  "task_id": "v4-748"
+}

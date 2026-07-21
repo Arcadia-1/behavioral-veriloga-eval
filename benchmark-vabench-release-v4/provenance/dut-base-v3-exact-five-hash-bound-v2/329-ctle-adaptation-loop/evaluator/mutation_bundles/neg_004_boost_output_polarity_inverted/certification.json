@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_DRIVE_VOUT_AS_A_BOOSTED_VERSION satisfy the public contract; fault class boost_output_polarity_inverted is rejected",
-    "observed": "EVAS: v4_329 checked=10 boost_codes=[0, 1, 2, 3] reset_clear=True disabled_clear=True adapt_errors=0 vout_errors=6 lock_errors=0 clear_errors=0; P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count=0; P_ON_EACH_ENABLED_RISING_CLK_EDGE mismatch_count=0; P_INCREASE_BOOST_CODE_WHEN_EDGE_METRIC mismatch_count=0; P_DRIVE_VOUT_AS_A_BOOSTED_VERSION mismatch_count=6; P_ASSERT_LOCKED_AFTER_THREE_CONSECUTIVE_UPDATES mismatch_count=0",
+    "observed": "EVAS: v4_329 checked=10 boost_codes=[0, 1, 2, 3] reset_clear=True disabled_clear=True oracle_checked=12 oracle_errors=10 direction_updates=9 adapt_errors=0 vout_errors=6 lock_errors=0 clear_errors=0; P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count=0; P_ON_EACH_ENABLED_RISING_CLK_EDGE mismatch_count=0; P_INCREASE_BOOST_CODE_WHEN_EDGE_METRIC mismatch_count=0; P_DRIVE_VOUT_AS_A_BOOSTED_VERSION mismatch_count=6; P_ASSERT_LOCKED_AFTER_THREE_CONSECUTIVE_UPDATES mismatch_count=0",
     "violated_property_ids": [
       "P_DRIVE_VOUT_AS_A_BOOSTED_VERSION"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_329_ctle_adaptation_loop",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 812
   },
   "family_id": "329",

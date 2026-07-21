@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "374-crystal-oscillator-startup-monitor",
+  "checker_task_id": "v4_374_crystal_oscillator_startup_monitor",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "a07bbddb4e0ee3b224b3b2358d147270c84d4013e75d4c380eb70501025788b4",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "92cff07b0da71096ddf8c78c2c8e105180683f2b58d4792257cb97a3da9c981b",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "374",
+  "family_spec_sha256": "cef84789ae7759a1b5d6cba78b14cecff1a02bf6b2d7018ea9ab32fe18915222",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "bca6d19f806dac62e4c5cbf5f613026806c1fb9f5abe5860e063147a80ca1133",
+  "public_contract": "tasks/874-crystal-oscillator-startup-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "d93b66e80fecedd9d3fef2467e21fea0c8d0c1a7be8cee66c37d3c280061637a",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/874-crystal-oscillator-startup-monitor-testbench",
+  "task_id": "v4-874"
+}

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_missing_offset/certification.json",
-        "certification_sha256": "3724b93576f294a2ce3b49c609e29d594c43264de893b0b2e90d3c553ca40b30",
+        "certification_sha256": "e8e63d61eb80be835c4f43c7896737a3210537717215d8274904f906b642b167",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "686b05e5330e2c0e1555a507d08b3970cd4b75eaa00dc5d1a12d2bba08dc50d6",
+        "mutation_bundle_sha256": "116fef3f5e44727aa61c53350275ce57596220f95a3435d258619b79b24c4fe3",
         "mutation_id": "neg_002_missing_offset",
         "source_catalog_certification_path": "negative_variants/neg_002_missing_offset/certification.json",
         "trigger_condition": "Starts from zero instead of the required fixed 0.239 offset.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_swap_msb_lsb/certification.json",
-        "certification_sha256": "1802d9dd62aabead82904d0b69540163281dfb1fe247f1a18bc632a55d6df53f",
+        "certification_sha256": "7f9958d625daabda17d330943775ab01972b8ed92986f2b62b1f11d1ed43d08a",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "2603ff7c40e84f1b2655ee80c78bda39c7d5cc29941e4924125147124422c275",
+        "mutation_bundle_sha256": "0a36e742b8a98b78aa359c8e78402e8c2a597a11d28353bc90cf6c4665533f26",
         "mutation_id": "neg_004_swap_msb_lsb",
         "source_catalog_certification_path": "negative_variants/neg_004_swap_msb_lsb/certification.json",
         "trigger_condition": "Swaps the din3 MSB and din0 LSB code weights.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_scaling/certification.json",
-        "certification_sha256": "76df3b676e5cd7d05e9d5b26c04a9dc6d34cd0bcae519d6505e56eb0f094e0cf",
+        "certification_sha256": "8a8f94c86b234d482c939ad1acdcebb2eecc57f1a86b80c46fce865056fac30c",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "42cb42e4e9b2031f1d04841d4d3722edfd9c2965ee8df3df368134d903b9d2fb",
+        "mutation_bundle_sha256": "25ae5a1d9db23d3bc14861fef417f49901cf381275d5031fb6c3fdba958d16c8",
         "mutation_id": "neg_003_wrong_scaling",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_scaling/certification.json",
         "trigger_condition": "Uses a denominator of 32 instead of the specified 32*10/9 scaling.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "2df5fe4e62010d3c595b513e3ddb3474eaa451e00453afb2df82baca15b2b16d",
+        "certification_sha256": "fb35158dc1c43bfae522afaaf5aeae9b284fab38aac8765e167f18c74961bb33",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "706ad4bba7f3e6364c1542fc6d8c9ab370f3c6b821a14efdb5b76cf3b81158a7",
+        "mutation_bundle_sha256": "5af83d5ad66d5b5312b81fad0701725283a133ca1146bb18f9870a42364e71c8",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "DAC Ideal 4b Offset: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "3085244222a3702f8f53bb6d7f9b3f31521b4caea74ecc94704d86831193401d",
+        "certification_sha256": "0efbc4b4962b8c22ae041d0547d5687f14710c0d799ed567ee46447e90ad1028",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "65b94a5d40ff62f60dda6bd8b38cf6f5563a15fd12eded1adbafba3a142363a8",
+        "mutation_bundle_sha256": "1649aedd0b85c3aa31b4fe29192ad7bc305cb1e4ba8b7b08319b5bd519554507",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "845f4c043e1c2452e4bd2be043b5ea976a167e3f38fba4f24fcca0b86dda7bff",
       "score_deck_sha256": "83245600b5b1c5110a6f9af81f78a4d9a6fda488f63d6529d745693ce317709f",
-      "task_certification_sha256": "de60aad96fbe982576fc669d09f9bbb0cad77cc21d413d981e549ce0ac5a41ba",
-      "task_record_sha256": "0af5f463b0dc3c225c4c443b878f64809cde465a4c720482593eb0f144707e98"
+      "task_certification_sha256": "43e555c31d71815e52d8b2a60a904c3b6da4dba5dd6c2ef1efd432fc99c90422",
+      "task_record_sha256": "3c7728c3f4f836683e657ba9ea4ff8988cd1ed48163531034c5ac07f0dcc5827"
     },
     "release_dir": "168-dac-ideal-4b-offset"
   }

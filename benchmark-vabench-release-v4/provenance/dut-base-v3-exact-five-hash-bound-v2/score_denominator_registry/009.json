@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_tolerance_too_wide/certification.json",
-        "certification_sha256": "501ad33d98366ae9c322ba345251f8ded5241e52f845f3331eb58b4dded32567",
+        "certification_sha256": "ba7972d8883652848f6c18ef2e2f99bce2f34fd92137a456fcfd4cccb9a4b510",
         "fault_class": "alignment_window_error",
-        "mutation_bundle_sha256": "bcc08a8ab7b5715294a159fc25b53a79ade683062641cfa4644a00593d2a2fd7",
+        "mutation_bundle_sha256": "bb39c4a9f47cecf31789de75336b421454e356ee2ac6294fc3699e5f1a704bc6",
         "mutation_id": "neg_002_tolerance_too_wide",
         "source_catalog_certification_path": "negative_variants/neg_002_tolerance_too_wide/certification.json",
         "trigger_condition": "a reference edge is more than tol but less than 6 ns from the most recent feedback edge",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_ignored/certification.json",
-        "certification_sha256": "728dc637c5b5706a662108c1a249df0aed6da12b721fe4728f63427346eb7af3",
+        "certification_sha256": "43690139bcc7ed1b092ee8462909785c027018c65cc2f666458abca9fafb9667",
         "fault_class": "reset_state_clear_omission",
-        "mutation_bundle_sha256": "9f546f67ddbe843adad6cedb12b0e2d5dedae4fb2855e280706f77ca1ea7aa61",
+        "mutation_bundle_sha256": "1ca1adf50e3816e28120cf55995a3d0a2887da4cd7142051e2b3b9507c2c455e",
         "mutation_id": "neg_004_reset_ignored",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_ignored/certification.json",
         "trigger_condition": "active-low reset is asserted after the detector has acquired lock",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_requires_four_hits/certification.json",
-        "certification_sha256": "79455078078f77e83deca8e98887ae594257831d91b0378a70e5de48da3f1919",
+        "certification_sha256": "e188ed4e1b3b59c2febffe71bb903f440ffecc15c36a06328c02d7ecac6f6535",
         "fault_class": "acquisition_count_error",
-        "mutation_bundle_sha256": "fed8c0744844a4145e565750b46aaad264d736d8ae1bfdb1e613046b3d2c5b20",
+        "mutation_bundle_sha256": "5a6d29dc389a3b2032adb54eddc839650f4305a155486651297d02fc0a0514d8",
         "mutation_id": "neg_001_requires_four_hits",
         "source_catalog_certification_path": "negative_variants/neg_001_requires_four_hits/certification.json",
         "trigger_condition": "the third consecutive aligned reference event occurs after reset release",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_does_not_reset_on_mismatch/certification.json",
-        "certification_sha256": "c0126e78939ebae5192ee9150a73fa7eabd0622b0d96440d948ab8c0bd5128b9",
+        "certification_sha256": "8c4dc700c1988d216ff7d1e18ec59ab7b3e52748b8615c0ab08a291e892eb708",
         "fault_class": "mismatch_clear_omission",
-        "mutation_bundle_sha256": "f4e6ee156a5f4e98f841000fcf2e208bf2f351f1adc158acbcc03d133d926859",
+        "mutation_bundle_sha256": "82f321f899a96ae250dda048e66d8fd2a2c789288be3868c6579495eeb6c01aa",
         "mutation_id": "neg_003_does_not_reset_on_mismatch",
         "source_catalog_certification_path": "negative_variants/neg_003_does_not_reset_on_mismatch/certification.json",
         "trigger_condition": "an out-of-window reference event occurs after lock has asserted",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_counts_feedback_events/certification.json",
-        "certification_sha256": "ad8a3aa2c3915c39f36c542abad6e7e8e484bd5238560a18cb3d208fb549bfed",
+        "certification_sha256": "2816e175cab3c05f24e5cc95126cd51421baabde7bd8d75e482235a83d4365e6",
         "fault_class": "feedback_event_counting_error",
-        "mutation_bundle_sha256": "a98ac1ee3528df9b7ee4aca195016adbe157cc438a768ba1d78d2f43ebc82136",
+        "mutation_bundle_sha256": "240552a3c5da69dfb5f98e1ee12cb176a2bda5cb1d44d67e5fa7468afea04e26",
         "mutation_id": "neg_005_counts_feedback_events",
         "source_catalog_certification_path": "negative_variants/neg_005_counts_feedback_events/certification.json",
         "trigger_condition": "multiple feedback edges occur before three legal reference comparisons",
@@ -73,8 +73,8 @@
     "hashes": {
       "mutation_catalog_sha256": "4bffd79b517596033bb0ece74d551dd58977cd3ff1830099397a96ad0078d70b",
       "score_deck_sha256": "368dcfc27599dedf380d88a54edff7b8beef5a1f41c26e87864955f9757ff0e1",
-      "task_certification_sha256": "0d36c5e0ca39ffc6485d2af61c290b67ed71914cd66ba559cc92eae8b34290bc",
-      "task_record_sha256": "a52106924c620d6bfe2ae6f0ee59e610896e29198cae9213420307c568434c51"
+      "task_certification_sha256": "337566dbd8175bf22c001f468388f544ea526e2a808b1c02f01796739eef00c1",
+      "task_record_sha256": "0c2fc85cbdde21c739f889cd8a5e65de09e463346bfb2b94332353416867c3e0"
     },
     "release_dir": "009-lock-detector"
   }

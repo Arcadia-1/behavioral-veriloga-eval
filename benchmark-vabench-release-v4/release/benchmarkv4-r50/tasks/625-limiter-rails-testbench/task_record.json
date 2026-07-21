@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "125-limiter-rails",
+  "checker_task_id": "v4_125_limiter_rails",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "9a92e6792fb4f054f5f309bba40d445c668affc5d41028243971af5e1552e2e1",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "989ff412667adbb80589418707f93a5393e7f94e6cae962b7c1a86668c6d8ee7",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "125",
+  "family_spec_sha256": "860d9c0671d3048a4b0fdad739a97b9a992582d9a51ea4bd83d88d0f887ae7a7",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c2240ce72aabf2f8e0fd3f32582267de785e502d9cd1b88ad183edbeed4f4d2b",
+  "public_contract": "tasks/625-limiter-rails-testbench/public_contract.json",
+  "public_contract_sha256": "57d8200d15bee119654d7878507ca8a889034fee055b852de2930e262020f3e4",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/625-limiter-rails-testbench",
+  "task_id": "v4-625"
+}

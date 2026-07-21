@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_EXPOSE_STORED_OFFSET_ON_OFFSET_STORE satisfy the public contract; fault class offset_store_stuck_common_mode is rejected",
-    "observed": "EVAS: v4_309 checked=7 reset_clear=True late_reset_clear=True premature_ready=0 ready_seen=True offset_dynamic=False high_expected=True low_expected=True decision_errors=0; P_ON_RESET_CLEAR_STORED_OFFSET_DECISION mismatch_count=0; P_DURING_AN_AUTO_ZERO_CLOCK_UPDATE mismatch_count=1; P_DURING_AN_EVALUATION_CLOCK_UPDATE_WITH mismatch_count=0; P_DRIVE_DECISION_HIGH_FOR_CORRECTED_NONNEGATIVE mismatch_count=0; P_EXPOSE_STORED_OFFSET_ON_OFFSET_STORE mismatch_count=1; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
+    "observed": "EVAS: v4_309 reset_edges=1 autozero_edges=3 evaluation_edges=7 order_errors=0 edge_errors=13 hold_checked=770 hold_errors=660 offset_span=0.244 high_expected=True low_expected=True; P_ON_RESET_CLEAR_STORED_OFFSET_DECISION mismatch_count=13; P_DURING_AN_AUTO_ZERO_CLOCK_UPDATE mismatch_count=0; P_DURING_AN_EVALUATION_CLOCK_UPDATE_WITH mismatch_count=0; P_DRIVE_DECISION_HIGH_FOR_CORRECTED_NONNEGATIVE mismatch_count=13; P_EXPOSE_STORED_OFFSET_ON_OFFSET_STORE mismatch_count=653; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
     "violated_property_ids": [
       "P_EXPOSE_STORED_OFFSET_ON_OFFSET_STORE"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_309_autozero_comparator_preamplifier",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 1073
   },
   "family_id": "309",

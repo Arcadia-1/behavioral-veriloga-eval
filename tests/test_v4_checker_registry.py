@@ -115,6 +115,17 @@ def test_first_order_lowpass_checker_is_independent_of_tran_stop() -> None:
         assert passed, detail
 
 
+def test_registry_normalizes_annotated_affine_trace_coordinates() -> None:
+    from checkers.v4.registry import load_checker
+    from checkers.v4.stimulus_relative import transformed_rows
+
+    checker = load_checker("v4_007_first_order_lowpass")
+    assert checker is not None
+    rows = _lowpass_rows(vin_low=0.0, vin_high=0.8)
+
+    assert checker(rows) == checker(transformed_rows(rows))
+
+
 def test_first_order_lowpass_registry_checker_preserves_initial_state_gate() -> None:
     from checkers.v4.registry import load_checker
 

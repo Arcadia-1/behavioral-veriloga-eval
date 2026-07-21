@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_DRIVE_T2_HIGH_WHEN_B0_IS satisfy the public contract; fault class lsb_drives_all is rejected",
-    "observed": "EVAS: t0@1.135ns=0.900 expected=0.000 t1@1.135ns=0.900 expected=0.000 t0@1.165ns=0.900 expected=0.000 t1@1.165ns=0.900 expected=0.000 t0@1.195ns=0.900 expected=0.000 t1@1.195ns=0.900 expected=0.000",
+    "observed": "EVAS: t0@1.165ns=0.900 expected=0.000 t1@1.165ns=0.900 expected=0.000 t0@1.195ns=0.900 expected=0.000 t1@1.195ns=0.900 expected=0.000 t0@1.225ns=0.900 expected=0.000 t1@1.225ns=0.900 expected=0.000",
     "violated_property_ids": [
       "P_DRIVE_T2_HIGH_WHEN_B0_IS"
     ]
@@ -17,18 +17,18 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_219_bin2ther_2b",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
-    "trace_row_count": 766
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "trace_row_count": 772
   },
   "family_id": "219",
   "inputs": {
     "checker_profile_sha256": "d7f8e4a1deda8ce74e1fbc3aeb5b1d493775cf6db1d1e01c8e9c5e18fd370107",
-    "harness_spec_sha256": "e8576f6c029c04fc8a415922330ce2a9b3fb6d984ffabc887724c90646139e99",
+    "harness_spec_sha256": "f6e5a7a566fb14eba3a1cac83e95604ee2e28a4cdbda673cd16f0228a27dd1f7",
     "mutation_bundle_sha256": "b5fb6b8bb09a9f0a36adddc23b9b5dcbda4aa1083b696015767f031cafaeeeb5",
-    "profile_sha256": "5760494311f4d507b1200bc5c8df33b41fc6732c376144333a9bdb79204fb55d"
+    "profile_sha256": "e85766e61d9afaa97d46035c0e8957151642c89efa521bbd5b9460a9b1433885"
   },
   "mutation_id": "neg_003_lsb_drives_all",
   "outcome": "killed_behaviorally",

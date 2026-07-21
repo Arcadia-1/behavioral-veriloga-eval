@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "024-clocked-sample-and-hold",
+  "checker_task_id": "v4_024_clocked_sample_and_hold",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "7fc9caae29392630c72162d657a2e427c95dd83853924a7db1d1d550317340d0",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "e75240a92009168555f589fad926c83fbc5fcfda148bf99898b8cf39392d2de0",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "024",
+  "family_spec_sha256": "49042f557290047762cfab3dc8d01c63be93bfe6867e3c2bfaea5069063dd371",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "235980ef4cce674862c48934a283a51c28bf50aa308b7027bcd6556d64d1b3fb",
+  "public_contract": "tasks/524-clocked-sample-and-hold-testbench/public_contract.json",
+  "public_contract_sha256": "c62647457517212fe0e03076d38d3bf3c700653edcc7670606cde7e88c9c0c5e",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/524-clocked-sample-and-hold-testbench",
+  "task_id": "v4-524"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "222-trim-ctrl-5bit",
+  "checker_task_id": "v4_222_trim_ctrl_5bit",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "0fb52f149ed3e6d3f4fd31fb07bfa5e244bd641581f4a789a11b1331396dadd3",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "cd03ff16c90e7dbd57d7c176128c496bdd706fa92d484bed719061dedef77c8f",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "222",
+  "family_spec_sha256": "a8389a5f85b6cd6f405441a7ea4234b8517885b6b5c0219c15837a71421024e7",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0234a758937abe4edb07e72a36e67eb0889f9fc87028850dd9d382e9d03af405",
+  "public_contract": "tasks/722-trim-ctrl-5bit-testbench/public_contract.json",
+  "public_contract_sha256": "c22e5fb72e2485a851fe0db389e557e09b0e40483db5bac0adcca373cbef0fd4",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/722-trim-ctrl-5bit-testbench",
+  "task_id": "v4-722"
+}

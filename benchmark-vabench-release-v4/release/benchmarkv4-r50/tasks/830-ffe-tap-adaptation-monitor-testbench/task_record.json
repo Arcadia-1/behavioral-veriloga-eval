@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "330-ffe-tap-adaptation-monitor",
+  "checker_task_id": "v4_330_ffe_tap_adaptation_monitor",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "7e1024dc2daefa213f15d1b8afb445d92571fef4d344176a9b58ac5f8bd3be9e",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "f8a1db3751510e410cf4a64a10f0e3d7ae80fb1cce082d2ede42b2c4992fb255",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "330",
+  "family_spec_sha256": "f61aa1f30bda5968e5ca3d1c3e581f5c505a190fff2b31769b6b8a9498a9587e",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c78197d7eecb7db4c27a8f365b029ba4d5af22ba3c986867547edebfd6aaa4fa",
+  "public_contract": "tasks/830-ffe-tap-adaptation-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "88dda448f3986e7955ba926c313b72a420d7510a9adb945d4b8a3ec5eff28d0c",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/830-ffe-tap-adaptation-monitor-testbench",
+  "task_id": "v4-830"
+}

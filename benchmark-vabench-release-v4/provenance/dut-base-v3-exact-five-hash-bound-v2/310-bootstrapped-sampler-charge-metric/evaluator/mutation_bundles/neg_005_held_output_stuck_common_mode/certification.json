@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_ASSERT_DROOP_FLAG_WHEN_ACCUMULATED_HOLD satisfy the public contract; fault class held_output_stuck_common_mode is rejected",
-    "observed": "EVAS: v4_310 active_rows=976 disabled_clear=True high_hold=False low_hold=False high_input_hold=False low_input_hold=False rail_metric=False cm_metric_low=True droop=True range_ok=False; P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count=0; P_ON_EACH_RISING_CLK_EDGE_WHILE mismatch_count=1; P_EXPOSE_A_BOOT_METRIC_THAT_INCREASES mismatch_count=1; P_BETWEEN_SAMPLES_HOLD_VHOLD_AND_APPLY mismatch_count=1; P_ASSERT_DROOP_FLAG_WHEN_ACCUMULATED_HOLD mismatch_count=0; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
+    "observed": "EVAS: v4_310 active_edges=8 inactive_edges=2 clear_errors=0 capture_errors=6 hold_checked=686 hold_errors=506 direction_errors=0 metric_errors=7 early_flag_errors=7 late_flag_windows=8 late_flag_missing=0 high_input_hold=False low_input_hold=False rail_metric=False cm_metric_low=True droop=True; P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count=0; P_ON_EACH_RISING_CLK_EDGE_WHILE mismatch_count=5; P_EXPOSE_A_BOOT_METRIC_THAT_INCREASES mismatch_count=1; P_BETWEEN_SAMPLES_HOLD_VHOLD_AND_APPLY mismatch_count=493; P_ASSERT_DROOP_FLAG_WHEN_ACCUMULATED_HOLD mismatch_count=7; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
     "violated_property_ids": [
       "P_ASSERT_DROOP_FLAG_WHEN_ACCUMULATED_HOLD"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_310_bootstrapped_sampler_charge_metric",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 1145
   },
   "family_id": "310",

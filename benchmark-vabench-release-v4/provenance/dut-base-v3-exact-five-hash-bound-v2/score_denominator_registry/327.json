@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_sample_valid_missing/certification.json",
-        "certification_sha256": "3436e3ff82a30af2a5b088382f2f134dad9c115e6bef58b06089fcae5990e945",
+        "certification_sha256": "40ebe39ce93486ff9124a5e4c1efbdfbc2cb609792e7c07df7948d05bb24495b",
         "fault_class": "sample_valid_suppressed",
-        "mutation_bundle_sha256": "09ed3c4b8f9aa5495111bd0f01e333ac72e1d1a2bbaceba47294d3002eb83486",
+        "mutation_bundle_sha256": "371b1143157bf22c6079300a14c5b92f08d146815e160cd9c79299c98f2d337e",
         "mutation_id": "neg_002_sample_valid_missing",
         "source_catalog_certification_path": "negative_variants/neg_002_sample_valid_missing/certification.json",
         "trigger_condition": "an enabled rising sample_clk edge captures a sample",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_early_late_flags_swapped/certification.json",
-        "certification_sha256": "7a1437d1d8892a9fd10afdafb2da58731fc2e616e5fe0ef695d70190c17b6ef6",
+        "certification_sha256": "e28b1d47fa595649cf734d97aa602ebdaa21cd6ab1bb4ba696a7352552d84345",
         "fault_class": "early_late_polarity_swapped",
-        "mutation_bundle_sha256": "6186bfe0c31d960f8b2654aab4d4e4785e6dbd8a271961b30e0444ea73baf27e",
+        "mutation_bundle_sha256": "a0f58f06c73cb3625fe03054936adb15c92e6f75b0a009601c929f4dc7e9b284",
         "mutation_id": "neg_003_early_late_flags_swapped",
         "source_catalog_certification_path": "negative_variants/neg_003_early_late_flags_swapped/certification.json",
         "trigger_condition": "a data transition occurs within the public edge window around a sample edge",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_eye_metric_not_updated/certification.json",
-        "certification_sha256": "a7458c5e089c97100575139fd205478fd22d579cc7b70723b24c2da837be7198",
+        "certification_sha256": "f6e3479f58dc22d94eeeffceb592df30bae1c35ceac5fed375565364fcb57c50",
         "fault_class": "public_eye_metric_update_suppressed",
-        "mutation_bundle_sha256": "f791eb9baa3201acacbda0d3a1f48c2c9dd0c21d0c78923d4bcc76243ef5b66f",
+        "mutation_bundle_sha256": "0073d782f158a243e2e5791b6691bcc3feec96e23256b5d6211139637e43dd4e",
         "mutation_id": "neg_004_eye_metric_not_updated",
         "source_catalog_certification_path": "negative_variants/neg_004_eye_metric_not_updated/certification.json",
         "trigger_condition": "an enabled valid sample updates the internal eye metric",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_lock_after_one_good_sample/certification.json",
-        "certification_sha256": "a09aa24c1970fbb6ee0d7b1cc62aeb18678dc998cd65c5f680414075ff62276f",
+        "certification_sha256": "7fa2a4c205a2c00d0ee75b474c92970a344c23b9f317efa49954611567743d22",
         "fault_class": "lock_qualification_too_short",
-        "mutation_bundle_sha256": "abaf4696528bd1857813126ed54f53ba5b6a95ffe77165fe73f81cb65d3d16f6",
+        "mutation_bundle_sha256": "65e9887262c8defd3fffcfc12ad83095538f0da916b03f07d9140a4892c20484",
         "mutation_id": "neg_005_lock_after_one_good_sample",
         "source_catalog_certification_path": "negative_variants/neg_005_lock_after_one_good_sample/certification.json",
         "trigger_condition": "the first valid sample has margin above eye_min",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_eye_metric_not_cleared/certification.json",
-        "certification_sha256": "132911e4ba9710982388320c1dd9d42cba5494950a3481c8df930f49c91445de",
+        "certification_sha256": "71d388a09fbb822e7efee5f17ca110ae1e1f9807a062b0c5c0d46f42667e88cb",
         "fault_class": "eye_metric_clear_forced_high",
-        "mutation_bundle_sha256": "6ed808f60c5ab08c2f468781ad225dc3cb7272786fc99ade96889b0411259bc5",
+        "mutation_bundle_sha256": "574deea8a0315e23d5719178e2ebb0c79effd32b273a80a594172f823ea5af84",
         "mutation_id": "neg_001_eye_metric_not_cleared",
         "source_catalog_certification_path": "negative_variants/neg_001_eye_metric_not_cleared/certification.json",
         "trigger_condition": "reset is asserted or enable is low",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "24478fc56292e9b042c37f7fe9094111fc96b8482645355c9c85ff0ae758bbc9",
       "score_deck_sha256": "2ea82a9e1f9cb2c84f390ed53779b226dee3b7f739b19566eb89486ad9e6814a",
-      "task_certification_sha256": "d32f12ec49175fe860c64112ee3f0e9fa775db7eb79fb0885661c37579831349",
-      "task_record_sha256": "a1b335a7ec45e989197cbeb3aa8c4ecadf1f460deffc82176ba78028f374dd2d"
+      "task_certification_sha256": "01b88a04a7a8f8d394b6d29c73508e91957357529e7e3be766dac3055e6ab135",
+      "task_record_sha256": "887c11b375694b8a2f0accfd4f595284760cd5d6eb9d969aa70a8a1afd3d1f84"
     },
     "release_dir": "327-cdr-eye-monitor"
   }

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "sampled_error_update_monitor.va"
+  ],
+  "canonical_dut_source_slug": "270-sampled-error-update-monitor",
+  "checker_task_id": "v4_270_sampled_error_update_monitor",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "34fe6e8b6588da2cc103d610e57f84e3b72786e723bfb518f5115092f43a0d13",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "cd8eed3f6ab8b0e5e5ca134108ddf2b35b7a884d1403e7754d5217b6d7bbb118",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "a7669ac9fd5713fa6633f07fb7b7bee969068450f3fda803170006ca964bb488",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "270",
+  "family_spec_sha256": "f2e0dde1363f1ea384f1fd5fb05109f072fcf739927e59dd9c32f700881968e1",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "fdf49008989deab6d25c17f2968ac18fb4ad40b3bacb9395d3a3de05a3431698",
+  "public_contract": "tasks/270-sampled-error-update-monitor/public_contract.json",
+  "public_contract_sha256": "ac262a8c17b47bb9d6f1c660d312be6ee12c316be9518d9cfabb8c5ebe502767",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/270-sampled-error-update-monitor",
+  "task_id": "v4-270"
+}

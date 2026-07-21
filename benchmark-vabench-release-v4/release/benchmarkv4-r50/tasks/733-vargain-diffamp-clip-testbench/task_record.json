@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "233-vargain-diffamp-clip",
+  "checker_task_id": "v4_233_vargain_diffamp_clip",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "5cca5e3f1ef674b5809366edebf7eef8a835ebd0964c4eb57c7826fac99b213b",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "972deb1b52baef6d0b9cc4db0096c7d9b4a8a6e70fd1614a3f424c37123ac8ad",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "233",
+  "family_spec_sha256": "947bd0b1fdaec3993c8c8144533822ec3505089428d7d76cdac87a119915b5e5",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f3ba74f3058e7412909b288a80702b3a63ce09e2057a7a9fbebdcfa073cafb5c",
+  "public_contract": "tasks/733-vargain-diffamp-clip-testbench/public_contract.json",
+  "public_contract_sha256": "e3c8739c85261a7c8181d71357e08bd83170d5b2d3eeea9d986b94a0deb43328",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/733-vargain-diffamp-clip-testbench",
+  "task_id": "v4-733"
+}

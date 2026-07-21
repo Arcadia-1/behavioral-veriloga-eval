@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "232-safe-analog-divider",
+  "checker_task_id": "v4_232_safe_analog_divider",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "7c2dc2782f65c81c3fe1e2614f2a4b79a2246e57790b7ec9b38e81a06a408440",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "52b1b4be9bda68e58fb24dc49801c977ddc65e6a010a24e5916961b9f6615ca1",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "232",
+  "family_spec_sha256": "0bc7b119b0cd02dd316663f62042d00341863e8e3c0c7aede68e72b2fa7b379b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e2a60c51f09cbe309f161b77ce4b4de39f99e17c7a1e9413552126b46048eb21",
+  "public_contract": "tasks/732-safe-analog-divider-testbench/public_contract.json",
+  "public_contract_sha256": "2655ad0b0418a7b01a5b91f1cd2fa97fc30c3ef43dd22406a276794ad9322bd2",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/732-safe-analog-divider-testbench",
+  "task_id": "v4-732"
+}

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_threshold_shifted/certification.json",
-        "certification_sha256": "7c5154113bfd39d873a9364cbb6586f8522abdcf93ed469a80931ada1ef4b890",
+        "certification_sha256": "75e6ff6a823a598b5ed0c1d7b00f3490c57baca7f39264e909ffb0dac8f49e2e",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "aac683f65dd87d6ad9d9e4c9c8c93180b77dd21679679692d9989ecb468360b1",
+        "mutation_bundle_sha256": "a8f2235e40125c31a3c209edf3bb102fb681bf27fc1ab0e1a1e2dc1b1cf2c073",
         "mutation_id": "neg_004_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_004_threshold_shifted/certification.json",
         "trigger_condition": "semantic threshold mutation from gold",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "fee65fe40e640af86478df1efd67271a30f090bfa2afca73c739672f1624fbaa",
+        "certification_sha256": "063127830c972e496468958f226aa10cc0cb0d283668b0a08c6276217cb33196",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "1b98cda6acf6820a5eead36fa1847653ff6a3d5dc22e0bacbf91ae7dbdcbccfb",
+        "mutation_bundle_sha256": "e2b47d6aa65bd129074ca6ac5d8e1f1b7eaf4b5eb808d848f637d41aca60d311",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "semantic zero mutation from gold",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_half_scale/certification.json",
-        "certification_sha256": "c290cd15b23edd4f8dafadcb131f0f6cba1e033440097b04527efda4d77b71f0",
+        "certification_sha256": "176daeb69f1ba9b6d6e6976eea549d6f8501c02fc8a737a0e5bae6a43c275293",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "0ed13d4b34da41572ee9908ded10a40aca39c66339174c8a83a5a50fc4e38c8e",
+        "mutation_bundle_sha256": "2f84d4f8a422b1bbf9c0be70c796e25c051c35bba778f37dac6403fc2b1e6cf4",
         "mutation_id": "neg_002_half_scale",
         "source_catalog_certification_path": "negative_variants/neg_002_half_scale/certification.json",
         "trigger_condition": "semantic scale mutation from gold",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_event_edge_wrong/certification.json",
-        "certification_sha256": "47fa8ce95ee113a284871fc095c09f11fb13ef6864aeec6b6507bd923c6d79cd",
+        "certification_sha256": "3d5d5382b3a2f01c1fbdd36b03a56d927171aedb84bfaf29181e271c1e6eebce",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "673bd522ba0c3324a4649ed0965e09cbc92eafc45220e1beb799cf3fd766550f",
+        "mutation_bundle_sha256": "bc267faff1aa0d99aec951660accd77db1d09ebf7a158729ef0101956c7fb88c",
         "mutation_id": "neg_005_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_005_event_edge_wrong/certification.json",
         "trigger_condition": "semantic delay_edge mutation from gold",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_inverted_transfer/certification.json",
-        "certification_sha256": "bf4ed9afd4ac778afb6a9bf18a24129df06cc0f770af7dc719b5b88f05e0dd54",
+        "certification_sha256": "88677a432f7d64d837ed6da06fe75986d5cfb3ebeb1eb0d20bf025084250fd6b",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "e9a83af284ad032340ec97fc8987e6c63b5016219f09bf36aed3b3478a4f0160",
+        "mutation_bundle_sha256": "8ae179bbb315762cc121a1059ab1a40fd8d677238ce55d55dc587d23861652c8",
         "mutation_id": "neg_003_inverted_transfer",
         "source_catalog_certification_path": "negative_variants/neg_003_inverted_transfer/certification.json",
         "trigger_condition": "semantic invert mutation from gold",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "f03cc8681c90e4bec8ef5492f58a3338a1daf693e2f5f42333997f8b2b2080d5",
       "score_deck_sha256": "e28de0bc065e3741eaee6199056bc958c1215f1c701cb67eb709c6d30faadb31",
-      "task_certification_sha256": "0e84de59c4ebb84b86b38757dec2b81657f60ba3384fed75a4ecf97aa906f479",
-      "task_record_sha256": "b1b6cdf7c6effae6a50f6e64e3f30cf90bc1b8cafc536e895a91e06b83037aa5"
+      "task_certification_sha256": "53c19ca667237003e0aa7a03b4a78b9bb1919f23ee892db5d26cdc93f8fb08db",
+      "task_record_sha256": "5026d3865cd3e10d4c4b5d38cf4b213452da7394f308845c9f68181499db2423"
     },
     "release_dir": "353-ffe-transmitter-3tap"
   }

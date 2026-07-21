@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "086-complete-calibration-loop",
+  "checker_task_id": "v4_086_complete_calibration_loop",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "c8b104134a75e451816b43e82b49a7caea2d85ff06c270a2a2050b9ea92f1c43",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "ae7c1423c4db62251a8dcb4bd93a94e6c41d4977b86ced04db6abca1aa854785",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "086",
+  "family_spec_sha256": "9ccc76dae3ce35797874a141923b07ed607ac783785390a5321e0ae02888804a",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3aec62247b47827a08265ea0f7aace6a163479fdfc2ee349815f95c2b55d6152",
+  "public_contract": "tasks/586-complete-calibration-loop-testbench/public_contract.json",
+  "public_contract_sha256": "2c44bf2a3a7d2be7f218c744c27a699c6b9c1b8f21c4fe474ef019e493e83c92",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/586-complete-calibration-loop-testbench",
+  "task_id": "v4-586"
+}

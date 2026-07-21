@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_initial_state/certification.json",
-        "certification_sha256": "2d8d9ed61d46c13c6bede5e7eb415bdf8e6bd381171430a3cde82b3bbc671aa5",
+        "certification_sha256": "519285b7b5a4d28fd381959c48b684b9f45b01104a9fc0ab02eaadb4c689410b",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "dc703b305f0ab3480ae27235cdb0c5afc73164b7da0c6a03c0a56124cbf4b1d7",
+        "mutation_bundle_sha256": "463ce9c43e02581fdb4a11b287762565b2fe43aed221d58bda9baeae1268059b",
         "mutation_id": "neg_003_wrong_initial_state",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_initial_state/certification.json",
         "trigger_condition": "Starts high instead of low.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_set_high_only/certification.json",
-        "certification_sha256": "bd6bb7c4184113c97d2cac8e594b92b7b3824b5fa21b450ec64daea3d871eb67",
+        "certification_sha256": "54ef12038738de85ba6ac96243ec1e45b53a129972c8922fc333489c125a09ce",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "61d3864b8de6ea3a448bfa0a3d794522bff21be1608fc8e200add70b88665bfa",
+        "mutation_bundle_sha256": "c640c85259acaebfc506a17507257ed98f4b24cb832f07cf3f92029c8ad11389",
         "mutation_id": "neg_002_set_high_only",
         "source_catalog_certification_path": "negative_variants/neg_002_set_high_only/certification.json",
         "trigger_condition": "Sets output high on every edge instead of toggling.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_high_level/certification.json",
-        "certification_sha256": "1d0234099a659627033312549ba1fc906f5aa93c1f53ab72bf6852ee55ab96ef",
+        "certification_sha256": "19316ffa3117828d7b7ef11771b059ec9a60def2378cd0812d03b25599f6af72",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "613bffe03e1c74a8ee4fb74a2ef5cc5ddb63acb07d3c462ee0eba775f9a0a2a3",
+        "mutation_bundle_sha256": "0765fd187f74177f4b91d604668cfdd80e8b971388ab04e1ea4c0e4a190952b5",
         "mutation_id": "neg_004_half_high_level",
         "source_catalog_certification_path": "negative_variants/neg_004_half_high_level/certification.json",
         "trigger_condition": "Uses half high level for output high.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "76b47ac8012eadda692f2c33da65fc3c291118eed8c2bb43a94be8906f19aef7",
+        "certification_sha256": "ec1112fdac8851e4b3a8843abbaf08a17a01ab98e8fb7aa05ad641c5e41b8d44",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "17d0495c8605c6f3e66176becc885838e1c1f70e834b1c7ee569f6956957959c",
+        "mutation_bundle_sha256": "d8e6495441079dbbab185705e204ac26b239376f77d576587c5669c4b542b6c8",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Divide By Two Toggle: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "2e0b1995685bae61e553528312293c56f6ca34b1c41dc4b37a78b44333e0712d",
+        "certification_sha256": "8cacd6f170f2fe842405d71ea916e9c5a3082de66b9094901fc591cd754cb28b",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "472d2556ffac135f7130fbdeab929e6f6c74b9e062326d5e80098844ac29c249",
+        "mutation_bundle_sha256": "d283254d8f76ab8b80d46655cd894ca88ce2138a90b776a04a5937698ce38d51",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "869071f743067f2867b36cf6ae1645107ff9001d31b3641df941072d15a9fd4b",
       "score_deck_sha256": "96d0598096a835c59ea18ba0a3a220a1845c3fcea2e5ec31e54065874e631144",
-      "task_certification_sha256": "0e4b700fff3825e6ef34cb027f94ddccd6251a394b6756a976afac23d442740b",
-      "task_record_sha256": "6978136b16f4a6fa805681006060c316a986a5882fb082e474f385eb8b6fd500"
+      "task_certification_sha256": "1b18499ae6f4ff522497f4eba71a772c119462643fba6f579434333932c9bfc3",
+      "task_record_sha256": "2b6bd90f339ea45a83afb6cf143b40d13b688d58c40c1d6f48cad13f7fe12834"
     },
     "release_dir": "155-divide-by-two-toggle"
   }

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "210-sample-hold-5v-clock",
+  "checker_task_id": "v4_210_sample_hold_5v_clock",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "7d2814c4108fd6c422672ee67f1862d241970b65e7fc24a4476aeea14ac841c8",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "cba3f8e34127595855c5833463dac364b9b477d984ed13cc760b23b6dec7be3e",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "210",
+  "family_spec_sha256": "484cbcef68817e92c5b2c51c4b18af1e933cf90369068c7677084bf7e90f04df",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e63af29a6b58e283a62cf4ddf2152da2b5aa986234b3556f9130a94a54943f4e",
+  "public_contract": "tasks/710-sample-hold-5v-clock-testbench/public_contract.json",
+  "public_contract_sha256": "f0c81f07594eaf7c87c236ac4261c68b9e26885509ef53bfa46350e6e8699e81",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/710-sample-hold-5v-clock-testbench",
+  "task_id": "v4-710"
+}

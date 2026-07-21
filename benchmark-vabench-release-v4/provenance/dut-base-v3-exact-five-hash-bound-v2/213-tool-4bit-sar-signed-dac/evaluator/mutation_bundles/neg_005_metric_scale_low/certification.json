@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_ON_EACH_RISING_CROSSING_OF_SH satisfy the public contract; fault class metric_or_observable_fault is rejected",
-    "observed": "EVAS: aout@0.360ns=-0.7087 expected=-1.6875 bits=0000 aout@1.360ns=0.2362 expected=0.5625 bits=1010 aout@2.360ns=-0.2362 expected=-0.5625 bits=0101 aout@3.360ns=0.7087 expected=1.6875 bits=1111",
+    "observed": "EVAS: aout@0.360ns=-0.7087 expected=-1.6875 bits=0000 aout_hold@1.280ns=-0.7087 expected=-1.6875 aout@1.360ns=0.2362 expected=0.5625 bits=1010 aout_hold@2.280ns=0.2362 expected=0.5625 aout@2.360ns=-0.2362 expected=-0.5625 bits=0101",
     "violated_property_ids": [
       "P_ON_EACH_RISING_CROSSING_OF_SH"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_213_tool_4bit_sar_signed_dac",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 780
   },
   "family_id": "213",

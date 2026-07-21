@@ -3,14 +3,14 @@
   "checker_task_id": "v4_091_chopper_stabilized_differential_amplifier",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "d888d439d766dbbf54c94c6e15fa1f5561ab9bc3effd79f437c5adc8be4e3f2e",
+    "certification.json": "d5ebad87787ab5a8842e96758e8af3834d0978ca3d447ef95c41914936f0b1b5",
     "checker_profile.json": "88c8bc22987ca9047c9083209e0fdd7dcf9d77af53d800350d3b8aaae48dea6e",
-    "derivation_manifest.json": "2fd77d5b919c567ecc489f156a523ab5cb88c4c5e91ba3e01833a6a3c93d8369",
+    "derivation_manifest.json": "7c5fb19521e0c89f23fb8af488b785c2e1b1b44a386c3d2489a1343e5068e07b",
     "family_spec.json": "3ceaf909e36f588a3afb82c73ea054e7bbbd8626f531d45bb9ae6c48337bc452",
-    "harness_spec.json": "29e8bf1094fa274f5a079034cbbf2108c08edf34451cd6bde48d40ded4345e55",
-    "mutation_catalog.json": "badb55a65aefe05f37bd03f1993bfb58ce4c170d634424d143d0b82596f4d440",
-    "profiles/feedback.json": "da16de502a991b1a7a116e9d72fb634bf2cfe60f6a00a4b0c71a180a58b5cf8f",
-    "profiles/score.json": "9838f114e1d05735370676f4c5d944f01d43fe34a4ca7e0b5038d7dad7637308",
+    "harness_spec.json": "918372dd6f4adb8e28c9ed2bb713b9aa1cadd829ccfb51acb667dfcdda7f7a89",
+    "mutation_catalog.json": "ec11fb8268a4d3523e17b172624cf91300adabfd81ad4c59c05d693ee975f90f",
+    "profiles/feedback.json": "c78edebb9d5d247e034d68809bafba1d9b4b806951abed6d38bde5f2032e7402",
+    "profiles/score.json": "76ab6704f54d1c7e70066f38179527edb60cc5d09a65817ece38f86094a5c4a8",
     "score_tb.scs": "109833a240584c3cb6b97b0746c5f6a1ba0d904090e82c1cab49f3d3ef036a91",
     "solution_tree": "517113fe2a1334517018cf56211b14b72997071f21694b12b5e8084cca8fc635",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "d888d439d766dbbf54c94c6e15fa1f5561ab9bc3effd79f437c5adc8be4e3f2e"
+    "sha256": "d5ebad87787ab5a8842e96758e8af3834d0978ca3d447ef95c41914936f0b1b5"
   },
   "release_dir": "091-chopper-stabilized-differential-amplifier",
   "schema_version": "v4-canonical-dut-release-task-v1",

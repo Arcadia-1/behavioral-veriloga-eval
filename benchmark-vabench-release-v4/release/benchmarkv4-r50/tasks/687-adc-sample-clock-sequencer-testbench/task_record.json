@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "187-adc-sample-clock-sequencer",
+  "checker_task_id": "v4_187_adc_sample_clock_sequencer",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "c810604330cae44438205502d71b1a2cd074473343464a993d7e05b4a3f897d3",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "0349406419449b901607688a8db75b2b002e9788193aad5b935272580b21a83c",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "187",
+  "family_spec_sha256": "d998dc8a5f893ab1ebc913f9855d3fd64044bb71b4379c49a482e51643ba2aec",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "fe498821cc9a6bb37769656382184665f3fc0dde2094e0be8188f12071744733",
+  "public_contract": "tasks/687-adc-sample-clock-sequencer-testbench/public_contract.json",
+  "public_contract_sha256": "a8f7c29471e8fb0ba8c347f7ede134a01750fa51c56a65fdfd018a9b43a65b31",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/687-adc-sample-clock-sequencer-testbench",
+  "task_id": "v4-687"
+}

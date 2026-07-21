@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "302-fractional-n-divider-accumulator-flow",
+  "checker_task_id": "v4_302_fractional_n_divider_accumulator_flow",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "745c66d71541668074aae466d9b4fff35b3ea76f36b9143f8eeb48af1f026229",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "0f6f64f9a42c2325372924a2cca14b592c72ecc6e37a1e9244cc0c18d76390a2",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "302",
+  "family_spec_sha256": "b1da880e3f7eca42407c169165ff31dd1575744712b42663d72c92c059f19eb5",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "df6bf2658acee5367e9805aa3c3eb3d3969f0ad2468270890e2e805ed08cac49",
+  "public_contract": "tasks/802-fractional-n-divider-accumulator-flow-testbench/public_contract.json",
+  "public_contract_sha256": "e02b9ec10f159414bfce789d52ec4e81b95c7cc800431fbe882641a4dd029c56",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/802-fractional-n-divider-accumulator-flow-testbench",
+  "task_id": "v4-802"
+}

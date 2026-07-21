@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_gain_metric_wrong/certification.json",
-        "certification_sha256": "2b3a940b8036051ab8d85fda397a8ddca63a116d10d49edabba9ea8f0ab38fe2",
+        "certification_sha256": "0670cb5f7d1ff2b2336787de9c03e6c291eb09c10fb88dc7cce43a59648a9da0",
         "fault_class": "gain_metric_wrong",
-        "mutation_bundle_sha256": "43be44dd43f2435bb8ca77d6d73f2f9c80a837617f444e1fb79468f4a6c6d6ce",
+        "mutation_bundle_sha256": "d4ec1187c587dfdce1e3a571a8d8e74da84549fc88280364fae3ed7170ea17f7",
         "mutation_id": "neg_002_gain_metric_wrong",
         "source_catalog_certification_path": "negative_variants/neg_002_gain_metric_wrong/certification.json",
         "trigger_condition": "gain_metric_wrong",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_no_compression/certification.json",
-        "certification_sha256": "352f77b76ed8a94aea6fef6c3b92d7b46c276c1943a9fefcff66f3e223304178",
+        "certification_sha256": "b84b9272f973b26bb69c5ccb704ce8ca127fecf702fe3dfc2f2695aa612e7c06",
         "fault_class": "no_compression",
-        "mutation_bundle_sha256": "11506b2e9662ddabc44b924c8bfc328c66a48c6030577d0cfad94509280efffb",
+        "mutation_bundle_sha256": "cc3252614abd8d03b25656470ff8a3b518fc4677a6478d2c9203e3f108bbaa62",
         "mutation_id": "neg_001_no_compression",
         "source_catalog_certification_path": "negative_variants/neg_001_no_compression/certification.json",
         "trigger_condition": "no_compression",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_missing_clear/certification.json",
-        "certification_sha256": "55207c7c34336d1028f82acdcce0f34c671ee12926f1208ff1a88acd10f4b3f3",
+        "certification_sha256": "a6a91adf1cffb0440c0ddcdf40beb83517827a038653b5b14a2eb0dbf9c6b96c",
         "fault_class": "missing_clear",
-        "mutation_bundle_sha256": "7221568339e022a1346405de72e715d4c4466a94e008189193b11b38d9919ba8",
+        "mutation_bundle_sha256": "43ebdf9d98374fbe3814afc974f2986f8c3db6e274746ddcd158527284a235c8",
         "mutation_id": "neg_004_missing_clear",
         "source_catalog_certification_path": "negative_variants/neg_004_missing_clear/certification.json",
         "trigger_condition": "missing_clear",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_gain_polarity_wrong/certification.json",
-        "certification_sha256": "ae972496a131935ed27ab8d421a267f43a28c858ecd55a6182aff957b71ee2c6",
+        "certification_sha256": "34017c783b0db79a9ed000cb2eca015941510cfb1517ae484021228aaa61a250",
         "fault_class": "gain_polarity_wrong",
-        "mutation_bundle_sha256": "1e3316c32d7295befdbabf0b5e3de776c3d8dbe30bd94113e37ca2d3211f9810",
+        "mutation_bundle_sha256": "0fb29f6a62da623f6fff7d078aaee64adae671392477ee909ce3d793419b0859",
         "mutation_id": "neg_005_gain_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_005_gain_polarity_wrong/certification.json",
         "trigger_condition": "gain_polarity_wrong",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_flag_stuck_low/certification.json",
-        "certification_sha256": "152a8f37392a9d925d9a8ca06abf0107b200d0d7931adc7174880de2a83673ce",
+        "certification_sha256": "881fcb0e0abdd22642cc66c9127aef90bb2715464af248ca86737e368d23b57a",
         "fault_class": "flag_stuck_low",
-        "mutation_bundle_sha256": "9cbafc6c69622c98c0fe5fcd3bbe963a65bf6919c5b3f6baca572abb66333e50",
+        "mutation_bundle_sha256": "c55ad763e3b516175096396b70f85ff4ce0d4b42980778240ede131416e633d9",
         "mutation_id": "neg_003_flag_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_003_flag_stuck_low/certification.json",
         "trigger_condition": "flag_stuck_low",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "ae17d3ff3eb58ba65379af399cb0ec1a356a4de3319af6bd386278ad7370666a",
       "score_deck_sha256": "99ff528ead9dc5a33c05a8f4f7dde0853696aaf69c741abc2aa4d5dd3aa5b45d",
-      "task_certification_sha256": "6a76ef03332a3e6491b33251ed07d0b09c15960c7f658b4fb3b0e219ab7727ac",
-      "task_record_sha256": "f2575ce885cffd0591b7486ba925802402f23ea68d4b168825bdc31afc908e56"
+      "task_certification_sha256": "0295f816b2e748e7ce54295b48926d70dcf1bbf783a70b3ab35ed42bf4d2782d",
+      "task_record_sha256": "9a86ef36453dfba10ce6bcfff07ee98fb09e5bea07e9a6c41cf60be954562ffe"
     },
     "release_dir": "387-lna-gain-compression-macro"
   }

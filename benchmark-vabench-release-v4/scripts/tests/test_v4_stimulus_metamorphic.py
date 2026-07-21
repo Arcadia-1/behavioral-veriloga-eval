@@ -112,6 +112,10 @@ def test_compact_evidence_identity_separates_release_revisions() -> None:
         "release/benchmarkv4-r47",
         "v4-r47-stimulus-metamorphic-compact-v1",
     )
+    assert runner.compact_evidence_identity("r50") == (
+        "release/benchmarkv4-r50",
+        "v4-r50-stimulus-metamorphic-compact-v1",
+    )
 
 
 def test_release_provenance_binds_manifest_and_source_registry(

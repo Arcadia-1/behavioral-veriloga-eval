@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "163-cyclic-decoder-10b",
+  "checker_task_id": "v4_163_cyclic_decoder_10b",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "60a381aa94a98976353f6aa6e08a4607dfda20791b98cdb4f7973f3787d09e0c",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "8a732a6b1eade97810d5d9097b6e1f2fb50846a44f2ba5b3db5aefe264813888",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "163",
+  "family_spec_sha256": "6cc09fd86389cec6c7bf50f82d9308a435a433ecf02284d0213f75dd795fd7c2",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "001e884c76b17fd1099dc4e0cc0a4c7f7a8065fd06905e7c198252ab72f171a5",
+  "public_contract": "tasks/663-cyclic-decoder-10b-testbench/public_contract.json",
+  "public_contract_sha256": "395fe3f5aa06c00eef2678c9e05c22d98e00a0843cadb519ce53992bdd41c3b2",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/663-cyclic-decoder-10b-testbench",
+  "task_id": "v4-663"
+}

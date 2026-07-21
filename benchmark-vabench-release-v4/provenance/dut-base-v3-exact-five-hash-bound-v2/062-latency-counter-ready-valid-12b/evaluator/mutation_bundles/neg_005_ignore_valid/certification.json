@@ -17,18 +17,18 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_062_latency_counter_ready_valid_12b",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
-    "trace_row_count": 1681
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "trace_row_count": 1689
   },
   "family_id": "062",
   "inputs": {
     "checker_profile_sha256": "c9891bec6c33695348fa9ba926b2d7241d7b613256893cf41790a99b7fdb39bf",
-    "harness_spec_sha256": "1f73d511571fee329befbdbb05ef1c71f0e2f19edbccf03105395df929fe5218",
+    "harness_spec_sha256": "3f56449bda0b274da7fc231b10abad477d4199ea9f826afb6ca76e5c60ac0cad",
     "mutation_bundle_sha256": "2fa63e6c8f17e73dbbfa8d4815074097f280dfdc127117748c3fbd392cde2759",
-    "profile_sha256": "b8ead8d8da84e7b201ec2300f601ef36c54a99fce36ae0abd4836fd31e22dd7c"
+    "profile_sha256": "402dffb3dd6b0b8a9913ca62f75709b38bb3f07a856faf9e70b7ba65605e9b90"
   },
   "mutation_id": "neg_005_ignore_valid",
   "outcome": "killed_behaviorally",

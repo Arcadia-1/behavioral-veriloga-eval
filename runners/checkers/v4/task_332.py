@@ -64,6 +64,9 @@ def check_v4_332_polyphase_iq_balance_monitor(rows: list[dict[str, float]]) -> t
         )
         if post is None:
             continue
+        if not _high(post, "enable") or _high(post, "rst"):
+            expected_streak = 0
+            continue
         output_bad = (
             abs(float(post["i_out"]) - expected_i) > 0.07
             or abs(float(post["q_out"]) - expected_q) > 0.07

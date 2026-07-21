@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "f0b774219ab37a466527550b34930c193902cbec12881bcd6e6a4e01f3bfa88c",
+        "certification_sha256": "f6d5a74a62cde54c0c0addc43ca864897525d17ce3027f0cbbcf2fbe7430d9e7",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "96e198105ba1f7ee59ad8b9fbeb7c2e263d3d4166dbba378a380c773e7440125",
+        "mutation_bundle_sha256": "c138b4415f240906f9d29e10404666bb56ab5adef072117bb75cf9c8e1bbece8",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrap_after_three_edges/certification.json",
-        "certification_sha256": "940076fc90d1d0651a73d99bbe7bd1da6757c9dea12a0422dff04062bb545175",
+        "certification_sha256": "28e346e9e76ddacfed4d7cda9cd68449a1270343aa92bbc24f193583c1259c19",
         "fault_class": "fault_003_wrap_after_three_edges",
-        "mutation_bundle_sha256": "4516734ea9176818a9657eeeb4714ed2cc7e9078fbd368833d823e231b74820d",
+        "mutation_bundle_sha256": "0a3de4640f85bb1d4e55532eb50900bf8696da4cc6826a88410ed081d7cc01f6",
         "mutation_id": "neg_003_wrap_after_three_edges",
         "source_catalog_certification_path": "negative_variants/neg_003_wrap_after_three_edges/certification.json",
         "trigger_condition": "Uses a modulo-three wrap marker.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_missing_initialization/certification.json",
-        "certification_sha256": "a9795d58869d2fde9500ecf338ff848f1f46b5dad65a75abca0d63294ac89cf2",
+        "certification_sha256": "42e2712b8c57f95f8e91208265a7cb03ffce331c3949494251327e3468e06cea",
         "fault_class": "fault_004_missing_initialization",
-        "mutation_bundle_sha256": "ed87927b860c206a9f0f51d24652cd31afe1dfba57cc242442d344021ce8c799",
+        "mutation_bundle_sha256": "a3d3cc0c3ffd8f73499c3a21e9e977caca474440ab98c5ed1f03b3d100211a33",
         "mutation_id": "neg_004_missing_initialization",
         "source_catalog_certification_path": "negative_variants/neg_004_missing_initialization/certification.json",
         "trigger_condition": "Starts the counter at one, shifting marker timing.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "3b32ffeb261d5a4484ce6530c9f53cb6257300b3e7e93a3e55be7f8dd106a57a",
+        "certification_sha256": "648d3426ed2add5ece3ac241e3293fae8243379e8dfca8c798e928b6e72db123",
         "fault_class": "fault_005_metric_scale_low",
-        "mutation_bundle_sha256": "221990db5b82733340a14a02b6fb219af4ee84e7b1271467e0be3831586dcbbd",
+        "mutation_bundle_sha256": "ad813d399556d69ced3d73aec46a99594d7c6258fd96cef451ee12d4ccb56bfc",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Two Bit Counter Marker: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_pulse_every_edge/certification.json",
-        "certification_sha256": "bc0718e85d27e4be1914ac4a971da40ad7b71492c37bc04ab0ea25b309f5c898",
+        "certification_sha256": "9bfb6005f87957bfad0d25ae746f3698886c4567460d90b8257ab5875f1cb199",
         "fault_class": "fault_002_pulse_every_edge",
-        "mutation_bundle_sha256": "88f04c31fb85da06cfc9dfcd09426093396440b7a6dda29d4169aacf54946f6a",
+        "mutation_bundle_sha256": "52da73d7801ac09b407627095e7367000b7467917223a8f114edf778d289aeac",
         "mutation_id": "neg_002_pulse_every_edge",
         "source_catalog_certification_path": "negative_variants/neg_002_pulse_every_edge/certification.json",
         "trigger_condition": "Marks every rising clock edge instead of only modulo-four wrap.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "e4917ea5043ef422441e596e25720221a80ec93211fb82485cc562516744a5e0",
       "score_deck_sha256": "dab95162e9a98e5589b7db15a0c010ee12b50500903ec02cc869914287c9843f",
-      "task_certification_sha256": "66a891e169cf61d3dfc3ecf950e912146be5540f06234a82eec21ac62ec9fdc6",
-      "task_record_sha256": "41a57c25f764d9a819ca493bb2cb12eaa55a6e95824a12e9443ffc5d06793158"
+      "task_certification_sha256": "c00111736249dd3002d82ce0c203fad0a63d9c5d1c753c0fb27865ec823576c0",
+      "task_record_sha256": "50d7f9bc7ac7782190d99e2ba5d2262271719af8fb9f7f35cd38be9756e7c636"
     },
     "release_dir": "115-two-bit-counter-marker"
   }
