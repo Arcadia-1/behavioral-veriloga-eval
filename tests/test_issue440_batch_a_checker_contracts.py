@@ -88,12 +88,14 @@ def test_068_checks_all_cycles_duty_and_common_parameterized_rails() -> None:
     assert "save vss clk0 clk90 clk180 clk270" in score_lines
 
 
-def _jitter_clock_rows(*, include_disabled_window: bool) -> list[dict[str, float]]:
+def _jitter_clock_rows(
+    *, include_disabled_window: bool, jitter_while_disabled: bool = False
+) -> list[dict[str, float]]:
     seed = 91
     disabled_indices = set(range(9, 14)) if include_disabled_window else set()
     transition_times = [5.0e-9]
     for edge_index in range(1, 25):
-        if edge_index in disabled_indices:
+        if edge_index in disabled_indices and not jitter_while_disabled:
             half_period_ns = 10.0
         else:
             half_period_ns = 10.0 + (((seed + 3 * edge_index) % 5) - 2) * 0.8
@@ -126,6 +128,13 @@ def _jitter_clock_rows(*, include_disabled_window: bool) -> list[dict[str, float
 def test_070_requires_enabled_and_disabled_jitter_en_coverage() -> None:
     _assert_passes(check_070, _jitter_clock_rows(include_disabled_window=True))
     _assert_fails(check_070, _jitter_clock_rows(include_disabled_window=False))
+    _assert_fails(
+        check_070,
+        _jitter_clock_rows(
+            include_disabled_window=True,
+            jitter_while_disabled=True,
+        ),
+    )
 
 
 _SEQ_077 = (-1.0, -0.5, 0.0, 0.5, 1.0, 0.5, 0.0, -0.5)
@@ -194,27 +203,51 @@ def test_084_checks_retimed_data_against_observed_supply_rails() -> None:
     _assert_fails(check_084, _bbpd_rows(vss=0.0, vdd=0.9, retimed_shortcut=True))
 
 
-def _interval_rows(*, vss: float, vdd: float, self_scaled: bool, recapture_extra_b: bool = False) -> list[dict[str, float]]:
+def _interval_rows(
+    *,
+    vss: float,
+    vdd: float,
+    self_scaled: bool,
+    single_shot: bool = False,
+    recapture_extra_b: bool = False,
+    ignore_vss_span: bool = False,
+    reuse_first_result: bool = False,
+) -> list[dict[str, float]]:
     rows = []
     span = vdd - vss
     for index in range(2601):
         time_ns = index * 0.01
-        cycle0 = 1.20 <= time_ns < 2.00
-        cycle1 = time_ns >= 2.12
+        cycle0 = time_ns >= 1.20 if single_shot else 1.20 <= time_ns < 2.00
+        cycle1 = not single_shot and time_ns >= 2.12
         output_high = vss + span * (0.3 if self_scaled else 1.0)
         if recapture_extra_b and 1.55 <= time_ns < 2.00:
-            delay_level = vss + span * (0.45 / 0.2)
+            normalized_delay = 0.45 / 0.2
         elif cycle1:
-            delay_level = vss + span * (0.12 / 0.2)
+            normalized_delay = 1.0 if reuse_first_result else 0.12 / 0.2
         else:
-            delay_level = vss + span * (0.20 / 0.2)
+            normalized_delay = 0.20 / 0.2
+        delay_level = (
+            normalized_delay
+            if ignore_vss_span
+            else vss + span * normalized_delay
+        )
+        if single_shot:
+            a_high = time_ns >= 1.0
+            b_high = time_ns >= 1.2
+        else:
+            a_high = 1.0 <= time_ns < 1.9 or time_ns >= 2.0
+            b_high = (
+                1.2 <= time_ns < 1.45
+                or 1.55 <= time_ns < 1.9
+                or time_ns >= 2.12
+            )
         rows.append(
             {
                 "time": time_ns * 1e-9,
                 "vdd": vdd,
                 "vss": vss,
-                "a": vdd if (1.0 <= time_ns < 1.9 or time_ns >= 2.0) else vss,
-                "b": vdd if (1.2 <= time_ns < 1.45 or 1.55 <= time_ns < 1.9 or time_ns >= 2.12) else vss,
+                "a": vdd if a_high else vss,
+                "b": vdd if b_high else vss,
                 "seen_out": output_high if (cycle0 or cycle1) else vss,
                 "delay_out": delay_level if (cycle0 or cycle1) else vss,
             }
@@ -222,22 +255,93 @@ def _interval_rows(*, vss: float, vdd: float, self_scaled: bool, recapture_extra
     return rows
 
 
-def test_089_uses_supply_for_row_and_streaming_normalization(tmp_path: Path) -> None:
-    valid = _interval_rows(vss=0.2, vdd=1.1, self_scaled=False)
-    adversarial = _interval_rows(vss=0.0, vdd=1.0, self_scaled=True)
-    recapture = _interval_rows(vss=0.0, vdd=1.0, self_scaled=False, recapture_extra_b=True)
-    _assert_passes(check_089, valid)
-    _assert_fails(check_089, adversarial)
-    _assert_fails(check_089, recapture)
-    valid_csv = tmp_path / "valid_089.csv"
-    adversarial_csv = tmp_path / "adversarial_089.csv"
-    recapture_csv = tmp_path / "recapture_089.csv"
-    _write_csv(valid_csv, valid)
-    _write_csv(adversarial_csv, adversarial)
-    _write_csv(recapture_csv, recapture)
-    assert stream_089(valid_csv)[0] == 1.0
-    assert stream_089(adversarial_csv)[0] == 0.0
-    assert stream_089(recapture_csv)[0] == 0.0
+def _assert_089_rejected_by_row_and_streaming(
+    tmp_path: Path,
+    name: str,
+    rows: list[dict[str, float]],
+) -> None:
+    passed, detail = check_089(rows)
+    assert not passed, f"{name}: {detail}"
+    csv_path = tmp_path / f"{name}.csv"
+    _write_csv(csv_path, rows)
+    score, notes = stream_089(csv_path)
+    assert score == 0.0, f"{name}: {notes}"
+
+
+def test_089_accepts_two_supply_normalized_measurement_cycles(
+    tmp_path: Path,
+) -> None:
+    rows = _interval_rows(vss=0.2, vdd=1.1, self_scaled=False)
+    _assert_passes(check_089, rows)
+    csv_path = tmp_path / "valid_089.csv"
+    _write_csv(csv_path, rows)
+    assert stream_089(csv_path)[0] == 1.0
+
+
+def test_089_rejects_seen_out_below_supply_rail_in_row_and_streaming(
+    tmp_path: Path,
+) -> None:
+    _assert_089_rejected_by_row_and_streaming(
+        tmp_path,
+        "seen_out_below_supply_rail_089",
+        _interval_rows(vss=0.0, vdd=1.0, self_scaled=True),
+    )
+
+
+def test_089_rejects_single_shot_trace_in_row_and_streaming(tmp_path: Path) -> None:
+    _assert_089_rejected_by_row_and_streaming(
+        tmp_path,
+        "single_shot_089",
+        _interval_rows(
+            vss=0.0,
+            vdd=1.0,
+            self_scaled=False,
+            single_shot=True,
+        ),
+    )
+
+
+def test_089_rejects_extra_b_recapture_in_row_and_streaming(tmp_path: Path) -> None:
+    _assert_089_rejected_by_row_and_streaming(
+        tmp_path,
+        "extra_b_recapture_089",
+        _interval_rows(
+            vss=0.0,
+            vdd=1.0,
+            self_scaled=False,
+            recapture_extra_b=True,
+        ),
+    )
+
+
+def test_089_rejects_ignored_vss_span_normalization_in_row_and_streaming(
+    tmp_path: Path,
+) -> None:
+    _assert_089_rejected_by_row_and_streaming(
+        tmp_path,
+        "ignores_vss_span_089",
+        _interval_rows(
+            vss=0.2,
+            vdd=1.1,
+            self_scaled=False,
+            ignore_vss_span=True,
+        ),
+    )
+
+
+def test_089_rejects_reused_first_cycle_result_in_row_and_streaming(
+    tmp_path: Path,
+) -> None:
+    _assert_089_rejected_by_row_and_streaming(
+        tmp_path,
+        "reuses_first_result_089",
+        _interval_rows(
+            vss=0.2,
+            vdd=1.1,
+            self_scaled=False,
+            reuse_first_result=True,
+        ),
+    )
 
 
 def _gain_rows(*, vss: float, vdd: float, self_scaled: bool) -> list[dict[str, float]]:
