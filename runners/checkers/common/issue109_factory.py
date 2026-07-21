@@ -245,34 +245,36 @@ def check_clocked_factory(
     metric_expected: list[float] = []
     saw_reset = False
     saw_enable_low = False
+    saw_invalid_low_span = False
+    saw_invalid_high_span = False
+    events: list[tuple[float, int, str]] = [(edge_t, 1, "clock") for edge_t in edges]
     if asynchronous_reset:
         reset_assertions = _threshold_crossings(
             [row["rst"] for row in rows], times, VTH, "rising"
         )
-        for reset_t in reset_assertions:
-            output_t = reset_t + delay
-            if output_t >= times[-1] - 0.05e-9:
-                continue
-            outputs = _values_at(rows, ("out", "flag", "metric"), output_t)
-            if outputs is None:
-                continue
-            worst = _worst_error(
-                outputs,
-                {"out": 0.0, "flag": 0.0, "metric": 0.0},
-                output_t,
-                worst,
-            )
-            saw_reset = True
-    for edge_t in edges:
-        output_t = edge_t + delay
+        events.extend((reset_t, 0, "reset") for reset_t in reset_assertions)
+    events.sort()
+    for event_t, _, event_kind in events:
+        output_t = event_t + delay
         if output_t >= times[-1] - 0.05e-9:
             continue
-        inputs = _values_at(rows, ("rst", "in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), edge_t + 1.0e-12)
         outputs = _values_at(rows, ("out", "flag", "metric"), output_t)
-        if inputs is None or outputs is None:
+        if outputs is None:
+            continue
+        if event_kind == "reset":
+            core_state = 0.0
+            out_state = 0.0
+            expected = {"out": 0.0, "flag": 0.0, "metric": 0.0}
+            worst = _worst_error(outputs, expected, output_t, worst)
+            saw_reset = True
+            continue
+        inputs = _values_at(rows, ("rst", "in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), event_t + 1.0e-12)
+        if inputs is None:
             continue
         values = {name: inputs[name] for name in ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en")}
         state = _normalized_inputs(values)
+        saw_invalid_low_span = saw_invalid_low_span or state["raw_span"] < SPAN_MIN
+        saw_invalid_high_span = saw_invalid_high_span or state["raw_span"] > SPAN_MAX
         x0, x1, x2, c0 = state["x0"], state["x1"], state["x2"], state["c0"]
         if inputs["rst"] > VTH or state["valid"] <= 0.5:
             core_state = 0.0
@@ -310,6 +312,11 @@ def check_clocked_factory(
         )
     if not (saw_reset and saw_enable_low):
         return False, f"{task_name}: missing_reset_or_enable_low_coverage reset={saw_reset} enable_low={saw_enable_low}"
+    if not (saw_invalid_low_span and saw_invalid_high_span):
+        return False, (
+            f"{task_name}: missing_invalid_span_coverage "
+            f"low={saw_invalid_low_span} high={saw_invalid_high_span}"
+        )
     if max(out_expected) - min(out_expected) < 0.16:
         return False, f"{task_name}: insufficient_clock_out_dynamic_range"
     if max(flag_expected) - min(flag_expected) < 0.45:

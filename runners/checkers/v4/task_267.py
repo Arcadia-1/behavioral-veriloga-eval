@@ -17,7 +17,13 @@ LEGACY_SYMBOL = '359-clocked-power-ready-sampler'
 
 def check_v4_267_clocked_power_ready_sampler(rows: list[Row]) -> CheckResult:
     """Check v4_267_clocked_power_ready_sampler: Clocked Power Ready Sampler clocked counter behavior."""
-    result = check_clocked_factory(rows, mode='counter', edge=1, task_name=TASK_LABEL)
+    result = check_clocked_factory(
+        rows,
+        mode='counter',
+        edge=1,
+        task_name=TASK_LABEL,
+        asynchronous_reset=True,
+    )
     if not result[0]:
         return result
     ok, hold_note = check_clocked_output_hold(rows, edge=1, task_name=TASK_LABEL)
