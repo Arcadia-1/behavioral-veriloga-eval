@@ -124,16 +124,17 @@
     ],
     "mode": "single_file"
   },
-  "family_id": "381",
-  "feedback": {
+  "evas": {
     "available_in_modes": [
       "G2",
       "G3",
       "G4",
       "G5"
     ],
-    "command": "vabench feedback run"
+    "command": "evas simulate public/task/visible_test.scs -o public/submission/evas-output --spectre-strict",
+    "visible_and_final_test": "identical"
   },
+  "family_id": "381",
   "form": "dut",
   "identity": {
     "category": "pll_clock_timing",
@@ -219,7 +220,7 @@
     },
     {
       "id": "P_ASSERT_VALID_AFTER_THE_FIRST_COMPLETED",
-      "observable_contract": "Assert `valid` after the first completed oscillator cycle following enable.",
+      "observable_contract": "Assert `valid` only after the first completed oscillator cycle following enable or reset recovery.",
       "required_signals": [
         "time",
         "mod_in",
