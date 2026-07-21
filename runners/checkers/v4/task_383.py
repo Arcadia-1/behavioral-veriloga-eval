@@ -1,10 +1,19 @@
 """Task-specific checker for canonical v4 DUT 383."""
 from __future__ import annotations
 
+from statistics import median
+
 from ..api import Checker
 
 
-def _level(row: dict[str, float], name: str, threshold: float = 0.45) -> bool | None:
+REQUIRED_SIGNALS = {"time", "enable", "rst", "osc_out", "period_metric", "valid"}
+VTH = 0.45
+LOW_TOL = 0.12
+HIGH_TOL = 0.65
+NOMINAL_PERIOD = 20e-9
+
+
+def _level(row: dict[str, float], name: str, threshold: float = VTH) -> bool | None:
     value = float(row.get(name, 0.0))
     if 0.1 < value < 0.8:
         return None
@@ -17,99 +26,183 @@ def _property_note(property_id: str, mismatch_count: int, expected: str, observe
         f"expected={expected} observed={observed}"
     )
 
-def check_v4_942_fixed_frequency_oscillator_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+
+def _missing_columns(rows: list[dict[str, float]]) -> str | None:
     if not rows:
-        return False, _property_note("P_TRACE_CONTRACT", 1, "non_empty_trace", "empty_trace")
-    checked = metric_errors = clear_errors = 0
-    reset_clear = disabled_clear = osc_activity = valid_seen = reenable_seen = False
-    osc_vals: list[float] = []
-    previous_enable: bool | None = None
-    previous_osc = float(rows[0].get("osc_out", 0.0))
-    saw_inactive = False
-    pending_enable_rises: list[float] = []
-    startup_delay: float | None = None
-    restart_delay: float | None = None
-    for index, row in enumerate(rows):
-        t = float(row["time"])
-        rst = _level(row, "rst")
-        enable = _level(row, "enable")
-        if rst is None or enable is None:
-            continue
-        enabled = enable and not rst
-        if previous_enable is not None and not previous_enable and enable and saw_inactive:
-            pending_enable_rises.append(t)
-            reenable_seen = True
-        previous_enable = enable
-        if not enabled:
-            clear = row["osc_out"] < 0.12 and row["period_metric"] < 0.08 and row["valid"] < 0.10
-            if index % 6 == 0:
-                if rst and clear:
-                    reset_clear = True
-                if not rst and not enable and clear:
-                    disabled_clear = True
-                if not clear:
-                    clear_errors += 1
-            saw_inactive = True
-            previous_osc = float(row["osc_out"])
-            continue
-        osc = float(row["osc_out"])
-        if index % 6 == 0:
-            osc_vals.append(osc)
-        # Detect the settled high side of the transition rather than relying
-        # on one exact waveform sample; this remains stable under time scaling.
-        if previous_osc < 0.65 <= osc and pending_enable_rises:
-            rise_time = pending_enable_rises.pop(0)
-            delay = t - rise_time
-            if startup_delay is None:
-                startup_delay = delay
-            elif restart_delay is None:
-                restart_delay = delay
-        if index % 6 == 0:
-            valid_seen = valid_seen or bool(_level(row, "valid"))
-            checked += 1
-            if abs(float(row["period_metric"]) - 0.45) > 0.10:
-                metric_errors += 1
-        previous_osc = osc
-    osc_activity = bool(osc_vals) and max(osc_vals) > 0.65 and min(osc_vals) < 0.20
-    # The controller resets phase on a timer tick, so the first edge may move
-    # within one transition interval when the stimulus edge is shifted.  Keep
-    # the tolerance relative to the observed startup delay; a materially
-    # different restart edge remains a semantic phase-reset failure.
-    timing_tolerance = 0.15 * startup_delay if startup_delay is not None else 0.0
-    restart_timing_ok = (
-        startup_delay is not None
-        and restart_delay is not None
-        and abs(restart_delay - startup_delay) <= timing_tolerance
+        return _property_note("P_TRACE_CONTRACT", 1, "non_empty_trace", "empty_trace")
+    missing = sorted(REQUIRED_SIGNALS - set(rows[0]))
+    if missing:
+        return _property_note("P_TRACE_CONTRACT", len(missing), "required_public_traces", ",".join(missing))
+    return None
+
+
+def _enabled(row: dict[str, float]) -> bool:
+    enable = _level(row, "enable")
+    rst = _level(row, "rst")
+    return enable is True and rst is False
+
+
+def _clear_outputs(row: dict[str, float]) -> bool:
+    return (
+        float(row["osc_out"]) < LOW_TOL
+        and float(row["period_metric"]) < LOW_TOL
+        and float(row["valid"]) < LOW_TOL
     )
-    timing_errors = int(not reenable_seen) + int(not restart_timing_ok)
-    ok = (
-        checked >= 12
-        and reset_clear
-        and disabled_clear
-        and timing_errors == 0
-        and osc_activity
-        and valid_seen
-        and metric_errors <= 4
-        and clear_errors <= 4
+
+
+def _segments(rows: list[dict[str, float]], enabled: bool) -> list[list[dict[str, float]]]:
+    groups: list[list[dict[str, float]]] = []
+    current: list[dict[str, float]] = []
+    for row in rows:
+        if _enabled(row) == enabled:
+            current.append(row)
+        elif current:
+            groups.append(current)
+            current = []
+    if current:
+        groups.append(current)
+    return groups
+
+
+def _span(rows: list[dict[str, float]]) -> float:
+    return float(rows[-1]["time"]) - float(rows[0]["time"])
+
+
+def _edge_times(rows: list[dict[str, float]]) -> tuple[list[float], list[float]]:
+    edges: list[float] = []
+    rises: list[float] = []
+    last = float(rows[0]["osc_out"]) > VTH
+    for row in rows[1:]:
+        cur = float(row["osc_out"]) > VTH
+        if cur != last:
+            t = float(row["time"])
+            edges.append(t)
+            if cur:
+                rises.append(t)
+        last = cur
+    return edges, rises
+
+
+def check_v4_942_fixed_frequency_oscillator_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    missing = _missing_columns(rows)
+    if missing:
+        return False, missing
+    rows = sorted(rows, key=lambda row: float(row["time"]))
+
+    enabled_segments = [seg for seg in _segments(rows, True) if _span(seg) >= 0.9 * NOMINAL_PERIOD]
+    disabled_segments = [seg for seg in _segments(rows, False) if _span(seg) >= 2e-9]
+    reset_segments = [
+        seg for seg in disabled_segments if any(_level(row, "rst") is True for row in seg)
+    ]
+    pure_disable_segments = [
+        seg
+        for seg in disabled_segments
+        if any(_level(row, "enable") is False for row in seg)
+        and not any(_level(row, "rst") is True for row in seg)
+    ]
+
+    clear_errors = sum(
+        1
+        for seg in disabled_segments
+        for row in seg
+        if float(row["time"]) >= float(seg[0]["time"]) + 1.0e-9 and not _clear_outputs(row)
     )
+    all_edges: list[float] = []
+    edge_intervals: list[float] = []
+    segment_errors = valid_errors = restart_errors = 0
+    metric_samples: list[float] = []
+    osc_high_seen = osc_low_seen = False
+
+    for seg in enabled_segments:
+        start = float(seg[0]["time"])
+        end = float(seg[-1]["time"])
+        edges, rises = _edge_times(seg)
+        all_edges.extend(edges)
+        edge_intervals.extend(b - a for a, b in zip(edges, edges[1:]) if b > a)
+        osc_values = [float(row["osc_out"]) for row in seg]
+        osc_high_seen = osc_high_seen or max(osc_values) > HIGH_TOL
+        osc_low_seen = osc_low_seen or min(osc_values) < LOW_TOL
+        if len(edges) < 3 or len(rises) < 2:
+            segment_errors += 1
+        if any((b - a) > 12.5e-9 for a, b in zip(edges, edges[1:])):
+            segment_errors += 1
+        if rises and abs((rises[0] - start) - NOMINAL_PERIOD / 2.0) > 2.5e-9:
+            restart_errors += 1
+        elif not rises:
+            restart_errors += 1
+
+        early_valid = [
+            row
+            for row in seg
+            if float(row["time"]) <= start + 0.9 * NOMINAL_PERIOD
+            and _level(row, "valid") is True
+        ]
+        late_rows = [row for row in seg if float(row["time"]) >= start + 1.1 * NOMINAL_PERIOD]
+        late_valid_low = [row for row in late_rows if _level(row, "valid") is not True]
+        if early_valid or late_valid_low:
+            valid_errors += 1
+        metric_samples.extend(float(row["period_metric"]) for row in late_rows)
+        if end - start < 1.4 * NOMINAL_PERIOD:
+            segment_errors += 1
+
+    half_period_errors = sum(1 for dt in edge_intervals if not 8.0e-9 <= dt <= 12.0e-9)
+    measured_period = 2.0 * median(edge_intervals) if edge_intervals else 0.0
+    expected_metric = min(0.9, max(0.0, measured_period / NOMINAL_PERIOD * 0.45)) if measured_period else 0.0
+    if metric_samples:
+        metric_mid = median(metric_samples)
+        metric_span = max(metric_samples) - min(metric_samples)
+        metric_stable = metric_span <= 0.08
+        metric_errors = sum(1 for value in metric_samples if abs(value - expected_metric) > 0.10)
+    else:
+        metric_mid = 0.0
+        metric_span = 0.0
+        metric_stable = False
+        metric_errors = 1
+
     notes = [
         _property_note(
             "P_RESET_DISABLE_CLEAR",
-            max(0, clear_errors - 4) + int(not reset_clear) + int(not disabled_clear),
-            "clear_on_reset_and_disable",
-            f"reset_clear={reset_clear},disabled_clear={disabled_clear},raw_clear_errors={clear_errors}",
+            clear_errors + int(len(reset_segments) < 2) + int(len(pure_disable_segments) < 2),
+            "repeat_reset_and_disable_clear_outputs",
+            (
+                f"reset_segments={len(reset_segments)},disable_segments={len(pure_disable_segments)},"
+                f"clear_errors={clear_errors}"
+            ),
         ),
-        _property_note("P_PERIOD_METRIC", max(0, metric_errors - 4), "period_metric=0.45_after_cycle", f"checked={checked},raw_errors={metric_errors}"),
-        _property_note("P_OSCILLATOR_ACTIVITY", int(not osc_activity), "osc_out_has_low_high_activity", str(osc_activity)),
-        _property_note("P_VALID_AFTER_CYCLE", int(not valid_seen), "valid_asserted_after_cycle", str(valid_seen)),
         _property_note(
-            "P_RELATIVE_RESTART_PHASE",
-            timing_errors,
-            "restart_delay_matches_initial_enable_delay",
-            f"startup_delay={startup_delay},restart_delay={restart_delay}",
+            "P_PERIODIC_OSCILLATION",
+            segment_errors + half_period_errors + int(len(edge_intervals) < 8),
+            "multiple_edges_per_enabled_window_with_10ns_half_period",
+            f"enabled_segments={len(enabled_segments)},edges={len(all_edges)},half_period_errors={half_period_errors}",
+        ),
+        _property_note(
+            "P_VALID_AFTER_COMPLETE_CYCLE",
+            valid_errors,
+            "valid_low_before_first_complete_cycle_and_high_after",
+            f"valid_errors={valid_errors}",
+        ),
+        _property_note(
+            "P_RESTART_PHASE",
+            restart_errors,
+            "first_edge_restarts_one_half_period_after_each_enable",
+            f"restart_errors={restart_errors}",
+        ),
+        _property_note(
+            "P_PERIOD_METRIC",
+            metric_errors + int(not metric_stable),
+            "stable_metric_matches_measured_period",
+            f"metric_mid={metric_mid:.3f},metric_span={metric_span:.3f},expected={expected_metric:.3f}",
+        ),
+        _property_note(
+            "P_OSCILLATOR_LEVELS",
+            int(not osc_high_seen) + int(not osc_low_seen),
+            "osc_out_reaches_low_and_high",
+            f"low={osc_low_seen},high={osc_high_seen}",
         ),
     ]
+    ok = all("mismatch_count=0" in note for note in notes)
     return ok, "; ".join(notes)
+
 
 CHECKER_ID = "v4_383_fixed_frequency_oscillator_source"
 CHECKER: Checker = check_v4_942_fixed_frequency_oscillator_source
