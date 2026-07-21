@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+import hashlib
+import json
+import os
+import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -28,6 +33,70 @@ CHECKER_CASES = [
     ("v4_264_enable_qualified_bias_hold", "latch", 1),
     ("v4_267_clocked_power_ready_sampler", "counter", 1),
 ]
+TASK_SOURCE = (
+    ROOT
+    / "benchmark-vabench-release-v4"
+    / "provenance"
+    / "dut-base-v3-exact-five-hash-bound-v2"
+)
+RENDERER = ROOT / "benchmark-vabench-release-v4" / "scripts" / "render_v4_harness.py"
+PARITY = ROOT / "benchmark-vabench-release-v4" / "scripts" / "validate_v4_profile_parity.py"
+TASK_FAMILIES = tuple(case[0][3:6] for case in CHECKER_CASES)
+
+
+def _family_dir(family: str) -> Path:
+    matches = sorted(TASK_SOURCE.glob(f"{family}-*"))
+    assert len(matches) == 1
+    return matches[0]
+
+
+def _sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _normalized_deck(path: Path) -> list[str]:
+    lines: list[str] = []
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("simulatorOptions options"):
+            continue
+        lines.append(re.sub(r"\s+", " ", line))
+    return lines
+
+
+def _pwl_values(deck_text: str, source_name: str) -> list[tuple[float, float]]:
+    pattern = re.compile(rf"^{re.escape(source_name)} .*? wave=\[(.*?)\]$", re.MULTILINE)
+    match = pattern.search(deck_text)
+    assert match is not None, source_name
+    tokens = match.group(1).split()
+    assert len(tokens) % 2 == 0
+
+    def scalar(token: str) -> float:
+        suffix = {"p": 1e-12, "n": 1e-9}.get(token[-1])
+        if suffix is not None:
+            return float(token[:-1]) * suffix
+        return float(token)
+
+    return [
+        (scalar(tokens[index]), scalar(tokens[index + 1]))
+        for index in range(0, len(tokens), 2)
+    ]
+
+
+def _sample_pwl(points: list[tuple[float, float]], time_s: float) -> float:
+    value = points[0][1]
+    for point_time, point_value in points:
+        if point_time > time_s:
+            break
+        value = point_value
+    return value
+
+
+def _spans_from_deck(deck_text: str) -> list[float]:
+    vdd = _pwl_values(deck_text, "Vvdd")
+    vss = _pwl_values(deck_text, "Vvss")
+    times = sorted({time_s for time_s, _ in vdd + vss})
+    return [_sample_pwl(vdd, time_s) - _sample_pwl(vss, time_s) for time_s in times]
 
 
 def _inputs(state: dict[str, float]) -> dict[str, float]:
@@ -271,6 +340,90 @@ def _async_recovery_rows(mode: str, edge: int) -> list[dict[str, float]]:
             previous = cleared
 
     return sorted(rows, key=lambda row: row["time"])
+
+
+def test_issue440_260_267_profiles_have_zero_semantic_drift() -> None:
+    for family in TASK_FAMILIES:
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(PARITY),
+                "--family",
+                family,
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            env={
+                **os.environ,
+                "EVAS_ENGINE": "evas2",
+                "VAEVAS_DEFAULT_EVAS_ENGINE": "evas2",
+            },
+            text=True,
+            check=False,
+        )
+        assert result.returncode == 0, result.stdout + result.stderr
+        report = json.loads(result.stdout)
+        assert report["status"] == "PASS"
+        assert report["checked_families"] == [family]
+
+
+@pytest.mark.parametrize("family", TASK_FAMILIES)
+def test_issue440_260_267_feedback_and_score_bind_same_span_stimulus(
+    family: str,
+    tmp_path: Path,
+) -> None:
+    task = _family_dir(family)
+    evaluator = task / "evaluator"
+    public = task / "public" / "task"
+    harness = json.loads((evaluator / "harness_spec.json").read_text(encoding="utf-8"))
+    score_deck = (evaluator / "score_tb.scs").read_text(encoding="utf-8")
+
+    assert _normalized_deck(public / "feedback_tb.scs") == _normalized_deck(
+        evaluator / "score_tb.scs"
+    )
+    assert min(_spans_from_deck(score_deck)) < 0.62
+    assert max(_spans_from_deck(score_deck)) > 1.28
+    assert any(0.62 <= span <= 1.28 for span in _spans_from_deck(score_deck))
+    assert any(
+        "Vvss" in line and "11.6n" in line and "14.8n" in line
+        for line in harness["deck"]["body_lines"]
+    )
+    assert any(
+        "Vvdd" in line and "11.6n" in line and "14.8n" in line
+        for line in harness["deck"]["body_lines"]
+    )
+
+    for profile_name in ("feedback", "score"):
+        profile_out = tmp_path / family / f"{profile_name}.json"
+        deck_out = tmp_path / family / f"{profile_name}.scs"
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(RENDERER),
+                "--spec",
+                str(evaluator / "harness_spec.json"),
+                "--profile",
+                profile_name,
+                "--check-parity",
+                "--profile-output",
+                str(profile_out),
+                "--deck-output",
+                str(deck_out),
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert result.returncode == 0, result.stdout + result.stderr
+        expected_profile = evaluator / "profiles" / f"{profile_name}.json"
+        expected_deck = (
+            public / "feedback_tb.scs"
+            if profile_name == "feedback"
+            else evaluator / "score_tb.scs"
+        )
+        assert _sha(profile_out) == _sha(expected_profile)
+        assert _sha(deck_out) == _sha(expected_deck)
 
 
 @pytest.mark.parametrize(("checker_id", "mode", "edge"), CHECKER_CASES)
