@@ -47,6 +47,14 @@ def check_deterministic_jittered_clock(rows: list[dict[str, float]]) -> tuple[bo
             observed=f"transitions={len(transitions)}",
             event="full_trace",
         )
+    if len(transitions) < 20:
+        return False, diagnostic(
+            "P_EDGE_MODULATION",
+            "insufficient_coverage",
+            expected="transitions>=20",
+            observed=f"transitions={len(transitions)}",
+            event="full_trace",
+        )
     if out_min < -0.05 or out_min > 0.15 or out_max < 0.72 or out_max > 1.02:
         return False, diagnostic(
             "P_OUTPUT_LEVELS",
@@ -96,6 +104,22 @@ def check_deterministic_jittered_clock(rows: list[dict[str, float]]) -> tuple[bo
             expected="half_period_ns=8.4..11.6",
             observed=f"half_period_ns={period:.3f},mismatch_count={len(bounds_failures)}",
             event=f"edge{index}",
+        )
+    if len(enabled_periods) < 5:
+        return False, diagnostic(
+            "P_EDGE_MODULATION",
+            "insufficient_coverage",
+            expected="jitter_en_high_half_periods>=5",
+            observed=f"enabled_half_periods={len(enabled_periods)}",
+            event="jitter_en_high",
+        )
+    if len(disabled_periods) < 3:
+        return False, diagnostic(
+            "P_NOMINAL_CLOCK",
+            "insufficient_coverage",
+            expected="jitter_en_low_half_periods>=3",
+            observed=f"disabled_half_periods={len(disabled_periods)}",
+            event="jitter_en_low",
         )
     nominal_failures = [
         (index, period) for index, period in disabled_periods if abs(period - 10.0) > 0.18

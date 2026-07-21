@@ -12,6 +12,7 @@ if str(RUNNERS) not in sys.path:
     sys.path.insert(0, str(RUNNERS))
 
 from checkers.v4.task_068 import CHECKER as check_068
+from checkers.v4.task_070 import CHECKER as check_070
 from checkers.v4.task_077 import CHECKER as check_077
 from checkers.v4.task_084 import CHECKER as check_084
 from checkers.v4.task_089 import CHECKER as check_089
@@ -87,6 +88,46 @@ def test_068_checks_all_cycles_duty_and_common_parameterized_rails() -> None:
     assert "save vss clk0 clk90 clk180 clk270" in score_lines
 
 
+def _jitter_clock_rows(*, include_disabled_window: bool) -> list[dict[str, float]]:
+    seed = 91
+    disabled_indices = set(range(9, 14)) if include_disabled_window else set()
+    transition_times = [5.0e-9]
+    for edge_index in range(1, 25):
+        if edge_index in disabled_indices:
+            half_period_ns = 10.0
+        else:
+            half_period_ns = 10.0 + (((seed + 3 * edge_index) % 5) - 2) * 0.8
+        transition_times.append(transition_times[-1] + half_period_ns * 1e-9)
+
+    rows = []
+    clock_high = False
+    rows.append(
+        {
+            "time": 0.0,
+            "jitter_en": 0.9,
+            "clk_out": 0.0,
+            **{f"seed{bit}": 0.9 if seed & (1 << bit) else 0.0 for bit in range(8)},
+        }
+    )
+    for edge_index, time_s in enumerate(transition_times, start=1):
+        clock_high = not clock_high
+        rows.append(
+            {
+                "time": time_s,
+                "jitter_en": 0.0 if edge_index in disabled_indices else 0.9,
+                "clk_out": 0.9 if clock_high else 0.0,
+                **{f"seed{bit}": 0.9 if seed & (1 << bit) else 0.0 for bit in range(8)},
+            }
+        )
+    rows.append({**rows[-1], "time": rows[-1]["time"] + 5.0e-9})
+    return rows
+
+
+def test_070_requires_enabled_and_disabled_jitter_en_coverage() -> None:
+    _assert_passes(check_070, _jitter_clock_rows(include_disabled_window=True))
+    _assert_fails(check_070, _jitter_clock_rows(include_disabled_window=False))
+
+
 _SEQ_077 = (-1.0, -0.5, 0.0, 0.5, 1.0, 0.5, 0.0, -0.5)
 
 
@@ -153,22 +194,29 @@ def test_084_checks_retimed_data_against_observed_supply_rails() -> None:
     _assert_fails(check_084, _bbpd_rows(vss=0.0, vdd=0.9, retimed_shortcut=True))
 
 
-def _interval_rows(*, vss: float, vdd: float, self_scaled: bool) -> list[dict[str, float]]:
+def _interval_rows(*, vss: float, vdd: float, self_scaled: bool, recapture_extra_b: bool = False) -> list[dict[str, float]]:
     rows = []
     span = vdd - vss
-    for index in range(401):
+    for index in range(2601):
         time_ns = index * 0.01
-        asserted = time_ns >= 1.20
+        cycle0 = 1.20 <= time_ns < 2.00
+        cycle1 = time_ns >= 2.12
         output_high = vss + span * (0.3 if self_scaled else 1.0)
+        if recapture_extra_b and 1.55 <= time_ns < 2.00:
+            delay_level = vss + span * (0.45 / 0.2)
+        elif cycle1:
+            delay_level = vss + span * (0.12 / 0.2)
+        else:
+            delay_level = vss + span * (0.20 / 0.2)
         rows.append(
             {
                 "time": time_ns * 1e-9,
                 "vdd": vdd,
                 "vss": vss,
-                "a": vdd if time_ns >= 1.0 else vss,
-                "b": vdd if time_ns >= 1.2 else vss,
-                "seen_out": output_high if asserted else vss,
-                "delay_out": output_high if asserted else vss,
+                "a": vdd if (1.0 <= time_ns < 1.9 or time_ns >= 2.0) else vss,
+                "b": vdd if (1.2 <= time_ns < 1.45 or 1.55 <= time_ns < 1.9 or time_ns >= 2.12) else vss,
+                "seen_out": output_high if (cycle0 or cycle1) else vss,
+                "delay_out": delay_level if (cycle0 or cycle1) else vss,
             }
         )
     return rows
@@ -177,14 +225,19 @@ def _interval_rows(*, vss: float, vdd: float, self_scaled: bool) -> list[dict[st
 def test_089_uses_supply_for_row_and_streaming_normalization(tmp_path: Path) -> None:
     valid = _interval_rows(vss=0.2, vdd=1.1, self_scaled=False)
     adversarial = _interval_rows(vss=0.0, vdd=1.0, self_scaled=True)
+    recapture = _interval_rows(vss=0.0, vdd=1.0, self_scaled=False, recapture_extra_b=True)
     _assert_passes(check_089, valid)
     _assert_fails(check_089, adversarial)
+    _assert_fails(check_089, recapture)
     valid_csv = tmp_path / "valid_089.csv"
     adversarial_csv = tmp_path / "adversarial_089.csv"
+    recapture_csv = tmp_path / "recapture_089.csv"
     _write_csv(valid_csv, valid)
     _write_csv(adversarial_csv, adversarial)
+    _write_csv(recapture_csv, recapture)
     assert stream_089(valid_csv)[0] == 1.0
     assert stream_089(adversarial_csv)[0] == 0.0
+    assert stream_089(recapture_csv)[0] == 0.0
 
 
 def _gain_rows(*, vss: float, vdd: float, self_scaled: bool) -> list[dict[str, float]]:

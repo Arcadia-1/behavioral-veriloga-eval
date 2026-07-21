@@ -5,12 +5,13 @@ ahdl_include "./dut/cross_interval_163p333_ref.va"
 
 Vvdd (vdd 0) vsource dc=1.0 type=dc
 Vvss (vss 0) vsource dc=0.0 type=dc
-// The two ramps cross 0.45 V at 10.000000 ns and 10.163333 ns.
-Va (a 0) vsource type=pwl wave=[0 0 9.95n 0 10.05n 0.9 12n 0.9]
-Vb (b 0) vsource type=pwl wave=[0 0 10.113333n 0 10.213333n 0.9 12n 0.9]
+// The ramps exercise two arm/capture cycles. The extra b edge in the first
+// cycle must be ignored until the second a edge rearms the timer.
+Va (a 0) vsource type=pwl wave=[0 0 9.95n 0 10.05n 0.9 19.8n 0.9 19.9n 0 19.95n 0 20.05n 0.9 26n 0.9]
+Vb (b 0) vsource type=pwl wave=[0 0 10.113333n 0 10.213333n 0.9 12.0n 0.9 12.1n 0 12.15n 0 12.25n 0.9 19.8n 0.9 19.9n 0 20.070n 0 20.170n 0.9 26n 0.9]
 IDUT (vdd vss a b delay_out seen_out) cross_interval_163p333_ref
 
 simulatorOptions options evas_profile=balanced
 
-tran tran stop=12n maxstep=5p errpreset=conservative
+tran tran stop=26n maxstep=5p errpreset=conservative
 save vdd vss a b delay_out seen_out

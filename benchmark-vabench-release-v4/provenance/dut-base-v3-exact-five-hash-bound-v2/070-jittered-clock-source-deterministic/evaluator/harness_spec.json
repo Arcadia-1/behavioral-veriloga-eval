@@ -19,7 +19,7 @@
       "Vseed6 (seed6 0) vsource type=pwl wave=[0 0.9 9.5n 0.9 10n 0.9]",
       "Vseed7 (seed7 0) vsource type=pwl wave=[0 0 9.5n 0 10n 0]",
       "XDUT (jitter_en seed0 seed1 seed2 seed3 seed4 seed5 seed6 seed7 clk_out) deterministic_jittered_clock",
-      "Vjitter_en (jitter_en 0) vsource type=pwl wave=[0 0.9 220n 0.9]"
+      "Vjitter_en (jitter_en 0) vsource type=pwl wave=[0 0.9 118n 0.9 118.1n 0 170n 0 170.1n 0.9 220n 0.9]"
     ],
     "header": [
       "simulator lang=spectre",
