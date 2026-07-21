@@ -2,7 +2,12 @@ from __future__ import annotations
 
 from ..api import Checker
 from .family_261_270_diagnostics import bind_properties
-from ..common.issue109_factory import CheckResult, Row, check_clocked_factory
+from ..common.issue109_factory import (
+    CheckResult,
+    Row,
+    check_clocked_factory,
+    check_clocked_output_hold,
+)
 
 
 TASK_LABEL = 'v4_262_resettable_phase_toggle_monitor'
@@ -12,7 +17,11 @@ LEGACY_SYMBOL = '353-resettable-phase-toggle-monitor'
 
 def check_v4_262_resettable_phase_toggle_monitor(rows: list[Row]) -> CheckResult:
     """Check v4_262_resettable_phase_toggle_monitor: Resettable Phase Toggle Monitor clocked toggle behavior."""
-    return check_clocked_factory(rows, mode='toggle', edge=1, task_name=TASK_LABEL)
+    result = check_clocked_factory(rows, mode='toggle', edge=1, task_name=TASK_LABEL)
+    if not result[0]:
+        return result
+    ok, hold_note = check_clocked_output_hold(rows, edge=1, task_name=TASK_LABEL)
+    return ok, f"{result[1]}; {hold_note}" if ok else hold_note
 
 
 CHECKS = {
