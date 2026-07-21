@@ -76,7 +76,8 @@ def _sample_many_within_trace(
     return _sample_many(rows, filtered, tol=tol)
 
 def check_v3_onehot_progress_encoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ck", "d0", "d1", "d2", "d3", "d4", "d15", "sum"}
+    progress_signals = tuple(f"d{index}" for index in range(16))
+    required = {"time", "ck", "sum", *progress_signals}
     if not rows or not required.issubset(rows[0]):
         return False, "missing onehot progress encoder signals"
     rows = normalize_affine_time(rows, [
@@ -85,17 +86,17 @@ def check_v3_onehot_progress_encoder(rows: list[dict[str, float]]) -> tuple[bool
     ])
     if rows is None:
         return False, "missing_progress_clock_stimulus_edges"
-    return _sample_many_within_trace(
-        rows,
-        {
-            "sum": [(0.8, 0.0), (1.3, 1.0), (4.3, 4.0), (16.3, 16.0), (17.3, 16.0)],
-            "d0": [(0.8, 0.0), (1.3, 1.0)],
-            "d3": [(4.3, 1.0)],
-            "d4": [(4.3, 0.0), (16.3, 1.0)],
-            "d15": [(16.3, 1.0), (17.3, 1.0)],
-        },
-        tol=0.08,
-    )
+    samples = {
+        "sum": [(0.8, 0.0), (1.3, 1.0), (4.3, 4.0), (16.3, 16.0), (17.3, 16.0)],
+    }
+    for index, signal in enumerate(progress_signals):
+        samples[signal] = [
+            (0.8, 0.0),
+            (index + 0.3, 0.0) if index else (0.8, 0.0),
+            (index + 1.3, 1.0),
+            (16.3, 1.0),
+        ]
+    return _sample_many_within_trace(rows, samples, tol=0.08)
 
 CHECKER_ID = "v4_178_onehot_progress_encoder"
 CHECKER: Checker = bind_properties(check_v3_onehot_progress_encoder, (
