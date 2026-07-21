@@ -27,7 +27,6 @@ Provide these overrideable public parameters on the top module and propagate com
 - `kvco = 5e6 Hz/V`: frequency sensitivity around `vcm`.
 - `vth = 0.45 V`: threshold for `enable` and `rst`.
 - `tr = 200 ps`: output transition smoothing time.
-- `tick = 500 ps`: deterministic internal update interval used to advance the behavioral oscillator state.
 
 ## Required Behavior
 
@@ -36,7 +35,7 @@ Provide these overrideable public parameters on the top module and propagate com
 - Clamp the commanded frequency to a nonnegative range and expose the normalized command on `freq_metric`.
 - `osc_out` must toggle between `vss` and `vdd` according to the commanded oscillator state.
 - `phase_marker` must pulse or toggle once per oscillator cycle so cycle period order is observable from public behavior.
-- Assert `valid` only after the first completed oscillator cycle following enable or reset recovery.
+- Assert `valid` after the first completed oscillator cycle following enable.
 
 ## Modeling Constraints
 

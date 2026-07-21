@@ -209,7 +209,7 @@
     },
     {
       "id": "P_ASSERT_VALID_AFTER_THE_FIRST_COMPLETED",
-      "observable_contract": "Assert `valid` only after the first completed oscillator cycle following enable or reset recovery.",
+      "observable_contract": "Assert `valid` after the first completed oscillator cycle following enable.",
       "required_signals": [
         "time",
         "mod_in",

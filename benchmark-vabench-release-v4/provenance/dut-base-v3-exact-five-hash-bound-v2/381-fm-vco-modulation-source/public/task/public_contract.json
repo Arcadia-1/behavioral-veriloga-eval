@@ -27,8 +27,9 @@
     "testbench_and_checker_split_required": true
   },
   "planned_checker_focus": [
-    "frequency monotonicity",
-    "phase marker",
+    "frequency transfer and 1 MHz lower clamp",
+    "phase marker pulse-or-toggle rising events",
+    "valid held after the first completed cycle",
     "enable/reset behavior",
     "output bounds"
   ],
