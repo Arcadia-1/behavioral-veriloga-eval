@@ -4,6 +4,22 @@ from __future__ import annotations
 from ..api import Checker
 import csv
 import math
+from pathlib import Path
+
+
+_RATIO_CONFORMANCE_CASES = (
+    ("round_below_half", 3.49, 3, 5.35e-6, 5.90e-6),
+    ("round_half_up", 3.50, 4, 6.17e-6, 6.72e-6),
+    ("clamp_low_override", 2.20, 3, 6.99e-6, 7.54e-6),
+    ("clamp_high_override", 13.20, 12, 7.81e-6, 8.36e-6),
+)
+
+
+def _ratio_tolerance(expected: int) -> float:
+    # Edge counting at the boundaries of a finite observation window can lose
+    # one edge.  Keep the tolerance well below the one-code separation needed
+    # to distinguish rounding and saturation faults.
+    return min(0.75, max(0.30, 0.06 * expected))
 
 def _csv_header_indices(csv_path: Path) -> tuple[list[str], dict[str, int]]:
     with csv_path.open(newline="", encoding="utf-8") as f:
@@ -106,7 +122,6 @@ def _stream_adpll_ratio_hop_csv(csv_path: Path) -> tuple[float, list[str]]:
     lock_max = float("-inf")
     vctrl_in_range = True
     prev_ratio: float | None = None
-    largest_step = 0.0
     ratio_samples: list[tuple[float, float]] = []
     with csv_path.open(newline="", encoding="utf-8") as f:
         reader = csv.reader(f)
@@ -120,26 +135,10 @@ def _stream_adpll_ratio_hop_csv(csv_path: Path) -> tuple[float, list[str]]:
             lock_max = max(lock_max, lock)
             if not (-1e-6 <= vctrl <= 1.2):
                 vctrl_in_range = False
-            if prev_ratio is not None:
-                step = abs(ratio_ctrl - prev_ratio)
-                if step > largest_step:
-                    largest_step = step
+            if prev_ratio is not None and not math.isfinite(hop_t):
+                if abs(ratio_ctrl - ratio_samples[0][1]) >= 0.5:
                     hop_t = time_s
             prev_ratio = ratio_ctrl
-
-    if (largest_step < 0.5 or not math.isfinite(hop_t)) and len(ratio_samples) >= 2:
-        ratio_initial = ratio_samples[0][1]
-        ratio_final = ratio_samples[-1][1]
-        ratio_delta = ratio_final - ratio_initial
-        if abs(ratio_delta) >= 0.5:
-            hop_threshold = 0.5 * (ratio_initial + ratio_final)
-            for (_prev_t, prev_v), (cur_t, cur_v) in zip(ratio_samples, ratio_samples[1:]):
-                if ratio_delta > 0.0 and prev_v <= hop_threshold <= cur_v:
-                    hop_t = cur_t
-                    break
-                if ratio_delta < 0.0 and prev_v >= hop_threshold >= cur_v:
-                    hop_t = cur_t
-                    break
 
     if not math.isfinite(hop_t):
         return 0.0, ["ratio_hop_not_detected"]
@@ -188,6 +187,26 @@ def _stream_adpll_ratio_hop_csv(csv_path: Path) -> tuple[float, list[str]]:
     if post_fb_ref_note != "ok":
         return 0.0, [f"post_feedback_window_{post_fb_ref_note}"]
 
+    conformance_notes: list[str] = []
+    for label, expected_raw, expected_ratio, start, stop in _RATIO_CONFORMANCE_CASES:
+        observed_raw = stream_median_signal("ratio_ctrl", start, stop)
+        if observed_raw is None or abs(observed_raw - expected_raw) > 0.05:
+            return 0.0, [
+                f"{label}_stimulus_mismatch expected={expected_raw:.2f} observed={observed_raw}"
+            ]
+        observed_ratio, ratio_note = _stream_edge_ratio(
+            csv_path, indices, "vout", "fb_clk", start, stop
+        )
+        if ratio_note != "ok":
+            return 0.0, [f"{label}_{ratio_note}"]
+        tolerance = _ratio_tolerance(expected_ratio)
+        if abs(observed_ratio - expected_ratio) > tolerance:
+            return 0.0, [
+                f"{label}_divider_ratio expected={expected_ratio} "
+                f"observed={observed_ratio:.3f} tol={tolerance:.3f}"
+            ]
+        conformance_notes.append(f"{label}={observed_ratio:.3f}")
+
     vth = lock_max * 0.5
     pre_lock = _stream_weighted_high_fraction_window(csv_path, indices, "lock", vth, hop_t - 4.0e-7, hop_t - 5.0e-8)
     post_lock = _stream_weighted_high_fraction_window(csv_path, indices, "lock", vth, windows["post"][0] + 3.0e-7, windows["post"][1])
@@ -215,7 +234,8 @@ def _stream_adpll_ratio_hop_csv(csv_path: Path) -> tuple[float, list[str]]:
         f"post_fb_ref={post_fb_ref_ratio:.3f} "
         f"pre_lock={pre_lock:.3f} "
         f"post_lock={post_lock:.3f} "
-        f"vctrl_range_ok={vctrl_in_range}"
+        f"vctrl_range_ok={vctrl_in_range} "
+        + " ".join(conformance_notes)
     ]
 
 def rising_edges(values: list[float], times: list[float], threshold: float = 0.45) -> list[float]:
@@ -252,18 +272,11 @@ def check_adpll_ratio_hop(rows: list[dict[str, float]]) -> tuple[bool, str]:
         return False, "missing ref_clk/ratio_ctrl/fb_clk/vout/lock/vctrl_mon"
 
     ratio_initial = rows[0]["ratio_ctrl"]
-    ratio_final = rows[-1]["ratio_ctrl"]
-    ratio_delta = ratio_final - ratio_initial
     hop_t = float("nan")
-    if abs(ratio_delta) >= 0.5:
-        hop_threshold = 0.5 * (ratio_initial + ratio_final)
-        for prev, cur in zip(rows, rows[1:]):
-            if ratio_delta > 0.0 and prev["ratio_ctrl"] <= hop_threshold <= cur["ratio_ctrl"]:
-                hop_t = cur["time"]
-                break
-            if ratio_delta < 0.0 and prev["ratio_ctrl"] >= hop_threshold >= cur["ratio_ctrl"]:
-                hop_t = cur["time"]
-                break
+    for cur in rows[1:]:
+        if abs(cur["ratio_ctrl"] - ratio_initial) >= 0.5:
+            hop_t = cur["time"]
+            break
     if not math.isfinite(hop_t):
         return False, "ratio_hop_not_detected"
 
@@ -303,6 +316,26 @@ def check_adpll_ratio_hop(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if post_fb_ref_note != "ok":
         return False, f"post_feedback_window_{post_fb_ref_note}"
 
+    conformance_notes: list[str] = []
+    for label, expected_raw, expected_ratio, start, stop in _RATIO_CONFORMANCE_CASES:
+        observed_raw = median_signal("ratio_ctrl", start, stop)
+        if observed_raw is None or abs(observed_raw - expected_raw) > 0.05:
+            return False, (
+                f"{label}_stimulus_mismatch expected={expected_raw:.2f} observed={observed_raw}"
+            )
+        observed_ratio, ratio_note = edge_frequency_ratio(
+            rows, "vout", "fb_clk", start, stop
+        )
+        if ratio_note != "ok":
+            return False, f"{label}_{ratio_note}"
+        tolerance = _ratio_tolerance(expected_ratio)
+        if abs(observed_ratio - expected_ratio) > tolerance:
+            return False, (
+                f"{label}_divider_ratio expected={expected_ratio} "
+                f"observed={observed_ratio:.3f} tol={tolerance:.3f}"
+            )
+        conformance_notes.append(f"{label}={observed_ratio:.3f}")
+
     vth = max(r["lock"] for r in rows) * 0.5 if rows else 0.45
     pre_lock = weighted_logic_high_fraction_window(rows, "lock", vth, hop_t - 4.0e-7, hop_t - 5.0e-8)
     post_lock = weighted_logic_high_fraction_window(rows, "lock", vth, post_start + 3.0e-7, post_stop)
@@ -333,7 +366,8 @@ def check_adpll_ratio_hop(rows: list[dict[str, float]]) -> tuple[bool, str]:
         f"post_fb_ref={post_fb_ref_ratio:.3f} "
         f"pre_lock={pre_lock:.3f} "
         f"post_lock={post_lock:.3f} "
-        f"vctrl_range_ok={vctrl_in_range}"
+        f"vctrl_range_ok={vctrl_in_range} "
+        + " ".join(conformance_notes)
     )
 
 def weighted_logic_high_fraction(rows: list[dict[str, float]], signal: str, threshold: float) -> float:

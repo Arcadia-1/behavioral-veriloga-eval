@@ -56,9 +56,11 @@ Required observable behavior:
 - Use `ref_clk` as the reference timing input.
 - Interpret `ratio_ctrl` as a voltage-coded requested feedback divide ratio in
   volts: round `V(ratio_ctrl)` to the nearest integer with half-step boundaries,
-  then clip the requested ratio to the inclusive `ratio_min` through `ratio_max`
-  range. Legal overrides of `ratio_min` and `ratio_max` must extend this
-  encoding rather than limiting it to the default 2-through-16 range.
+  with an exact positive half-step rounding upward to the next integer, then
+  clip the requested ratio to the inclusive `ratio_min` through `ratio_max`
+  range. Legal overrides of `ratio_min` and `ratio_max` must define the active
+  saturation endpoints rather than limiting the encoding to the default
+  2-through-16 range.
 - Generate a behavioral DCO clock on `vout`.
 - Generate `fb_clk` by dividing the DCO activity according to the requested
   ratio.

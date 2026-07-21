@@ -195,6 +195,26 @@
       ]
     },
     {
+      "id": "P_RATIO_HALF_STEP_ROUNDING",
+      "observable_contract": "Requests immediately below a positive half-step round down while an exact positive half-step rounds up before divider selection.",
+      "required_signals": [
+        "time",
+        "ratio_ctrl",
+        "vout",
+        "fb_clk"
+      ]
+    },
+    {
+      "id": "P_RATIO_OVERRIDE_SATURATION",
+      "observable_contract": "Requests below ratio_min or above ratio_max saturate to the respective inclusive endpoint when legal non-default bounds are configured.",
+      "required_signals": [
+        "time",
+        "ratio_ctrl",
+        "vout",
+        "fb_clk"
+      ]
+    },
+    {
       "id": "P_DCO_FREQUENCY_BOUNDS",
       "observable_contract": "The behavioral DCO on vout remains within the configured f_min and f_max limits.",
       "required_signals": [

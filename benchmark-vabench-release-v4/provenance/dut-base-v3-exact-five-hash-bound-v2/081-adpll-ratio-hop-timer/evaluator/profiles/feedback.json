@@ -6,11 +6,13 @@
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "ecfc1c66ac901d317136ca36e7498d7affb8b88f60072a6d45ede81e9b10737e",
+  "harness_spec_sha256": "dfd7e51a1993f3922bed401791b89677e92015f50fc283539aa491088905fc67",
   "parameters": {},
   "profile_name": "feedback",
   "property_ids": [
     "P_RATIO_REQUEST_CLAMP",
+    "P_RATIO_HALF_STEP_ROUNDING",
+    "P_RATIO_OVERRIDE_SATURATION",
     "P_DCO_FREQUENCY_BOUNDS",
     "P_FEEDBACK_DERIVED_FROM_DCO",
     "P_BOUNDED_CONTROL_MONITOR",
