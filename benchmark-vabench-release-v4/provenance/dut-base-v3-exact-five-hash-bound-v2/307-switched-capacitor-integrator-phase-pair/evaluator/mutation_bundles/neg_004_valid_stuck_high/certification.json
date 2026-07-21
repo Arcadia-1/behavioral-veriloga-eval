@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_REJECT_OVERLAPPING_PHI1_AND_PHI2_UPDATES, P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE satisfy the public contract; fault class valid_stuck_high is rejected",
-    "observed": "EVAS: v4_307 accepted=847 reset_clear=False overlap_low=False overlap_events=0 phase_tracks_input=True held_disabled=False direction_checks=2 direction_errors=0 vout_span=0.058 phase_span=0.520; P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count=2; P_ON_A_RISING_PHI1_CROSSING_SAMPLE mismatch_count=0; P_ON_THE_FOLLOWING_RISING_PHI2_CROSSING mismatch_count=0; P_REJECT_OVERLAPPING_PHI1_AND_PHI2_UPDATES mismatch_count=2; P_EXPOSE_THE_MOST_RECENT_ACCEPTED_PHASE mismatch_count=0; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
+    "observed": "EVAS: v4_307 initial_checked=59 initial_errors=59 phi1_captures=4 accepted_pairs=3 overlap_events=1 positive_steps=True negative_steps=True edge_errors=1 hold_checked=687 hold_errors=168; P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count=59; P_ON_A_RISING_PHI1_CROSSING_SAMPLE mismatch_count=0; P_ON_THE_FOLLOWING_RISING_PHI2_CROSSING mismatch_count=1; P_REJECT_OVERLAPPING_PHI1_AND_PHI2_UPDATES mismatch_count=0; P_EXPOSE_THE_MOST_RECENT_ACCEPTED_PHASE mismatch_count=162; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
     "violated_property_ids": [
       "P_REJECT_OVERLAPPING_PHI1_AND_PHI2_UPDATES",
       "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE"
@@ -18,10 +18,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_307_switched_capacitor_integrator_phase_pair",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 1012
   },
   "family_id": "307",

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "308-correlated-double-sampler-offset-cancel",
+  "checker_task_id": "v4_308_correlated_double_sampler_offset_cancel",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "fff597845cf703c586582a0ca6231752defaa03e26d1bf56166b3a8871bd8a50",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "de7dfb21b99ef4d87f13faaa7c91a5335f7fc005e95f0551a170592bc80b7644",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "308",
+  "family_spec_sha256": "14a68835afe8051115536ea3645cb80e90b219c4e802a1d56980f89d9bfcaae1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0cace914f80f794c3aaec8344bd9c78651471e590ef9982c7acf581393892c08",
+  "public_contract": "tasks/808-correlated-double-sampler-offset-cancel-testbench/public_contract.json",
+  "public_contract_sha256": "9756c9103eed9e92d37b066f13cad79f86063b0f854f2e2625842c7478e52be3",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/808-correlated-double-sampler-offset-cancel-testbench",
+  "task_id": "v4-808"
+}

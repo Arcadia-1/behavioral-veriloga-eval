@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_ON_RESET_OR_WHEN_DISABLED_DRIVE satisfy the public contract; fault class sampled_gain_polarity_inverted is rejected",
-    "observed": "EVAS: v4_305 checked=976 codes=[0, 1, 2, 3] disabled_clear=True settled_seen=False sample_errors=90 gain_errors=720 settled_errors=140; P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count=0; P_ON_EACH_RISING_CLK_EDGE_WHILE mismatch_count=0; P_DRIVE_SAMPLED_METRIC_WITH_THE_HELD mismatch_count=0; P_MOVE_VOUT_TOWARD_VCM_GAIN_SAMPLE mismatch_count=1; P_ASSERT_SETTLED_AFTER_THE_OUTPUT_HAS mismatch_count=1; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
+    "observed": "EVAS: v4_305 active_edges=13 inactive_edges=3 codes=[0, 1, 2, 3] settled_seen=True sample_errors=0 gain_errors=10 settled_errors=0 hold_checked=850 hold_errors=521; P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count=10; P_ON_EACH_RISING_CLK_EDGE_WHILE mismatch_count=0; P_DRIVE_SAMPLED_METRIC_WITH_THE_HELD mismatch_count=504; P_MOVE_VOUT_TOWARD_VCM_GAIN_SAMPLE mismatch_count=9; P_ASSERT_SETTLED_AFTER_THE_OUTPUT_HAS mismatch_count=0; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
     "violated_property_ids": [
       "P_ON_RESET_OR_WHEN_DISABLED_DRIVE"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_305_capacitive_feedback_amplifier_macro",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 1133
   },
   "family_id": "305",

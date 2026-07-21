@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "075-peak-detector",
+  "checker_task_id": "v4_075_peak_detector",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "75f830903592d23f7cea432d8896b068815b4907997518672d135b666fdf65e9",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "0a15c6fb0cd06840eeb6eda1e633b113626f1bdc48cad0ede37fbbc61ecaf56f",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "075",
+  "family_spec_sha256": "23194842a80ba3a3fdfb829b78156803d77ec92c803ddd011c0afeee1124fa5d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9066cd8654ebe4210afb8f204660ab825766c3104d5527665a41c4d4448cb860",
+  "public_contract": "tasks/575-peak-detector-testbench/public_contract.json",
+  "public_contract_sha256": "4cc78716c22090aab90aa4a1e9fd36c70057cbcace038f2cbb71aa2ecffb10cb",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/575-peak-detector-testbench",
+  "task_id": "v4-575"
+}

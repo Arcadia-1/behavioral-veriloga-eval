@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "vin_src.va"
+  ],
+  "canonical_dut_source_slug": "102-clocked-sine-source",
+  "checker_task_id": "v4_102_clocked_sine_source",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "51d6c74a8ce214e277efe2b8fdc0bc74a99a63111c4ca0527f030e52556133d4",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "5251c473ed6bdb860efb57f96147e056c2343832a063f5f3332c884ae6e6b027",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "4e0668cfb8d56372351926abd7819060c4cd6e16f3914a15f294e54b38623637",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "102",
+  "family_spec_sha256": "bb97d3e27e2b374578a8ccbdef291d3f69e090493e2101a12ab02e43247c646a",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c87924bbd57d058b253118a3a8304990729f26efbb74bbafa77d07981a8402a1",
+  "public_contract": "tasks/102-clocked-sine-source/public_contract.json",
+  "public_contract_sha256": "04a2207dc66f9feee467cbe2c71d019fe8a36cc2e15df6a8fc343e1b035a177d",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/102-clocked-sine-source",
+  "task_id": "v4-102"
+}

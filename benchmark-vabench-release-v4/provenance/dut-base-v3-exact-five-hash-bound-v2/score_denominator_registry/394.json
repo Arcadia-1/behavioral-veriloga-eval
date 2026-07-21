@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_middle_threshold_shift/certification.json",
-        "certification_sha256": "3ad5bf4010a305b9ad119dea38e2de87615ba3a13b1d8d447b60ad87ef90a245",
+        "certification_sha256": "cbb266111c9aa183e434087578aa08f825b6b5e152610d4e271ee3198ddc1c93",
         "fault_class": "wrong_threshold",
-        "mutation_bundle_sha256": "c7d2588e08c0cadb0fd290aeeb60652089e6adad006348ef3fa6797b5c3d0a5a",
+        "mutation_bundle_sha256": "602f52ca8178f8042989c456bc8cf38b7aa3547600e9ff8e48a66c0e4ef2ebc1",
         "mutation_id": "neg_001_middle_threshold_shift",
         "source_catalog_certification_path": "negative_variants/neg_001_middle_threshold_shift/certification.json",
         "trigger_condition": "vin lies between nominal and shifted middle thresholds",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_falling_edge_sampling/certification.json",
-        "certification_sha256": "0cd9f5cc1050823a8a3d21e52804d5f90fa7190ca364c6e99efe1dcd19c6ec1a",
+        "certification_sha256": "593a26d7dc241dd299cd516ff22a88e06123362c7c2cbfd13e4c44e97539e72c",
         "fault_class": "wrong_clock_edge",
-        "mutation_bundle_sha256": "375e5aad2258bec515354c228e22ad7b4fe3266060bd89e07005966d3af2de9c",
+        "mutation_bundle_sha256": "a63541b4d817163f84c395e31ee89baf587f462eb747f83313db404d6cc6e803",
         "mutation_id": "neg_003_falling_edge_sampling",
         "source_catalog_certification_path": "negative_variants/neg_003_falling_edge_sampling/certification.json",
         "trigger_condition": "vin differs at rising and falling edges",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_level_metric_divide_four/certification.json",
-        "certification_sha256": "41c79939d6bbd3c2b2fb89a1d289175a994bdfcdfd7ac99cf7e94904677309b8",
+        "certification_sha256": "385c7546066824a28b8b228965dabd49aca974d5e47c08334c8144863a755828",
         "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "4d07279992421ef357dbd86b865f924a81084c104e28d21ab3b40f7e17202069",
+        "mutation_bundle_sha256": "68538de98b13a9510bbc192614a8a93d9187d15d147fa6cbd5a63c6fdc7aeb3a",
         "mutation_id": "neg_004_level_metric_divide_four",
         "source_catalog_certification_path": "negative_variants/neg_004_level_metric_divide_four/certification.json",
         "trigger_condition": "a nonzero PAM4 level is sampled",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_enable_disable_not_cleared/certification.json",
-        "certification_sha256": "977a89f4d80c69e40231d66d70232eae45ab418f1f11e1d0f843a55d10169b1f",
+        "certification_sha256": "42285891ba79a5464bb8ed39be68a862a5793ffec0665e51517df7768de54521",
         "fault_class": "missing_disable_clear",
-        "mutation_bundle_sha256": "4ff07b4884753eec2b1c1faecea059019054832a33be73e506e18abd3c2067c5",
+        "mutation_bundle_sha256": "6f3b2226f15662c79e5cc19d85fa18a5515882a05f9880d4a58a95f62d6db6d9",
         "mutation_id": "neg_005_enable_disable_not_cleared",
         "source_catalog_certification_path": "negative_variants/neg_005_enable_disable_not_cleared/certification.json",
         "trigger_condition": "enable is deasserted after a valid sample",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_level2_binary_code/certification.json",
-        "certification_sha256": "ec8e7d17782689a1dc54b5747c31e040e1856201da92ffc7dda9fa6133756c54",
+        "certification_sha256": "c59c65ba36ff2b84f70a89742149a5a947580c3a372a1ef2c9716d53b5f360dd",
         "fault_class": "wrong_gray_code",
-        "mutation_bundle_sha256": "80977a2f1e75c46f8454aa96b7d73b9c8e1d23a1a51b0dccaaf75f9e8f4382b4",
+        "mutation_bundle_sha256": "803ea6276788a9e705fde1cb0dbaf3430f0160fef14aac9a1b42cbc7183759ea",
         "mutation_id": "neg_002_level2_binary_code",
         "source_catalog_certification_path": "negative_variants/neg_002_level2_binary_code/certification.json",
         "trigger_condition": "level two is sampled",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "e6512d9b0bf502d7afe5ee25da88eddf1ef79afb72001255379be941364a7b8c",
       "score_deck_sha256": "d1c123bed546a5f68ce32870754a7e866e25c296fe546e3bd744b542bad9859d",
-      "task_certification_sha256": "55c4156aea239ad31ce5f442e6dd2371f6a82253081806a4f8620e58fcb9e087",
-      "task_record_sha256": "52a5111c30c15d2a8b217a1c0d78372a4fad902c7985d5928291c7787bf6c525"
+      "task_certification_sha256": "f1d1eced8f23fb7864e7817885c98707fb1966d1152792d8d97a49b59e241fcf",
+      "task_record_sha256": "4febbd70d6578695116533fa85d0d4ada5e7c2c59e79e2edd2f38b8afd8147fb"
     },
     "release_dir": "394-pam4-slicer-gray-decoder"
   }

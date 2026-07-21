@@ -69,6 +69,7 @@ from audit_tri_form_release import (  # noqa: E402
     expected_buggy_artifact_hashes,
     file_sha,
     prompt_component_path,
+    valid_git_oid,
 )
 
 
@@ -96,6 +97,13 @@ def write_runtime_skill_manifest(runtime: Path, skill_id: str = "veriloga") -> N
         }) + "\n",
         encoding="utf-8",
     )
+
+
+def test_git_oid_validation_accepts_sha1_and_sha256() -> None:
+    assert valid_git_oid("a" * 40)
+    assert valid_git_oid("b" * 64)
+    assert not valid_git_oid("c" * 39)
+    assert not valid_git_oid("not-a-git-oid")
 
 
 def test_runtime_schema_compatibility_preserves_frozen_r45_and_requires_r47_v2() -> None:

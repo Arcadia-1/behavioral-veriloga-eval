@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_calibration_direction_reversed/certification.json",
-        "certification_sha256": "5dd4d81be4770c81651fac6461059b09df3c5d68af7f48028e05472e142f5757",
+        "certification_sha256": "25903b605376f5f7353b92b364a4bec75d41e872a4ed5e2bd90e2d14fa9d705d",
         "fault_class": "calibration_polarity",
-        "mutation_bundle_sha256": "a5e9e67e9a3b561504b960c9cc16170ea61c8daa9b960ab5582d5229f1f2fed5",
+        "mutation_bundle_sha256": "f14b36449a746f3c61087f61bc64558199dd891edf716d949329449221b413fd",
         "mutation_id": "neg_001_calibration_direction_reversed",
         "source_catalog_certification_path": "negative_variants/neg_001_calibration_direction_reversed/certification.json",
         "trigger_condition": "cal_ref is high during calibration",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_unsigned_offset_dac/certification.json",
-        "certification_sha256": "c2d1e630dd1b3016e1c10612fa1f5b8a4193e2b1ae558d7f7043442bceae9e06",
+        "certification_sha256": "653af05d2b256ca71e422ed7d1a6bc6c08716a79863da52e8d2980afa5f697d4",
         "fault_class": "offset_mapping_error",
-        "mutation_bundle_sha256": "e88fb60204b566c93d75f52bc16d45ae26cf511a79d77b339933b02e00d6ef85",
+        "mutation_bundle_sha256": "7e4ab64330d99537d360e9d0b505b2834695d112bfd867cfb42691c2e2bea8b6",
         "mutation_id": "neg_003_unsigned_offset_dac",
         "source_catalog_certification_path": "negative_variants/neg_003_unsigned_offset_dac/certification.json",
         "trigger_condition": "offset code differs from zero",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_comparator_polarity/certification.json",
-        "certification_sha256": "4193e4621f5264c253606dafe3e82b2ad3e17e322252cfe64b0dca96fbfbd32a",
+        "certification_sha256": "262211d45f7da36114ae35db700fc67454c7d400e7eadad9c44b8c428315570d",
         "fault_class": "comparator_polarity",
-        "mutation_bundle_sha256": "a44a9a7ae963996ba43861e37771de4700ba3f828c69c18f88710b895b1048f2",
+        "mutation_bundle_sha256": "b4a259b21fad48a2966d5c1bdece9d73eba0f3e721f078cac3bab5df47de00fe",
         "mutation_id": "neg_004_comparator_polarity",
         "source_catalog_certification_path": "negative_variants/neg_004_comparator_polarity/certification.json",
         "trigger_condition": "the corrected differential input changes sign",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_reset_decision_not_gated/certification.json",
-        "certification_sha256": "2546bf20523e3d49971100690715e155b1272c9dc00a631d635f96ab1ed3dd34",
+        "certification_sha256": "247a87515daf20ec68652d84cbc2ecb66ae21cb0cbc5aa96252b02563f27e5f9",
         "fault_class": "missing_reset",
-        "mutation_bundle_sha256": "1129472999fe18c570c551547f3123250c6f968e7a0f8d88432e6dce71add0d5",
+        "mutation_bundle_sha256": "b376ba784a0d0056aa71a7983b8157a8fabce05fc8cdf3d5ed0ccf95a3f7d38c",
         "mutation_id": "neg_005_reset_decision_not_gated",
         "source_catalog_certification_path": "negative_variants/neg_005_reset_decision_not_gated/certification.json",
         "trigger_condition": "reset is asserted with a positive differential input",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_ready_one_cycle_early/certification.json",
-        "certification_sha256": "75f5a5e962621619c09e1aab5421647193b32661d76eac4b4b8581269b4e8234",
+        "certification_sha256": "ae1c501f73ffac73fc56f162ba1f65c565b37b018909afe1e66a496b78e50226",
         "fault_class": "qualification_length_error",
-        "mutation_bundle_sha256": "d5de1fc1bd52589c0b2317c538f031f2ac17d69f04090ab9d5210ce8dc9e2fb1",
+        "mutation_bundle_sha256": "876dcf511642d2f5c768bcedeacc113957b369fc528bb5316b52400643af80de",
         "mutation_id": "neg_002_ready_one_cycle_early",
         "source_catalog_certification_path": "negative_variants/neg_002_ready_one_cycle_early/certification.json",
         "trigger_condition": "three calibration updates complete",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "fd7e1414a19bdf5f0594eedc5edd7e0457b321502b0b9a3c80504ac1591497ec",
       "score_deck_sha256": "6a6174f821cc4f0571eb8796fc70311432536344a136ebdbd34aba7c4579bff6",
-      "task_certification_sha256": "42faee04309d88964910dce3c55e94abe68a519a54fa2992cae107e0842d1861",
-      "task_record_sha256": "15963815cd3a5e3a0a8d28d3e13d26d33f52e6490150000bdc025a8ef1661328"
+      "task_certification_sha256": "79fdad7234a52f69e5c7922dbb0de19954d96e1a37949b474910ca9cd455e79e",
+      "task_record_sha256": "1454d8146e9ae837e484775e6257b5a67c1bcbbd3d6daa9e2ea4e1e1d65000e7"
     },
     "release_dir": "345-offset-calibrated-comparator-system"
   }

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "reset_polarity_qualifier.va"
+  ],
+  "canonical_dut_source_slug": "255-reset-polarity-qualifier",
+  "checker_task_id": "v4_255_reset_polarity_qualifier",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "394e354ccdc8f59f9e7ff966fd2b7eaad1961415c16c8c6272aca6b2098d9527",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "b080c3eded9d4e172a235724605ce74a053baa7d64f605ad295195ff3e7a5f22",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "4427570eedadf467f4245cb15ae737a9c2901da3e9104ed019980544976c799d",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "255",
+  "family_spec_sha256": "3c4342be34d623919966602d49c091ef2ae57aa35676735fd971dd6dfdc17c83",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "118909ffd2d3e4a2bfce1540055fbc1c2d6d2af0a8772f91aa7347cb93f9aa47",
+  "public_contract": "tasks/1255-reset-polarity-qualifier-bugfix/public_contract.json",
+  "public_contract_sha256": "44b9c0cd9fc00c33457840b481ae63ae311ab0c4eb3b8693b82ce90172885d2d",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1255-reset-polarity-qualifier-bugfix",
+  "task_id": "v4-1255"
+}

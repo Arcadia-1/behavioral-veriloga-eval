@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_DRIVE_CORRECTION_METRIC_AS_THE_VOLTAGE satisfy the public contract; fault class done_qualification_too_early is rejected",
-    "observed": "EVAS: v4_317 checked=410 codes=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] reset_clear=True disabled_clear=True monotonic_up=True high_code_seen=True done_seen=True metric_errors=0 done_errors=180 clear_errors=0",
+    "observed": "EVAS: v4_317 checked=410 codes=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] reset_clear=True disabled_clear=True monotonic_up=True high_code_seen=True done_seen=True oracle_checked=15 oracle_errors=6 metric_errors=0 done_errors=180 clear_errors=0",
     "violated_property_ids": [
       "P_DRIVE_CORRECTION_METRIC_AS_THE_VOLTAGE"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_317_capacitor_mismatch_calibration_engine",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 839
   },
   "family_id": "317",

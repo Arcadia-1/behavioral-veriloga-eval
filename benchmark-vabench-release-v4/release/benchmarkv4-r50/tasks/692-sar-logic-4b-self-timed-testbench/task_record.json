@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "192-sar-logic-4b-self-timed",
+  "checker_task_id": "v4_192_sar_logic_4b_self_timed",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "c49e7daa63375c12be3a16d1811f78013015e7dec26c82cc43685eb84dd279b5",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "79d083541d32985d7c8fd41bbc78f3f1e7f42ae393ec7ea404a84e6867af47e4",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "192",
+  "family_spec_sha256": "5f936d8d2426b956bf10102b56dcd2e9732cf5cf7c75cc00275a90964a70e5f4",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c897dcb57d3a37a1a1fe5490c457ad221f6e499ac97347f11021bf7e6e255e9e",
+  "public_contract": "tasks/692-sar-logic-4b-self-timed-testbench/public_contract.json",
+  "public_contract_sha256": "47621ecfc3f00675ca7ba145eefc7134609ba4d73cf67e6e37700971636ffd89",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/692-sar-logic-4b-self-timed-testbench",
+  "task_id": "v4-692"
+}

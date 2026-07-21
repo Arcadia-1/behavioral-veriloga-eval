@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_sum_uses_difference/certification.json",
-        "certification_sha256": "b15649f1077ab9f5024dc95945e38f225dca2b1611cef9cfae326cdb9211a7d5",
+        "certification_sha256": "844edc5f638e6a4a8128e0d64fb150923762d930aa2121bec1c77e58dc51ffd0",
         "fault_class": "wrong_polarity",
-        "mutation_bundle_sha256": "d80795c9582263858735bc07b1bb6bd19db4e3b6477cfe26ed1ee4e2bf2a8b95",
+        "mutation_bundle_sha256": "b29cbe0bf62701df4542f53873a1d120a279be2164d4d7f4ce1a1cbd40f2b7df",
         "mutation_id": "neg_001_sum_uses_difference",
         "source_catalog_certification_path": "negative_variants/neg_001_sum_uses_difference/certification.json",
         "trigger_condition": "port_a and port_b have unequal same-direction deviations",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_trim_ignored/certification.json",
-        "certification_sha256": "eeb95ed1f3adf67a47b207a92401d083e89a826c50c3344c0a610153112d75df",
+        "certification_sha256": "f8e998eac71e6aff843890c1e5bd8cc92f391bf70bbedca887c20d352e9d287d",
         "fault_class": "missing_calibration",
-        "mutation_bundle_sha256": "8ed2e931e2e8f50254f1c534bff61dbb7b99e87a3eba385e9045dda0ccadf271",
+        "mutation_bundle_sha256": "a41369f77c24725ba1b1190756ec72026d896a919fe8a691390a5b65013225d2",
         "mutation_id": "neg_003_trim_ignored",
         "source_catalog_certification_path": "negative_variants/neg_003_trim_ignored/certification.json",
         "trigger_condition": "trim code changes away from mid-code",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_swapped_directional_metrics/certification.json",
-        "certification_sha256": "6724a8b53ca098c73036606259aae4b4aa241d8fa40591cfbc05f3b184d1ae7b",
+        "certification_sha256": "aba6cb7ac86e4bcd3046ea7a0a6d46539a2165eabbc2e5626df1aa3bdebc6f58",
         "fault_class": "output_swap",
-        "mutation_bundle_sha256": "25e646fb97773c31ec69df93e6ccdbb048c02ab522198d14c0907f32dd85b4c9",
+        "mutation_bundle_sha256": "0e77c9233e21923a0b1bcbd0fbc69ad70a2bae404b3396f09b5ac5e57fece77f",
         "mutation_id": "neg_004_swapped_directional_metrics",
         "source_catalog_certification_path": "negative_variants/neg_004_swapped_directional_metrics/certification.json",
         "trigger_condition": "forward and reverse directional components differ",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_balance_asserts_early/certification.json",
-        "certification_sha256": "4b87bbe8ccf0773f9e19978b38b7af1ebcb45b0d4929f4a300512c989a3b76f2",
+        "certification_sha256": "18280edc6b780964097458b41aae2f3b99118c111c13655849774ad438eec217",
         "fault_class": "qualification_count_error",
-        "mutation_bundle_sha256": "55f4d6e10e2ee9e46720e053aadab1a130381d3aa06caa29f61220bc8150d157",
+        "mutation_bundle_sha256": "1c87738b822565e6b0891fbbd229e8cadbb6da5abce82b960ac881e466ac2666",
         "mutation_id": "neg_005_balance_asserts_early",
         "source_catalog_certification_path": "negative_variants/neg_005_balance_asserts_early/certification.json",
         "trigger_condition": "the first balanced metric update occurs",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_reset_not_cleared/certification.json",
-        "certification_sha256": "acc7f6158056b60c15c8114e4c5c1a1d1a2a815cb905c3c6910ceca8b5e606d8",
+        "certification_sha256": "90803cc3785dc6d899083c519fdf083658dd000f6a9f056048804b87873a1797",
         "fault_class": "missing_reset",
-        "mutation_bundle_sha256": "6e8de9a5f9c72a80e5207e2913f1067fe2775de76ba96ddb61c4f4b59447d099",
+        "mutation_bundle_sha256": "e84bf89c3790359ffd1cd7a862b92fca8262a266cb201f24f2a7293e69e46084",
         "mutation_id": "neg_002_reset_not_cleared",
         "source_catalog_certification_path": "negative_variants/neg_002_reset_not_cleared/certification.json",
         "trigger_condition": "rst is asserted while the input ports are away from common mode",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "202c2b8d40404627d443678a260a9df352703a621a0f21615cdfee66ecd66a1a",
       "score_deck_sha256": "317c5abd18809a59787113bfc4dc73b8da3e5dc5b33b9760793d0687fcfdd900",
-      "task_certification_sha256": "411c03b8d51ea3ae20db18b47a4db437af433ab034813f388ceb1a67f71d7806",
-      "task_record_sha256": "38b8cc049848175aa59212d09ea6a6105e4fb5708ae156923ed53e8e830b2835"
+      "task_certification_sha256": "c980be69697db07da7f81f4de526a90fd8339219c4ef81dea32cd32452a00ca7",
+      "task_record_sha256": "5956b6ba059b9bf4d169107e6981540b0d361ba51fd83b0d95c5111e1759027f"
     },
     "release_dir": "377-bidirectional-hybrid-macro"
   }

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "227-weighted-decoder-6bit",
+  "checker_task_id": "v4_227_weighted_decoder_6bit",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "63101985942de425191725ab36b1c811dcf829342490b0618073a7ba97c3fe93",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "2660d9c5aa2dc9268bdfd394e495edc20c2381e1fe33d2c723838ed90dd0395d",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "227",
+  "family_spec_sha256": "b7587b595525895325c66bab77330e636d39ba322bf3388567ed16b4f2c2264f",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6a1c8eaf895a2262d86e1b6d1af95478e863fe748475d5c06395044efe1b3853",
+  "public_contract": "tasks/727-weighted-decoder-6bit-testbench/public_contract.json",
+  "public_contract_sha256": "a93100316989aa39f9202caefc41d18563904a69b38fb9584abe66ba44392a14",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/727-weighted-decoder-6bit-testbench",
+  "task_id": "v4-727"
+}

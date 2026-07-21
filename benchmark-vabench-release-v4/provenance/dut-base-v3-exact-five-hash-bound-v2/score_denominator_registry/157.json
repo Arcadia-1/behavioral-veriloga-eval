@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_denominator/certification.json",
-        "certification_sha256": "ae2f0a2b83609e79b715f724ff5756c5aa1c93011d03330d91dff66288207416",
+        "certification_sha256": "49fcee81e14445556f5a282644106ada9d14de89171298757f802708dd4b6807",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "5bf29ceb606e949d9a9e3770f2c2d43dcf0d95ac5b67d561aee5778ff2cf3ad4",
+        "mutation_bundle_sha256": "abc25a7bfbc8c31c31e1cf4e83feda2020693213a82042521abf31d0c9fc723a",
         "mutation_id": "neg_003_wrong_denominator",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_denominator/certification.json",
         "trigger_condition": "Divides by 8 instead of 16.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "3e55a47bf5129ae1a447585a7c089f5af6785f6b9717d030f511c3f68ed5ac66",
+        "certification_sha256": "ebde590c54a9d9864e6e87039e8dbcebbd245a027e260b42391512e3a417e76e",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "cc2db5514d68d365bc1780e73c1188fafa80cca35b55c9fbe3c359e2c30f6dbc",
+        "mutation_bundle_sha256": "77807ca1ca036703af7338fea8b33ee3b9a7f82643093f3fd7673b129870012b",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_inverted_msb_fold/certification.json",
-        "certification_sha256": "95352191ed8d779e244d88fc3aaab6a720de9621e47dda52c3122426f0a7cf73",
+        "certification_sha256": "ca17ca1ed0bc226072b71341a047a944cfb5b5f39425da7313cf60eabb558d06",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "0a16282610f2f67c983f4fcef561e8f35255199b6ca4a77cb00cc7e570de4a53",
+        "mutation_bundle_sha256": "c5d5160226ef2c3de2f13857ac642346613966667621f4e0ee9f91eece3f267b",
         "mutation_id": "neg_004_inverted_msb_fold",
         "source_catalog_certification_path": "negative_variants/neg_004_inverted_msb_fold/certification.json",
         "trigger_condition": "Uses the opposite fold branch for vd4.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "f3e01e2f960349d5c1934bad76243e2dadbe716e57096d7684e1f44e2716e5fc",
+        "certification_sha256": "23b0200b30216791870972c272b8b65101de35a852ffbd6e4387d43ad07cc6ea",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "31f8616c4bf5af0645b5bea01f68b5edfbb651bad145b52972ff0b84dcb704cf",
+        "mutation_bundle_sha256": "ffa23187e482ad3921a0a3c6d2f244915b5e3fe81986c201c467c1ab376d3dc3",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Folded Flash DAC 4b: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_fold_mirror/certification.json",
-        "certification_sha256": "75a85f4ac0c20d9ab16b72ba4bab290112c927bb4a45ce8e18872e9a92ee672f",
+        "certification_sha256": "c44ae97d3c14c50bf04194584100e965c8525ce9ff8228e340056c1d4cd9d4e6",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "02e1af4be95aa871d6f589b903d42d1d5b66c74a7f199a1142e19b6ea933f14b",
+        "mutation_bundle_sha256": "bedc21b26368a9e3bf658efd821053215eff7ae5f35c7e07225da3a1257fbc62",
         "mutation_id": "neg_002_no_fold_mirror",
         "source_catalog_certification_path": "negative_variants/neg_002_no_fold_mirror/certification.json",
         "trigger_condition": "Uses direct unsigned code without folding.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "b6a96f86ad19afa5a2345361506c706b6be042c23125a5ebd905b73cf93f8bdb",
       "score_deck_sha256": "6fc1b10b668d29abb3fd103de41307e22515c3b8cc3363c22e3468d229521d0a",
-      "task_certification_sha256": "43f422a49857f5c41dc0c352630531943ce273be50c6890161abc953811e207b",
-      "task_record_sha256": "a748eb04ee5cc603d6af0a652c88d486e4f776581f6884602e9ee95ebe276dd6"
+      "task_certification_sha256": "1e48892fe8e67cfa8304af22e438c05cabd4ccccbdbc4ec3bec9964cf6deec45",
+      "task_record_sha256": "54a22bacdd8a5cf2a24e5607b45bd06c5f9cf5c3f23be4a6ca330dc92f66e817"
     },
     "release_dir": "157-folded-flash-dac-4b"
   }

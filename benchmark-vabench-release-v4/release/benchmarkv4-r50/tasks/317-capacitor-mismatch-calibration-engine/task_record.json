@@ -1,0 +1,38 @@
+{
+  "candidate_artifacts": [
+    "capacitor_mismatch_cal_engine_top.va",
+    "cal_code_accumulator.va",
+    "correction_metric_dac.va"
+  ],
+  "canonical_dut_source_slug": "317-capacitor-mismatch-calibration-engine",
+  "checker_task_id": "v4_317_capacitor_mismatch_calibration_engine",
+  "evaluation_binding": {
+    "canonical_semantics_sha256": "314ed0e74eeed159236e15076fa41f4c9f430def67ffbf4c169e3676e9850f4b",
+    "kind": "canonical_test_deck",
+    "profile": "evaluator/canonical_test_profile.json",
+    "profile_sha256": "ad3e9dc539fcdcc6be40f41e853639fb10d6a765ff3c9d2e592e17826b78b0d8",
+    "public_test": "public/visible_test.scs",
+    "reuse_policy": "public_visible_and_final_trusted_replay_same_bytes",
+    "test_deck_sha256": "12105c44450d4476eecfd81959e2327c943b76244f3ac1cd09bec6e6efb58a9e",
+    "trusted_replay_test": "evaluator/trusted_replay_test.scs"
+  },
+  "family_id": "317",
+  "family_spec_sha256": "2b29141377d9be92578a6d3bd2ffe534c3d1b1b2caf5be56ede3a322dfe78a9e",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "59cb1fcd4e11a84d029e3e32c11dcc1cae9b8e67a2a33565227542e2c8138091",
+  "public_contract": "tasks/317-capacitor-mismatch-calibration-engine/public_contract.json",
+  "public_contract_sha256": "26923a8e5ece26814e9b192003053fdcc515a7ac42f2c868a2810cc003a4ecc1",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/317-capacitor-mismatch-calibration-engine",
+  "task_id": "v4-317"
+}

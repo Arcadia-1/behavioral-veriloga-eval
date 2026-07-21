@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_falling_trigger/certification.json",
-        "certification_sha256": "85f4d50a092b27f1f58bc52ff57f48c2671ffcc238c47c8e5bb2975fbdba2dd6",
+        "certification_sha256": "2769ab9d422de09a4539adff47340c9e53d969fdde259f8c7bb3f263785ee1f5",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "7b9f0220b94bb6e4f7b0290b3c175d35ab048ae9e2bb715eec85f22746c50ba1",
+        "mutation_bundle_sha256": "08b527b19e29cdc9e9997c904eba5ff843ef875dd88dee73859a214f36fe5929",
         "mutation_id": "neg_002_falling_trigger",
         "source_catalog_certification_path": "negative_variants/neg_002_falling_trigger/certification.json",
         "trigger_condition": "Triggers the one-shot on falling input edges rather than rising edges.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_short_pulse/certification.json",
-        "certification_sha256": "210bd6d0a975603ccda1aafe7cb0c7a2add57fd374ab7df7ae0bd0c4cca887f0",
+        "certification_sha256": "50f18979505e3b8ad13905b01f1f17d2371d9a53343e64f80bff361c6a2f7d4e",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "b2fc69d79abf51b1ea2aeaf8e972ebe1ec0b260adec8a19ae0892b7ab828a360",
+        "mutation_bundle_sha256": "3c7e44d2b374d30630e455c46600fd3c8ae3632d1359bcb67b460c2e4ef37899",
         "mutation_id": "neg_003_short_pulse",
         "source_catalog_certification_path": "negative_variants/neg_003_short_pulse/certification.json",
         "trigger_condition": "Uses half the required pulse width.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "b3a0080a43e477a3039613d3c897b4532518e68dba653dfac355ae238d377e09",
+        "certification_sha256": "bc9f3facc48dbf90ccf9ec084a6efaa82e0b89f973ce085960895a8b51e26cdd",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "a0c18655bcdb9e6b9c2ee67f774af78cbf131de6b974bbc1dc85b8c0db42ae67",
+        "mutation_bundle_sha256": "7b8750a6baef96706b85397d1bf28671300170da6ac77dd5b94e7732c842843e",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Single Shot Timer Pulse: scales the metric output, preserving the main path while failing measurement checks.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "c8a031b5b5f4fcf84c843c8519e892375f880b6ff5aabb37fb5b1f0588a48bef",
+        "certification_sha256": "218f9082f8a3859374dd2def12278bffe62648017186cb3cfb75107307b76557",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "59b85a36c46406dde65485c4e8e9e272919d441d25a3389b4d16d383abcc5038",
+        "mutation_bundle_sha256": "119457a41a04d3ce5d098f259ba0b35680c00c9b53422e8c64b7767f77e615af",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_turnoff/certification.json",
-        "certification_sha256": "8ad302fb6c027293c082b302cf6035dec61b4f24ce866c11bd7ad90b7f806fd4",
+        "certification_sha256": "898d3cedd86ac7a3f0559349cc0efaffc54987712aa671fb8165314f4df30786",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "dde833ca3a4a3efa0e1e879a6ecfec9f8916fc53b2af2755368e8d6459231c23",
+        "mutation_bundle_sha256": "98a1dffbe3d5e7ae6bd0c78e0c1c986e1ccd259bfdb373419b6724f3bc66a2ea",
         "mutation_id": "neg_004_no_turnoff",
         "source_catalog_certification_path": "negative_variants/neg_004_no_turnoff/certification.json",
         "trigger_condition": "Never schedules the timer turn-off after a trigger.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "dec7fe6502fed453583367e30033b0d11b0c98e613040a66b89d3ca43107b628",
       "score_deck_sha256": "fe27e7f565daa0e2124663136270084d4cd6baa8d78a5621399dd457a206ea6d",
-      "task_certification_sha256": "22412fa89d1a89233d7a7199e18da117729c499a28ca5a68c79c5d3a814ca82c",
-      "task_record_sha256": "33cbf442a76b850477c7801d0f37c35c506e236220d99c1d785a165c494edb59"
+      "task_certification_sha256": "a0b655b41493afd107f04bd368f48cf381d3fb4ebbe599afaf9f095be4abe85d",
+      "task_record_sha256": "bee980893296789dc79431d2c7669d9d8413bb9ba5eb9b79a205575e16be4f64"
     },
     "release_dir": "217-single-shot-timer-pulse"
   }

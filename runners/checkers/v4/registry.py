@@ -8,13 +8,14 @@ checker ID; certification still comes from the benchmark evidence chain.
 from __future__ import annotations
 
 import ast
-from functools import lru_cache
+from functools import lru_cache, wraps
 from importlib import import_module
 from pathlib import Path
 import re
 from types import ModuleType
 
 from ..api import Checker
+from .stimulus_relative import canonical_time_rows
 
 
 _TASK_MODULE_RE = re.compile(r"task_\d{3}\.py$")
@@ -68,7 +69,14 @@ def _validated_checker(module: ModuleType, checker_id: str) -> Checker | None:
     if getattr(module, "CHECKER_ID", None) != checker_id:
         return None
     checker = getattr(module, "CHECKER", None)
-    return checker if callable(checker) else None
+    if not callable(checker):
+        return None
+
+    @wraps(checker)
+    def canonical_checker(rows):
+        return checker(canonical_time_rows(rows))
+
+    return canonical_checker
 
 
 def _validated_streaming_checker(module: ModuleType, checker_id: str) -> Checker | None:

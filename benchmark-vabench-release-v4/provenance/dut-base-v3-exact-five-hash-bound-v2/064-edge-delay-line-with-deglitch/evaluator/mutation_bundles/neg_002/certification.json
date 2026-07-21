@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_STABLE_EDGE_QUALIFICATION satisfy the public contract; fault class stable_edge_qualification_omitted is rejected",
-    "observed": "EVAS: property_id=P_DELAYED_EDGE_EMISSION category=semantic_mismatch expected=wide_matches>=2,delay=1.7..3.4ns,rejected_valid_disabled_clear,no_early observed=input_edges=6_output_edges=4_wide_matches=4_delay_range=(1.275e-09,1.275e-09)_rejected=False_valid=True_disabled_clears=True_early_errors=0 event=full_trace",
+    "observed": "EVAS: property_id=P_DELAYED_EDGE_EMISSION category=semantic_mismatch expected=every_qualified_edge_matched_once,each_valid,narrow_rejected,disabled_clear observed=input_edges=6_output_edges=4_qualified=4_matched=0_narrow=1_rejected_misses=1_valid_misses=0_delay_range=(0.000e+00,0.000e+00)_disabled_clears=True event=full_trace",
     "violated_property_ids": [
       "P_STABLE_EDGE_QUALIFICATION"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_064_edge_delay_line_with_deglitch",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 1268
   },
   "family_id": "064",

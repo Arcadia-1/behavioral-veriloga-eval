@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "326-fractional-delay-dtc-macro",
+  "checker_task_id": "v4_326_fractional_delay_dtc_macro",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "c7907c4efc43e222db50a6de9346aedee80aec4e139f4583c35eddb578fc2903",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "bc1b4a45bb1cfd7535afb07a29be3504e08eb6e0742fda1d63ab02ff7e4a2563",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "326",
+  "family_spec_sha256": "3b237519d82f987e0f7462deeb64099cb5ef342eba65837a237ef19c87754cd1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f8a2086a129eceabc10547fe0b2d8a1d65facf775ef7143426f8402c4404a514",
+  "public_contract": "tasks/826-fractional-delay-dtc-macro-testbench/public_contract.json",
+  "public_contract_sha256": "ea193f6799ca3d432a5d01802922e5575bdb14f57059390a2c5bc28f0c0cfd8c",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/826-fractional-delay-dtc-macro-testbench",
+  "task_id": "v4-826"
+}

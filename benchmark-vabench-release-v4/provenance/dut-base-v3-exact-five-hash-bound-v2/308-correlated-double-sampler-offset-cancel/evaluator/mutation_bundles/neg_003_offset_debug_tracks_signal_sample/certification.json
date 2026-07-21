@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_ON_A_LATER_RISING_CLK_EDGE satisfy the public contract; fault class offset_debug_tracks_signal_sample is rejected",
-    "observed": "EVAS: v4_308 checked=2 reset_clear=True late_reset_clear=True premature_valid=0 polarity_pos=False polarity_neg=False vout_errors=2 offset_errors=0 offset_span=0.681 vout_span=0.792; P_ON_RESET_CLEAR_RESET_SAMPLE_SIGNAL mismatch_count=0; P_ON_A_RISING_CLK_EDGE_WITH mismatch_count=2; P_ON_A_LATER_RISING_CLK_EDGE mismatch_count=0; P_DRIVE_VOUT_AS_VCM_PLUS_THE mismatch_count=2; P_EXPOSE_THE_RESET_SAMPLE_ON_OFFSET mismatch_count=0; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
+    "observed": "EVAS: v4_308 reset_edges=1 reset_capture_edges=2 signal_edges=2 order_errors=0 edge_errors=8 hold_checked=799 hold_errors=439 polarity_pos=True polarity_neg=True reset_span=0.393; P_ON_RESET_CLEAR_RESET_SAMPLE_SIGNAL mismatch_count=8; P_ON_A_RISING_CLK_EDGE_WITH mismatch_count=0; P_ON_A_LATER_RISING_CLK_EDGE mismatch_count=0; P_DRIVE_VOUT_AS_VCM_PLUS_THE mismatch_count=440; P_EXPOSE_THE_RESET_SAMPLE_ON_OFFSET mismatch_count=8; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
     "violated_property_ids": [
       "P_ON_A_LATER_RISING_CLK_EDGE"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_308_correlated_double_sampler_offset_cancel",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 1065
   },
   "family_id": "308",

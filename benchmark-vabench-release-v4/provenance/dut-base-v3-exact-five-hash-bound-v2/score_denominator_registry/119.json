@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "da196b2843dd40f75da1568869c537d9082f3c8d99526cdec4eab455fa547b0e",
+        "certification_sha256": "54a7e14d193500099fbbaaa7a40cd173964a57c5b4c0e21b08146600294ceab0",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "69bc2ebd8a8b7b47c25ab805806cab8125abd9716c7b62f7c7f00c4a704ed4cb",
+        "mutation_bundle_sha256": "7097ed1132e2b23dedded631b50eed5c808bbba80e59e5fded6fae9d1900d0f0",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "f296a7f506a98a15d2149a77a274bae0c25672ed1c8218cc6163c840a06811d4",
+        "certification_sha256": "4b0167c9e4f43795668cd0a977873db7b234d63183d983ae7f79e8d343d40565",
         "fault_class": "fault_005_metric_scale_low",
-        "mutation_bundle_sha256": "44f826b4e88a7395c40eb0e271b545ebce71aae2f191813bfdc90ec100d3e501",
+        "mutation_bundle_sha256": "447b213fa3d2e1144567d1a839f31b93515e9421deb8880dc867c6641e9364cc",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "SAR CDAC Residue: scales the metric output, preserving the main path while failing measurement checks.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_weight_scale/certification.json",
-        "certification_sha256": "32d18aec1baaefebc065926b47f44ddc520e261d9e6f4dd60c800dcc0fb7ba78",
+        "certification_sha256": "50c80a912efdb36867419a26514eca27f7699c49c023b950291b340bf4bdb889",
         "fault_class": "fault_003_wrong_weight_scale",
-        "mutation_bundle_sha256": "d57c4b5014768e34cf550cbb218cb45883d4c0fe8ab6a44c17e30a5345447a39",
+        "mutation_bundle_sha256": "815642ac5a0d744484bc4cb108cb27d059abed828100dfc43299c08ccae2af5d",
         "mutation_id": "neg_003_wrong_weight_scale",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_weight_scale/certification.json",
         "trigger_condition": "Uses doubled binary residue weights.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_missing_lsb_step/certification.json",
-        "certification_sha256": "2ac7a3da5513e993ed6c7560324d533b6d81c49a7fa4947d772231506d538ad7",
+        "certification_sha256": "4eed624e69103a07399fe0c4748d11cab744c40b79c5e18dcb509d64a886d313",
         "fault_class": "fault_004_missing_lsb_step",
-        "mutation_bundle_sha256": "dd401c962ca3459907575066c40905328914f81c441ed61d0763eed63dd2ab9b",
+        "mutation_bundle_sha256": "330c5480c5b3c0c2b9d7eb551cfeb778b26456eee7f61645395af3767ae593cc",
         "mutation_id": "neg_004_missing_lsb_step",
         "source_catalog_certification_path": "negative_variants/neg_004_missing_lsb_step/certification.json",
         "trigger_condition": "Omits the S1 least-significant residue step.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_s6_edge/certification.json",
-        "certification_sha256": "2a5277631106a2961327aac8d7430e58092ff57af2f92124a282bb0541f5d1f0",
+        "certification_sha256": "f51c6227c431fe976e6dba26d98aa99cf3cd7be08873c665147f0f9ecb548f2a",
         "fault_class": "fault_002_wrong_s6_edge",
-        "mutation_bundle_sha256": "ac7ec904736323c7077b3f7ee3a983dd3e1a8c893a72cca515d3c75e7bf8486e",
+        "mutation_bundle_sha256": "2f529896c327ae859f600fa96c38c52c2ebcd18bda07eaac198c583f5cf44034",
         "mutation_id": "neg_002_wrong_s6_edge",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_s6_edge/certification.json",
         "trigger_condition": "Applies the S6 residue step on rising instead of falling edge.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "e0d673913a9a4613fedeaecfa818594c733f52eb102e50c981448165ad7b18df",
       "score_deck_sha256": "bbcd8088dac16a0e9f98e32a124654154bb4f8dfa0e50a4eae77db5a6eda7559",
-      "task_certification_sha256": "733ffd8af8cf3ccb31652bdfd5da09b25beae64cdb2f5a1cb0c7e826c88b8bd5",
-      "task_record_sha256": "9786bdff812dfad19ffe70cf4e478240e57996aac0de36168c7d543f3ea07780"
+      "task_certification_sha256": "59b71e56ff241e4aee0b567d0acd6f3d26bbd84ae2071cd5546936fdc90032b5",
+      "task_record_sha256": "20a805be2bcae45f30042446c5e289642979cfc3707e232bc430a05c99d7fc7b"
     },
     "release_dir": "119-sar-cdac-residue"
   }

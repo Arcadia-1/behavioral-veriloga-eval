@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "121-deadband-window",
+  "checker_task_id": "v4_121_deadband_window",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "a51e86dadb454e99dc51c51ea0a08887a623ec4219204210fd1c3c338e73f78c",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "9c0b336d5811909ce4510f23e204e97a1b8d91bc972f3116bc0d6d36ad28584a",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "121",
+  "family_spec_sha256": "ad6810c59a513ebb8eb42c06cd9034688fa26ac84c4fb9a9ba6d2cb1048a51de",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "548007503aeb318c890cf74fa9e96063b68d405e330c591db491167fad3f3369",
+  "public_contract": "tasks/621-deadband-window-testbench/public_contract.json",
+  "public_contract_sha256": "0c314c5ec2d682b88dd1c32719e9b418a163d52725b6ba06bd07b78d1b512514",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/621-deadband-window-testbench",
+  "task_id": "v4-621"
+}

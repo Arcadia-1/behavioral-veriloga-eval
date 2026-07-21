@@ -1,0 +1,36 @@
+{
+  "artifact_sha256": {
+    "AUDIT_REPORT.json": "dec8a2452a28e939b26f96f80347980e2f8fc6c11d9257637e702bcd81bb56b9",
+    "MANIFEST.json": "3eaaa733e2f0e726b18d53e038dc7c7903a7ad6ff81be84525804e608f4560bc",
+    "RUNTIME_INGESTION_EVIDENCE.json": "e3821f669b58d668215532113c9e53d643d19e887a843c0830dc8a0ec318cdbb",
+    "TASK_INDEX.json": "fd13fd1933974cd306ab13b6f2c62f72eff9dde629ca3da25c23f716072d3073",
+    "prompt_modes/manifest.json": "97755f691b785422ef1519fe89d06953bcdb898e1cca1577851f90e882bedf97",
+    "prompt_modes/modes.json": "3d5a0a8452ae998d85566d3bc85ae227dd9df33e003b0a03750ac67470423218",
+    "skills/SNAPSHOT_MANIFEST.json": "4511879936adecf88ff4bda9723175e43f10edc2d9a9aa00d10d89055eb68d7f"
+  },
+  "certification_reuse": {
+    "evaluators": [
+      "rust_evas2"
+    ],
+    "policy": "source_transitive_input_hash_bound",
+    "simulation_rerun_required_for_materialization": false,
+    "source_dut_gold_certification_count": 400,
+    "source_dut_gold_certification_total": 400,
+    "source_negative_certification_count": 2000,
+    "source_negative_certification_total": 2000,
+    "stale_certification_family_ids": [],
+    "stale_gold_family_ids": [],
+    "stale_negative_case_ids": []
+  },
+  "evidence_sha256": {
+    "evidence/r50/PROFILE_PARITY.json": "aeae94345eef83deeca5912395115d93c253240f65b18a769b3f8d020531b010",
+    "evidence/r50/RUST_EVAS2_CERTIFICATION.json": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "evidence/r50/STIMULUS_METAMORPHIC.json": "a15253e61243f07d97eb075e2e5eda0111af8b048b1ed899eaf1ad9e4918bd3d"
+  },
+  "immutable": true,
+  "release_revision": "r50",
+  "release_status": "r50_immutable_rust_evas2_certified",
+  "schema_version": "v4-benchmarkv4-release-seal-v1",
+  "simulation_claim": "fresh full400 Rust EVAS2 evidence with hash-bound source inputs",
+  "source_score_denominator_registry_sha256": "0a191811780ab87d31fdec388e50969bd90dc867f0f796d9242e474efc9e3a85"
+}

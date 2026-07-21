@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_ASSERT_DONE_AFTER_SIX_ENABLED_ADAPTATION satisfy the public contract; fault class adaptation_done_qualification_too_short is rejected",
-    "observed": "EVAS: v4_330 checked=12 updates=3 done_at=1.306e-08 adapt_max=0.480 main_errors=0 adapt_errors=0 polarity_errors=0 done_errors=6 reset_clear=True disabled_clear=True clear_errors=6; P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count=0; P_ON_EACH_ENABLED_RISING_CLK_EDGE mismatch_count=0; P_DRIVE_MAIN_OUT_AS_THE_CURRENT mismatch_count=0; P_EXPOSE_AGGREGATE_TAP_MAGNITUDE_ON_ADAPT mismatch_count=0; P_ASSERT_DONE_AFTER_SIX_ENABLED_ADAPTATION mismatch_count=6",
+    "observed": "EVAS: v4_330 checked=12 updates=3 done_at=1.306e-08 adapt_max=0.480 oracle_checked=12 oracle_errors=8 main_errors=0 adapt_errors=0 polarity_errors=0 done_errors=6 reset_clear=True disabled_clear=True clear_errors=6; P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count=0; P_ON_EACH_ENABLED_RISING_CLK_EDGE mismatch_count=0; P_DRIVE_MAIN_OUT_AS_THE_CURRENT mismatch_count=0; P_EXPOSE_AGGREGATE_TAP_MAGNITUDE_ON_ADAPT mismatch_count=0; P_ASSERT_DONE_AFTER_SIX_ENABLED_ADAPTATION mismatch_count=6",
     "violated_property_ids": [
       "P_ASSERT_DONE_AFTER_SIX_ENABLED_ADAPTATION"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_330_ffe_tap_adaptation_monitor",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 4295
   },
   "family_id": "330",

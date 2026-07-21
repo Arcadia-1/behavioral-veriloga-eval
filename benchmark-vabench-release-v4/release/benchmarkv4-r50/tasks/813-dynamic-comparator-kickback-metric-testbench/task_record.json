@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "313-dynamic-comparator-kickback-metric",
+  "checker_task_id": "v4_313_dynamic_comparator_kickback_metric",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "33453c3e96e22919e2fba872a5ce8072aa68af76138a90e2f8da6b117a94aa7c",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "2b609e19609d29eaadac3106fca8482733d80f36094ce9cf412565b86883178d",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "313",
+  "family_spec_sha256": "9ccb61f872241f103c8fc5cc34d7fb7c9cc1cfa3c95cb728100883e9ad665beb",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9137557b2388e6336876d239ee758f9a644348bd6facdc533c95a4013fb54136",
+  "public_contract": "tasks/813-dynamic-comparator-kickback-metric-testbench/public_contract.json",
+  "public_contract_sha256": "f4bf47602d08990cacd310a0b46c13616971a47b6f5278554a8e3d0e6930bb97",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/813-dynamic-comparator-kickback-metric-testbench",
+  "task_id": "v4-813"
+}

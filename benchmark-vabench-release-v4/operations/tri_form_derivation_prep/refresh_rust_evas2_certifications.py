@@ -297,7 +297,7 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument(
         "--release-revision",
-        choices=("r44", "r45", "r47", "r48", "r49"),
+        choices=("r44", "r45", "r47", "r48", "r49", "r50"),
         required=True,
         help="labels the evidence; revisions never share a certification report",
     )

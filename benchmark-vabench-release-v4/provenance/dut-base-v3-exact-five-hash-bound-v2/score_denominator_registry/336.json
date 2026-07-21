@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_magnitude_wrong/certification.json",
-        "certification_sha256": "767aaf872dbe2be3ccefb0f029a7cd4de2c427d3cb7270a0800e1e65a2aceaac",
+        "certification_sha256": "656e60cbb6034116c7db47510c9fc51e81150da4161953095dca5aea8878d11c",
         "fault_class": "magnitude_wrong",
-        "mutation_bundle_sha256": "4625a13915f82da6b4a5ae9f80fd1f3f1b79e2cc7a68fcab8148b4c2a2705760",
+        "mutation_bundle_sha256": "a54101457c944fee9de4d665ee612cabba62318189c3ffbdbc2dce1548e3af01",
         "mutation_id": "neg_001_magnitude_wrong",
         "source_catalog_certification_path": "negative_variants/neg_001_magnitude_wrong/certification.json",
         "trigger_condition": "magnitude_wrong",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_release_too_fast/certification.json",
-        "certification_sha256": "24a2b1c49fab439d167804a34a6587e5d5d77209a7e82a6b6d6f53345da48419",
+        "certification_sha256": "ca282ee93dbe1a10b78bc75fe63d91d4d3649cd36dc23ab5f2a7e61a13d7ebdb",
         "fault_class": "release_too_fast",
-        "mutation_bundle_sha256": "8a52f2c5cfb3d2a8060a73b74b326d9b25ef6c9d25e8024a0d394bfe0127bb3c",
+        "mutation_bundle_sha256": "01cc28c65ca39adfaa2b66fb8532c5d6c7813939c63343a94c827daa9e9a66ca",
         "mutation_id": "neg_005_release_too_fast",
         "source_catalog_certification_path": "negative_variants/neg_005_release_too_fast/certification.json",
         "trigger_condition": "release_too_fast",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_valid_stuck_low/certification.json",
-        "certification_sha256": "bf85ca0cc9e9893e42cef51043c7e6163e6e259f2472488e3ce94a8739cce224",
+        "certification_sha256": "b9bcc0d4adab37c17453b73911aa90fbf09537440ad751b2a246db03dcef9bce",
         "fault_class": "valid_stuck_low",
-        "mutation_bundle_sha256": "c86d3d3806568e55b2ae9c1e45ddcf869cc8c423fcc187ec39e13f74608ed7cb",
+        "mutation_bundle_sha256": "26a6f6d02e0e8a58c516caf777d38146e4cdd0e1c5dddfc1ae476a03d799e18f",
         "mutation_id": "neg_003_valid_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_003_valid_stuck_low/certification.json",
         "trigger_condition": "valid_stuck_low",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_missing_clear/certification.json",
-        "certification_sha256": "acb3fc41380c6d31a54db23042a7c973627c1448cb18fee7111c569b2cec7beb",
+        "certification_sha256": "4894a278b8978f364168b5337a272d627dc7b57e3382607a5721c9d0b89c945a",
         "fault_class": "missing_clear",
-        "mutation_bundle_sha256": "5b6646524133732e08e540130fa344a70f006f29503fec845fe9b29f7a5b1c80",
+        "mutation_bundle_sha256": "f475a351f5deec8d418413d76bbfc45b047a4f2c936a65c88ef943a9f4b57f0a",
         "mutation_id": "neg_004_missing_clear",
         "source_catalog_certification_path": "negative_variants/neg_004_missing_clear/certification.json",
         "trigger_condition": "missing_clear",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_attack_metric_stuck_low/certification.json",
-        "certification_sha256": "3c1ee75c2cedced7b3598750ab8ae69e9032a141a36a2e1874a6e71ce6595111",
+        "certification_sha256": "1da9f4a3cb108cd1c343fb967d85a445cfb6d9ee86156e915dd7edb5591cb528",
         "fault_class": "attack_metric_stuck_low",
-        "mutation_bundle_sha256": "7f176ac9d1e8fc4a4b8fde1bced35827ad74d4c273a95a00bb364c275c650f7c",
+        "mutation_bundle_sha256": "0273637727f231a1a8041aadbe343984d56efe67ee502c30efa4dd89af463068",
         "mutation_id": "neg_002_attack_metric_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_002_attack_metric_stuck_low/certification.json",
         "trigger_condition": "attack_metric_stuck_low",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "1372e30c22c2cb5e366e69c503f7913637c871ab3ca18d55a62dde6540b3c130",
       "score_deck_sha256": "546e8e144a15ed0fd45199b05b579bf3f074f08268306721e572166a99f50b88",
-      "task_certification_sha256": "29fa6cc9ad5282feee95bf971d6a71535487af5f42e23b9869999812ecf4d0bd",
-      "task_record_sha256": "4cba338f5455d65e70b265cfa05fab540d6eed993c8ec52b162576cddce8dcdf"
+      "task_certification_sha256": "dac4f69f3bc28bee228134b952bf5bea7a73fd444d2b09381caa387e224ffc27",
+      "task_record_sha256": "fbb280601ff88df073c97a3e829a66f9bca02f45d1848a35d63bfbddd24dc282"
     },
     "release_dir": "336-rf-envelope-detector-attack-release"
   }

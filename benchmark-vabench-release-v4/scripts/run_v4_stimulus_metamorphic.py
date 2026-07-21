@@ -76,7 +76,7 @@ _SCALE = {
 
 
 def compact_evidence_identity(release_revision: str) -> tuple[str, str]:
-    if release_revision not in {"r44", "r45", "r47", "r48", "r49"}:
+    if release_revision not in {"r44", "r45", "r47", "r48", "r49", "r50"}:
         raise ValueError(f"unsupported release revision: {release_revision}")
     release_label = (
         "release/benchmarkv4"
@@ -419,7 +419,7 @@ def main() -> int:
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument(
         "--release-revision",
-        choices=("r44", "r45", "r47", "r48", "r49"),
+        choices=("r44", "r45", "r47", "r48", "r49", "r50"),
         default=DEFAULT_RELEASE_REVISION,
         help="release identity written into evidence (default: r45)",
     )

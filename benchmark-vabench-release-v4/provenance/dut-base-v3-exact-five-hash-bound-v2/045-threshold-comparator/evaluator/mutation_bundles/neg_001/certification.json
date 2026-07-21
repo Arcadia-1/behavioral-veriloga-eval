@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_INITIAL_DECISION satisfy the public contract; fault class inverts_the_static_differential_decision_polarit is rejected",
-    "observed": "EVAS: property_id=P_INITIAL_DECISION category=behavior_mismatch expected=high_frac>0.90,low_frac>0.90 observed=high_frac=0.000,low_frac=0.000 event=stable_differential_regions",
+    "observed": "EVAS: property_id=P_INITIAL_DECISION category=behavior_mismatch expected=correct_initial_decision_within_2ns,high_frac>0.90,low_frac>0.90 observed=initial_correct=False,high_frac=0.000,low_frac=0.000 event=stable_differential_regions",
     "violated_property_ids": [
       "P_INITIAL_DECISION"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_045_threshold_comparator",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 322
   },
   "family_id": "045",

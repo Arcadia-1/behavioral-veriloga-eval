@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_OPPOSITE_EDGE_REJECTION satisfy the public contract; fault class swaps_selected_polarity is rejected",
-    "observed": "EVAS: property_id=P_BOUNDED_PULSE category=semantic_mismatch expected=pulse_after_selected_edge observed=pulse_missing event=selected_sig_edge[3]@8.005000e-08s property_id=P_BOUNDED_PULSE category=semantic_mismatch expected=pulse_after_selected_edge observed=pulse_missing event=selected_sig_edge[4]@1.250500e-07s property_id=P_OPPOSITE_EDGE_REJECTION category=semantic_mismatch expected=no_pulse_without_selected_edge observed=false_pulses=44 event=full_trace",
+    "observed": "EVAS: property_id=P_BOUNDED_PULSE category=semantic_mismatch expected=pulse_peak_in_[0.75,1.05]V_after_selected_edge observed=pulse_peak=0.000 event=selected_sig_edge[3]@8.005000e-08s property_id=P_BOUNDED_PULSE category=semantic_mismatch expected=pulse_peak_in_[0.75,1.05]V_after_selected_edge observed=pulse_peak=0.000 event=selected_sig_edge[4]@1.250500e-07s property_id=P_OPPOSITE_EDGE_REJECTION category=semantic_mismatch expected=no_pulse_without_selected_edge observed=false_pulses=44 event=full_trace",
     "violated_property_ids": [
       "P_OPPOSITE_EDGE_REJECTION"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_066_configurable_polarity_edge_detector",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 3026
   },
   "family_id": "066",

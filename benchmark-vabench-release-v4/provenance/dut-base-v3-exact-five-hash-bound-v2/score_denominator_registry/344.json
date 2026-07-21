@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_dac_divisor_64/certification.json",
-        "certification_sha256": "c37d5b8be54a0ad79ef0c1940ffda7ea7755649395b449d6840183289738e4e7",
+        "certification_sha256": "790a4aea8ad91ce5a80dd3726d9bf4c3002bbcba2658b926376f8f07dfcc4221",
         "fault_class": "dac_gain_error",
-        "mutation_bundle_sha256": "dc5cbdbdbccd2834f5665f1065b2d4dd4aa7c865dac6832bd83150a495bd899e",
+        "mutation_bundle_sha256": "961431b2990795d653a220051c01e6f6633c054b97f5b5a8bf1e91fa1a0751ff",
         "mutation_id": "neg_001_dac_divisor_64",
         "source_catalog_certification_path": "negative_variants/neg_001_dac_divisor_64/certification.json",
         "trigger_condition": "any nonzero code is sampled",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_pointer_frozen/certification.json",
-        "certification_sha256": "ace94e7bf396c377396b0a09694b31a4947ad5adb462c57393d32bff1e850e43",
+        "certification_sha256": "5268936bf673b9394292a50bb5dbd5d0172589d719781602532e0c76c7afe7d8",
         "fault_class": "pointer_update_error",
-        "mutation_bundle_sha256": "481d33928ead8a1d072d9c48e8230a8d0880acd69d31212521a04b4d34867cae",
+        "mutation_bundle_sha256": "09a2f858e02ef313344c67babaa5b17ceb2d664816072cdc371396f0cdb72582",
         "mutation_id": "neg_002_pointer_frozen",
         "source_catalog_certification_path": "negative_variants/neg_002_pointer_frozen/certification.json",
         "trigger_condition": "a nonzero coarse request is sampled",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_vout_stuck_low/certification.json",
-        "certification_sha256": "884ffd9a01d602ec44050dd183c9548beb05f76dbc0d1fc92e8760f199c42f8b",
+        "certification_sha256": "03fb24b29a2552f0cc7ca5b743004146b51e16a7d16f7665f5067b0a7095bf84",
         "fault_class": "reset_clear_failure",
-        "mutation_bundle_sha256": "56b1d9c01f2b32469db2788559c201fdb9a83d9fc5b573026e1e80f5f7b0e587",
+        "mutation_bundle_sha256": "2a14042c7054476147ad18e591a9c62c4e8fd38f6f564e1bafe977600230027d",
         "mutation_id": "neg_005_vout_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_005_vout_stuck_low/certification.json",
         "trigger_condition": "rst is asserted at startup",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_mask_short_by_one/certification.json",
-        "certification_sha256": "ff74715d7162aff3c0c35896e8ebec5c6932f1c781df6c44e5118e897f593b8b",
+        "certification_sha256": "7f66666abd209eac69aa9b74042105bd2540e2dce4551c6cecdaf7141e609d8d",
         "fault_class": "unit_mask_count_error",
-        "mutation_bundle_sha256": "d7ae12d1d2184e6d83fc9c09df18980908cc85f2036f1bec14a9db7de38d6d0f",
+        "mutation_bundle_sha256": "74dadb3055bd6ebcb6ecbaa7e12efe20056ad17c972cd6f060701304ac2f88b4",
         "mutation_id": "neg_003_mask_short_by_one",
         "source_catalog_certification_path": "negative_variants/neg_003_mask_short_by_one/certification.json",
         "trigger_condition": "coarse request exceeds zero",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_fine_lsb_stuck_low/certification.json",
-        "certification_sha256": "b5ab5d6e18eb283bf3c5dc873db1da2330a4dff242210b53da0018e9d6bd6370",
+        "certification_sha256": "46153d95f265f7d9975f51807c4698dda97630385623def753adfa9d2fbe9e4f",
         "fault_class": "fine_decode_error",
-        "mutation_bundle_sha256": "bcb1a20f8547ffaabbc0dd5892cde056965c86adc0f00c7ed86d8bfb129915ed",
+        "mutation_bundle_sha256": "6057af6eb0efbad36f5e73b055d7f72afc792c71c37ad0b294d9343472e6fd8d",
         "mutation_id": "neg_004_fine_lsb_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_004_fine_lsb_stuck_low/certification.json",
         "trigger_condition": "an odd fine code is sampled",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "2281001a0532c02678838b765909ecdce0f7319fa7e2e4f81431707e681cd2af",
       "score_deck_sha256": "ef2ae20b0bdb0cb7af642e3ade17ace80ec506f82a8226619fa3e638d8bcb5f3",
-      "task_certification_sha256": "460c311acb745d4a115a5680dc5df1a856db64ff7a88f5e2dc74da7039d8bc50",
-      "task_record_sha256": "1808097f25d7faa076dab4fb8b7b850ed12839e432f4ad463a4d456a42226616"
+      "task_certification_sha256": "7e3701c8fa60da87d49d00112742207ac9ea1edccc26bd9a31681a0828c38879",
+      "task_record_sha256": "bdaecad04cb4acfaafb417285971fb84dd3ea2ad964d83f4dcf1e3450e53103b"
     },
     "release_dir": "344-segmented-dac-dem-system"
   }

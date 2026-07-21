@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "079-ramp-step-source",
+  "checker_task_id": "v4_079_ramp_step_source",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "cdd4199fe9c76bb71fb1fe80bd79303657e758e67467f51340b7fb271d4ee31d",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "e6d5180f3deb2392565c44e7156bcec529e06c0c87849b68a244dc204f3ca34e",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "079",
+  "family_spec_sha256": "63832b2178ad20ca4e4f64d68673be02bd3535ca6c1e8dbf470c1b97699dc4a0",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "69536137c298597385e06e31d3c7e53e0a3b0ade6dda126dd35dd57b9380c89a",
+  "public_contract": "tasks/579-ramp-step-source-testbench/public_contract.json",
+  "public_contract_sha256": "1c4d38e1a5413adf14968b57653f7971f0053474ec9b600f4bf0c367c1efcfe9",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/579-ramp-step-source-testbench",
+  "task_id": "v4-579"
+}

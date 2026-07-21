@@ -1,0 +1,35 @@
+{
+  "candidate": "public/submission/testbench.scs",
+  "candidate_command_template": "rm -rf /tmp/vabench-visible/runs/{case} /tmp/vabench-visible/evas-output/{case} && mkdir -p /tmp/vabench-visible/runs/{case} && cp public/submission/testbench.scs /tmp/vabench-visible/runs/{case}/testbench.scs && ln -sfn \"$(pwd)/public/task/{dut_root}\" /tmp/vabench-visible/runs/{case}/dut && evas simulate /tmp/vabench-visible/runs/{case}/testbench.scs -o /tmp/vabench-visible/evas-output/{case} --spectre-strict",
+  "candidate_dut_binding": "./dut",
+  "cases": [
+    {
+      "case": "reference",
+      "dut_root": "visible_fixtures/reference/dut"
+    },
+    {
+      "case": "mutation_01",
+      "dut_root": "visible_fixtures/mutation_01/dut"
+    },
+    {
+      "case": "mutation_02",
+      "dut_root": "visible_fixtures/mutation_02/dut"
+    },
+    {
+      "case": "mutation_03",
+      "dut_root": "visible_fixtures/mutation_03/dut"
+    },
+    {
+      "case": "mutation_04",
+      "dut_root": "visible_fixtures/mutation_04/dut"
+    },
+    {
+      "case": "mutation_05",
+      "dut_root": "visible_fixtures/mutation_05/dut"
+    }
+  ],
+  "fixture_policy": "read_only_and_identical_for_visible_and_final_replay",
+  "fixture_tree_sha256": "e99508ddadff46d7507e21dcffc689b806cb1310eea7396aa8ab10a5acdc5338",
+  "schema_version": "r50-direct-evas-testbench-suite-v2",
+  "working_directory": "runtime_package_root"
+}

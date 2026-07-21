@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_shifted_bits/certification.json",
-        "certification_sha256": "d066718879a6f013db2569c17b70b7e2152c83edb10cd38bcd2f5c6f763d7849",
+        "certification_sha256": "c48fe5d48314354389514ad51963d2214220ee2e4e5de51461619b8c257b8d10",
         "fault_class": "shifted_bits",
-        "mutation_bundle_sha256": "f7a548cfa69f5f49d24f369316ea9913b61a4cc990ed0a0c5ad2dbabaf03ee51",
+        "mutation_bundle_sha256": "c514a148efd864abd3ad8413eec438f9428ec2bb4f3bcbb9370c68511e121f69",
         "mutation_id": "neg_002_shifted_bits",
         "source_catalog_certification_path": "negative_variants/neg_002_shifted_bits/certification.json",
         "trigger_condition": "Shifts every decoded bit by one position.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "afd7d8981cf4b7286c5b2721ffd60a0000793a4a156095b95108d371653940b3",
+        "certification_sha256": "0852a0629c4ab713a5fc8d2e90f1c1febc799eac02a3c3bd5bc068432238ba31",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "a05e064a6aa62d03137977c10edcbc255e8c78c6bf8c90bdaf84509d92e74c80",
+        "mutation_bundle_sha256": "16973103ea818d4125c6fbf2352c9abfdfef3581e035dc68306736027f2dbad1",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_inverted_bits/certification.json",
-        "certification_sha256": "08a4e49cff9cd14bc4510e1c93cc8f0fa3af1989ae0c85a7891798aee3ab1bdd",
+        "certification_sha256": "00d06fcad6f574b3d8e1cd4327c08fe55d17e8e6ab65d52d7cbbd297ebc998d1",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "a568f51c5532758a3a759fb1b20746430b360898512ca70c52c6a6000a05d06b",
+        "mutation_bundle_sha256": "77f3312ef0f81d3c17e8cd994ba77ade654aa9f539a4d9b43d2a13ca8056829d",
         "mutation_id": "neg_003_inverted_bits",
         "source_catalog_certification_path": "negative_variants/neg_003_inverted_bits/certification.json",
         "trigger_condition": "Inverts every output bit.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_high_level/certification.json",
-        "certification_sha256": "6fbc164beffb3071f3a4d048ba16542baa392c6718f700017e4ce2800ebe5854",
+        "certification_sha256": "cb2771c9be4104459e9fecce6e22c23373130c985820194a8deea29930357e6c",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "7ab643bc564da1b182c134d72203c1ded7a62af264caf9affa80b2ab96953a28",
+        "mutation_bundle_sha256": "57e69635a072deafd3b5c7df9228fbbae190b5e221d7ff83a7d3aa723f46e395",
         "mutation_id": "neg_004_half_high_level",
         "source_catalog_certification_path": "negative_variants/neg_004_half_high_level/certification.json",
         "trigger_condition": "Uses half high level for logic one.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "ad7dfd0654b44cb4b13f247f47b1a44f90ce218d34503d656cc53e5fe3f340fb",
+        "certification_sha256": "521b1da40a710e84cf29bc5902a9ef465bce0cd4df229f114ea854609c47e68f",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "7f9a3c50ebda4f37c3b2d91627a2e7f05fccd3f6685ee229c9a5812fca030c84",
+        "mutation_bundle_sha256": "1f3ea9b6c09ff8e7126952304114fcbc16190360a2325acccbd827370a8101dc",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Control Word Encoder 7b: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "99385aa6457ec09493510caf359e52fbc2de215437b53eddaa9fb5a71c3dbf89",
       "score_deck_sha256": "e60e480576d86045600f3432d3b84a39c60ed791d8380ec2911d12203ee16fea",
-      "task_certification_sha256": "dc5dae596336941ffcf120608c429e08dd00e6d221b7813037ffc10cfc52ee47",
-      "task_record_sha256": "c113fbff6947d6aefa72f13f2b9d607a83974857613365c6945a1b7d8fd0fb18"
+      "task_certification_sha256": "e1c160a2979f79d2ff1adbf4ea600151f49f23e6115894b89b0fa1661cf02183",
+      "task_record_sha256": "5a606852fce862984f974aab05ab1f9c86400c1fc05c7ad94d37851b80bdac4e"
     },
     "release_dir": "147-control-word-encoder-7b"
   }

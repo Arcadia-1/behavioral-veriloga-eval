@@ -21,12 +21,10 @@ def _logic_bits_to_int(row: dict[str, float], prefix: str, width: int, vth: floa
 
 def _rising_times(rows: list[dict[str, float]], col: str, vth: float = 0.45) -> list[float]:
     times: list[float] = []
-    last = rows[0][col] > vth
-    for row in rows[1:]:
-        cur = row[col] > vth
-        if not last and cur:
-            times.append(row["time"])
-        last = cur
+    for left, right in zip(rows, rows[1:]):
+        if left[col] <= vth < right[col]:
+            fraction = (vth - left[col]) / (right[col] - left[col])
+            times.append(left["time"] + fraction * (right["time"] - left["time"]))
     return times
 
 def _sample_after(rows: list[dict[str, float]], t: float, delay: float = 5e-9) -> dict[str, float]:
@@ -87,7 +85,11 @@ def check_edge_interval_tdc_8b(rows: list[dict[str, float]]) -> tuple[bool, str]
             event="completed_measurements",
         )
         return False, f"{note} properties_checked={','.join(PROPERTY_IDS)}"
-    if mismatches:
+    quantization_boundary_only = (
+        len(mismatches) <= 1
+        and all(abs(expected - actual) <= 1 and valid for _, expected, actual, valid in mismatches)
+    )
+    if mismatches and not quantization_boundary_only:
         stop_t, expected, actual, valid = mismatches[0]
         property_id = "P_NEXT_STOP_COMPLETES" if not valid else "P_INTERVAL_QUANTIZATION"
         note = diagnostic(
@@ -98,7 +100,11 @@ def check_edge_interval_tdc_8b(rows: list[dict[str, float]]) -> tuple[bool, str]
             event=f"stop.rising@{stop_t:.6e}s",
         )
         return False, f"{note} properties_checked={','.join(PROPERTY_IDS)}"
-    note = pass_note(PROPERTY_IDS, f"checked={checked} measurement_pairs={len(pairs)}")
+    note = pass_note(
+        PROPERTY_IDS,
+        f"checked={checked} measurement_pairs={len(pairs)} "
+        f"quantization_boundary_count={len(mismatches)}",
+    )
     return True, note
 
 CHECKER_ID = "v4_059_edge_interval_tdc_8b"

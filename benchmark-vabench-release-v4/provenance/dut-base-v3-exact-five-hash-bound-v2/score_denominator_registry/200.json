@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_denominator/certification.json",
-        "certification_sha256": "b293e6036e6fa5300d5d98a1938913bbac37375a65a2dcfc06d54ae0c7cc2d10",
+        "certification_sha256": "a9b5249b91f576cf14aaac85e854d71f2969d5ad9833ee78afa954b825790cc2",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "969fc4e7ad88aefc28f42238c43d502fa4b280322442d754bf2d61a374e68360",
+        "mutation_bundle_sha256": "94b961867c209ff6bfe48d2252be2cc538447e3089ed9ab0245c30203ac4971f",
         "mutation_id": "neg_003_wrong_denominator",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_denominator/certification.json",
         "trigger_condition": "Normalizes the 4-bit CDAC code by 8 instead of 8.5.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_ready_skip/certification.json",
-        "certification_sha256": "bde818a436304734b6c35fe0b6eef723f6ca46ef99107d19bc64cf280e2c8365",
+        "certification_sha256": "7f526da01d358d908606ebad7e9cf1fdfc9f5e6f29bea14ea205abb44798bb49",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "a133c0dbbbd8c2509f38846069eae8e1474a758ffb7f4c0fb5b8e1e873c52c87",
+        "mutation_bundle_sha256": "5468304adb30a66c7e7d75669519b4789d7641b00007de75ae8155b82d0d8ee2",
         "mutation_id": "neg_002_no_ready_skip",
         "source_catalog_certification_path": "negative_variants/neg_002_no_ready_skip/certification.json",
         "trigger_condition": "Updates aout on the first ready edge instead of skipping it.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_unipolar_output/certification.json",
-        "certification_sha256": "97e6bfa7d2d51897b76fa2d423804ccd1fb8ab989ccd3e97a2ab9bb5e232bb42",
+        "certification_sha256": "9e413abe180b52a6832ed5bccdecabed70ad4de211ea7aea3820635601ca53a8",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "4d1eadcf19cb63e3e099e07aa6a014382936fd5e532319c5f88f08d8a38d1524",
+        "mutation_bundle_sha256": "d24d8d30c578d51428a7c7a15d121b9459de40da30c9c6f199d1e7d4759ae824",
         "mutation_id": "neg_004_unipolar_output",
         "source_catalog_certification_path": "negative_variants/neg_004_unipolar_output/certification.json",
         "trigger_condition": "Omits the bipolar minus-vdd output offset.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "b7c12acbcd9e859d82f755e68f2ce39d6491b2e326bc88d4417e558b82d040ee",
+        "certification_sha256": "a8ba9ceaa75c32a37ddd14f35dd3e4509bd5177d110e4a80efcb1dc48f2dd6e5",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "b1818fce38bc53cac7f4336307cbe41437c63ddcf9c39afe382072b7392c7ed1",
+        "mutation_bundle_sha256": "898b5e7f14f2963395cfbc5bd994145953571823ca52f4a32afe1731684d4d4e",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "L2 CDAC 4b Switch: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "7cfea2646429dd2da93ca4765467372820961ad7ae4b305ae314e71bfee119f2",
+        "certification_sha256": "97b2ec248354cefb78c5afc4005f974404bde4da7900f6b3ddd413471d4c0249",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "812512dc5f88aa72b5d9bb796fe28b1ccad046078e31031b27f376ffcf87f1b3",
+        "mutation_bundle_sha256": "353bb00efeb720b81ab168db9c43012cad49f35c4fd71a0585719e26f7e423e2",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "0ff9a520017d30f3db29b0cba884c356fa6d05def473c59a5bde0b10e8ae722e",
       "score_deck_sha256": "d847c1c68a18316d30663f96aa911d2067e6e40ee22fe582eb360449361c320c",
-      "task_certification_sha256": "9062fc403c5a3001c05bb202feabca22245cb6065adfe5d2f120721c043d86df",
-      "task_record_sha256": "79d96c0fd6b78abcc3f77104ddaeb0269d03b4d91d6de08f4a6ceb4e60fa9828"
+      "task_certification_sha256": "d3973fa32f61c2c91285e294ea5385218fb76a6c9f51f0c8f956d10c72463490",
+      "task_record_sha256": "0b0b26df9d5bb60683561818691526846696f48ebb7b1b16e71fbf095dcdbb78"
     },
     "release_dir": "200-l2-cdac-4b-switch"
   }

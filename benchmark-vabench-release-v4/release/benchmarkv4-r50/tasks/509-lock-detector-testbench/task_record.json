@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "009-lock-detector",
+  "checker_task_id": "v4_009_lock_detector",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "2893822b00c1f0f05aba5c3d200ba41ab8b57257faacfdacff30b841fecb9daf",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "c3a0c959ef5d1e73c175630ef0c9aaa0b825d9066d9d2015f0779d6260a01f0f",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "009",
+  "family_spec_sha256": "6eb54297af6b6bbdc9cccc98df60e93c238c5c2889be02fdbe5e24c9d153ca74",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "cb4afba1023000f2e5945ec403141dbecaa669d2f592b70e206cf72869c4ff5c",
+  "public_contract": "tasks/509-lock-detector-testbench/public_contract.json",
+  "public_contract_sha256": "88bf9846ac999182d8cc98d9d87b3d50a843a6e141e789c1e7997bd77ed92d35",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/509-lock-detector-testbench",
+  "task_id": "v4-509"
+}

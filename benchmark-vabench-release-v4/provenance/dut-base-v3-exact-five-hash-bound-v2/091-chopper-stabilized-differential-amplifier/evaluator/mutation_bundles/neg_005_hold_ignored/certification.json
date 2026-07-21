@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_HOLD_PRESERVES_STATE satisfy the public contract; fault class hold_semantics_error is rejected",
-    "observed": "EVAS: checked=1884 active=15 hold_edges=1 clears=2 polarity=+8/-7 settled_rows=196 errors=5 first=offset_residual@19.440ns=-0.00969 expected=0.00708",
+    "observed": "EVAS: checked=226 active=1 hold_edges=0 clears=2 polarity=+1/-0 settled_rows=0 errors=5 first=voutp@4.480ns=0.45000 expected=0.47250",
     "violated_property_ids": [
       "P_HOLD_PRESERVES_STATE"
     ]
@@ -17,18 +17,18 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-targeted",
+    "campaign": "r50-full400",
     "checker_id": "v4_091_chopper_stabilized_differential_amplifier",
-    "report_path": "evidence/r50/FAMILY091_TARGETED_EVAS.json",
-    "report_sha256": "0d8e9cca3c59b3859dd592095b818a885df949380700ec2c92aa342f2a5bb2d8",
-    "trace_row_count": 3839
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "trace_row_count": 3638
   },
   "family_id": "091",
   "inputs": {
     "checker_profile_sha256": "88c8bc22987ca9047c9083209e0fdd7dcf9d77af53d800350d3b8aaae48dea6e",
-    "harness_spec_sha256": "29e8bf1094fa274f5a079034cbbf2108c08edf34451cd6bde48d40ded4345e55",
-    "mutation_bundle_sha256": "da8bd345d66c9fe1cd15fae973f1e35d8a279fa87d820cc15246e5234c8baede",
-    "profile_sha256": "9838f114e1d05735370676f4c5d944f01d43fe34a4ca7e0b5038d7dad7637308"
+    "harness_spec_sha256": "918372dd6f4adb8e28c9ed2bb713b9aa1cadd829ccfb51acb667dfcdda7f7a89",
+    "mutation_bundle_sha256": "01347798805d65b02cca718a6fd0e6a89fd9d9cbb938658bd0100f740839048f",
+    "profile_sha256": "76ab6704f54d1c7e70066f38179527edb60cc5d09a65817ece38f86094a5c4a8"
   },
   "mutation_id": "neg_005_hold_ignored",
   "outcome": "killed_behaviorally",

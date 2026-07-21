@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "141-ideal-adc-4bit-quantizer",
+  "checker_task_id": "v4_141_ideal_adc_4bit_quantizer",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "6a26c5c34df73bd5d089fafe52b211cd24a8bc6a029f159914ecb8bdbaa33e69",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "2d30a11a004187cd43115e5786ee3f998c88895667a080f68dc792f829ab92a6",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "141",
+  "family_spec_sha256": "727ba99822760baa7ffabb7bc0379b10bf7958a9024c405b11924d29fbc1b008",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2a7fda401d56fa0905e4e991d2e2292b27c5d8bf19b7540589b5a772ce0f63b9",
+  "public_contract": "tasks/641-ideal-adc-4bit-quantizer-testbench/public_contract.json",
+  "public_contract_sha256": "6c064d3582fd2f9bae7872e21a8ea5adf721309380b41b803b47f4b55d74e88b",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/641-ideal-adc-4bit-quantizer-testbench",
+  "task_id": "v4-641"
+}

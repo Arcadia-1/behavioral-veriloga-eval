@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_ASSERT_OVERLOAD_WHEN_THE_UNCLAMPED_OUTPUT satisfy the public contract; fault class reset_enable_clear_ignored is rejected",
-    "observed": "EVAS: v4_304 checked=1144 high_bias=True low_bias=True overload=True disabled_clear=False polarity_errors=0 gain_errors=0 metric_errors=0 overload_errors=17; P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count=1; P_TREAT_VIN_PROXY_AS_A_VOLTAGE mismatch_count=0; P_GENERATE_AN_OUTPUT_DEVIATION_AROUND_VCM mismatch_count=0; P_REDUCE_EFFECTIVE_GAIN_WHEN_BIAS_FALLS mismatch_count=0; P_ASSERT_OVERLOAD_WHEN_THE_UNCLAMPED_OUTPUT mismatch_count=0; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
+    "observed": "EVAS: v4_304 checked=1144 high_bias=True low_bias=True overload=True disable_seen=True inactive_checked=166 inactive_errors=166 polarity_errors=0 gain_errors=0 metric_errors=0 overload_errors=17; P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count=163; P_TREAT_VIN_PROXY_AS_A_VOLTAGE mismatch_count=0; P_GENERATE_AN_OUTPUT_DEVIATION_AROUND_VCM mismatch_count=0; P_REDUCE_EFFECTIVE_GAIN_WHEN_BIAS_FALLS mismatch_count=0; P_ASSERT_OVERLOAD_WHEN_THE_UNCLAMPED_OUTPUT mismatch_count=0; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
     "violated_property_ids": [
       "P_ASSERT_OVERLOAD_WHEN_THE_UNCLAMPED_OUTPUT"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_304_common_gate_tia_front_end",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 1329
   },
   "family_id": "304",

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "109-comparator-offset-calibration-loop",
+  "checker_task_id": "v4_109_comparator_offset_calibration_loop",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "a230dd694c93915919cacc129d132c138433a2dca08ab136fc936302d7dadae7",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "a5a3c0b86e748fc6f7c1305dfea16f04f993ef00990c96e5b22523ef905e1eb9",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "109",
+  "family_spec_sha256": "453e16a533b8d26544b8b2fb70608adc3391af7e660ba7937b724b4f1d340cb8",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0609be3379f38a99b35ff3cede148e166243c3eb96f48a97007e4ac842faf1bc",
+  "public_contract": "tasks/609-comparator-offset-calibration-loop-testbench/public_contract.json",
+  "public_contract_sha256": "3387c4b99ff7955e3f067d33f3e46d847ba7f24fa8cfdf69878dbce615ddd0df",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/609-comparator-offset-calibration-loop-testbench",
+  "task_id": "v4-609"
+}

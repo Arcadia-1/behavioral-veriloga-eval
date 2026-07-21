@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "104-sample-and-hold-ideal",
+  "checker_task_id": "v4_104_sample_and_hold_ideal",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "1011797fc5c1effa480fe2494536e9fce51c89d7df25081169ad8f6decb1f679",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "6d2fbeb36becef4f2123d597931b20103fa72d2ab1ab8519892ed0d71d3f83e9",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "104",
+  "family_spec_sha256": "72eea8fa03055ea9db5a2ec5b907f8d8eb94607fac62087158e299415a93acc2",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6ad3bb4da28868f71c723088d043cabec71312d1e2f63dd3f7f8059998269e38",
+  "public_contract": "tasks/604-sample-and-hold-ideal-testbench/public_contract.json",
+  "public_contract_sha256": "07584e0fcdb9e6367e61e687c1118a1e055eaae78d742b29c25521db6e672fe8",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/604-sample-and-hold-ideal-testbench",
+  "task_id": "v4-604"
+}

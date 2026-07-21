@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_common_mode/certification.json",
-        "certification_sha256": "a9240064e67cabc1739c5f9bbaeeb107a4b0511e6c237c2f0e1702a97ba319d1",
+        "certification_sha256": "fac44fe2cab14145a67ef85af95cb13d8452cc42fc38a48a2a24185a39aba625",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "d6583f369f672ef068b36568c2a719c08faeb313c6757dab27cebd8e89330e0c",
+        "mutation_bundle_sha256": "61216fa77f2474f9fae17c882a7723bdb235728c86aaa7b5f33eeaf30f3b4e28",
         "mutation_id": "neg_004_wrong_common_mode",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_common_mode/certification.json",
         "trigger_condition": "Drives outputs around zero common mode.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_half_gain/certification.json",
-        "certification_sha256": "45560a0a33d87513fe2c96559d09a51ba7783ec9ce3824ba21f00ab5ffd3e7a9",
+        "certification_sha256": "55cd1e4a8bdda672e83305cbb3f564e08ba5ef53e190213dcde9481191cdc5fd",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "e7bca1279009e2b9ffdd410326da8bcfadb8698dce1660b71d00a821642d738a",
+        "mutation_bundle_sha256": "45d2be781381021403626ee532d906fc21250195f0f81f263902b3939907c91b",
         "mutation_id": "neg_002_half_gain",
         "source_catalog_certification_path": "negative_variants/neg_002_half_gain/certification.json",
         "trigger_condition": "Uses half the required differential gain.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_inverted_polarity/certification.json",
-        "certification_sha256": "b74f6622d5ccf16aec0ff40c233c0975d7f248fc05d76fb48ccdf46f8c4f9e85",
+        "certification_sha256": "532c536b61a623c8bf27c865da801c55d40352c2d68b3c575cf2be52580f11b4",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "d267ef28ff850f05c96f45adea34564c9aae5a71320bb033a2093a63614d4c9d",
+        "mutation_bundle_sha256": "9e7a0c3205f7d74794ade36054c45d46566d1e9c1736069506b7c21377d5785c",
         "mutation_id": "neg_003_inverted_polarity",
         "source_catalog_certification_path": "negative_variants/neg_003_inverted_polarity/certification.json",
         "trigger_condition": "Inverts the differential output polarity.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "7a4369f770450879cabffcc2d883f5666cfd5d0d4de1ac4e25027168b32cd233",
+        "certification_sha256": "5d26db6b6b280359c2e236e45e5e829e37d78b60397d315aca55e5255f345d04",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "7f818413fbaa5a758a1c6c17bc8cf2d516abd7f74261cf18bec8d47b45378224",
+        "mutation_bundle_sha256": "3da5745e53982536b4a21dba102dce18781f9bc941b0058f663fa010a9ed795e",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "5589601c41164eb79cd0b766713f202e1ebf332e5337fe5993970ba2aff4e5f7",
+        "certification_sha256": "126df5b8ae1c4846fe4b3563c65efe92ffbe5073045f9f5ddfbeb453ac927bef",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "1b7242b2a214ddb6e9ae11e9b07d8e4056b09340162f84ee2e4a00cfe601ceab",
+        "mutation_bundle_sha256": "2e848c2257fae98b51cd92bbb30fb3b7a0f2bc1e5936c8a244083d5c06fa95b8",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Ideal Differential Opamp: scales the metric output, preserving the main path while failing measurement checks.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "e4d5077ec9c58540b7325250a0ad32a2cfeabd8512487b878ba83e661ba1d916",
       "score_deck_sha256": "60502352b657427857d87fdaa134bdd3b6b199d1a0a31bb2afaeb6f9a26d4831",
-      "task_certification_sha256": "e95225edcaaa8f37a31a3647bb1999f2d17c65fd980b5afb2a21083aa660a41d",
-      "task_record_sha256": "0414e88112d1166a9bc4132a1187f09fcc314e08019444390923b8d9c1f68bc3"
+      "task_certification_sha256": "e45e8bb450c18cbf5d42ac050c7ec02bbde80c6dee6fedde4355851c4f13a234",
+      "task_record_sha256": "0a1a4fb566876f60ff8d74579b71b9826a3e952ec4b16f2b03f4b324b697f120"
     },
     "release_dir": "139-ideal-differential-opamp"
   }

@@ -476,3 +476,25 @@ def transformed_rows(rows: list[Row], *, scale: float = 1.37,
         }
         for row in rows
     ]
+
+
+def canonical_time_rows(rows: list[Row]) -> list[Row]:
+    """Undo an explicitly annotated affine trace-coordinate transform."""
+
+    if not rows:
+        return rows
+    scale = float(rows[0].get("_time_scale", 1.0))
+    shift_s = float(rows[0].get("_time_shift_s", 0.0))
+    if scale == 1.0 and shift_s == 0.0:
+        return rows
+    if scale <= 0.0:
+        raise ValueError("trace time scale must be positive")
+    return [
+        {
+            **row,
+            "time": (float(row["time"]) - shift_s) / scale,
+            "_time_scale": 1.0,
+            "_time_shift_s": 0.0,
+        }
+        for row in rows
+    ]

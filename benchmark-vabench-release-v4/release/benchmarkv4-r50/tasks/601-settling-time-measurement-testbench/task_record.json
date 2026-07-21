@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "101-settling-time-measurement",
+  "checker_task_id": "v4_101_settling_time_measurement",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "a247a706099e015cfe0558ec03feec61b2e10091e9d0940618d9a8f9bafc94c5",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "2d79cf19af9f039ffe7ec0a98a0558687829788f3e69f12b02fb40dd1270ba5b",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "101",
+  "family_spec_sha256": "eefb23fc7add6d41f3c48ce132af632df56500c06056afc2c916ccda217afab6",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "298792e3c9218002c39202d826ff4fd9c318a3838b6ed29241a27042ddf88c5f",
+  "public_contract": "tasks/601-settling-time-measurement-testbench/public_contract.json",
+  "public_contract_sha256": "b53219930cb47dc86c414c74f46e5fe321c617e8d35ebdf8f23491a0bef17b9f",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/601-settling-time-measurement-testbench",
+  "task_id": "v4-601"
+}

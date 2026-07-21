@@ -3,28 +3,28 @@
   "checker_task_id": "v4_202_adc_zoom_timing_sequencer",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "4a84da974bc72822fba1ebd8d68c5a5f7d79821d7bcc4791b03653d774ff0279",
+    "certification.json": "38e8e6267523a63afc57a1e6f3df748c2f130b70d6d81feab7db5117e9491d8d",
     "checker_profile.json": "f3f85a22e4a208302282c15fec20a79e846707c409bf5985ccfd44519bcbb35d",
     "derivation_manifest.json": "7cdc333ab23b916e63fb1eccb8700e0b4c203da3b0e4a98f4691d3a83ae72789",
     "family_spec.json": "3091409e1058e7b28b7ffd90b77e69536ea3faae06e6876f7826bb15ae084b7f",
-    "harness_spec.json": "1874e218ef6992f4fac5a634221278cda8b5205bf17a5cf264940383a4991707",
+    "harness_spec.json": "c76f9d5b2f50c1005e9b6620b52609dac4173e877a8f7e212e96c2e76719081c",
     "mutation_catalog.json": "01e8ea6337ec3ac868ac1ad6f33d46849c80181bf225240a106e9bdade049f13",
-    "profiles/feedback.json": "6b97df3145d951d31a5ccfe07d0691bfe6e03121622b17fa1b11d4e4f49616c6",
-    "profiles/score.json": "1cf4175a5eae021b49146f057f2b871776319841889f311cba1af310767a7900",
-    "score_tb.scs": "6814af9104b66624588b6dbb50cacfc19a467382c45dbf6a35094a6381e6bcc0",
+    "profiles/feedback.json": "824c2077b87117467178981b9d8d086e7732102650dd5e949a7627f81f70e022",
+    "profiles/score.json": "a0337657bc76e764a565a60d9b6b2afed14e095a492ce22c48a1ea9b9182de2d",
+    "score_tb.scs": "4c43bcadfa1df5e0d1e8fbd00fe1a1c40611ffd5aba927ab3890b8b3f3e844a1",
     "solution_tree": "632acfc4b6db090e9ccd6b8526fdffdef25641dff2b16e9e2f8f83bc51f1553c",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
   "form": "dut",
   "public_hashes": {
-    "feedback_tb.scs": "904cb24f98635858806cdd876df5aa34abaddd7c27484f3d3c55b6ba3b9fe351",
+    "feedback_tb.scs": "408e658a44a5276b9d88ed12de71e727ace289ffae3868e1d1c05f12a1c8cf52",
     "instruction.md": "334b1b1a8f860f422b282492934466b559d854a44312b3380881a40bfd88301a",
     "public_contract.json": "c654b6205540bd046606dfae9413bb85c5600588fa447102d2b7a65cfc01a5db"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "4a84da974bc72822fba1ebd8d68c5a5f7d79821d7bcc4791b03653d774ff0279"
+    "sha256": "38e8e6267523a63afc57a1e6f3df748c2f130b70d6d81feab7db5117e9491d8d"
   },
   "release_dir": "202-adc-zoom-timing-sequencer",
   "schema_version": "v4-canonical-dut-release-task-v1",

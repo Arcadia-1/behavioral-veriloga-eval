@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_DECODE_TRIM_2_TRIM_0_AS satisfy the public contract; fault class ready_asserts_without_three_updates is rejected",
-    "observed": "EVAS: v4_306 checked=12 reset_clear=True late_reset_clear=True ready_seen=True metric_dynamic=True trim_response=True premature_ready=3 vout_errors=0 metric_errors=0; P_ON_RESET_CLEAR_THE_TRIM_STATE mismatch_count=0; P_DECODE_TRIM_2_TRIM_0_AS mismatch_count=0; P_WHILE_CAL_EN_IS_HIGH_UPDATE mismatch_count=0; P_DRIVE_VOUT_FROM_THE_CORRECTED_DIFFERENTIAL mismatch_count=0; P_EXPOSE_THE_ACTIVE_CORRECTION_ON_OFFSET mismatch_count=0; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
+    "observed": "EVAS: v4_306 checked=12 reset_checked=46 reset_errors=0 late_reset_checked=31 late_reset_errors=0 ready_seen=True metric_dynamic=True trim_response=True premature_ready=3 vout_errors=0 metric_errors=0; P_ON_RESET_CLEAR_THE_TRIM_STATE mismatch_count=0; P_DECODE_TRIM_2_TRIM_0_AS mismatch_count=0; P_WHILE_CAL_EN_IS_HIGH_UPDATE mismatch_count=0; P_DRIVE_VOUT_FROM_THE_CORRECTED_DIFFERENTIAL mismatch_count=0; P_EXPOSE_THE_ACTIVE_CORRECTION_ON_OFFSET mismatch_count=0; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
     "violated_property_ids": [
       "P_DECODE_TRIM_2_TRIM_0_AS"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_306_instrumentation_amplifier_offset_trim",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 1103
   },
   "family_id": "306",

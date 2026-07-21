@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "185-spi-shift-mux",
+  "checker_task_id": "v4_185_spi_shift_mux",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "fed5ff4aae15a6eadcc4a2d773e09ef7eb43d3d6b65684ef3c76a6c6fcec2cd4",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "b5586788d8c80dd28410cc3b6e356d81a3c5e8790f07afd7e0dd475c0c5a10d8",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "185",
+  "family_spec_sha256": "d799411e6138ac220107ff2c112de00a41a39c5d94f7a179088855f6bb14f31e",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5a9b1b719a98a236a1943c227770ad2c2cf0b18279d4d6066e650514dfbd7750",
+  "public_contract": "tasks/685-spi-shift-mux-testbench/public_contract.json",
+  "public_contract_sha256": "fb36f02eac0a814fe77245f3bd4bed6033a064bb4cf678228eb217e94656a5eb",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/685-spi-shift-mux-testbench",
+  "task_id": "v4-685"
+}

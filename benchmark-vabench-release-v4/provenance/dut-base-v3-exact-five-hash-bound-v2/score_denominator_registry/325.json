@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_start_edge_does_not_arm/certification.json",
-        "certification_sha256": "15062891ead5680fb012586caa98948d15c85a3fd25b335ccf352c3a0eab204c",
+        "certification_sha256": "cf670f2b83c240c879aaec410e03bb323698aae70b63a6182e6b645458947147",
         "fault_class": "start_arm_missing",
-        "mutation_bundle_sha256": "ece4620c7961bc7882b4a4881d565b400ca9fe5fa553f2c9df24db2011644202",
+        "mutation_bundle_sha256": "a9916ee0736b08fe20fec29bb4860d284596baa3e0d9e685980007f6c0cff82e",
         "mutation_id": "neg_002_start_edge_does_not_arm",
         "source_catalog_certification_path": "negative_variants/neg_002_start_edge_does_not_arm/certification.json",
         "trigger_condition": "an enabled rising start edge begins a new measurement",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_ref_clk_edges_double_counted/certification.json",
-        "certification_sha256": "01fb3315cc0a3682ef8f36ac97ee2e31edd38d9c1a9ca09cbd43cb8b44274963",
+        "certification_sha256": "e7e179903ece70ffd4fe018a34b54bb8d9e6719929b152ec4b3a53da8ecc48bb",
         "fault_class": "reference_edge_double_count",
-        "mutation_bundle_sha256": "d8caa4e9b87de285f78e04cd60dc7fb5c9a4ee527db6d341f44b3d4cafd72d33",
+        "mutation_bundle_sha256": "e6f2f705c5552ed55f6ed6409cce92360c27ec30f33fc1d3efaaf3454226989f",
         "mutation_id": "neg_003_ref_clk_edges_double_counted",
         "source_catalog_certification_path": "negative_variants/neg_003_ref_clk_edges_double_counted/certification.json",
         "trigger_condition": "an armed rising ref_clk edge occurs before the first rising stop edge",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_fine_residual_inverted/certification.json",
-        "certification_sha256": "9327ef73089ae5e6d9d5ed24a049e1cb97fab497bd35d201e39b032f94a0647b",
+        "certification_sha256": "19c51821629a353470ded06266c416cbedee099f44d249565fa2564e406dd33c",
         "fault_class": "fine_residual_polarity_inverted",
-        "mutation_bundle_sha256": "b293ee9c17ece05a07f3d93d6eaca55aa2fcb2e99d62be1b10b811d247a7f4c8",
+        "mutation_bundle_sha256": "6cfd4370faf3d19cdf5b26d07ed13ce5a662de2699fb2d200bf1c61c33c5f6aa",
         "mutation_id": "neg_004_fine_residual_inverted",
         "source_catalog_certification_path": "negative_variants/neg_004_fine_residual_inverted/certification.json",
         "trigger_condition": "a rising stop edge completes an armed measurement after reference edges have established the period",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_valid_asserted_at_start/certification.json",
-        "certification_sha256": "7b7ed6dc81fb28f48ff34c8b629e1ccb369e562b1e262f16ab5def2d335c7609",
+        "certification_sha256": "538107f8b76cfa2ee937a8abadcc5f2103d3d6ac0544681f5e0f6f7514ef5d87",
         "fault_class": "valid_asserted_before_stop",
-        "mutation_bundle_sha256": "bc9509dfc47c5000220c62598c0136b25cd499513c1adb63453e1ae982c0c691",
+        "mutation_bundle_sha256": "5d0f206d44133e71dc115dcb4ee54b7ac587daa0f6dfe8f8ffcb0eddd0bc8233",
         "mutation_id": "neg_005_valid_asserted_at_start",
         "source_catalog_certification_path": "negative_variants/neg_005_valid_asserted_at_start/certification.json",
         "trigger_condition": "a start edge arms a measurement before any stop edge",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_coarse_code_not_cleared_on_disable/certification.json",
-        "certification_sha256": "5a22efa813d859a2d2fa2f1b5757cf6708b029f79bd5ff1195a81be2d30e8f3c",
+        "certification_sha256": "854581b5c68f0c03df549dd83e5df4b8047060d9d90745d332791ba6cd0b1427",
         "fault_class": "coarse_code_clear_omitted_on_disable",
-        "mutation_bundle_sha256": "14c1112f62debd1830ebffac8f5d830ac2ddedd24cfb9981cfc58104f675133d",
+        "mutation_bundle_sha256": "f86b6fbdd480c2fed9962eeebef348a29c254819c45883d029c03b21dc02dc37",
         "mutation_id": "neg_001_coarse_code_not_cleared_on_disable",
         "source_catalog_certification_path": "negative_variants/neg_001_coarse_code_not_cleared_on_disable/certification.json",
         "trigger_condition": "enable falls after a completed measurement has latched a nonzero coarse code",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "ff9170b6407b77c0d5961e62ff73c6c138a841ceeb4f565b49429f55a5656946",
       "score_deck_sha256": "7cf6cf03f8dfe096d36aa0d573a1b8c1a6d442f19b658d213d259b494470c87d",
-      "task_certification_sha256": "e0c2ce387b41f87b294331665dfcfdc079b76d6f6e3dda8d1060acf7509ad3a2",
-      "task_record_sha256": "370743449ef6509680821b961bb8952aa86b224a3f43bdfa6f4497ec3e7546b4"
+      "task_certification_sha256": "bbea08939b95070dbd106a822a0085f560e0bdcf2a7ea15e3fd98c606acc8688",
+      "task_record_sha256": "bd4c03f5c5c3b0bc8353d47c8ad7f99fcb160ff68a9ee9cbc762fe9ef791f1c4"
     },
     "release_dir": "325-fine-coarse-tdc-encoder"
   }

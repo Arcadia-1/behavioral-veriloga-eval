@@ -99,6 +99,10 @@ def valid_sha256(value: object) -> bool:
     return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{64}", value) is not None
 
 
+def valid_git_oid(value: object) -> bool:
+    return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", value) is not None
+
+
 def rust_evas2_runtime(payload: object, *, backend_key: str = "evas_backend") -> bool:
     return isinstance(payload, dict) and (
         payload.get("evas_engine") == "evas2"
@@ -940,7 +944,7 @@ def audit_prompt_components(
                     != "https://github.com/Arcadia-1/veriloga-skills"
                     or source.get("upstream_pull_request")
                     != "https://github.com/Arcadia-1/veriloga-skills/pull/17"
-                    or not valid_sha256(source.get("upstream_commit"))
+                    or not valid_git_oid(source.get("upstream_commit"))
                 ):
                     problems.append("veriloga skill snapshot provenance mismatch")
             elif source != {"type": "in_repository", "path": "skills/vabench-feedback"}:

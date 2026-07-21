@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_GENERATE_A_REPEATING_32_NS_COMPACT satisfy the public contract; fault class zero_stub_output is rejected",
-    "observed": "EVAS: rst@0.6ns=0.0000 expected=1.1000 tol=0.0900",
+    "observed": "EVAS: rst_edge_count_frame=0 observed=0 expected=2",
     "violated_property_ids": [
       "P_GENERATE_A_REPEATING_32_NS_COMPACT"
     ]
@@ -17,18 +17,18 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_202_adc_zoom_timing_sequencer",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
-    "trace_row_count": 651
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "trace_row_count": 2251
   },
   "family_id": "202",
   "inputs": {
     "checker_profile_sha256": "f3f85a22e4a208302282c15fec20a79e846707c409bf5985ccfd44519bcbb35d",
-    "harness_spec_sha256": "1874e218ef6992f4fac5a634221278cda8b5205bf17a5cf264940383a4991707",
+    "harness_spec_sha256": "c76f9d5b2f50c1005e9b6620b52609dac4173e877a8f7e212e96c2e76719081c",
     "mutation_bundle_sha256": "77dd764af7a7c39d0948d3a05b3ec78270e8e45c9f01e1d641e17413a1a9e257",
-    "profile_sha256": "6b97df3145d951d31a5ccfe07d0691bfe6e03121622b17fa1b11d4e4f49616c6"
+    "profile_sha256": "824c2077b87117467178981b9d8d086e7732102650dd5e949a7627f81f70e022"
   },
   "mutation_id": "neg_001_zero",
   "outcome": "killed_behaviorally",

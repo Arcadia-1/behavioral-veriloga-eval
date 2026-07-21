@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "281-async-reset-event-counter",
+  "checker_task_id": "v4_281_async_reset_event_counter",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "18a8b818fbe8c6e6b820f54f3dc1572cba562e7a94939dc2f80d9f1a1f15d000",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "5bd58806070c019add1bc5de1fd49c630c1dab28e1280944123cb0fde3122567",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "281",
+  "family_spec_sha256": "c9c42c6d6791ed2c114d499dfe9682692594a004d26dfa0da53c71f54cfdb725",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3fedca37fbace6bd65ff789b71295d03006e6e754d11f9c0c68dd4c714af7e01",
+  "public_contract": "tasks/781-async-reset-event-counter-testbench/public_contract.json",
+  "public_contract_sha256": "6e038a09b8d3c34947b12ce6d87af2112f3afd5d19591b8dcbc2c966d1ca2583",
+  "release_revision": "r50",
+  "schema_version": "r50-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/781-async-reset-event-counter-testbench",
+  "task_id": "v4-781"
+}

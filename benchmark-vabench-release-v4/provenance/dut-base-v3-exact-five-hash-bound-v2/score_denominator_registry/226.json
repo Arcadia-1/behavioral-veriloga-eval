@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_offset/certification.json",
-        "certification_sha256": "61f27cdc793b42444bc546f451740e72025997959ceb2fc008834d4d82cf4866",
+        "certification_sha256": "023fb922498dc39abccec05316231f034f25b52e4371487136f213a76d2c2af2",
         "fault_class": "offset_magnitude_error",
-        "mutation_bundle_sha256": "60dd0aa4701632ad537e51259698efe856c6aa1ec026a612eb7d83d70b861f5b",
+        "mutation_bundle_sha256": "cd345c28c1645d06f8ec22975f2b03d13b43bbb5147ea055d609af4499f9163e",
         "mutation_id": "neg_002_wrong_offset",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_offset/certification.json",
         "trigger_condition": "Adds 200 mV instead of the required 350 mV offset.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_gain_plus_offset/certification.json",
-        "certification_sha256": "b7107aa1fc22b7b25e2fbe83d59fe8d512b7760228ba2c1378515c6beea35094",
+        "certification_sha256": "b320b39d6f2009625e16283b5aaa1ff0679477e79949a04f323763660fb1c946",
         "fault_class": "input_gain_error",
-        "mutation_bundle_sha256": "75174b6f358e9b1cda698df40130c33a2458e85cccbca3b0328dd17762b7d4f9",
+        "mutation_bundle_sha256": "6525d2f3c1b24d082ee5e895ad0106869ed7bc80586256e66e03e12cd4629391",
         "mutation_id": "neg_004_gain_plus_offset",
         "source_catalog_certification_path": "negative_variants/neg_004_gain_plus_offset/certification.json",
         "trigger_condition": "Adds an erroneous gain of 2 before the offset.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_subtract_offset/certification.json",
-        "certification_sha256": "8f9228875c94efda02f9cf80cb14d819951baa67eb7baf578f3846cf39958ce4",
+        "certification_sha256": "26c98dd1a55a9f48817f71c7b3979aabc7f9dcdd0841ff2eb580a01d3c19ff9d",
         "fault_class": "offset_polarity_error",
-        "mutation_bundle_sha256": "eaeb154bc68f6ef13b495c694a217eca79e156cce760f9c8f873bad26be5c1a9",
+        "mutation_bundle_sha256": "4472f528f2a6d512128ce10b4de380a28f3458c75b8075f55db02e22d58655e3",
         "mutation_id": "neg_003_subtract_offset",
         "source_catalog_certification_path": "negative_variants/neg_003_subtract_offset/certification.json",
         "trigger_condition": "Subtracts the level shift instead of adding it.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "d64b332b3b6331cba89d31f3767d701dee3cb5c6f5fe219295e412e0847ce61f",
+        "certification_sha256": "53403d35dcaf63bbc50bb35741bca6560cba01dac2f5cf0d0803abcee084102a",
         "fault_class": "output_scale_error",
-        "mutation_bundle_sha256": "f4813d28c3120c49c38fc06d7d70e3eaba5118ea9ec168241c3b8ffc96f13fde",
+        "mutation_bundle_sha256": "2dae447c0444cb55eb825de4cdb8f73eb62c26c84f5a893c3bd2a3f21bf6f667",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Level Shifter Offset: scales the metric output, preserving the main path while failing measurement checks.",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "4a12f69d1ded3b3b6812050da57257385beddd2ad690d90bb3bf5f05a2ce2a99",
+        "certification_sha256": "1362af31f1bf04575171819146ea8e18a4b3ac5a16d2665a78e400dcb843a2af",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "bbc3bb3401ff7226d4aa7d8dbcae9c855afd669c0f6d43b6621b21cb107d5767",
+        "mutation_bundle_sha256": "eefabc12946023a41c16dc985c9a69a93a97320f38f7afb825c89e88a399cfac",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -73,8 +73,8 @@
     "hashes": {
       "mutation_catalog_sha256": "63c839202af614d7cc1bcd75ff52aeb8c536ed124dbc19a9a87d44ed068e6bfc",
       "score_deck_sha256": "cc41c7c760cd1560383f642a624a4e1a7c6de5d4aa9c47eafda4ab692942a430",
-      "task_certification_sha256": "00629e3126cded90b4bbb5e37919836fb7b4f1565182064c0a2334d49b85dfb4",
-      "task_record_sha256": "980506a29921f58a8623905c8dfea42df53d2607a2079c0d45bfb8b6946ee9cd"
+      "task_certification_sha256": "53b72b9d5450bd32bc86ff8d18f5c2a2261dc41b208d518e3463c5ba4ea9d705",
+      "task_record_sha256": "75d76770d1fa6ef13b7df45de3a07595132e261e4d74dc81f14f6df3ba0e2813"
     },
     "release_dir": "226-level-shifter-offset"
   }

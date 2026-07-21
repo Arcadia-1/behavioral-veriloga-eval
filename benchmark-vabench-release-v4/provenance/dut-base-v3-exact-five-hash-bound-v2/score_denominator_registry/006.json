@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_monotonic_output_order/certification.json",
-        "certification_sha256": "57249bad1305f9ba9a946091b4134c1baf978bab2cb0af00841cf9fdc1a043f2",
+        "certification_sha256": "84a4acb472adb074c98eea509604a754240dd1fd443d800e20ae96f597dd4d30",
         "fault_class": "permutation_mapping_error",
-        "mutation_bundle_sha256": "f53a5a4bc4afbc473b4e0171cc47413f9437509be40ed6133784f5eb8fd550f1",
+        "mutation_bundle_sha256": "5aa8e92d8bb6a1973c5b3e260e2e27de45c4a70881958491843ad0ff58edb8a3",
         "mutation_id": "neg_003_monotonic_output_order",
         "source_catalog_certification_path": "negative_variants/neg_003_monotonic_output_order/certification.json",
         "trigger_condition": "the first four post-reset clock edges occur",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_out0_stuck_high/certification.json",
-        "certification_sha256": "15fa813303ec95e898beec80984da011b3b8081daabf172b94c12525db36a5f0",
+        "certification_sha256": "59cd27b6627578fa130af1986b334e594f14fcfe0c5888ddd6fb33179cfd2c76",
         "fault_class": "one_hot_stuck_output",
-        "mutation_bundle_sha256": "d622acf71d7d10d0fc230d9b0a7d4997545343a6355e920c22683204a8472b8f",
+        "mutation_bundle_sha256": "ae6d10d30da5b3dfef25994622f6b48c08b954045d74aaf09cf6b58b31f2a775",
         "mutation_id": "neg_005_out0_stuck_high",
         "source_catalog_certification_path": "negative_variants/neg_005_out0_stuck_high/certification.json",
         "trigger_condition": "the active element should rotate away from out0",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_weak_high_level/certification.json",
-        "certification_sha256": "57d7e6439fdeb9e4a2ceb0f64ced4f0209f78c470fd10401d6a8748d4aba53f4",
+        "certification_sha256": "f403d3c5c22eb262607593a67e0e3cb4a304a10b240b9afb24b086234caa9097",
         "fault_class": "weak_logic_high",
-        "mutation_bundle_sha256": "04e71fe6733102e78b22ec698718eef73ead18373606ee686f1bbcd30de739f6",
+        "mutation_bundle_sha256": "6ff7cb18c2986651c6880192447235a155bce50bee7148ff70fe627cc0197b0b",
         "mutation_id": "neg_006_weak_high_level",
         "source_catalog_certification_path": "negative_variants/neg_006_weak_high_level/certification.json",
         "trigger_condition": "any output is selected",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_007_wrong_reset_state/certification.json",
-        "certification_sha256": "31d5b2263faf3aa310b18abf93ad05947cc28bb1e4dcab70043ca1cd054975ed",
+        "certification_sha256": "6b7f66e0a3d2646c8cf5c3a3d75acbd8bb54aa31fd654f327afbd83ece082b3c",
         "fault_class": "reset_state_error",
-        "mutation_bundle_sha256": "551894031aad633bddfc3a93075cd6c89214b57177a12261c3d8fddc663edbb0",
+        "mutation_bundle_sha256": "ed7721ad8a472957d0b71ba13ff8f215b20f115ef5fd4c853626d142d9eb3fba",
         "mutation_id": "neg_007_wrong_reset_state",
         "source_catalog_certification_path": "negative_variants/neg_007_wrong_reset_state/certification.json",
         "trigger_condition": "the first rising clock edge after reset release occurs",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_stuck_initial_state/certification.json",
-        "certification_sha256": "924ed4b3ef3abc1b06b4ab11b214e61b5e707eec652b01adde3ab23abe4eb38b",
+        "certification_sha256": "042f20b012b43b1c16daa45ccb6f721a3b570381e834222dfc4353a4102fa8c0",
         "fault_class": "state_advance_omission",
-        "mutation_bundle_sha256": "e1dd9365005aa8fbfee7050c8282be8f90e5ea01db8a2ea723f5306135fa176c",
+        "mutation_bundle_sha256": "e1a75d99c5704d2b5ff3399d79006e87da5fb84684f969d05b9ec07a3b012aac",
         "mutation_id": "neg_001_stuck_initial_state",
         "source_catalog_certification_path": "negative_variants/neg_001_stuck_initial_state/certification.json",
         "trigger_condition": "valid rising clock edges occur",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "12cf24d09a30c3e3d7c639dbe7e2fc4f6bfc0f70f5b62c71dff43dca5e9e93f6",
       "score_deck_sha256": "c031b3b826188e0ddd5533a953ba58c30ff4dd41ec1ff593317e37a826f77f93",
-      "task_certification_sha256": "1dccdefc6e8e5146ff459ece575c5c22309c691ec4d6ba3269a475c1d7582344",
-      "task_record_sha256": "6f90ec9d3b7b1b66dcc858d1326bf5abeae1658531acb544dc325d1b38a7f842"
+      "task_certification_sha256": "6c588362ebad111bfaf5937cd3fe480c184ea3c45f4964ea849b5b6fe64cacc2",
+      "task_record_sha256": "bca72d42e046f299cbacb7fef5d4d25594f3bcb65a2cd4d146090b8f96070f3e"
     },
     "release_dir": "006-element-shuffler"
   }

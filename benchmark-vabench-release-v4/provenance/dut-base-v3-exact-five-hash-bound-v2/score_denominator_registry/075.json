@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "aea73ff4b72ef89674dedfc5b77ff1fbe9e5c3a8576fc5aeb24d2c7f47727ca4",
+        "certification_sha256": "649f1038da47931d96252cfbc50f63af2e964b36c2b192404bfa293c77620804",
         "fault_class": "zero_stub_output_implementation_copied_from_starter_must_not_satisfy_hidden_beha",
-        "mutation_bundle_sha256": "a8e16dd429cb3f2e6afabeeb90d619b5f08f7dd11d63f33e43527101ce8e40e5",
+        "mutation_bundle_sha256": "12266460597dee057e88f07bf51c074a95fdca65435d11896444bf973f9eff96",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "stimulus exercises zero/stub output implementation copied from starter must not satisfy hidden behavior checker against the public observable contract",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "5eaa6d2177de727fd476a4457e9fd182e175a35dee8459a838aea91dc7a62d54",
+        "certification_sha256": "0e3f8daeb89435a79d5f8c23f22811fb84e4694d38fe4b49a39f90aa843bff81",
         "fault_class": "peak_accept_threshold_too_high_misses_valid_public_peak",
-        "mutation_bundle_sha256": "37eeb8b6da28fa190fa0f465f19bbaec9029b19240b133ff1c7bb3e1f9ae0ecc",
+        "mutation_bundle_sha256": "4883424ad942db0231f51723182782a188d4692a1a10e830bea4e1000eb2a1eb",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "Requires vin to exceed 0.60 V before updating the held peak, missing a valid 0.55 V public peak while retaining reset behavior.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "7117777646f7641d0b0369e2f8ef8d06334f8afe8e022eab8937b5c66df7b77e",
+        "certification_sha256": "13be2001f20a58297592ddb03a1ba9b22fdac9c9804af358261d68e301a0b0b4",
         "fault_class": "reset_polarity_inverted_prevents_declared_reset_clear",
-        "mutation_bundle_sha256": "38924050ac315ed5a63b2db9673e11d61d73f0cd3d570e0af656aa4683740426",
+        "mutation_bundle_sha256": "92d080bc138171445ec9903769f47ebfcba38c893ac4e294f8161a17d29e5d35",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "Clears the held peak when reset is low instead of when reset is high.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "5ac332855fc40ce318a45c754f881b688c32329e0f989c3cae376e96dc59df2f",
+        "certification_sha256": "d445ff6e693f0d873a04c7a2caf28665c1ad30b3ad1ba16a5fd2dd101bee4d7f",
         "fault_class": "tracks_latest_sample_instead_of_retaining_peak",
-        "mutation_bundle_sha256": "78a065be88c28368769efdd26f5d77defa1fa2b57be9e57281c6ab38ce245146",
+        "mutation_bundle_sha256": "3bac096d45b8aa5c8f976fb273279d4c39bb3b872aec142525b7d26c9472c078",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Tracks each periodic input sample instead of retaining the maximum value observed since reset.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_monotonic_notch/certification.json",
-        "certification_sha256": "9325936d8d774e59360c8271728b7b8db4ea27877047101daaff40f1141b51ef",
+        "certification_sha256": "cf460b1f65e6ce6dfa6b18f85e1c4ae210f5d69f51d35f206dc79db5dd3182fd",
         "fault_class": "retained_peak_contains_a_transient_downward_notch",
-        "mutation_bundle_sha256": "31d4d8d28334df5dc2f41344a25317bd65cd73db0bc4b430b15b07cd93ab51ad",
+        "mutation_bundle_sha256": "d26f3a94323a65dec4579a3bc7a160c1dfab8e832e225e52631dd5339f4141bd",
         "mutation_id": "neg_006_monotonic_notch",
         "source_catalog_certification_path": "negative_variants/neg_006_monotonic_notch/certification.json",
         "trigger_condition": "between resets the held peak must never decrease",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "faa85bdd27e997a6ed84d04ae2a7cd21f7764616f9239f40f6fc1f25b3bdcaca",
       "score_deck_sha256": "8933ffbc05eef1afcc43a28ce30801be576d8c18b7f984748edb723f2a450cd7",
-      "task_certification_sha256": "e17a0a49120272c30e206a8ab531351485b2f9acc41dcaa5ce85e6488efd2c9b",
-      "task_record_sha256": "df70675fa3d2fec986dbce390e0aec68d4ce35ec82d4cde87e984f6dbba3ded6"
+      "task_certification_sha256": "c9f42798b288f1f1a4c174f301e03e74a5b04a66c7c413edb49a158eed8ce85b",
+      "task_record_sha256": "602dffca7426fb9362152ae946cd3ae4f55a57dd4dff9363663055d5ca323b34"
     },
     "release_dir": "075-peak-detector"
   }

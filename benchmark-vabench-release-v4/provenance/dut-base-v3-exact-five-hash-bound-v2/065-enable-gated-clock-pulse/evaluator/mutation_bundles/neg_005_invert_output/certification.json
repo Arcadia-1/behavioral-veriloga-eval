@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_ENABLED_HIGH satisfy the public contract; fault class inverts_output is rejected",
-    "observed": "EVAS: property_id=P_ENABLE_GATING category=semantic_mismatch expected=pulse_equals_clk_and_enable,with_blocked_case observed=errors=435_saw_high=True_saw_blocked=False event=observable_stable_points",
+    "observed": "EVAS: property_id=P_OUTPUT_LEVELS category=semantic_mismatch expected=pulse_equals_clk_and_enable_at_0.0/0.9V,with_blocked_case observed=errors=435_level_errors=435_saw_high=True_saw_blocked=False event=observable_stable_points",
     "violated_property_ids": [
       "P_ENABLED_HIGH"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r49-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_065_enable_gated_clock_pulse",
-    "report_path": "evidence/r49/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "e2a9bcf8ba6a5ee0ffd9803bd48a0ac10c18ed150e9b378bc2bb32fd519703cf",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 1561
   },
   "family_id": "065",
