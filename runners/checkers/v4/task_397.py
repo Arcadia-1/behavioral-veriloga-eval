@@ -16,6 +16,13 @@ def _sample_after(rows: list[dict[str, float]], t: float, delay: float = 5e-9) -
     target = t + delay
     return min(rows, key=lambda row: abs(row["time"] - target))
 
+def _sample_before(rows: list[dict[str, float]], t: float, delay: float = 0.4e-9) -> dict[str, float]:
+    target = t - delay
+    candidates = [row for row in rows if row["time"] <= t]
+    if not candidates:
+        return rows[0]
+    return min(candidates, key=lambda row: abs(row["time"] - target))
+
 def _v4_missing_columns(rows: list[dict[str, float]], required: set[str]) -> str | None:
     if not rows:
         return "missing_columns=" + ",".join(sorted(required)[:16])
@@ -60,8 +67,22 @@ def check_v4_baseband_offset_gain_trim_macro(rows: list[dict[str, float]]) -> tu
     offset_codes: set[int] = set()
     clipped_seen = False
     disabled_seen = False
+    hold_checked = 0
+    hold_errors = 0
+    previous_expected_out = 0.45
+    previous_expected_metric = 0.0
+    previous_valid = False
     for edge_t in _rising_times(rows, "clk"):
         edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
+        if checked > 0:
+            before = _sample_before(rows, edge_t)
+            hold_checked += 1
+            if not _v4_close(before["vout"], previous_expected_out, 0.08):
+                hold_errors += 1
+            if not _v4_close(before["residual_metric"], previous_expected_metric, 0.07):
+                hold_errors += 1
+            if (before["valid"] > 0.45) != previous_valid:
+                hold_errors += 1
         if edge_row["rst"] > 0.45 or edge_row["enable"] <= 0.45:
             expected_out = 0.45
             expected_metric = 0.0
@@ -85,9 +106,14 @@ def check_v4_baseband_offset_gain_trim_macro(rows: list[dict[str, float]]) -> tu
         if (sample["valid"] > 0.45) != valid:
             errors += 1
         checked += 1
+        previous_expected_out = expected_out
+        previous_expected_metric = expected_metric
+        previous_valid = valid
     ok = (
         errors == 0
+        and hold_errors == 0
         and checked >= 10
+        and hold_checked >= 5
         and len(gain_codes) >= 4
         and len(offset_codes) >= 4
         and disabled_seen
@@ -95,7 +121,8 @@ def check_v4_baseband_offset_gain_trim_macro(rows: list[dict[str, float]]) -> tu
     )
     return ok, (
         f"v4_baseband_trim checked={checked} gain_codes={sorted(gain_codes)} "
-        f"offset_codes={sorted(offset_codes)} clipped={clipped_seen} disabled={disabled_seen} errors={errors}"
+        f"offset_codes={sorted(offset_codes)} clipped={clipped_seen} disabled={disabled_seen} "
+        f"errors={errors} hold_checked={hold_checked} hold_errors={hold_errors}"
     )
 
 CHECKER_ID = "v4_397_baseband_offset_gain_trim_macro"
