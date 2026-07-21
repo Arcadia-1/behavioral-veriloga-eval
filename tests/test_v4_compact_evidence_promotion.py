@@ -107,7 +107,7 @@ def rust_report(tmp_path: Path, source: Path, run_dir: Path) -> Path:
         "checker_module_sha256": "a" * 64,
         "checker_aliases": "/machine/checkout/checker_aliases.json",
         "checker_aliases_sha256": "b" * 64,
-        "claim_boundary": "EVAS filter; Spectre final judge",
+        "claim_boundary": "EVAS formal judge; Spectre optional parity audit",
         "engine": {
             "name": "evas-rust",
             "git_commit": "deadbeef",
