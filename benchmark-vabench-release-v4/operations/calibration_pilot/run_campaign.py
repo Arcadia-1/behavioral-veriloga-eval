@@ -710,6 +710,12 @@ TOOLS = [
     {"type": "function", "function": {"name": "run_evas", "description": "Run EVAS against the task-local visible test. Testbench tasks require one public case name from evas_runtime.json.", "parameters": {"type": "object", "properties": {"case": {"type": "string"}}, "additionalProperties": False}}},
     {"type": "function", "function": {"name": "finalize", "description": "Finalize the current submission.", "parameters": {"type": "object", "properties": {}}}},
 ]
+SKILL_TOOLS = [
+    {"type": "function", "function": {"name": "list_skills", "description": "List available read-only skill packages for this mode.", "parameters": {"type": "object", "properties": {}, "additionalProperties": False}}},
+    {"type": "function", "function": {"name": "read_skill", "description": "Read one text file from an available skill package.", "parameters": {"type": "object", "properties": {"skill": {"type": "string"}, "path": {"type": "string", "description": "Relative path inside the skill package, such as SKILL.md or references/runtime-contract.md."}}, "required": ["skill", "path"], "additionalProperties": False}}},
+]
+TEXT_SKILL_EXTENSIONS = {".md", ".txt", ".yaml", ".yml", ".json", ".va"}
+MAX_SKILL_FILE_BYTES = 256 * 1024
 
 
 def command_result(
@@ -1063,6 +1069,7 @@ def attach_experiment_result(
         replay=replay,
         final_submission=final_submission,
     )
+    result["skill_lookup_events"] = read_skill_lookup_events(runtime)
     if replay.get("command") is not None:
         result["final_judge"] = replay["command"]
 
@@ -1181,6 +1188,10 @@ def execute_tool(
 ) -> tuple[str, bool]:
     public = runtime / "public"
     submission = public / "submission"
+    if name == "list_skills":
+        return json.dumps(list_available_skills(runtime), sort_keys=True), False
+    if name == "read_skill":
+        return read_skill_file(runtime, str(arguments["skill"]), str(arguments["path"])), False
     if name == "list_files":
         rows = []
         for root, label in ((public / "task", "task"), (submission, "submission")):
@@ -1237,6 +1248,210 @@ def execute_tool(
     if name == "finalize":
         return json.dumps({"status": "finalized"}), True
     raise ValueError(f"unknown tool: {name}")
+
+
+def list_available_skills(runtime: Path) -> dict[str, Any]:
+    public_path = runtime / "public"
+    if public_path.is_symlink():
+        raise ValueError("runtime public root is a symlink")
+    public_root = public_path.resolve()
+    skills_path = public_path / "skills"
+    if skills_path.is_symlink():
+        raise ValueError("runtime skills root is a symlink")
+    skills_root = skills_path.resolve()
+    try:
+        skills_root.relative_to(public_root)
+    except ValueError as exc:
+        raise ValueError("runtime skills root escapes the public bundle") from exc
+    manifest_path = skills_path / "SNAPSHOT_MANIFEST.json"
+    if not manifest_path.is_file():
+        return {"schema_version": "v4-runtime-skill-list-v1", "skills": {}}
+    if manifest_path.is_symlink():
+        raise ValueError("runtime skill manifest is a symlink")
+    manifest = read_json(manifest_path)
+    if manifest.get("schema_version") != "v4-runtime-skill-manifest-v1":
+        raise ValueError("runtime skill manifest schema mismatch")
+    skills = manifest.get("skills") or {}
+    if not isinstance(skills, dict):
+        raise ValueError("runtime skill manifest skills must be an object")
+    result: dict[str, dict[str, Any]] = {}
+    for raw_skill_id, record in sorted(skills.items()):
+        skill_id = str(raw_skill_id)
+        if re.fullmatch(r"[a-z0-9][a-z0-9-]*", skill_id) is None:
+            raise ValueError(f"invalid runtime skill identifier: {skill_id!r}")
+        if not isinstance(record, dict):
+            raise ValueError(f"invalid runtime skill record: {skill_id}")
+        if record.get("skill_file") != f"public/skills/{skill_id}/SKILL.md":
+            raise ValueError(f"runtime skill has a noncanonical SKILL.md path: {skill_id}")
+        raw_root = runtime / "public" / "skills" / skill_id
+        if raw_root.is_symlink():
+            raise ValueError(f"runtime skill root is a symlink: {skill_id}")
+        root = raw_root.resolve()
+        if not (root / "SKILL.md").is_file():
+            raise ValueError(f"runtime skill is missing SKILL.md: {skill_id}")
+        if any(item.is_symlink() for item in root.rglob("*")):
+            raise ValueError(f"runtime skill contains a symlink: {skill_id}")
+        observed_tree = skill_tree_sha(root)
+        if record.get("tree_sha256") != observed_tree:
+            raise ValueError(f"runtime skill tree hash mismatch: {skill_id}")
+        files = record.get("files") or []
+        indexed_files = []
+        indexed_paths: set[str] = set()
+        for file_record in files:
+            if not isinstance(file_record, dict):
+                raise ValueError(f"invalid runtime skill file record: {skill_id}")
+            relative = safe_relative(str(file_record.get("path") or ""))
+            if relative.as_posix() in indexed_paths:
+                raise ValueError(
+                    f"runtime skill file index has a duplicate: {skill_id}/{relative}"
+                )
+            indexed_paths.add(relative.as_posix())
+            target = (root / relative).resolve()
+            target.relative_to(root)
+            if not target.is_file():
+                raise ValueError(
+                    f"runtime skill manifest names a missing file: {skill_id}/{relative}"
+                )
+            observed = file_digest_summary(target)
+            if (
+                file_record.get("sha256") != observed["sha256"]
+                or file_record.get("bytes") != observed["bytes"]
+            ):
+                raise ValueError(
+                    f"runtime skill file hash mismatch: {skill_id}/{relative}"
+                )
+            indexed_files.append({"path": relative.as_posix(), **observed})
+        actual_paths = {
+            item.relative_to(root).as_posix()
+            for item in root.rglob("*")
+            if item.is_file()
+        }
+        if actual_paths != {record["path"] for record in indexed_files}:
+            raise ValueError(f"runtime skill file index mismatch: {skill_id}")
+        result[skill_id] = {
+            "skill_file": record.get("skill_file"),
+            "tree_sha256": observed_tree,
+            "files": indexed_files,
+        }
+    return {
+        "schema_version": "v4-runtime-skill-list-v1",
+        "skills": result,
+    }
+
+
+def skill_tree_sha(root: Path) -> str:
+    digest = hashlib.sha256()
+    for item in sorted(root.rglob("*")):
+        if item.is_file():
+            digest.update(item.relative_to(root).as_posix().encode("utf-8"))
+            digest.update(b"\0")
+            digest.update(item.read_bytes())
+            digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def active_tool_schemas(runtime: Path, mode: str) -> list[dict[str, Any]] | None:
+    policy_path = runtime / "MODEL_ACCESS_POLICY.json"
+    if not policy_path.is_file():
+        raise ValueError("runtime model access policy is missing")
+    policy = read_json(policy_path)
+    if str(policy.get("mode") or "") != mode:
+        raise ValueError("runtime model access policy mode mismatch")
+    skill_tool_names = [tool["function"]["name"] for tool in SKILL_TOOLS]
+    provider_tools = policy.get("provider_tools") or []
+    if provider_tools not in ([], skill_tool_names):
+        raise ValueError("runtime model access policy declares unsupported provider tools")
+    manifest_path = runtime / "public" / "skills" / "SNAPSHOT_MANIFEST.json"
+    has_skills = manifest_path.is_file()
+    if bool(provider_tools) != has_skills:
+        raise ValueError("runtime skill manifest and provider-tool policy disagree")
+    if has_skills:
+        listed_skills = set(list_available_skills(runtime).get("skills") or {})
+        policy_skills = set((policy.get("available_skills") or {}).keys())
+        if listed_skills != policy_skills:
+            raise ValueError("runtime skill manifest and model access policy disagree")
+    if mode in AGENTIC:
+        return [*TOOLS, *SKILL_TOOLS] if has_skills else TOOLS
+    if has_skills:
+        return SKILL_TOOLS
+    return None
+
+
+def read_skill_file(runtime: Path, skill_id: str, raw_path: str) -> str:
+    manifest = list_available_skills(runtime)
+    skill_record = (manifest.get("skills") or {}).get(skill_id)
+    if not isinstance(skill_record, dict):
+        raise ValueError(f"skill is not available in this mode: {skill_id}")
+    relative = safe_relative(raw_path)
+    if relative.suffix.lower() not in TEXT_SKILL_EXTENSIONS:
+        raise ValueError(f"unsupported skill file type: {relative.suffix}")
+    indexed_files = {
+        str(record.get("path")): record
+        for record in skill_record.get("files") or []
+        if isinstance(record, dict)
+    }
+    if relative.as_posix() not in indexed_files:
+        raise ValueError(f"skill file is unavailable: {skill_id}/{relative.as_posix()}")
+    raw_root = runtime / "public" / "skills" / skill_id
+    root = raw_root.resolve()
+    unresolved = root / relative
+    cursor = root
+    for part in relative.parts:
+        cursor /= part
+        if cursor.is_symlink():
+            raise ValueError(f"skill file is unavailable: {skill_id}/{relative.as_posix()}")
+    target = unresolved.resolve()
+    target.relative_to(root)
+    if not target.is_file():
+        raise ValueError(f"skill file is unavailable: {skill_id}/{relative.as_posix()}")
+    summary = file_digest_summary(target)
+    expected = indexed_files[relative.as_posix()]
+    if summary != {"bytes": expected.get("bytes"), "sha256": expected.get("sha256")}:
+        raise ValueError(f"skill file changed after manifest validation: {skill_id}/{relative}")
+    if summary["bytes"] > MAX_SKILL_FILE_BYTES:
+        raise ValueError(f"skill file exceeds delivery limit: {skill_id}/{relative}")
+    delivered = read_tool_delivery_cache(runtime)
+    cache_key = f"skills/{skill_id}/{relative.as_posix()}"
+    if cache_key in delivered:
+        write_skill_lookup_event(runtime, skill_id, relative.as_posix(), target, cached=True)
+        return json.dumps({
+            "status": "already_provided_in_this_episode",
+            "path": cache_key,
+            **summary,
+        }, sort_keys=True)
+    text = target.read_text(encoding="utf-8")
+    delivered.add(cache_key)
+    write_tool_delivery_cache(runtime, delivered)
+    write_skill_lookup_event(runtime, skill_id, relative.as_posix(), target, cached=False)
+    return text
+
+
+def write_skill_lookup_event(
+    runtime: Path, skill_id: str, relative: str, target: Path, *, cached: bool
+) -> None:
+    path = runtime / "evidence" / "skill_lookup_events.jsonl"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    event = {
+        "schema_version": "v4-skill-lookup-event-v1",
+        "skill": skill_id,
+        "path": relative,
+        "sha256": hashlib.sha256(target.read_bytes()).hexdigest(),
+        "cached": cached,
+        "timestamp": now(),
+    }
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(event, sort_keys=True) + "\n")
+
+
+def read_skill_lookup_events(runtime: Path) -> list[dict[str, Any]]:
+    path = runtime / "evidence" / "skill_lookup_events.jsonl"
+    if not path.is_file():
+        return []
+    events: list[dict[str, Any]] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            events.append(json.loads(line))
+    return events
 
 
 def expected_candidate_artifacts(runtime: Path) -> list[str]:
@@ -1821,6 +2036,8 @@ def run_mini_swe_agentic_cell(
             "mini_swe_exit_status": exit_status,
             "model_calls": episode["model_calls"],
             "bash_commands": commands,
+            "available_skills": episode.get("available_skills") or {},
+            "skill_command_events": episode.get("skill_command_events") or [],
             "evas_invocations": evas_invocations,
             "evas_usage": summarize_evas_invocations(evas_invocations),
             "incidents": incidents,
@@ -1888,6 +2105,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         "agent_timeout_s": args.agent_timeout_s,
         "agent_scaffold": MINI_SWE_SCAFFOLD_ID if mini_swe_agentic else "native-v4-loop",
         "evas_identity": getattr(args, "evas_identity", None),
+        "available_skills": list_available_skills(runtime).get("skills") or {},
     }
     if mini_swe_agentic:
         result["public_agent_environment"] = {
@@ -1926,6 +2144,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         finalized = False
 
     per_turn_max_tokens = cell_per_turn_max_tokens(cell)
+    tools_for_cell = active_tool_schemas(runtime, str(cell["mode"]))
     agent_deadline = agent_started_monotonic + max(0.0, args.agent_timeout_s - resumed_agent_elapsed_s)
 
     def current_agent_elapsed_s() -> float:
@@ -1965,6 +2184,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             if remaining <= 0:
                 return
             function = call["function"]
+            arguments: dict[str, Any] = {}
             try:
                 arguments = json.loads(function.get("arguments") or "{}")
                 text, done = execute_tool(
@@ -1983,7 +2203,17 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
                 })
                 done = False
             delivered = reference_tokens(text)
-            events.append({"type": "tool", "name": function["name"], "reference_tokens": delivered})
+            tool_event = {
+                "type": "tool",
+                "name": function["name"],
+                "reference_tokens": delivered,
+            }
+            if function["name"] == "read_skill":
+                tool_event.update({
+                    "skill": str(arguments.get("skill") or ""),
+                    "path": str(arguments.get("path") or ""),
+                })
+            events.append(tool_event)
             write_json(runtime / "evidence" / "campaign_checkpoint.json", {
                 "cell_id": cell["cell_id"], "output_tokens": output_tokens,
                 "working_tokens": output_tokens,
@@ -2010,25 +2240,30 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         result["status"] = "submitted" if complete else incomplete_status
         result["termination_reason"] = reason if (complete or reason != "completed") else "completed"
 
-    if cell["mode"] not in AGENTIC and len(messages) > 1:
-        content = str(messages[-1].get("content") or "")
-        direct_submission = extract_direct_submission(content, runtime)
-        complete = bool(direct_submission["submission_protocol_compliant"])
-        set_terminal_submission_status(complete, default_reason="completed")
-        result.update({
-            "finished_at": now(),
-            "output_tokens": output_tokens,
-            "working_tokens": output_tokens,
-            "output_token_budget": None,
-            "per_turn_max_tokens": per_turn_max_tokens,
-            "agent_elapsed_s": current_agent_elapsed_s(),
-            "events": events,
-            "recovered_from_checkpoint": True,
-            **direct_submission,
-        })
-        attach_experiment_result(result, runtime, messages, args, "completed")
-        write_json(runtime / "evidence" / "campaign_result.json", result)
-        return result
+    if cell["mode"] not in AGENTIC and len(messages) > 1 and args.resume:
+        pending = pending_tool_calls(messages)
+        if pending:
+            process_tool_calls(pending)
+            save_conversation()
+        elif messages[-1].get("role") == "assistant":
+            content = str(messages[-1].get("content") or "")
+            direct_submission = extract_direct_submission(content, runtime)
+            complete = bool(direct_submission["submission_protocol_compliant"])
+            set_terminal_submission_status(complete, default_reason="completed")
+            result.update({
+                "finished_at": now(),
+                "output_tokens": output_tokens,
+                "working_tokens": output_tokens,
+                "output_token_budget": None,
+                "per_turn_max_tokens": per_turn_max_tokens,
+                "agent_elapsed_s": current_agent_elapsed_s(),
+                "events": events,
+                "recovered_from_checkpoint": True,
+                **direct_submission,
+            })
+            attach_experiment_result(result, runtime, messages, args, "completed")
+            write_json(runtime / "evidence" / "campaign_result.json", result)
+            return result
     if cell["mode"] in AGENTIC and args.resume:
         pending = pending_tool_calls(messages)
         if pending:
@@ -2045,7 +2280,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             response = client.complete(
                 messages,
                 per_turn_max_tokens,
-                TOOLS if cell["mode"] in AGENTIC else None,
+                tools_for_cell,
                 timeout_s=max(0.1, min(float(args.request_timeout_s), remaining_agent_s())),
             )
         except ProviderContextWindowExceeded as exc:
@@ -2106,6 +2341,10 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         messages.append(choice)
         save_conversation()
         if cell["mode"] not in AGENTIC:
+            calls = choice.get("tool_calls") or []
+            if calls:
+                process_tool_calls(calls)
+                continue
             direct_submission = extract_direct_submission(content, runtime)
             complete = bool(direct_submission["submission_protocol_compliant"])
             hit_limit = model_event_hit_limit(model_event)

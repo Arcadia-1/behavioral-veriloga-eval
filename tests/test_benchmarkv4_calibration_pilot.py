@@ -783,6 +783,148 @@ def test_direct_run_cell_records_model_output_limit_without_budget_status(
     assert result["per_turn_max_tokens"] == 4096
 
 
+def test_g1_direct_run_cell_can_read_a_skill_before_submitting(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    runner = load_run_campaign()
+    cell = {
+        "cell_id": "v4-001-G1-r0",
+        "task_id": "v4-001",
+        "mode": "G1",
+        "per_turn_max_tokens": 4096,
+    }
+    args = run_args(tmp_path / "run", tmp_path / "release")
+
+    def prepare_runtime(
+        _cell: dict, _release: Path, runtime: Path, *, timeout_s: int
+    ) -> None:
+        assert timeout_s == args.setup_timeout_s
+        (runtime / "public" / "submission").mkdir(parents=True)
+        (runtime / "evaluator").mkdir(parents=True)
+        (runtime / "direct_prompt.txt").write_text(
+            "Create dut.va. The veriloga skill is available by lookup.\n",
+            encoding="utf-8",
+        )
+        (runtime / "evaluator" / "score_policy.json").write_text(
+            json.dumps({"candidate_artifacts": ["dut.va"]}), encoding="utf-8"
+        )
+        skill = runtime / "public" / "skills" / "veriloga"
+        skill.mkdir(parents=True)
+        skill_file = skill / "SKILL.md"
+        skill_file.write_text(
+            "---\nname: veriloga\n---\n# Verilog-A language\n",
+            encoding="utf-8",
+        )
+        file_bytes = skill_file.read_bytes()
+        (runtime / "public" / "skills" / "SNAPSHOT_MANIFEST.json").write_text(
+            json.dumps({
+                "schema_version": "v4-runtime-skill-manifest-v1",
+                "skills": {
+                    "veriloga": {
+                        "skill_file": "public/skills/veriloga/SKILL.md",
+                        "tree_sha256": runner.skill_tree_sha(skill),
+                        "files": [{
+                            "path": "SKILL.md",
+                            "bytes": len(file_bytes),
+                            "sha256": hashlib.sha256(file_bytes).hexdigest(),
+                        }],
+                    }
+                },
+            }),
+            encoding="utf-8",
+        )
+        (runtime / "MODEL_ACCESS_POLICY.json").write_text(
+            json.dumps({
+                "mode": "G1",
+                "available_skills": {
+                    "veriloga": {
+                        "skill_file": "public/skills/veriloga/SKILL.md",
+                        "tree_sha256": runner.skill_tree_sha(skill),
+                    }
+                },
+                "provider_tools": ["list_skills", "read_skill"],
+            }),
+            encoding="utf-8",
+        )
+
+    class SkillThenArtifactClient:
+        def __init__(self) -> None:
+            self.calls = 0
+
+        def complete(self, messages, _max_tokens, tools, **_kwargs):
+            self.calls += 1
+            names = [tool["function"]["name"] for tool in tools]
+            assert names == ["list_skills", "read_skill"]
+            if self.calls == 1:
+                return {
+                    "id": "skill-read",
+                    "model": "test-model",
+                    "choices": [{
+                        "finish_reason": "tool_calls",
+                        "message": {
+                            "role": "assistant",
+                            "content": "",
+                            "tool_calls": [{
+                                "id": "read-veriloga",
+                                "type": "function",
+                                "function": {
+                                    "name": "read_skill",
+                                    "arguments": json.dumps({
+                                        "skill": "veriloga",
+                                        "path": "SKILL.md",
+                                    }),
+                                },
+                            }],
+                        },
+                    }],
+                    "usage": {"completion_tokens": 8},
+                }
+            assert messages[-1]["role"] == "tool"
+            assert "# Verilog-A language" in messages[-1]["content"]
+            return {
+                "id": "artifact",
+                "model": "test-model",
+                "choices": [{
+                    "finish_reason": "stop",
+                    "message": {
+                        "role": "assistant",
+                        "content": (
+                            '<<<VABENCH_ARTIFACT path="dut.va">>>\n'
+                            "module dut; endmodule\n"
+                            "<<<END_VABENCH_ARTIFACT>>>"
+                        ),
+                    },
+                }],
+                "usage": {"completion_tokens": 16},
+            }
+
+    monkeypatch.setattr(runner, "export_runtime", prepare_runtime)
+    client = SkillThenArtifactClient()
+    result = runner.run_cell(cell, args, client)
+
+    assert client.calls == 2
+    assert result["status"] == "submitted"
+    assert result["submission_protocol_compliant"] is True
+    assert result["skill_lookup_events"] == [
+        {
+            "cached": False,
+            "path": "SKILL.md",
+            "schema_version": "v4-skill-lookup-event-v1",
+            "sha256": hashlib.sha256(
+                "---\nname: veriloga\n---\n# Verilog-A language\n".encode("utf-8")
+            ).hexdigest(),
+            "skill": "veriloga",
+            "timestamp": result["skill_lookup_events"][0]["timestamp"],
+        }
+    ]
+    assert any(
+        event.get("name") == "read_skill"
+        and event.get("skill") == "veriloga"
+        and event.get("path") == "SKILL.md"
+        for event in result["events"]
+    )
+
+
 def test_provider_context_window_is_a_cell_status_not_runner_error(
     tmp_path: Path, r45_release: Path
 ) -> None:

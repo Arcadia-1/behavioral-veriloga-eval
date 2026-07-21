@@ -28,6 +28,7 @@ DEFAULT_RELEASES = {
     "r47": PACKAGE_ROOT / "release" / "benchmarkv4-r47",
     "r48": PACKAGE_ROOT / "release" / "benchmarkv4-r48",
     "r49": PACKAGE_ROOT / "release" / "benchmarkv4-r49",
+    "r50": PACKAGE_ROOT / "release" / "benchmarkv4-r50",
 }
 DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 FORMS = ("dut", "testbench", "bugfix")
@@ -230,6 +231,16 @@ def prompt_component_path(release: Path, component_id: str) -> Path:
     return release / "prompt_modes" / subdir / component_id
 
 
+def release_uses_real_skills(release_revision: str) -> bool:
+    return release_revision == "r50"
+
+
+def materialized_artifacts_for_revision(release_revision: str) -> tuple[str, ...]:
+    if release_uses_real_skills(release_revision):
+        return (*MATERIALIZED_ARTIFACTS, "skills/SNAPSHOT_MANIFEST.json")
+    return MATERIALIZED_ARTIFACTS
+
+
 def build_release_seal(
     release: Path,
     source_registry_sha256: str,
@@ -240,7 +251,10 @@ def build_release_seal(
     release_revision: str = "r44",
 ) -> dict[str, Any]:
     artifact_hashes = {}
-    for relative in RELEASE_SEAL_ARTIFACTS:
+    release_seal_artifacts = (
+        ("MANIFEST.json", *materialized_artifacts_for_revision(release_revision), "AUDIT_REPORT.json", "RUNTIME_INGESTION_EVIDENCE.json")
+    )
+    for relative in release_seal_artifacts:
         path = release / relative
         if not path.is_file():
             raise SystemExit(f"cannot seal release; missing artifact: {relative}")
@@ -834,28 +848,123 @@ def audit_prompt_components(
     component_manifest = read_json(release / "prompt_modes" / "manifest.json")
     mode_manifest = read_json(release / "prompt_modes" / "modes.json")
     wrapper_records = component_manifest.get("wrappers") or {}
-    form_skill_records = component_manifest.get("form_skills") or {}
-    guide_manifest_key = "feedback_guides" if release_revision == "r44" else "evas_guides"
-    guide_records = component_manifest.get(guide_manifest_key) or {}
-    component_records = component_manifest.get("components") or {
-        **wrapper_records,
-        **form_skill_records,
-        **guide_records,
-    }
+    component_records = component_manifest.get("components") or dict(wrapper_records)
     tokenizer = component_manifest.get("reference_tokenizer") or {}
     tokenizer_key = f"{tokenizer.get('id')}@{tokenizer.get('version')}"
     required_wrappers = set(WRAPPERS_BY_MODE.values())
-    required_form_skills = set(FORM_SKILLS.values())
-    core_guide = FEEDBACK_CORE if release_revision == "r44" else EVAS_CORE
-    form_guides = FEEDBACK_GUIDES if release_revision == "r44" else EVAS_GUIDES
-    required_guides = {core_guide, *form_guides.values()}
     if set(wrapper_records) != required_wrappers:
         problems.append("component manifest wrapper set mismatch")
-    if set(form_skill_records) != required_form_skills:
-        problems.append("component manifest form-skill set mismatch")
-    if set(guide_records) != required_guides:
-        problems.append(f"component manifest {guide_manifest_key.replace('_', '-')} set mismatch")
-    if set(component_records) != required_wrappers | required_form_skills | required_guides:
+    if release_uses_real_skills(release_revision):
+        if component_manifest.get("form_skills") or component_manifest.get("evas_guides"):
+            problems.append("real-skill release still declares legacy inline guide sets")
+        skill_manifest_path = release / "skills" / "SNAPSHOT_MANIFEST.json"
+        if not skill_manifest_path.is_file():
+            problems.append("real-skill release is missing skills/SNAPSHOT_MANIFEST.json")
+            skill_manifest = {}
+        else:
+            skill_manifest = read_json(skill_manifest_path)
+            if skill_manifest.get("schema_version") != "v4-real-skill-snapshot-manifest-v1":
+                problems.append("skill snapshot manifest schema mismatch")
+        skills = skill_manifest.get("skills") or {}
+        if not isinstance(skills, dict):
+            problems.append("skill snapshot manifest skills must be an object")
+            skills = {}
+        if set(skills) != {"veriloga", "vabench-feedback"}:
+            problems.append("skill snapshot set mismatch")
+        expected_matrix = {
+            "G0": [],
+            "G1": ["veriloga"],
+            "G2": [],
+            "G3": ["veriloga"],
+            "G4": ["vabench-feedback"],
+            "G5": ["veriloga", "vabench-feedback"],
+        }
+        if skill_manifest.get("mode_skill_matrix") != expected_matrix:
+            problems.append("skill mode matrix mismatch")
+        for skill_id, record in skills.items():
+            if not isinstance(record, dict):
+                problems.append(f"skill snapshot {skill_id}: invalid record")
+                continue
+            skill_root = release / "skills" / skill_id
+            if record.get("path") != f"skills/{skill_id}":
+                problems.append(f"skill snapshot {skill_id}: unexpected package path")
+            if record.get("skill_file") != f"skills/{skill_id}/SKILL.md":
+                problems.append(f"skill snapshot {skill_id}: unexpected SKILL.md path")
+            if skill_root.is_symlink() or any(
+                item.is_symlink() for item in skill_root.rglob("*")
+            ):
+                problems.append(f"skill snapshot {skill_id}: symlink is not allowed")
+            if not (skill_root / "SKILL.md").is_file():
+                problems.append(f"skill snapshot {skill_id}: missing SKILL.md")
+            elif record.get("tree_sha256") != tree_sha_skipping(skill_root, excluded_names=set()):
+                problems.append(f"skill snapshot {skill_id}: tree hash mismatch")
+            actual_files = {
+                item.relative_to(skill_root).as_posix(): {
+                    "sha256": file_sha(item),
+                    "bytes": item.stat().st_size,
+                }
+                for item in sorted(skill_root.rglob("*"))
+                if item.is_file() and not item.is_symlink()
+            } if skill_root.is_dir() and not skill_root.is_symlink() else {}
+            declared_files: dict[str, dict[str, Any]] = {}
+            for item in record.get("files") or []:
+                if not isinstance(item, dict):
+                    problems.append(f"skill snapshot {skill_id}: invalid file record")
+                    continue
+                relative = Path(str(item.get("path") or ""))
+                relative_key = relative.as_posix()
+                if (
+                    relative.is_absolute()
+                    or ".." in relative.parts
+                    or relative_key in {"", "."}
+                    or relative_key in declared_files
+                ):
+                    problems.append(f"skill snapshot {skill_id}: invalid file path")
+                    continue
+                declared_files[relative_key] = {
+                    "sha256": item.get("sha256"),
+                    "bytes": item.get("bytes"),
+                }
+            if declared_files != actual_files:
+                problems.append(f"skill snapshot {skill_id}: file index mismatch")
+            for item in record.get("files") or []:
+                source_path = Path(str(item.get("source_path") or ""))
+                if source_path.is_absolute() or source_path.parts[:2] != ("skills", skill_id):
+                    problems.append(f"skill snapshot {skill_id}: invalid source path")
+                    break
+            source = record.get("source") or {}
+            if skill_id == "veriloga":
+                if (
+                    source.get("type") != "vendored_runtime_subset"
+                    or source.get("upstream_repository")
+                    != "https://github.com/Arcadia-1/veriloga-skills"
+                    or source.get("upstream_pull_request")
+                    != "https://github.com/Arcadia-1/veriloga-skills/pull/17"
+                    or not valid_sha256(source.get("upstream_commit"))
+                ):
+                    problems.append("veriloga skill snapshot provenance mismatch")
+            elif source != {"type": "in_repository", "path": "skills/vabench-feedback"}:
+                problems.append("feedback skill snapshot provenance mismatch")
+    else:
+        form_skill_records = component_manifest.get("form_skills") or {}
+        guide_manifest_key = "feedback_guides" if release_revision == "r44" else "evas_guides"
+        guide_records = component_manifest.get(guide_manifest_key) or {}
+        component_records = component_manifest.get("components") or {
+            **wrapper_records,
+            **form_skill_records,
+            **guide_records,
+        }
+        required_form_skills = set(FORM_SKILLS.values())
+        core_guide = FEEDBACK_CORE if release_revision == "r44" else EVAS_CORE
+        form_guides = FEEDBACK_GUIDES if release_revision == "r44" else EVAS_GUIDES
+        required_guides = {core_guide, *form_guides.values()}
+        if set(form_skill_records) != required_form_skills:
+            problems.append("component manifest form-skill set mismatch")
+        if set(guide_records) != required_guides:
+            problems.append(f"component manifest {guide_manifest_key.replace('_', '-')} set mismatch")
+        if set(component_records) != required_wrappers | required_form_skills | required_guides:
+            problems.append("component manifest component set mismatch")
+    if release_uses_real_skills(release_revision) and set(component_records) != required_wrappers:
         problems.append("component manifest component set mismatch")
     if (release / "prompt_modes" / "skills").exists():
         problems.append("legacy prompt_modes/skills/ directory should not be present")
@@ -890,9 +999,9 @@ def audit_prompt_components(
                 if not item.is_file():
                     problems.append(f"{task_id}/{mode}: prompt public input missing: {item.relative_to(task_dir)}")
             expected_components: list[str] = []
-            if mode in {"G1", "G3", "G5"}:
+            if not release_uses_real_skills(release_revision) and mode in {"G1", "G3", "G5"}:
                 expected_components.append(FORM_SKILLS.get(form, ""))
-            if mode in {"G4", "G5"}:
+            if not release_uses_real_skills(release_revision) and mode in {"G4", "G5"}:
                 expected_components.extend([core_guide, form_guides.get(form, "")])
             expected_components.append(WRAPPERS_BY_MODE.get(mode, ""))
             for name in expected_components:
@@ -971,12 +1080,13 @@ def main() -> int:
         for item in source_rows_list
     }
     source_definition_sha = source_certification_definition_sha256(source, source_rows)
+    expected_artifacts = materialized_artifacts_for_revision(release_revision)
     expected_materialized_hashes = {
         relative: file_sha(release / relative)
-        for relative in MATERIALIZED_ARTIFACTS
+        for relative in expected_artifacts
         if (release / relative).is_file()
     }
-    if set(expected_materialized_hashes) != set(MATERIALIZED_ARTIFACTS):
+    if set(expected_materialized_hashes) != set(expected_artifacts):
         problems.append("one or more materialized release artifacts are missing")
     if manifest.get("materialized_artifact_sha256") != expected_materialized_hashes:
         problems.append("materialized artifact hash binding mismatch")

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -10,6 +11,9 @@ import pytest
 PREP = Path(__file__).resolve().parents[2] / "operations" / "tri_form_derivation_prep"
 if str(PREP) not in sys.path:
     sys.path.insert(0, str(PREP))
+CALIBRATION = Path(__file__).resolve().parents[2] / "operations" / "calibration_pilot"
+if str(CALIBRATION) not in sys.path:
+    sys.path.insert(0, str(CALIBRATION))
 
 from materialize_tri_form_release import (  # noqa: E402
     COMPONENT_METADATA,
@@ -19,6 +23,7 @@ from materialize_tri_form_release import (  # noqa: E402
     build_dut_view,
     build_testbench_view,
     canonical_required_behavior,
+    install_skill_snapshots,
     install_prompt_assets,
     iter_public_inputs,
     public_contract_relative_path,
@@ -39,7 +44,16 @@ from export_tri_form_runtime import (  # noqa: E402
     render_prompt,
     task_record as load_task_record,
 )
-from audit_runtime_export import main as audit_runtime_export  # noqa: E402
+from run_campaign import (  # noqa: E402
+    active_tool_schemas,
+    list_available_skills,
+    read_skill_file,
+    skill_tree_sha,
+)
+from audit_runtime_export import (  # noqa: E402
+    main as audit_runtime_export,
+    public_text_leaks_authoring_surface,
+)
 from record_runtime_ingestion_evidence import verified_audit  # noqa: E402
 from rebuild_tri_form_release import (  # noqa: E402
     DEFAULT_RELEASES as REBUILD_DEFAULT_RELEASES,
@@ -56,6 +70,32 @@ from audit_tri_form_release import (  # noqa: E402
     file_sha,
     prompt_component_path,
 )
+
+
+def write_runtime_skill_manifest(runtime: Path, skill_id: str = "veriloga") -> None:
+    skill = runtime / "public" / "skills" / skill_id
+    files = [
+        {
+            "path": item.relative_to(skill).as_posix(),
+            "sha256": file_sha(item),
+            "bytes": item.stat().st_size,
+        }
+        for item in sorted(skill.rglob("*"))
+        if item.is_file() and not item.is_symlink()
+    ]
+    (runtime / "public" / "skills" / "SNAPSHOT_MANIFEST.json").write_text(
+        json.dumps({
+            "schema_version": "v4-runtime-skill-manifest-v1",
+            "skills": {
+                skill_id: {
+                    "skill_file": f"public/skills/{skill_id}/SKILL.md",
+                    "tree_sha256": skill_tree_sha(skill),
+                    "files": files,
+                }
+            },
+        }) + "\n",
+        encoding="utf-8",
+    )
 
 
 def test_runtime_schema_compatibility_preserves_frozen_r45_and_requires_r47_v2() -> None:
@@ -415,35 +455,122 @@ def test_prompt_components_have_pinned_reference_tokenizer_metadata() -> None:
     assert set(COMPONENT_METADATA) == {
         "direct_wrapper.md",
         "agentic_wrapper.md",
-        "dut_modeling.md",
-        "testbench_verification.md",
-        "bugfix_diagnosis.md",
-        "evas_core.md",
-        "evas_dut.md",
-        "evas_testbench.md",
-        "evas_bugfix.md",
     }
     assert reference_token_count("one two; three") == 4
 
 
-def test_prompt_assets_split_wrappers_form_skills_and_evas_guides(tmp_path: Path) -> None:
+def test_facility_veriloga_skill_is_tool_independent_and_probe_only() -> None:
+    root = Path(__file__).resolve().parents[3] / "skills" / "veriloga"
+    text = "\n".join(
+        path.read_text(encoding="utf-8", errors="ignore")
+        for path in sorted(root.rglob("*"))
+        if path.is_file()
+    ).lower()
+    for forbidden in (
+        "evas", "spectre", "openvaf", "ngspice", "cadence", "virtuoso",
+        "vabench", "behavioral-veriloga-eval", ".scs", "testbench",
+    ):
+        assert forbidden not in text
+    examples = {
+        path.name for path in (root / "assets" / "examples").glob("*.va")
+    }
+    assert examples == {
+        "branch_access_probe.va",
+        "cross_logging_probe.va",
+        "declaration_parameter_probe.va",
+        "minimal_zero_probe.va",
+        "transition_syntax_probe.va",
+        "vector_genvar_zero_probe.va",
+    }
+    assert not list(root.rglob("*.scs"))
+    assert not list(root.rglob("*.py"))
+
+
+def test_feedback_skill_is_a_routed_public_evas_workflow() -> None:
+    root = Path(__file__).resolve().parents[3] / "skills" / "vabench-feedback"
+    skill = (root / "SKILL.md").read_text(encoding="utf-8")
+    assert "name: vabench-feedback" in skill
+    assert "public/task/evas_runtime.json" in skill
+    assert "private evaluator remain the final judge" in skill
+    assert "references/runtime-contract.md" in skill
+    assert "references/form-workflows.md" in skill
+    assert "references/diagnosis.md" in skill
+    assert re.search(r"v4-\d{3,4}", skill, flags=re.IGNORECASE) is None
+
+
+def test_feedback_skill_name_is_not_confused_with_legacy_feedback_cli() -> None:
+    assert public_text_leaks_authoring_surface("# vaBench Feedback") is False
+    assert public_text_leaks_authoring_surface("vabench feedback run --task v4-001") is True
+    assert public_text_leaks_authoring_surface("vabench feedback capabilities") is True
+
+
+def test_prompt_assets_keep_wrappers_and_snapshot_real_skills(tmp_path: Path) -> None:
     records = install_prompt_assets(tmp_path)
     manifest = json.loads((tmp_path / "prompt_modes" / "manifest.json").read_text(encoding="utf-8"))
     assert set(manifest["wrappers"]) == {"direct_wrapper.md", "agentic_wrapper.md"}
-    assert set(manifest["form_skills"]) == {"dut_modeling.md", "testbench_verification.md", "bugfix_diagnosis.md"}
+    assert "form_skills" not in manifest
+    assert "evas_guides" not in manifest
+    assert set(manifest["components"]) == set(manifest["wrappers"])
+    assert set(manifest["skill_snapshots"]) == {"veriloga", "vabench-feedback"}
+    assert (tmp_path / "prompt_modes" / "wrappers" / "direct_wrapper.md").is_file()
+    assert (tmp_path / "prompt_modes" / "wrappers" / "agentic_wrapper.md").is_file()
+    assert not (tmp_path / "prompt_modes" / "form_skills").exists()
+    assert not (tmp_path / "prompt_modes" / "evas_guides").exists()
+    assert not (tmp_path / "prompt_modes" / "skills").exists()
+    assert (tmp_path / "skills" / "veriloga" / "SKILL.md").is_file()
+    assert (tmp_path / "skills" / "vabench-feedback" / "SKILL.md").is_file()
+    skill_manifest = json.loads((tmp_path / "skills" / "SNAPSHOT_MANIFEST.json").read_text(encoding="utf-8"))
+    assert skill_manifest["mode_skill_matrix"]["G1"] == ["veriloga"]
+    assert skill_manifest["mode_skill_matrix"]["G4"] == ["vabench-feedback"]
+    veriloga_source = skill_manifest["skills"]["veriloga"]["source"]
+    assert veriloga_source["upstream_commit"] == (
+        "c0f51c76d0e4dd51e8e931f404e4d52d07d49df5"
+    )
+    assert veriloga_source["upstream_pull_request"].endswith("/pull/17")
+    assert all(
+        not Path(record["source_path"]).is_absolute()
+        for skill in skill_manifest["skills"].values()
+        for record in skill["files"]
+    )
+    assert records["direct_wrapper.md"]["kind"] == "wrapper"
+
+
+def test_materializer_rejects_a_symlinked_skill_source(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source_root = tmp_path / "skill-sources"
+    outside = tmp_path / "outside-veriloga"
+    outside.mkdir()
+    (outside / "SKILL.md").write_text("---\nname: veriloga\n---\n", encoding="utf-8")
+    source_root.mkdir()
+    (source_root / "veriloga").symlink_to(outside, target_is_directory=True)
+    monkeypatch.setitem(
+        install_skill_snapshots.__globals__, "SKILLS_ROOT", source_root
+    )
+
+    with pytest.raises(SystemExit, match="skill source contains symlink"):
+        install_skill_snapshots(tmp_path / "release")
+
+
+def test_pre_r50_prompt_assets_remain_reproducible_as_legacy_inline_components(
+    tmp_path: Path,
+) -> None:
+    install_prompt_assets(tmp_path, "r49")
+    manifest = json.loads(
+        (tmp_path / "prompt_modes" / "manifest.json").read_text(encoding="utf-8")
+    )
+    modes = json.loads(
+        (tmp_path / "prompt_modes" / "modes.json").read_text(encoding="utf-8")
+    )["modes"]
+    assert set(manifest["form_skills"]) == {
+        "dut_modeling.md", "testbench_verification.md", "bugfix_diagnosis.md",
+    }
     assert set(manifest["evas_guides"]) == {
         "evas_core.md", "evas_dut.md", "evas_testbench.md", "evas_bugfix.md",
     }
-    assert set(manifest["components"]) == set(manifest["wrappers"]) | set(manifest["form_skills"]) | set(manifest["evas_guides"])
-    assert (tmp_path / "prompt_modes" / "wrappers" / "direct_wrapper.md").is_file()
-    assert (tmp_path / "prompt_modes" / "wrappers" / "agentic_wrapper.md").is_file()
-    assert (tmp_path / "prompt_modes" / "form_skills" / "dut_modeling.md").is_file()
-    assert (tmp_path / "prompt_modes" / "evas_guides" / "evas_dut.md").is_file()
-    assert (tmp_path / "prompt_modes" / "evas_guides" / "evas_core.md").is_file()
-    assert not (tmp_path / "prompt_modes" / "skills").exists()
-    assert records["direct_wrapper.md"]["kind"] == "wrapper"
-    assert records["dut_modeling.md"]["kind"] == "form_skill"
-    assert records["evas_dut.md"]["kind"] == "evas_guide"
+    assert not (tmp_path / "skills").exists()
+    assert modes["G1"]["form_skill"] is True
+    assert "skills" not in modes["G1"]
 
 
 def test_direct_wrapper_defines_unambiguous_artifact_protocol(tmp_path: Path) -> None:
@@ -463,53 +590,37 @@ def test_runtime_prompt_components_follow_explicit_order_with_wrapper_last() -> 
     mode_record = {
         "component_order": [
             "instruction",
-            "bugfix_diagnosis.md",
-            "evas_core.md",
-            "evas_bugfix.md",
             "agentic_wrapper.md",
         ],
         "prompt_component_hashes": {
-            "bugfix_diagnosis.md": "a" * 64,
-            "evas_core.md": "b" * 64,
-            "evas_bugfix.md": "c" * 64,
             "agentic_wrapper.md": "d" * 64,
         },
     }
-    assert ordered_prompt_components(mode_record) == [
-        "bugfix_diagnosis.md",
-        "evas_core.md",
-        "evas_bugfix.md",
-        "agentic_wrapper.md",
-    ]
+    assert ordered_prompt_components(mode_record) == ["agentic_wrapper.md"]
 
 
-def test_render_prompt_places_guides_before_wrapper_without_public_contract_inline(tmp_path: Path) -> None:
+def test_render_prompt_announces_skills_without_inlining_body(tmp_path: Path) -> None:
     release = tmp_path / "release"
     task = tmp_path / "task"
-    for subdir, name, text in [
-        ("form_skills", "bugfix_diagnosis.md", "bugfix skill\n"),
-        ("evas_guides", "evas_core.md", "EVAS core\n"),
-        ("evas_guides", "evas_bugfix.md", "EVAS bugfix\n"),
-        ("wrappers", "agentic_wrapper.md", "agentic wrapper\n"),
-    ]:
-        path = release / "prompt_modes" / subdir / name
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(text, encoding="utf-8")
+    path = release / "prompt_modes" / "wrappers" / "agentic_wrapper.md"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("agentic wrapper\n", encoding="utf-8")
     (task / "public").mkdir(parents=True)
     (task / "public" / "instruction.md").write_text("repair task\n", encoding="utf-8")
     mode_record = {
         "mode": "G5",
         "component_order": [
             "instruction",
-            "bugfix_diagnosis.md",
-            "evas_core.md",
-            "evas_bugfix.md",
             "agentic_wrapper.md",
         ],
+        "available_skills": {
+            "veriloga": {
+                "path": "public/skills/veriloga",
+                "skill_file": "public/skills/veriloga/SKILL.md",
+                "tree_sha256": "a" * 64,
+            },
+        },
         "prompt_component_hashes": {
-            "bugfix_diagnosis.md": "a" * 64,
-            "evas_core.md": "b" * 64,
-            "evas_bugfix.md": "c" * 64,
             "agentic_wrapper.md": "d" * 64,
         },
     }
@@ -520,14 +631,11 @@ def test_render_prompt_places_guides_before_wrapper_without_public_contract_inli
         mode_record,
         inline_artifacts=False,
     )
-    markers = [
-        '<<<VABENCH_COMPONENT id="bugfix_diagnosis.md">>>',
-        '<<<VABENCH_COMPONENT id="evas_core.md">>>',
-        '<<<VABENCH_COMPONENT id="evas_bugfix.md">>>',
-        '<<<VABENCH_COMPONENT id="agentic_wrapper.md">>>',
-    ]
-    positions = [rendered.index(marker) for marker in markers]
-    assert positions == sorted(positions)
+    assert '<<<VABENCH_SKILL_AVAILABILITY>>>' in rendered
+    assert "public/skills/veriloga/SKILL.md" in rendered
+    assert '<<<VABENCH_COMPONENT id="agentic_wrapper.md">>>' in rendered
+    assert "---\nname:" not in rendered
+    assert "Use this skill" not in rendered
     assert "VABENCH_PUBLIC_CONTRACT" not in rendered
     assert rendered.strip().endswith("<<<END_VABENCH_COMPONENT>>>")
 
@@ -548,9 +656,8 @@ def test_derived_prompt_plan_hash_binds_non_visible_public_contract(tmp_path: Pa
     }
     plan = build_mode_record(release, task, record, "G5")
     assert plan["public_contract_sha256"] == file_sha(task / "public_contract.json")
-    assert plan["component_order"][-4:] == [
-        "bugfix_diagnosis.md", "evas_core.md", "evas_bugfix.md", "agentic_wrapper.md",
-    ]
+    assert plan["component_order"][-1:] == ["agentic_wrapper.md"]
+    assert set(plan["available_skills"]) == {"veriloga", "vabench-feedback"}
     assert set(plan["public_input_hashes"]) == {
         "public/instruction.md", "public/buggy_bundle/dut.va",
     }
@@ -646,7 +753,7 @@ def test_g5_testbench_runtime_exports_direct_evas_visible_suite(
         seed_review,
         release_revision=release_revision,
     )
-    install_prompt_assets(release)
+    install_prompt_assets(release, release_revision)
     (release / "TASK_INDEX.json").write_text(
         json.dumps({"tasks": [task_record]}) + "\n", encoding="utf-8"
     )
@@ -685,7 +792,7 @@ def test_g1_dut_runtime_audit_does_not_require_agentic_visible_mount(
     source_task, row, _ = sample_source_task(tmp_path, independent_reference=True)
     release = tmp_path / "release"
     task_record = build_dut_view(
-        release, source_task, row, sample_spec(), "a" * 64
+        release, source_task, row, sample_spec(), "a" * 64, release_revision="r50"
     )
     install_prompt_assets(release)
     (release / "TASK_INDEX.json").write_text(
@@ -702,10 +809,273 @@ def test_g1_dut_runtime_audit_does_not_require_agentic_visible_mount(
     ])
     assert export_runtime() == 0
     assert not (runtime / "public" / "task" / "visible_test.scs").exists()
+    policy = json.loads((runtime / "MODEL_ACCESS_POLICY.json").read_text(encoding="utf-8"))
+    assert policy["mounts"] == []
+    assert policy["provider_tools"] == ["list_skills", "read_skill"]
+    assert set(policy["available_skills"]) == {"veriloga"}
+    assert (runtime / "public" / "skills" / "veriloga" / "SKILL.md").is_file()
     monkeypatch.setattr(sys, "argv", [
         "audit_runtime_export.py", "--run", str(runtime),
     ])
     assert audit_runtime_export() == 0
+
+
+def test_g2_runtime_has_no_skill_surface(tmp_path: Path, monkeypatch) -> None:
+    source_task, row, _ = sample_source_task(tmp_path, independent_reference=True)
+    release = tmp_path / "release"
+    task_record = build_dut_view(
+        release, source_task, row, sample_spec(), "a" * 64, release_revision="r50"
+    )
+    install_prompt_assets(release)
+    (release / "TASK_INDEX.json").write_text(json.dumps({"tasks": [task_record]}) + "\n", encoding="utf-8")
+    runtime = tmp_path / "runtime"
+    monkeypatch.setattr(sys, "argv", [
+        "export_tri_form_runtime.py",
+        "--release", str(release),
+        "--task", "v4-001",
+        "--mode", "G2",
+        "--output", str(runtime),
+        "--working-token-budget", "4096",
+    ])
+    assert export_runtime() == 0
+    policy = json.loads((runtime / "MODEL_ACCESS_POLICY.json").read_text(encoding="utf-8"))
+    assert policy["mounts"] == ["public/task:ro", "public/submission:rw", "public/work:rw"]
+    assert policy["provider_tools"] == []
+    assert policy["available_skills"] == {}
+    assert not (runtime / "public" / "skills").exists()
+
+
+@pytest.mark.parametrize(
+    ("mode", "expected_skills", "expected_mounts"),
+    [
+        ("G0", set(), []),
+        ("G1", {"veriloga"}, []),
+        ("G2", set(), ["public/task:ro", "public/submission:rw", "public/work:rw"]),
+        (
+            "G3",
+            {"veriloga"},
+            [
+                "public/task:ro",
+                "public/submission:rw",
+                "public/work:rw",
+                "public/skills:ro",
+            ],
+        ),
+        (
+            "G4",
+            {"vabench-feedback"},
+            [
+                "public/task:ro",
+                "public/submission:rw",
+                "public/work:rw",
+                "public/skills:ro",
+            ],
+        ),
+        (
+            "G5",
+            {"veriloga", "vabench-feedback"},
+            [
+                "public/task:ro",
+                "public/submission:rw",
+                "public/work:rw",
+                "public/skills:ro",
+            ],
+        ),
+    ],
+)
+def test_r50_mode_matrix_exports_only_declared_real_skills(
+    tmp_path: Path,
+    monkeypatch,
+    mode: str,
+    expected_skills: set[str],
+    expected_mounts: list[str],
+) -> None:
+    source_task, row, _ = sample_source_task(tmp_path, independent_reference=True)
+    release = tmp_path / "release"
+    task_record = build_dut_view(
+        release, source_task, row, sample_spec(), "a" * 64, release_revision="r50"
+    )
+    install_prompt_assets(release)
+    (release / "TASK_INDEX.json").write_text(
+        json.dumps({"tasks": [task_record]}) + "\n", encoding="utf-8"
+    )
+    runtime = tmp_path / "runtime"
+    monkeypatch.setattr(sys, "argv", [
+        "export_tri_form_runtime.py",
+        "--release", str(release),
+        "--task", "v4-001",
+        "--mode", mode,
+        "--output", str(runtime),
+        "--working-token-budget", "4096",
+    ])
+
+    assert export_runtime() == 0
+    policy = json.loads(
+        (runtime / "MODEL_ACCESS_POLICY.json").read_text(encoding="utf-8")
+    )
+    assert policy["schema_version"] == "r50-real-skills-model-access-policy-v1"
+    assert policy["mounts"] == expected_mounts
+    assert set(policy["available_skills"]) == expected_skills
+    assert policy["provider_tools"] == (
+        ["list_skills", "read_skill"] if expected_skills else []
+    )
+    active_tools = active_tool_schemas(runtime, mode)
+    active_tool_names = [
+        tool["function"]["name"] for tool in (active_tools or [])
+    ]
+    assert active_tool_names == (
+        (["list_files", "read_file", "write_file", "run_evas", "finalize"]
+         if mode in {"G2", "G3", "G4", "G5"} else [])
+        + (["list_skills", "read_skill"] if expected_skills else [])
+    )
+    skills_root = runtime / "public" / "skills"
+    observed_skills = {
+        path.name
+        for path in skills_root.iterdir()
+        if path.is_dir()
+    } if skills_root.is_dir() else set()
+    assert observed_skills == expected_skills
+    prompt_name = "agent_prompt.txt" if mode in {"G2", "G3", "G4", "G5"} else "direct_prompt.txt"
+    prompt = (runtime / prompt_name).read_text(encoding="utf-8")
+    assert ("<<<VABENCH_SKILL_AVAILABILITY>>>" in prompt) is bool(expected_skills)
+    assert "---\nname: veriloga" not in prompt
+    assert "---\nname: vabench-feedback" not in prompt
+    monkeypatch.setattr(sys, "argv", [
+        "audit_runtime_export.py", "--run", str(runtime),
+    ])
+    assert audit_runtime_export() == 0
+
+
+def test_export_rejects_a_noncanonical_release_skill_path(tmp_path: Path) -> None:
+    source_task, row, _ = sample_source_task(tmp_path, independent_reference=True)
+    release = tmp_path / "release"
+    task_record = build_dut_view(
+        release, source_task, row, sample_spec(), "a" * 64, release_revision="r50"
+    )
+    install_prompt_assets(release)
+    manifest_path = release / "skills" / "SNAPSHOT_MANIFEST.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["skills"]["veriloga"]["path"] = "../outside/veriloga"
+    manifest_path.write_text(json.dumps(manifest) + "\n", encoding="utf-8")
+    task = next((release / "tasks").iterdir())
+
+    with pytest.raises(SystemExit, match="path is not canonical"):
+        build_mode_record(release, task, task_record, "G1")
+
+
+def test_runner_rejects_a_skill_manifest_in_a_skill_free_mode(tmp_path: Path) -> None:
+    runtime = tmp_path / "runtime"
+    skill = runtime / "public" / "skills" / "veriloga"
+    skill.mkdir(parents=True)
+    (skill / "SKILL.md").write_text("---\nname: veriloga\n---\n", encoding="utf-8")
+    write_runtime_skill_manifest(runtime)
+    (runtime / "MODEL_ACCESS_POLICY.json").write_text(
+        json.dumps({"mode": "G0", "provider_tools": [], "available_skills": {}}),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="provider-tool policy disagree"):
+        active_tool_schemas(runtime, "G0")
+
+
+def test_runtime_audit_rejects_an_undeclared_skills_directory(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source_task, row, _ = sample_source_task(tmp_path, independent_reference=True)
+    release = tmp_path / "release"
+    task_record = build_dut_view(
+        release, source_task, row, sample_spec(), "a" * 64, release_revision="r50"
+    )
+    install_prompt_assets(release)
+    (release / "TASK_INDEX.json").write_text(
+        json.dumps({"tasks": [task_record]}) + "\n", encoding="utf-8"
+    )
+    runtime = tmp_path / "runtime"
+    monkeypatch.setattr(sys, "argv", [
+        "export_tri_form_runtime.py",
+        "--release", str(release),
+        "--task", "v4-001",
+        "--mode", "G0",
+        "--output", str(runtime),
+        "--working-token-budget", "4096",
+    ])
+    assert export_runtime() == 0
+    (runtime / "public" / "skills").mkdir()
+    monkeypatch.setattr(sys, "argv", [
+        "audit_runtime_export.py", "--run", str(runtime),
+    ])
+
+    assert audit_runtime_export() == 1
+
+
+def test_skill_lookup_rejects_a_symlinked_skills_root(tmp_path: Path) -> None:
+    runtime = tmp_path / "runtime"
+    (runtime / "public").mkdir(parents=True)
+    outside = tmp_path / "outside-skills"
+    outside.mkdir()
+    (runtime / "public" / "skills").symlink_to(outside, target_is_directory=True)
+
+    with pytest.raises(ValueError, match="skills root is a symlink"):
+        list_available_skills(runtime)
+
+
+def test_skill_lookup_is_confined_and_cached(tmp_path: Path) -> None:
+    runtime = tmp_path / "runtime"
+    skill = runtime / "public" / "skills" / "veriloga"
+    skill.mkdir(parents=True)
+    (skill / "SKILL.md").write_text("---\nname: veriloga\n---\n# Skill\n", encoding="utf-8")
+    (skill / "assets").mkdir()
+    (skill / "assets" / "probe.va").write_text(
+        "module probe; analog begin end endmodule\n", encoding="utf-8"
+    )
+    write_runtime_skill_manifest(runtime)
+
+    listed = list_available_skills(runtime)["skills"]
+    assert set(listed) == {"veriloga"}
+    assert {record["path"] for record in listed["veriloga"]["files"]} == {
+        "SKILL.md", "assets/probe.va",
+    }
+    first = read_skill_file(runtime, "veriloga", "SKILL.md")
+    assert "# Skill" in first
+    assert "module probe" in read_skill_file(runtime, "veriloga", "assets/probe.va")
+    second = read_skill_file(runtime, "veriloga", "SKILL.md")
+    assert json.loads(second)["status"] == "already_provided_in_this_episode"
+    with pytest.raises(ValueError, match="unsafe relative path"):
+        read_skill_file(runtime, "veriloga", "../secret.md")
+    with pytest.raises(ValueError, match="not available"):
+        read_skill_file(runtime, "missing", "SKILL.md")
+    events = [
+        json.loads(line)
+        for line in (runtime / "evidence" / "skill_lookup_events.jsonl")
+        .read_text(encoding="utf-8")
+        .splitlines()
+    ]
+    assert [event["cached"] for event in events] == [False, False, True]
+
+
+def test_skill_lookup_rejects_symlink(tmp_path: Path) -> None:
+    runtime = tmp_path / "runtime"
+    skill = runtime / "public" / "skills" / "veriloga"
+    skill.mkdir(parents=True)
+    (skill / "SKILL.md").write_text("---\nname: veriloga\n---\n", encoding="utf-8")
+    outside = tmp_path / "outside.md"
+    outside.write_text("secret\n", encoding="utf-8")
+    (skill / "leak.md").symlink_to(outside)
+    write_runtime_skill_manifest(runtime)
+    with pytest.raises(ValueError, match="contains a symlink"):
+        read_skill_file(runtime, "veriloga", "leak.md")
+
+
+def test_skill_lookup_rejects_snapshot_tampering(tmp_path: Path) -> None:
+    runtime = tmp_path / "runtime"
+    skill = runtime / "public" / "skills" / "veriloga"
+    skill.mkdir(parents=True)
+    source = skill / "SKILL.md"
+    source.write_text("---\nname: veriloga\n---\n# Skill\n", encoding="utf-8")
+    write_runtime_skill_manifest(runtime)
+    source.write_text("tampered\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="tree hash mismatch"):
+        list_available_skills(runtime)
 
 
 def test_runtime_evidence_rejects_handwritten_pass_report(tmp_path: Path) -> None:

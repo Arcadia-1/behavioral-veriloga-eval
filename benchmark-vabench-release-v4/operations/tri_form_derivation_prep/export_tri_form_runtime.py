@@ -231,6 +231,60 @@ def prompt_component_path(release: Path, component_id: str) -> Path:
     return release / "prompt_modes" / subdir / component_id
 
 
+def load_skill_manifest(release: Path) -> dict[str, Any]:
+    manifest = read_json(release / "skills" / "SNAPSHOT_MANIFEST.json")
+    if manifest.get("schema_version") != "v4-real-skill-snapshot-manifest-v1":
+        raise SystemExit("release has no real skill snapshot manifest")
+    return manifest
+
+
+def release_skill_root(release: Path, skill_id: str, raw_path: object) -> Path:
+    expected = f"skills/{skill_id}"
+    if str(raw_path or "") != expected:
+        raise SystemExit(f"skill package path is not canonical: {skill_id}")
+    unresolved = release
+    for part in Path(expected).parts:
+        unresolved /= part
+        if unresolved.is_symlink():
+            raise SystemExit(f"skill package path contains a symlink: {skill_id}")
+    source = unresolved.resolve()
+    try:
+        source.relative_to(release.resolve())
+    except ValueError as exc:
+        raise SystemExit(f"skill package escapes the release: {skill_id}") from exc
+    return source
+
+
+def available_skill_records(release: Path, mode: str) -> dict[str, dict[str, Any]]:
+    modes = read_json(release / "prompt_modes" / "modes.json").get("modes") or {}
+    policy = modes.get(mode) or {}
+    if "skills" not in policy:
+        return {}
+    policy_skill_ids = [str(item) for item in policy.get("skills") or []]
+    if not policy_skill_ids:
+        return {}
+    manifest = load_skill_manifest(release)
+    matrix = manifest.get("mode_skill_matrix") or {}
+    skill_ids = [str(item) for item in matrix.get(mode) or []]
+    if skill_ids != policy_skill_ids:
+        raise SystemExit(f"skill mode matrix disagrees with prompt policy: {mode}")
+    skills = manifest.get("skills") or {}
+    records: dict[str, dict[str, Any]] = {}
+    for skill_id in skill_ids:
+        record = skills.get(skill_id)
+        if not isinstance(record, dict):
+            raise SystemExit(f"mode references unknown skill: {skill_id}")
+        source = release_skill_root(release, skill_id, record.get("path"))
+        if not (source / "SKILL.md").is_file():
+            raise SystemExit(f"skill package is missing SKILL.md: {skill_id}")
+        if source.is_symlink() or any(item.is_symlink() for item in source.rglob("*")):
+            raise SystemExit(f"skill package contains a symlink: {skill_id}")
+        if record.get("tree_sha256") != tree_sha(source):
+            raise SystemExit(f"skill package hash mismatch: {skill_id}")
+        records[skill_id] = record
+    return records
+
+
 def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mode: str) -> dict[str, Any]:
     modes = read_json(release / "prompt_modes" / "modes.json").get("modes") or {}
     policy = modes.get(mode)
@@ -267,6 +321,8 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
         guide_components.append(FORM_SKILLS[form])
     if policy.get("evas_guide"):
         guide_components.extend([EVAS_CORE, EVAS_GUIDES[form]])
+    skill_records = available_skill_records(release, mode)
+    real_skill_delivery = "skills" in policy
     wrapper = WRAPPERS_BY_PROCESS[str(policy.get("process") or "")]
     prompt_components = [*guide_components, wrapper]
     missing = [name for name in prompt_components if name not in component_records]
@@ -297,10 +353,31 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
             for path in public_input_paths
         },
         "component_order": [*public_inputs, *guide_components, wrapper],
-        "skill_hashes": {
-            name: component_records[name]["sha256"]
-            for name in guide_components
-        },
+        **(
+            {
+                "skill_delivery": "real_skill_lookup_v1",
+                "available_skills": {
+                    skill_id: {
+                        "path": f"public/skills/{skill_id}",
+                        "skill_file": f"public/skills/{skill_id}/SKILL.md",
+                        "tree_sha256": skill_record["tree_sha256"],
+                        "release_skill_path": skill_record["path"],
+                    }
+                    for skill_id, skill_record in skill_records.items()
+                },
+                "skill_hashes": {
+                    skill_id: skill_record["tree_sha256"]
+                    for skill_id, skill_record in skill_records.items()
+                },
+            }
+            if real_skill_delivery
+            else {
+                "skill_hashes": {
+                    name: component_records[name]["sha256"]
+                    for name in guide_components
+                },
+            }
+        ),
         "prompt_component_hashes": {
             name: component_records[name]["sha256"]
             for name in prompt_components
@@ -315,6 +392,28 @@ def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_re
     artifacts = serialize_public_artifacts(task_dir, str(record["form"])) if inline_artifacts else ""
     if artifacts:
         parts.append(artifacts)
+    skills = mode_record.get("available_skills") or {}
+    if skills:
+        public_skills = {
+            skill_id: {
+                "path": record["path"],
+                "skill_file": record["skill_file"],
+                "tree_sha256": record["tree_sha256"],
+            }
+            for skill_id, record in skills.items()
+        }
+        parts.extend([
+            "<<<VABENCH_SKILL_AVAILABILITY>>>",
+            json.dumps({
+                "available_skills": public_skills,
+                "lookup_policy": (
+                    "Use list_skills/read_skill in direct/tool runtimes, or inspect "
+                    "public/skills/<id>/SKILL.md in bash runtimes. Skill content is "
+                    "not inlined into this prompt."
+                ),
+            }, indent=2, sort_keys=True),
+            "<<<END_VABENCH_SKILL_AVAILABILITY>>>",
+        ])
     for component in ordered_prompt_components(mode_record):
         if component.endswith("_wrapper.md"):
             parts.extend([
@@ -331,7 +430,37 @@ def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_re
     return "\n\n".join(parts)
 
 
-def install_public(task_dir: Path, public_root: Path, form: str, mode: str) -> None:
+def install_skills(release: Path, public_root: Path, mode_record: dict[str, Any]) -> None:
+    runtime_records: dict[str, dict[str, Any]] = {}
+    for skill_id, record in (mode_record.get("available_skills") or {}).items():
+        source = release_skill_root(release, str(skill_id), record["release_skill_path"])
+        destination = public_root / "skills" / str(skill_id)
+        if destination.exists():
+            shutil.rmtree(destination)
+        shutil.copytree(source, destination, symlinks=False)
+        runtime_records[str(skill_id)] = {
+            "id": str(skill_id),
+            "path": f"public/skills/{skill_id}",
+            "skill_file": f"public/skills/{skill_id}/SKILL.md",
+            "tree_sha256": tree_sha(destination),
+            "files": [
+                {
+                    "path": item.relative_to(destination).as_posix(),
+                    "sha256": file_sha(item),
+                    "bytes": item.stat().st_size,
+                }
+                for item in sorted(destination.rglob("*"))
+                if item.is_file()
+            ],
+        }
+    if runtime_records:
+        write_json(public_root / "skills" / "SNAPSHOT_MANIFEST.json", {
+            "schema_version": "v4-runtime-skill-manifest-v1",
+            "skills": runtime_records,
+        })
+
+
+def install_public(task_dir: Path, public_root: Path, form: str, mode: str, release: Path | None = None, mode_record: dict[str, Any] | None = None) -> None:
     source_public = task_dir / "public"
     target = public_root / "task"
     target.mkdir(parents=True)
@@ -346,6 +475,8 @@ def install_public(task_dir: Path, public_root: Path, form: str, mode: str) -> N
         destination = target / "public_support" / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
+    if release is not None and mode_record is not None:
+        install_skills(release, public_root, mode_record)
     if mode in AGENTIC:
         for name in ("visible_test.scs", "evas_runtime.json"):
             if (source_public / name).is_file():
@@ -418,7 +549,7 @@ def main() -> int:
     mode_record = build_mode_record(release, task_dir, record, args.mode)
     public_root = output / "public"
     (public_root / "submission").mkdir(parents=True)
-    install_public(task_dir, public_root, str(record["form"]), args.mode)
+    install_public(task_dir, public_root, str(record["form"]), args.mode, release, mode_record)
     install_evaluator(task_dir, output / "evaluator", record)
     prompt = render_prompt(
         release,
@@ -434,10 +565,28 @@ def main() -> int:
         "public/submission:rw",
         "public/work:rw",
     ]
+    if args.mode in AGENTIC and mode_record.get("available_skills"):
+        model_mounts.append("public/skills:ro")
+    provider_tools = []
+    if mode_record.get("available_skills"):
+        provider_tools.extend(["list_skills", "read_skill"])
+    real_skill_delivery = mode_record.get("skill_delivery") == "real_skill_lookup_v1"
     write_json(output / "MODEL_ACCESS_POLICY.json", {
-        "schema_version": "r45-model-access-policy-v1",
+        "schema_version": (
+            "r50-real-skills-model-access-policy-v1"
+            if real_skill_delivery
+            else "r45-model-access-policy-v1"
+        ),
         "mode": args.mode,
         "mounts": model_mounts,
+        **(
+            {
+                "available_skills": mode_record.get("available_skills") or {},
+                "provider_tools": provider_tools,
+            }
+            if real_skill_delivery
+            else {}
+        ),
         "executables": [] if args.mode not in AGENTIC else ["evas", "vabench-submit"],
         "network": False,
         "evaluator_mounted": False,
@@ -457,6 +606,11 @@ def main() -> int:
         "submission_seeded_from_buggy_bundle": bool(record["form"] == "bugfix" and args.mode in AGENTIC),
         "evaluator_bundle_sha256": tree_sha(output / "evaluator"),
         "prompt_record_sha256": hashlib.sha256(json.dumps(mode_record, sort_keys=True).encode("utf-8")).hexdigest(),
+        **(
+            {"available_skill_hashes": mode_record.get("skill_hashes") or {}}
+            if real_skill_delivery
+            else {}
+        ),
         "final_candidate_sha256": None,
         "private_score_decisions": 0,
         "telemetry": {
