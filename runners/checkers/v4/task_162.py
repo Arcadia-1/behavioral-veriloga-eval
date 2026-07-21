@@ -45,11 +45,11 @@ def check_v3_flash_data_align_pipeline(rows: list[Row]) -> tuple[bool, str]:
     clk_threshold = logic_threshold(rows, ("clk",), default_high=0.9)
     din_threshold = logic_threshold(rows, DIN, default_high=0.9)
     clk_edges = crossings(rows, "clk", threshold=clk_threshold, direction="rising")
-    if len(clk_edges) < 5:
+    if len(clk_edges) < 9:
         return False, diagnostic(
             "P_FOUR_STAGE_ALIGNMENT",
             "coverage",
-            expected="at_least_5_clk_rises",
+            expected="at_least_9_clk_rises",
             observed=f"clk_rises={len(clk_edges)}",
             event="full_trace",
         )
@@ -69,12 +69,27 @@ def check_v3_flash_data_align_pipeline(rows: list[Row]) -> tuple[bool, str]:
 
     checked = 0
     max_error = 0.0
+    upper_patterns_observed: set[tuple[int, int, int]] = set()
     for index, edge_t in enumerate(clk_edges[4:], start=4):
         next_edge = clk_edges[index + 1] if index + 1 < len(clk_edges) else None
         probe_t = probe_time(rows, edge_t, next_edge, fraction=0.25)
         if probe_t is None:
             continue
         expected_code = counts[index - 4]
+        sampled_input_t = clk_edges[index - 4]
+        upper_values = tuple(
+            logic_at(rows, signal, sampled_input_t, threshold=din_threshold)
+            for signal in DIN[5:]
+        )
+        if any(bit is None for bit in upper_values):
+            return False, diagnostic(
+                "P_THERMOMETER_COUNT",
+                "invalid_trace",
+                expected="sampled_din5_din6_din7",
+                observed="missing_sample",
+                event=event_label("clk_rise", index - 4, sampled_input_t),
+            )
+        upper_patterns_observed.add(tuple(int(bit) for bit in upper_values))
         label = event_label("clk_rise", index, edge_t)
         for bit, signal in enumerate(DOUT):
             observed = sample(rows, signal, probe_t)
@@ -97,15 +112,44 @@ def check_v3_flash_data_align_pipeline(rows: list[Row]) -> tuple[bool, str]:
                     observed=f"{signal}={observed:.4f}",
                     event=label,
                 )
+        interval_stop = rows[-1]["time"] if next_edge is None else next_edge
+        margin = 0.02 * (interval_stop - edge_t)
+        hold_rows = [
+            row for row in rows
+            if edge_t + margin <= row["time"] <= interval_stop - margin
+        ]
+        for row in hold_rows:
+            for bit, signal in enumerate(DOUT):
+                expected = 1.0 if (expected_code >> bit) & 1 else 0.0
+                observed = row[signal]
+                error = abs(observed - expected)
+                max_error = max(max_error, error)
+                if error > 0.12:
+                    return False, diagnostic(
+                        "P_EVENT_HELD_OUTPUTS",
+                        "hold_mismatch",
+                        expected=f"{signal}={expected:.1f}_through_interval",
+                        observed=f"{signal}={observed:.4f}",
+                        event=f"{label}@{row['time']:.6e}s",
+                    )
         checked += 1
 
-    if checked < 2:
+    if checked < 5:
         return False, diagnostic(
             "P_FOUR_STAGE_ALIGNMENT",
             "coverage",
-            expected="at_least_2_delayed_outputs",
+            expected="at_least_5_delayed_outputs",
             observed=f"checked={checked}",
             event="full_trace",
+        )
+    required_upper_patterns = {(1, 0, 0), (0, 1, 0), (0, 0, 1)}
+    if not required_upper_patterns.issubset(upper_patterns_observed):
+        return False, diagnostic(
+            "P_THERMOMETER_COUNT",
+            "coverage",
+            expected="independent_one_hot_din5_din6_din7_checked_delayed_samples",
+            observed=f"patterns={sorted(upper_patterns_observed)}",
+            event="checked_input_samples",
         )
     return True, pass_note(PROPERTY_IDS, f"checked={checked} max_error={max_error:.5f}")
 

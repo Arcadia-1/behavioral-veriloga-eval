@@ -51,11 +51,11 @@ def check_v3_va_lx_dac_ideal_4b(rows: list[Row]) -> tuple[bool, str]:
     din_threshold = logic_threshold(rows, DIN, default_high=1.8)
     vdd = max_signal_value(rows, DIN, default=1.8)
     rdy_edges = crossings(rows, "rdy", threshold=rdy_threshold, direction="rising")
-    if len(rdy_edges) < 3:
+    if len(rdy_edges) < 4:
         return False, diagnostic(
             "P_READY_CLOCKED_SAMPLING",
             "coverage",
-            expected="at_least_3_rdy_rises",
+            expected="at_least_4_rdy_rises",
             observed=f"rdy_rises={len(rdy_edges)}",
             event="full_trace",
         )
@@ -89,12 +89,25 @@ def check_v3_va_lx_dac_ideal_4b(rows: list[Row]) -> tuple[bool, str]:
                 observed=f"aout={observed:.5f}",
                 event=label,
             )
+        interval_stop = rows[-1]["time"] if next_edge is None else next_edge
+        margin = 0.02 * (interval_stop - edge_t)
+        for row in rows:
+            if not (edge_t + margin <= row["time"] <= interval_stop - margin):
+                continue
+            if abs(row["aout"] - expected) > 0.03:
+                return False, diagnostic(
+                    "P_READY_CLOCKED_SAMPLING",
+                    "hold_mismatch",
+                    expected=f"aout={expected:.5f}_until_next_rdy",
+                    observed=f"aout={row['aout']:.5f}",
+                    event=f"{label}@{row['time']:.6e}s",
+                )
 
-    if checked < 3:
+    if checked < 4:
         return False, diagnostic(
             "P_READY_CLOCKED_SAMPLING",
             "coverage",
-            expected="at_least_3_checked_rdy_rises",
+            expected="at_least_4_checked_rdy_rises",
             observed=f"checked={checked}",
             event="full_trace",
         )

@@ -50,7 +50,7 @@ def check_v3_cyclic_decoder_10b(rows: list[Row]) -> tuple[bool, str]:
     nbit = 10
     counter = nbit - 1
     total = 0.0
-    expected_samples: list[tuple[float, float, str]] = []
+    publications: list[tuple[float, float, str]] = []
     half_weight_seen = False
     for event_index, (event_t, event_kind) in enumerate(events):
         if event_kind == "ready":
@@ -76,21 +76,22 @@ def check_v3_cyclic_decoder_10b(rows: list[Row]) -> tuple[bool, str]:
         sample_t = event_t + 1.8e-9
         if sample_t <= rows[-1]["time"]:
             expected = total / (2.0 ** nbit - 1.0) - 0.5
-            expected_samples.append((sample_t, expected, event_label("clks", event_index, event_t)))
+            publications.append((event_t, expected, event_label("clks", event_index, event_t)))
         counter = nbit - 1
         total = 0.0
 
-    if len(expected_samples) < 2:
+    if len(publications) < 2:
         return False, diagnostic(
             "P_CLOCKED_PUBLICATION_HOLD",
             "coverage",
             expected="at_least_2_publication_samples",
-            observed=f"samples={len(expected_samples)}",
+            observed=f"samples={len(publications)}",
             event="full_trace",
         )
 
     max_error = 0.0
-    for sample_t, expected, label in expected_samples:
+    for publication_index, (event_t, expected, label) in enumerate(publications):
+        sample_t = event_t + 1.8e-9
         observed = sample(rows, "dout", sample_t)
         if observed is None:
             return False, diagnostic(
@@ -100,6 +101,19 @@ def check_v3_cyclic_decoder_10b(rows: list[Row]) -> tuple[bool, str]:
                 observed="missing_sample",
                 event=label,
             )
+        next_event = publications[publication_index + 1][0] if publication_index + 1 < len(publications) else rows[-1]["time"]
+        margin = 0.02 * (next_event - event_t)
+        for row in rows:
+            if not (event_t + margin <= row["time"] <= next_event - margin):
+                continue
+            if abs(row["dout"] - expected) > 0.025:
+                return False, diagnostic(
+                    "P_CLOCKED_PUBLICATION_HOLD",
+                    "hold_mismatch",
+                    expected=f"dout={expected:.5f}_until_next_publication",
+                    observed=f"dout={row['dout']:.5f}",
+                    event=f"{label}@{row['time']:.6e}s",
+                )
         error = abs(observed - expected)
         max_error = max(max_error, error)
         if error > 0.025:
@@ -121,7 +135,7 @@ def check_v3_cyclic_decoder_10b(rows: list[Row]) -> tuple[bool, str]:
         )
     return True, pass_note(
         PROPERTY_IDS,
-        f"published={len(expected_samples)} half_weight_seen={half_weight_seen} max_error={max_error:.5f}",
+        f"published={len(publications)} half_weight_seen={half_weight_seen} max_error={max_error:.5f}",
     )
 
 
