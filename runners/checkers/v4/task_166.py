@@ -30,9 +30,38 @@ def check_v3_l2_cdac_4b_residue(rows: list[Row]) -> tuple[bool, str]:
         return False, missing
 
     threshold = logic_threshold(rows, ("clks", "dctrl1", "dctrl2", "dctrl3"), default_high=1.0)
+    falling_edges = crossings(rows, "clks", threshold=threshold, direction="falling")
+    rising_edges = crossings(rows, "clks", threshold=threshold, direction="rising")
+    discriminating_edges = 0
+    for falling_t in falling_edges:
+        preceding_rise = next(
+            (rising_t for rising_t in reversed(rising_edges) if rising_t < falling_t),
+            None,
+        )
+        if preceding_rise is None:
+            continue
+        vin_at_rise = sample(rows, "vin", preceding_rise)
+        vin_at_fall = sample(rows, "vin", falling_t)
+        if (
+            vin_at_rise is not None
+            and vin_at_fall is not None
+            and abs(vin_at_fall - vin_at_rise) > 0.05
+        ):
+            discriminating_edges += 1
+    if len(falling_edges) < 2 or discriminating_edges < 1:
+        return False, diagnostic(
+            "P_FALLING_CLOCK_SAMPLE",
+            "coverage",
+            expected="at_least_2_falling_edges_and_vin_change_between_rise_and_fall",
+            observed=(
+                f"falling_edges={len(falling_edges)} "
+                f"edge_discriminating_cycles={discriminating_edges}"
+            ),
+            event="full_trace",
+        )
     events: list[tuple[float, str]] = [
         (edge_t, "clks_fall")
-        for edge_t in crossings(rows, "clks", threshold=threshold, direction="falling")
+        for edge_t in falling_edges
     ]
     for signal in CONTROL_STEPS:
         events.extend(
@@ -94,8 +123,13 @@ def check_v3_l2_cdac_4b_residue(rows: list[Row]) -> tuple[bool, str]:
         max_error = max(max_error, error)
         checked += 1
         if error > 0.03:
+            property_id = (
+                "P_FALLING_CLOCK_SAMPLE"
+                if kind == "clks_fall"
+                else "P_CONTROL_STEP_WEIGHTS"
+            )
             return False, diagnostic(
-                "P_RETAINED_RESIDUE_OUTPUT",
+                property_id,
                 "value_mismatch",
                 expected=f"vres={state:.5f}",
                 observed=f"vres={observed:.5f}",

@@ -69,18 +69,41 @@ def check_v3_flash_adc_threshold_taps(rows: list[dict[str, float]]) -> tuple[boo
     thresholds = [-0.125 + tap * (0.25 / 31.0) for tap in tap_indices]
     max_error = 0.0
     checked = 0
-    for edge_t, sample_t in edge_samples:
+    hold_checked = 0
+    for edge_index, (edge_t, sample_t) in enumerate(edge_samples):
         vin = sample_signal_at(rows, "vin", edge_t)
         if vin is None:
             return False, f"missing_vin_at_clk={edge_t * 1e9:.3f}ns"
-        for idx, threshold in enumerate(thresholds):
+        expected_outputs = [0.9 if vin > threshold else 0.0 for threshold in thresholds]
+        for idx, expected in enumerate(expected_outputs):
             observed = sample_signal_at(rows, f"dout{idx}", sample_t)
             if observed is None:
                 return False, f"missing_dout{idx}_sample={sample_t * 1e9:.3f}ns"
-            expected = 0.9 if vin > threshold else 0.0
             max_error = max(max_error, abs(observed - expected))
             checked += 1
-    return max_error <= 0.09, f"tap_checks={checked} max_error={max_error:.5f}"
+
+        interval_stop = (
+            edge_samples[edge_index + 1][0]
+            if edge_index + 1 < len(edge_samples)
+            else rows[-1]["time"]
+        )
+        for row in rows:
+            time_s = row["time"]
+            if time_s < edge_t + 0.2e-9 or time_s >= interval_stop - 0.05e-9:
+                continue
+            for idx, expected in enumerate(expected_outputs):
+                error = abs(row[f"dout{idx}"] - expected)
+                max_error = max(max_error, error)
+                hold_checked += 1
+                if error > 0.09:
+                    return False, (
+                        "P_CLOCKED_SELECTED_THRESHOLD_TAPS hold_mismatch "
+                        f"dout{idx}@{time_s * 1e9:.3f}ns={row[f'dout{idx}']:.5f} "
+                        f"expected={expected:.5f}"
+                    )
+    return max_error <= 0.09, (
+        f"tap_checks={checked} hold_checks={hold_checked} max_error={max_error:.5f}"
+    )
 
 CHECKER_ID = "v4_154_flash_adc_threshold_taps"
 CHECKER: Checker = check_v3_flash_adc_threshold_taps

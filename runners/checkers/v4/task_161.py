@@ -68,6 +68,7 @@ def check_v3_dac_restore_10bit_offset(rows: list[Row]) -> tuple[bool, str]:
 
     max_error = 0.0
     checked = 0
+    hold_checked = 0
     for index, edge_t in enumerate(clk_edges):
         next_edge = clk_edges[index + 1] if index + 1 < len(clk_edges) else None
         probe_t = probe_time(rows, edge_t, next_edge, fraction=0.25)
@@ -96,6 +97,23 @@ def check_v3_dac_restore_10bit_offset(rows: list[Row]) -> tuple[bool, str]:
                 event=label,
             )
 
+        interval_stop = next_edge if next_edge is not None else rows[-1]["time"]
+        for row in rows:
+            time_s = row["time"]
+            if time_s < edge_t + 0.2e-9 or time_s >= interval_stop - 0.05e-9:
+                continue
+            hold_error = abs(row["vout"] - expected)
+            max_error = max(max_error, hold_error)
+            hold_checked += 1
+            if hold_error > 0.025:
+                return False, diagnostic(
+                    "P_OUTPUT_SMOOTH_HOLD",
+                    "hold_mismatch",
+                    expected=f"vout={expected:.5f}",
+                    observed=f"vout={row['vout']:.5f}",
+                    event=f"between_clk_rises@{time_s * 1e9:.3f}ns",
+                )
+
     if checked < 3:
         return False, diagnostic(
             property_id,
@@ -104,7 +122,10 @@ def check_v3_dac_restore_10bit_offset(rows: list[Row]) -> tuple[bool, str]:
             observed=f"checked={checked}",
             event="full_trace",
         )
-    return True, pass_note(PROPERTY_IDS, f"checked={checked} max_error={max_error:.5f}")
+    return True, pass_note(
+        PROPERTY_IDS,
+        f"checked={checked} hold_checks={hold_checked} max_error={max_error:.5f}",
+    )
 
 
 CHECKER_ID = "v4_161_dac_restore_10bit_offset"
