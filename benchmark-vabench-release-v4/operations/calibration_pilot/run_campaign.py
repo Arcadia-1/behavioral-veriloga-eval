@@ -27,6 +27,7 @@ if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 import result_protocol as RESULT_PROTOCOL  # noqa: E402
 from mini_swe_vabench import (  # noqa: E402
+    DEFAULT_DOCKER_IMAGE,
     MINI_SWE_SCAFFOLD_ID,
     default_sandbox_backend,
     run_mini_swe_episode,
@@ -1642,6 +1643,8 @@ def run_mini_swe_agentic_cell(
             tool_timeout_s=float(args.tool_timeout_s),
             sandbox_backend=args.mini_swe_sandbox,
             evas_command=args.evas_command,
+            docker_command=getattr(args, "docker_command", "docker"),
+            docker_image=getattr(args, "mini_swe_image", DEFAULT_DOCKER_IMAGE),
             submission_gate=submission_artifact_gate,
             usage_parser=provider_output_usage,
             response_metadata=provider_response_metadata,
@@ -1774,9 +1777,16 @@ def run_mini_swe_agentic_cell(
                     "bash_contract_sha256",
                     "trajectory_format",
                     "sandbox_backend",
+                    "docker_image",
+                    "docker_image_id",
                     "network",
                     "evaluator_mounted",
                 )
+            },
+            "public_agent_environment": {
+                "backend": episode["sandbox_backend"],
+                "image": episode.get("docker_image"),
+                "image_id": episode.get("docker_image_id"),
             },
             "mini_swe_exit_status": exit_status,
             "model_calls": episode["model_calls"],
@@ -1841,6 +1851,12 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         "agent_scaffold": MINI_SWE_SCAFFOLD_ID if mini_swe_agentic else "native-v4-loop",
         "evas_identity": getattr(args, "evas_identity", None),
     }
+    if mini_swe_agentic:
+        result["public_agent_environment"] = {
+            "backend": getattr(args, "mini_swe_sandbox", None),
+            "image": getattr(args, "mini_swe_image", DEFAULT_DOCKER_IMAGE),
+            "image_id": None,
+        }
     if args.dry_run:
         result["finished_at"] = now()
         write_json(runtime / "evidence" / "campaign_result.json", result)
@@ -2157,10 +2173,12 @@ def main() -> int:
     )
     parser.add_argument(
         "--mini-swe-sandbox",
-        choices=("auto", "sandbox-exec", "bubblewrap", "none"),
+        choices=("auto", "docker", "sandbox-exec", "bubblewrap", "none"),
         default="auto",
-        help="Shell isolation backend. 'none' is for tests only and is not paper-valid.",
+        help="Shell backend. Formal mini-SWE runs use the shared Docker environment.",
     )
+    parser.add_argument("--docker-command", default="docker")
+    parser.add_argument("--mini-swe-image", default=DEFAULT_DOCKER_IMAGE)
     parser.add_argument("--agent-timeout-s", type=int, default=DEFAULT_AGENT_TIMEOUT_S)
     parser.add_argument("--setup-timeout-s", type=int, default=DEFAULT_SETUP_TIMEOUT_S)
     parser.add_argument("--request-timeout-s", type=int, default=DEFAULT_REQUEST_TIMEOUT_S)
@@ -2182,6 +2200,14 @@ def main() -> int:
     args.release = args.release.resolve()
     args.output = args.output.resolve()
     campaign = read_json(args.campaign)
+    expected_mini_swe_image = (campaign.get("execution_config") or {}).get(
+        "mini_swe_image"
+    )
+    if expected_mini_swe_image and args.mini_swe_image != expected_mini_swe_image:
+        raise SystemExit(
+            "campaign shared Docker image does not match --mini-swe-image: "
+            f"expected={expected_mini_swe_image} observed={args.mini_swe_image}"
+        )
     expected_evas_identity = (campaign.get("execution_config") or {}).get(
         "evas_identity"
     )
@@ -2216,6 +2242,15 @@ def main() -> int:
             "--mini-swe-sandbox none is test-only; use a supported secure sandbox "
             "for executable G2-G5 campaigns"
         )
+    if (
+        uses_mini_swe
+        and args.mini_swe_sandbox not in {"docker", "auto"}
+        and not args.dry_run
+    ):
+        raise SystemExit(
+            "paper-valid mini-SWE campaigns require --mini-swe-sandbox docker; "
+            "legacy host sandboxes are retained only for sensitivity tests"
+        )
     if args.workers < 1:
         raise SystemExit("--workers must be at least 1")
     if min(
@@ -2240,13 +2275,37 @@ def main() -> int:
         with ThreadPoolExecutor(max_workers=args.workers) as pool:
             results = list(pool.map(lambda cell: run_cell_preserving_failure(cell, args, client), cells))
     all_results = stored_results(args.output)
-    summary = {"schema_version": "v4-calibration-run-summary-v1", "campaign": str(args.campaign), "dry_run": args.dry_run, "evas_identity": args.evas_identity, "result_count": len(all_results), "statuses": {}}
+    image_ids = sorted(
+        {
+            str((row.get("agent_scaffold") or {}).get("docker_image_id"))
+            for row in all_results
+            if isinstance(row.get("agent_scaffold"), dict)
+            and (row.get("agent_scaffold") or {}).get("docker_image_id")
+        }
+    )
+    summary = {
+        "schema_version": "v4-calibration-run-summary-v1",
+        "campaign": str(args.campaign),
+        "dry_run": args.dry_run,
+        "evas_identity": args.evas_identity,
+        "public_agent_environment": {
+            "backend": args.mini_swe_sandbox if uses_mini_swe else None,
+            "image": args.mini_swe_image if uses_mini_swe else None,
+            "observed_image_ids": image_ids,
+            "identity_consistent": len(image_ids) <= 1,
+        },
+        "result_count": len(all_results),
+        "statuses": {},
+    }
     for row in all_results:
         status = row["status"]
         summary["statuses"][status] = summary["statuses"].get(status, 0) + 1
     write_json(args.output / "SUMMARY.json", summary)
     print(json.dumps(summary, indent=2))
-    return 1 if summary["statuses"].get("runner_error") else 0
+    return 1 if (
+        summary["statuses"].get("runner_error")
+        or not summary["public_agent_environment"]["identity_consistent"]
+    ) else 0
 
 
 if __name__ == "__main__":

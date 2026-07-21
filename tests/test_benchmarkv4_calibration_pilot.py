@@ -905,7 +905,7 @@ def test_agentic_run_cell_uses_mini_swe_bash_scaffold_by_default_path(
 
     assert result["status"] == "submitted"
     assert result["agent_scaffold"]["scaffold"] == (
-        "mini-swe-agent-2.4.5-vabench-direct-evas-v2"
+        "mini-swe-agent-2.4.5-vabench-docker-evas-v3"
     )
     assert result["agent_scaffold"]["evaluator_mounted"] is False
     assert result["output_token_budget"] is None

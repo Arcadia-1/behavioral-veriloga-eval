@@ -33,6 +33,7 @@ DEFAULT_SETUP_TIMEOUT_S = 1800
 DEFAULT_REQUEST_TIMEOUT_S = 1800
 DEFAULT_TOOL_TIMEOUT_S = 1800
 DEFAULT_JUDGE_TIMEOUT_S = 1800
+DEFAULT_DOCKER_IMAGE = "vabench-agent-runtime:0.8.3"
 MODES = tuple(f"G{i}" for i in range(6))
 
 if str(CALIBRATION) not in sys.path:
@@ -164,10 +165,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--mini-swe-sandbox",
-        choices=("auto", "sandbox-exec", "bubblewrap", "none"),
+        choices=("auto", "docker", "sandbox-exec", "bubblewrap", "none"),
         default="auto",
-        help="Use sandbox-exec on macOS or Bubblewrap on Linux/WSL2; 'none' is test-only.",
+        help="Formal runs use the upstream shared Docker environment; 'none' is test-only.",
     )
+    parser.add_argument("--docker-command", default="docker")
+    parser.add_argument("--mini-swe-image", default=DEFAULT_DOCKER_IMAGE)
     parser.add_argument("--agent-timeout-s", type=int, default=DEFAULT_AGENT_TIMEOUT_S)
     parser.add_argument("--setup-timeout-s", type=int, default=DEFAULT_SETUP_TIMEOUT_S)
     parser.add_argument("--request-timeout-s", type=int, default=DEFAULT_REQUEST_TIMEOUT_S)
@@ -216,6 +219,16 @@ def main() -> int:
             "--mini-swe-sandbox none is test-only; use a supported secure sandbox "
             "for executable G2-G5 campaigns"
         )
+    if (
+        args.agent_scaffold == "mini-swe"
+        and args.mini_swe_sandbox not in {"auto", "docker", "none"}
+        and any(mode in {"G2", "G3", "G4", "G5"} for mode in (args.mode or MODES))
+        and not args.dry_run
+    ):
+        raise SystemExit(
+            "paper-valid mini-SWE campaigns require the upstream shared Docker "
+            "environment; legacy host sandboxes are sensitivity-only"
+        )
     release = args.release.expanduser().resolve()
     output_root = args.output_root.expanduser().resolve()
     output_root.mkdir(parents=True, exist_ok=True)
@@ -246,6 +259,7 @@ def main() -> int:
         "token_accounting": "telemetry_only",
         "agent_scaffold": args.agent_scaffold,
         "mini_swe_sandbox": args.mini_swe_sandbox,
+        "mini_swe_image": args.mini_swe_image,
         "base_url_sha256": text_sha256(args.base_url.rstrip("/")),
         "temperature": args.temperature,
         "stream": args.stream,
@@ -274,6 +288,10 @@ def main() -> int:
         args.agent_scaffold,
         "--mini-swe-sandbox",
         args.mini_swe_sandbox,
+        "--docker-command",
+        args.docker_command,
+        "--mini-swe-image",
+        args.mini_swe_image,
         "--agent-timeout-s",
         str(args.agent_timeout_s),
         "--setup-timeout-s",

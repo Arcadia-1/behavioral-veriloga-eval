@@ -89,20 +89,19 @@ rejected cells start fresh.
 
 ## Dry Run
 
-Install the pinned agent scaffold before executing G2--G5:
+Install the pinned agent scaffold and build the upstream shared environment
+before executing G2--G5:
 
 ```bash
 uv sync --extra agentic --group dev
+benchmark-vabench-release-v4/public-agent-runtime/build.sh
+benchmark-vabench-release-v4/public-agent-runtime/verify.sh
 ```
 
-Linux and WSL2 hosts also require Bubblewrap (for example,
-`sudo apt-get install bubblewrap` on Ubuntu/Debian). `auto` selects
-`sandbox-exec` on macOS and `bubblewrap` on Linux/WSL2. Native Windows should
-run the campaign inside WSL2; it is not a supported Bash execution host.
-Bubblewrap additionally requires unprivileged user and network namespaces.
-Ubuntu 24.04 hosts with restrictive AppArmor defaults must enable the distro's
-targeted system-Bubblewrap user-namespace profile; the runner fails before the
-first API call rather than silently dropping network isolation.
+`auto` selects Docker. Formal results require the single image built from the
+repository's top-level `environment/`; `sandbox-exec`, Bubblewrap, and `none`
+remain legacy/test sensitivity paths and are not paper-valid. Record the Git
+commit, image reference, and observed image ID with every campaign.
 
 G2--G5 use `mini-swe-agent==2.4.5` with its `DefaultAgent` controller and one
 `bash` tool. The benchmark runner still owns campaign construction, runtime
@@ -110,6 +109,11 @@ export, credentials, wall-time enforcement, telemetry, trusted replay, and
 final scoring; it does not implement a second model-control loop. Mini-SWE
 step, cost, and consecutive-format-error limits are disabled. Accumulated
 tokens are recorded but never terminate an episode.
+
+Mini-SWE fixes the model--tool interaction scaffold; upstream vaBench's shared
+Docker image fixes where those commands execute. This adapter does not fork or
+modify mini-SWE-agent. It creates one container per task, forwards mini-SWE's
+Bash calls through `docker exec`, and destroys the container at episode end.
 
 Dry-run exports isolated runtime packages without contacting a model:
 
@@ -120,8 +124,8 @@ python3 benchmark-vabench-release-v4/operations/calibration_pilot/run_campaign.p
   --dry-run --limit 18
 ```
 
-The mini-SWE shell starts in `public/` and exposes the exported public runtime
-through both `task/` and its contract-compatible `public/task/` alias. Form
+The mini-SWE shell starts at `/workspace` in the shared container and exposes
+`public/task/` read-only, `public/submission/` writable, and `work/` writable. Form
 skills and the EVAS guide remain part of the frozen G0--G5 prompt treatments.
 All agentic modes receive the same minimal tool contract: a pinned, real `evas`
 executable is discoverable in `PATH`, `evas --help` works, and the task-local
@@ -129,12 +133,11 @@ executable is discoverable in `PATH`, `evas --help` works, and the task-local
 receive task-agnostic EVAS debugging guidance; tool discovery itself is not a
 skill treatment.
 
-The model invokes EVAS directly through ordinary bash, including pipes,
-redirection, and compound commands, and inspects the resulting logs and
-`tran.csv` itself. The sandbox launcher only pins the executable and confines
-the release's `/tmp/vabench-visible/evas-output` destination to
-`public/evas-output/`; it does not run a feedback broker, checker, gold
-comparison, or property diagnosis. `vabench-submit` is likewise a real,
+The model invokes the image's fixed EVAS directly through ordinary bash,
+including pipes, redirection, and compound commands, and inspects logs and
+`tran.csv` under `/tmp/vabench-visible/evas-output` itself. The adapter does not
+run a feedback broker, checker, gold comparison, or property diagnosis.
+`vabench-submit` is likewise a real,
 discoverable shell command that requests runner validation of the final
 artifact set.
 
@@ -155,10 +158,10 @@ correctness and the agent's ability to recognize completion are reported
 separately.
 
 Evaluator, gold, and trusted-replay assets remain outside the model-visible
-sandbox. A production G2--G5 run requires a supported OS sandbox; `none` is
-allowed only for unit tests and dry runs. Both supported backends deny network
-access and mount only the public workspace, with writes limited to
-`public/submission/`, `public/evas-output/`, and `public/.tmp/`. Before trusted
+container. A production G2--G5 run requires the shared Docker environment;
+`none` is allowed only for unit tests and dry runs. Docker denies network
+access and mounts only the current task, submission, and work directories.
+Before trusted
 replay starts, the runner also rejects submission symlinks and candidate source
 includes that can escape the declared artifact set.
 

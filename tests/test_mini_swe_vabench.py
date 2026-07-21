@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 from pathlib import Path
 import shutil
 import sys
@@ -162,12 +163,101 @@ def test_mini_swe_bash_episode_runs_direct_evas_reads_output_and_submits(
         "bash",
         "bash-submit",
     ]
-    assert result["scaffold"] == "mini-swe-agent-2.4.5-vabench-direct-evas-v2"
+    assert result["scaffold"] == "mini-swe-agent-2.4.5-vabench-docker-evas-v3"
     assert (runtime / "public" / "submission" / "model.va").is_file()
     assert "time,vout" in (
         runtime / "public" / "evas-output" / "tran.csv"
     ).read_text()
     assert (runtime / "evidence" / "trajectory.json").is_file()
+
+
+def test_docker_backend_runs_shell_in_shared_environment_and_cleans_up(
+    tmp_path: Path,
+) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "task" / "instruction.md").write_text("public task")
+    (runtime / "public" / "submission").mkdir(parents=True)
+    log = tmp_path / "docker.log"
+    fake_docker = tmp_path / "docker"
+    fake_docker.write_text(
+        "#!/bin/sh\n"
+        f"printf '%s\\n' \"$*\" >> {str(log)!r}\n"
+        "case \"$1 $2\" in\n"
+        "  'image inspect') echo 'sha256:shared-environment' ;;\n"
+        "  'create --name') echo 'vabench-test-container' ;;\n"
+        "  'exec -i') echo 'hello from shared docker' ;;\n"
+        "esac\n",
+        encoding="utf-8",
+    )
+    fake_docker.chmod(0o755)
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=5,
+        sandbox_backend="docker",
+        evas_command="",
+        docker_command=str(fake_docker),
+        docker_image="vabench-agent-runtime:test-commit",
+        submission_gate=artifact_gate,
+    )
+
+    environment.preflight()
+    result = environment.execute({"command": "printf hello"})
+    serialized = environment.serialize()
+    environment.close()
+
+    assert result["returncode"] == 0
+    assert "hello from shared docker" in result["output"]
+    assert serialized["info"]["config"]["environment"]["image_id"] == (
+        "sha256:shared-environment"
+    )
+    calls = log.read_text(encoding="utf-8")
+    assert "--network=none" in calls
+    assert "dst=/workspace/public/task,readonly" in calls
+    assert "dst=/workspace/public/submission" in calls
+    assert "dst=/workspace/work" in calls
+    assert "exec -i" in calls
+    assert "/usr/bin/timeout --signal=TERM --kill-after=1s" in calls
+    assert "rm -f" in calls
+
+
+def test_shared_docker_image_executes_real_adapter_contract(tmp_path: Path) -> None:
+    if os.environ.get("VABENCH_TEST_DOCKER_RUNTIME") != "1":
+        pytest.skip("real shared-image test is enabled by public-agent-runtime CI")
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "task" / "instruction.md").write_text("public task")
+    (runtime / "public" / "submission").mkdir(parents=True)
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=30,
+        sandbox_backend="docker",
+        evas_command="",
+        docker_image=os.environ.get(
+            "VABENCH_TEST_DOCKER_IMAGE", module.DEFAULT_DOCKER_IMAGE
+        ),
+        submission_gate=artifact_gate,
+    )
+    try:
+        environment.preflight()
+        result = environment.execute(
+            {
+                "command": (
+                    "evas --version --format json && "
+                    "printf 'module model; endmodule\\n' > public/submission/model.va"
+                )
+            }
+        )
+        serialized = environment.serialize()["info"]["config"]["environment"]
+    finally:
+        environment.close()
+
+    assert result["returncode"] == 0
+    assert '"package_version":"0.8.3"' in result["output"].replace(" ", "")
+    assert serialized["image_id"].startswith("sha256:")
+    assert (runtime / "public" / "submission" / "model.va").is_file()
 
 
 def test_sandbox_cannot_read_sibling_evaluator(tmp_path: Path) -> None:
@@ -285,16 +375,15 @@ def test_bubblewrap_argv_mounts_only_the_public_workspace(tmp_path: Path) -> Non
     ]
 
 
-def test_auto_selects_bubblewrap_on_linux(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_auto_selects_shared_docker_environment(monkeypatch: pytest.MonkeyPatch) -> None:
     module = load_module()
-    monkeypatch.setattr(module.platform, "system", lambda: "Linux")
     monkeypatch.setattr(
         module.shutil,
         "which",
-        lambda name: "/usr/bin/bwrap" if name == "bwrap" else None,
+        lambda name: "/usr/bin/docker" if name == "docker" else None,
     )
 
-    assert module.default_sandbox_backend() == "bubblewrap"
+    assert module.default_sandbox_backend() == "docker"
 
 
 def test_bubblewrap_isolates_evaluator_and_allows_direct_evas_output(

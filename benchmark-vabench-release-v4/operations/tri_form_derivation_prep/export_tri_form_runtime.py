@@ -429,12 +429,16 @@ def main() -> int:
     )
     prompt_name = "agent_prompt.txt" if args.mode in AGENTIC else "direct_prompt.txt"
     (output / prompt_name).write_text(prompt, encoding="utf-8")
-    model_mounts = [] if args.mode not in AGENTIC else ["public/task:ro", "public/submission:rw"]
+    model_mounts = [] if args.mode not in AGENTIC else [
+        "public/task:ro",
+        "public/submission:rw",
+        "public/work:rw",
+    ]
     write_json(output / "MODEL_ACCESS_POLICY.json", {
         "schema_version": "r45-model-access-policy-v1",
         "mode": args.mode,
         "mounts": model_mounts,
-        "executables": [] if args.mode not in AGENTIC else ["evas"],
+        "executables": [] if args.mode not in AGENTIC else ["evas", "vabench-submit"],
         "network": False,
         "evaluator_mounted": False,
     })

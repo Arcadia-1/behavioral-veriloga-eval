@@ -12,7 +12,6 @@ import hashlib
 import json
 import os
 from pathlib import Path
-import platform
 import re
 import secrets
 import shlex
@@ -24,7 +23,8 @@ from typing import Any, Callable
 
 
 MINI_SWE_AGENT_VERSION = "2.4.5"
-MINI_SWE_SCAFFOLD_ID = "mini-swe-agent-2.4.5-vabench-direct-evas-v2"
+MINI_SWE_SCAFFOLD_ID = "mini-swe-agent-2.4.5-vabench-docker-evas-v3"
+DEFAULT_DOCKER_IMAGE = "vabench-agent-runtime:0.8.3"
 BASH_TOOL = {
     "type": "function",
     "function": {
@@ -55,9 +55,9 @@ least one bash tool call.
 
 Workspace:
 - public/task/ is read-only public task material.
-- public/skill/ is an optional read-only reusable skill/reference tree in skill-enabled modes.
 - public/submission/ is the only writable candidate-artifact directory.
-- public/evas-output/ is writable simulator scratch and is never scored.
+- work/ is writable scratch space and is never scored.
+- /tmp/vabench-visible/evas-output/ contains public EVAS logs and waveforms.
 - evaluator, gold implementations, checker source, private mutations, and final
   score cases are not mounted in this shell.
 
@@ -67,12 +67,12 @@ Commands:
 - `evas` is a real, pinned executable in PATH. `evas --help`, pipes, redirection,
   and compound shell commands behave normally.
 - Follow public/task/evas_runtime.json and invoke `evas` directly. The sandboxed
-  launcher confines its documented `/tmp/vabench-visible/evas-output` destination
-  to public/evas-output/; inspect logs and tran.csv there yourself.
+  launcher keeps its documented `/tmp/vabench-visible/evas-output` destination
+  inside this task container; inspect logs and tran.csv there yourself.
 - `vabench-submit` is a real command in PATH. Run it after every declared artifact
   is complete. A rejected submission returns diagnostics and the episode continues.
 
-Do not access the network, leave the workspace, create symlinks, or modify public/task/.
+The container has no network. Do not create symlinks or modify public/task/.
 </vabench_bash_contract>
 """.strip()
 
@@ -270,6 +270,8 @@ class VaBenchBashEnvironment:
         timeout_s: float,
         sandbox_backend: str,
         evas_command: str,
+        docker_command: str = "docker",
+        docker_image: str = "",
         deadline_monotonic: float | None = None,
         submission_gate: Callable[[Path], dict[str, Any]],
     ) -> None:
@@ -281,15 +283,28 @@ class VaBenchBashEnvironment:
             cwd=str(self.workspace), timeout=float(timeout_s), sandbox_backend=sandbox_backend
         )
         self.workspace.joinpath("submission").mkdir(parents=True, exist_ok=True)
-        self.workspace.joinpath("evas-output").mkdir(parents=True, exist_ok=True)
-        self.workspace.joinpath(".tmp").mkdir(parents=True, exist_ok=True)
-        self.tools_dir = self.workspace / ".tools"
+        self.work_dir = self.workspace / "work"
+        self.work_dir.mkdir(parents=True, exist_ok=True)
+        scratch_root = self.work_dir if sandbox_backend == "docker" else self.workspace
+        scratch_root.joinpath("evas-output").mkdir(parents=True, exist_ok=True)
+        scratch_root.joinpath(".tmp").mkdir(parents=True, exist_ok=True)
+        self.tools_dir = scratch_root / ".tools"
         self.tools_dir.mkdir(parents=True, exist_ok=True)
         public_alias = self.workspace / "public"
         if not public_alias.exists() and not public_alias.is_symlink():
             public_alias.symlink_to(".", target_is_directory=True)
-        self.submit_sentinel = self.workspace / ".tmp" / "submission-request"
+        self.submit_sentinel = scratch_root / ".tmp" / "submission-request"
         self.evas_command = evas_command
+        self.docker_command = docker_command
+        self.docker_image = docker_image
+        self.docker_image_id: str | None = None
+        self._docker_container: str | None = None
+        self._docker_name = (
+            "vabench-"
+            + hashlib.sha256(str(self.runtime).encode()).hexdigest()[:12]
+            + "-"
+            + secrets.token_hex(4)
+        )
         self._evas_telemetry_token = secrets.token_hex(16)
         self.evas_invocations: list[dict[str, Any]] = []
         self._install_shell_tools()
@@ -297,21 +312,40 @@ class VaBenchBashEnvironment:
         self._submitted_exception: type | None = None
 
     def _install_shell_tools(self) -> None:
-        base = shlex.split(self.evas_command)
-        if not base:
-            raise ValueError("empty EVAS executable command")
-        executable = shutil.which(base[0])
-        if executable is None:
-            raise ValueError(f"EVAS executable is unavailable: {base[0]}")
-        base[0] = str(Path(executable).resolve())
-        self.evas_read_roots = self._evas_read_roots(Path(base[0]), base[1:])
-        if any(
-            root == self.runtime or self.runtime in root.parents
-            for root in self.evas_read_roots
-        ):
-            raise ValueError("EVAS executable runtime is inside the private task runtime")
+        if self.config.sandbox_backend == "docker":
+            if not self.docker_image:
+                raise ValueError("Docker backend requires a shared environment image")
+            base = ["/usr/local/bin/evas"]
+            self.evas_read_roots = []
+        else:
+            base = shlex.split(self.evas_command)
+            if not base:
+                raise ValueError("empty EVAS executable command")
+            executable = shutil.which(base[0])
+            if executable is None:
+                raise ValueError(f"EVAS executable is unavailable: {base[0]}")
+            base[0] = str(Path(executable).resolve())
+            self.evas_read_roots = self._evas_read_roots(Path(base[0]), base[1:])
+            if any(
+                root == self.runtime or self.runtime in root.parents
+                for root in self.evas_read_roots
+            ):
+                raise ValueError("EVAS executable runtime is inside the private task runtime")
         evas_wrapper = self.tools_dir / "evas"
         telemetry_prefix = f"VABENCH_EVAS:{self._evas_telemetry_token}"
+        output_remap = ""
+        if self.config.sandbox_backend != "docker":
+            output_remap = (
+                "    if [[ $output == /tmp/vabench-visible/evas-output* ]]; then\n"
+                "      suffix=${output#/tmp/vabench-visible/evas-output}\n"
+                "      output=${VABENCH_EVAS_OUTPUT_ROOT}${suffix}\n"
+                "      echo \"VABENCH_EVAS_OUTPUT=$output\" >&2\n"
+                "    elif [[ $output == public/submission/evas-output* ]]; then\n"
+                "      suffix=${output#public/submission/evas-output}\n"
+                "      output=${VABENCH_EVAS_OUTPUT_ROOT}${suffix}\n"
+                "      echo \"VABENCH_EVAS_OUTPUT=$output\" >&2\n"
+                "    fi\n"
+            )
         evas_wrapper.write_text(
             "#!/bin/bash\n"
             "set -e\n"
@@ -329,15 +363,8 @@ class VaBenchBashEnvironment:
             "    shift\n"
             "    [[ $# -gt 0 ]] || { echo 'evas: -o requires a path' >&2; exit 2; }\n"
             "    output=$1\n"
-            "    if [[ $output == /tmp/vabench-visible/evas-output* ]]; then\n"
-            "      suffix=${output#/tmp/vabench-visible/evas-output}\n"
-            "      output=${VABENCH_EVAS_OUTPUT_ROOT}${suffix}\n"
-            "      echo \"VABENCH_EVAS_OUTPUT=$output\" >&2\n"
-            "    elif [[ $output == public/submission/evas-output* ]]; then\n"
-            "      suffix=${output#public/submission/evas-output}\n"
-            "      output=${VABENCH_EVAS_OUTPUT_ROOT}${suffix}\n"
-            "      echo \"VABENCH_EVAS_OUTPUT=$output\" >&2\n"
-            "    fi\n"
+            + output_remap
+            +
             "    args+=(\"-o\" \"$output\")\n"
             "  else\n"
             "    args+=(\"$1\")\n"
@@ -415,6 +442,8 @@ class VaBenchBashEnvironment:
                         "cwd": str(self.workspace),
                         "timeout": self.config.timeout,
                         "sandbox_backend": self.config.sandbox_backend,
+                        "docker_image": self.docker_image or None,
+                        "image_id": self.docker_image_id,
                         "network": False,
                         "evaluator_mounted": False,
                     }
@@ -427,6 +456,8 @@ class VaBenchBashEnvironment:
         """Fail before the first model call if the requested isolation is unusable."""
         if self.config.sandbox_backend == "none":
             return
+        if self.config.sandbox_backend == "docker":
+            self._ensure_docker_container()
         # ``test -r`` checks Unix permission bits and can still report a path as
         # readable when sandbox-exec would deny the actual filesystem access.
         # Probe a real directory read so macOS and namespace-based backends are
@@ -463,6 +494,33 @@ class VaBenchBashEnvironment:
     def _sandbox_argv(self, command: str) -> list[str]:
         command = "exec 9>&1\n" + command
         backend = self.config.sandbox_backend
+        if backend == "docker":
+            self._ensure_docker_container()
+            assert self._docker_container is not None
+            container_timeout_s = max(0.05, self._remaining_command_timeout_s() - 0.5)
+            return [
+                *shlex.split(self.docker_command),
+                "exec",
+                "-i",
+                "--workdir",
+                "/workspace",
+                "--env",
+                "PATH=/workspace/work/.tools:/usr/local/bin:/usr/bin:/bin",
+                "--env",
+                "HOME=/home/agent",
+                "--env",
+                "TMPDIR=/tmp",
+                "--env",
+                "VABENCH_SUBMIT_SENTINEL=/workspace/work/.tmp/submission-request",
+                self._docker_container,
+                "/usr/bin/timeout",
+                "--signal=TERM",
+                "--kill-after=1s",
+                f"{container_timeout_s:.3f}s",
+                "/bin/bash",
+                "-c",
+                command,
+            ]
         if backend == "sandbox-exec":
             executable = shutil.which("sandbox-exec")
             if not executable:
@@ -485,6 +543,105 @@ class VaBenchBashEnvironment:
         if backend == "none":
             return ["/bin/bash", "-c", command]
         raise RuntimeError(f"unsupported mini-SWE sandbox backend: {backend}")
+
+    def _ensure_docker_container(self) -> None:
+        if self._docker_container is not None:
+            return
+        docker = shlex.split(self.docker_command)
+        if not docker:
+            raise ValueError("empty Docker command")
+        executable = shutil.which(docker[0])
+        if executable is None:
+            raise RuntimeError(f"Docker executable is unavailable: {docker[0]}")
+        docker[0] = str(Path(executable).resolve())
+        inspect = subprocess.run(
+            [*docker, "image", "inspect", "--format", "{{.Id}}", self.docker_image],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=min(30.0, self._remaining_command_timeout_s()),
+            check=False,
+        )
+        if inspect.returncode != 0 or not inspect.stdout.strip():
+            raise RuntimeError(
+                "shared vaBench Docker image is unavailable: "
+                + (inspect.stdout.strip()[:2000] or self.docker_image)
+            )
+        self.docker_image_id = inspect.stdout.strip().splitlines()[-1]
+        uid = os.getuid() if hasattr(os, "getuid") else 10001
+        gid = os.getgid() if hasattr(os, "getgid") else 10001
+        create = subprocess.run(
+            [
+                *docker,
+                "create",
+                "--name",
+                self._docker_name,
+                "--platform",
+                "linux/amd64",
+                "--read-only",
+                "--cap-drop=ALL",
+                "--security-opt=no-new-privileges",
+                "--user",
+                f"{uid}:{gid}",
+                "--pids-limit=512",
+                "--memory=4g",
+                "--cpus=2",
+                "--network=none",
+                "--tmpfs",
+                "/tmp:rw,nosuid,nodev,size=2g,mode=1777",
+                "--tmpfs",
+                f"/home/agent:rw,nosuid,nodev,size=256m,mode=0700,uid={uid},gid={gid}",
+                "--mount",
+                f"type=bind,src={self.workspace / 'task'},dst=/workspace/public/task,readonly",
+                "--mount",
+                f"type=bind,src={self.workspace / 'submission'},dst=/workspace/public/submission",
+                "--mount",
+                f"type=bind,src={self.work_dir},dst=/workspace/work",
+                "--workdir",
+                "/workspace",
+                self.docker_image_id,
+                "/bin/sh",
+                "-c",
+                "while :; do sleep 3600; done",
+            ],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=min(30.0, self._remaining_command_timeout_s()),
+            check=False,
+        )
+        if create.returncode != 0:
+            raise RuntimeError(
+                "failed to create shared vaBench Docker container: "
+                + create.stdout.strip()[:2000]
+            )
+        self._docker_container = create.stdout.strip().splitlines()[-1]
+        start = subprocess.run(
+            [*docker, "start", self._docker_container],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=min(30.0, self._remaining_command_timeout_s()),
+            check=False,
+        )
+        if start.returncode != 0:
+            diagnostic = start.stdout.strip()[:2000]
+            self.close()
+            raise RuntimeError("failed to start shared vaBench Docker container: " + diagnostic)
+
+    def close(self) -> None:
+        if self._docker_container is None:
+            return
+        container = self._docker_container
+        self._docker_container = None
+        subprocess.run(
+            [*shlex.split(self.docker_command), "rm", "-f", container],
+            text=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=30,
+            check=False,
+        )
 
     def _submit(self) -> dict[str, Any]:
         gate = self.submission_gate(self.runtime)
@@ -512,6 +669,8 @@ class VaBenchBashEnvironment:
         )
 
     def _shell_env(self) -> dict[str, str]:
+        if self.config.sandbox_backend == "docker":
+            return dict(os.environ)
         return {
             "PATH": f"{self.tools_dir}:/usr/bin:/bin:/usr/sbin:/sbin",
             "HOME": str(self.workspace),
@@ -538,16 +697,24 @@ class VaBenchBashEnvironment:
                 check=False,
             )
             elapsed_s = time.monotonic() - started
+            command_timed_out = (
+                self.config.sandbox_backend == "docker"
+                and completed.returncode == 124
+            )
             output = self._record_evas_invocations(
                 completed.stdout,
                 command=command,
                 elapsed_s=elapsed_s,
-                command_timed_out=False,
+                command_timed_out=command_timed_out,
             )
             return {
                 "output": output,
                 "returncode": completed.returncode,
-                "exception_info": "",
+                "exception_info": (
+                    "bash command timed out within the episode wall-time limit"
+                    if command_timed_out
+                    else ""
+                ),
                 "elapsed_s": elapsed_s,
             }
         except subprocess.TimeoutExpired as exc:
@@ -806,6 +973,8 @@ def run_mini_swe_episode(
     tool_timeout_s: float,
     sandbox_backend: str,
     evas_command: str,
+    docker_command: str = "docker",
+    docker_image: str = DEFAULT_DOCKER_IMAGE,
     submission_gate: Callable[[Path], dict[str, Any]],
     usage_parser: Callable[..., dict[str, Any]],
     response_metadata: Callable[[dict[str, Any]], dict[str, Any]],
@@ -819,72 +988,77 @@ def run_mini_swe_episode(
         timeout_s=min(float(tool_timeout_s), float(agent_timeout_s)),
         sandbox_backend=sandbox_backend,
         evas_command=evas_command,
+        docker_command=docker_command,
+        docker_image=docker_image,
         deadline_monotonic=deadline,
         submission_gate=submission_gate,
     )
-    environment.preflight()
-    environment.bind_submitted_exception(Submitted)
-    model = VaBenchMiniModel(
-        client,
-        per_turn_max_tokens=per_turn_max_tokens,
-        request_timeout_s=request_timeout_s,
-        deadline_monotonic=deadline,
-        usage_parser=usage_parser,
-        response_metadata=response_metadata,
-    )
-    model.bind_mini_swe_protocol(observation_formatter, FormatError)
-    agent = DefaultAgent(
-        model,
-        environment,
-        system_template=SYSTEM_PROMPT,
-        instance_template="{{task}}",
-        step_limit=0,
-        cost_limit=0.0,
-        wall_time_limit_seconds=max(1, int(agent_timeout_s)),
-        # Keep malformed-turn recovery available without introducing another
-        # episode cutoff. Submission, provider/context failure, and wall time
-        # remain the only terminal conditions.
-        max_consecutive_format_errors=0,
-        output_path=trajectory_path,
-    )
-    task = prompt.rstrip() + "\n\n" + BASH_CONTRACT
-    outcome = agent.run(task)
-    gate = submission_gate(runtime)
-    serialized = agent.serialize()
-    explicit_submission = outcome.get("exit_status") == "Submitted"
-    return {
-        "scaffold": MINI_SWE_SCAFFOLD_ID,
-        "scaffold_version": MINI_SWE_AGENT_VERSION,
-        "bash_tool_schema_sha256": _json_digest(BASH_TOOL),
-        "system_prompt_sha256": hashlib.sha256(SYSTEM_PROMPT.encode()).hexdigest(),
-        "bash_contract_sha256": hashlib.sha256(BASH_CONTRACT.encode()).hexdigest(),
-        "exit_status": outcome.get("exit_status"),
-        "submission": outcome.get("submission", ""),
-        "submitted": bool(explicit_submission and gate.get("passed")),
-        "artifact_complete": bool(gate.get("passed")),
-        "artifact_gate": gate,
-        "artifact_sha256": gate.get("artifact_sha256") or {},
-        "output_tokens": model.total_output_tokens,
-        "events": model.events,
-        "commands": environment.commands,
-        "evas_invocations": environment.evas_invocations,
-        "model_calls": len(model.events),
-        "messages": list(serialized.get("messages") or []),
-        "agent_elapsed_s": time.monotonic() - started,
-        "trajectory_format": serialized.get("trajectory_format"),
-        "sandbox_backend": sandbox_backend,
-        "network": False,
-        "evaluator_mounted": False,
-    }
+    try:
+        environment.preflight()
+        environment.bind_submitted_exception(Submitted)
+        model = VaBenchMiniModel(
+            client,
+            per_turn_max_tokens=per_turn_max_tokens,
+            request_timeout_s=request_timeout_s,
+            deadline_monotonic=deadline,
+            usage_parser=usage_parser,
+            response_metadata=response_metadata,
+        )
+        model.bind_mini_swe_protocol(observation_formatter, FormatError)
+        agent = DefaultAgent(
+            model,
+            environment,
+            system_template=SYSTEM_PROMPT,
+            instance_template="{{task}}",
+            step_limit=0,
+            cost_limit=0.0,
+            wall_time_limit_seconds=max(1, int(agent_timeout_s)),
+            # Keep malformed-turn recovery available without introducing another
+            # episode cutoff. Submission, provider/context failure, and wall time
+            # remain the only terminal conditions.
+            max_consecutive_format_errors=0,
+            output_path=trajectory_path,
+        )
+        task = prompt.rstrip() + "\n\n" + BASH_CONTRACT
+        outcome = agent.run(task)
+        gate = submission_gate(runtime)
+        serialized = agent.serialize()
+        explicit_submission = outcome.get("exit_status") == "Submitted"
+        return {
+            "scaffold": MINI_SWE_SCAFFOLD_ID,
+            "scaffold_version": MINI_SWE_AGENT_VERSION,
+            "bash_tool_schema_sha256": _json_digest(BASH_TOOL),
+            "system_prompt_sha256": hashlib.sha256(SYSTEM_PROMPT.encode()).hexdigest(),
+            "bash_contract_sha256": hashlib.sha256(BASH_CONTRACT.encode()).hexdigest(),
+            "exit_status": outcome.get("exit_status"),
+            "submission": outcome.get("submission", ""),
+            "submitted": bool(explicit_submission and gate.get("passed")),
+            "artifact_complete": bool(gate.get("passed")),
+            "artifact_gate": gate,
+            "artifact_sha256": gate.get("artifact_sha256") or {},
+            "output_tokens": model.total_output_tokens,
+            "events": model.events,
+            "commands": environment.commands,
+            "evas_invocations": environment.evas_invocations,
+            "model_calls": len(model.events),
+            "messages": list(serialized.get("messages") or []),
+            "agent_elapsed_s": time.monotonic() - started,
+            "trajectory_format": serialized.get("trajectory_format"),
+            "sandbox_backend": sandbox_backend,
+            "docker_image": docker_image if sandbox_backend == "docker" else None,
+            "docker_image_id": environment.docker_image_id,
+            "network": False,
+            "evaluator_mounted": False,
+        }
+    finally:
+        environment.close()
 
 
 def default_sandbox_backend() -> str:
-    if platform.system() == "Darwin" and shutil.which("sandbox-exec"):
-        return "sandbox-exec"
-    if platform.system() == "Linux" and shutil.which("bwrap"):
-        return "bubblewrap"
+    if shutil.which("docker"):
+        return "docker"
     raise RuntimeError(
-        "no supported secure bash sandbox found; install bubblewrap on Linux/WSL2, "
-        "use macOS sandbox-exec, or explicitly select --mini-swe-sandbox none only "
-        "for local tests"
+        "the shared vaBench Docker environment is unavailable; install Docker and "
+        "build environment/ before an executable mini-SWE campaign, or explicitly "
+        "select --mini-swe-sandbox none only for local tests"
     )
