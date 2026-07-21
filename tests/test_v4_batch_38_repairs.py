@@ -33,6 +33,7 @@ def _shift_and_scale(rows: list[dict[str, float]], scale: float = 1.37) -> list[
 def _sampler_rows() -> list[dict[str, float]]:
     rows: list[dict[str, float]] = []
     hold = 0.0
+    metric = 0.0
     valid = 0.0
     values = (0.60, 0.60, 0.20, 0.20, 0.75, 0.75, 0.30, 0.30)
     sample_enabled = (True, True, False, True, True, False, True, True)
@@ -57,8 +58,6 @@ def _sampler_rows() -> list[dict[str, float]]:
             metric = min(0.9, 0.5 * abs(vin - hold))
             hold = vin
             valid = 0.9
-        else:
-            metric = None
         rows.append({
             **base,
             "time": edge,
@@ -69,7 +68,7 @@ def _sampler_rows() -> list[dict[str, float]]:
             "time": edge + 1.0e-9,
             "clk": 0.9,
             "vhold": hold,
-            "aperture_metric": 0.0 if metric is None else metric,
+            "aperture_metric": metric,
             "valid": valid,
         })
     return rows
