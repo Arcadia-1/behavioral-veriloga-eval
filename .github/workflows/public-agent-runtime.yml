@@ -1,0 +1,34 @@
+name: Public Agent Runtime
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/public-agent-runtime.yml"
+      - "benchmark-vabench-release-v4/public-agent-runtime/**"
+      - "benchmark-vabench-release-v4/scripts/tests/test_public_agent_runtime.py"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/public-agent-runtime.yml"
+      - "benchmark-vabench-release-v4/public-agent-runtime/**"
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Check runtime contract
+        run: python3 -m pytest -q benchmark-vabench-release-v4/scripts/tests/test_public_agent_runtime.py
+
+      - name: Build pinned runtime image
+        working-directory: benchmark-vabench-release-v4/public-agent-runtime
+        run: ./build.sh
+
+      - name: Verify mounts and readable EVAS waveform
+        working-directory: benchmark-vabench-release-v4/public-agent-runtime
+        run: ./verify.sh

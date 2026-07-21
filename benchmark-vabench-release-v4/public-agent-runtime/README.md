@@ -1,0 +1,110 @@
+# vaBench Public Agent Runtime
+
+中文操作说明见 [`README.zh-CN.md`](README.zh-CN.md)。
+
+This directory builds a public, task-agnostic Docker image for running a
+Verilog-A agent with Bash and EVAS. The image contains no benchmark task,
+checker, evaluator, gold solution, hidden test, mutation catalog, credential,
+or internal registry configuration. One sanitized public task is mounted
+read-only at runtime; only the submission and working directories are writable.
+
+## Build
+
+Requirements:
+
+- Docker with Buildx
+- public access to Docker Hub and PyPI
+- an `amd64` host, or Docker emulation for `linux/amd64`
+
+```bash
+git clone https://github.com/Arcadia-1/behavioral-veriloga-eval.git
+cd behavioral-veriloga-eval
+git checkout <approved-commit>
+cd benchmark-vabench-release-v4/public-agent-runtime
+./build.sh
+```
+
+`requirements.lock` pins EVAS and every Python dependency by version and
+SHA-256. The Dockerfile pins the base image by digest. Record the image ID
+printed by `build.sh`; campaign records should use that immutable identity.
+
+## Verify
+
+```bash
+./verify.sh
+```
+
+The verifier checks:
+
+- EVAS 0.8.3 is installed with a loadable Rust core;
+- the public task mount is readable but not writable;
+- submission and work mounts are writable;
+- strict EVAS simulation produces a readable `tran.csv`;
+- the image does not expose `/opt/benchmark` or `/workspace/evaluator`.
+
+## Run One Assigned Task
+
+Prepare three host directories:
+
+```text
+task/        sanitized public material for exactly one assigned task
+submission/  final candidate artifacts
+work/        disposable agent working files
+```
+
+Then start an interactive shell:
+
+```bash
+./run.sh ./task ./submission ./work
+```
+
+Or provide an agent command:
+
+```bash
+cp /path/to/agent ./work/agent
+./run.sh ./task ./submission ./work /workspace/work/agent --workspace /workspace
+```
+
+Inside the container, a DUT or bugfix task can be simulated with:
+
+```bash
+evas simulate public/task/visible_test.scs \
+  -o /tmp/vabench-visible/evas-output \
+  --spectre-strict
+python3 -c 'import csv; print(next(csv.DictReader(open("/tmp/vabench-visible/evas-output/tran.csv"))))'
+```
+
+Testbench tasks use the fixed `candidate_command_template` in
+`public/task/evas_runtime.json` for the named public cases.
+
+## Isolation Contract
+
+The launcher uses a read-only root filesystem, drops Linux capabilities,
+enables `no-new-privileges`, disables networking by default, and mounts only:
+
+```text
+/workspace/public/task        read-only
+/workspace/public/submission  read-write
+/workspace/work               read-write
+/tmp                           private tmpfs
+/home/agent                    private tmpfs
+```
+
+Do not mount the Docker socket, a home directory, a complete benchmark
+checkout, an evaluator directory, or credential files. If an in-container
+agent requires network access, the operator may set `VABENCH_NETWORK` to a
+dedicated Docker network and use only operator-owned credentials. Internal
+credentials must never be included in the image or task bundle.
+
+After a run, export only the files declared by the task's submission contract.
+Hidden scoring is performed once by the private evaluator in a separate
+environment.
+
+## Security Boundary
+
+This image protects the runtime mount boundary; it cannot make material secret
+after that material has already been published. The tracked r49 release is an
+open development benchmark because its evaluator assets are present in this
+public repository. A blind external evaluation requires new held-out tasks
+whose private evaluator assets have never been committed publicly, with only
+their sanitized public bundles supplied to this launcher.
