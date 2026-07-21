@@ -30,6 +30,13 @@ def _v4_clip(value: float, lo: float = 0.0, hi: float = 0.9) -> float:
 def _v4_close(actual: float, expected: float, tol: float = 0.07) -> bool:
     return abs(actual - expected) <= tol
 
+def _inactive_between(rows: list[dict[str, float]], start: float, stop: float) -> bool:
+    return any(
+        start < row["time"] <= stop
+        and (row["rst"] > 0.45 or row["enable"] <= 0.45)
+        for row in rows
+    )
+
 def check_v4_pwm_ramp_modulator_front_end(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "rst", "enable", "vctrl", "ramp_out", "pwm_out", "cycle_start", "duty_metric"}
     missing = _v4_missing_columns(rows, required)
@@ -41,9 +48,33 @@ def check_v4_pwm_ramp_modulator_front_end(rows: list[dict[str, float]]) -> tuple
     wraps = 0
     highs = 0
     lows = 0
+    inactive_since: float | None = None
+    reset_clear = False
+    disabled_clear = False
+    clear_errors = 0
+    for row in rows:
+        inactive = row["rst"] > 0.45 or row["enable"] <= 0.45
+        if inactive:
+            if inactive_since is None:
+                inactive_since = row["time"]
+            if row["time"] - inactive_since >= 500e-12:
+                clear = all(
+                    abs(row[name]) <= 0.08
+                    for name in ("ramp_out", "pwm_out", "cycle_start", "duty_metric")
+                )
+                reset_clear = reset_clear or (row["rst"] > 0.45 and clear)
+                disabled_clear = disabled_clear or (
+                    row["rst"] <= 0.45 and row["enable"] <= 0.45 and clear
+                )
+                clear_errors += int(not clear)
+        else:
+            inactive_since = None
+    previous_edge = rows[0]["time"]
     for edge_t in _rising_times(rows, "clk"):
         edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
         sample = _sample_after(rows, edge_t, 0.8e-9)
+        if _inactive_between(rows, previous_edge, edge_t):
+            ramp = 0.0
         if edge_row["rst"] > 0.45 or edge_row["enable"] <= 0.45:
             ramp = 0.0
             expected_pwm = 0.0
@@ -61,6 +92,11 @@ def check_v4_pwm_ramp_modulator_front_end(rows: list[dict[str, float]]) -> tuple
             expected_duty = _v4_clip(edge_row["vctrl"])
             highs += int(expected_pwm > 0.45)
             lows += int(expected_pwm <= 0.45)
+        if _inactive_between(rows, edge_t, sample["time"]):
+            ramp = 0.0
+            expected_pwm = 0.0
+            expected_cycle = 0.0
+            expected_duty = 0.0
         if not _v4_close(sample["ramp_out"], ramp, 0.06):
             errors += 1
         if (sample["pwm_out"] > 0.45) != (expected_pwm > 0.45):
@@ -70,8 +106,22 @@ def check_v4_pwm_ramp_modulator_front_end(rows: list[dict[str, float]]) -> tuple
         if not _v4_close(sample["duty_metric"], expected_duty, 0.06):
             errors += 1
         checked += 1
-    ok = errors == 0 and checked >= 8 and wraps >= 2 and highs > 0 and lows > 0
-    return ok, f"v4_pwm_ramp checked={checked} wraps={wraps} highs={highs} lows={lows} errors={errors}"
+        previous_edge = edge_t
+    ok = (
+        errors == 0
+        and clear_errors == 0
+        and reset_clear
+        and disabled_clear
+        and checked >= 8
+        and wraps >= 2
+        and highs > 0
+        and lows > 0
+    )
+    return ok, (
+        f"v4_pwm_ramp checked={checked} wraps={wraps} highs={highs} lows={lows} "
+        f"errors={errors} reset_clear={reset_clear} disabled_clear={disabled_clear} "
+        f"clear_errors={clear_errors}"
+    )
 
 CHECKER_ID = "v4_376_pwm_ramp_modulator_front_end"
 CHECKER: Checker = check_v4_pwm_ramp_modulator_front_end
