@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 import sys
 from pathlib import Path
 
@@ -7,6 +9,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+
+TASK_DIR = (
+    ROOT
+    / "benchmark-vabench-release-v4"
+    / "release"
+    / "benchmarkv4"
+    / "tasks"
+    / "158-ref-flash-8level-decoder"
+)
 
 
 def _times(stop_ns: float = 42.0, step_ns: float = 0.05) -> list[float]:
@@ -112,6 +123,14 @@ def test_task158_accepts_independent_one_hot_tap_coverage() -> None:
     )
     assert passed, note
     assert "independent_one_hot_taps=8" in note
+
+
+def test_task158_release_feedback_profile_tracks_harness_hash() -> None:
+    harness_path = TASK_DIR / "evaluator" / "harness_spec.json"
+    feedback_path = TASK_DIR / "evaluator" / "profiles" / "feedback.json"
+    feedback = json.loads(feedback_path.read_text(encoding="utf-8"))
+
+    assert feedback["harness_spec_sha256"] == hashlib.sha256(harness_path.read_bytes()).hexdigest()
 
 
 def test_task158_rejects_old_pass_wrong_weight_regression() -> None:
