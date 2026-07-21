@@ -53,15 +53,16 @@ def check_v3_cdac_6b_stage1_up(rows: list[dict[str, float]]) -> tuple[bool, str]
         behavior.compare(expected=expected, observed=probe["vres"], tolerance=0.03,
                          time_s=probe_time, label=kind)
 
+    required_controls = {f"dctrl{bit}" for bit in range(6)}
     behavior.condition(
         sample_events >= 2
         and max(sampled_values, default=0.0) - min(sampled_values, default=0.0) >= 0.05
-        and len(controls_seen) >= 4
-        and "dctrl5" in controls_seen,
-        expected="two_changed_falling_samples_and_four_control_weights_including_msb",
+        and required_controls.issubset(controls_seen),
+        expected="two_changed_falling_samples_and_all_six_control_weights",
         observed=(
             f"sample_events={sample_events}_sampled_values={sampled_values}"
             f"_controls={sorted(controls_seen)}"
+            f"_missing_controls={sorted(required_controls - controls_seen)}"
         ),
         time_s=rows[-1]["time"],
     )

@@ -34,6 +34,8 @@ def _cdac_trace(*, repeated_sample: bool) -> list[dict[str, float]]:
     event(3.0, {"dctrl4": 1.0, "vres": 0.95})
     event(4.0, {"dctrl3": 1.0, "vres": 1.075})
     event(5.0, {"dctrl2": 1.0, "vres": 1.1375})
+    event(5.4, {"dctrl1": 1.0, "vres": 1.16875})
+    event(5.7, {"dctrl0": 1.0, "vres": 1.184375})
     if repeated_sample:
         event(6.0, {"clks": 1.0, "vin": -0.1})
         event(7.0, {"clks": 0.0, "vres": -0.1})
