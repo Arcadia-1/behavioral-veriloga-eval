@@ -17,7 +17,13 @@ LEGACY_SYMBOL = '351-comparator-decision-capture'
 
 def check_v4_260_comparator_decision_capture(rows: list[Row]) -> CheckResult:
     """Check v4_260_comparator_decision_capture: Comparator Decision Capture clocked edge behavior."""
-    ok, note = check_clocked_factory(rows, mode='edge', edge=1, task_name=TASK_LABEL)
+    ok, note = check_clocked_factory(
+        rows,
+        mode='edge',
+        edge=1,
+        task_name=TASK_LABEL,
+        asynchronous_reset=True,
+    )
     if ok:
         ok, hold_note = check_clocked_output_hold(
             rows, edge=1, task_name=TASK_LABEL

@@ -17,7 +17,13 @@ LEGACY_SYMBOL = '353-resettable-phase-toggle-monitor'
 
 def check_v4_262_resettable_phase_toggle_monitor(rows: list[Row]) -> CheckResult:
     """Check v4_262_resettable_phase_toggle_monitor: Resettable Phase Toggle Monitor clocked toggle behavior."""
-    result = check_clocked_factory(rows, mode='toggle', edge=1, task_name=TASK_LABEL)
+    result = check_clocked_factory(
+        rows,
+        mode='toggle',
+        edge=1,
+        task_name=TASK_LABEL,
+        asynchronous_reset=True,
+    )
     if not result[0]:
         return result
     ok, hold_note = check_clocked_output_hold(rows, edge=1, task_name=TASK_LABEL)
