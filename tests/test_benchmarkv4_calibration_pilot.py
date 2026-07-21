@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import time
 from types import SimpleNamespace
 
 import pytest
@@ -27,6 +28,12 @@ RUN_CAMPAIGN_WRAPPER = (
     / "benchmark-vabench-release-v4"
     / "runners"
     / "run_benchmarkv4_campaign.py"
+)
+RUN_CAMPAIGN_DETACHED = (
+    ROOT
+    / "benchmark-vabench-release-v4"
+    / "runners"
+    / "run_benchmarkv4_campaign_detached.sh"
 )
 RUN_CAMPAIGN = (
     ROOT
@@ -839,6 +846,18 @@ def test_provider_request_timeout_is_not_mislabeled_as_agent_walltime(
     assert result.get("termination_reason") != "agent_timeout"
 
 
+def test_runtime_export_failure_is_not_mislabeled_as_evas_failure() -> None:
+    runner = load_run_campaign()
+    classification = runner.classify_execution_exception(
+        runner.RuntimeExportError("runtime exporter failed under /tmp/vaEvas")
+    )
+
+    assert classification["status"] == "infrastructure_failure"
+    assert classification["termination_reason"] == "runtime_export_failure"
+    assert classification["incident"]["component"] == "runner"
+    assert classification["incident"]["phase"] == "setup"
+
+
 def test_agentic_run_cell_rejects_an_undeclared_file_at_finalize(
     tmp_path: Path, r45_release: Path
 ) -> None:
@@ -1297,6 +1316,101 @@ def test_campaign_wrapper_dry_run_exports_agentic_cells(
     assert campaign["execution_config"]["token_accounting"] == "telemetry_only"
     summary = json.loads((output / "run" / "SUMMARY.json").read_text(encoding="utf-8"))
     assert summary["statuses"] == {"prepared": 3}
+
+
+def test_detached_campaign_launcher_survives_closed_caller_stdin(tmp_path: Path) -> None:
+    assert RUN_CAMPAIGN_DETACHED.is_file()
+    output = tmp_path / "detached-campaign"
+    log = tmp_path / "detached-campaign.log"
+    pid_file = tmp_path / "detached-campaign.pid"
+    env = dict(os.environ)
+    env["VABENCH_PYTHON"] = sys.executable
+    completed = subprocess.run(
+        [
+            str(RUN_CAMPAIGN_DETACHED),
+            "--log",
+            str(log),
+            "--pid-file",
+            str(pid_file),
+            "--",
+            "--release",
+            str(R49_RELEASE),
+            "--task-id",
+            "v4-012",
+            "--mode",
+            "G2",
+            "--output-root",
+            str(output),
+            "--model",
+            "deepseek-v4-flash",
+            "--dry-run",
+            "--workers",
+            "2",
+        ],
+        cwd=ROOT,
+        env=env,
+        stdin=subprocess.PIPE,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr + completed.stdout
+    summary_path = output / "run" / "SUMMARY.json"
+    for _ in range(100):
+        if summary_path.is_file():
+            break
+        time.sleep(0.05)
+    assert summary_path.is_file(), log.read_text(encoding="utf-8", errors="replace")
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    assert summary["statuses"] == {"prepared": 1}
+    assert pid_file.read_text(encoding="utf-8").strip().isdigit()
+
+
+def test_runtime_export_isolates_exporter_standard_streams(tmp_path: Path) -> None:
+    exporter_probe = tmp_path / "exporter_probe.py"
+    exporter_probe.write_text(
+        "import os\n"
+        "for fd in (0, 1, 2):\n"
+        "    os.fstat(fd)\n",
+        encoding="utf-8",
+    )
+    helper = f"""
+import importlib.util
+import os
+from pathlib import Path
+import sys
+
+runner_path = Path({str(RUN_CAMPAIGN)!r})
+spec = importlib.util.spec_from_file_location("run_campaign_stdio_probe", runner_path)
+runner = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = runner
+spec.loader.exec_module(runner)
+runner.EXPORTER = Path({str(exporter_probe)!r})
+os.close(0)
+runner.export_runtime(
+    {{
+        "cell_id": "v4-012-G0-r00",
+        "task_id": "v4-012",
+        "mode": "G0",
+        "per_turn_max_tokens": 131072,
+    }},
+    Path({str(R49_RELEASE)!r}),
+    Path({str(tmp_path / "runtime")!r}),
+    timeout_s=30,
+)
+"""
+    completed = subprocess.run(
+        [sys.executable, "-c", helper],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+
+    assert completed.returncode == 0, completed.stdout + completed.stderr
 
 
 def test_campaign_wrapper_requires_explicit_evas_for_executable_run(
