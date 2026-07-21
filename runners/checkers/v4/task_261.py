@@ -2,7 +2,12 @@ from __future__ import annotations
 
 from ..api import Checker
 from .family_261_270_diagnostics import bind_properties
-from ..common.issue109_factory import CheckResult, Row, check_clocked_factory
+from ..common.issue109_factory import (
+    CheckResult,
+    Row,
+    check_clocked_factory,
+    check_clocked_output_hold,
+)
 
 
 TASK_LABEL = 'v4_261_falling_edge_calibration_sampler'
@@ -12,7 +17,7 @@ LEGACY_SYMBOL = '352-falling-edge-calibration-sampler'
 
 def check_v4_261_falling_edge_calibration_sampler(rows: list[Row]) -> CheckResult:
     """Check v4_261_falling_edge_calibration_sampler: Falling Edge Calibration Sampler clocked sample_fall behavior."""
-    return check_clocked_factory(
+    result = check_clocked_factory(
         rows,
         mode='sample_fall',
         edge=-1,
@@ -20,6 +25,10 @@ def check_v4_261_falling_edge_calibration_sampler(rows: list[Row]) -> CheckResul
         min_edges=7,
         asynchronous_reset=True,
     )
+    if not result[0]:
+        return result
+    ok, hold_note = check_clocked_output_hold(rows, edge=-1, task_name=TASK_LABEL)
+    return ok, f"{result[1]}; {hold_note}" if ok else hold_note
 
 
 CHECKS = {

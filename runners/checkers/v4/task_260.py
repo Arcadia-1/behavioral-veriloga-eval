@@ -1,7 +1,12 @@
 from __future__ import annotations
 
 from ..api import Checker
-from ..common.issue109_factory import CheckResult, Row, check_clocked_factory
+from ..common.issue109_factory import (
+    CheckResult,
+    Row,
+    check_clocked_factory,
+    check_clocked_output_hold,
+)
 from .factory_property_diagnostics import append_clocked_property_diagnostics
 
 
@@ -13,6 +18,11 @@ LEGACY_SYMBOL = '351-comparator-decision-capture'
 def check_v4_260_comparator_decision_capture(rows: list[Row]) -> CheckResult:
     """Check v4_260_comparator_decision_capture: Comparator Decision Capture clocked edge behavior."""
     ok, note = check_clocked_factory(rows, mode='edge', edge=1, task_name=TASK_LABEL)
+    if ok:
+        ok, hold_note = check_clocked_output_hold(
+            rows, edge=1, task_name=TASK_LABEL
+        )
+        note = f"{note}; {hold_note}" if ok else hold_note
     return ok, append_clocked_property_diagnostics(
         rows,
         note,

@@ -319,3 +319,78 @@ def check_clocked_factory(
     if worst[0] > 0.10:
         return False, f"{task_name}: max_error={worst[0]:.5f} {worst[1]}"
     return True, f"{task_name}: samples={checked} max_error={worst[0]:.5f} edge={direction}"
+
+
+def check_clocked_output_hold(
+    rows: list[Row],
+    *,
+    edge: int,
+    task_name: str,
+    min_intervals: int = 4,
+) -> CheckResult:
+    """Require clocked observables to remain stable between update events."""
+    missing = _missing_columns(rows, CLOCK_REQUIRED)
+    if missing:
+        return False, f"{task_name}: {missing}"
+
+    times = _times(rows)
+    direction = "rising" if edge > 0 else "falling"
+    clock_edges = _threshold_crossings(
+        [row["clk"] for row in rows], times, VTH, direction
+    )
+    reset_assertions = _threshold_crossings(
+        [row["rst"] for row in rows], times, VTH, "rising"
+    )
+    update_times = sorted(set(clock_edges + reset_assertions))
+
+    checked = 0
+    worst = (0.0, "")
+    for start_t, end_t in zip(update_times, update_times[1:]):
+        interval = end_t - start_t
+        if interval <= 0.20e-9:
+            continue
+        guard = min(0.18e-9, 0.20 * interval)
+        probe_start = start_t + guard
+        probe_end = end_t - guard
+        if probe_end <= probe_start:
+            continue
+        baseline: dict[str, float] | None = None
+        interval_rows = 0
+        for row in rows:
+            row_time = float(row["time"])
+            if row_time < probe_start or row_time > probe_end:
+                continue
+            if baseline is None:
+                baseline = {
+                    signal: float(row[signal])
+                    for signal in ("out", "flag", "metric")
+                }
+                interval_rows = 1
+                continue
+            interval_rows += 1
+            for signal in ("out", "flag", "metric"):
+                if baseline is None:
+                    continue
+                error = abs(float(row[signal]) - baseline[signal])
+                if error > worst[0]:
+                    worst = (
+                        error,
+                        f"signal={signal} time={row_time:.6g} "
+                        f"baseline={baseline[signal]:.5f} observed={float(row[signal]):.5f}",
+                    )
+        if interval_rows >= 2:
+            checked += 1
+
+    if checked < min_intervals:
+        return False, (
+            f"{task_name}: insufficient_hold_intervals={checked} "
+            f"required={min_intervals} edge={direction}"
+        )
+    if worst[0] > 0.10:
+        return False, (
+            f"{task_name}: inter_edge_hold_error={worst[0]:.5f} {worst[1]}"
+        )
+    return True, (
+        f"{task_name}: hold_intervals={checked} "
+        f"max_hold_error={worst[0]:.5f} edge={direction}"
+    )
