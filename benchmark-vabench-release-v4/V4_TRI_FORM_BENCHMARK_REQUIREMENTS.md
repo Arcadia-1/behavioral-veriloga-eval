@@ -33,7 +33,7 @@ prompt view.
 | Form | Scored IDs | Derivation rule | Candidate output |
 |---|---:|---|---|
 | DUT | `001-400` | canonical family task | one DUT bundle: one `.va` file or a multi-file Verilog-A system |
-| Testbench | `501-900` | DUT ID + 500 | exactly one top-level Spectre `.scs` file |
+| Testbench | `501-900` | DUT ID + 500 | exactly one top-level Spectre-compatible `.scs` file |
 | Bugfix | `1001-1400` | DUT ID + 1000 | repaired Verilog-A DUT bundle |
 
 IDs `401-500`, `901-1000`, and `1401-1500` are reserved. A family such as
@@ -69,7 +69,7 @@ statistically correlated.
    metrics, and property results. G0/G1 receive no tool access. Testbench tasks
    receive the supplied correct DUT bundle as read-only public input but no
    starter or reference testbench. Gold answers for DUT/Bugfix, negative-DUT
-   sources, checker source, final Spectre results, and evaluator paths are never
+   sources, checker source, final private results, and evaluator paths are never
    model-visible.
 7. **Pinned strict EVAS is the formal judge.** Public feedback and final private
    scoring use the release-pinned EVAS identity, with the final score produced
@@ -103,7 +103,7 @@ statistically correlated.
     file hash is not a universal evidence cache key. Evidence validity and
     rerun scope MUST be decided from the exact task, oracle, harness, backend,
     and policy components consumed by that evidence.
-14. **One semantic evaluation suite.** EVAS feedback and final Spectre scoring
+14. **One semantic evaluation suite.** EVAS feedback and final strict-EVAS scoring
     consume the same public property definitions, case IDs, stimulus semantics,
     trace contract, and checker logic. Backend-specific deck and trace adapters
     MAY differ, but v4 does not maintain separate visible and hidden behavior
@@ -133,7 +133,7 @@ flowchart LR
     H --> I["G0-G5 prompt records"]
     I --> J["Public bundle + evaluator bundle"]
     J --> K["Model or agent run"]
-    K --> L["Private Spectre score"]
+    K --> L["Private strict-EVAS score"]
 ```
 
 The normal construction order is:
@@ -163,7 +163,7 @@ The following ownership table is normative.
 | trace contract | `family_spec.json` | expose declared signals | save declared signals | preserve observability |
 | gold DUT bundle | canonical family asset | private score reference | read-only public input and trusted evaluator copy | private repair reference |
 | task-specific checker | evaluator-only checker registry | reused | reused | reused |
-| canonical cases, harness generator, and backend profiles | evaluator-only family asset | EVAS feedback and Spectre score renderings | candidate-deck execution support | EVAS feedback and Spectre score renderings |
+| canonical cases, harness generator, and backend profiles | evaluator-only family asset | EVAS feedback and private score renderings | candidate-deck execution support | EVAS feedback and private score renderings |
 | negative-DUT catalog and assignment | evaluator-only family asset | checker certification | all five certified negatives | one representative buggy seed |
 | canonical form instruction | generated from structured records | DUT wording | testbench wording | repair wording |
 | G0-G5 wrappers | global mode registry | rendered | rendered | rendered |
@@ -183,7 +183,7 @@ repository but absent from the public runtime export.
 
 ```text
 benchmark-vabench-release-v4/
-  TOOLCHAIN_LOCK.json                # release-level EVAS/Spectre identity
+  TOOLCHAIN_LOCK.json                # release-level EVAS identity and optional parity backends
   schemas/                           # normative JSON Schemas
     family_spec.schema.json
     task_record.schema.json
@@ -377,7 +377,7 @@ evaluator/
 
 The model creates the submission files. In G2-G5, the form adapter attaches the
 evaluator-owned feedback profile and trusted `feedback_tb.scs` inside the
-isolated evaluator service. Private evaluation attaches the Spectre rendering.
+isolated evaluator service. Private evaluation attaches the sealed score rendering.
 No official evaluator deck is mounted into the model workspace.
 
 ### 7.2 Testbench runtime package
@@ -401,7 +401,7 @@ evaluator/
 ```
 
 The submitted testbench is one task-declared top-level `.scs` file and is
-byte-identical between EVAS feedback and final Spectre scoring. Both paths run
+byte-identical between EVAS feedback and final strict-EVAS scoring. Both paths run
 the supplied correct DUT plus the same five-member negative-DUT suite `T`.
 Any per-case deck assembled by the runner is an evaluator runtime artifact, not
 another candidate output. The candidate does not submit a checker or a
@@ -693,7 +693,7 @@ The gold bundle MUST:
 - compile and elaborate as one atomic DUT bundle;
 - preserve portable Spectre-compatible Verilog-A semantics;
 - avoid benchmark-ID or checker-specific special cases;
-- pass AHDL warning triage, EVAS validation, and targeted Spectre validation;
+- pass AHDL warning triage and strict EVAS validation;
 - pass every public behavior property under both feedback and score profiles.
 
 `REFERENCE_PROVENANCE.json` MUST record whether the gold was authored locally,
@@ -742,7 +742,7 @@ backend-specific deck syntax, trace parsing, and recorded simulator identity.
 They MUST NOT become separate visible and hidden behavior datasets.
 
 Generated `.scs` decks are evaluator-only backend renderings. Neither the EVAS
-deck nor the Spectre rendering is mounted into a model workspace. In DUT and
+feedback deck nor the private score rendering is mounted into a model workspace. In DUT and
 Bugfix G2-G5, the shared CLI may return requested redacted logs, traces, metrics,
 and public-property diagnostics, while deck source remains private. Both
 renderings MUST derive from the same canonical case manifest. Testbench tasks
@@ -819,15 +819,15 @@ is hash-bound to the prompt record rather than mounted into the model runtime.
 In G2-G5, the DUT adapter combines the candidate bundle with the
 evaluator-owned EVAS rendering. The agent may request AHDL-like diagnostics,
 EVAS logs, traces, metrics, and public-property diagnostics through the shared
-CLI. Evaluator deck source, checker source, and final Spectre results remain
+CLI. Evaluator deck source, checker source, and final private results remain
 inaccessible.
 
 ### 9.3 Private score
 
 The evaluator combines the unchanged candidate bundle with the private score
 profile and task-specific checker. The final DUT result is a full-contract
-pass/fail, with a private property vector retained for analysis. Spectre is the
-final scoring backend.
+pass/fail, with a private property vector retained for analysis. The
+release-pinned strict EVAS runtime is the final scoring backend.
 
 ## 10. Testbench Task Form
 
@@ -838,7 +838,7 @@ parameters, behavior properties, and trace contract, plus the complete correct
 DUT source bundle as a read-only public input. It does not receive any
 negative-DUT source, reference testbench, or checker implementation.
 
-The output contract MUST name exactly one top-level Spectre `.scs` artifact.
+The output contract MUST name exactly one top-level Spectre-compatible `.scs` artifact.
 The task MAY choose a task-specific filename, but `target_artifacts` in the
 public contract and `candidate_artifacts` in the private score policy MUST each
 contain exactly that same single basename. There is no starter testbench.
@@ -880,7 +880,7 @@ the family spec. The standard binding has all of the following properties:
 - the candidate saves the public trace names required by the trace contract;
   and
 - the candidate `.scs` bytes and SHA-256 remain unchanged across all gold,
-  EVAS-feedback and Spectre-score cases.
+  EVAS-feedback and strict-EVAS-score cases.
 
 The agent may inspect the read-only supplied correct DUT bundle but never
 receives the evaluator staging directory or any negative-DUT source. A feedback
@@ -891,7 +891,7 @@ the exact binding can be audited without disclosing mutation identities.
 
 Every testbench task MUST reference a versioned, hashed
 `testbench_security_policy.json`. Every restriction that can reject a candidate
-MUST also be summarized in the public contract. Before Spectre starts, a
+MUST also be summarized in the public contract. Before simulation starts, a
 structural deck validator MUST enforce at least the following standard-track
 boundary:
 
@@ -938,7 +938,7 @@ The private evaluator runs the unchanged single candidate testbench against:
 1. the same correct DUT;
 2. the same five certified negative DUTs in `T`.
 
-The private Spectre score service is invoked exactly once after finalization.
+The private strict-EVAS score service is invoked exactly once after finalization.
 That one sealed invocation evaluates the reference and five negative cases and
 aggregates them into one task score. Its case results are not returned to the
 agent and cannot trigger another repair turn.
@@ -1092,7 +1092,7 @@ Trace artifacts SHOULD be readable by signal, time window, or bounded row
 range. The default response returns a concise summary plus artifact paths;
 every trace or log chunk first delivered to the model is token-counted as
 telemetry. The CLI MUST redact negative-DUT source and identity,
-checker source paths, evaluator paths, and final Spectre results. The supplied
+checker source paths, evaluator paths, and final private results. The supplied
 correct DUT remains visible only in the Testbench task workspace.
 
 Public feedback and final score are different privilege surfaces. The shared
@@ -1114,7 +1114,7 @@ one exact source revision, runtime package, engine, profile, ABI, executable
 build, and AHDL-like ruleset. That identity is frozen in the toolchain lock
 before the formal campaign. A documented transition from a Python, hybrid, or
 pure-Rust implementation to another implementation requires a new lock and
-fresh affected EVAS evidence; it does not invalidate unchanged Spectre
+fresh affected EVAS evidence; it does not invalidate unchanged optional parity
 evidence.
 
 The primary G2-G5 campaign MUST use one frozen EVAS identity with silent
@@ -1122,8 +1122,8 @@ cross-engine fallback disabled. A task unsupported by that identity is blocked
 from the primary formal campaign until support and parity evidence exist.
 Alternative-engine runs may be retained as explicitly labeled diagnostic
 strata but MUST NOT be pooled into the primary condition. Benchmark task
-definitions and final Spectre scoring remain independent of the selected
-feedback evaluator.
+definitions and final strict-EVAS scoring remain independent of the selected
+feedback profile.
 
 At minimum, the lock MUST record:
 
@@ -1137,7 +1137,8 @@ At minimum, the lock MUST record:
 - EVAS numerical/profile settings, Rust core ABI, and executable or extension
   build SHA-256;
 - AHDL-like ruleset ID/hash and strictness settings;
-- exact Spectre version plus bridge version/configuration identity;
+- optional Spectre version plus bridge version/configuration identity when a
+  parity audit is run;
 - benchmark commit, checker-registry hash, harness-generator hash, Python
   version, operating system, and architecture.
 
@@ -1165,7 +1166,7 @@ A minimal shape is:
     "build_sha256": "<sha256>",
     "ahdl_like": {"ruleset_sha256": "<sha256>", "spectre_strict": true}
   },
-  "spectre": {"version": "<exact-version>", "bridge_version": "<version>"},
+  "spectre": {"status": "optional_not_run"},
   "benchmark": {
     "git_commit": "<full-sha>",
     "checker_registry_sha256": "<sha256>",
@@ -1217,7 +1218,8 @@ the exact fingerprints it consumed in four namespaces:
   profile/deck, stimulus, and trace contract;
 - `oracle`: task-specific checker implementation, canonical registry binding,
   property profile, and diagnostic policy;
-- `backend`: separate AHDL-like, EVAS, and Spectre semantic identities; and
+- `backend`: AHDL-like and EVAS semantic identities, plus optional Spectre
+  parity identity when present; and
 - `assembly`: certification schema/policy version plus a provenance reference
   to the release snapshot.
 
@@ -1234,8 +1236,8 @@ The minimum invalidation rules are:
 | Prompt prose only; public contract and artifacts unchanged | Regenerate prompt/package records; no simulation rerun |
 | Diagnostic rendering or regex only | Re-evaluate stored diagnostics; no simulation rerun |
 | Checker/property logic only | Re-run the checker on stored traces when the trace contract is sufficient; re-simulate only when required observables are absent |
-| EVAS implementation/profile | Re-run affected EVAS evidence only; retain matching Spectre evidence |
-| Spectre/bridge semantic configuration | Re-run affected Spectre evidence only; retain matching EVAS evidence |
+| EVAS implementation/profile | Re-run affected EVAS evidence only; retain matching optional parity evidence |
+| Optional Spectre/bridge semantic configuration | Re-run only the optional parity evidence; retain matching EVAS evidence |
 | Gold, candidate, or negative source | Re-run that source for each affected backend/profile only |
 | Harness, stimulus, deck, sample window, or trace contract | Re-run affected task/profile backends |
 | Report, aggregate, audit presentation, or non-semantic schema change | Regenerate derived records; no simulation rerun |
@@ -1244,8 +1246,8 @@ The minimum invalidation rules are:
 Carry-forward is permitted only after exact fingerprint comparison and raw
 evidence availability checks. A changed global checker registry does not stale
 an unrelated task whose canonical checker implementation and binding hashes
-are unchanged. A changed EVAS build does not stale Spectre evidence. A changed
-Spectre installation does not stale EVAS evidence. Aggregate reports MUST
+are unchanged. A changed EVAS build does not stale historical Spectre evidence. A changed
+optional Spectre installation does not stale EVAS evidence. Aggregate reports MUST
 explain every reuse or invalidation decision per task and backend.
 
 ## 13. G0-G5 Ablation Contract
@@ -1383,7 +1385,7 @@ bytes and SHA-256 and revokes write access. Private scoring is then invoked
 exactly once for that frozen hash, and its result is never returned for another
 repair turn.
 If no valid artifact exists, parsing or artifact validation returns a structured
-zero without starting Spectre; it still creates the one final score decision.
+zero without starting simulation; it still creates the one final score decision.
 
 The phrase `accepted submission` MUST NOT be used to remove failed attempts.
 Missing output, malformed one-shot blocks, undeclared files, compile failures,
@@ -1395,10 +1397,11 @@ after dispatch is marked `infrastructure_error`, retains all partial evidence,
 does not score the model, and MUST be retried under the declared retry policy;
 it may not be silently omitted. Retries receive linked attempt IDs and do not
 overwrite the original record.
-A Spectre license-checkout failure, evaluator-service outage, or bridge failure
-that exposes no candidate-dependent diagnostic is an infrastructure error. The
-same frozen candidate and scoring policy MUST be retried after recovery; license
-unavailability MUST NOT be converted into a model failure or a missing row.
+An EVAS evaluator-service outage or sandbox failure that exposes no
+candidate-dependent diagnostic is an infrastructure error. The same frozen
+candidate and scoring policy MUST be retried after recovery; infrastructure
+failure MUST NOT be converted into a model failure or a missing row. Optional
+Spectre parity infrastructure never blocks or changes the benchmark score.
 
 The score service MUST accept an `(attempt_id, candidate_sha256,
 score_policy_sha256)` idempotency key. A second request for the same key returns
@@ -1443,7 +1446,7 @@ At minimum, telemetry records:
   final submission, wall-time exhaustion, and provider output/context-limit
   stops if applicable; and
 - private evaluation spans separated into queue, sandbox assembly, artifact
-  gate, Spectre compile/simulate, checker, score aggregation, and sealing.
+  gate, strict-EVAS compile/simulate, checker, score aggregation, and sealing.
 
 A minimal record shape is:
 
@@ -1619,8 +1622,8 @@ that JSON and MUST NOT be edited independently. The status record includes:
 - family and task counts separated into selected, authored, materialized,
   schema-valid, Gate-2-certified, Gate-3-ready, score-ready, and blocked states;
 - derivative counts by DUT, Testbench, and Bugfix form, plus G0-G5 record counts;
-- toolchain-lock validity, actual EVAS engine/profile distribution, Spectre and
-  bridge identity, and any forced fallback or version mismatch;
+- toolchain-lock validity, actual EVAS engine/profile distribution, any forced
+  fallback or version mismatch, and optional parity-backend identity when run;
 - runner-ingestion, one-shot-parser, testbench-security, access-audit, parity,
   and aggregate-manifest evidence with bound input hashes;
 - explicit blockers with owner, severity, affected task IDs, first/last observed
@@ -1654,10 +1657,10 @@ A DUT passes Gate 2 only when:
 - the nested artifact record is the only file/module/interface fact source and
   all rendered views derive from it without restated file lists;
 - the complete gold artifact bundle compiles and elaborates atomically;
-- the gold bundle passes AHDL triage, EVAS, and targeted Spectre;
+- the gold bundle passes AHDL triage and strict EVAS;
 - task certification references a valid release snapshot, declares its exact
-  component fingerprints, and its observed EVAS and Spectre identities match
-  the backend records it composes;
+  component fingerprints, and its observed EVAS identity matches the backend
+  records it composes;
 - the trace contract is complete;
 - the task-specific checker validates functional behavior;
 - feedback and final score use one canonical case, property, trace, and checker
@@ -1671,13 +1674,14 @@ A DUT passes Gate 2 only when:
   `FAIL`, while the model remains free to choose which available result channels
   to request;
 - public feedback contains no negative source or identity, checker source, final
-  Spectre result, evaluator path, or checker-only constant;
+  private result, evaluator path, or checker-only constant;
 - certified negatives compile and fail behaviorally rather than through setup,
   missing-module, simulation-crash, or missing-trace artifacts;
 - DUT and Bugfix public files do not leak gold implementation; Testbench public
   files contain only the intentionally supplied correct DUT bundle and contract;
-- relevant gold and negative classifications have no unresolved EVAS/Spectre
-  disagreement, including no EVAS-pass/Spectre-fail divergence.
+- relevant gold and negative classifications have current strict-EVAS evidence.
+  Any optional EVAS/Spectre disagreement is reported as parity research and is
+  not a benchmark certification blocker.
 
 ### Gate 3: tri-form derivation readiness
 
@@ -1688,15 +1692,15 @@ A Gate 2 DUT passes Gate 3 only when:
   another negative;
 - the representative Bugfix seed `B` is selected semantically and is one member
   of the five-element Testbench suite `T`; Testbench uses all five negatives;
-- gold and all five negatives have current EVAS and Spectre evidence with
-  matching behavioral classifications under the canonical case/property suite;
+- gold and all five negatives have current strict-EVAS evidence with matching
+  behavioral classifications under the canonical case/property suite;
 - the testbench derivative declares exactly one top-level `.scs` candidate
   artifact, and its public contract and private score policy agree on its
   basename;
 - its stable DUT binding is generated from the canonical artifact record, and
   the same candidate `.scs` hash runs against the supplied correct DUT and all
   five members of `T` behind that binding in both EVAS feedback and final
-  Spectre scoring;
+  strict-EVAS scoring;
 - a structural security-policy audit rejects source exfiltration, undeclared
   includes, DUT redefinition, direct output driving, internal or hierarchical
   probes, network access, and unbounded resource use without exposing evaluator
@@ -1749,16 +1753,15 @@ new family:
       matching the declared artifact contract;
 - [ ] provenance and redistribution record;
 - [ ] task-specific checker with useful diagnostic fields;
-- [ ] one canonical case/property/harness specification with EVAS and Spectre
-      backend renderings;
-- [ ] AHDL-like, EVAS, and Spectre gold evidence;
-- [ ] validated toolchain-lock hash and observed EVAS engine/profile/ABI plus
-      exact Spectre identity;
+- [ ] one canonical case/property/harness specification with EVAS feedback and
+      private score renderings;
+- [ ] AHDL-like and strict-EVAS gold evidence;
+- [ ] validated toolchain-lock hash and observed EVAS engine/profile/ABI;
 - [ ] exactly five compile-pass semantic negative DUTs with distinct fault
       metadata;
 - [ ] explicit `B/T` assignment with one representative `B` included in the
       five-member Testbench suite `T`;
-- [ ] matched EVAS/Spectre gold and negative behavior certificates;
+- [ ] matched strict-EVAS gold and negative behavior certificates;
 - [ ] reference testbench certificate: correct DUT passes and all five
       negatives are behaviorally killed;
 - [ ] Testbench binding and security-policy certificate;
@@ -1828,11 +1831,11 @@ pilot-controlled numerical and procedural choices have been frozen:
 
 1. one canonical family spec generates all three form prompts without manual
    behavior duplication;
-2. the DUT candidate can use shared feedback and is scored privately by
-   Spectre;
+2. the DUT candidate can use shared feedback and is scored privately by the
+   release-pinned strict EVAS runtime;
 3. the Testbench candidate submits exactly one self-contained top-level `.scs`,
    receives EVAS feedback for the supplied correct DUT and all five anonymous
-   negatives, and the same byte-identical file is judged once by Spectre on the
+   negatives, and the same byte-identical file is judged once by strict EVAS on the
    same correct-plus-five semantic suite;
 4. the Bugfix candidate receives the complete editable buggy bundle plus only a
    generic statement that the public contract is violated, may choose whether
@@ -1840,7 +1843,7 @@ pilot-controlled numerical and procedural choices have been frozen:
 5. G0-G5 records use one registry and enforce direct-versus-agent tool access;
 6. the feedback CLI is shared while score access remains evaluator-only;
 7. runtime access logs prove that DUT and Bugfix runs cannot read gold and that
-   no form can read negative sources, checker internals, final Spectre results,
+   no form can read negative sources, checker internals, final private results,
    evaluator paths, sibling tasks, or the benchmark root; the Testbench sees
    only its intentionally supplied read-only correct DUT bundle;
 8. regeneration is deterministic and validated by schema, hash, and integrity
@@ -1858,7 +1861,7 @@ pilot-controlled numerical and procedural choices have been frozen:
     direct plus four agentic design;
 13. a sealed attempt demonstrates reference-token telemetry accounting,
     automatic latest-artifact submission at wall-time exhaustion, frozen candidate
-    hashing, exactly one no-feedback Spectre decision, denominator-safe failure
+    hashing, exactly one no-feedback strict-EVAS decision, denominator-safe failure
     handling, and detailed token/time/tool evidence;
 14. repeated episodes demonstrate pass@1 recording, fixed seeds and model
     snapshots, fresh-session isolation, infrastructure-only retry semantics,

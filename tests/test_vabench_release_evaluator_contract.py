@@ -6,6 +6,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "benchmark-vabench-release-v1" / "EVALUATOR.json"
+V4_REQUIREMENTS = (
+    ROOT / "benchmark-vabench-release-v4" / "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md"
+)
+V4_SOURCE = (
+    ROOT
+    / "benchmark-vabench-release-v4"
+    / "provenance"
+    / "dut-base-v3-exact-five-hash-bound-v2"
+)
 
 
 def test_evaluator_contract_records_current_selection_and_score_gate() -> None:
@@ -71,3 +80,24 @@ def test_evaluator_contract_requires_evas_but_not_spectre_for_baselines() -> Non
     assert "not simulator certification evidence" in boundary
     assert "Pinned strict EVAS is the formal judge" in boundary
     assert "Spectre is optional non-blocking parity evidence" in boundary
+
+
+def test_v4_normative_surfaces_do_not_require_spectre() -> None:
+    requirements = V4_REQUIREMENTS.read_text(encoding="utf-8")
+    forbidden_phrases = (
+        "final Spectre scoring",
+        "Private Spectre score",
+        "Spectre is the final scoring backend",
+        "targeted Spectre validation",
+        "exactly one no-feedback Spectre decision",
+    )
+    assert not any(phrase in requirements for phrase in forbidden_phrases)
+
+    for path in V4_SOURCE.glob("*/public/task/public_contract.json"):
+        contract = json.loads(path.read_text(encoding="utf-8"))
+        validation = contract.get("validation_status") or {}
+        assert "evas_spectre" not in str(validation.get("next_gate", ""))
+        assert validation.get("spectre_score_gold") not in {
+            "pending",
+            "pending_recertification",
+        }
