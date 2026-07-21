@@ -28,7 +28,12 @@ def _bits(code: int, prefix: str, width: int) -> dict[str, float]:
     return {f"{prefix}_{bit}": 0.9 if code & (1 << bit) else 0.0 for bit in range(width)}
 
 
-def _trace_358(*, wrong_source: bool = False, reversed_delay: bool = False) -> list[dict[str, float]]:
+def _trace_358(
+    *,
+    wrong_source: bool = False,
+    reversed_delay: bool = False,
+    missing_delay: bool = False,
+) -> list[dict[str, float]]:
     codes = [2, 7, 8, 12, 17, 24, 30, 5, 2]
     rows: list[dict[str, float]] = []
     for index in range(10_001):
@@ -39,7 +44,8 @@ def _trace_358(*, wrong_source: bool = False, reversed_delay: bool = False) -> l
         clk_q = _square(time_s, first_rise=12.5e-9, period=10e-9, width=2e-9)
         quadrant = code // 8
         intra_code = code % 8
-        delay = ((7 - intra_code) if reversed_delay else intra_code) * 5e-12
+        delay_code = 0 if missing_delay else (7 - intra_code) if reversed_delay else intra_code
+        delay = delay_code * 5e-12
         selected = _square(
             time_s - delay,
             first_rise=10e-9 if quadrant in (0, 2) else 12.5e-9,
@@ -177,6 +183,12 @@ def test_358_rejects_activity_unrelated_to_selected_quadrature_reference() -> No
     passed, detail = CHECKER_358(_trace_358(reversed_delay=True))
     assert not passed
     assert "P_SELECTED_EDGE_DELAY" in detail
+
+
+def test_358_rejects_missing_intra_code_delay() -> None:
+    passed, detail = CHECKER_358(_trace_358(missing_delay=True))
+    assert not passed
+    assert "delay_step" in detail
 
 
 def test_362_allows_only_explicit_metric_update_transients() -> None:
