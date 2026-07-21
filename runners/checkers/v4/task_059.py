@@ -75,7 +75,7 @@ def check_edge_interval_tdc_8b(rows: list[dict[str, float]]) -> tuple[bool, str]
         row = _sample_after(rows, stop_t, time_scale * 0.20e-9)
         actual = _logic_bits_to_int(row, "code", 8)
         valid = row["valid"] > 0.45
-        if not valid or abs(actual - expected) > 1:
+        if not valid or actual != expected:
             mismatches.append((stop_t, expected, actual, valid))
         checked.append(expected)
     if len(set(checked)) < 3:
@@ -93,7 +93,7 @@ def check_edge_interval_tdc_8b(rows: list[dict[str, float]]) -> tuple[bool, str]
         note = diagnostic(
             property_id,
             "behavior_mismatch",
-            expected=f"valid=1,code={expected}+/-1",
+            expected=f"valid=1,code={expected}",
             observed=f"valid={int(valid)},code={actual}",
             event=f"stop.rising@{stop_t:.6e}s",
         )

@@ -1,6 +1,8 @@
 """Task-specific checker for canonical v4 DUT 042."""
 from __future__ import annotations
 
+from statistics import median
+
 from ..api import Checker
 from .stimulus_relative import crossings, diagnostic, pass_note, require_signals, sample
 
@@ -74,7 +76,8 @@ def check_release_vin_sampled_droop_hold(rows: list[dict[str, float]]) -> tuple[
     hold_edge, hold_end = max(hold_windows, key=lambda window: window[1] - window[0])
     droop_start_t = hold_edge + 2.0e-9
     droop_end_t = hold_end - 2.0e-9
-    droop_values = [r["vout"] for r in rows if droop_start_t <= r["time"] <= droop_end_t]
+    droop_rows = [r for r in rows if droop_start_t <= r["time"] <= droop_end_t]
+    droop_values = [r["vout"] for r in droop_rows]
     if len(droop_values) < 8:
         return False, diagnostic(
             "P_PERIODIC_DROOP",
@@ -85,7 +88,21 @@ def check_release_vin_sampled_droop_hold(rows: list[dict[str, float]]) -> tuple[
         )
     droop = droop_values[0] - droop_values[-1]
     upward_steps = sum(1 for a, b in zip(droop_values[:-1], droop_values[1:]) if b - a > 0.004)
-    droop_ok = 0.04 <= droop <= 0.45 and upward_steps <= max(1, len(droop_values) // 10)
+    sample_steps = [right["time"] - left["time"] for left, right in zip(droop_rows, droop_rows[1:])]
+    median_step = median(sample_steps) if sample_steps else float("inf")
+    observable_timer_structure = median_step <= 1.1e-9 * float(rows[0].get("_time_scale", 1.0))
+    held_deltas = [abs(right - left) for left, right in zip(droop_values, droop_values[1:])]
+    hold_fraction = (
+        sum(delta <= 5e-5 for delta in held_deltas) / len(held_deltas)
+        if held_deltas
+        else 0.0
+    )
+    event_hold_ok = not observable_timer_structure or hold_fraction >= 0.15
+    droop_ok = (
+        0.04 <= droop <= 0.45
+        and upward_steps <= max(1, len(droop_values) // 10)
+        and event_hold_ok
+    )
 
     reset_t = reset_edges[0] if reset_edges else 125.0e-9
     reset_sample = sample(rows, "vout", reset_t + 8.0e-9)
@@ -98,7 +115,8 @@ def check_release_vin_sampled_droop_hold(rows: list[dict[str, float]]) -> tuple[
         f"vin_samples={exp_text} held_samples={obs_text} "
         f"max_sample_err={max_err:.3f} expected_span={expected_span:.3f} "
         f"observed_span={observed_span:.3f} droop={droop:.3f} "
-        f"upward_steps={upward_steps} reset_clear={reset_clear}"
+        f"upward_steps={upward_steps} hold_fraction={hold_fraction:.3f} "
+        f"reset_clear={reset_clear}"
     )
     if not sample_match:
         return False, diagnostic(
@@ -112,8 +130,11 @@ def check_release_vin_sampled_droop_hold(rows: list[dict[str, float]]) -> tuple[
         return False, diagnostic(
             "P_PERIODIC_DROOP",
             "behavior_mismatch",
-            expected="0.04<=droop<=0.45 and limited upward steps",
-            observed=f"droop={droop:.3f},upward_steps={upward_steps}",
+            expected="0.04<=droop<=0.45,limited_upward_steps,periodic_update_holds",
+            observed=(
+                f"droop={droop:.3f},upward_steps={upward_steps},"
+                f"hold_fraction={hold_fraction:.3f}"
+            ),
             event="post_second_sample_hold",
         )
     if not reset_clear:

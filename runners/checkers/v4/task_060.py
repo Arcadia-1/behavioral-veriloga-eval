@@ -47,7 +47,7 @@ def check_duty_cycle_meter_8b(rows: list[dict[str, float]]) -> tuple[bool, str]:
         expected = max(0, min(255, int(round(255.0 * high_time / period))))
         row = _sample_after(rows, second_rise)
         actual = _logic_bits_to_int(row, "duty", 8)
-        if row["valid"] <= 0.45 or abs(actual - expected) > 1:
+        if row["valid"] <= 0.45 or actual != expected:
             errors += 1
         checked.append(expected)
     return errors == 0 and len(checked) >= 3 and len(set(checked)) >= 2, f"checked={checked} errors={errors}"

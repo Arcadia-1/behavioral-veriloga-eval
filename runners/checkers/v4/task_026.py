@@ -105,16 +105,19 @@ def check_phase_accumulator_timer_wrap(rows: list[dict[str, float]]) -> tuple[bo
 
     spacings = [right - left for left, right in zip(event_times, event_times[1:])]
     cadence = median(spacings) if spacings else 0.0
+    time_scale = float(rows[0].get("_time_scale", 1.0))
+    normalized_cadence = cadence / time_scale
     cadence_error = max((abs(value - cadence) for value in spacings), default=float("inf"))
     cadence_tolerance = 0.08 * cadence if cadence > 0.0 else 0.0
     by_id["P_PARAMETERIZED_PERIOD"].condition(
         len(spacings) >= 4
-        and 0.01 < inferred_step < 1.0
+        and 0.18 <= inferred_step <= 0.26
         and cadence > 0.0
+        and 3.8e-9 <= normalized_cadence <= 7.2e-9
         and cadence_error <= cadence_tolerance,
-        expected="stable_positive_timer_cadence_and_step",
+        expected="supported_public_or_score_timer_cadence_and_step",
         observed=(
-            f"events={len(event_times)},cadence={cadence:.6g},"
+            f"events={len(event_times)},cadence={normalized_cadence:.6g},"
             f"max_gap_error={cadence_error:.6g},step={inferred_step:.6g}"
         ),
         time_s=event_times[-1] if event_times else 0.0,
@@ -125,7 +128,7 @@ def check_phase_accumulator_timer_wrap(rows: list[dict[str, float]]) -> tuple[bo
         results,
         coverage=(
             f"timer_events={len(event_times)} wraps={wraps} "
-            f"inferred_step={inferred_step:.6g} cadence_s={cadence:.6g}"
+            f"inferred_step={inferred_step:.6g} cadence_s={normalized_cadence:.6g}"
         ),
     )
 

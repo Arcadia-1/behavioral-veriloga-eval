@@ -39,6 +39,52 @@ def check_v3_504_charge_pump_pfd_state_machine(rows: list[dict[str, float]]) -> 
     metric_hi = 0.8
     vctrl_init = 0.45
 
+    # Reconstruct the public three-state PFD directly from the input events.
+    # Aggregate rail-reaching checks alone admit an arbitrary ramp and a stuck
+    # metric, neither of which implements the required event-driven machine.
+    events = sorted(
+        [(event, 1) for event in ref_edges]
+        + [(event, -1) for event in fb_edges]
+    )
+    transition_guard = max(5.0 * sample_step(rows), 0.0025 * ref_period)
+    state = 0
+    event_index = 0
+    stable_checked = metric_state_errors = vctrl_state_errors = 0
+    previous_stable: dict[str, float] | None = None
+    for row in rows:
+        t = float(row["time"])
+        while event_index < len(events) and events[event_index][0] <= t:
+            state = max(-1, min(1, state + events[event_index][1]))
+            event_index += 1
+        if any(abs(t - event_time) < transition_guard for event_time, _ in events):
+            previous_stable = None
+            continue
+        stable_checked += 1
+        expected_metric = {-1: metric_lo, 0: 0.45, 1: metric_hi}[state]
+        if abs(float(row["metric"]) - expected_metric) > 0.08:
+            metric_state_errors += 1
+        if previous_stable is not None:
+            dv = float(row["vctrl"]) - float(previous_stable["vctrl"])
+            if state == 0 and abs(dv) > 0.006:
+                vctrl_state_errors += 1
+            elif state > 0 and dv < -0.006:
+                vctrl_state_errors += 1
+            elif state < 0 and dv > 0.006:
+                vctrl_state_errors += 1
+        previous_stable = row
+
+    allowed_state_errors = max(2, stable_checked // 100)
+    if stable_checked < 20 or metric_state_errors > allowed_state_errors:
+        return False, (
+            f"metric_state_trajectory_errors={metric_state_errors} "
+            f"checked={stable_checked} allowed={allowed_state_errors}"
+        )
+    if vctrl_state_errors > allowed_state_errors:
+        return False, (
+            f"vctrl_state_trajectory_errors={vctrl_state_errors} "
+            f"checked={stable_checked} allowed={allowed_state_errors}"
+        )
+
     def _window_mean(lo_frac: float, hi_frac: float, key: str) -> float:
         vals = [row[key] for row in relative_rows(rows, lo_frac, hi_frac)]
         return sum(vals) / len(vals) if vals else 0.0
@@ -81,17 +127,19 @@ def check_v3_504_charge_pump_pfd_state_machine(rows: list[dict[str, float]]) -> 
     direction = "ref_leads" if ref_leads else "fb_leads"
     metric_range_ok = all(metric_lo - 0.05 <= float(row["metric"]) <= metric_hi + 0.05 for row in rows)
     diagnostics = {
-        "P_AN_INTEGER_STATE_Q_HELD_IN": int(not metric_range_ok),
+        "P_AN_INTEGER_STATE_Q_HELD_IN": metric_state_errors + int(not metric_range_ok),
         "P_ON_EACH_RISING_CROSSING_OF_V": int(len(ref_edges) < 3),
         "P_ON_EACH_RISING_CROSSING_OF_V_2": int(len(fb_edges) < 3),
-        "P_MAINTAIN_A_CONTROL_VOLTAGE_VCTRL_Q": int((ref_leads and vmax_obs < vctrl_init + 0.10) or (not ref_leads and vmin_obs > vctrl_init - 0.10)),
+        "P_MAINTAIN_A_CONTROL_VOLTAGE_VCTRL_Q": vctrl_state_errors + int((ref_leads and vmax_obs < vctrl_init + 0.10) or (not ref_leads and vmin_obs > vctrl_init - 0.10)),
         "P_DRIVE_VCTRL_TRANSITION_VCTRL_Q_0": int(vmin_obs < vctrl_min - 0.02 or vmax_obs > vctrl_max + 0.02),
-        "P_DRIVE_METRIC_AS_A_VOLTAGE_CODED": int((ref_leads and lo_frac > 0.02) or ((not ref_leads) and hi_frac > 0.02)),
+        "P_DRIVE_METRIC_AS_A_VOLTAGE_CODED": metric_state_errors + int((ref_leads and lo_frac > 0.02) or ((not ref_leads) and hi_frac > 0.02)),
     }
     return True, (
         f"{direction} delta_ns={signed_delta * 1e9:.3f} late_vctrl={late_vctrl:.4f} "
         f"vctrl_range=[{vmin_obs:.4f},{vmax_obs:.4f}] "
-        f"metric_hi_frac={hi_frac:.3f} metric_lo_frac={lo_frac:.3f}; "
+        f"metric_hi_frac={hi_frac:.3f} metric_lo_frac={lo_frac:.3f} "
+        f"stable_checked={stable_checked} metric_state_errors={metric_state_errors} "
+        f"vctrl_state_errors={vctrl_state_errors}; "
         + "; ".join(f"{key} mismatch_count={value}" for key, value in diagnostics.items())
     )
 

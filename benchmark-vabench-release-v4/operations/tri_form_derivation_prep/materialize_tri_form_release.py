@@ -44,9 +44,21 @@ DEFAULT_OUTPUTS = {
     "r47": PACKAGE_ROOT / "release" / "benchmarkv4-r47",
     "r48": PACKAGE_ROOT / "release" / "benchmarkv4-r48",
     "r49": PACKAGE_ROOT / "release" / "benchmarkv4-r49",
+    "r50": PACKAGE_ROOT / "release" / "benchmarkv4-r50",
 }
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
-MODES = {
+SKILLS_ROOT = PACKAGE_ROOT.parent / "skills"
+SKILL_IDS = ("veriloga", "vabench-feedback")
+REAL_SKILL_REVISIONS = frozenset({"r50"})
+REAL_SKILL_MODES = {
+    "G0": {"process": "direct_one_shot", "skills": [], "evas_cli": False},
+    "G1": {"process": "direct_one_shot", "skills": ["veriloga"], "evas_cli": False},
+    "G2": {"process": "agentic", "skills": [], "evas_cli": True},
+    "G3": {"process": "agentic", "skills": ["veriloga"], "evas_cli": True},
+    "G4": {"process": "agentic", "skills": ["vabench-feedback"], "evas_cli": True},
+    "G5": {"process": "agentic", "skills": ["veriloga", "vabench-feedback"], "evas_cli": True},
+}
+LEGACY_MODES = {
     "G0": {"process": "direct_one_shot", "form_skill": False, "evas_guide": False, "evas_cli": False},
     "G1": {"process": "direct_one_shot", "form_skill": True, "evas_guide": False, "evas_cli": False},
     "G2": {"process": "agentic", "form_skill": False, "evas_guide": False, "evas_cli": True},
@@ -54,6 +66,9 @@ MODES = {
     "G4": {"process": "agentic", "form_skill": False, "evas_guide": True, "evas_cli": True},
     "G5": {"process": "agentic", "form_skill": True, "evas_guide": True, "evas_cli": True},
 }
+# The active comparison contract is the real-skill r50 registry.  The legacy
+# registry remains available only to reproduce sealed pre-r50 releases.
+MODES = REAL_SKILL_MODES
 FORM_SKILLS = {
     "dut": "dut_modeling.md",
     "testbench": "testbench_verification.md",
@@ -71,6 +86,7 @@ MATERIALIZED_ARTIFACTS = (
     "prompt_modes/manifest.json",
 )
 PUBLIC_MATERIALIZED_ARTIFACTS = MATERIALIZED_ARTIFACTS
+REAL_SKILL_MATERIALIZED_ARTIFACTS = (*MATERIALIZED_ARTIFACTS, "skills/SNAPSHOT_MANIFEST.json")
 WRAPPERS_BY_PROCESS = {
     "direct_one_shot": "direct_wrapper.md",
     "agentic": "agentic_wrapper.md",
@@ -83,6 +99,9 @@ REFERENCE_TOKENIZER = {
 COMPONENT_METADATA = {
     "direct_wrapper.md": {"stable_id": "component.wrapper.direct_one_shot", "kind": "wrapper", "applicable_forms": ["dut", "testbench", "bugfix"]},
     "agentic_wrapper.md": {"stable_id": "component.wrapper.agentic", "kind": "wrapper", "applicable_forms": ["dut", "testbench", "bugfix"]},
+}
+LEGACY_COMPONENT_METADATA = {
+    **COMPONENT_METADATA,
     "dut_modeling.md": {"stable_id": "component.form.dut", "kind": "form_skill", "applicable_forms": ["dut"]},
     "testbench_verification.md": {"stable_id": "component.form.testbench", "kind": "form_skill", "applicable_forms": ["testbench"]},
     "bugfix_diagnosis.md": {"stable_id": "component.form.bugfix", "kind": "form_skill", "applicable_forms": ["bugfix"]},
@@ -95,6 +114,20 @@ COMPONENT_SUBDIR_BY_KIND = {
     "wrapper": "wrappers",
     "form_skill": "form_skills",
     "evas_guide": "evas_guides",
+}
+SKILL_SOURCES = {
+    "veriloga": {
+        "type": "vendored_runtime_subset",
+        "path": "skills/veriloga",
+        "upstream_repository": "https://github.com/Arcadia-1/veriloga-skills",
+        "upstream_commit": "bf3ee9f5c20bbefccc36f1cd58af9a48032a6ca5",
+        "upstream_pull_request": "https://github.com/Arcadia-1/veriloga-skills/pull/17",
+        "included_paths": ["SKILL.md", "agents/**", "assets/**", "references/**"],
+    },
+    "vabench-feedback": {
+        "type": "in_repository",
+        "path": "skills/vabench-feedback",
+    },
 }
 STANDALONE_EVALUATOR_COMMON = (
     "family_spec.json",
@@ -198,6 +231,14 @@ def tree_sha(path: Path) -> str:
 
 def materialized_artifact_hashes(output: Path, artifacts: Iterable[str]) -> dict[str, str]:
     return {relative: file_sha(output / relative) for relative in artifacts}
+
+
+def materialized_artifacts_for_revision(revision: str) -> tuple[str, ...]:
+    return (
+        REAL_SKILL_MATERIALIZED_ARTIFACTS
+        if revision in REAL_SKILL_REVISIONS
+        else MATERIALIZED_ARTIFACTS
+    )
 
 
 def rel(path: Path, root: Path) -> str:
@@ -1041,24 +1082,90 @@ def build_bugfix_view(
     }
 
 
-def prompt_component_subdir(component_id: str) -> str:
-    kind = COMPONENT_METADATA[component_id]["kind"]
+def prompt_component_subdir(
+    component_id: str, metadata: dict[str, dict[str, Any]] | None = None
+) -> str:
+    kind = (metadata or COMPONENT_METADATA)[component_id]["kind"]
     return COMPONENT_SUBDIR_BY_KIND[kind]
 
 
-def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
+def skill_file_records(skill_id: str, release_skill_root: Path) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    for item in sorted(release_skill_root.rglob("*")):
+        if not item.is_file():
+            continue
+        if item.is_symlink():
+            raise SystemExit(f"skill snapshot contains symlink: {item}")
+        relative = item.relative_to(release_skill_root).as_posix()
+        records.append({
+            "path": relative,
+            "sha256": file_sha(item),
+            "bytes": item.stat().st_size,
+            "source_path": (Path("skills") / skill_id / relative).as_posix(),
+        })
+    return records
+
+
+def install_skill_snapshots(output: Path) -> dict[str, dict[str, Any]]:
+    skills: dict[str, dict[str, Any]] = {}
+    release_skills = output / "skills"
+    for skill_id in SKILL_IDS:
+        source = SKILLS_ROOT / skill_id
+        if not (source / "SKILL.md").is_file():
+            raise SystemExit(f"missing real skill package: {source}")
+        if source.is_symlink() or any(item.is_symlink() for item in source.rglob("*")):
+            raise SystemExit(f"skill source contains symlink: {source}")
+        destination = release_skills / skill_id
+        if destination.exists():
+            shutil.rmtree(destination)
+        shutil.copytree(source, destination, symlinks=False)
+        files = skill_file_records(skill_id, destination)
+        skills[skill_id] = {
+            "id": skill_id,
+            "path": rel(destination, output),
+            "skill_file": f"skills/{skill_id}/SKILL.md",
+            "tree_sha256": tree_sha(destination),
+            "files": files,
+            "source": SKILL_SOURCES[skill_id],
+            "license": {"status": "not_declared_in_source_repository", "spdx": None},
+        }
+    write_json(release_skills / "SNAPSHOT_MANIFEST.json", {
+        "schema_version": "v4-real-skill-snapshot-manifest-v1",
+        "skills": skills,
+        "mode_skill_matrix": {
+            mode: list(policy.get("skills") or [])
+            for mode, policy in MODES.items()
+        },
+    })
+    return skills
+
+
+def install_prompt_assets(
+    output: Path, release_revision: str = "r50"
+) -> dict[str, dict[str, Any]]:
+    real_skills = release_revision in REAL_SKILL_REVISIONS
+    component_metadata = COMPONENT_METADATA if real_skills else LEGACY_COMPONENT_METADATA
+    modes = REAL_SKILL_MODES if real_skills else LEGACY_MODES
     records: dict[str, dict[str, Any]] = {}
     wrappers: dict[str, dict[str, Any]] = {}
     form_skills: dict[str, dict[str, Any]] = {}
     evas_guides: dict[str, dict[str, Any]] = {}
-    for source in sorted(PROMPT_ASSETS.rglob("*.md")):
-        if source.name not in COMPONENT_METADATA:
-            raise SystemExit(f"prompt component lacks metadata: {source.name}")
-        destination = output / "prompt_modes" / prompt_component_subdir(source.name) / source.name
+    sources = {source.name: source for source in sorted(PROMPT_ASSETS.rglob("*.md"))}
+    missing_sources = sorted(set(component_metadata) - set(sources))
+    if missing_sources:
+        raise SystemExit(f"prompt component source(s) missing: {missing_sources}")
+    for component_id in component_metadata:
+        source = sources[component_id]
+        destination = (
+            output
+            / "prompt_modes"
+            / prompt_component_subdir(component_id, component_metadata)
+            / component_id
+        )
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
-        metadata = COMPONENT_METADATA[source.name]
-        fingerprint = component_fingerprint(source.name, destination)
+        metadata = component_metadata[component_id]
+        fingerprint = component_fingerprint(component_id, destination)
         record = {
             "path": rel(destination, output),
             **fingerprint,
@@ -1069,32 +1176,57 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
             "license": {"status": "repository_license_pending", "spdx": None},
             "provenance": {"type": "project_authored", "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md"},
         }
-        records[source.name] = record
+        records[component_id] = record
         if metadata["kind"] == "wrapper":
-            wrappers[source.name] = record
+            wrappers[component_id] = record
         elif metadata["kind"] == "form_skill":
-            form_skills[source.name] = record
+            form_skills[component_id] = record
         elif metadata["kind"] == "evas_guide":
-            evas_guides[source.name] = record
+            evas_guides[component_id] = record
         else:
             raise SystemExit(f"unknown prompt component kind: {metadata['kind']}")
-    write_json(output / "prompt_modes" / "manifest.json", {
+    manifest = {
         "schema_version": "v4-prompt-component-manifest-v1",
         "reference_tokenizer": REFERENCE_TOKENIZER,
         "components": records,
         "wrappers": wrappers,
-        "form_skills": form_skills,
-        "evas_guides": evas_guides,
-    })
+    }
+    if real_skills:
+        skills = install_skill_snapshots(output)
+        manifest.update({
+            "skills_manifest": "skills/SNAPSHOT_MANIFEST.json",
+            "skill_snapshots": {
+                skill_id: {
+                    "path": record["path"],
+                    "skill_file": record["skill_file"],
+                    "tree_sha256": record["tree_sha256"],
+                }
+                for skill_id, record in skills.items()
+            },
+        })
+    else:
+        manifest.update({
+            "form_skills": form_skills,
+            "evas_guides": evas_guides,
+        })
+    write_json(output / "prompt_modes" / "manifest.json", manifest)
     write_json(output / "prompt_modes" / "modes.json", {
         "schema_version": "v4-prompt-mode-registry-v1",
-        "modes": MODES,
-        "composition_order": [
-            "canonical_instruction_and_inline_artifacts",
-            "form_skill",
-            "evas_guide",
-            "mode_wrapper_response_protocol",
-        ],
+        "modes": modes,
+        "composition_order": (
+            [
+                "canonical_instruction_and_inline_artifacts",
+                "real_skill_lookup_when_enabled",
+                "mode_wrapper_response_protocol",
+            ]
+            if real_skills
+            else [
+                "canonical_instruction_and_inline_artifacts",
+                "form_skill",
+                "evas_guide",
+                "mode_wrapper_response_protocol",
+            ]
+        ),
         "working_token_budget": "runner_supplied_same_ceiling_within_comparison_stratum",
         "wall_time_policy": "safety_limit_not_ability_budget",
     })
@@ -1189,7 +1321,7 @@ def main() -> int:
         ])
 
     task_rows.sort(key=lambda item: int(str(item["task_id"]).split("-", 1)[1]))
-    install_prompt_assets(output)
+    install_prompt_assets(output, revision)
     write_json(
         output / "TASK_INDEX.json",
         {
@@ -1224,6 +1356,7 @@ def main() -> int:
             "tasks": "tasks",
             "prompt_modes": "prompt_modes",
             "task_index": "TASK_INDEX.json",
+            **({"skills": "skills"} if revision in REAL_SKILL_REVISIONS else {}),
         },
         "package_layout": {
             "task_public_inputs": "tasks/<task>/public",
@@ -1232,7 +1365,9 @@ def main() -> int:
             "task_form": "tasks/<task>/task_record.json:form",
         },
         "tasks_index": "TASK_INDEX.json",
-        "materialized_artifact_sha256": materialized_artifact_hashes(output, MATERIALIZED_ARTIFACTS),
+        "materialized_artifact_sha256": materialized_artifact_hashes(
+            output, materialized_artifacts_for_revision(revision)
+        ),
     }
     write_json(output / "MANIFEST.json", manifest)
     print(json.dumps(manifest, indent=2, sort_keys=True))

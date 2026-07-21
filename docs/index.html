@@ -6,7 +6,7 @@
     <title>vaBench</title>
     <meta
       name="description"
-      content="vaBench 300 evaluates behavioral Verilog-A generation with EVAS fast gates and Spectre final judging."
+      content="vaBench 300 evaluates behavioral Verilog-A generation with pinned strict EVAS scoring and optional Spectre parity audits."
     >
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="assets/style.css">
@@ -45,7 +45,7 @@
             <h1 data-i18n="homeTitle">vaBench 300</h1>
             <p class="hero-text" data-i18n="homeText">
               A benchmark and evaluation framework for analog and mixed-signal behavioral Verilog-A tasks.
-              EVAS provides a fast development gate; Spectre remains the final judge for reported scores.
+              Pinned strict EVAS provides the formal score; Spectre is an optional, non-blocking parity reference.
             </p>
             <div class="button-row">
               <a class="button-link primary" href="run-model-eval.html" data-i18n="homePrimaryAction">Run a model</a>
@@ -66,7 +66,7 @@
           <a class="feature-card" href="leaderboard.html">
             <span data-i18n="featureLeaderboardEyebrow">Leaderboard</span>
             <strong data-i18n="featureLeaderboardTitle">Model results</strong>
-            <p data-i18n="featureLeaderboardBody">Separate verified Spectre-scored runs from integration smoke tests.</p>
+            <p data-i18n="featureLeaderboardBody">Separate verified EVAS-scored runs from integration smoke tests.</p>
           </a>
           <a class="feature-card" href="protocol.html">
             <span data-i18n="featureProtocolEyebrow">Protocol</span>

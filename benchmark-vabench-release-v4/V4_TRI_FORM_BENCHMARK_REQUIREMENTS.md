@@ -71,9 +71,11 @@ statistically correlated.
    starter or reference testbench. Gold answers for DUT/Bugfix, negative-DUT
    sources, checker source, final Spectre results, and evaluator paths are never
    model-visible.
-7. **Spectre is the final judge.** AHDL-like checks and EVAS provide fast public
-   feedback and preflight evidence. Final accepted scores use the private
-   Spectre evaluation path.
+7. **Pinned strict EVAS is the formal judge.** Public feedback and final private
+   scoring use the release-pinned EVAS identity, with the final score produced
+   only after submission in the isolated evaluator environment. Spectre MAY be
+   used for non-blocking parity research, but it is not a release,
+   certification, or score gate and a run that omits it MUST NOT remain pending.
 8. **Physical isolation.** Repository authoring paths are not runtime access
    policy. Every experiment MUST materialize separate public and evaluator
    bundles and MUST NOT mount the full authoring repository into the model
@@ -1189,7 +1191,7 @@ engine, profile, AHDL-like ruleset, wall-time limit, and provider per-turn
 output cap. Any alternative
 engine result is a separately labeled diagnostic stratum and cannot satisfy the
 primary campaign gate. G0/G1 use no public EVAS feedback, but their experiment
-metadata MUST explicitly record that fact and still pin the final Spectre
+metadata MUST explicitly record that fact and still pin the final private EVAS
 identity.
 
 The agent-visible `tool_manifest.json` SHOULD expose only the safe subset:
@@ -1803,8 +1805,10 @@ The release report MUST state the number of circuit families, the number of
 materialized task instances by form, and the number that passed each gate.
 It MUST also state the full EVAS commit, source and runtime package versions,
 actual engine/profile distribution, Rust ABI/build identity, AHDL-like ruleset,
-exact Spectre version, and toolchain-lock hash. Engine strata MUST be reported
-separately when they cannot be normalized.
+and toolchain-lock hash. If an optional Spectre parity audit ran, the report
+MUST also state its exact version; otherwise it MUST record Spectre as not run
+without blocking the release. Engine strata MUST be reported separately when
+they cannot be normalized.
 
 For every G0-G5 condition, the report MUST also provide model-success and
 efficiency evidence: reference-tokenizer working tokens; provider-native input,
