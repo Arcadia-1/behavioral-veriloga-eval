@@ -71,6 +71,10 @@ def check_v4_1039_buck_soft_start_ramp_controller(rows: list[dict[str, float]]) 
                 ramp_seen = ramp_seen or expected_metric > 0.03
                 if observed_soft - target > 0.045:
                     clamp_errors += 1
+                if previous_active_soft is not None:
+                    max_next_soft = min(target, previous_active_soft + ramp_step)
+                    if observed_soft - max_next_soft > 0.010:
+                        step_errors += 1
                 if previous_active_soft is not None and target >= previous_active_soft and observed_soft + 0.02 < previous_active_soft and expected_metric > ramp_tol:
                     step_errors += 1
                 previous_active_soft = observed_soft
@@ -93,7 +97,7 @@ def check_v4_1039_buck_soft_start_ramp_controller(rows: list[dict[str, float]]) 
         and metric_errors <= 1
         and done_errors <= 1
         and clear_errors <= 3
-        and step_errors <= 1
+        and step_errors == 0
         and clamp_errors <= 1
     )
     return ok, (
