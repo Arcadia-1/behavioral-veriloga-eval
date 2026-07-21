@@ -225,7 +225,7 @@ def check_v4_917_quadrature_phase_interpolator(rows: list[dict[str, float]]) -> 
             + _crossing_times(rows, f"code_{bit}", rising=False)
         )
     )
-    stable_edges: list[tuple[float, int, float]] = []
+    stable_edges: list[tuple[float, int, int, float, float]] = []
     skipped_first_after_clear: set[float] = set()
     for edge in out_rises:
         row = _sample_at(rows, edge + 0.2e-9 * time_scale)
@@ -257,12 +257,13 @@ def check_v4_917_quadrature_phase_interpolator(rows: list[dict[str, float]]) -> 
                 gap=1.0e-9 * time_scale if reference is None else edge - reference,
             )
             continue
-        residual = edge - reference - (code % 8) * 5e-12 * time_scale
-        stable_edges.append((edge, quadrant, residual))
+        observed_delay = edge - reference
+        residual = observed_delay - (code % 8) * 5e-12 * time_scale
+        stable_edges.append((edge, quadrant, code, observed_delay, residual))
 
     if stable_edges:
-        baseline = sorted(residual for _, _, residual in stable_edges)[len(stable_edges) // 2]
-        for edge, quadrant, residual in stable_edges:
+        baseline = sorted(item[4] for item in stable_edges)[len(stable_edges) // 2]
+        for edge, quadrant, _, _, residual in stable_edges:
             gap = abs(residual - baseline)
             if gap > 35e-12 * time_scale:
                 diagnostics["P_SELECTED_EDGE_DELAY"].mismatch(
@@ -271,7 +272,34 @@ def check_v4_917_quadrature_phase_interpolator(rows: list[dict[str, float]]) -> 
                     time=edge,
                     gap=gap,
                 )
-    represented_quadrants = {quadrant for _, quadrant, _ in stable_edges}
+
+    slope_checks = 0
+    by_quadrant_code: dict[tuple[int, int], list[float]] = {}
+    for _, quadrant, code, observed_delay, _ in stable_edges:
+        by_quadrant_code.setdefault((quadrant, code), []).append(observed_delay)
+    for quadrant in range(4):
+        points = [
+            (code, sorted(delays)[len(delays) // 2])
+            for (point_quadrant, code), delays in sorted(by_quadrant_code.items())
+            if point_quadrant == quadrant
+        ]
+        for (code0, delay0), (code1, delay1) in zip(points, points[1:]):
+            expected_step = (code1 - code0) * 5e-12 * time_scale
+            observed_step = delay1 - delay0
+            gap = abs(observed_step - expected_step)
+            slope_checks += 1
+            diagnostics["P_SELECTED_EDGE_DELAY"].checked += 1
+            if gap > 8e-12 * time_scale:
+                diagnostics["P_SELECTED_EDGE_DELAY"].mismatch(
+                    expected=(
+                        f"quadrant={quadrant} delay_step="
+                        f"({code1}-{code0})*5ps={expected_step:.6g}"
+                    ),
+                    observed=f"delay_step={observed_step:.6g}",
+                    time=float(rows[-1]["time"]),
+                    gap=gap,
+                )
+    represented_quadrants = {item[1] for item in stable_edges}
     if diagnostics["P_SELECTED_EDGE_DELAY"].checked < 5 or len(represented_quadrants) < 3:
         diagnostics["P_SELECTED_EDGE_DELAY"].mismatch(
             expected="paired_edges>=5 represented_quadrants>=3",
@@ -281,6 +309,13 @@ def check_v4_917_quadrature_phase_interpolator(rows: list[dict[str, float]]) -> 
             ),
             time=float(rows[-1]["time"]),
             gap=float(max(0, 5 - len(stable_edges)) + max(0, 3 - len(represented_quadrants))),
+        )
+    if slope_checks < 2:
+        diagnostics["P_SELECTED_EDGE_DELAY"].mismatch(
+            expected="intra_quadrant_slope_comparisons>=2",
+            observed=f"intra_quadrant_slope_comparisons={slope_checks}",
+            time=float(rows[-1]["time"]),
+            gap=float(2 - slope_checks),
         )
     diagnostics["P_SELECTED_EDGE_DELAY"].checked = max(
         1, diagnostics["P_SELECTED_EDGE_DELAY"].checked
