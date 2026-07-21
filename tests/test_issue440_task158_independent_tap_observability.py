@@ -10,12 +10,11 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-TASK_DIR = (
+PROVENANCE_TASK_DIR = (
     ROOT
     / "benchmark-vabench-release-v4"
-    / "release"
-    / "benchmarkv4"
-    / "tasks"
+    / "provenance"
+    / "dut-base-v3-exact-five-hash-bound-v2"
     / "158-ref-flash-8level-decoder"
 )
 
@@ -125,12 +124,14 @@ def test_task158_accepts_independent_one_hot_tap_coverage() -> None:
     assert "independent_one_hot_taps=8" in note
 
 
-def test_task158_release_feedback_profile_tracks_harness_hash() -> None:
-    harness_path = TASK_DIR / "evaluator" / "harness_spec.json"
-    feedback_path = TASK_DIR / "evaluator" / "profiles" / "feedback.json"
-    feedback = json.loads(feedback_path.read_text(encoding="utf-8"))
+def test_task158_provenance_profiles_track_harness_hash() -> None:
+    harness_path = PROVENANCE_TASK_DIR / "evaluator" / "harness_spec.json"
+    harness_hash = hashlib.sha256(harness_path.read_bytes()).hexdigest()
 
-    assert feedback["harness_spec_sha256"] == hashlib.sha256(harness_path.read_bytes()).hexdigest()
+    for profile_name in ("feedback", "score"):
+        profile_path = PROVENANCE_TASK_DIR / "evaluator" / "profiles" / f"{profile_name}.json"
+        profile = json.loads(profile_path.read_text(encoding="utf-8"))
+        assert profile["harness_spec_sha256"] == harness_hash
 
 
 def test_task158_rejects_old_pass_wrong_weight_regression() -> None:
