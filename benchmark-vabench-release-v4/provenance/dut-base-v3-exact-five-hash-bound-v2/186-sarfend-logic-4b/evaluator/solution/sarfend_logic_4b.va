@@ -17,13 +17,13 @@ analog begin
         dcmp=0; clkcval=0;
     end
     @(cross(V(clks) - 0.45, -1)) clkcval=1;
-    @(cross(V(dcomp)+V(dcompb)-0.45, -1)) if (V(clks)<0.45) clkcval=1;
+    @(cross(V(dcomp)+V(dcompb)-0.45, -1)) if ((V(clks)<0.45) && (pointer<4)) clkcval=1;
     @(cross(V(dcomp)+V(dcompb)-0.45, +1)) begin
-        if (V(clks)<0.45) begin
+        if ((V(clks)<0.45) && (pointer<4)) begin
             dcmp = V(dcomp)>V(dcompb);
             if (V(test)<0.45) begin p[pointer]=dcmp; m[pointer]=1-dcmp; end
             else begin p[pointer]=dtest[pointer]; m[pointer]=1-dtest[pointer]; end
-            if (pointer<3) clkcval=0;
+            clkcval=0;
             pointer=pointer+1;
         end
     end

@@ -25,7 +25,7 @@ No overrideable public parameters are required. Use 0.45 V thresholds and 0/1 V 
 
 ## Required Behavior
 
-On each rising `clks` crossing, publish the previous cycle DAC-P word on `dout0..dout3`, reset the conversion pointer, initialize the DAC controls for a new conversion, capture the test override word, and clear `clkc`. On falling `clks`, assert `clkc` to start comparison. While `clks` is low, comparator output reset/recovery should reassert `clkc`; comparator decision activity should capture one MSB-to-LSB decision per step. With `test` low, use the live comparator decision; with `test` high, use the captured test bit for that step. Drive complementary `dp`/`dm` controls and stop requesting comparisons after four decisions.
+On each rising `clks` crossing, publish the previous cycle DAC-P word with `dout3=dp4`, `dout2=dp3`, `dout1=dp2`, and `dout0=dp1`; reset the conversion pointer; initialize `dp4=dm4=0` and `dp3=dm3=dp2=dm2=dp1=dm1=1`; capture the test override word; and clear `clkc`. On falling `clks`, assert `clkc` to start comparison. While `clks` is low, comparator output reset/recovery should reassert `clkc`; comparator decision activity should capture one MSB-to-LSB decision per step. With `test` low, use the live comparator decision. With `test` high, consume the captured override bits in the order `dtest3`, `dtest2`, `dtest1`, then `dtest0`. Drive complementary `dp`/`dm` controls and stop requesting comparisons after four decisions without changing the completed word.
 
 ## Modeling Constraints
 

@@ -44,6 +44,7 @@ def check_v4_spi_shift_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
     bits = list(DEFAULT_BITS)
     sdi_values: set[int] = set()
     reset_checks = 0
+    reset_clock_checks = 0
     shift_checks = 0
 
     initial_probe = row_at_or_after(rows, rows[0]["time"] + settle)
@@ -63,6 +64,8 @@ def check_v4_spi_shift_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
             bits = list(DEFAULT_BITS)
             result = reset_result
             reset_checks += 1
+            if kind in {"rise", "fall"}:
+                reset_clock_checks += 1
         else:
             incoming = int(before["sdi"] > 0.45)
             sdi_values.add(incoming)
@@ -118,6 +121,12 @@ def check_v4_spi_shift_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
         observed=f"reset_checks={reset_checks}",
         time_s=rows[-1]["time"],
     )
+    reset_result.condition(
+        reset_clock_checks >= 2,
+        expected="clock_edges_while_reset_high>=2",
+        observed=f"reset_clock_checks={reset_clock_checks}",
+        time_s=rows[-1]["time"],
+    )
     shift_result.condition(
         shift_checks >= 4 and bool(rises) and bool(falls),
         expected="shift_checks>=4_with_both_edges",
@@ -135,7 +144,8 @@ def check_v4_spi_shift_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
         results,
         coverage=(
             f"rises={len(rises)} falls={len(falls)} shifts={shift_checks} "
-            f"reset_checks={reset_checks} sdi={sorted(sdi_values)}"
+            f"reset_checks={reset_checks} reset_clock_checks={reset_clock_checks} "
+            f"sdi={sorted(sdi_values)}"
         ),
     )
 

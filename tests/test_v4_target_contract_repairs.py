@@ -360,42 +360,62 @@ def test_sample_hold_checker_uses_clamped_capture_and_duration_scaled_droop() ->
 
 
 def test_sarfend_checker_accepts_event_relative_noncanonical_timing() -> None:
+    sys.path.insert(0, str(ROOT))
     from runners.checkers.v4.task_186 import CHECKER
 
     rows: list[dict[str, float]] = []
-    for time_ns in range(121):
-        if time_ns < 30 or time_ns >= 100:
+    for time_ns in range(151):
+        if time_ns < 20 or 80 <= time_ns < 95 or time_ns >= 140:
             p = [0, 1, 1, 1]
-        elif time_ns < 50:
+        elif time_ns < 40 or 95 <= time_ns < 105:
             p = [1, 1, 1, 1]
-        elif time_ns < 70:
+        elif time_ns < 70 or 105 <= time_ns < 125:
             p = [1, 0, 1, 1]
         else:
-            p = [1, 0, 1, 1]
-        if time_ns < 70 or time_ns >= 100:
-            m = [0, 1, 1, 1]
-        else:
+            p = [1, 0, 1, 0]
+        if 60 <= time_ns < 80 or 115 <= time_ns < 140:
             m = [0, 1, 0, 1]
+        else:
+            m = [0, 1, 1, 1]
         if time_ns < 10:
             dout = [0, 0, 0, 0]
-        elif time_ns < 100:
+        elif time_ns < 80:
             dout = [1, 1, 1, 0]
         else:
-            dout = [1, 1, 0, 1]
+            dout = [0, 1, 0, 1]
         clkc = int(
-            15 <= time_ns < 30
-            or 35 <= time_ns < 50
-            or 55 <= time_ns < 70
-            or 75 <= time_ns < 100
-            or time_ns >= 105
+            15 <= time_ns < 20
+            or 25 <= time_ns < 40
+            or 45 <= time_ns < 60
+            or 65 <= time_ns < 70
+            or 85 <= time_ns < 95
+            or 100 <= time_ns < 105
+            or 110 <= time_ns < 115
+            or 120 <= time_ns < 125
+            or time_ns >= 145
         )
         rows.append(
             {
                 "time": (time_ns + 3000) * 1e-9,
-                "clks": float(10 <= time_ns < 15 or 100 <= time_ns < 105),
-                "dcomp": float(30 <= time_ns < 35 or 70 <= time_ns < 75),
-                "dcompb": float(50 <= time_ns < 55),
-                "test": 0.0,
+                "clks": float(
+                    10 <= time_ns < 15
+                    or 80 <= time_ns < 85
+                    or 140 <= time_ns < 145
+                ),
+                "dcomp": float(
+                    20 <= time_ns < 25
+                    or 60 <= time_ns < 65
+                    or 105 <= time_ns < 110
+                    or 125 <= time_ns < 130
+                    or 132 <= time_ns < 136
+                ),
+                "dcompb": float(
+                    40 <= time_ns < 45
+                    or 70 <= time_ns < 75
+                    or 95 <= time_ns < 100
+                    or 115 <= time_ns < 120
+                ),
+                "test": float(time_ns >= 90),
                 "dtest0": 0.0,
                 "dtest1": 1.0,
                 "dtest2": 0.0,

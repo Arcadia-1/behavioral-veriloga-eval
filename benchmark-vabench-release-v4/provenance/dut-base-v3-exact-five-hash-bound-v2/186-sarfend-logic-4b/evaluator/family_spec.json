@@ -158,7 +158,7 @@
   "properties": [
     {
       "id": "P_CONVERSION_RESET_AND_PREVIOUS_WORD",
-      "observable_contract": "Each rising `clks` crossing publishes the previous DAC-P word on `dout0..dout3`, resets the conversion pointer, and initializes controls for a new conversion.",
+      "observable_contract": "Each rising `clks` crossing publishes `dout3..dout0 = dp4..dp1`, resets the conversion pointer, and initializes `dp4=dm4=0` with `dp3=dm3=dp2=dm2=dp1=dm1=1` for a new conversion.",
       "required_signals": [
         "time",
         "clkc",
@@ -186,7 +186,7 @@
     },
     {
       "id": "P_SAMPLE_AND_COMPARATOR_DECISIONS",
-      "observable_contract": "The conversion captures comparator inputs and updates SAR decisions with the declared `dcomp/dcompb` polarity.",
+      "observable_contract": "The conversion captures comparator inputs MSB-to-LSB with the declared `dcomp/dcompb` polarity, consumes test overrides as `dtest3` through `dtest0`, and ignores further comparator activity after four decisions.",
       "required_signals": [
         "time",
         "clkc",
