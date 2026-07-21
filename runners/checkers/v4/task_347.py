@@ -93,14 +93,20 @@ def check_v4_347_power_reset_sequencer_system(rows: list[dict[str, float]]) -> t
                 _mismatch(errors, "P_PWR_SEQUENCE_ORDER", time_s, f"{signal}={int(value)}", f"{signal}={int(_high(observed, signal))}", 1.0)
         startup_seen = startup_seen or all(_high(observed, signal) for signal in outputs)
         checks += 1
-    async_clear = any(
-        (float(row["vdd_sense"]) < 0.68 or not _high(row, "rst_n_ext"))
-        and all(not _high(row, signal) for signal in outputs)
-        for row in rows
-    )
-    if not async_clear:
+    async_checks = 0
+    async_clear_seen = False
+    for row in rows:
+        if float(row["vdd_sense"]) < 0.68 or not _high(row, "rst_n_ext"):
+            async_checks += 1
+            observed = _row_after(rows, float(row["time"]))
+            clear = all(not _high(observed, signal) for signal in outputs)
+            async_clear_seen = async_clear_seen or clear
+            if not clear:
+                observed_high = [signal for signal in outputs if _high(observed, signal)]
+                _mismatch(errors, "P_PWR_ASYNC_CLEAR", float(row["time"]), "all outputs low during reset/brownout", ",".join(observed_high) or "none")
+    if async_checks == 0 or not async_clear_seen:
         _mismatch(errors, "P_PWR_ASYNC_CLEAR", 0.0, "all outputs low during reset/brownout", "not observed")
-    return _finish("v4_347", checks, errors, f"startup_seen={startup_seen} brownout_seen={brownout_seen} async_clear={async_clear}", 10)
+    return _finish("v4_347", checks, errors, f"startup_seen={startup_seen} brownout_seen={brownout_seen} async_clear={async_clear_seen} async_checks={async_checks}", 10)
 
 CHECKER_ID = "v4_347_power_reset_sequencer_system"
 CHECKER: Checker = check_v4_347_power_reset_sequencer_system
