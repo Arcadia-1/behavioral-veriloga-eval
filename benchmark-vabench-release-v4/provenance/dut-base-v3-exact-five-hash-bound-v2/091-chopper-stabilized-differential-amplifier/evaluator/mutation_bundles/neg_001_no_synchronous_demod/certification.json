@@ -1,0 +1,44 @@
+{
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
+  "diagnostics": {
+    "expected": "properties P_CHOP_DEMOD_BASEBAND_GAIN, P_INTERNAL_OFFSET_SUPPRESSION satisfy the public contract; fault class missing_synchronous_demodulation is rejected",
+    "observed": "EVAS: checked=344 active=2 hold_edges=0 clears=2 polarity=+1/-1 settled_rows=0 errors=5 first=offset_residual@5.440ns=-0.10125 expected=-0.07125",
+    "violated_property_ids": [
+      "P_CHOP_DEMOD_BASEBAND_GAIN",
+      "P_INTERNAL_OFFSET_SUPPRESSION"
+    ]
+  },
+  "evaluators": {
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r50-targeted",
+    "checker_id": "v4_091_chopper_stabilized_differential_amplifier",
+    "report_path": "evidence/r50/FAMILY091_TARGETED_EVAS.json",
+    "report_sha256": "0d8e9cca3c59b3859dd592095b818a885df949380700ec2c92aa342f2a5bb2d8",
+    "trace_row_count": 3814
+  },
+  "family_id": "091",
+  "inputs": {
+    "checker_profile_sha256": "88c8bc22987ca9047c9083209e0fdd7dcf9d77af53d800350d3b8aaae48dea6e",
+    "harness_spec_sha256": "29e8bf1094fa274f5a079034cbbf2108c08edf34451cd6bde48d40ded4345e55",
+    "mutation_bundle_sha256": "5d02b3760639d86633263bb2a9ab2d072d34bd636962f56b724716fdd4626bdc",
+    "profile_sha256": "9838f114e1d05735370676f4c5d944f01d43fe34a4ca7e0b5038d7dad7637308"
+  },
+  "mutation_id": "neg_001_no_synchronous_demod",
+  "outcome": "killed_behaviorally",
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.3"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
+  "status": "pass"
+}

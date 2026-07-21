@@ -326,6 +326,7 @@ def run_case(
         insufficient_excitation_rejected = True if not insufficient_passed else None
     ok = (
         classification_ok
+        and timing_invariant
         and diagnostics_complete
         and insufficient_excitation_rejected is not False
     )

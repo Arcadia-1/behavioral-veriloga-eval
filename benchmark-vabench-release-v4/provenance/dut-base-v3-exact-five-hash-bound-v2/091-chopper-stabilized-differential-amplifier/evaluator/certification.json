@@ -1,0 +1,53 @@
+{
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "active_negative_count": 5,
+    "active_negatives": "all_killed_behaviorally",
+    "diagnostic": "present",
+    "gold_behavior": "pass",
+    "insufficient_excitation": "rejected",
+    "trace_axis_metamorphic": "classification_invariant"
+  },
+  "component_fingerprints": {
+    "task_inputs": {
+      "checker_profile_sha256": "88c8bc22987ca9047c9083209e0fdd7dcf9d77af53d800350d3b8aaae48dea6e",
+      "family_spec_sha256": "3ceaf909e36f588a3afb82c73ea054e7bbbd8626f531d45bb9ae6c48337bc452",
+      "feedback_deck_sha256": "109833a240584c3cb6b97b0746c5f6a1ba0d904090e82c1cab49f3d3ef036a91",
+      "feedback_profile_sha256": "da16de502a991b1a7a116e9d72fb634bf2cfe60f6a00a4b0c71a180a58b5cf8f",
+      "gold_bundle_sha256": "2519d46f93ca13ac49050ba53e274bf332d78edd391f7463575058e5bdd22176",
+      "harness_spec_sha256": "29e8bf1094fa274f5a079034cbbf2108c08edf34451cd6bde48d40ded4345e55",
+      "score_deck_sha256": "109833a240584c3cb6b97b0746c5f6a1ba0d904090e82c1cab49f3d3ef036a91",
+      "score_profile_sha256": "9838f114e1d05735370676f4c5d944f01d43fe34a4ca7e0b5038d7dad7637308"
+    }
+  },
+  "evaluators": {
+    "evas2": {
+      "evas_backend": "evas-rust",
+      "evas_engine": "evas2",
+      "evas_engine_used": "evas2",
+      "evas_version": "0.8.3",
+      "status": "pass"
+    }
+  },
+  "evidence": {
+    "campaign": "r50-targeted",
+    "checker_id": "v4_091_chopper_stabilized_differential_amplifier",
+    "report_path": "evidence/r50/FAMILY091_TARGETED_EVAS.json",
+    "report_sha256": "0d8e9cca3c59b3859dd592095b818a885df949380700ec2c92aa342f2a5bb2d8",
+    "trace_row_count": 4180
+  },
+  "family_id": "091",
+  "input_hashes": {
+    "checker_profile": "88c8bc22987ca9047c9083209e0fdd7dcf9d77af53d800350d3b8aaae48dea6e",
+    "family_spec": "3ceaf909e36f588a3afb82c73ea054e7bbbd8626f531d45bb9ae6c48337bc452",
+    "feedback_profile": "da16de502a991b1a7a116e9d72fb634bf2cfe60f6a00a4b0c71a180a58b5cf8f",
+    "gold_bundle": "2519d46f93ca13ac49050ba53e274bf332d78edd391f7463575058e5bdd22176",
+    "harness_spec": "29e8bf1094fa274f5a079034cbbf2108c08edf34451cd6bde48d40ded4345e55",
+    "score_profile": "9838f114e1d05735370676f4c5d944f01d43fe34a4ca7e0b5038d7dad7637308"
+  },
+  "pending_requirements": [
+    "r50 full400 Rust EVAS2 certification"
+  ],
+  "schema_version": "v4-task-certification-rust-evas2-v1",
+  "status": "pending_full400"
+}
