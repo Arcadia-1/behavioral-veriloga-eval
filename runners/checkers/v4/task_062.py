@@ -67,13 +67,18 @@ def check_ready_valid_latency_counter_12b(rows: list[dict[str, float]]) -> tuple
             active = False
     if failures:
         return False, " ".join(failures[:5])
-    ok = errors == 0 and len(checked) >= 2 and max(checked, default=0) > 0
+    ok = (
+        errors == 0
+        and len(checked) >= 3
+        and 0 in checked
+        and max(checked, default=0) > 0
+    )
     summary = f"checked={checked} errors={errors} sampled_clock_edges={len(rise_rows)}"
     if not ok:
         return False, diagnostic(
             "P_WAIT_CYCLE_COUNT",
             "insufficient_coverage",
-            expected="two_transactions,nonzero_latency",
+            expected="three_transactions,including_zero_and_nonzero_latency",
             observed=summary.replace(" ", "_"),
             event="full_trace",
         )

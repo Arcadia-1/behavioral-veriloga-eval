@@ -77,6 +77,7 @@ def check_rf_mixer_downconverter_macro(rows: list[dict[str, float]]) -> tuple[bo
     neg_hi = _mean_selected(rows, "out", clk_high=True, vin_high=False)
     neg_lo = _mean_selected(rows, "out", clk_high=False, vin_high=False)
     active_metric = _mean_where(rows, "metric", lambda row: row["rst"] <= 0.45)
+    reset_rows = [row for row in rows if row["rst"] > 0.75]
     if None in (pos_hi, pos_lo, neg_hi, neg_lo, active_metric):
         return False, diagnostic(
             "P_DOWNCONVERSION_TRANSFER",
@@ -90,6 +91,36 @@ def check_rf_mixer_downconverter_macro(rows: list[dict[str, float]]) -> tuple[bo
     assert neg_hi is not None
     assert neg_lo is not None
     assert active_metric is not None
+
+    if not reset_rows:
+        return False, diagnostic(
+            "P_RESET_COMMON_MODE",
+            "insufficient_excitation",
+            expected="observable_reset_interval",
+            observed="reset_rows=0",
+            event="rst.high",
+        )
+    reset_errors = sum(
+        abs(row["out"] - 0.45) > 0.10 or abs(row["metric"]) > 0.15
+        for row in reset_rows[len(reset_rows) // 3 :]
+    )
+    if reset_errors:
+        return False, diagnostic(
+            "P_RESET_COMMON_MODE",
+            "behavior_mismatch",
+            expected="out=0.45+/-0.10,metric<=0.15_during_reset",
+            observed=f"mismatching_reset_rows={reset_errors}",
+            event="rst.high_settled",
+        )
+    rail_errors = sum(row["out"] < -0.03 or row["out"] > 0.93 for row in rows)
+    if rail_errors:
+        return False, diagnostic(
+            "P_OUTPUT_CLAMP",
+            "behavior_mismatch",
+            expected="out_within_smoothed_[0.02,0.88]_clamp",
+            observed=f"out_of_range_rows={rail_errors}",
+            event="full_trace",
+        )
 
     if pos_hi <= 0.58 or pos_lo >= 0.34:
         return False, diagnostic(

@@ -19,6 +19,11 @@ def _slope(rows: list[Row]) -> float | None:
     return None if denominator <= 0 else sum((x - xbar) * (y - ybar) for x, y in zip(xs, ys)) / denominator
 
 
+def _hold_fraction(rows: list[Row], tolerance: float = 5e-4) -> float:
+    deltas = [abs(right["vout"] - left["vout"]) for left, right in zip(rows, rows[1:])]
+    return sum(delta <= tolerance for delta in deltas) / len(deltas) if deltas else 0.0
+
+
 def _transition_fit(rows: list[Row], start: float, stop: float) -> list[Row]:
     start_out = sample_signal(rows, "vout", start)
     target = sample_signal(rows, "vin", start + 0.5 * (stop - start))
@@ -104,6 +109,9 @@ def check_slew_rate_limiter(rows: list[Row]) -> tuple[bool, str]:
     falling_fit = _transition_fit(rows, fall_time, next_rise)
     rising_slope = _slope(rising_fit)
     falling_slope = _slope(falling_fit)
+    rising_hold_fraction = _hold_fraction(rising_fit)
+    falling_hold_fraction = _hold_fraction(falling_fit)
+    periodic_errors = int(rising_hold_fraction < 0.15) + int(falling_hold_fraction < 0.15)
     rate_errors = int(rising_slope is None) + int(falling_slope is None)
     if rising_slope is not None and falling_slope is not None:
         rate_errors += int(rising_slope <= 0.0) + int(falling_slope >= 0.0)
@@ -137,8 +145,8 @@ def check_slew_rate_limiter(rows: list[Row]) -> tuple[bool, str]:
     coverage_missing += int(len(rising_fit) < 4) + int(len(falling_fit) < 4)
     counts = {
         "P_INITIAL_ZERO": initial_error,
-        "P_PERIODIC_UPDATE": rate_errors + coverage_missing,
-        "P_BIDIRECTIONAL_STEP_LIMIT": rate_errors + passthrough_errors,
+        "P_PERIODIC_UPDATE": rate_errors + periodic_errors + coverage_missing,
+        "P_BIDIRECTIONAL_STEP_LIMIT": rate_errors + periodic_errors + passthrough_errors,
         "P_NEAR_TARGET_SETTLE": settle_errors,
         "P_EVENTUAL_TRACKING": settle_errors,
     }
@@ -146,6 +154,7 @@ def check_slew_rate_limiter(rows: list[Row]) -> tuple[bool, str]:
     coverage = "" if coverage_missing == 0 else f" insufficient_excitation={coverage_missing}"
     summary = (
         f"rise={rise_time:.3e} fall={fall_time:.3e} slopes={rising_slope}/{falling_slope} "
+        f"hold_fractions={rising_hold_fraction:.3f}/{falling_hold_fraction:.3f} "
         f"high={high_sample} final={final_sample}{coverage}; {property_diagnostics(counts)}"
     )
     if not ok:
