@@ -71,6 +71,13 @@ def check_v3_iterative_isar_dac(rows: list[dict[str, float]]) -> tuple[bool, str
         return False, "missing_reset_rising_edge"
 
     failures: list[str] = []
+    initial_probe_t = rows[0]["time"] + 0.5 * (rst_edges[0] - rows[0]["time"])
+    initial_vdac = sample_signal_at(rows, "vdac", initial_probe_t)
+    if initial_vdac is None:
+        return False, "missing_initial_vdac_sample"
+    if abs(initial_vdac) > 0.02:
+        failures.append(f"initial_vdac@{initial_probe_t * 1e9:.3f}ns={initial_vdac:.4f}")
+
     for rst_t in rst_edges:
         observed = sample_signal_at(rows, "vdac", rst_t + 0.25e-9)
         if observed is None:

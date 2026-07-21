@@ -88,6 +88,27 @@ def check_v3_comparator_delay_overdrive_meter(rows: list[Row]) -> tuple[bool, st
         if probe_t is None:
             continue
 
+        armed_probe_t = clk_t + 0.5 * (event_t - clk_t)
+        armed_valid = sample(rows, "valid", armed_probe_t)
+        if armed_valid is None:
+            return False, diagnostic(
+                "P_CLOCK_ARMED_MEASUREMENT",
+                "invalid_trace",
+                expected="valid_low_between_arm_and_decision",
+                observed="missing_sample",
+                event=event_label("valid", checked, armed_probe_t),
+            )
+        if armed_valid > 0.2 * vdd:
+            failures.append(
+                diagnostic(
+                    "P_CLOCK_ARMED_MEASUREMENT",
+                    "value_mismatch",
+                    expected=f"valid<={0.2 * vdd:.3f}_while_armed",
+                    observed=f"valid={armed_valid:.3f}",
+                    event=event_label("valid", checked, armed_probe_t),
+                )
+            )
+
         vinp = sample(rows, "vinp", clk_t + 1e-12)
         vinn = sample(rows, "vinn", clk_t + 1e-12)
         delay_s = sample(rows, "delay_ps", probe_t)

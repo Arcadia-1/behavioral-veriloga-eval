@@ -89,6 +89,26 @@ def _check_offset_search_driver_behavior(
     failures: list[str] = []
 
     for edge_t in falling_edges:
+        pre_probe_t = max(rows[0]["time"], edge_t - 0.10e-9)
+        pre_p = sample_signal_at(rows, vinp, pre_probe_t)
+        pre_n = sample_signal_at(rows, vinn, pre_probe_t)
+        pre_common = (
+            sample_signal_at(rows, common_signal, pre_probe_t)
+            if common_signal is not None
+            else fixed_common
+        )
+        if pre_p is not None and pre_n is not None and pre_common is not None:
+            pre_diff = pre_p - pre_n
+            pre_cm = 0.5 * (pre_p + pre_n)
+            if abs(pre_diff - diff) > 0.004:
+                failures.append(
+                    f"pre_falling_diff@{pre_probe_t * 1e9:.3f}ns={pre_diff:.5f} expected={diff:.5f}"
+                )
+            if abs(pre_cm - pre_common) > 0.004:
+                failures.append(
+                    f"pre_falling_cm@{pre_probe_t * 1e9:.3f}ns={pre_cm:.5f} expected={pre_common:.5f}"
+                )
+
         decision_value = sample_signal_at(rows, decision, edge_t)
         if decision_value is None:
             continue
