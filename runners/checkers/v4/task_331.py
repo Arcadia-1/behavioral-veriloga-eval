@@ -108,12 +108,6 @@ def check_v4_331_dfe_error_proxy_loop(rows: list[dict[str, float]]) -> tuple[boo
             streak += 1
         else:
             streak = 0
-        # Ignore the first edge after each observed enable transition while
-        # the stateful proxy settles; this is relative to the submitted
-        # stimulus, not a hidden absolute timestamp.  It still counts toward
-        # the public consecutive-low-error convergence streak.
-        if active_edges == 1:
-            continue
         checked += 1
         decisions += 1
         error_max = max(error_max, err)
