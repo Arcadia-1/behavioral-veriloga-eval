@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 import sys
 from pathlib import Path
 
@@ -42,7 +44,12 @@ def _logic(condition: bool) -> float:
     return VDD if condition else 0.0
 
 
-def _gold_rows(dt: float = 0.5e-9, shift: float = 0.0) -> list[dict[str, float]]:
+def _gold_rows(
+    dt: float = 0.5e-9,
+    shift: float = 0.0,
+    *,
+    high_first: bool = False,
+) -> list[dict[str, float]]:
     rows: list[dict[str, float]] = []
     count = int(STOP / dt) + 1
     for index in range(count + 1):
@@ -56,7 +63,7 @@ def _gold_rows(dt: float = 0.5e-9, shift: float = 0.0) -> list[dict[str, float]]
         if enabled and start is not None:
             elapsed = local_t - start
             half_cycles = int(elapsed // HALF_PERIOD)
-            osc_high = half_cycles % 2 == 1
+            osc_high = (half_cycles % 2 == 0) if high_first else (half_cycles % 2 == 1)
             valid_high = elapsed >= PERIOD
             metric = 0.45 if valid_high else 0.0
         rows.append(
@@ -178,3 +185,30 @@ def test_task383_checker_is_stable_under_time_prefix_shift_and_sparse_rows() -> 
     sparse = shifted[::2]
     ok, note = CHECKER(sparse)
     assert ok, note
+
+
+def test_task383_checker_accepts_deterministic_high_first_restart_phase() -> None:
+    ok, note = CHECKER(_gold_rows(high_first=True))
+    assert ok, note
+
+
+def test_task383_harness_metadata_matches_extended_score_deck() -> None:
+    task = (
+        ROOT
+        / "benchmark-vabench-release-v4/release/benchmarkv4/tasks"
+        / "383-fixed-frequency-oscillator-source/evaluator"
+    )
+    harness_path = task / "harness_spec.json"
+    harness = json.loads(harness_path.read_text())
+    score_deck = task / "score_tb.scs"
+    assert harness["deck"]["analyses"] == ["tran tran stop=195n maxstep=200p"]
+    assert harness["deck"]["body_lines"][:2] == score_deck.read_text().splitlines()[5:7]
+    assert harness["migration"]["legacy_score_deck_sha256"] == hashlib.sha256(
+        score_deck.read_bytes()
+    ).hexdigest()
+    harness_hash = hashlib.sha256(harness_path.read_bytes()).hexdigest()
+    for profile_name in ("feedback", "score"):
+        profile = json.loads((task / "profiles" / f"{profile_name}.json").read_text())
+        assert harness["profile_defaults"][profile_name]["parameters"]["stop_time"] == "200n"
+        assert profile["parameters"]["stop_time"] == "200n"
+        assert profile["harness_spec_sha256"] == harness_hash

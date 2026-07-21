@@ -109,27 +109,28 @@ def check_v4_942_fixed_frequency_oscillator_source(rows: list[dict[str, float]])
     )
     all_edges: list[float] = []
     edge_intervals: list[float] = []
-    segment_errors = valid_errors = restart_errors = 0
+    segment_errors = valid_errors = 0
+    restart_initial_levels: list[bool] = []
+    restart_edge_offsets: list[float] = []
     metric_samples: list[float] = []
     osc_high_seen = osc_low_seen = False
 
     for seg in enabled_segments:
         start = float(seg[0]["time"])
         end = float(seg[-1]["time"])
-        edges, rises = _edge_times(seg)
+        edges, _ = _edge_times(seg)
         all_edges.extend(edges)
         edge_intervals.extend(b - a for a, b in zip(edges, edges[1:]) if b > a)
         osc_values = [float(row["osc_out"]) for row in seg]
         osc_high_seen = osc_high_seen or max(osc_values) > HIGH_TOL
         osc_low_seen = osc_low_seen or min(osc_values) < LOW_TOL
-        if len(edges) < 3 or len(rises) < 2:
+        if len(edges) < 3:
             segment_errors += 1
         if any((b - a) > 12.5e-9 for a, b in zip(edges, edges[1:])):
             segment_errors += 1
-        if rises and abs((rises[0] - start) - NOMINAL_PERIOD / 2.0) > 2.5e-9:
-            restart_errors += 1
-        elif not rises:
-            restart_errors += 1
+        restart_initial_levels.append(float(seg[0]["osc_out"]) > VTH)
+        if edges:
+            restart_edge_offsets.append(edges[0] - start)
 
         early_valid = [
             row
@@ -144,6 +145,17 @@ def check_v4_942_fixed_frequency_oscillator_source(rows: list[dict[str, float]])
         metric_samples.extend(float(row["period_metric"]) for row in late_rows)
         if end - start < 1.4 * NOMINAL_PERIOD:
             segment_errors += 1
+
+    restart_errors = int(len(restart_edge_offsets) != len(enabled_segments))
+    if restart_initial_levels:
+        restart_errors += sum(level != restart_initial_levels[0] for level in restart_initial_levels[1:])
+    if restart_edge_offsets:
+        reference_offset = median(restart_edge_offsets)
+        restart_errors += sum(abs(offset - reference_offset) > 2.5e-9 for offset in restart_edge_offsets)
+        restart_span = max(restart_edge_offsets) - min(restart_edge_offsets)
+    else:
+        reference_offset = 0.0
+        restart_span = 0.0
 
     half_period_errors = sum(1 for dt in edge_intervals if not 8.0e-9 <= dt <= 12.0e-9)
     measured_period = 2.0 * median(edge_intervals) if edge_intervals else 0.0
@@ -184,8 +196,12 @@ def check_v4_942_fixed_frequency_oscillator_source(rows: list[dict[str, float]])
         _property_note(
             "P_RESTART_PHASE",
             restart_errors,
-            "first_edge_restarts_one_half_period_after_each_enable",
-            f"restart_errors={restart_errors}",
+            "deterministic_initial_level_and_first_edge_offset_across_enabled_frames",
+            (
+                f"initial_high={restart_initial_levels[0] if restart_initial_levels else None},"
+                f"first_edge_offset={reference_offset:.3e},restart_span={restart_span:.3e},"
+                f"restart_errors={restart_errors}"
+            ),
         ),
         _property_note(
             "P_PERIOD_METRIC",
