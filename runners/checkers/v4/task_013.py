@@ -22,6 +22,11 @@ def _slope(rows: list[Row], signal: str) -> float | None:
     return sum((x - xbar) * (y - ybar) for x, y in zip(xs, ys)) / denominator
 
 
+def _hold_fraction(rows: list[Row], signal: str, tolerance: float = 5e-4) -> float:
+    deltas = [abs(right[signal] - left[signal]) for left, right in zip(rows, rows[1:])]
+    return sum(delta <= tolerance for delta in deltas) / len(deltas) if deltas else 0.0
+
+
 def check_resettable_integrator(rows: list[Row]) -> tuple[bool, str]:
     required = {"time", "vin", "rst", "vout"}
     missing = sorted(required - (set(rows[0]) if rows else set()))
@@ -39,6 +44,7 @@ def check_resettable_integrator(rows: list[Row]) -> tuple[bool, str]:
     slopes: list[float] = []
     slope_errors = 0
     monotonic_errors = 0
+    event_hold_errors = 0
     restart_seen = False
     for segment_index, (start, end) in enumerate(active_segments):
         segment = rows[start : end + 1]
@@ -50,6 +56,7 @@ def check_resettable_integrator(rows: list[Row]) -> tuple[bool, str]:
             slope_errors += abs(measured - expected) > max(0.22 * abs(expected), 2.5e5)
         else:
             slope_errors += 1
+        event_hold_errors += _hold_fraction(fit, "vout") < 0.15
         monotonic_errors += sum(
             right["vout"] + 0.012 < left["vout"]
             for left, right in zip(segment, segment[1:])
@@ -73,7 +80,7 @@ def check_resettable_integrator(rows: list[Row]) -> tuple[bool, str]:
         "P_TIMER_INTEGRATION": slope_errors + int(len(slopes) < 2),
         "P_ACTIVE_HIGH_RESET": reset_errors + int(len(reset_segments) < 2) + int(not restart_seen),
         "P_ACCUMULATOR_CLAMP": clamp_errors,
-        "P_EVENT_HOLD": monotonic_errors,
+        "P_EVENT_HOLD": monotonic_errors + event_hold_errors,
     }
     ok = coverage_missing == 0 and all(count == 0 for count in counts.values())
     coverage = "" if coverage_missing == 0 else f" insufficient_excitation={coverage_missing}"

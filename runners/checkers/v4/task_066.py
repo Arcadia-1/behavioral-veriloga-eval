@@ -32,19 +32,23 @@ def check_configurable_polarity_edge_detector(rows: list[dict[str, float]]) -> t
         if (direction == "rising" and rise_en > 0.45) or (direction == "falling" and rise_en <= 0.45):
             edge_times.append(edge_t)
     missed = 0
+    level_errors = 0
     failures: list[str] = []
     for edge_index, edge_t in enumerate(edge_times, start=1):
-        if not any(edge_t <= row["time"] <= edge_t + 3e-9 and row["pulse"] > 0.45 for row in rows):
+        pulse_rows = [row for row in rows if edge_t <= row["time"] <= edge_t + 3e-9]
+        peak = max((row["pulse"] for row in pulse_rows), default=0.0)
+        if peak < 0.75:
             missed += 1
             failures.append(
                 diagnostic(
-                    "P_BOUNDED_PULSE",
+                    "P_OUTPUT_LEVELS" if peak > 0.45 else "P_BOUNDED_PULSE",
                     "semantic_mismatch",
-                    expected="pulse_after_selected_edge",
-                    observed="pulse_missing",
+                    expected="pulse_peak_in_[0.75,1.05]V_after_selected_edge",
+                    observed=f"pulse_peak={peak:.3f}",
                     event=event_label("selected_sig_edge", edge_index, edge_t),
                 )
             )
+        level_errors += sum(row["pulse"] > 1.05 or row["pulse"] < -0.15 for row in pulse_rows)
     false_pulses = 0
     for row in rows:
         if row["pulse"] <= 0.45:
@@ -63,8 +67,11 @@ def check_configurable_polarity_edge_detector(rows: list[dict[str, float]]) -> t
         )
     if failures:
         return False, " ".join(failures[:5])
-    summary = f"events={len(edge_times)} missed={missed} false_pulses={false_pulses}"
-    ok = len(edge_times) >= 3 and missed == 0 and false_pulses == 0
+    summary = (
+        f"events={len(edge_times)} missed={missed} "
+        f"false_pulses={false_pulses} level_errors={level_errors}"
+    )
+    ok = len(edge_times) >= 3 and missed == 0 and false_pulses == 0 and level_errors == 0
     if not ok:
         return False, diagnostic(
             "P_RISING_SELECTION",
