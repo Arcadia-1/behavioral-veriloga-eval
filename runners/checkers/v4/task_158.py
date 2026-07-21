@@ -75,6 +75,7 @@ def check_v3_ref_flash_8level_decoder(rows: list[dict[str, float]]) -> tuple[boo
     max_dout_error = 0.0
     max_res_error = 0.0
     checked = 0
+    observed_one_hot_taps: set[int] = set()
     for edge_t, sample_t in edge_samples:
         tap_bits = [_v3_logic_at(rows, name, edge_t, threshold=0.45) for name in tap_names]
         vin = sample_signal_at(rows, "vin", edge_t)
@@ -82,14 +83,23 @@ def check_v3_ref_flash_8level_decoder(rows: list[dict[str, float]]) -> tuple[boo
         observed_vres = sample_signal_at(rows, "vres", sample_t)
         if vin is None or observed_dout is None or observed_vres is None or any(bit is None for bit in tap_bits):
             return False, f"missing_ref_flash_sample={edge_t * 1e9:.3f}ns"
+        if sum(tap_bits) == 1:
+            observed_one_hot_taps.add(tap_bits.index(1))
         count = float(sum(tap_bits))
         expected_dout = count / 8.0
         expected_vres = vin - (count - 4.0) / 8.0
         max_dout_error = max(max_dout_error, abs(observed_dout - expected_dout))
         max_res_error = max(max_res_error, abs(observed_vres - expected_vres))
         checked += 1
+    missing_one_hot_taps = sorted(set(range(8)) - observed_one_hot_taps)
+    if missing_one_hot_taps:
+        missing_text = ",".join(f"dt{idx}" for idx in missing_one_hot_taps)
+        return False, f"missing_independent_tap_coverage={missing_text} checked={checked}"
     ok = max_dout_error <= 0.035 and max_res_error <= 0.035
-    return ok, f"checked={checked} max_dout_error={max_dout_error:.5f} max_res_error={max_res_error:.5f}"
+    return ok, (
+        f"checked={checked} independent_one_hot_taps={len(observed_one_hot_taps)} "
+        f"max_dout_error={max_dout_error:.5f} max_res_error={max_res_error:.5f}"
+    )
 
 CHECKER_ID = "v4_158_ref_flash_8level_decoder"
 CHECKER: Checker = check_v3_ref_flash_8level_decoder
