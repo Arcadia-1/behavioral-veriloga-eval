@@ -153,6 +153,7 @@ def check_v4_942_fixed_frequency_oscillator_source(rows: list[dict[str, float]])
         reference_offset = median(restart_edge_offsets)
         restart_errors += sum(abs(offset - reference_offset) > 2.5e-9 for offset in restart_edge_offsets)
         restart_span = max(restart_edge_offsets) - min(restart_edge_offsets)
+        restart_errors += int(restart_span > 2.5e-9)
     else:
         reference_offset = 0.0
         restart_span = 0.0

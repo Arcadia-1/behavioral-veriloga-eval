@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from statistics import median
 import sys
 from pathlib import Path
 
@@ -124,6 +125,22 @@ def _one_shot_rows() -> list[dict[str, float]]:
     return rows
 
 
+def _split_restart_offset_rows() -> list[dict[str, float]]:
+    rows = _gold_rows()
+    reset_restart_starts = {WINDOWS[0][0], WINDOWS[2][0]}
+    for row in rows:
+        start = _segment_start(row["time"])
+        enabled = start is not None and row["enable"] > 0.45 and row["rst"] <= 0.45
+        if enabled:
+            elapsed = row["time"] - start
+            first_edge_offset = 6e-9 if start in reset_restart_starts else 10e-9
+            after_first_edge = elapsed - first_edge_offset
+            row["osc_out"] = _logic(
+                after_first_edge >= 0.0 and int(after_first_edge // HALF_PERIOD) % 2 == 0
+            )
+    return rows
+
+
 def _mutate(rows: list[dict[str, float]], name: str) -> list[dict[str, float]]:
     mutated = [dict(row) for row in rows]
     for row in mutated:
@@ -190,6 +207,18 @@ def test_task383_checker_is_stable_under_time_prefix_shift_and_sparse_rows() -> 
 def test_task383_checker_accepts_deterministic_high_first_restart_phase() -> None:
     ok, note = CHECKER(_gold_rows(high_first=True))
     assert ok, note
+
+
+def test_task383_checker_rejects_old_pass_split_restart_offsets() -> None:
+    restart_offsets = (6e-9, 10e-9, 6e-9, 10e-9)
+    old_reference = median(restart_offsets)
+    old_restart_errors = sum(abs(offset - old_reference) > 2.5e-9 for offset in restart_offsets)
+    assert old_restart_errors == 0
+
+    ok, note = CHECKER(_split_restart_offset_rows())
+    assert not ok
+    assert "P_RESTART_PHASE mismatch_count=1" in note
+    assert "restart_span=4.000e-09" in note
 
 
 def test_task383_harness_metadata_matches_extended_score_deck() -> None:
