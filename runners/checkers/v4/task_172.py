@@ -73,6 +73,19 @@ def check_v3_pipe_2lane_edge_align(rows: list[dict[str, float]]) -> tuple[bool, 
     max_err = 0.0
     checked = 0
     failures: list[str] = []
+
+    initial_probe_t = rows[0]["time"] + 0.5 * (events[0][0] - rows[0]["time"])
+    initial_expected = sample_signal_at(rows, "din1", initial_probe_t)
+    initial_observed = sample_signal_at(rows, "dout", initial_probe_t)
+    if initial_expected is None or initial_observed is None:
+        return False, "missing_initial_lane1_sample"
+    initial_err = abs(initial_observed - initial_expected)
+    max_err = max(max_err, initial_err)
+    if initial_err > 0.035:
+        failures.append(
+            f"initial_dout@{initial_probe_t * 1e9:.3f}ns={initial_observed:.4f} expected={initial_expected:.4f}"
+        )
+
     for edge_t, source in events:
         sample_t = edge_t + 0.15e-9
         if sample_t > rows[-1]["time"]:
