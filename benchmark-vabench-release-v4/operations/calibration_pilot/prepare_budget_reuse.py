@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reuse uncensored calibration episodes under a larger output-token cap."""
+"""Reuse completed calibration episodes under compatible execution settings."""
 from __future__ import annotations
 
 import argparse
@@ -52,13 +52,13 @@ def candidate_files(runtime: Path) -> list[Path]:
 
 
 def model_turn_hit_limit(result: dict[str, Any]) -> bool:
-    legacy_budget = RUNNER.cell_output_budget(result["cell"])
+    per_turn_cap = RUNNER.cell_per_turn_max_tokens(result["cell"])
     legacy_used = 0
     for event in result.get("events") or []:
         if event.get("type") == "model":
             requested = event.get("requested_max_tokens")
             if not isinstance(requested, int):
-                requested = max(0, legacy_budget - legacy_used)
+                requested = per_turn_cap
             generated = event.get("provider_output_tokens")
             if not isinstance(generated, int):
                 generated = (event.get("provider_usage") or {}).get("completion_tokens")
@@ -118,8 +118,8 @@ def check_campaign_compatibility(source: dict[str, Any], target: dict[str, Any])
         raise ValueError("budget reuse requires execution_config in both campaigns")
     if source["execution_config"] != target["execution_config"]:
         raise ValueError("campaign execution_config mismatch")
-    if RUNNER.cell_output_budget(target) < RUNNER.cell_output_budget(source):
-        raise ValueError("target output-token budget must not be smaller than source")
+    if RUNNER.cell_per_turn_max_tokens(target) != RUNNER.cell_per_turn_max_tokens(source):
+        raise ValueError("campaign per-turn token cap mismatch")
 
 
 def prepare_reuse(
@@ -159,7 +159,8 @@ def prepare_reuse(
         copied["source_cell"] = copied["cell"]
         copied["cell"] = target_cell
         copied["runtime"] = str(target_runtime)
-        copied["output_token_budget"] = RUNNER.cell_output_budget(target_cell)
+        copied["output_token_budget"] = None
+        copied["per_turn_max_tokens"] = RUNNER.cell_per_turn_max_tokens(target_cell)
         provider_output_tokens = sum(
             int((event.get("provider_usage") or {}).get("completion_tokens") or 0)
             for event in copied.get("events") or []
@@ -172,8 +173,10 @@ def prepare_reuse(
             "kind": "uncensored_completed_episode",
             "prepared_at": now(),
             "source_result_sha256": row["source_result_sha256"],
-            "source_output_token_budget": RUNNER.cell_output_budget(result["cell"]),
-            "target_output_token_budget": RUNNER.cell_output_budget(target_cell),
+            "source_per_turn_max_tokens": RUNNER.cell_per_turn_max_tokens(result["cell"]),
+            "target_per_turn_max_tokens": RUNNER.cell_per_turn_max_tokens(target_cell),
+            "source_output_token_budget": RUNNER.cell_per_turn_max_tokens(result["cell"]),
+            "target_output_token_budget": RUNNER.cell_per_turn_max_tokens(target_cell),
         }
         write_json(copied_result_path, copied)
         write_json(target_runtime / "evidence" / "reuse_record.json", row)
@@ -183,8 +186,10 @@ def prepare_reuse(
         "schema_version": "v4-calibration-budget-reuse-v1",
         "generated_at": now(),
         "source_output": str(source_output),
-        "source_budget": RUNNER.cell_output_budget(source_campaign),
-        "target_budget": RUNNER.cell_output_budget(target_campaign),
+        "source_per_turn_max_tokens": RUNNER.cell_per_turn_max_tokens(source_campaign),
+        "target_per_turn_max_tokens": RUNNER.cell_per_turn_max_tokens(target_campaign),
+        "source_budget": RUNNER.cell_per_turn_max_tokens(source_campaign),
+        "target_budget": RUNNER.cell_per_turn_max_tokens(target_campaign),
         "cell_count": len(rows),
         "reused_count": reusable,
         "rerun_count": len(rows) - reusable,

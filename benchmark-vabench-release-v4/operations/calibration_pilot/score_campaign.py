@@ -21,7 +21,7 @@ assert SPEC and SPEC.loader
 RUNNER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(RUNNER)
 
-SUBMITTED = {"submitted", "submitted_at_budget"}
+ARTIFACT_READY = {"submitted", "submitted_at_budget", "workspace_ready"}
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -101,7 +101,7 @@ def event_telemetry(events: list[dict[str, Any]]) -> dict[str, Any]:
     output_tokens = 0
     reasoning_tokens = 0
     visible_tokens = 0
-    budget_hits = 0
+    output_limit_hits = 0
     for event in events:
         if event.get("type") != "model":
             continue
@@ -118,7 +118,7 @@ def event_telemetry(events: list[dict[str, Any]]) -> dict[str, Any]:
         output_tokens += output
         reasoning_tokens += reasoning
         visible_tokens += visible
-        budget_hits += RUNNER.model_event_hit_limit(event)
+        output_limit_hits += RUNNER.model_event_hit_limit(event)
     return {
         "model_calls": sum(event.get("type") == "model" for event in events),
         "model_elapsed_s": sum(
@@ -131,11 +131,15 @@ def event_telemetry(events: list[dict[str, Any]]) -> dict[str, Any]:
         "provider_output_tokens_total": output_tokens,
         "provider_reasoning_tokens_total": reasoning_tokens,
         "provider_visible_tokens_total": visible_tokens,
-        "budget_hit_model_calls": budget_hits,
+        "output_limit_model_calls": output_limit_hits,
+        "budget_hit_model_calls": output_limit_hits,
     }
 
 
 def elapsed_seconds(result: dict[str, Any]) -> float | None:
+    agent_elapsed = result.get("agent_elapsed_s")
+    if isinstance(agent_elapsed, (int, float)):
+        return max(0.0, float(agent_elapsed))
     try:
         started = datetime.fromisoformat(str(result["started_at"]))
         finished = datetime.fromisoformat(str(result["finished_at"]))
@@ -148,7 +152,7 @@ def evaluate_cell(
     result_path: Path,
     command: str | None,
     timeout_s: int,
-    evas_command: str = "evas",
+    evas_command: str | None = None,
 ) -> dict[str, Any]:
     result = read_json(result_path)
     cell = result["cell"]
@@ -166,35 +170,46 @@ def evaluate_cell(
         "form": cell["form"],
         "mode": cell["mode"],
         "submission_status": result["status"],
+        "termination_reason": result.get("termination_reason"),
+        "submission_mode": result.get("submission_mode"),
         "submission_protocol_compliant": result.get("submission_protocol_compliant"),
         "artifact_gate": artifact_gate,
         "output_tokens": output_tokens,
         "working_tokens": result.get("working_tokens", result.get("output_tokens", 0)),
         "provider_usage": provider_usage(result.get("events") or []),
         "telemetry": telemetry,
+        "evas_usage": result.get("evas_usage") or {},
+        "incidents": list(result.get("incidents") or []),
         "episode_elapsed_s": elapsed_seconds(result),
     }
     experiment = result.get("experiment_result") or {}
     if (
-        result["status"] not in SUBMITTED
-        or result.get("submission_protocol_compliant") is False
-        or not artifact_gate["passed"]
+        result["status"] not in ARTIFACT_READY or not artifact_gate["passed"]
     ):
         outcome = str(experiment.get("outcome") or "no_submission")
         row["judge_status"] = (
             outcome
-            if outcome in {"agent_timeout", "no_submission", "infrastructure_failure"}
+            if outcome
+            in {
+                "agent_timeout",
+                "agent_resource_exhausted",
+                "no_submission",
+                "infrastructure_failure",
+            }
             else "no_submission"
         )
-        if result.get("submission_protocol_compliant") is False:
-            row["judge_status_reason"] = "submission_protocol_noncompliant"
-        elif not artifact_gate["passed"]:
+        if not artifact_gate["passed"]:
             row["judge_status_reason"] = "artifact_gate_failed"
         row["outcome"] = outcome
     elif not command:
         row["judge_status"] = "not_run"
         row["outcome"] = experiment.get("outcome", "not_scored")
     else:
+        if not evas_command:
+            raise ValueError("an explicit EVAS command is required for trusted replay")
+        expected_identity = result.get("evas_identity")
+        if expected_identity:
+            RUNNER.validate_pinned_evas_identity(evas_command, expected_identity)
         final_submission = RUNNER.RESULT_PROTOCOL.snapshot_submission(runtime, artifact_gate)
         replay = RUNNER.run_trusted_replay(
             runtime, command, timeout_s, evas_command, final_submission
@@ -242,6 +257,22 @@ def summarize(rows: list[dict[str, Any]], judge_kind: str) -> dict[str, Any]:
             "model_calls_total": sum(int(row.get("telemetry", {}).get("model_calls", 0)) for row in selected),
             "tool_calls_total": sum(int(row.get("telemetry", {}).get("tool_calls_total", 0)) for row in selected),
             "evas_calls_total": sum(int(row.get("telemetry", {}).get("evas_calls", 0)) for row in selected),
+            "direct_evas_calls_total": sum(
+                int(row.get("evas_usage", {}).get("calls_executed", 0))
+                for row in selected
+            ),
+            "direct_evas_successes_total": sum(
+                int(row.get("evas_usage", {}).get("calls_succeeded", 0))
+                for row in selected
+            ),
+            "direct_evas_failures_total": sum(
+                int(row.get("evas_usage", {}).get("calls_failed", 0))
+                for row in selected
+            ),
+            "direct_evas_timeouts_total": sum(
+                int(row.get("evas_usage", {}).get("calls_timed_out", 0))
+                for row in selected
+            ),
             "legacy_feedback_calls_total": sum(
                 int(row.get("telemetry", {}).get("legacy_feedback_calls", 0))
                 for row in selected
@@ -267,6 +298,15 @@ def summarize(rows: list[dict[str, Any]], judge_kind: str) -> dict[str, Any]:
         "cell_count": len(rows),
         "submission_statuses": dict(Counter(row["submission_status"] for row in rows)),
         "judge_statuses": dict(Counter(row["judge_status"] for row in rows)),
+        "incident_categories": dict(
+            sorted(
+                Counter(
+                    str(incident.get("category") or "unknown")
+                    for row in rows
+                    for incident in row.get("incidents") or []
+                ).items()
+            )
+        ),
         "breakdown": {key: dict(value) for key, value in sorted(grouped.items())},
         "telemetry_by_mode": telemetry_by_mode,
         "rows": rows,
@@ -284,7 +324,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--judge-command")
     parser.add_argument("--timeout-s", type=int, default=120)
     parser.add_argument("--workers", type=int, default=1)
-    parser.add_argument("--evas-command", default="evas")
+    parser.add_argument("--evas-command")
     parser.add_argument("--output", type=Path)
     return parser.parse_args()
 
@@ -298,6 +338,8 @@ def main() -> int:
         raise SystemExit("--workers must be at least 1")
     if args.judge_kind in {"final_trusted_replay", "final_spectre"} and not args.judge_command:
         raise SystemExit(f"--judge-kind {args.judge_kind} requires --judge-command")
+    if args.judge_command and not args.evas_command:
+        raise SystemExit("--evas-command is required when replay executes")
     result_paths = sorted(args.campaign_output.glob("v4-*/evidence/campaign_result.json"))
     if not result_paths:
         raise SystemExit(f"no campaign results under {args.campaign_output}")

@@ -26,11 +26,22 @@ REPO = PACKAGE.parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 import result_protocol as RESULT_PROTOCOL  # noqa: E402
+from mini_swe_vabench import (  # noqa: E402
+    DEFAULT_DOCKER_IMAGE,
+    MINI_SWE_SCAFFOLD_ID,
+    default_sandbox_backend,
+    run_mini_swe_episode,
+)
 
 EXPORTER = PACKAGE / "operations" / "tri_form_derivation_prep" / "export_tri_form_runtime.py"
-DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r45"
+DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r49"
 DEFAULT_BASE_URL = "https://www.cun.ai/v1"
 DEFAULT_API_KEY_ENV = "VAEVAS_API_KEY"
+DEFAULT_AGENT_TIMEOUT_S = 5400
+DEFAULT_SETUP_TIMEOUT_S = 1800
+DEFAULT_REQUEST_TIMEOUT_S = 1800
+DEFAULT_TOOL_TIMEOUT_S = 1800
+DEFAULT_JUDGE_TIMEOUT_S = 1800
 DIRECT_PARSER_VERSION = "v4-exact-artifact-envelope-parser-v1"
 DIRECT_DUT_RUNTIME_SCHEMAS = {
     "r45-direct-evas-runtime-v1",
@@ -73,6 +84,17 @@ FILENAME_TOKEN_RE = re.compile(
     re.IGNORECASE,
 )
 AGENTIC = {"G2", "G3", "G4", "G5"}
+RESUMABLE_TERMINAL_STATUSES = {
+    "submitted",
+    "submitted_at_budget",
+    "workspace_ready",
+    "invalid_submission",
+    "budget_exhausted",
+    "agent_timeout",
+    "agent_resource_exhausted",
+    "context_window_exceeded",
+}
+ARTIFACT_READY_STATUSES = {"submitted", "submitted_at_budget", "workspace_ready"}
 FEEDBACK_SIGNAL_PREFIXES = (
     "FEEDBACK_",
     "reference:",
@@ -96,8 +118,16 @@ PUBLIC_ESCAPE_RE = re.compile(
 )
 
 
-class AgentTimeoutError(TimeoutError):
-    """The model endpoint exhausted the per-request wall-clock allowance."""
+class ProviderRequestTimeout(TimeoutError):
+    """One provider request exhausted its infrastructure timeout."""
+
+
+class ProviderContextWindowExceeded(RuntimeError):
+    """Provider rejected the turn because the conversation exceeded context."""
+
+
+class ProviderAPIError(RuntimeError):
+    """Provider returned a structured API error that is not transport failure."""
 
 
 def now() -> str:
@@ -111,6 +141,40 @@ def read_json(path: Path) -> dict[str, Any]:
 def write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def resolve_pinned_evas_identity(command: str) -> dict[str, Any]:
+    argv = shlex.split(command)
+    if not argv or not Path(argv[0]).is_absolute():
+        raise SystemExit("--evas-command must start with an absolute executable path")
+    identity = RESULT_PROTOCOL.evas_identity(argv)
+    if not identity.get("available"):
+        raise SystemExit(
+            "configured EVAS is unavailable or has no version identity: "
+            f"{identity.get('error') or identity.get('version_output') or command}"
+        )
+    return identity
+
+
+def validate_pinned_evas_identity(
+    command: str, expected: dict[str, Any] | None
+) -> dict[str, Any]:
+    if not isinstance(expected, dict) or not expected.get("available"):
+        raise SystemExit("campaign is missing its pinned EVAS identity")
+    observed = resolve_pinned_evas_identity(command)
+    fields = (
+        "command",
+        "resolved_executable",
+        "executable_sha256",
+        "version_output",
+        "sha256",
+    )
+    mismatches = [
+        field for field in fields if observed.get(field) != expected.get(field)
+    ]
+    if mismatches:
+        raise SystemExit("EVAS identity mismatch: " + ", ".join(mismatches))
+    return observed
 
 
 def file_digest_summary(path: Path) -> dict[str, Any]:
@@ -195,6 +259,118 @@ def model_event_hit_limit(event: dict[str, Any]) -> bool:
     )
 
 
+def summarize_evas_invocations(invocations: list[dict[str, Any]]) -> dict[str, Any]:
+    statuses = [str(row.get("status") or "unknown") for row in invocations]
+    return {
+        "schema_version": "v4-direct-evas-usage-v1",
+        "calls_executed": len(invocations),
+        "calls_succeeded": statuses.count("succeeded"),
+        "calls_failed": statuses.count("failed"),
+        "calls_timed_out": statuses.count("timed_out"),
+        "calls_interrupted": statuses.count("interrupted"),
+        "last_status": statuses[-1] if statuses else None,
+    }
+
+
+def evas_invocation_incidents(invocations: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    incidents: list[dict[str, Any]] = []
+    for row in invocations:
+        status = str(row.get("status") or "unknown")
+        if status == "succeeded":
+            continue
+        incidents.append(
+            {
+                "phase": "tool",
+                "component": "evas",
+                "category": (
+                    "evas_command_timeout"
+                    if status == "timed_out"
+                    else "evas_command_interrupted"
+                    if status == "interrupted"
+                    else "evas_command_failure"
+                ),
+                "responsibility": "candidate_or_model",
+                "retryable": True,
+                "invocation_id": row.get("invocation_id"),
+                "returncode": row.get("returncode"),
+            }
+        )
+    return incidents
+
+
+def classify_execution_exception(exc: Exception) -> dict[str, Any]:
+    error_type = type(exc).__name__
+    message = str(exc).lower()
+    if isinstance(exc, ProviderRequestTimeout):
+        return {
+            "status": "provider_timeout",
+            "termination_reason": "provider_request_timeout",
+            "model_status": "provider_failure",
+            "incident": {
+                "category": "provider_request_timeout",
+                "component": "provider",
+                "error_type": error_type,
+                "phase": "model",
+                "responsibility": "infrastructure",
+                "retryable": True,
+            },
+        }
+    if isinstance(exc, ProviderAPIError) or (
+        isinstance(exc, RuntimeError) and "provider" in message
+    ):
+        return {
+            "status": "provider_error",
+            "termination_reason": "provider_api_error",
+            "model_status": "provider_failure",
+            "incident": {
+                "category": "provider_api_error",
+                "component": "provider",
+                "error_type": error_type,
+                "phase": "model",
+                "responsibility": "infrastructure",
+                "retryable": True,
+            },
+        }
+    if "sandbox" in message:
+        category, component = "sandbox_failure", "sandbox"
+    elif "evas" in message:
+        category, component = "evas_infrastructure_failure", "evas"
+    elif isinstance(exc, subprocess.TimeoutExpired):
+        category, component = "runner_subprocess_timeout", "runner"
+    else:
+        category, component = "runner_failure", "runner"
+    return {
+        "status": "infrastructure_failure" if category != "runner_failure" else "runner_error",
+        "termination_reason": category,
+        "model_status": "runner_failure",
+        "incident": {
+            "category": category,
+            "component": component,
+            "error_type": error_type,
+            "phase": "setup" if component in {"sandbox", "evas"} else "runner",
+            "responsibility": "infrastructure" if component != "runner" else "runner",
+            "retryable": isinstance(exc, subprocess.TimeoutExpired),
+        },
+    }
+
+
+def provider_error_is_context_window(error: Any) -> bool:
+    text = json.dumps(error, sort_keys=True) if isinstance(error, dict) else str(error)
+    lowered = text.lower()
+    markers = (
+        "contextwindowexceeded",
+        "context window",
+        "context length",
+        "maximum context",
+        "max context",
+        "too many tokens",
+        "tokens exceed",
+        "input is too long",
+        "prompt is too long",
+    )
+    return any(marker in lowered for marker in markers)
+
+
 def pending_tool_calls(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Return uncheckpointed calls from the most recent assistant tool turn."""
     assistant_index = next(
@@ -216,11 +392,16 @@ def pending_tool_calls(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return [call for call in calls if str(call.get("id")) not in handled]
 
 
-def cell_output_budget(cell: dict[str, Any]) -> int:
-    value = cell.get("max_output_tokens", cell.get("max_working_tokens"))
+def cell_per_turn_max_tokens(cell: dict[str, Any]) -> int:
+    value = cell.get("per_turn_max_tokens", cell.get("max_output_tokens", cell.get("max_working_tokens")))
     if not isinstance(value, int) or value <= 0:
-        raise ValueError(f"invalid output-token budget for {cell.get('cell_id')}: {value!r}")
+        raise ValueError(f"invalid per-turn output-token cap for {cell.get('cell_id')}: {value!r}")
     return value
+
+
+def cell_output_budget(cell: dict[str, Any]) -> int:
+    """Backward-compatible alias for historical budget-reuse tooling."""
+    return cell_per_turn_max_tokens(cell)
 
 
 def validate_campaign_cells(cells: list[dict[str, Any]], release: Path) -> None:
@@ -251,7 +432,7 @@ def validate_campaign_cells(cells: list[dict[str, Any]], release: Path) -> None:
             raise ValueError(f"campaign family mismatch for {cell_id}")
         if str(cell.get("form")) != str(task["form"]):
             raise ValueError(f"campaign form mismatch for {cell_id}")
-        cell_output_budget(cell)
+        cell_per_turn_max_tokens(cell)
 
 
 def safe_relative(raw: str) -> Path:
@@ -307,7 +488,15 @@ class OpenAICompatible:
     def _redact(self, text: str) -> str:
         return text.replace(self.api_key, "<redacted-provider-credential>") if self.api_key else text
 
-    def complete(self, messages: list[dict[str, Any]], max_tokens: int, tools: list[dict[str, Any]] | None) -> dict[str, Any]:
+    def complete(
+        self,
+        messages: list[dict[str, Any]],
+        max_tokens: int,
+        tools: list[dict[str, Any]] | None,
+        *,
+        timeout_s: float | None = None,
+    ) -> dict[str, Any]:
+        effective_timeout_s = max(0.1, float(timeout_s or self.timeout_s))
         payload: dict[str, Any] = {
             "model": self.model,
             "messages": messages,
@@ -319,9 +508,11 @@ class OpenAICompatible:
             payload["tool_choice"] = "auto"
         if self.stream:
             payload["stream"] = True
-            return self._complete_stream(payload)
+            return self._complete_stream(payload, timeout_s=effective_timeout_s)
         completed = None
+        deadline = time.monotonic() + effective_timeout_s
         for attempt in range(1, 4):
+            attempt_timeout_s = max(0.1, deadline - time.monotonic())
             with tempfile.TemporaryDirectory(prefix="v4_provider_") as td:
                 root = Path(td)
                 payload_path = root / "payload.json"
@@ -332,27 +523,24 @@ class OpenAICompatible:
                     encoding="utf-8",
                 )
                 header_path.chmod(0o600)
-                try:
-                    completed = subprocess.run(
-                        [
-                            "curl", "-sS", "--max-time", str(self.timeout_s),
-                            self.endpoint, "-H", f"@{header_path}",
-                            "--data-binary", f"@{payload_path}",
-                        ],
-                        text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                        timeout=self.timeout_s + 5, check=False,
-                    )
-                except subprocess.TimeoutExpired as exc:
-                    raise AgentTimeoutError(
-                        f"provider request exceeded {self.timeout_s}s"
-                    ) from exc
+                completed = subprocess.run(
+                    [
+                        "curl", "-sS", "--max-time", f"{attempt_timeout_s:.3f}",
+                        self.endpoint, "-H", f"@{header_path}",
+                        "--data-binary", f"@{payload_path}",
+                    ],
+                    text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                    timeout=attempt_timeout_s + 0.5, check=False,
+                )
             if completed.returncode == 0:
                 break
-            if attempt < 3:
-                time.sleep(2 * attempt)
+            if attempt < 3 and time.monotonic() < deadline:
+                time.sleep(min(2 * attempt, max(0.0, deadline - time.monotonic())))
+            if time.monotonic() >= deadline:
+                break
         assert completed is not None
         if completed.returncode == 28:
-            raise AgentTimeoutError(
+            raise ProviderRequestTimeout(
                 f"provider request exceeded {self.timeout_s}s after 3 attempts"
             )
         if completed.returncode != 0:
@@ -371,11 +559,15 @@ class OpenAICompatible:
                 f"stderr_tail={self._redact(completed.stderr[-2000:])!r}"
             ) from exc
         if response.get("error"):
+            if provider_error_is_context_window(response["error"]):
+                raise ProviderContextWindowExceeded(
+                    f"provider context window exceeded: {self._redact(json.dumps(response['error'])[:2000])}"
+                )
             error = self._redact(json.dumps(response["error"])[:2000])
-            raise RuntimeError(f"provider error: {error}")
+            raise ProviderAPIError(f"provider error: {error}")
         return response
 
-    def _curl_payload(self, payload: dict[str, Any]) -> subprocess.CompletedProcess[str]:
+    def _curl_payload(self, payload: dict[str, Any], *, timeout_s: float) -> subprocess.CompletedProcess[str]:
         with tempfile.TemporaryDirectory(prefix="v4_provider_") as td:
             root = Path(td)
             payload_path = root / "payload.json"
@@ -386,32 +578,31 @@ class OpenAICompatible:
                 encoding="utf-8",
             )
             header_path.chmod(0o600)
-            try:
-                return subprocess.run(
-                    [
-                        "curl", "-sS", "--no-buffer", "--max-time", str(self.timeout_s),
-                        self.endpoint, "-H", f"@{header_path}",
-                        "--data-binary", f"@{payload_path}",
-                    ],
-                    text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                    timeout=self.timeout_s + 5, check=False,
-                )
-            except subprocess.TimeoutExpired as exc:
-                raise AgentTimeoutError(
-                    f"provider streaming request exceeded {self.timeout_s}s"
-                ) from exc
+            return subprocess.run(
+                [
+                    "curl", "-sS", "--no-buffer", "--max-time", f"{timeout_s:.3f}",
+                    self.endpoint, "-H", f"@{header_path}",
+                    "--data-binary", f"@{payload_path}",
+                ],
+                text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                timeout=timeout_s + 0.5, check=False,
+            )
 
-    def _complete_stream(self, payload: dict[str, Any]) -> dict[str, Any]:
+    def _complete_stream(self, payload: dict[str, Any], *, timeout_s: float) -> dict[str, Any]:
         completed = None
+        deadline = time.monotonic() + timeout_s
         for attempt in range(1, 4):
-            completed = self._curl_payload(payload)
+            attempt_timeout_s = max(0.1, deadline - time.monotonic())
+            completed = self._curl_payload(payload, timeout_s=attempt_timeout_s)
             if completed.returncode == 0:
                 break
-            if attempt < 3:
-                time.sleep(2 * attempt)
+            if attempt < 3 and time.monotonic() < deadline:
+                time.sleep(min(2 * attempt, max(0.0, deadline - time.monotonic())))
+            if time.monotonic() >= deadline:
+                break
         assert completed is not None
         if completed.returncode == 28:
-            raise AgentTimeoutError(
+            raise ProviderRequestTimeout(
                 f"provider streaming request exceeded {self.timeout_s}s after 3 attempts"
             )
         if completed.returncode != 0:
@@ -451,6 +642,12 @@ def parse_openai_sse_response(stdout: str, stderr: str = "") -> dict[str, Any]:
                 f"line_tail={line[-1000:]!r} stderr_tail={stderr[-2000:]!r}"
             ) from exc
         chunk_count += 1
+        if chunk.get("error"):
+            if provider_error_is_context_window(chunk["error"]):
+                raise ProviderContextWindowExceeded(
+                    f"provider context window exceeded: {json.dumps(chunk['error'])[:2000]}"
+                )
+            raise ProviderAPIError(f"provider streaming error: {json.dumps(chunk['error'])[:2000]}")
         for key in ("id", "model", "created", "system_fingerprint"):
             if chunk.get(key) is not None:
                 metadata[key] = chunk.get(key)
@@ -518,7 +715,7 @@ TOOLS = [
 def command_result(
     command: str,
     runtime: Path,
-    timeout_s: int,
+    timeout_s: float,
     submission_dir: Path | None = None,
 ) -> dict[str, Any]:
     effective_submission = submission_dir or runtime / "public" / "submission"
@@ -613,6 +810,58 @@ def confined_path(root: Path, relative: str) -> Path:
     return path
 
 
+def submission_source_diagnostics(runtime: Path) -> list[str]:
+    """Reject candidate filesystem/include escapes before trusted execution."""
+    submission = runtime / "public" / "submission"
+    expected = set(expected_candidate_artifacts(runtime))
+    diagnostics: list[str] = []
+    if not submission.is_dir():
+        return diagnostics
+    for path in sorted(submission.rglob("*")):
+        relative = path.relative_to(submission).as_posix()
+        if path.is_symlink():
+            diagnostics.append(f"symlink_not_allowed:{relative}")
+            continue
+        if not path.is_file() or path.suffix.lower() not in {".va", ".scs"}:
+            continue
+        if path.stat().st_size > 1_000_000:
+            diagnostics.append(f"source_too_large:{relative}")
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            diagnostics.append(f"source_not_utf8:{relative}")
+            continue
+        uncommented = re.sub(r"/\*.*?\*/", "", text, flags=re.DOTALL)
+        uncommented = "\n".join(
+            line.split("//", 1)[0] for line in uncommented.splitlines()
+        )
+        for raw in PUBLIC_INCLUDE_RE.findall(uncommented):
+            normalized = raw.replace("\\", "/")
+            include = Path(normalized)
+            if normalized in {"constants.vams", "disciplines.vams"}:
+                continue
+            if (
+                path.name == "testbench.scs"
+                and not include.is_absolute()
+                and ".." not in include.parts
+                and include.parts
+                and include.parts[0] == "dut"
+            ):
+                continue
+            if include.is_absolute() or ".." in include.parts:
+                diagnostics.append(f"unsafe_source_include:{relative}:{raw}")
+                continue
+            try:
+                target = safe_relative((Path(relative).parent / include).as_posix()).as_posix()
+            except ValueError:
+                diagnostics.append(f"unsafe_source_include:{relative}:{raw}")
+                continue
+            if target not in expected:
+                diagnostics.append(f"undeclared_source_include:{relative}:{raw}")
+    return diagnostics
+
+
 def validate_public_testbench(candidate: Path) -> None:
     if candidate.is_symlink() or candidate.stat().st_size > 1_000_000:
         raise ValueError("candidate testbench must be a regular file no larger than 1 MB")
@@ -635,10 +884,20 @@ def validate_public_testbench(candidate: Path) -> None:
 def run_public_evas(
     runtime: Path,
     arguments: dict[str, Any],
-    timeout_s: int,
+    timeout_s: float,
     evas_command: str,
 ) -> dict[str, Any]:
     """Execute only the fixed public EVAS contract, never an agent-supplied command."""
+    source_diagnostics = submission_source_diagnostics(runtime)
+    if source_diagnostics:
+        return {
+            "execution_status": "candidate_rejected",
+            "returncode": 2,
+            "stdout": "",
+            "stderr": "candidate source rejected: " + "; ".join(source_diagnostics),
+            "elapsed_s": 0.0,
+            "status": "fail",
+        }
     public = runtime / "public"
     task = public / "task"
     submission = public / "submission"
@@ -668,12 +927,7 @@ def run_public_evas(
         ):
             raise ValueError("unrecognized public EVAS command contract")
         deck = confined_path(runtime, "public/task/visible_test.scs")
-        output = confined_path(
-            runtime,
-            ".vabench-visible/evas-output"
-            if schema_version.endswith("-v2")
-            else "public/submission/evas-output",
-        )
+        output = confined_path(runtime, ".vabench-visible/evas-output")
         if not deck.is_file():
             raise FileNotFoundError("visible_test.scs is missing")
         argv = [*executable, "simulate", str(deck), "-o", str(output), "--spectre-strict"]
@@ -713,9 +967,7 @@ def run_public_evas(
     if not fixture.is_dir():
         raise FileNotFoundError(f"public fixture is missing for {case}")
 
-    scratch_root = runtime / (
-        ".vabench-visible" if schema_version.endswith("-v2") else "public/submission"
-    )
+    scratch_root = runtime / ".vabench-visible"
     run_dir = confined_path(scratch_root, f"runs/{case}")
     if run_dir.exists():
         shutil.rmtree(run_dir)
@@ -820,7 +1072,7 @@ def compact_text_lines(text: str, *, limit: int = 24) -> list[str]:
 
     Feedback stdout can include thousands of low-level simulator timing and
     instrumentation lines.  Returning all of that to the model repeatedly burns
-    the working-token budget without materially improving repairs.  Keep the
+    provider context and token telemetry without materially improving repairs.  Keep the
     public oracle summaries, validation diagnostics, and concrete errors.
     """
     semantic: list[str] = []
@@ -1312,6 +1564,11 @@ def submission_artifact_gate(runtime: Path) -> dict[str, Any]:
     diagnostics.extend(
         f"undeclared_artifact_path:{relative}" for relative in sorted(actual - expected_set)
     )
+    diagnostics.extend(
+        diagnostic
+        for diagnostic in submission_source_diagnostics(runtime)
+        if diagnostic not in diagnostics
+    )
     passed = not diagnostics
     artifacts = {
         relative: hashlib.sha256((submission / relative).read_bytes()).hexdigest()
@@ -1357,12 +1614,233 @@ def gate_agentic_submission(runtime: Path, result: dict[str, Any]) -> bool:
     return bool(gate["passed"])
 
 
-def export_runtime(cell: dict[str, Any], release: Path, output: Path) -> None:
+def export_runtime(cell: dict[str, Any], release: Path, output: Path, *, timeout_s: int) -> None:
     subprocess.run([
         sys.executable, str(EXPORTER), "--release", str(release), "--task", cell["task_id"],
-        "--mode", cell["mode"], "--output", str(output), "--working-token-budget",
-        str(cell_output_budget(cell)), "--force",
-    ], cwd=REPO, check=True, stdout=subprocess.DEVNULL)
+        "--mode", cell["mode"], "--output", str(output), "--per-turn-max-tokens",
+        str(cell_per_turn_max_tokens(cell)), "--force",
+    ], cwd=REPO, check=True, stdout=subprocess.DEVNULL, timeout=timeout_s)
+
+
+def run_mini_swe_agentic_cell(
+    *,
+    cell: dict[str, Any],
+    args: argparse.Namespace,
+    client: OpenAICompatible,
+    runtime: Path,
+    prompt: str,
+    result: dict[str, Any],
+) -> dict[str, Any]:
+    trajectory_path = runtime / "evidence" / "mini_swe_trajectory.json"
+    if args.resume and trajectory_path.is_file():
+        raise ValueError(
+            "resuming an unfinished mini-SWE-agent trajectory is not supported; "
+            "reuse only terminal campaign results"
+        )
+
+    def trajectory_messages() -> list[dict[str, Any]]:
+        trajectory = read_json(trajectory_path) if trajectory_path.is_file() else {}
+        return list(trajectory.get("messages") or [])
+
+    started = time.monotonic()
+    try:
+        episode = run_mini_swe_episode(
+            runtime=runtime,
+            prompt=prompt,
+            client=client,
+            per_turn_max_tokens=cell_per_turn_max_tokens(cell),
+            agent_timeout_s=float(args.agent_timeout_s),
+            request_timeout_s=float(args.request_timeout_s),
+            tool_timeout_s=float(args.tool_timeout_s),
+            sandbox_backend=args.mini_swe_sandbox,
+            evas_command=args.evas_command,
+            docker_command=getattr(args, "docker_command", "docker"),
+            docker_image=getattr(args, "mini_swe_image", DEFAULT_DOCKER_IMAGE),
+            submission_gate=submission_artifact_gate,
+            usage_parser=provider_output_usage,
+            response_metadata=provider_response_metadata,
+            trajectory_path=trajectory_path,
+        )
+    except ProviderContextWindowExceeded as exc:
+        result.update(
+            {
+                "status": "context_window_exceeded",
+                "termination_reason": "provider_context_window_exceeded",
+                "provider_error": str(exc)[:4000],
+                "incidents": [
+                    {
+                        "category": "provider_context_window_exceeded",
+                        "component": "provider",
+                        "error_type": type(exc).__name__,
+                        "phase": "model",
+                        "responsibility": "experiment_configuration",
+                        "retryable": False,
+                    }
+                ],
+                "finished_at": now(),
+                "agent_elapsed_s": time.monotonic() - started,
+            }
+        )
+        attach_experiment_result(
+            result, runtime, trajectory_messages(), args, "provider_failure"
+        )
+        write_json(runtime / "evidence" / "campaign_result.json", result)
+        return result
+    except (subprocess.TimeoutExpired, ProviderRequestTimeout) as exc:
+        elapsed_s = time.monotonic() - started
+        if elapsed_s < float(args.agent_timeout_s):
+            raise
+        result.update(
+            {
+                "status": "agent_timeout",
+                "termination_reason": "agent_timeout",
+                "provider_error": str(exc)[:4000],
+                "incidents": [
+                    {
+                        "category": "agent_walltime_exhausted",
+                        "component": "mini_swe_agent",
+                        "error_type": type(exc).__name__,
+                        "phase": "agent",
+                        "responsibility": "experiment_limit",
+                        "retryable": True,
+                    }
+                ],
+                "finished_at": now(),
+                "agent_elapsed_s": elapsed_s,
+            }
+        )
+        attach_experiment_result(
+            result, runtime, trajectory_messages(), args, "agent_timeout"
+        )
+        write_json(runtime / "evidence" / "campaign_result.json", result)
+        return result
+
+    complete = bool(episode["artifact_complete"])
+    explicit_submission = bool(episode["submitted"])
+    exit_status = str(episode.get("exit_status") or "")
+    evas_invocations = list(episode.get("evas_invocations") or [])
+    commands = list(episode.get("commands") or [])
+    incidents = evas_invocation_incidents(evas_invocations)
+    resource_exhausted = any(
+        (command.get("resources") or {}).get("exceeded") for command in commands
+    )
+    if resource_exhausted:
+        incidents.append(
+            {
+                "category": "agent_resource_exhausted",
+                "component": "mini_swe_agent",
+                "phase": "tool",
+                "responsibility": "model",
+                "retryable": False,
+            }
+        )
+    if exit_status == "TimeExceeded":
+        incidents.append(
+            {
+                "category": "agent_walltime_exhausted",
+                "component": "mini_swe_agent",
+                "phase": "agent",
+                "responsibility": "experiment_limit",
+                "retryable": True,
+            }
+        )
+    if not complete and exit_status != "TimeExceeded":
+        incidents.append(
+            {
+                "category": "artifact_submission_failure",
+                "component": "submission",
+                "phase": "artifact",
+                "responsibility": "model",
+                "retryable": False,
+            }
+        )
+    result.update(
+        {
+            "status": (
+                "agent_resource_exhausted"
+                if resource_exhausted
+                else "submitted"
+                if complete and explicit_submission
+                else "workspace_ready"
+                if complete
+                else "agent_timeout"
+                if exit_status == "TimeExceeded"
+                else "invalid_submission"
+            ),
+            "termination_reason": (
+                "agent_resource_exhausted"
+                if resource_exhausted
+                else "agent_timeout"
+                if exit_status == "TimeExceeded"
+                else "completed"
+                if explicit_submission
+                else "mini_swe_agent_exit"
+            ),
+            "finished_at": now(),
+            "termination_policy": "wall_time",
+            "output_tokens": episode["output_tokens"],
+            "working_tokens": episode["output_tokens"],
+            "output_token_budget": None,
+            "per_turn_max_tokens": cell_per_turn_max_tokens(cell),
+            "events": episode["events"],
+            "agent_elapsed_s": episode["agent_elapsed_s"],
+            "artifact_gate": episode["artifact_gate"],
+            "artifact_sha256": episode["artifact_sha256"],
+            "submission_protocol_compliant": explicit_submission,
+            "submission_mode": (
+                "explicit"
+                if explicit_submission
+                else "workspace_at_deadline"
+                if complete and exit_status == "TimeExceeded"
+                else "workspace_at_termination"
+                if complete
+                else "unavailable"
+            ),
+            "agent_scaffold": {
+                key: episode.get(key)
+                for key in (
+                    "scaffold",
+                    "scaffold_version",
+                    "bash_tool_schema_sha256",
+                    "system_prompt_sha256",
+                    "bash_contract_sha256",
+                    "trajectory_format",
+                    "sandbox_backend",
+                    "docker_image",
+                    "docker_image_id",
+                    "network",
+                    "evaluator_mounted",
+                    "resource_limits",
+                )
+            },
+            "public_agent_environment": {
+                "backend": episode["sandbox_backend"],
+                "image": episode.get("docker_image"),
+                "image_id": episode.get("docker_image_id"),
+            },
+            "mini_swe_exit_status": exit_status,
+            "model_calls": episode["model_calls"],
+            "bash_commands": commands,
+            "evas_invocations": evas_invocations,
+            "evas_usage": summarize_evas_invocations(evas_invocations),
+            "incidents": incidents,
+        }
+    )
+    attach_experiment_result(
+        result,
+        runtime,
+        episode["messages"],
+        args,
+        "agent_resource_exhausted"
+        if resource_exhausted
+        else "agent_timeout"
+        if exit_status == "TimeExceeded"
+        else "completed"
+        if complete
+        else result["status"],
+    )
+    write_json(runtime / "evidence" / "campaign_result.json", result)
+    return result
 
 
 def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompatible | None) -> dict[str, Any]:
@@ -1370,9 +1848,20 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
     result_path = runtime / "evidence" / "campaign_result.json"
     if args.resume and result_path.is_file():
         previous = read_json(result_path)
-        if previous.get("status") in {
-            "submitted", "submitted_at_budget", "invalid_submission", "budget_exhausted"
-        }:
+        if previous.get("status") in RESUMABLE_TERMINAL_STATUSES:
+            previous_cell = previous.get("cell") or {}
+            if previous_cell.get("cell_id") != cell.get("cell_id"):
+                raise ValueError("resumed campaign result cell_id does not match the requested cell")
+            if previous.get("status") in ARTIFACT_READY_STATUSES:
+                gate = submission_artifact_gate(runtime)
+                if not gate["passed"]:
+                    raise ValueError(
+                        "resumed artifact-ready result no longer passes its artifact gate: "
+                        + ", ".join(gate["diagnostics"])
+                    )
+                recorded_hashes = dict(previous.get("artifact_sha256") or {})
+                if recorded_hashes and recorded_hashes != gate["artifact_sha256"]:
+                    raise ValueError("resumed submission artifact hash does not match its result")
             if "experiment_result" not in previous:
                 checkpoint_path = runtime / "evidence" / "conversation_checkpoint.json"
                 checkpoint = read_json(checkpoint_path) if checkpoint_path.is_file() else {}
@@ -1383,15 +1872,43 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             return previous
     conversation_path = runtime / "evidence" / "conversation_checkpoint.json"
     if not (args.resume and conversation_path.is_file()):
-        export_runtime(cell, args.release, runtime)
+        export_runtime(cell, args.release, runtime, timeout_s=args.setup_timeout_s)
     prompt_path = runtime / ("agent_prompt.txt" if cell["mode"] in AGENTIC else "direct_prompt.txt")
     prompt = prompt_path.read_text(encoding="utf-8")
-    result: dict[str, Any] = {"cell": cell, "started_at": now(), "runtime": str(runtime), "status": "prepared"}
+    agent_scaffold = getattr(args, "agent_scaffold", "native")
+    mini_swe_agentic = cell["mode"] in AGENTIC and agent_scaffold == "mini-swe"
+    agent_started_monotonic = time.monotonic()
+    resumed_agent_elapsed_s = 0.0
+    result: dict[str, Any] = {
+        "cell": cell,
+        "started_at": now(),
+        "runtime": str(runtime),
+        "status": "prepared",
+        "termination_policy": "wall_time",
+        "agent_timeout_s": args.agent_timeout_s,
+        "agent_scaffold": MINI_SWE_SCAFFOLD_ID if mini_swe_agentic else "native-v4-loop",
+        "evas_identity": getattr(args, "evas_identity", None),
+    }
+    if mini_swe_agentic:
+        result["public_agent_environment"] = {
+            "backend": getattr(args, "mini_swe_sandbox", None),
+            "image": getattr(args, "mini_swe_image", DEFAULT_DOCKER_IMAGE),
+            "image_id": None,
+        }
     if args.dry_run:
         result["finished_at"] = now()
         write_json(runtime / "evidence" / "campaign_result.json", result)
         return result
     assert client is not None
+    if mini_swe_agentic:
+        return run_mini_swe_agentic_cell(
+            cell=cell,
+            args=args,
+            client=client,
+            runtime=runtime,
+            prompt=prompt,
+            result=result,
+        )
     if args.resume and conversation_path.is_file():
         checkpoint = read_json(conversation_path)
         if checkpoint.get("cell_id") != cell["cell_id"]:
@@ -1401,13 +1918,24 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         output_tokens = int(checkpoint.get("output_tokens", checkpoint.get("working_tokens", 0)))
         events = list(checkpoint["events"])
         finalized = bool(checkpoint.get("finalized"))
+        resumed_agent_elapsed_s = float(checkpoint.get("agent_elapsed_s") or 0.0)
     else:
         messages = [{"role": "user", "content": prompt}]
         output_tokens = 0
         events = []
         finalized = False
 
-    output_budget = cell_output_budget(cell)
+    per_turn_max_tokens = cell_per_turn_max_tokens(cell)
+    agent_deadline = agent_started_monotonic + max(0.0, args.agent_timeout_s - resumed_agent_elapsed_s)
+
+    def current_agent_elapsed_s() -> float:
+        return resumed_agent_elapsed_s + max(0.0, time.monotonic() - agent_started_monotonic)
+
+    def remaining_agent_s() -> float:
+        return max(0.0, agent_deadline - time.monotonic())
+
+    def agent_time_expired() -> bool:
+        return time.monotonic() >= agent_deadline
 
     def save_conversation() -> None:
         write_json(conversation_path, {
@@ -1415,7 +1943,12 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             "cell_id": cell["cell_id"], "messages": messages,
             "started_at": result["started_at"],
             "output_tokens": output_tokens, "working_tokens": output_tokens, "events": events,
-            "finalized": finalized, "updated_at": now(),
+            "finalized": finalized,
+            "termination_policy": "wall_time",
+            "agent_timeout_s": args.agent_timeout_s,
+            "agent_elapsed_s": current_agent_elapsed_s(),
+            "per_turn_max_tokens": per_turn_max_tokens,
+            "updated_at": now(),
         })
 
     def current_turn_hit_limit() -> bool:
@@ -1423,11 +1956,14 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             (event for event in reversed(events) if event.get("type") == "model"),
             {},
         )
-        return model_event_hit_limit(last_model) or output_tokens >= output_budget
+        return model_event_hit_limit(last_model)
 
     def process_tool_calls(calls: list[dict[str, Any]]) -> None:
         nonlocal finalized
         for call in calls:
+            remaining = remaining_agent_s()
+            if remaining <= 0:
+                return
             function = call["function"]
             try:
                 arguments = json.loads(function.get("arguments") or "{}")
@@ -1435,7 +1971,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
                     function["name"],
                     arguments,
                     runtime,
-                    args.tool_timeout_s,
+                    max(0.1, min(float(args.tool_timeout_s), remaining)),
                     args.evas_command,
                 )
             except Exception as exc:  # Model tool mistakes are episode evidence, not runner failures.
@@ -1451,26 +1987,41 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             write_json(runtime / "evidence" / "campaign_checkpoint.json", {
                 "cell_id": cell["cell_id"], "output_tokens": output_tokens,
                 "working_tokens": output_tokens,
+                "termination_policy": "wall_time",
+                "per_turn_max_tokens": per_turn_max_tokens,
+                "agent_elapsed_s": current_agent_elapsed_s(),
                 "event_count": len(events), "events": events, "updated_at": now(),
             })
             messages.append({"role": "tool", "tool_call_id": call["id"], "content": text})
             finalized = finalized or done
             save_conversation()
 
+    def model_limit_reason() -> str | None:
+        return "model_output_limit" if current_turn_hit_limit() else None
+
+    def set_terminal_submission_status(
+        complete: bool,
+        *,
+        default_reason: str,
+        incomplete_status: str = "invalid_submission",
+        force_reason: str | None = None,
+    ) -> None:
+        reason = force_reason or model_limit_reason() or default_reason
+        result["status"] = "submitted" if complete else incomplete_status
+        result["termination_reason"] = reason if (complete or reason != "completed") else "completed"
+
     if cell["mode"] not in AGENTIC and len(messages) > 1:
         content = str(messages[-1].get("content") or "")
         direct_submission = extract_direct_submission(content, runtime)
         complete = bool(direct_submission["submission_protocol_compliant"])
+        set_terminal_submission_status(complete, default_reason="completed")
         result.update({
-            "status": (
-                "submitted_at_budget" if complete and current_turn_hit_limit()
-                else "submitted" if complete
-                else "budget_exhausted" if current_turn_hit_limit()
-                else "invalid_submission"
-            ),
             "finished_at": now(),
             "output_tokens": output_tokens,
             "working_tokens": output_tokens,
+            "output_token_budget": None,
+            "per_turn_max_tokens": per_turn_max_tokens,
+            "agent_elapsed_s": current_agent_elapsed_s(),
             "events": events,
             "recovered_from_checkpoint": True,
             **direct_submission,
@@ -1484,23 +2035,38 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             process_tool_calls(pending)
         elif messages and messages[-1].get("role") == "assistant":
             complete = gate_agentic_submission(runtime, result)
-            result["status"] = (
-                "submitted_at_budget" if complete and current_turn_hit_limit()
-                else "submitted" if complete
-                else "budget_exhausted" if current_turn_hit_limit()
-                else "invalid_submission"
-            )
+            set_terminal_submission_status(complete, default_reason="completed")
         if finalized:
             complete = gate_agentic_submission(runtime, result)
-            result["status"] = (
-                "submitted_at_budget" if complete and current_turn_hit_limit()
-                else "submitted" if complete
-                else "invalid_submission"
-            )
-    while output_tokens < output_budget and not finalized and result.get("status") == "prepared":
-        remaining = output_budget - output_tokens
+            set_terminal_submission_status(complete, default_reason="completed")
+    while not agent_time_expired() and not finalized and result.get("status") == "prepared":
         started = time.monotonic()
-        response = client.complete(messages, remaining, TOOLS if cell["mode"] in AGENTIC else None)
+        try:
+            response = client.complete(
+                messages,
+                per_turn_max_tokens,
+                TOOLS if cell["mode"] in AGENTIC else None,
+                timeout_s=max(0.1, min(float(args.request_timeout_s), remaining_agent_s())),
+            )
+        except ProviderContextWindowExceeded as exc:
+            result.update({
+                "status": "context_window_exceeded",
+                "termination_reason": "provider_context_window_exceeded",
+                "provider_error": str(exc)[:4000],
+            })
+            break
+        except (subprocess.TimeoutExpired, ProviderRequestTimeout) as exc:
+            if agent_time_expired():
+                complete = gate_agentic_submission(runtime, result) if cell["mode"] in AGENTIC else False
+                set_terminal_submission_status(
+                    complete,
+                    default_reason="agent_timeout",
+                    incomplete_status="agent_timeout",
+                    force_reason="agent_timeout",
+                )
+                result["provider_error"] = str(exc)[:4000]
+                break
+            raise
         response_choice = response["choices"][0]
         choice = response_choice["message"]
         elapsed = time.monotonic() - started
@@ -1518,7 +2084,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         model_event = {
             "type": "model",
             "elapsed_s": elapsed,
-            "requested_max_tokens": remaining,
+            "requested_max_tokens": per_turn_max_tokens,
             "finish_reason": response_choice.get("finish_reason"),
             "provider_output_tokens": usage["output_tokens"],
             "provider_reasoning_tokens": usage["reasoning_tokens"],
@@ -1532,6 +2098,9 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         write_json(runtime / "evidence" / "campaign_checkpoint.json", {
             "cell_id": cell["cell_id"], "output_tokens": output_tokens,
             "working_tokens": output_tokens,
+            "termination_policy": "wall_time",
+            "per_turn_max_tokens": per_turn_max_tokens,
+            "agent_elapsed_s": current_agent_elapsed_s(),
             "event_count": len(events), "events": events, "updated_at": now(),
         })
         messages.append(choice)
@@ -1539,44 +2108,39 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         if cell["mode"] not in AGENTIC:
             direct_submission = extract_direct_submission(content, runtime)
             complete = bool(direct_submission["submission_protocol_compliant"])
-            hit_limit = model_event_hit_limit(model_event) or output_tokens >= output_budget
+            hit_limit = model_event_hit_limit(model_event)
             result.update({
-                "status": (
-                    "submitted_at_budget" if complete and hit_limit
-                    else "submitted" if complete
-                    else "budget_exhausted" if hit_limit
-                    else "invalid_submission"
-                ),
+                "status": "submitted" if complete else "invalid_submission",
+                "termination_reason": "model_output_limit" if hit_limit else "completed",
                 **direct_submission,
             })
             break
         calls = choice.get("tool_calls") or []
         if not calls:
-            hit_limit = model_event_hit_limit(model_event) or output_tokens >= output_budget
+            hit_limit = model_event_hit_limit(model_event)
             complete = gate_agentic_submission(runtime, result)
-            result["status"] = (
-                "submitted_at_budget" if complete and hit_limit
-                else "submitted" if complete
-                else "budget_exhausted" if hit_limit
-                else "invalid_submission"
-            )
+            result["status"] = "submitted" if complete else "invalid_submission"
+            result["termination_reason"] = "model_output_limit" if hit_limit else "completed"
             break
         process_tool_calls(calls)
         if finalized:
             complete = gate_agentic_submission(runtime, result)
-            result["status"] = (
-                "submitted_at_budget" if complete and current_turn_hit_limit()
-                else "submitted" if complete
-                else "invalid_submission"
-            )
+            set_terminal_submission_status(complete, default_reason="completed")
     if result.get("status") == "prepared":
         complete = gate_agentic_submission(runtime, result) if cell["mode"] in AGENTIC else False
-        result["status"] = "submitted_at_budget" if complete else "budget_exhausted"
+        set_terminal_submission_status(
+            complete,
+            default_reason="agent_timeout",
+            incomplete_status="agent_timeout",
+            force_reason="agent_timeout",
+        )
     result.update({
         "finished_at": now(),
         "output_tokens": output_tokens,
         "working_tokens": output_tokens,
-        "output_token_budget": output_budget,
+        "output_token_budget": None,
+        "per_turn_max_tokens": per_turn_max_tokens,
+        "agent_elapsed_s": current_agent_elapsed_s(),
         "events": events,
     })
     attach_experiment_result(result, runtime, messages, args, "completed")
@@ -1596,25 +2160,26 @@ def run_cell_preserving_failure(
         if client is not None:
             error = client._redact(error)
             trace = client._redact(trace)
+        classification = classify_execution_exception(exc)
         failure = {
             "cell": cell,
-            "status": "agent_timeout" if isinstance(exc, AgentTimeoutError) else "runner_error",
+            "status": classification["status"],
+            "termination_reason": classification["termination_reason"],
             "error_type": type(exc).__name__,
             "error": error,
             "traceback": trace,
+            "incidents": [classification["incident"]],
             "finished_at": now(),
         }
         checkpoint_path = runtime / "evidence" / "conversation_checkpoint.json"
         checkpoint = read_json(checkpoint_path) if checkpoint_path.is_file() else {}
-        model_status = (
-            "agent_timeout"
-            if isinstance(exc, AgentTimeoutError)
-            else "provider_failure"
-            if isinstance(exc, RuntimeError) and "provider" in str(exc).lower()
-            else "runner_failure"
+        trajectory_path = runtime / "evidence" / "mini_swe_trajectory.json"
+        trajectory = read_json(trajectory_path) if trajectory_path.is_file() else {}
+        failure_messages = list(
+            checkpoint.get("messages") or trajectory.get("messages") or []
         )
         attach_experiment_result(
-            failure, runtime, list(checkpoint.get("messages") or []), args, model_status
+            failure, runtime, failure_messages, args, classification["model_status"]
         )
         write_json(runtime / "evidence" / "campaign_result.json", failure)
         return failure
@@ -1638,24 +2203,58 @@ def main() -> int:
     parser.add_argument("--cell")
     parser.add_argument("--limit", type=int)
     parser.add_argument("--temperature", type=float, default=0.0)
-    parser.add_argument("--request-timeout-s", type=int, default=600)
-    parser.add_argument("--tool-timeout-s", type=int, default=120)
-    parser.add_argument("--judge-timeout-s", type=int, default=600)
+    parser.add_argument(
+        "--agent-scaffold",
+        choices=("mini-swe", "native"),
+        default="mini-swe",
+        help="Agent controller for G2-G5. G0/G1 remain direct-generation conditions.",
+    )
+    parser.add_argument(
+        "--mini-swe-sandbox",
+        choices=("auto", "docker", "sandbox-exec", "bubblewrap", "none"),
+        default="auto",
+        help="Shell backend. Formal mini-SWE runs use the shared Docker environment.",
+    )
+    parser.add_argument("--docker-command", default="docker")
+    parser.add_argument("--mini-swe-image", default=DEFAULT_DOCKER_IMAGE)
+    parser.add_argument("--agent-timeout-s", type=int, default=DEFAULT_AGENT_TIMEOUT_S)
+    parser.add_argument("--setup-timeout-s", type=int, default=DEFAULT_SETUP_TIMEOUT_S)
+    parser.add_argument("--request-timeout-s", type=int, default=DEFAULT_REQUEST_TIMEOUT_S)
+    parser.add_argument("--tool-timeout-s", type=int, default=DEFAULT_TOOL_TIMEOUT_S)
+    parser.add_argument("--judge-timeout-s", type=int, default=DEFAULT_JUDGE_TIMEOUT_S)
     parser.add_argument("--final-judge-command")
     parser.add_argument(
         "--evas-command",
-        default="evas",
-        help="EVAS executable used by the restricted visible-test tool and recorded for trusted replay identity.",
+        help="Explicit pinned EVAS command; required unless --dry-run is used.",
     )
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--stream", action="store_true", help="Use OpenAI-compatible SSE streaming responses.")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
+    if not args.dry_run and not args.evas_command:
+        raise SystemExit("--evas-command is required for executable campaigns")
     args.campaign = args.campaign.resolve()
     args.release = args.release.resolve()
     args.output = args.output.resolve()
     campaign = read_json(args.campaign)
+    expected_mini_swe_image = (campaign.get("execution_config") or {}).get(
+        "mini_swe_image"
+    )
+    if expected_mini_swe_image and args.mini_swe_image != expected_mini_swe_image:
+        raise SystemExit(
+            "campaign shared Docker image does not match --mini-swe-image: "
+            f"expected={expected_mini_swe_image} observed={args.mini_swe_image}"
+        )
+    expected_evas_identity = (campaign.get("execution_config") or {}).get(
+        "evas_identity"
+    )
+    if args.evas_command:
+        args.evas_identity = validate_pinned_evas_identity(
+            args.evas_command, expected_evas_identity
+        )
+    else:
+        args.evas_identity = None
     expected_release_hash = str(campaign.get("release_manifest_sha256") or "")
     observed_release_hash = hashlib.sha256((args.release / "MANIFEST.json").read_bytes()).hexdigest()
     if expected_release_hash != observed_release_hash:
@@ -1671,10 +2270,35 @@ def main() -> int:
         cells = cells[:args.limit]
     if not cells:
         raise SystemExit("no matching campaign cells")
+    uses_mini_swe = args.agent_scaffold == "mini-swe" and any(
+        cell["mode"] in AGENTIC for cell in cells
+    )
+    if uses_mini_swe and args.mini_swe_sandbox == "auto" and not args.dry_run:
+        args.mini_swe_sandbox = default_sandbox_backend()
+    if uses_mini_swe and args.mini_swe_sandbox == "none" and not args.dry_run:
+        raise SystemExit(
+            "--mini-swe-sandbox none is test-only; use a supported secure sandbox "
+            "for executable G2-G5 campaigns"
+        )
+    if (
+        uses_mini_swe
+        and args.mini_swe_sandbox not in {"docker", "auto"}
+        and not args.dry_run
+    ):
+        raise SystemExit(
+            "paper-valid mini-SWE campaigns require --mini-swe-sandbox docker; "
+            "legacy host sandboxes are retained only for sensitivity tests"
+        )
     if args.workers < 1:
         raise SystemExit("--workers must be at least 1")
-    if min(args.request_timeout_s, args.tool_timeout_s, args.judge_timeout_s) < 1:
-        raise SystemExit("request, tool, and judge timeouts must be positive")
+    if min(
+        args.agent_timeout_s,
+        args.setup_timeout_s,
+        args.request_timeout_s,
+        args.tool_timeout_s,
+        args.judge_timeout_s,
+    ) < 1:
+        raise SystemExit("agent, setup, request, tool, and judge timeouts must be positive")
     key = "" if args.dry_run else load_key(args.api_key_file, args.api_key_env)
     if not args.dry_run:
         os.environ.pop(args.api_key_env, None)
@@ -1689,13 +2313,37 @@ def main() -> int:
         with ThreadPoolExecutor(max_workers=args.workers) as pool:
             results = list(pool.map(lambda cell: run_cell_preserving_failure(cell, args, client), cells))
     all_results = stored_results(args.output)
-    summary = {"schema_version": "v4-calibration-run-summary-v1", "campaign": str(args.campaign), "dry_run": args.dry_run, "result_count": len(all_results), "statuses": {}}
+    image_ids = sorted(
+        {
+            str((row.get("agent_scaffold") or {}).get("docker_image_id"))
+            for row in all_results
+            if isinstance(row.get("agent_scaffold"), dict)
+            and (row.get("agent_scaffold") or {}).get("docker_image_id")
+        }
+    )
+    summary = {
+        "schema_version": "v4-calibration-run-summary-v1",
+        "campaign": str(args.campaign),
+        "dry_run": args.dry_run,
+        "evas_identity": args.evas_identity,
+        "public_agent_environment": {
+            "backend": args.mini_swe_sandbox if uses_mini_swe else None,
+            "image": args.mini_swe_image if uses_mini_swe else None,
+            "observed_image_ids": image_ids,
+            "identity_consistent": len(image_ids) <= 1,
+        },
+        "result_count": len(all_results),
+        "statuses": {},
+    }
     for row in all_results:
         status = row["status"]
         summary["statuses"][status] = summary["statuses"].get(status, 0) + 1
     write_json(args.output / "SUMMARY.json", summary)
     print(json.dumps(summary, indent=2))
-    return 1 if summary["statuses"].get("runner_error") else 0
+    return 1 if (
+        summary["statuses"].get("runner_error")
+        or not summary["public_agent_environment"]["identity_consistent"]
+    ) else 0
 
 
 if __name__ == "__main__":

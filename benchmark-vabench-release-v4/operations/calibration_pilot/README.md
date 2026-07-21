@@ -1,7 +1,7 @@
 # V4 Calibration Pilot
 
 The default release target is
-`benchmark-vabench-release-v4/release/benchmarkv4-r45`. Tools that support
+`benchmark-vabench-release-v4/release/benchmarkv4-r49`. Tools that support
 historical inspection require the frozen r44 path explicitly; the active
 direct-EVAS runner never falls back to it.
 Use `--sample-families N --seed S` for reproducible random complete-family
@@ -10,10 +10,11 @@ historical pilot. `CALIBRATION_FAMILIES.json` is retained only as historical
 selection evidence.
 
 The pilot is used only to freeze generic form skills, the public EVAS guide,
-the episode output-token cap, safety limits, runner behavior, repetition count,
-and telemetry. Skill text must remain task-agnostic. Form-writing skills are
-derived from installed Cadence/Spectre help; EVAS guides describe only the
-public command-line contract. Neither may contain a selected family ID,
+the agent wall-time cap, provider per-turn output cap, safety limits, runner
+behavior, repetition count, and telemetry. Skill text must remain
+task-agnostic. Form-writing skills are derived from installed Cadence/Spectre
+help; EVAS guides describe only the public command-line contract. Neither may
+contain a selected family ID,
 title, equation, threshold, stimulus constant, checker rule, or mutation hint.
 
 Because model outcomes from these families influence experimental settings,
@@ -28,29 +29,28 @@ file by SHA-256 and record the frozen parameters produced by the pilot.
 
 ## Build The Campaign
 
-The calibrated cap is 65,536 provider output tokens per episode. Provider
-`completion_tokens` includes hidden reasoning and visible completion. G0-G5
-share the same cumulative cap; tool output is recorded separately and does not
-consume the model-generation budget. Episodes stop early on normal completion,
-so 65,536 is a ceiling rather than a target consumption.
+The calibrated primary episode limit is wall-clock time: by default each agent
+episode gets 5,400 seconds, while setup, model requests, tool calls, and judges
+use 1,800-second infrastructure ceilings. The provider token value is
+`per_turn_max_tokens`: a per-model-call safety cap passed as `max_tokens`, not a
+cumulative G0-G5 stopping budget. Provider completion, hidden reasoning, visible
+completion, and feedback-delivered text are recorded as telemetry and must be
+reported separately from functional score.
 
-Local DeepSeek smoke tests showed that the 65,536-token ceiling can still be a
-binding infrastructure limit for long agentic modes. In a five-testbench,
-G0-G5 transport/evaluator smoke, all 30 cells submitted and no runner errors
-occurred, but five cells reached the output budget; the strongest provisional
-EVAS feedback was in G2-G4, while G5 showed diminishing returns. Treat
-`submitted_at_budget` as a separate runner/setting signal when comparing modes,
-and report hidden reasoning tokens separately from visible candidate text.
-Future prompt or feedback changes should prefer compact diagnostics,
-budget-aware stopping, and mode-specific round limits before increasing the
-global cap.
+If a model/provider rejects the next turn because the conversation exceeds its
+native context window, the runner records `context_window_exceeded` separately.
+If a single call stops at the provider output cap, the runner records
+`termination_reason=model_output_limit`; it does not treat accumulated tokens as
+the experimental ability budget. If wall time expires, the latest valid
+workspace artifact is still eligible for judging, and otherwise the cell is
+reported as `agent_timeout`.
 
 ```bash
 python3 benchmark-vabench-release-v4/operations/calibration_pilot/build_campaign.py \
   --sample-families 10 \
   --seed 20260715 \
   --model qwen3.5-flash \
-  --max-output-tokens 65536 \
+  --per-turn-max-tokens 65536 \
   --repetitions 1 \
   --output /tmp/v4-api-pilot-campaign.json
 ```
@@ -58,16 +58,16 @@ python3 benchmark-vabench-release-v4/operations/calibration_pilot/build_campaign
 This produces 180 cells: ten families, three forms, and six modes. Use
 `--repetitions` only after the single-episode smoke is sound.
 
-Each model event records the requested maximum, provider-reported completion,
-reasoning and visible tokens, and `finish_reason`. Hosted-model aliases and
-provider timestamps must also be retained in external run metadata.
+Each model event records the requested per-turn maximum, provider-reported
+completion, reasoning and visible tokens, and `finish_reason`. Hosted-model
+aliases and provider timestamps must also be retained in external run metadata.
 
-## Reuse An Uncensored Pilot
+## Reuse A Completed Pilot
 
-Increasing a stopping cap does not invalidate an episode that completed
-naturally before the old cap, provided the model, prompt hash, release hash,
-selection hash, tools, and candidate files are unchanged. Prepare a derived
-runtime containing only mechanically eligible episodes:
+Completed episodes may be mechanically reused only when the model, prompt hash,
+release hash, selection hash, endpoint hash, decoding settings, wall-time
+policy, per-turn token cap, tools, and candidate files are unchanged. Prepare a
+derived runtime containing only mechanically eligible episodes:
 
 ```bash
 python3 benchmark-vabench-release-v4/operations/calibration_pilot/prepare_budget_reuse.py \
@@ -80,14 +80,40 @@ python3 benchmark-vabench-release-v4/operations/calibration_pilot/prepare_budget
 `REUSE_MANIFEST.json` records every accepted or rejected cell, source-result
 hashes, candidate hashes, and rejection reasons. Reuse requires the same
 provider, model, endpoint hash, temperature, streaming mode, prompt, EVAS
-executable identity, and release; only the output-token ceiling may increase. A
-submitted file is not by itself reusable: any episode whose model turn hit the
-old output limit must be rerun because an agent may have written an intermediate
+executable identity, wall-time policy, per-turn token cap, and release. A submitted
+file is not by itself reusable: any episode whose model turn hit the provider
+output limit must be rerun because an agent may have written an intermediate
 file before truncation.
 Run the full target campaign with `--resume`; reused cells are skipped and all
 rejected cells start fresh.
 
 ## Dry Run
+
+Install the pinned agent scaffold and build the upstream shared environment
+before executing G2--G5:
+
+```bash
+uv sync --extra agentic --group dev
+benchmark-vabench-release-v4/public-agent-runtime/build.sh
+benchmark-vabench-release-v4/public-agent-runtime/verify.sh
+```
+
+`auto` selects Docker. Formal results require the single image built from the
+repository's top-level `environment/`; `sandbox-exec`, Bubblewrap, and `none`
+remain legacy/test sensitivity paths and are not paper-valid. Record the Git
+commit, image reference, and observed image ID with every campaign.
+
+G2--G5 use `mini-swe-agent==2.4.5` with its `DefaultAgent` controller and one
+`bash` tool. The benchmark runner still owns campaign construction, runtime
+export, credentials, wall-time enforcement, telemetry, trusted replay, and
+final scoring; it does not implement a second model-control loop. Mini-SWE
+step, cost, and consecutive-format-error limits are disabled. Accumulated
+tokens are recorded but never terminate an episode.
+
+Mini-SWE fixes the model--tool interaction scaffold; upstream vaBench's shared
+Docker image fixes where those commands execute. This adapter does not fork or
+modify mini-SWE-agent. It creates one container per task, forwards mini-SWE's
+Bash calls through `docker exec`, and destroys the container at episode end.
 
 Dry-run exports isolated runtime packages without contacting a model:
 
@@ -98,13 +124,59 @@ python3 benchmark-vabench-release-v4/operations/calibration_pilot/run_campaign.p
   --dry-run --limit 18
 ```
 
-Each runtime exposes only `public/task` and `public/submission` to an agentic
-model. Evaluator assets remain outside the model mount. G0/G1 parse exact
-artifact blocks into the submission directory. G2-G5 expose bounded file
-tools, restricted `run_evas`, and `finalize`. `run_evas` accepts no command
-string: DUT/bugfix tasks run the fixed visible deck, while testbench tasks may
-select only the reference or five public mutation fixtures declared by the
-task-local `evas_runtime.json`.
+The mini-SWE shell starts at `/workspace` in the shared container and exposes
+`public/task/` read-only, `public/submission/` writable, and `work/` writable. Form
+skills and the EVAS guide remain part of the frozen G0--G5 prompt treatments.
+All agentic modes receive the same minimal tool contract: a pinned, real `evas`
+executable is discoverable in `PATH`, `evas --help` works, and the task-local
+`evas_runtime.json` gives the public command. Skill-enabled modes additionally
+receive task-agnostic EVAS debugging guidance; tool discovery itself is not a
+skill treatment.
+
+The model invokes the image's fixed EVAS directly through ordinary bash,
+including pipes, redirection, and compound commands, and inspects logs and
+`tran.csv` under `/tmp/vabench-visible/evas-output` itself. The adapter does not
+run a feedback broker, checker, gold comparison, or property diagnosis.
+`vabench-submit` is likewise a real,
+discoverable shell command that requests runner validation of the final
+artifact set.
+
+The shell wrapper records each actual `evas` process invocation independently
+of the surrounding bash spelling, so pipes, redirections, and compound commands
+do not disappear from telemetry. Campaign results expose the raw invocation
+records and a `v4-direct-evas-usage-v1` summary with succeeded, failed, timed
+out, and interrupted counts. These records describe tool use only; an EVAS
+nonzero exit is not promoted to a hidden-checker or behavioral verdict.
+
+An explicit `vabench-submit` ends the episode early and records
+`submission_mode=explicit`. It is not a score-eligibility gate: when wall time
+expires with a complete declared artifact set, the runner snapshots that final
+workspace as `status=workspace_ready` and
+`submission_mode=workspace_at_deadline`, then sends the snapshot to the same
+trusted judge. `termination_reason=agent_timeout` remains visible, so artifact
+correctness and the agent's ability to recognize completion are reported
+separately.
+
+Evaluator, gold, and trusted-replay assets remain outside the model-visible
+container. A production G2--G5 run requires the shared Docker environment;
+`none` is allowed only for unit tests and dry runs. Docker denies network
+access and mounts only the current task, submission, and work directories.
+Each command has a 64 MiB per-file limit. The runner permits at most 64 MiB in
+submission and 512 MiB in work, and captures at most 1 MiB of command output in
+host memory. Model observations receive a 12 KiB head/tail summary when output
+is larger; telemetry records the original, captured, and truncated byte counts.
+Quota violations are reported as `agent_resource_exhausted`, not as benchmark
+behavior failures or hidden-test zeroes.
+Before trusted
+replay starts, the runner also rejects submission symlinks and candidate source
+includes that can escape the declared artifact set.
+
+G0/G1 parse exact artifact blocks into the submission directory. In the
+mini-SWE path, the model controls direct EVAS invocations over the public
+runtime package. DUT/bugfix tasks expose their visible deck; testbench tasks
+expose the reference and five public mutation fixtures declared by task-local
+`evas_runtime.json`. The legacy native scaffold retains its restricted
+`run_evas` tool only as a sensitivity path and is not the default G2--G5 agent.
 
 Direct responses must use the exact artifact envelope contract. The live runner
 rejects filename-only markers, input-artifact markers, Markdown fences,
@@ -133,8 +205,17 @@ python3 benchmark-vabench-release-v4/runners/run_benchmarkv4_campaign.py \
   --model deepseek-v4-flash \
   --base-url https://api.deepseek.com/v1 \
   --api-key-env DEEPSEEK_API_KEY \
+  --evas-command "$(pwd)/.venv/bin/evas" \
   --output-root /tmp/benchmarkv4-api-smoke
 ```
+
+Executable campaigns require `--evas-command`; there is no PATH-derived
+default. Before the first model request, the wrapper resolves it to an absolute
+command and records the executable SHA-256, complete `--version` output
+(including version, ABI, and revision), and version-output SHA-256 in
+`campaign.json`. The cell runner rechecks that identity before loading provider
+credentials. Dry runs may omit EVAS because they execute neither model nor
+evaluator.
 
 The provider adapter uses the OpenAI-compatible chat-completions protocol.
 Changing providers requires only `--base-url`, the campaign model ID, and
@@ -155,7 +236,7 @@ remotely. Neither its command string nor evaluator directory is sent to the
 model. A formal pilot must configure the final adapter; a provider-only smoke
 may omit it only to test API transport and artifact handling.
 
-### R45 result protocol
+### Result protocol
 
 Every completed G0-G5 cell now writes an `experiment_result` object in
 `evidence/campaign_result.json` conforming to
@@ -168,8 +249,8 @@ change it. Trusted replay receives the snapshot path in both
 the replay to the snapshot tree hash.
 
 The final judge is a trusted replay, not another model-feedback turn. Before it
-runs, the runner hashes the exported evaluator tree and records
-`evas --version` (override the executable with `--evas-command`). The adapter
+runs, the runner hashes the exported evaluator tree and records the already
+pinned EVAS identity. The adapter
 must write JSON to `VABENCH_TRUSTED_REPLAY_RESULT` with one of these statuses:
 
 ```json
@@ -185,16 +266,26 @@ adapter returning zero without JSON is accepted as `passed` with a compatibility
 diagnostic. A nonzero return without JSON is an infrastructure failure because
 the runner cannot safely infer its failure stage.
 
-Model execution is separate from replay execution. `agent_timeout` and
-`no_submission` have `score_eligible: false` and `score: null`; neither is
-reported as a hidden-test or behavior zero. Trusted replay timeouts are
+Model execution is separate from replay execution. `agent_timeout` without a
+complete artifact and `no_submission` have `score_eligible: false` and
+`score: null`; neither is reported as a hidden-test or behavior zero. A complete
+workspace produced before the wall-time boundary may still enter trusted replay.
+Trusted replay timeouts are
 `runtime_failure`, while launch and malformed-result failures remain
 `infrastructure_failure`.
 
+Operational failures are also recorded on an orthogonal `incidents` axis.
+Each incident identifies its phase, component, category, responsibility, and
+retryability. This separates provider request timeouts, sandbox/preflight
+failures, runner failures, and direct EVAS command failures without replacing
+the final artifact/checker outcome. In particular, a failed exploratory EVAS
+call can coexist with a later passing final submission.
+
 The historical `feedback_adapter.py` remains only to reproduce old experiments.
 It reads evaluator assets and must never be configured as an active G2-G5 model
-tool. New runs use `run_evas`, which returns only raw public simulation output
-from the fixed task-local contract and never invokes a checker or score oracle.
+tool. The legacy native sensitivity scaffold retains `run_evas`; current
+mini-SWE runs invoke the pinned `evas` executable directly and receive only its
+raw public simulation output, never a checker or score oracle.
 
 Generated campaign manifests, runtime workspaces, API responses, simulator
 outputs, and credentials belong outside the repository. Only runner source,
@@ -241,7 +332,7 @@ submitted.
 Long agentic episodes checkpoint the public conversation, cumulative provider
 output tokens, tool events, and current submission after every model and tool action.
 `--resume` continues the same episode after an infrastructure interruption;
-it does not reset the token budget, create another sample, or grant another
+it does not reset the wall-time episode budget, create another sample, or grant another
 pass@k opportunity.
 
 Independent cells may run concurrently with `--workers N`. Each worker writes

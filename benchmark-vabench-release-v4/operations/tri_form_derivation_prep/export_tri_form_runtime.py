@@ -397,7 +397,14 @@ def main() -> int:
     parser.add_argument("--task", required=True)
     parser.add_argument("--mode", choices=[f"G{x}" for x in range(6)], required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--working-token-budget", type=int, required=True)
+    parser.add_argument(
+        "--per-turn-max-tokens",
+        "--working-token-budget",
+        dest="per_turn_max_tokens",
+        type=int,
+        required=True,
+        help="Provider per-call max_tokens cap; not a cumulative episode budget.",
+    )
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
     release = args.release.expanduser().resolve()
@@ -422,12 +429,16 @@ def main() -> int:
     )
     prompt_name = "agent_prompt.txt" if args.mode in AGENTIC else "direct_prompt.txt"
     (output / prompt_name).write_text(prompt, encoding="utf-8")
-    model_mounts = [] if args.mode not in AGENTIC else ["public/task:ro", "public/submission:rw"]
+    model_mounts = [] if args.mode not in AGENTIC else [
+        "public/task:ro",
+        "public/submission:rw",
+        "public/work:rw",
+    ]
     write_json(output / "MODEL_ACCESS_POLICY.json", {
         "schema_version": "r45-model-access-policy-v1",
         "mode": args.mode,
         "mounts": model_mounts,
-        "executables": [] if args.mode not in AGENTIC else ["evas"],
+        "executables": [] if args.mode not in AGENTIC else ["evas", "vabench-submit"],
         "network": False,
         "evaluator_mounted": False,
     })
@@ -438,7 +449,9 @@ def main() -> int:
         "form": record["form"],
         "mode": args.mode,
         "state": "prepared",
-        "working_token_budget": args.working_token_budget,
+        "termination_policy": "wall_time",
+        "per_turn_max_tokens": args.per_turn_max_tokens,
+        "working_token_budget": args.per_turn_max_tokens,
         "public_bundle_sha256": tree_sha(public_root / "task"),
         "initial_submission_sha256": tree_sha(public_root / "submission"),
         "submission_seeded_from_buggy_bundle": bool(record["form"] == "bugfix" and args.mode in AGENTIC),

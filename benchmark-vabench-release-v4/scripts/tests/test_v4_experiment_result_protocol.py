@@ -99,7 +99,7 @@ def test_unstructured_nonzero_replay_is_not_behavior_failure() -> None:
     assert "missing_structured" in replay["diagnostics"][0]
 
 
-def test_agent_timeout_has_no_score_even_if_files_exist(tmp_path: Path) -> None:
+def test_complete_workspace_at_timeout_awaits_replay(tmp_path: Path) -> None:
     runtime = runtime_with_submission(tmp_path)
     record = PROTOCOL.build_experiment_result(
         cell={"cell_id": "v4-001-G4-r01", "task_id": "v4-001", "mode": "G4"},
@@ -114,7 +114,28 @@ def test_agent_timeout_has_no_score_even_if_files_exist(tmp_path: Path) -> None:
             {"available": False},
         ),
     )
-    assert record["outcome"] == "agent_timeout"
+    assert record["outcome"] == "not_scored"
+    assert record["score_eligible"] is False
+    assert record["score"] is None
+    jsonschema.Draft7Validator(json.loads(SCHEMA.read_text())).validate(record)
+
+
+def test_agent_resource_exhaustion_has_no_score(tmp_path: Path) -> None:
+    runtime = runtime_with_submission(tmp_path)
+    record = PROTOCOL.build_experiment_result(
+        cell={"cell_id": "v4-001-G4-r01", "task_id": "v4-001", "mode": "G4"},
+        model_status="agent_resource_exhausted",
+        messages=[{"role": "assistant", "content": "oversized workspace"}],
+        artifact_gate=RUNNER.submission_artifact_gate(runtime),
+        runtime=runtime,
+        replay=PROTOCOL.trusted_replay(
+            None,
+            None,
+            PROTOCOL.hash_test_tree(runtime / "evaluator"),
+            {"available": False},
+        ),
+    )
+    assert record["outcome"] == "agent_resource_exhausted"
     assert record["score_eligible"] is False
     assert record["score"] is None
     jsonschema.Draft7Validator(json.loads(SCHEMA.read_text())).validate(record)

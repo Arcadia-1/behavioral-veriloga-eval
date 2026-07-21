@@ -106,11 +106,11 @@ statistically correlated.
     trace contract, and checker logic. Backend-specific deck and trace adapters
     MAY differ, but v4 does not maintain separate visible and hidden behavior
     datasets.
-15. **Token-bounded execution.** Working token is the only experimental
-    resource budget for G0-G5. Model turns, feedback calls, candidate versions,
-    cache hits, simulator calls, cost, and wall time are measured but are not
-    separate ability budgets. Wall-time and per-call limits remain safety and
-    infrastructure controls.
+15. **Wall-time-bounded execution.** Agent wall-clock time is the primary
+    experimental resource budget for G0-G5. Model turns, feedback calls,
+    candidate versions, cache hits, simulator calls, cost, and tokens are
+    measured but are not separate ability budgets. Per-call output-token and
+    provider context-window limits remain safety and infrastructure controls.
 16. **Cross-form isolation.** A formal episode receives exactly one task view,
     runs in a fresh session and workspace, has no network or benchmark-root
     access, and cannot recover paired-form assets. Formal paper experiments MUST
@@ -1088,8 +1088,8 @@ Diagnostics SHOULD provide public property ID, expected and observed values or
 ranges, relevant time/event, mismatch count, and metric gap when available.
 Trace artifacts SHOULD be readable by signal, time window, or bounded row
 range. The default response returns a concise summary plus artifact paths;
-every trace or log chunk first delivered to the model contributes to the
-working-token budget. The CLI MUST redact negative-DUT source and identity,
+every trace or log chunk first delivered to the model is token-counted as
+telemetry. The CLI MUST redact negative-DUT source and identity,
 checker source paths, evaluator paths, and final Spectre results. The supplied
 correct DUT remains visible only in the Testbench task workspace.
 
@@ -1185,7 +1185,8 @@ before simulation if a component required by the requested run conflicts with
 the selected release snapshot.
 
 G2-G5 within one comparison stratum MUST use the same EVAS revision, actual
-engine, profile, AHDL-like ruleset, and working-token budget. Any alternative
+engine, profile, AHDL-like ruleset, wall-time limit, and provider per-turn
+output cap. Any alternative
 engine result is a separately labeled diagnostic stratum and cannot satisfy the
 primary campaign gate. G0/G1 use no public EVAS feedback, but their experiment
 metadata MUST explicitly record that fact and still pin the final Spectre
@@ -1274,10 +1275,11 @@ Requirements:
   their canonical public inputs are serialized into the deterministic one-shot
   prompt described in Section 7.4;
 - G2-G5 receive the public task bundle, shared feedback CLI, declared
-  working-token budget, and no evaluator bundle or evaluator deck;
-- all G0-G5 records declare the same reference-tokenizer working-token ceiling
-  within a comparison stratum; G0/G1 consume it only through their one generated
-  response, while G2-G5 also consume first-delivered tool-result text;
+  wall-time limit, provider per-turn output cap, and no evaluator bundle or
+  evaluator deck;
+- all G0-G5 records declare the same agent wall-time ceiling within a
+  comparison stratum; G0/G1 use one generated response, while G2-G5 may also
+  receive first-delivered tool-result text as token telemetry;
 - form skills and feedback skills are generic and contain no task-specific
   values, mutation names, checker details, or gold code;
 - mode name, wrapper version, and experiment IDs are stored in runner metadata,
@@ -1372,19 +1374,20 @@ planned -> materialized -> dispatched -> interacting -> finalized
 
 `materialized` freezes all prompt-component and public-bundle hashes.
 `finalized` occurs when the model explicitly submits, the one-shot response
-returns, the agentic working-token budget is exhausted, or the safety wall-time
-limit is reached. Budget or wall-time finalization automatically submits the
-latest declared files in the workspace. The runner snapshots their bytes and
-SHA-256 and revokes write access. Private scoring is then invoked exactly once
-for that frozen hash, and its result is never returned for another repair turn.
+returns, a provider context/output limit prevents further model progress, or
+the agent wall-time limit is reached. Wall-time finalization automatically
+submits the latest declared files in the workspace. The runner snapshots their
+bytes and SHA-256 and revokes write access. Private scoring is then invoked
+exactly once for that frozen hash, and its result is never returned for another
+repair turn.
 If no valid artifact exists, parsing or artifact validation returns a structured
 zero without starting Spectre; it still creates the one final score decision.
 
 The phrase `accepted submission` MUST NOT be used to remove failed attempts.
 Missing output, malformed one-shot blocks, undeclared files, compile failures,
 and model-caused timeouts are model outcomes and remain in the denominator.
-Budget exhaustion itself is not an automatic failure: the frozen current
-artifact receives its normal final score. A failure before
+Agent wall-time exhaustion itself is not an automatic failure: the frozen
+current artifact receives its normal final score. A failure before
 model dispatch is not a model attempt. A proven benchmark-infrastructure failure
 after dispatch is marked `infrastructure_error`, retains all partial evidence,
 does not score the model, and MUST be retried under the declared retry policy;
@@ -1415,14 +1418,15 @@ At minimum, telemetry records:
   SHA-256, tokenizer identity, and token count for the instruction, public
   artifacts, mode wrapper, form skill, and feedback package; the associated
   public-contract metadata hash is recorded separately because the JSON is not
-  model-visible; static component tokens are reported but excluded from
-  working-token consumption;
+  model-visible; static component tokens are reported as prompt/context
+  telemetry;
 - each model turn's request/response timestamps, latency, provider-reported
   input, cached-input, output, and reasoning tokens when available, finish
   reason, and request/response hashes;
-- reference-tokenizer working-token attribution, defined as model-generated
-  text plus each tool-result byte range the first time it is delivered to the
-  model; repeated conversation context and fixed prompt components are not
+- reference-tokenizer generated/delivered-token attribution, defined as
+  model-generated text plus each tool-result byte range the first time it is
+  delivered to the model; repeated conversation context and fixed prompt
+  components are not
   charged again;
 - every agent action and tool call, including command/capability name, candidate
   hash, whether that hash is new or repeated, cache status, requested feedback
@@ -1434,7 +1438,8 @@ At minimum, telemetry records:
   a reason when a stage is not invoked;
 - candidate-write and snapshot events observable to the runner, including time
   to first valid artifact, first feedback call, first feedback pass, last edit,
-  final submission, and budget exhaustion if applicable; and
+  final submission, wall-time exhaustion, and provider output/context-limit
+  stops if applicable; and
 - private evaluation spans separated into queue, sandbox assembly, artifact
   gate, Spectre compile/simulate, checker, score aggregation, and sealing.
 
@@ -1456,14 +1461,14 @@ A minimal record shape is:
   "prompt_components": [
     {"id": "instruction", "sha256": "...", "bytes": 0, "tokens": 0, "tokenizer": "..."}
   ],
-  "working_token_budget": {
+  "token_telemetry": {
     "reference_tokenizer": "<id-and-version>",
-    "max_working_tokens": 0,
-    "consumed_working_tokens": 0
+    "per_turn_max_tokens": 0,
+    "generated_or_delivered_tokens": 0
   },
   "safety_limits": {
-    "wall_ms": 0,
-    "per_call_limits": {"simulator_ms": 0, "visible_output_bytes": 0}
+    "agent_wall_ms": 0,
+    "per_call_limits": {"model_ms": 0, "simulator_ms": 0, "visible_output_bytes": 0}
   },
   "turns": [
     {
@@ -1490,13 +1495,13 @@ A minimal record shape is:
 The zero-valued numeric fields above are schema-shape placeholders, not default
 experimental budgets or expected timings.
 
-The pinned reference tokenizer is authoritative for the experimental
-working-token budget. Provider-native input, output, reasoning, cached-token,
-and billing records are authoritative only for provider telemetry and cost;
-they MUST NOT replace the common reference-token budget in cross-model
-comparisons. Any estimated provider count MUST identify its tokenizer and MUST
-NOT be presented as exact billing. Model-completion cost and evaluator-service
-cost remain separate fields.
+The pinned reference tokenizer is authoritative for common token telemetry.
+Provider-native input, output, reasoning, cached-token, and billing records are
+authoritative only for provider telemetry and cost; they MUST NOT be presented
+as the experimental stopping rule in cross-model comparisons. Any estimated
+provider count MUST identify its tokenizer and MUST NOT be presented as exact
+billing. Model-completion cost and evaluator-service cost remain separate
+fields.
 
 Every model response and tool-result delivery has a deterministic visible-byte
 limit. Truncation MUST be explicit, preserve the result hash and omitted-byte
@@ -1504,8 +1509,8 @@ count, and count the bytes actually delivered under the reference tokenizer.
 The full unredacted result may be retained evaluator-side for audit but MUST NOT
 become model-visible through another path.
 
-Required aggregate metrics include working tokens; provider input, output,
-reasoning, and cached tokens; model turns; feedback calls by requested channel;
+Required aggregate metrics include generated/delivered token telemetry;
+provider input, output, reasoning, and cached tokens; model turns; feedback calls by requested channel;
 distinct and repeated candidate hashes; cache hits; simulator invocations;
 agent elapsed time from dispatch to finalization; cumulative and critical-path
 feedback time; private score time; total benchmark service time; time to first
@@ -1515,30 +1520,33 @@ functional score unless a future track preregisters that objective separately.
 
 ### 14.3 Budgets and comparison fairness
 
-The sole experimental ability budget for G0-G5 is `max_working_tokens`, counted
-with the pinned reference tokenizer under Section 14.2. The benchmark MUST NOT
-cap model turns, feedback calls, candidate versions, cache hits, or simulator
-calls as independent ability budgets. Those quantities are telemetry. All six
-modes in one comparison stratum receive the same working-token ceiling and
-artifact contract; G2-G5 additionally receive the same tool capabilities and
-feedback interface.
+The primary experimental ability budget for G0-G5 is agent wall-clock time.
+The default pilot-calibrated value is 5,400 seconds per episode, with setup,
+model-request, tool-call, and judge ceilings treated as infrastructure safety
+limits. The benchmark MUST NOT cap model turns, feedback calls, candidate
+versions, cache hits, simulator calls, cost, or cumulative tokens as independent
+ability budgets. Those quantities are telemetry. All six modes in one
+comparison stratum receive the same wall-time ceiling and artifact contract;
+G2-G5 additionally receive the same tool capabilities and feedback interface.
 
-G0/G1 each use exactly one model generation and no tools. Their generated text
-is charged against the same `max_working_tokens` ceiling. They use the same
-model snapshot, decoding configuration, response protocol, and transport-level
-output ceiling.
+G0/G1 each use exactly one model generation and no tools. They use the same
+model snapshot, decoding configuration, response protocol, and provider
+per-call output-token cap. G2-G5 use the same provider per-call cap for every
+model turn. This cap is a transport/provider safety limit, not a cumulative
+episode budget.
 Fixed instruction, public-input, wrapper, and skill tokens are measured
-separately but excluded from working-token consumption in every mode; this
-prevents a longer enabled skill from silently reducing the model's usable
-usable working-token allowance.
+separately and reported as prompt/context telemetry in every mode; this
+prevents a longer enabled skill from being confused with model-generated work.
 
-Wall-clock, per-call simulator, and visible-output limits are safety and
-infrastructure controls, not experimental ability budgets. Their numerical
-values MUST be fixed by the pilot, identical where the same capability is
-available, and reported. Reaching the working-token or safety-wall limit
-finalizes and normally scores the latest valid workspace artifact. A repeated
-candidate MAY reuse a content-addressed feedback result; cache reuse is logged,
-and only newly delivered result text consumes working tokens.
+Per-call simulator, judge, output-token, and provider context-window limits are
+safety and infrastructure controls, not experimental ability budgets. Their
+numerical values MUST be fixed by the pilot, identical where the same
+capability is available, and reported. Reaching the agent wall-time limit
+finalizes and normally scores the latest valid workspace artifact. A provider
+context-window error or single-turn output-limit stop is recorded as a separate
+termination reason. A repeated candidate MAY reuse a content-addressed feedback
+result; cache reuse is logged, and newly delivered result text is token-counted
+as telemetry only.
 
 The runner MUST start every condition from a fresh model session and isolated
 workspace. No conversation, generated artifact, task result, feedback trace,
@@ -1581,8 +1589,9 @@ for the primary report.
 A development pilot MUST contain 12 circuit families that are disjoint in
 circuit identity and source lineage from the scored 400 families. Pilot tasks
 are not counted in benchmark scores. They are used to set the numerical
-working-token budget, safety wall, per-call and visible-output limits, repetition
-count `R`, wrappers, skills, runner behavior, telemetry schema, and retry policy.
+agent wall-time limit, provider per-turn output cap, per-call and visible-output
+limits, repetition count `R`, wrappers, skills, runner behavior, telemetry
+schema, and retry policy.
 
 All pilot-controlled values and artifacts MUST be frozen and content-hashed
 before any formal G0-G5 result is inspected. The complete 400-family campaign
@@ -1778,9 +1787,9 @@ DUT, Testbench, and Bugfix results MUST also remain visible separately.
 Every episode is reported as pass@1. Internal candidate revisions are not
 counted as independent samples or used to compute pass@k. Reports MUST state
 the fixed repetition count `R`, seed sequence, immutable model snapshot,
-decoding configuration, working-token budget, reference tokenizer, and safety
-limits. The same experimental configuration is used for all six G modes within
-a comparison stratum.
+decoding configuration, agent wall-time limit, provider per-turn output cap,
+reference tokenizer, and safety limits. The same experimental configuration is
+used for all six G modes within a comparison stratum.
 
 Primary uncertainty uses paired family-level differences and a bootstrap 95%
 confidence interval clustered by the 400 base circuit families. The primary
@@ -1843,8 +1852,8 @@ pilot-controlled numerical and procedural choices have been frozen:
 12. G0-G5 use exactly the applicable global form skill and/or rendered feedback
     core-plus-form guide declared by the mode registry, preserving the two
     direct plus four agentic design;
-13. a sealed attempt demonstrates reference-token working-budget accounting,
-    automatic latest-artifact submission at exhaustion, frozen candidate
+13. a sealed attempt demonstrates reference-token telemetry accounting,
+    automatic latest-artifact submission at wall-time exhaustion, frozen candidate
     hashing, exactly one no-feedback Spectre decision, denominator-safe failure
     handling, and detailed token/time/tool evidence;
 14. repeated episodes demonstrate pass@1 recording, fixed seeds and model
