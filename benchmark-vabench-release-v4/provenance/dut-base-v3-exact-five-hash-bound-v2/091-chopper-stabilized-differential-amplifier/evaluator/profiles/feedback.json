@@ -1,7 +1,7 @@
 {
-  "corners": [], "deck_overrides": {"stop": "58n", "chop_period": "2.4n"}, "deterministic_seed": 0,
+  "corners": [], "deck_overrides": {}, "deterministic_seed": 0,
   "generated_from": {"script": "render_v4_harness.py", "version": "v4-harness-renderer-v1"},
-  "harness_spec_sha256": "dc8459f586465dd415efabeb8fdae965d20e8bb14c5cb9ff225bc92377b20762",
+  "harness_spec_sha256": "29e8bf1094fa274f5a079034cbbf2108c08edf34451cd6bde48d40ded4345e55",
   "parameters": {"gain": 3.0, "vos_amp": 0.02, "lp_alpha": 0.25, "settle_tol": 0.02, "settle_cycles": 3},
   "profile_name": "feedback",
   "property_ids": ["P_CHOP_DEMOD_BASEBAND_GAIN", "P_INTERNAL_OFFSET_SUPPRESSION", "P_EVENT_DRIVEN_LOWPASS", "P_RESET_ENABLE_CLEAR", "P_HOLD_PRESERVES_STATE", "P_SETTLED_QUALIFICATION"],

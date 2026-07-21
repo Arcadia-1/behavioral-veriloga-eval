@@ -3,32 +3,34 @@
   "checker_task_id": "v4_074_sampled_true_rms_to_dc_converter",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "e7015f15da1f385773a9d87d909312722aefe8f9c67320c3a359edf269b8974e",
+    "certification.json": "2c9cd4021f1fd130609ea31847bcfebd10fe1e90f5c5366a54f6ac08b24854bc",
     "checker_profile.json": "2eef5a2929930b2f0d34df7975e6ca50ea0cacc6013c67096597b1e6b86d1aea",
-    "derivation_manifest.json": "41589ff2b51b0f125867ce6efb27d2ff0a3f3ac6cb2b6fb68529a9ec68cbc9b1",
+    "derivation_manifest.json": "ca56bbe2afd4a9289ed715370cf9f678f3bf80b0ea8e0cb9ed8725bf0dfeea06",
     "family_spec.json": "03eac1fabd0442946406eb36713e7771942a4dbcbbade8d98ce436a1b69dd9ef",
-    "harness_spec.json": "f95d792bdb294d7e9d337b3c5714df952bf4a855e98a17d157c05c2bb381ed69",
-    "mutation_catalog.json": "153d0d170c3eca804ada5bcb523670602d29d764168fa65a7cffb344c2414406",
-    "profiles/feedback.json": "02d1e40e77aca5e7135f90373f9c2bfd1bbcd6726ca5c710ce5262a64983d480",
-    "profiles/score.json": "7f5aeb2a78a8ee702bc1425b05dd73479832fa43d3b30527dd84dda35eb82f70",
+    "harness_spec.json": "882a2fba2a99184da406b25763db4ed9785e519c1d83f9e572f4d82cf9fbd7ab",
+    "mutation_catalog.json": "b3cec37cc6664c8ee24d8d10eaa69167f33b50deb645706031d301fb537dde6c",
+    "profiles/feedback.json": "53057f9674d50141c078b0d4ddd5f6fac9a08e157f5cb8edf39380e1fee98b9b",
+    "profiles/score.json": "ed14ac95690dfc39764927e6879879294e91bcf662d7af102e684458d8c556cc",
     "score_tb.scs": "d1fd261424aff317ecc95d9c7c894411ae61c5f88cd882dcc8d4b95470603af0",
     "solution_tree": "45abd1917098ec28292502cb8f1358c03c0cb672098f5cd2b39d82edf1c1c716",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
   "form": "dut",
   "public_hashes": {
-    "feedback_tb.scs": "b64df1321c78f0fb8bb3b8ab30d0e2101207fb9491ab28d108092bc16611aebc",
+    "feedback_tb.scs": "d1fd261424aff317ecc95d9c7c894411ae61c5f88cd882dcc8d4b95470603af0",
     "instruction.md": "71fc9fbe21101fb072de245ab893ba135d14120f61e1072ad78eb3e4741e3771",
-    "public_contract.json": "b3655c87857f592b83544fa923f754e7eced0d4e29dd9dea48cd4017f0fec9ab"
+    "public_contract.json": "cffc652e4ffd39939b6c85da891c2a2ed100a4661af6a7bb6badaad32c977671"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "e7015f15da1f385773a9d87d909312722aefe8f9c67320c3a359edf269b8974e"
+    "sha256": "2c9cd4021f1fd130609ea31847bcfebd10fe1e90f5c5366a54f6ac08b24854bc"
   },
   "release_dir": "074-sampled-true-rms-to-dc-converter",
   "schema_version": "v4-canonical-dut-release-task-v1",
   "source_slug": "074-sampled-true-rms-to-dc-converter",
   "support_root": "",
-  "target_artifacts": ["sampled_true_rms_to_dc.va"]
+  "target_artifacts": [
+    "sampled_true_rms_to_dc.va"
+  ]
 }

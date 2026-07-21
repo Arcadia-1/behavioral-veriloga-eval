@@ -1,17 +1,43 @@
 {
-  "artifact_hashes": {
-    "chopper_stabilized_differential_amplifier.va": "45428231583a0db4c32a896de7c186a18a65335ade1bfae3a6eea3bc6bd86b38"
+  "certification_policy": "rust_evas2_only",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
   },
-  "behavior_status": "killed_behaviorally",
-  "checker_result": "checked=1884 active=15 hold_edges=1 clears=2 polarity=+8/-7 settled_rows=196 errors=5",
-  "compile_status": "pass",
+  "diagnostics": {
+    "expected": "properties P_HOLD_PRESERVES_STATE satisfy the public contract; fault class hold_semantics_error is rejected",
+    "observed": "EVAS: checked=1884 active=15 hold_edges=1 clears=2 polarity=+8/-7 settled_rows=196 errors=5 first=offset_residual@19.440ns=-0.00969 expected=0.00708",
+    "violated_property_ids": [
+      "P_HOLD_PRESERVES_STATE"
+    ]
+  },
+  "evaluators": {
+    "evas2": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "campaign": "r50-targeted",
+    "checker_id": "v4_091_chopper_stabilized_differential_amplifier",
+    "report_path": "evidence/r50/FAMILY091_TARGETED_EVAS.json",
+    "report_sha256": "0d8e9cca3c59b3859dd592095b818a885df949380700ec2c92aa342f2a5bb2d8",
+    "trace_row_count": 3839
+  },
   "family_id": "091",
-  "fault_class": "hold_semantics_error",
-  "profile": "score",
-  "runtime": {"evas_backend": "evas-rust", "evas_engine": "evas2", "evas_version": "0.8.3"},
-  "simulation_status": "pass",
-  "status": "pass",
-  "violated_property_ids": [
-    "P_HOLD_PRESERVES_STATE"
-  ]
+  "inputs": {
+    "checker_profile_sha256": "88c8bc22987ca9047c9083209e0fdd7dcf9d77af53d800350d3b8aaae48dea6e",
+    "harness_spec_sha256": "29e8bf1094fa274f5a079034cbbf2108c08edf34451cd6bde48d40ded4345e55",
+    "mutation_bundle_sha256": "da8bd345d66c9fe1cd15fae973f1e35d8a279fa87d820cc15246e5234c8baede",
+    "profile_sha256": "9838f114e1d05735370676f4c5d944f01d43fe34a4ca7e0b5038d7dad7637308"
+  },
+  "mutation_id": "neg_005_hold_ignored",
+  "outcome": "killed_behaviorally",
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.3"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
+  "status": "pass"
 }

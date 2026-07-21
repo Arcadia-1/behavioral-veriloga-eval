@@ -148,13 +148,12 @@ def test_task_074_gold_and_five_mutations_are_file_io_free() -> None:
         assert "filename" not in text
 
 
-def test_task_074_feedback_and_score_add_distinct_public_coverage() -> None:
+def test_task_074_feedback_and_score_use_the_same_stimulus() -> None:
     feedback = (TASK / "public/task/feedback_tb.scs").read_text(encoding="utf-8")
     score = (TASK / "evaluator/score_tb.scs").read_text(encoding="utf-8")
     for deck in (feedback, score):
         assert "sampled_true_rms_to_dc.va" in deck
         assert "save vinp vinn clk reset enable rms_out valid" in deck
         assert "metric.out" not in deck
-    assert feedback != score
-    assert "period=4n" in feedback
-    assert "period=5n" in score
+    assert feedback == score
+    assert "period=5n" in feedback

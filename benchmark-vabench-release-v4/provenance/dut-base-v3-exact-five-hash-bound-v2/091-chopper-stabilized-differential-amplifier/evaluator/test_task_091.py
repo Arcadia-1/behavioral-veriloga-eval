@@ -6,6 +6,15 @@ from copy import deepcopy
 from checker import CHECKER, GAIN, LP_ALPHA, SETTLE_CYCLES, SETTLE_TOL, VCM, VDD, VOS_AMP
 
 
+def _transform_time(
+    rows: list[dict[str, float]], *, scale: float, shift_s: float
+) -> list[dict[str, float]]:
+    transformed = deepcopy(rows)
+    for row in transformed:
+        row["time"] = scale * row["time"] + shift_s
+    return transformed
+
+
 def _trace(fault: str = "gold") -> list[dict[str, float]]:
     step_ns = 0.05
     times = [index * step_ns for index in range(round(70 / step_ns) + 1)]
@@ -69,6 +78,11 @@ def _trace(fault: str = "gold") -> list[dict[str, float]]:
 
 def test_gold_oracle_trace_passes() -> None:
     rows = _trace()
+    assert CHECKER(rows)[0], CHECKER(rows)[1]
+
+
+def test_gold_oracle_is_time_affine_invariant() -> None:
+    rows = _transform_time(_trace(), scale=1.37, shift_s=2e-9)
     assert CHECKER(rows)[0], CHECKER(rows)[1]
 
 

@@ -15,7 +15,7 @@
     "raw_scs_exposed": true
   },
   "form": "dut",
-  "gate2_status": "cadence_sim_pending",
+  "gate2_status": "repair_pending_recertification",
   "language": "verilog-a",
   "level": "L1",
   "oracle_policy": {
@@ -39,7 +39,7 @@
     "queryable_by_agentic_modes": false,
     "raw_scs_exposed": false
   },
-  "status": "cadence_sim_pending",
+  "status": "repair_pending_recertification",
   "target_artifacts": ["sampled_true_rms_to_dc.va"],
   "task_id": "v4_074_sampled_true_rms_to_dc_converter",
   "task_slug": "074-sampled-true-rms-to-dc-converter",
@@ -47,10 +47,10 @@
   "track": "baseband_signal_conditioning_dut",
   "validation_status": {
     "evas_feedback_score_gold": "pass",
-    "gate2": "replacement_local_validation",
-    "next_gate": "targeted_spectre_and_ahdl_lint_pending",
+    "gate2": "targeted_rust_evas2_pass",
+    "next_gate": "r50_full400_rust_evas2_certification",
     "semantic_negative_certification": "pass",
-    "spectre_score_gold": "pending",
-    "untriaged_warning_count": null
+    "spectre_score_gold": "optional_not_run",
+    "untriaged_warning_count": 0
   }
 }

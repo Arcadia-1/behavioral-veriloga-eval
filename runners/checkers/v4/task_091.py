@@ -85,9 +85,16 @@ def check_chopper_stabilized_differential_amplifier(
         return False, "insufficient_excitation trace_rows"
 
     steps = [b["time"] - a["time"] for a, b in zip(rows, rows[1:]) if b["time"] > a["time"]]
-    guard = max(0.45e-9, 8.0 * median(steps))
+    step = median(steps)
+    chop_rising = _crossings(rows, "chop_clk", +1)
+    chop_periods = [right - left for left, right in zip(chop_rising, chop_rising[1:])]
+    if not chop_periods:
+        return False, "insufficient_excitation chop_periods"
+    chop_period = median(chop_periods)
+    guard = max(0.225 * chop_period, 8.0 * step)
+    probe_offset = max(5e-4 * chop_period, 0.05 * step)
     events: list[tuple[float, int, str, int]] = []
-    events += [(time_s, 1, "chop", +1) for time_s in _crossings(rows, "chop_clk", +1)]
+    events += [(time_s, 1, "chop", +1) for time_s in chop_rising]
     events += [(time_s, 1, "chop", -1) for time_s in _crossings(rows, "chop_clk", -1)]
     events += [(time_s, 0, "clear", 0) for time_s in _crossings(rows, "rst", +1)]
     events += [(time_s, 0, "clear", 0) for time_s in _crossings(rows, "enable", -1)]
@@ -101,7 +108,7 @@ def check_chopper_stabilized_differential_amplifier(
     errors: list[str] = []
 
     for index, (event_time, _priority, kind, polarity) in enumerate(events):
-        probe = min(rows[-1]["time"], event_time + 1e-12)
+        probe = min(rows[-1]["time"], event_time + probe_offset)
         rst = _sample(rows, "rst", probe)
         enable = _sample(rows, "enable", probe)
         hold = _sample(rows, "hold", probe)
@@ -119,7 +126,7 @@ def check_chopper_stabilized_differential_amplifier(
 
         next_time = events[index + 1][0] if index + 1 < len(events) else rows[-1]["time"]
         for row in rows:
-            if not (event_time + guard <= row["time"] < next_time - 0.5 * median(steps)):
+            if not (event_time + guard <= row["time"] < next_time - 0.5 * step):
                 continue
             for signal, expected in state.outputs().items():
                 tolerance = 0.015 if signal != "settled" else 0.08

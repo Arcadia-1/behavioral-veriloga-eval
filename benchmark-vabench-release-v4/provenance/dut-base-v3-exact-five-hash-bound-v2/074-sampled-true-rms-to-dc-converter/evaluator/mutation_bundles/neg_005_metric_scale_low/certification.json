@@ -1,31 +1,41 @@
 {
-  "certification_policy": "local_evas_rust_behavioral",
+  "certification_policy": "rust_evas2_only",
   "checks": {
     "behavior": "fail_as_expected",
     "compile": "pass",
-    "diagnostic": "present"
+    "diagnostic": "present",
+    "trace_axis_metamorphic": "classification_invariant"
   },
   "diagnostics": {
-    "expected": "satisfy the sampled true-RMS public port contract",
-    "observed": "wrong-divisor output=0.16034 instead of RMS=0.22675",
+    "expected": "properties P_DIFFERENTIAL_RMS satisfy the public contract; fault class wrong_rms_divisor is rejected",
+    "observed": "EVAS: property_id=P_DIFFERENTIAL_RMS category=rms_mismatch expected=rms_out=0.22235 observed=rms_out=0.15722,err=0.06512 event=clk_rising[4]",
     "violated_property_ids": [
       "P_DIFFERENTIAL_RMS"
     ]
   },
   "evaluators": {
-    "evas_rust": "compile_pass_behavior_fail"
+    "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
+    "campaign": "r50-targeted",
     "checker_id": "v4_074_sampled_true_rms_to_dc_converter",
-    "profile": "feedback",
-    "trace_source": "task_local_reference_deck"
+    "report_path": "evidence/r50/FAMILY074_TARGETED_EVAS.json",
+    "report_sha256": "4155dd4bd98852d7210039449b7862c2914426f61e5f6c7ffd46020c1d6fd1e8",
+    "trace_row_count": 2838
   },
   "family_id": "074",
+  "inputs": {
+    "checker_profile_sha256": "2eef5a2929930b2f0d34df7975e6ca50ea0cacc6013c67096597b1e6b86d1aea",
+    "harness_spec_sha256": "882a2fba2a99184da406b25763db4ed9785e519c1d83f9e572f4d82cf9fbd7ab",
+    "mutation_bundle_sha256": "0fb06e4c462c2c62b54e6cde9d729f7fe3e4ad04d5a295d715b8d90588176507",
+    "profile_sha256": "ed14ac95690dfc39764927e6879879294e91bcf662d7af102e684458d8c556cc"
+  },
   "mutation_id": "neg_005_metric_scale_low",
   "outcome": "killed_behaviorally",
   "runtime": {
     "evas_backend": "evas-rust",
-    "evas_engine_used": "evas-rust",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

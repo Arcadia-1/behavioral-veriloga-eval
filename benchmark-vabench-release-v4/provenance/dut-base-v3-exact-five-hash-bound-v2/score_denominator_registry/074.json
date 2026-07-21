@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "96217e1749269f9dd3a4603a1aa399b0ee3d4254ea9405b359e2041fcacf4052",
+        "certification_sha256": "a7fc4dabc1a6f1934c91d8d3c0ced8070fa5a0be5f14aad582af3850ddf38c91",
         "fault_class": "zero_output",
-        "mutation_bundle_sha256": "7c4197ef2d74ddfd60f951d4635018df39b595ed00b149f680a123d722569e7d",
+        "mutation_bundle_sha256": "7f95302b5733516578f1ad0c2d4c6fa8cde6598784211342c3724ea914145e2a",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "mutation_bundles/neg_001_zero/certification.json",
         "trigger_condition": "a complete enabled four-sample window",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "bc35b66063fd44a5b74ac320cd75ac3294f04bdba2146bf1b6ab69e355d163d7",
+        "certification_sha256": "bbcde78eb7bc44e1ffecb860ad3a9ab5fb7dfeb80d4ab1366f4b46c0b44b2324",
         "fault_class": "mean_absolute_instead_of_rms",
-        "mutation_bundle_sha256": "01346a3988b7485f9432e13fb3a80c8a1619b550ef556dbc0cb74d395a1a73d3",
+        "mutation_bundle_sha256": "7742c47c4b533b1af087f8ccc756b90f4079f10f519519ac67425be9f82513cd",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "mutation_bundles/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "a window with unequal sample magnitudes",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "c8c2e038fb69d7312a949ee10b51639ad34e3755d3c6523db45709ee84270913",
+        "certification_sha256": "a67d480a6ffa4b75b17f548175d52454a0035238846e2841710c71b6626a5a57",
         "fault_class": "falling_edge_sampling",
-        "mutation_bundle_sha256": "acd039bea96052a0469bc763b36a9065c33f572229d705a69296dd2e11d0d809",
+        "mutation_bundle_sha256": "170340a61324b5c4a4a509debb2745b3fe2358253c506da22e744abe2719048b",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "mutation_bundles/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "input changes between rising and falling clock edges",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "3951cc8522611542f1400c564ea634bc32787b0c51977710d7bd1bf99a79a16a",
+        "certification_sha256": "5a02f71e3d54d64565a2bd46a859e0af90d4c33b21f54a873e9831dc0563e51c",
         "fault_class": "reset_polarity_inverted",
-        "mutation_bundle_sha256": "2ae5ae77092234f456de297ad7a43bae60960a35a3537155cb990fb2b91c49d5",
+        "mutation_bundle_sha256": "97367c4c91b906e2ecfa13768924fe3e747f58cafe0e6dfaa8212424922f0614",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "active-high reset followed by enabled sampling",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "1790ae48083ae7984deb06e78c90a7f46663e63cd690af77cbe0790be8067ab5",
+        "certification_sha256": "9217954b4d742a8e9061fa4a690e077fa8de5aea7f93da428512f8185a4cc7b4",
         "fault_class": "wrong_rms_divisor",
-        "mutation_bundle_sha256": "9205cd2bc9f5eeae8b0aa44fe7602d81074a347dec47f11ac37e159c6307f00f",
+        "mutation_bundle_sha256": "f5db5980d6a391bd9165d7556ca2cbfff1ae82fad64629f79c021cdaa84aec15",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "mutation_bundles/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "any nonzero completed window",
@@ -70,10 +70,10 @@
     "bugfix_seed": "neg_001_zero",
     "canonical_dut_id": "074",
     "hashes": {
-      "mutation_catalog_sha256": "153d0d170c3eca804ada5bcb523670602d29d764168fa65a7cffb344c2414406",
+      "mutation_catalog_sha256": "b3cec37cc6664c8ee24d8d10eaa69167f33b50deb645706031d301fb537dde6c",
       "score_deck_sha256": "d1fd261424aff317ecc95d9c7c894411ae61c5f88cd882dcc8d4b95470603af0",
-      "task_certification_sha256": "e7015f15da1f385773a9d87d909312722aefe8f9c67320c3a359edf269b8974e",
-      "task_record_sha256": "2e31a02fcad741e190c71296d49c0ed77354813fa7935f762e465814aa6990d3"
+      "task_certification_sha256": "2c9cd4021f1fd130609ea31847bcfebd10fe1e90f5c5366a54f6ac08b24854bc",
+      "task_record_sha256": "38f9b2d3f74322e9eb7b0c6684578e2c5ae877a9172df7f134fa3bc1e8e330be"
     },
     "release_dir": "074-sampled-true-rms-to-dc-converter"
   }
