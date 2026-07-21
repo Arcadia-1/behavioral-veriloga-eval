@@ -19,6 +19,12 @@ mkdir -p "$SUBMISSION_INPUT" "$WORK_INPUT"
 TASK_DIR=$(cd "$TASK_INPUT" && pwd -P)
 SUBMISSION_DIR=$(cd "$SUBMISSION_INPUT" && pwd -P)
 WORK_DIR=$(cd "$WORK_INPUT" && pwd -P)
+SKILLS_ARG=
+if [ "${VABENCH_SKILLS_DIR:-}" ]; then
+    [ -d "$VABENCH_SKILLS_DIR" ] || { echo "skills directory does not exist: $VABENCH_SKILLS_DIR" >&2; exit 66; }
+    SKILLS_DIR=$(cd "$VABENCH_SKILLS_DIR" && pwd -P)
+    SKILLS_ARG="--mount=type=bind,src=$SKILLS_DIR,dst=/workspace/public/skills,readonly"
+fi
 
 IMAGE_TAG="${IMAGE_TAG:-vabench-agent-runtime:0.8.3}"
 DOCKER="${DOCKER:-docker}"
@@ -50,6 +56,7 @@ exec "$DOCKER" run --rm $TTY_ARGS \
     --tmpfs /tmp:rw,nosuid,nodev,size=2g,mode=1777 \
     --tmpfs "/home/agent:rw,nosuid,nodev,size=256m,mode=0700,uid=$HOST_UID,gid=$HOST_GID" \
     --mount "type=bind,src=$TASK_DIR,dst=/workspace/public/task,readonly" \
+    ${SKILLS_ARG:+"$SKILLS_ARG"} \
     --mount "type=bind,src=$SUBMISSION_DIR,dst=/workspace/public/submission" \
     --mount "type=bind,src=$WORK_DIR,dst=/workspace/work" \
     --workdir /workspace \

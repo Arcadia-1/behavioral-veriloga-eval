@@ -9,13 +9,13 @@ campaigns, or pass an explicit `--selection` manifest when reproducing a
 historical pilot. `CALIBRATION_FAMILIES.json` is retained only as historical
 selection evidence.
 
-The pilot is used only to freeze generic form skills, the public EVAS guide,
-the agent wall-time cap, provider per-turn output cap, safety limits, runner
-behavior, repetition count, and telemetry. Skill text must remain
-task-agnostic. Form-writing skills are derived from installed Cadence/Spectre
-help; EVAS guides describe only the public command-line contract. Neither may
-contain a selected family ID,
-title, equation, threshold, stimulus constant, checker rule, or mutation hint.
+The pilot is used only to freeze real skill snapshots, the agent wall-time cap,
+provider per-turn output cap, safety limits, runner behavior, repetition count,
+and telemetry. Skill text must remain task-agnostic and is not inlined into the
+task prompt. G1/G3 expose the `veriloga` language skill, G4 exposes the
+`vabench-feedback` public-EVAS diagnosis skill, and G5 exposes both. Neither
+skill may contain a selected family ID, title, equation, threshold, stimulus
+constant, checker rule, or mutation hint.
 
 Because model outcomes from these families influence experimental settings,
 their 30 forms are excluded from the primary post-calibration result. The
@@ -125,13 +125,22 @@ python3 benchmark-vabench-release-v4/operations/calibration_pilot/run_campaign.p
 ```
 
 The mini-SWE shell starts at `/workspace` in the shared container and exposes
-`public/task/` read-only, `public/submission/` writable, and `work/` writable. Form
-skills and the EVAS guide remain part of the frozen G0--G5 prompt treatments.
-All agentic modes receive the same minimal tool contract: a pinned, real `evas`
-executable is discoverable in `PATH`, `evas --help` works, and the task-local
-`evas_runtime.json` gives the public command. Skill-enabled modes additionally
-receive task-agnostic EVAS debugging guidance; tool discovery itself is not a
-skill treatment.
+`public/task/` read-only, `public/submission/` writable, and `work/` writable.
+Skill-enabled modes additionally expose `public/skills/<id>/` read-only with a
+hash-bound `SKILL.md` package and `public/skills/SNAPSHOT_MANIFEST.json`; G2 has
+no skill directory. All agentic modes receive the same minimal EVAS contract: a
+pinned, real `evas` executable is discoverable in `PATH`, `evas --help` works,
+and the task-local `evas_runtime.json` gives the public command.
+
+G1 is still a direct artifact-envelope mode, but may use provider-side
+`list_skills` and `read_skill` tools before the final answer. These tools read
+only `public/skills`, reject path escape and symlinks, cache repeated reads, and
+record skill lookup events. G0 receives no tools.
+
+The old `prompt_assets/form_skills/` and `prompt_assets/evas_guides/` files are
+retained only to reproduce sealed pre-r50 releases. The r50 materializer does
+not copy or render them; all new comparisons use the real package/mode matrix
+above.
 
 The model invokes the image's fixed EVAS directly through ordinary bash,
 including pipes, redirection, and compound commands, and inspects logs and
@@ -144,8 +153,9 @@ artifact set.
 The shell wrapper records each actual `evas` process invocation independently
 of the surrounding bash spelling, so pipes, redirections, and compound commands
 do not disappear from telemetry. Campaign results expose the raw invocation
-records and a `v4-direct-evas-usage-v1` summary with succeeded, failed, timed
-out, and interrupted counts. These records describe tool use only; an EVAS
+records, skill availability/hash metadata, bash commands that reference
+`public/skills`, and a `v4-direct-evas-usage-v1` summary with succeeded, failed,
+timed out, and interrupted counts. These records describe tool use only; an EVAS
 nonzero exit is not promoted to a hidden-checker or behavioral verdict.
 
 An explicit `vabench-submit` ends the episode early and records
