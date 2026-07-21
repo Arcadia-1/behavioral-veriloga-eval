@@ -208,7 +208,7 @@ def _interval_rows(
     vss: float,
     vdd: float,
     self_scaled: bool,
-    single_shot: bool = False,
+    single_shot_output: bool = False,
     recapture_extra_b: bool = False,
     ignore_vss_span: bool = False,
     reuse_first_result: bool = False,
@@ -217,8 +217,8 @@ def _interval_rows(
     span = vdd - vss
     for index in range(2601):
         time_ns = index * 0.01
-        cycle0 = time_ns >= 1.20 if single_shot else 1.20 <= time_ns < 2.00
-        cycle1 = not single_shot and time_ns >= 2.12
+        cycle0 = 1.20 <= time_ns < 2.00
+        cycle1 = not single_shot_output and time_ns >= 2.12
         output_high = vss + span * (0.3 if self_scaled else 1.0)
         if recapture_extra_b and 1.55 <= time_ns < 2.00:
             normalized_delay = 0.45 / 0.2
@@ -231,16 +231,12 @@ def _interval_rows(
             if ignore_vss_span
             else vss + span * normalized_delay
         )
-        if single_shot:
-            a_high = time_ns >= 1.0
-            b_high = time_ns >= 1.2
-        else:
-            a_high = 1.0 <= time_ns < 1.9 or time_ns >= 2.0
-            b_high = (
-                1.2 <= time_ns < 1.45
-                or 1.55 <= time_ns < 1.9
-                or time_ns >= 2.12
-            )
+        a_high = 1.0 <= time_ns < 1.9 or time_ns >= 2.0
+        b_high = (
+            1.2 <= time_ns < 1.45
+            or 1.55 <= time_ns < 1.9
+            or time_ns >= 2.12
+        )
         rows.append(
             {
                 "time": time_ns * 1e-9,
@@ -288,17 +284,27 @@ def test_089_rejects_seen_out_below_supply_rail_in_row_and_streaming(
     )
 
 
-def test_089_rejects_single_shot_trace_in_row_and_streaming(tmp_path: Path) -> None:
-    _assert_089_rejected_by_row_and_streaming(
-        tmp_path,
-        "single_shot_089",
-        _interval_rows(
-            vss=0.0,
-            vdd=1.0,
-            self_scaled=False,
-            single_shot=True,
-        ),
+def test_089_rejects_single_shot_output_for_two_valid_input_cycles(
+    tmp_path: Path,
+) -> None:
+    rows = _interval_rows(
+        vss=0.0,
+        vdd=1.0,
+        self_scaled=False,
+        single_shot_output=True,
     )
+    passed, detail = check_089(rows)
+    assert not passed, detail
+    assert "missing_input_edges" not in detail
+    assert "seen_out_no_logic_high_samples cycle=1" in detail
+
+    csv_path = tmp_path / "single_shot_output_089.csv"
+    _write_csv(csv_path, rows)
+    score, notes = stream_089(csv_path)
+    assert score == 0.0, notes
+    streaming_detail = " ".join(notes)
+    assert "missing_input_edges" not in streaming_detail
+    assert "seen_out_no_logic_high_samples cycle=1" in streaming_detail
 
 
 def test_089_rejects_extra_b_recapture_in_row_and_streaming(tmp_path: Path) -> None:
