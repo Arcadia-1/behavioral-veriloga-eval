@@ -35,6 +35,7 @@ Use these directories for durable public work:
 - `benchmark-vabench-release-v3/` - active benchmark task release.
 - `benchmark-vabench-release-v1/` - legacy release/evidence surface.
 - `docs/` - stable public documentation, policies, and website data exports.
+- `environment/` - shared Harbor-compatible agent environment build source.
 - `examples/` - runnable non-scored examples.
 - `runners/` - reusable public benchmark and simulator harnesses.
 - `schemas/` - public task/result schemas.
