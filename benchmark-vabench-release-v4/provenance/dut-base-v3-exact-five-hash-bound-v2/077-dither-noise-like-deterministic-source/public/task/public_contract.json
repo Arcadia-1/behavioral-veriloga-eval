@@ -41,7 +41,8 @@
   "public_observables": [
     "time",
     "vin_i",
-    "vout_o"
+    "vout_default",
+    "vout_override"
   ],
   "schema_version": "v4-public-contract-v1",
   "score_oracle": {
