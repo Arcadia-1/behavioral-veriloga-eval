@@ -18,6 +18,7 @@ def check_enable_gated_clock_pulse(rows: list[dict[str, float]]) -> tuple[bool, 
     if invalid:
         return False, invalid
     errors = 0
+    level_errors = 0
     saw_high = False
     saw_blocked = False
     edge_times = (
@@ -29,21 +30,28 @@ def check_enable_gated_clock_pulse(rows: list[dict[str, float]]) -> tuple[bool, 
     for row in rows[:: max(1, len(rows) // 400)]:
         if any(abs(row["time"] - t) < 0.3e-9 for t in edge_times):
             continue
-        if 0.1 < row["clk"] < 0.8 or 0.1 < row["en"] < 0.8 or 0.1 < row["pulse"] < 0.8:
+        if 0.1 < row["clk"] < 0.8 or 0.1 < row["en"] < 0.8:
             continue
         expected = row["en"] > 0.45 and row["clk"] > 0.45
         actual = row["pulse"] > 0.45
         if actual != expected:
             errors += 1
+        if expected:
+            level_errors += int(not 0.75 <= row["pulse"] <= 1.05)
+        else:
+            level_errors += int(abs(row["pulse"]) > 0.15)
         saw_high = saw_high or actual
         saw_blocked = saw_blocked or (row["clk"] > 0.45 and row["en"] <= 0.45 and not actual)
-    summary = f"errors={errors} saw_high={saw_high} saw_blocked={saw_blocked}"
-    ok = errors == 0 and saw_high and saw_blocked
+    summary = (
+        f"errors={errors} level_errors={level_errors} "
+        f"saw_high={saw_high} saw_blocked={saw_blocked}"
+    )
+    ok = errors == 0 and level_errors == 0 and saw_high and saw_blocked
     if not ok:
         return False, diagnostic(
-            "P_ENABLE_GATING",
+            "P_OUTPUT_LEVELS" if level_errors else "P_ENABLE_GATING",
             "semantic_mismatch",
-            expected="pulse_equals_clk_and_enable,with_blocked_case",
+            expected="pulse_equals_clk_and_enable_at_0.0/0.9V,with_blocked_case",
             observed=summary.replace(" ", "_"),
             event="observable_stable_points",
         )

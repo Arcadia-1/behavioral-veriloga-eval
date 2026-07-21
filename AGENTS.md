@@ -3,19 +3,22 @@
 ## Current vaEVAS Mainline
 This repository exists to support the paper-facing vaEVAS mainline:
 
-> **vaEVAS = vaBench benchmark + EVAS Spectre-aligned fast evaluator.**
+> **vaEVAS = vaBench benchmark + EVAS fast evaluator.**
 
 Benchmark construction and EVAS/Spectre parity are the durable contributions. LLM repair loops, controllers, RAG, compile skills, prompt variants, token optimization, and local/SFT model experiments are support harnesses only; do not treat them as the core research direction unless the user explicitly reopens that scope.
 
 Default priorities:
 - Strengthen the tracked `tasks/` benchmark tree, the `vabench-main-v1-main120` evidence asset, future vaBench splits, gold references, checkers, schemas, and coverage metadata.
-- Preserve and extend EVAS/Spectre parity evidence and regression cases.
-- Keep Spectre as the final paper-facing judge; use strict EVAS as a fast filter/debug evaluator.
+- Preserve historical EVAS/Spectre parity evidence and extend parity regressions when
+  they answer a specific evaluator-conformance question.
+- Use pinned strict EVAS as the formal certification and scoring judge. Spectre is an
+  optional, non-blocking comparison backend and MUST NOT be required for release,
+  certification, or model-score claims.
 - Avoid benchmark memorization, local model fine-tuning, and workflow over-optimization as default investments.
 - Keep generated candidates, raw simulator outputs, waveform dumps, and historical workflow sweeps out of versioned or high-signal paths unless promoted to a named fixture/report.
 
 Benchmark/evaluator split policy:
-- `vaBench-main` should be the broad end-to-end benchmark and can be used directly for EVAS/Spectre parity audits.
+- `vaBench-main` should be the broad end-to-end benchmark and can optionally be used for EVAS/Spectre parity audits.
 - In the current worktree, the source-controlled benchmark source is `tasks/`; the historical `benchmark-vabench-main-v1` directory is not present, while `vabench-main-v1-main120` appears as local result evidence under `results/`.
 - Use `docs/VABENCH_MAIN120_MATERIALIZATION.md` and `runners/materialize_main120_inventory.py` as the provenance surface for main120 source recovery. Do not frame the work as "92 existing plus 28 missing"; current `tasks/` and main120 have different task ID sets.
 - Separate EVAS/Spectre conformance regressions are still useful because they isolate one failure cause per case: Spectre syntax legality, source parsing, event scheduling, solver-time sampling, waveform breakpoint behavior, or checker semantics.

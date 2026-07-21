@@ -18,7 +18,7 @@ const I18N = {
     heroEyebrow: "Model evaluation guide",
     heroTitle: "Run vaBench with a new model",
     heroText:
-      "Use one public runner to list the model roster, run a one-task smoke test, score generated Verilog-A with EVAS, and optionally send the same candidates through Spectre as the final judge.",
+      "Use one public runner to list the model roster, run a one-task smoke test, score generated Verilog-A with pinned strict EVAS, and optionally send the same candidates through Spectre for a non-blocking parity audit.",
     primaryAction: "Start with a smoke test",
     secondaryAction: "Read the result contract",
     tocTitle: "On this page",
@@ -26,7 +26,7 @@ const I18N = {
     tocPrerequisites: "Prerequisites",
     tocSmoke: "Smoke test",
     tocRun: "Run with a model",
-    tocSpectre: "Spectre final judge",
+    tocSpectre: "Optional Spectre audit",
     tocCustom: "Custom models",
     tocResults: "Results",
     compatibilityTitle: "What models can run?",
@@ -40,7 +40,7 @@ const I18N = {
       "If a provider uses another request format, put an OpenAI-compatible proxy in front of it or add a small adapter before claiming benchmark support.",
     judgeTitle: "Judge boundary",
     judgeBody:
-      "EVAS is the fast development gate. Spectre is still the final paper-facing judge for reported model scores.",
+      "Pinned strict EVAS is the formal certification and scoring judge. Spectre is optional parity evidence and never blocks a reported model score.",
     prerequisitesTitle: "Prerequisites",
     prereqPython: "Python 3 in the repository environment.",
     prereqRelease:
@@ -66,13 +66,13 @@ const I18N = {
     proxyHelp: "Optional. Use it only when the provider needs a local or network proxy.",
     filterHelp: "Use these for cheap targeted runs before full-roster execution.",
     resumeHelp: "Resume a partially completed run without regenerating completed samples.",
-    spectreTitle: "Run the Spectre final judge",
+    spectreTitle: "Run an optional Spectre parity audit",
     spectreBody:
-      "Use Spectre for leaderboard or paper-facing claims. The runner first performs generation plus EVAS scoring, then sends the selected candidates to the Spectre dual-judge runner.",
-    spectreCommandTitle: "Full eval with Spectre",
-    requiresSpectre: "requires Spectre",
+      "Use Spectre only when supplemental simulator-parity evidence is useful. The runner first performs generation plus formal EVAS scoring, then may send selected candidates to the optional Spectre comparison runner.",
+    spectreCommandTitle: "Optional comparison with Spectre",
+    requiresSpectre: "optional backend",
     claimAllowedNote:
-      'The summary marks <code>claim_allowed</code> false unless Spectre ran to completion and no backend produced an inconclusive result.',
+      'Spectre status is reported separately and does not change <code>claim_allowed</code> for a completed pinned strict EVAS run.',
     customTitle: "Custom models and agents",
     customBody:
       "If a model cannot speak the existing API formats, keep the benchmark protocol fixed and adapt only the model-call layer. The evaluator expects candidate Verilog-A files and deterministic run metadata; it does not require the model provider to be built into the benchmark.",
@@ -124,7 +124,7 @@ const I18N = {
     heroEyebrow: "模型评测指南",
     heroTitle: "用新模型运行 vaBench",
     heroText:
-      "用一个公开 runner 完成名单查看、单题 smoke、EVAS 快速评分，并可选地把同一批候选送到 Spectre 作为最终判定。",
+      "用一个公开 runner 完成名单查看、单题 smoke、固定严格 EVAS 正式评分，并可选地把同一批候选送到 Spectre 做非阻塞对齐审计。",
     primaryAction: "从 smoke test 开始",
     secondaryAction: "查看结果契约",
     tocTitle: "本页目录",
@@ -132,7 +132,7 @@ const I18N = {
     tocPrerequisites: "前置条件",
     tocSmoke: "Smoke test",
     tocRun: "运行模型",
-    tocSpectre: "Spectre 最终判定",
+    tocSpectre: "可选 Spectre 审计",
     tocCustom: "自定义模型",
     tocResults: "结果",
     compatibilityTitle: "哪些模型可以跑？",
@@ -146,7 +146,7 @@ const I18N = {
       "如果服务商请求格式不同，需要在前面放一个 OpenAI-compatible proxy，或者先补一个小 adapter，再声称 benchmark support。",
     judgeTitle: "裁判边界",
     judgeBody:
-      "EVAS 是快速开发门控；论文或排行榜口径的最终模型分数仍然需要 Spectre 判定。",
+      "固定严格 EVAS 是正式认证和评分判定；Spectre 仅作为可选且非阻塞的对齐证据。",
     prerequisitesTitle: "前置条件",
     prereqPython: "仓库环境中可用的 Python 3。",
     prereqRelease:
@@ -172,13 +172,13 @@ const I18N = {
     proxyHelp: "可选。只有服务商需要本地或网络代理时才使用。",
     filterHelp: "全量运行前，用这些参数做低成本定向测试。",
     resumeHelp: "恢复未完成运行，不重新生成已经完成的样本。",
-    spectreTitle: "运行 Spectre 最终判定",
+    spectreTitle: "运行可选 Spectre 对齐审计",
     spectreBody:
-      "排行榜或论文口径需要用 Spectre。runner 会先做生成和 EVAS 评分，再把选中的候选送到 Spectre dual-judge runner。",
-    spectreCommandTitle: "完整评测含 Spectre",
-    requiresSpectre: "需要 Spectre",
+      "仅在需要补充跨模拟器对齐证据时使用 Spectre。runner 会先完成生成和正式 EVAS 评分，再把选中的候选送到可选 Spectre 对照 runner。",
+    spectreCommandTitle: "可选 Spectre 对照",
+    requiresSpectre: "可选后端",
     claimAllowedNote:
-      '除非 Spectre 完整跑完且没有后端 inconclusive，summary 中的 <code>claim_allowed</code> 会保持 false。',
+      'Spectre 状态会单独记录，不会改变已完成固定严格 EVAS 正式评分的 <code>claim_allowed</code>。',
     customTitle: "自定义模型与 agent",
     customBody:
       "如果模型不支持现有 API 格式，应保持 benchmark protocol 不变，只适配模型调用层。评测器需要的是候选 Verilog-A 文件和确定性的运行元数据，不要求服务商内置在 benchmark 里。",

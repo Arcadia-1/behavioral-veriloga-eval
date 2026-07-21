@@ -5,6 +5,8 @@ import json
 import os
 from pathlib import Path
 import shutil
+import shlex
+import subprocess
 import sys
 
 import pytest
@@ -17,6 +19,9 @@ MODULE = (
     / "operations"
     / "calibration_pilot"
     / "mini_swe_vabench.py"
+)
+PUBLIC_RUNTIME = (
+    ROOT / "benchmark-vabench-release-v4" / "public-agent-runtime" / "run.sh"
 )
 
 
@@ -171,6 +176,99 @@ def test_mini_swe_bash_episode_runs_direct_evas_reads_output_and_submits(
     assert (runtime / "evidence" / "trajectory.json").is_file()
 
 
+def test_mini_swe_exposes_skill_package_lazily_and_records_lookup_command(
+    tmp_path: Path,
+) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "task" / "instruction.md").write_text("public task")
+    (runtime / "public" / "submission").mkdir(parents=True)
+    skill = runtime / "public" / "skills" / "veriloga"
+    skill.mkdir(parents=True)
+    (skill / "SKILL.md").write_text("---\nname: veriloga\n---\n# Language\n")
+    tree_sha = module._skill_tree_sha(skill)
+    (runtime / "public" / "skills" / "SNAPSHOT_MANIFEST.json").write_text(
+        json.dumps({
+            "schema_version": "v4-runtime-skill-manifest-v1",
+            "skills": {
+                "veriloga": {
+                    "skill_file": "public/skills/veriloga/SKILL.md",
+                    "tree_sha256": tree_sha,
+                }
+            },
+        }) + "\n"
+    )
+    (runtime / "MODEL_ACCESS_POLICY.json").write_text(
+        json.dumps({
+            "mounts": [
+                "public/task:ro",
+                "public/submission:rw",
+                "public/work:rw",
+                "public/skills:ro",
+            ],
+            "available_skills": {
+                "veriloga": {"tree_sha256": tree_sha},
+            },
+        }) + "\n",
+        encoding="utf-8",
+    )
+    provider = FakeProvider([
+        "sed -n '1,80p' public/skills/veriloga/SKILL.md",
+        "printf 'module model; endmodule\\n' > public/submission/model.va",
+        "vabench-submit",
+    ])
+
+    result = module.run_mini_swe_episode(
+        runtime=runtime,
+        prompt="Generate model.va.",
+        client=provider,
+        per_turn_max_tokens=4096,
+        agent_timeout_s=30,
+        request_timeout_s=10,
+        tool_timeout_s=10,
+        sandbox_backend="none",
+        evas_command="/usr/bin/true",
+        submission_gate=artifact_gate,
+        usage_parser=usage_parser,
+        response_metadata=response_metadata,
+        trajectory_path=runtime / "evidence" / "trajectory.json",
+    )
+
+    assert set(result["available_skills"]) == {"veriloga"}
+    assert len(result["skill_command_events"]) == 1
+    assert result["skill_command_events"][0]["returncode"] == 0
+    assert "command" not in result["skill_command_events"][0]
+
+
+def test_mini_swe_rejects_an_undeclared_skills_directory(tmp_path: Path) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "submission").mkdir(parents=True)
+    (runtime / "public" / "skills" / "veriloga").mkdir(parents=True)
+    (runtime / "MODEL_ACCESS_POLICY.json").write_text(
+        json.dumps({
+            "mounts": [
+                "public/task:ro",
+                "public/submission:rw",
+                "public/work:rw",
+            ],
+            "available_skills": {},
+        }),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="not authorized"):
+        module.VaBenchBashEnvironment(
+            runtime,
+            timeout_s=5,
+            sandbox_backend="none",
+            evas_command="/usr/bin/true",
+            submission_gate=artifact_gate,
+        )
+
+
 def test_docker_backend_runs_shell_in_shared_environment_and_cleans_up(
     tmp_path: Path,
 ) -> None:
@@ -179,6 +277,38 @@ def test_docker_backend_runs_shell_in_shared_environment_and_cleans_up(
     (runtime / "public" / "task").mkdir(parents=True)
     (runtime / "public" / "task" / "instruction.md").write_text("public task")
     (runtime / "public" / "submission").mkdir(parents=True)
+    (runtime / "public" / "skills" / "veriloga").mkdir(parents=True)
+    (runtime / "public" / "skills" / "veriloga" / "SKILL.md").write_text(
+        "---\nname: veriloga\n---\n", encoding="utf-8"
+    )
+    skill = runtime / "public" / "skills" / "veriloga"
+    tree_sha = module._skill_tree_sha(skill)
+    (runtime / "public" / "skills" / "SNAPSHOT_MANIFEST.json").write_text(
+        json.dumps({
+            "schema_version": "v4-runtime-skill-manifest-v1",
+            "skills": {
+                "veriloga": {
+                    "skill_file": "public/skills/veriloga/SKILL.md",
+                    "tree_sha256": tree_sha,
+                }
+            },
+        }),
+        encoding="utf-8",
+    )
+    (runtime / "MODEL_ACCESS_POLICY.json").write_text(
+        json.dumps({
+            "mounts": [
+                "public/task:ro",
+                "public/submission:rw",
+                "public/work:rw",
+                "public/skills:ro",
+            ],
+            "available_skills": {
+                "veriloga": {"tree_sha256": tree_sha},
+            },
+        }),
+        encoding="utf-8",
+    )
     log = tmp_path / "docker.log"
     fake_docker = tmp_path / "docker"
     fake_docker.write_text(
@@ -215,11 +345,53 @@ def test_docker_backend_runs_shell_in_shared_environment_and_cleans_up(
     calls = log.read_text(encoding="utf-8")
     assert "--network=none" in calls
     assert "dst=/workspace/public/task,readonly" in calls
+    assert "dst=/workspace/public/skills,readonly" in calls
     assert "dst=/workspace/public/submission" in calls
     assert "dst=/workspace/work" in calls
     assert "exec -i" in calls
     assert "/usr/bin/timeout --signal=TERM --kill-after=1s" in calls
     assert "rm -f" in calls
+
+
+def test_public_runtime_mounts_a_spaced_skill_path_as_one_readonly_argument(
+    tmp_path: Path,
+) -> None:
+    task = tmp_path / "task input"
+    submission = tmp_path / "submission output"
+    work = tmp_path / "work output"
+    skills = tmp_path / "skill packages"
+    for directory in (task, submission, work, skills):
+        directory.mkdir()
+    log = tmp_path / "docker-arguments.log"
+    fake_docker = tmp_path / "fake-docker"
+    fake_docker.write_text(
+        "#!/bin/sh\n"
+        f"printf '%s\\n' \"$@\" > {shlex.quote(str(log))}\n",
+        encoding="utf-8",
+    )
+    fake_docker.chmod(0o755)
+    env = os.environ.copy()
+    env.update({
+        "DOCKER": str(fake_docker),
+        "VABENCH_SKILLS_DIR": str(skills),
+    })
+
+    subprocess.run(
+        [str(PUBLIC_RUNTIME), str(task), str(submission), str(work), "/bin/true"],
+        cwd=ROOT,
+        env=env,
+        check=True,
+    )
+
+    arguments = log.read_text(encoding="utf-8").splitlines()
+    skill_mounts = [
+        argument
+        for argument in arguments
+        if "dst=/workspace/public/skills" in argument
+    ]
+    assert skill_mounts == [
+        f"--mount=type=bind,src={skills.resolve()},dst=/workspace/public/skills,readonly"
+    ]
 
 
 def test_bash_output_capture_is_bounded(tmp_path: Path) -> None:

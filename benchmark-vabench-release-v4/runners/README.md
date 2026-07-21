@@ -1,15 +1,16 @@
 # benchmarkv4 runners
 
 This directory contains public runtime tooling for
-`benchmark-vabench-release-v4/release/benchmarkv4-r45`.
+`benchmark-vabench-release-v4/release/benchmarkv4-r49`.
 
 Implemented:
 
 - `run_benchmarkv4_campaign.py` is the unified experiment entry point for
-  `release/benchmarkv4-r45`: it builds a random or preselected campaign, then
+  `release/benchmarkv4-r49`: it builds a random or preselected campaign, then
   runs `G0`/`G1` through direct one-shot artifact extraction and `G2`-`G5`
-  through the real agentic filesystem plus restricted visible-EVAS loop. Both
-  paths enter the same strict declared-artifact gate before they become
+  through the pinned mini-SWE-agent scaffold in the shared public Docker
+  runtime, where the agent has full Bash and direct access to public EVAS.
+  Both paths enter the same strict declared-artifact gate before they become
   score-eligible.
 
 Boundary:
@@ -17,8 +18,9 @@ Boundary:
 - The campaign runner is a generation/materialization runner, not the final
   Spectre scorer.
 - Faithful single-turn API runs are `G0` and `G1`. `G2`-`G5` can read and write
-  their isolated workspace and invoke only the public `run_evas` contract;
-  they cannot query a checker, gold solution, mutation catalog, or score.
+  their isolated public workspace and invoke the pinned public `evas`
+  executable; they cannot query a checker, gold solution, mutation catalog,
+  hidden test, or score.
 - Deprecated API-only and initial-judge entry points were removed from this
   package to keep one comparable G0-G5 path.
 
@@ -37,6 +39,32 @@ python3 benchmark-vabench-release-v4/runners/run_benchmarkv4_campaign.py \
   --workers 12 \
   --output-root /tmp/benchmarkv4-deepseek-campaign
 ```
+
+For an unattended run, use the detached launcher instead of inheriting a
+terminal's standard streams. It binds stdin to `/dev/null`, sends stdout and
+stderr to one log, and records the runner PID before returning:
+
+```bash
+benchmark-vabench-release-v4/runners/run_benchmarkv4_campaign_detached.sh \
+  --log /tmp/benchmarkv4-deepseek-campaign.log \
+  --pid-file /tmp/benchmarkv4-deepseek-campaign.pid \
+  -- \
+  --sample-families 10 \
+  --seed 20260715 \
+  --model deepseek-v4-flash \
+  --base-url https://api.deepseek.com/v1 \
+  --api-key-file /path/to/key.txt \
+  --evas-command "$(pwd)/.venv/bin/evas" \
+  --agent-timeout-s 5400 \
+  --per-turn-max-tokens 65536 \
+  --workers 12 \
+  --output-root /tmp/benchmarkv4-deepseek-campaign
+```
+
+Set `VABENCH_PYTHON=/absolute/path/to/python` to select a specific host
+interpreter. The launcher does not rely on a Python-version change to repair
+invalid terminal descriptors; it disconnects the process from the calling
+terminal before Python starts.
 
 `--evas-command` is mandatory for executable campaigns. The wrapper resolves
 the executable to an absolute path and stores its binary hash and complete

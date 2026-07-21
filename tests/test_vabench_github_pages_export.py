@@ -117,7 +117,7 @@ def test_model_eval_guide_is_linked_to_current_roster() -> None:
     assert 'data/model_eval_roster.json' in script
     assert "DeepSeek V4 Flash smoke" in guide
     assert "OpenAI-compatible" in guide
-    assert "Spectre final judge" in guide
+    assert "optional Spectre parity audit" in guide
     assert "navAccuracy" in script
     assert "NEWS_ITEMS" in site_script
     assert "VERIFIED_LEADERBOARD_ROWS" in site_script

@@ -65,6 +65,8 @@ least one bash tool call.
 
 Workspace:
 - public/task/ is read-only public task material.
+- public/skills/ is read-only and exists only in skill-enabled modes; read
+  public/skills/<id>/SKILL.md before applying a skill.
 - public/submission/ is the only writable candidate-artifact directory.
 - work/ is writable scratch space and is never scored.
 - /tmp/vabench-visible/evas-output/ contains public EVAS logs and waveforms.
@@ -152,6 +154,85 @@ def load_mini_swe() -> tuple[type, type, type, Callable[..., list[dict[str, Any]
 def _json_digest(value: Any) -> str:
     payload = json.dumps(value, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _skill_tree_sha(root: Path) -> str:
+    digest = hashlib.sha256()
+    for item in sorted(root.rglob("*")):
+        if item.is_file():
+            digest.update(item.relative_to(root).as_posix().encode("utf-8"))
+            digest.update(b"\0")
+            digest.update(item.read_bytes())
+            digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def available_skills(runtime: Path) -> dict[str, Any]:
+    skills_root = runtime / "public" / "skills"
+    policy_path = runtime / "MODEL_ACCESS_POLICY.json"
+    policy: dict[str, Any] = {}
+    if policy_path.is_file():
+        policy = json.loads(policy_path.read_text(encoding="utf-8"))
+    policy_skills = policy.get("available_skills") or {}
+    policy_mounts = policy.get("mounts") or []
+    if not isinstance(policy_skills, dict) or not isinstance(policy_mounts, list):
+        raise ValueError("invalid skill fields in MODEL_ACCESS_POLICY.json")
+    if not skills_root.exists():
+        if policy_skills or "public/skills:ro" in policy_mounts:
+            raise ValueError("skill policy declares a missing public/skills directory")
+        return {}
+    if skills_root.is_symlink() or not skills_root.is_dir():
+        raise ValueError("public/skills must be a real directory")
+    if not policy_path.is_file():
+        raise ValueError("public/skills exists without MODEL_ACCESS_POLICY.json")
+    if "public/skills:ro" not in policy_mounts or not policy_skills:
+        raise ValueError("public/skills is not authorized by MODEL_ACCESS_POLICY.json")
+    manifest = skills_root / "SNAPSHOT_MANIFEST.json"
+    if not manifest.is_file() or manifest.is_symlink():
+        raise ValueError("public/skills has no regular snapshot manifest")
+    payload = json.loads(manifest.read_text(encoding="utf-8"))
+    if payload.get("schema_version") != "v4-runtime-skill-manifest-v1":
+        raise ValueError("runtime skill manifest schema mismatch")
+    skills = payload.get("skills") or {}
+    if not isinstance(skills, dict) or set(skills) != set(policy_skills):
+        raise ValueError("runtime skill manifest and model access policy disagree")
+    result: dict[str, Any] = {}
+    for skill_id, record in skills.items():
+        if not isinstance(record, dict):
+            raise ValueError(f"invalid runtime skill record: {skill_id}")
+        root = skills_root / str(skill_id)
+        if root.is_symlink() or any(item.is_symlink() for item in root.rglob("*")):
+            raise ValueError(f"runtime skill contains a symlink: {skill_id}")
+        if record.get("skill_file") != f"public/skills/{skill_id}/SKILL.md":
+            raise ValueError(f"runtime skill has a noncanonical SKILL.md path: {skill_id}")
+        if not (root / "SKILL.md").is_file():
+            raise ValueError(f"runtime skill is missing SKILL.md: {skill_id}")
+        observed_tree = _skill_tree_sha(root)
+        if (
+            record.get("tree_sha256") != observed_tree
+            or (policy_skills.get(skill_id) or {}).get("tree_sha256") != observed_tree
+        ):
+            raise ValueError(f"runtime skill hash mismatch: {skill_id}")
+        result[str(skill_id)] = {
+            "skill_file": record["skill_file"],
+            "tree_sha256": observed_tree,
+        }
+    return result
+
+
+def skill_command_events(commands: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    events: list[dict[str, Any]] = []
+    for index, command in enumerate(commands):
+        text = str(command.get("command") or "")
+        if "public/skills" not in text and "/workspace/public/skills" not in text:
+            continue
+        events.append({
+            "schema_version": "v4-bash-skill-command-v1",
+            "command_index": index,
+            "sha256": hashlib.sha256(text.encode()).hexdigest(),
+            "returncode": command.get("returncode"),
+        })
+    return events
 
 
 def _sandbox_profile(
@@ -321,6 +402,7 @@ class VaBenchBashEnvironment:
     ) -> None:
         self.runtime = runtime.resolve()
         self.workspace = (self.runtime / "public").resolve()
+        self.available_skills = available_skills(self.runtime)
         self.submission_gate = submission_gate
         self.deadline_monotonic = deadline_monotonic
         self.config = BashEnvironmentConfig(
@@ -514,6 +596,7 @@ class VaBenchBashEnvironment:
         # validated against the isolation property we rely on.
         argv = self._sandbox_argv(
             "test -r public/task/instruction.md "
+            "&& { test ! -d public/skills || test -r public/skills/SNAPSHOT_MANIFEST.json; } "
             "&& command -v evas >/dev/null "
             "&& evas --version >/dev/null "
             "&& ! /bin/ls ../evaluator >/dev/null 2>&1"
@@ -624,6 +707,15 @@ class VaBenchBashEnvironment:
         self.docker_image_id = inspect.stdout.strip().splitlines()[-1]
         uid = os.getuid() if hasattr(os, "getuid") else 10001
         gid = os.getgid() if hasattr(os, "getgid") else 10001
+        skill_mount: list[str] = []
+        if self.available_skills:
+            skill_mount = [
+                "--mount",
+                (
+                    f"type=bind,src={self.workspace / 'skills'},"
+                    "dst=/workspace/public/skills,readonly"
+                ),
+            ]
         create = subprocess.run(
             [
                 *docker,
@@ -647,6 +739,7 @@ class VaBenchBashEnvironment:
                 f"/home/agent:rw,nosuid,nodev,size=256m,mode=0700,uid={uid},gid={gid}",
                 "--mount",
                 f"type=bind,src={self.workspace / 'task'},dst=/workspace/public/task,readonly",
+                *skill_mount,
                 "--mount",
                 f"type=bind,src={self.workspace / 'submission'},dst=/workspace/public/submission",
                 "--mount",
@@ -1179,6 +1272,8 @@ def run_mini_swe_episode(
             "output_tokens": model.total_output_tokens,
             "events": model.events,
             "commands": environment.commands,
+            "available_skills": available_skills(runtime),
+            "skill_command_events": skill_command_events(environment.commands),
             "evas_invocations": environment.evas_invocations,
             "model_calls": len(model.events),
             "messages": list(serialized.get("messages") or []),
