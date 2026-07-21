@@ -16,7 +16,9 @@ import re
 import secrets
 import shlex
 import shutil
+import signal
 import subprocess
+import threading
 import time
 from types import SimpleNamespace
 from typing import Any, Callable
@@ -25,6 +27,14 @@ from typing import Any, Callable
 MINI_SWE_AGENT_VERSION = "2.4.5"
 MINI_SWE_SCAFFOLD_ID = "mini-swe-agent-2.4.5-vabench-docker-evas-v3"
 DEFAULT_DOCKER_IMAGE = "vabench-agent-runtime:0.8.3"
+COMMAND_OUTPUT_CAPTURE_BYTES = 1 * 1024 * 1024
+COMMAND_OUTPUT_HEAD_BYTES = 64 * 1024
+MODEL_OUTPUT_BYTES = 12_000
+MODEL_OUTPUT_HEAD_BYTES = 4_000
+SUBMISSION_QUOTA_BYTES = 64 * 1024 * 1024
+WORK_QUOTA_BYTES = 512 * 1024 * 1024
+# Bash reports file-size limits in 1024-byte blocks on the supported hosts.
+COMMAND_FILE_SIZE_BLOCKS = 64 * 1024
 BASH_TOOL = {
     "type": "function",
     "function": {
@@ -79,6 +89,40 @@ The container has no network. Do not create symlinks or modify public/task/.
 
 class MiniSweAgentUnavailable(RuntimeError):
     """Raised when the pinned mini-SWE-agent package is unavailable or mismatched."""
+
+
+class _BoundedOutput:
+    """Drain process output without allowing a command to exhaust host memory."""
+
+    def __init__(self) -> None:
+        self.head = bytearray()
+        self.tail = bytearray()
+        self.total_bytes = 0
+
+    def append(self, chunk: bytes) -> None:
+        self.total_bytes += len(chunk)
+        head_remaining = max(0, COMMAND_OUTPUT_HEAD_BYTES - len(self.head))
+        if head_remaining:
+            self.head.extend(chunk[:head_remaining])
+            chunk = chunk[head_remaining:]
+        if not chunk:
+            return
+        tail_limit = COMMAND_OUTPUT_CAPTURE_BYTES - COMMAND_OUTPUT_HEAD_BYTES
+        self.tail.extend(chunk)
+        if len(self.tail) > tail_limit:
+            del self.tail[: len(self.tail) - tail_limit]
+
+    @property
+    def truncated_bytes(self) -> int:
+        return max(0, self.total_bytes - len(self.head) - len(self.tail))
+
+    def text(self) -> str:
+        marker = b""
+        if self.truncated_bytes:
+            marker = (
+                f"\n[vaBench truncated {self.truncated_bytes} command-output bytes]\n"
+            ).encode()
+        return bytes(self.head + marker + self.tail).decode("utf-8", errors="replace")
 
 
 def load_mini_swe() -> tuple[type, type, type, Callable[..., list[dict[str, Any]]]]:
@@ -446,6 +490,12 @@ class VaBenchBashEnvironment:
                         "image_id": self.docker_image_id,
                         "network": False,
                         "evaluator_mounted": False,
+                        "resource_limits": {
+                            "command_output_capture_bytes": COMMAND_OUTPUT_CAPTURE_BYTES,
+                            "command_file_size_blocks": COMMAND_FILE_SIZE_BLOCKS,
+                            "submission_bytes": SUBMISSION_QUOTA_BYTES,
+                            "work_bytes": WORK_QUOTA_BYTES,
+                        },
                     }
                 },
                 "commands": self.commands,
@@ -492,7 +542,11 @@ class VaBenchBashEnvironment:
             )
 
     def _sandbox_argv(self, command: str) -> list[str]:
-        command = "exec 9>&1\n" + command
+        command = (
+            f"ulimit -f {COMMAND_FILE_SIZE_BLOCKS}\n"
+            "exec 9>&1\n"
+            + command
+        )
         backend = self.config.sandbox_backend
         if backend == "docker":
             self._ensure_docker_container()
@@ -681,57 +735,139 @@ class VaBenchBashEnvironment:
             "VABENCH_SUBMIT_SENTINEL": str(self.submit_sentinel),
         }
 
+    @staticmethod
+    def _directory_size(root: Path, stop_after: int) -> int:
+        total = 0
+        pending = [root]
+        while pending:
+            directory = pending.pop()
+            try:
+                entries = list(os.scandir(directory))
+            except FileNotFoundError:
+                continue
+            for entry in entries:
+                try:
+                    if entry.is_symlink():
+                        continue
+                    if entry.is_dir(follow_symlinks=False):
+                        pending.append(Path(entry.path))
+                    elif entry.is_file(follow_symlinks=False):
+                        total += entry.stat(follow_symlinks=False).st_size
+                except FileNotFoundError:
+                    continue
+                if total > stop_after:
+                    return total
+        return total
+
+    def _resource_usage(self) -> dict[str, Any]:
+        submission_bytes = self._directory_size(
+            self.workspace / "submission", SUBMISSION_QUOTA_BYTES
+        )
+        work_bytes = self._directory_size(self.work_dir, WORK_QUOTA_BYTES)
+        exceeded = []
+        if submission_bytes > SUBMISSION_QUOTA_BYTES:
+            exceeded.append("submission")
+        if work_bytes > WORK_QUOTA_BYTES:
+            exceeded.append("work")
+        return {
+            "submission_bytes": submission_bytes,
+            "submission_limit_bytes": SUBMISSION_QUOTA_BYTES,
+            "work_bytes": work_bytes,
+            "work_limit_bytes": WORK_QUOTA_BYTES,
+            "exceeded": exceeded,
+        }
+
+    @staticmethod
+    def _model_visible_output(output: str) -> str:
+        encoded = output.encode("utf-8", errors="replace")
+        if len(encoded) <= MODEL_OUTPUT_BYTES:
+            return output
+        tail_bytes = MODEL_OUTPUT_BYTES - MODEL_OUTPUT_HEAD_BYTES
+        removed = len(encoded) - MODEL_OUTPUT_BYTES
+        return (
+            encoded[:MODEL_OUTPUT_HEAD_BYTES].decode("utf-8", errors="replace")
+            + f"\n[vaBench omitted {removed} captured bytes from the model observation]\n"
+            + encoded[-tail_bytes:].decode("utf-8", errors="replace")
+        )
+
     def _run_sandboxed(self, command: str) -> dict[str, Any]:
         env = self._shell_env()
         argv = self._sandbox_argv(command)
         started = time.monotonic()
+        capture = _BoundedOutput()
+        process = subprocess.Popen(
+            argv,
+            cwd=self.workspace,
+            env=env,
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            start_new_session=True,
+        )
+        assert process.stdout is not None
+
+        def drain_output() -> None:
+            try:
+                while chunk := process.stdout.read(64 * 1024):
+                    capture.append(chunk)
+            except (OSError, ValueError):
+                return
+
+        reader = threading.Thread(target=drain_output, name="vabench-output", daemon=True)
+        reader.start()
+        host_timed_out = False
         try:
-            completed = subprocess.run(
-                argv,
-                cwd=self.workspace,
-                env=env,
-                text=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                timeout=self._remaining_command_timeout_s(),
-                check=False,
+            returncode = process.wait(timeout=self._remaining_command_timeout_s())
+        except subprocess.TimeoutExpired:
+            host_timed_out = True
+            try:
+                os.killpg(process.pid, signal.SIGKILL)
+            except (AttributeError, OSError):
+                process.kill()
+            process.wait()
+            returncode = -1
+        finally:
+            reader.join(timeout=5.0)
+            if reader.is_alive():
+                process.stdout.close()
+                reader.join(timeout=1.0)
+
+        elapsed_s = time.monotonic() - started
+        command_timed_out = host_timed_out or (
+            self.config.sandbox_backend == "docker" and returncode == 124
+        )
+        output = self._record_evas_invocations(
+            capture.text(),
+            command=command,
+            elapsed_s=elapsed_s,
+            command_timed_out=command_timed_out,
+        )
+        resources = self._resource_usage()
+        resource_exhausted = bool(resources["exceeded"])
+        if resource_exhausted:
+            returncode = 125
+            output += "\n" + json.dumps(
+                {"status": "agent_resource_exhausted", "resources": resources},
+                sort_keys=True,
             )
-            elapsed_s = time.monotonic() - started
-            command_timed_out = (
-                self.config.sandbox_backend == "docker"
-                and completed.returncode == 124
-            )
-            output = self._record_evas_invocations(
-                completed.stdout,
-                command=command,
-                elapsed_s=elapsed_s,
-                command_timed_out=command_timed_out,
-            )
-            return {
-                "output": output,
-                "returncode": completed.returncode,
-                "exception_info": (
-                    "bash command timed out within the episode wall-time limit"
-                    if command_timed_out
-                    else ""
-                ),
-                "elapsed_s": elapsed_s,
-            }
-        except subprocess.TimeoutExpired as exc:
-            output = exc.stdout.decode(errors="replace") if isinstance(exc.stdout, bytes) else (exc.stdout or "")
-            elapsed_s = time.monotonic() - started
-            output = self._record_evas_invocations(
-                output,
-                command=command,
-                elapsed_s=elapsed_s,
-                command_timed_out=True,
-            )
-            return {
-                "output": output,
-                "returncode": -1,
-                "exception_info": "bash command timed out within the episode wall-time limit",
-                "elapsed_s": elapsed_s,
-            }
+        return {
+            "output": self._model_visible_output(output),
+            "returncode": returncode,
+            "exception_info": (
+                "agent workspace quota exceeded"
+                if resource_exhausted
+                else "bash command timed out within the episode wall-time limit"
+                if command_timed_out
+                else ""
+            ),
+            "elapsed_s": elapsed_s,
+            "output_total_bytes": capture.total_bytes,
+            "output_captured_bytes": min(
+                capture.total_bytes, COMMAND_OUTPUT_CAPTURE_BYTES
+            ),
+            "output_truncated_bytes": capture.truncated_bytes,
+            "resources": resources,
+        }
 
     def _record_evas_invocations(
         self,
@@ -799,6 +935,10 @@ class VaBenchBashEnvironment:
                 "kind": kind,
                 "returncode": output.get("returncode"),
                 "elapsed_s": output.get("elapsed_s", time.monotonic() - started),
+                "output_total_bytes": output.get("output_total_bytes", 0),
+                "output_captured_bytes": output.get("output_captured_bytes", 0),
+                "output_truncated_bytes": output.get("output_truncated_bytes", 0),
+                "resources": output.get("resources") or {},
             }
         )
         return output
@@ -1049,6 +1189,12 @@ def run_mini_swe_episode(
             "docker_image_id": environment.docker_image_id,
             "network": False,
             "evaluator_mounted": False,
+            "resource_limits": {
+                "command_output_capture_bytes": COMMAND_OUTPUT_CAPTURE_BYTES,
+                "command_file_size_blocks": COMMAND_FILE_SIZE_BLOCKS,
+                "submission_bytes": SUBMISSION_QUOTA_BYTES,
+                "work_bytes": WORK_QUOTA_BYTES,
+            },
         }
     finally:
         environment.close()

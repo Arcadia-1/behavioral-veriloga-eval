@@ -1023,6 +1023,50 @@ def test_complete_workspace_can_pass_even_when_agent_reaches_walltime() -> None:
     assert outcome == "passed"
 
 
+def test_resume_reuses_workspace_ready_without_model_call(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    runner = load_run_campaign()
+    cell = campaign_cell("G2", R49_RELEASE)
+    args = run_args(tmp_path / "run", R49_RELEASE)
+    args.resume = True
+    runtime = args.output / cell["cell_id"]
+    runner.export_runtime(cell, R49_RELEASE, runtime, timeout_s=30)
+    candidate = runtime / "public" / "submission" / "bbpd_ref.va"
+    candidate.write_text("module bbpd_ref; endmodule\n", encoding="utf-8")
+    gate = runner.submission_artifact_gate(runtime)
+    assert gate["passed"] is True
+    previous = {
+        "cell": cell,
+        "status": "workspace_ready",
+        "artifact_gate": gate,
+        "artifact_sha256": gate["artifact_sha256"],
+        "experiment_result": {"outcome": "passed"},
+    }
+    runner.write_json(runtime / "evidence" / "campaign_result.json", previous)
+
+    def unexpected_episode(**_kwargs):
+        raise AssertionError("resume must not call the model for workspace_ready")
+
+    monkeypatch.setattr(runner, "run_mini_swe_episode", unexpected_episode)
+    result = runner.run_cell(cell, args, None)
+
+    assert result == previous
+    assert candidate.read_text(encoding="utf-8") == "module bbpd_ref; endmodule\n"
+
+
+def test_resource_exhaustion_is_not_scored_as_model_zero() -> None:
+    runner = load_run_campaign()
+
+    outcome = runner.RESULT_PROTOCOL.terminal_outcome(
+        "agent_resource_exhausted",
+        {"status": "available"},
+        {"status": "passed"},
+    )
+
+    assert outcome == "agent_resource_exhausted"
+
+
 def test_scorer_accepts_complete_workspace_without_explicit_submit(
     tmp_path: Path,
 ) -> None:

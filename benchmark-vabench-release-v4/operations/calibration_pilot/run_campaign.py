@@ -84,6 +84,17 @@ FILENAME_TOKEN_RE = re.compile(
     re.IGNORECASE,
 )
 AGENTIC = {"G2", "G3", "G4", "G5"}
+RESUMABLE_TERMINAL_STATUSES = {
+    "submitted",
+    "submitted_at_budget",
+    "workspace_ready",
+    "invalid_submission",
+    "budget_exhausted",
+    "agent_timeout",
+    "agent_resource_exhausted",
+    "context_window_exceeded",
+}
+ARTIFACT_READY_STATUSES = {"submitted", "submitted_at_budget", "workspace_ready"}
 FEEDBACK_SIGNAL_PREFIXES = (
     "FEEDBACK_",
     "reference:",
@@ -1708,7 +1719,21 @@ def run_mini_swe_agentic_cell(
     explicit_submission = bool(episode["submitted"])
     exit_status = str(episode.get("exit_status") or "")
     evas_invocations = list(episode.get("evas_invocations") or [])
+    commands = list(episode.get("commands") or [])
     incidents = evas_invocation_incidents(evas_invocations)
+    resource_exhausted = any(
+        (command.get("resources") or {}).get("exceeded") for command in commands
+    )
+    if resource_exhausted:
+        incidents.append(
+            {
+                "category": "agent_resource_exhausted",
+                "component": "mini_swe_agent",
+                "phase": "tool",
+                "responsibility": "model",
+                "retryable": False,
+            }
+        )
     if exit_status == "TimeExceeded":
         incidents.append(
             {
@@ -1732,7 +1757,9 @@ def run_mini_swe_agentic_cell(
     result.update(
         {
             "status": (
-                "submitted"
+                "agent_resource_exhausted"
+                if resource_exhausted
+                else "submitted"
                 if complete and explicit_submission
                 else "workspace_ready"
                 if complete
@@ -1741,7 +1768,9 @@ def run_mini_swe_agentic_cell(
                 else "invalid_submission"
             ),
             "termination_reason": (
-                "agent_timeout"
+                "agent_resource_exhausted"
+                if resource_exhausted
+                else "agent_timeout"
                 if exit_status == "TimeExceeded"
                 else "completed"
                 if explicit_submission
@@ -1781,6 +1810,7 @@ def run_mini_swe_agentic_cell(
                     "docker_image_id",
                     "network",
                     "evaluator_mounted",
+                    "resource_limits",
                 )
             },
             "public_agent_environment": {
@@ -1790,7 +1820,7 @@ def run_mini_swe_agentic_cell(
             },
             "mini_swe_exit_status": exit_status,
             "model_calls": episode["model_calls"],
-            "bash_commands": episode["commands"],
+            "bash_commands": commands,
             "evas_invocations": evas_invocations,
             "evas_usage": summarize_evas_invocations(evas_invocations),
             "incidents": incidents,
@@ -1801,7 +1831,9 @@ def run_mini_swe_agentic_cell(
         runtime,
         episode["messages"],
         args,
-        "agent_timeout"
+        "agent_resource_exhausted"
+        if resource_exhausted
+        else "agent_timeout"
         if exit_status == "TimeExceeded"
         else "completed"
         if complete
@@ -1816,14 +1848,20 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
     result_path = runtime / "evidence" / "campaign_result.json"
     if args.resume and result_path.is_file():
         previous = read_json(result_path)
-        if previous.get("status") in {
-            "submitted",
-            "submitted_at_budget",
-            "invalid_submission",
-            "budget_exhausted",
-            "agent_timeout",
-            "context_window_exceeded",
-        }:
+        if previous.get("status") in RESUMABLE_TERMINAL_STATUSES:
+            previous_cell = previous.get("cell") or {}
+            if previous_cell.get("cell_id") != cell.get("cell_id"):
+                raise ValueError("resumed campaign result cell_id does not match the requested cell")
+            if previous.get("status") in ARTIFACT_READY_STATUSES:
+                gate = submission_artifact_gate(runtime)
+                if not gate["passed"]:
+                    raise ValueError(
+                        "resumed artifact-ready result no longer passes its artifact gate: "
+                        + ", ".join(gate["diagnostics"])
+                    )
+                recorded_hashes = dict(previous.get("artifact_sha256") or {})
+                if recorded_hashes and recorded_hashes != gate["artifact_sha256"]:
+                    raise ValueError("resumed submission artifact hash does not match its result")
             if "experiment_result" not in previous:
                 checkpoint_path = runtime / "evidence" / "conversation_checkpoint.json"
                 checkpoint = read_json(checkpoint_path) if checkpoint_path.is_file() else {}

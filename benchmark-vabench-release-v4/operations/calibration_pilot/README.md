@@ -161,6 +161,12 @@ Evaluator, gold, and trusted-replay assets remain outside the model-visible
 container. A production G2--G5 run requires the shared Docker environment;
 `none` is allowed only for unit tests and dry runs. Docker denies network
 access and mounts only the current task, submission, and work directories.
+Each command has a 64 MiB per-file limit. The runner permits at most 64 MiB in
+submission and 512 MiB in work, and captures at most 1 MiB of command output in
+host memory. Model observations receive a 12 KiB head/tail summary when output
+is larger; telemetry records the original, captured, and truncated byte counts.
+Quota violations are reported as `agent_resource_exhausted`, not as benchmark
+behavior failures or hidden-test zeroes.
 Before trusted
 replay starts, the runner also rejects submission symlinks and candidate source
 includes that can escape the declared artifact set.
@@ -260,9 +266,11 @@ adapter returning zero without JSON is accepted as `passed` with a compatibility
 diagnostic. A nonzero return without JSON is an infrastructure failure because
 the runner cannot safely infer its failure stage.
 
-Model execution is separate from replay execution. `agent_timeout` and
-`no_submission` have `score_eligible: false` and `score: null`; neither is
-reported as a hidden-test or behavior zero. Trusted replay timeouts are
+Model execution is separate from replay execution. `agent_timeout` without a
+complete artifact and `no_submission` have `score_eligible: false` and
+`score: null`; neither is reported as a hidden-test or behavior zero. A complete
+workspace produced before the wall-time boundary may still enter trusted replay.
+Trusted replay timeouts are
 `runtime_failure`, while launch and malformed-result failures remain
 `infrastructure_failure`.
 

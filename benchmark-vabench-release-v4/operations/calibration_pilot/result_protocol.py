@@ -198,8 +198,12 @@ def terminal_outcome(
     submission: dict[str, Any],
     replay: dict[str, Any],
 ) -> str:
+    if model_status == "agent_resource_exhausted":
+        return "agent_resource_exhausted"
     if model_status in {"provider_failure", "runner_failure"}:
         return "infrastructure_failure"
+    if model_status == "agent_timeout" and submission.get("status") != "available":
+        return "agent_timeout"
     if submission.get("status") != "available":
         return "no_submission"
     replay_status = str(replay.get("status") or "not_run")

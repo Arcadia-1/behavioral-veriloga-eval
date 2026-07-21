@@ -189,7 +189,13 @@ def evaluate_cell(
         outcome = str(experiment.get("outcome") or "no_submission")
         row["judge_status"] = (
             outcome
-            if outcome in {"agent_timeout", "no_submission", "infrastructure_failure"}
+            if outcome
+            in {
+                "agent_timeout",
+                "agent_resource_exhausted",
+                "no_submission",
+                "infrastructure_failure",
+            }
             else "no_submission"
         )
         if not artifact_gate["passed"]:

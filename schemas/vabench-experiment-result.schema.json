@@ -30,6 +30,7 @@
           "enum": [
             "completed",
             "agent_timeout",
+            "agent_resource_exhausted",
             "provider_failure",
             "runner_failure"
           ]
@@ -111,6 +112,7 @@
       "enum": [
         "passed",
         "agent_timeout",
+        "agent_resource_exhausted",
         "no_submission",
         "compile_failure",
         "runtime_failure",
@@ -129,6 +131,7 @@
           "outcome": {
             "enum": [
               "agent_timeout",
+              "agent_resource_exhausted",
               "no_submission",
               "infrastructure_failure",
               "not_scored"

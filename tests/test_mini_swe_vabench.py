@@ -222,6 +222,58 @@ def test_docker_backend_runs_shell_in_shared_environment_and_cleans_up(
     assert "rm -f" in calls
 
 
+def test_bash_output_capture_is_bounded(tmp_path: Path) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "submission").mkdir(parents=True)
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=10,
+        sandbox_backend="none",
+        evas_command="/usr/bin/true",
+        submission_gate=artifact_gate,
+    )
+
+    result = environment.execute(
+        {"command": "yes x | head -c 2097152; printf 'TAIL-SENTINEL\\n'"}
+    )
+
+    assert result["returncode"] == 0
+    assert result["output_total_bytes"] > module.COMMAND_OUTPUT_CAPTURE_BYTES
+    assert result["output_captured_bytes"] == module.COMMAND_OUTPUT_CAPTURE_BYTES
+    assert result["output_truncated_bytes"] > 0
+    assert len(result["output"].encode()) < 13_000
+    assert "TAIL-SENTINEL" in result["output"]
+    assert "omitted" in result["output"]
+
+
+def test_workspace_quota_is_reported_as_resource_exhaustion(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    module = load_module()
+    monkeypatch.setattr(module, "SUBMISSION_QUOTA_BYTES", 8)
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "submission").mkdir(parents=True)
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=10,
+        sandbox_backend="none",
+        evas_command="/usr/bin/true",
+        submission_gate=artifact_gate,
+    )
+
+    result = environment.execute(
+        {"command": "printf 123456789 > public/submission/extra.va"}
+    )
+
+    assert result["returncode"] == 125
+    assert result["exception_info"] == "agent workspace quota exceeded"
+    assert result["resources"]["exceeded"] == ["submission"]
+    assert environment.commands[-1]["resources"]["submission_bytes"] == 9
+
+
 def test_shared_docker_image_executes_real_adapter_contract(tmp_path: Path) -> None:
     if os.environ.get("VABENCH_TEST_DOCKER_RUNTIME") != "1":
         pytest.skip("real shared-image test is enabled by public-agent-runtime CI")
