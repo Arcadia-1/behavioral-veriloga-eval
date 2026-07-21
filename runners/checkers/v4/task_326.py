@@ -69,22 +69,30 @@ def check_v4_1024_fractional_delay_dtc_macro(rows: list[dict[str, float]]) -> tu
             valid_errors += 1
     output_edges = _v4_edges(rows, "clk_out")
     delay_errors = 0
+    edge_count_errors = 0
     matched = 0
     prev_delay = None
     monotonic_pairs = 0
+    output_idx = 0
     for edge_t, code in input_edges:
-        candidates = [out_t for out_t in output_edges if edge_t + 0.05e-9 <= out_t <= edge_t + 5.5e-9]
-        if not candidates:
+        while output_idx < len(output_edges) and output_edges[output_idx] < edge_t + 0.05e-9:
+            edge_count_errors += 1
+            output_idx += 1
+        if output_idx >= len(output_edges):
+            edge_count_errors += 1
             delay_errors += 1
             continue
-        delay = min(candidates) - edge_t
+        out_t = output_edges[output_idx]
+        output_idx += 1
+        delay = out_t - edge_t
         expected_delay = (code + 1) * 0.2e-9
         matched += 1
-        if abs(delay - expected_delay) > 0.55e-9:
+        if delay > 5.5e-9 or abs(delay - expected_delay) > 0.55e-9:
             delay_errors += 1
         if prev_delay is not None and code >= 8 and delay > prev_delay:
             monotonic_pairs += 1
         prev_delay = delay
+    edge_count_errors += len(output_edges) - output_idx
     delay_budget = 2
     metric_budget = max(6, checked // 15)
     valid_budget = 4
@@ -96,6 +104,7 @@ def check_v4_1024_fractional_delay_dtc_macro(rows: list[dict[str, float]]) -> tu
         and monotonic_pairs >= 1
         and reset_clear
         and disabled_clear
+        and edge_count_errors == 0
         and delay_errors <= delay_budget
         and metric_errors <= metric_budget
         and valid_errors <= valid_budget
@@ -104,11 +113,11 @@ def check_v4_1024_fractional_delay_dtc_macro(rows: list[dict[str, float]]) -> tu
     return ok, (
         f"v4_1024 checked={checked} codes={sorted(codes_seen)} input_edges={len(input_edges)} "
         f"output_edges={len(output_edges)} matched={matched} monotonic_pairs={monotonic_pairs} "
-        f"reset_clear={reset_clear} disabled_clear={disabled_clear} delay_errors={delay_errors} "
+        f"reset_clear={reset_clear} disabled_clear={disabled_clear} delay_errors={delay_errors} edge_count_errors={edge_count_errors} "
         f"metric_errors={metric_errors} valid_errors={valid_errors} clear_errors={clear_errors}; "
         f"P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count={max(0, clear_errors - clear_budget) + int(not reset_clear) + int(not disabled_clear)}; "
         f"P_DECODE_FRAC_3_FRAC_0_AS mismatch_count={max(0, delay_errors - delay_budget)}; "
-        f"P_FOR_EACH_INPUT_EDGE_EMIT_ONE mismatch_count={max(0, delay_errors - delay_budget) + max(0, len(input_edges) - matched)}; "
+        f"P_FOR_EACH_INPUT_EDGE_EMIT_ONE mismatch_count={edge_count_errors + max(0, delay_errors - delay_budget) + max(0, len(input_edges) - matched)}; "
         f"P_EXPOSE_THE_FRACTIONAL_DELAY_AS_PHASE mismatch_count={max(0, metric_errors - metric_budget)}; "
         f"P_PRESERVE_INPUT_EDGE_ORDER_AND_ASSERT mismatch_count={max(0, valid_errors - valid_budget)}"
     )
