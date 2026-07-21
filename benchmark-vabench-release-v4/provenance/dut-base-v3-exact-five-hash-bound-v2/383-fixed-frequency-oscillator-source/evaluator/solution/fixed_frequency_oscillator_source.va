@@ -15,7 +15,7 @@ module fixed_frequency_oscillator_source(enable, rst, osc_out, period_metric, va
                 phase = phase + tick / (period / 2.0);
                 if (phase >= 1.0) begin phase = phase - 1.0; osc_v = (osc_v > vth) ? vss : vdd; cycles = cycles + 1; end
                 metric_v = min2(vdd, period / 20e-9 * 0.45);
-                valid_v = (cycles >= 1) ? vdd : vss;
+                valid_v = (cycles >= 2) ? vdd : vss;
             end
         end
         V(osc_out) <+ transition(osc_v, 0, tr, tr);

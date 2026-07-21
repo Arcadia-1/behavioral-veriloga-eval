@@ -7,11 +7,11 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=195n maxstep=200p"
+      "tran tran stop=92n maxstep=200p"
     ],
     "body_lines": [
-      "Venable (enable 0) vsource type=pwl wave=[0 0 5n 0 5.2n 0.9 54n 0.9 54.2n 0 64n 0 64.2n 0.9 150n 0.9 150.2n 0 160n 0 160.2n 0.9 195n 0.9]",
-      "Vrst (rst 0) vsource type=pwl wave=[0 0.9 3n 0.9 3.2n 0 112n 0 112.2n 0.9 118n 0.9 118.2n 0 195n 0]",
+      "Venable (enable 0) vsource type=pwl wave=[0 0 5n 0 5.2n 0.9 54n 0.9 54.2n 0 64n 0 64.2n 0.9 92n 0.9]",
+      "Vrst (rst 0) vsource type=pwl wave=[0 0.9 3n 0.9 3.2n 0 92n 0]",
       "XDUT (enable rst osc_out period_metric valid) fixed_frequency_oscillator_source",
       ""
     ],
@@ -39,7 +39,7 @@
     "legacy_feedback_deck": "test_feedback/public_tb.scs",
     "legacy_feedback_deck_sha256": "ccee89dfc6aff05f1109634a8f8ea3c0ece16ff6b81168917c137f5557d52c48",
     "legacy_score_deck": "evaluator/score_tb.scs",
-    "legacy_score_deck_sha256": "34872f92fd6a6d6a402fe581f52973637fb8507a5a9eb8648ee9da7aedcb95dc",
+    "legacy_score_deck_sha256": "ccee89dfc6aff05f1109634a8f8ea3c0ece16ff6b81168917c137f5557d52c48",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
       "legacy score deck seeded private profile-specific overrides"
@@ -52,7 +52,7 @@
       "deterministic_seed": 0,
       "parameters": {
         "maxstep": "100p",
-        "stop_time": "200n"
+        "stop_time": "100n"
       },
       "simulatorOptions": {
         "evas_profile": "balanced"
@@ -64,7 +64,7 @@
       "deterministic_seed": 0,
       "parameters": {
         "maxstep": "100p",
-        "stop_time": "200n"
+        "stop_time": "100n"
       }
     }
   },
