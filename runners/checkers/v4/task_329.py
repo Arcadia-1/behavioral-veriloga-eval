@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from ..common.relative_events import rising_edges, sample_after_event
 VCM = 0.45
 VTH = 0.45
 
@@ -27,6 +28,53 @@ def check_v4_329_ctle_adaptation_loop(rows: list[dict[str, float]]) -> tuple[boo
     miss = _missing(rows, req)
     if miss:
         return False, f"v4_329 missing_signals={','.join(miss)}"
+
+    expected_boost = expected_streak = 0
+    oracle_checked = oracle_errors = direction_updates = 0
+    for edge_time in rising_edges(rows, "clk"):
+        edge_index = next(
+            (index for index, row in enumerate(rows) if float(row["time"]) >= edge_time),
+            None,
+        )
+        if edge_index is None:
+            continue
+        stimulus = rows[max(0, edge_index - 1)]
+        active = _high(stimulus, "enable") and not _high(stimulus, "rst")
+        if not active:
+            expected_boost = expected_streak = 0
+            continue
+        edge_metric = float(stimulus["edge_metric_in"])
+        previous_boost = expected_boost
+        if edge_metric < 0.52:
+            expected_boost = min(7, expected_boost + 1)
+            expected_streak = 0
+        elif edge_metric > 0.58:
+            expected_boost = max(0, expected_boost - 1)
+            expected_streak = 0
+        else:
+            expected_streak = min(3, expected_streak + 1)
+        direction_updates += int(expected_boost != previous_boost)
+        post = sample_after_event(
+            rows,
+            edge_time,
+            clock_signal="clk",
+            fraction_of_period=0.15,
+        )
+        if post is None:
+            continue
+        observed_boost = _code(post, ["boost_0", "boost_1", "boost_2"])
+        expected_vout = max(
+            0.0,
+            min(0.9, VCM + (float(post["vin"]) - VCM) * (1.0 + 0.12 * expected_boost)),
+        )
+        oracle_checked += 1
+        if (
+            observed_boost != expected_boost
+            or abs(float(post["adapt_metric"]) - abs(edge_metric - 0.55)) > 0.06
+            or abs(float(post["vout"]) - expected_vout) > 0.08
+            or _high(post, "locked") != (expected_streak >= 3)
+        ):
+            oracle_errors += 1
     prev_clk = float(rows[0]["clk"])
     prev_boost = 0
     checked = adapt_errors = vout_errors = lock_errors = clear_errors = 0
@@ -94,6 +142,9 @@ def check_v4_329_ctle_adaptation_loop(rows: list[dict[str, float]]) -> tuple[boo
         prev_row = row
     ok = (
         checked >= 8
+        and oracle_checked >= 8
+        and oracle_errors == 0
+        and direction_updates >= 2
         and reset_clear
         and disabled_clear
         and len(boost_codes) >= 2
@@ -105,6 +156,7 @@ def check_v4_329_ctle_adaptation_loop(rows: list[dict[str, float]]) -> tuple[boo
     return ok, (
         f"v4_329 checked={checked} boost_codes={sorted(boost_codes)} "
         f"reset_clear={reset_clear} disabled_clear={disabled_clear} "
+        f"oracle_checked={oracle_checked} oracle_errors={oracle_errors} direction_updates={direction_updates} "
         f"adapt_errors={adapt_errors} vout_errors={vout_errors} "
         f"lock_errors={lock_errors} clear_errors={clear_errors}; "
         f"P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count={int(not reset_clear) + int(not disabled_clear)}; "

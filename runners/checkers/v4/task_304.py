@@ -7,25 +7,38 @@ from ..common.v4_topup import (
     _v4_topup_logic_high,
     _v4_topup_near,
 )
-from ..common.relative_events import active_start, first_disable
+from ..common.relative_events import active_start, first_disable, sample_step
 
 def check_v4_304_common_gate_tia_front_end(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, "v4_1002 empty_trace"
     checked = gain_errors = polarity_errors = metric_errors = overload_errors = 0
-    high_bias_seen = low_bias_seen = overload_seen = disabled_clear = False
+    inactive_checked = inactive_errors = 0
+    high_bias_seen = low_bias_seen = overload_seen = False
     rz_gain = 3.0
     bias_min = 0.3
     activation = active_start(rows, enable="enable", reset="rst")
     disable = first_disable(rows, "enable", activation)
+    guard = max(sample_step(rows) * 8.0, 0.0)
+    previous_active = _v4_topup_logic_high(rows[0], "enable") and not _v4_topup_logic_high(rows[0], "rst")
+    control_change = float(rows[0]["time"])
     for row in rows:
         t = float(row["time"])
-        if t < activation:
-            continue
         enabled = _v4_topup_logic_high(row, "enable") and not _v4_topup_logic_high(row, "rst")
+        if enabled != previous_active:
+            previous_active = enabled
+            control_change = t
         if not enabled:
-            if (disable is None or t >= disable) and _v4_topup_near(row["vout"], 0.45, 0.08) and row["transimpedance_metric"] < 0.15 and row["overload"] < 0.15:
-                disabled_clear = True
+            if t - control_change >= guard:
+                inactive_checked += 1
+                if not (
+                    _v4_topup_near(row["vout"], 0.45, 0.08)
+                    and row["transimpedance_metric"] < 0.15
+                    and row["overload"] < 0.15
+                ):
+                    inactive_errors += 1
+            continue
+        if t < activation:
             continue
         gain_scale = _v4_topup_clip01((float(row["bias"]) - bias_min) / (0.45 - bias_min))
         if gain_scale < 0.35:
@@ -52,14 +65,19 @@ def check_v4_304_common_gate_tia_front_end(rows: list[dict[str, float]]) -> tupl
         and high_bias_seen
         and low_bias_seen
         and overload_seen
-        and disabled_clear
+        and disable is not None
+        and inactive_checked >= 8
+        and inactive_errors <= max(2, inactive_checked // 50)
         and polarity_errors <= max(6, checked // 80)
         and gain_errors <= max(16, checked // 25)
         and metric_errors <= max(16, checked // 25)
         and overload_errors <= max(20, checked // 20)
     )
     diagnostics = {
-        "P_ON_RESET_OR_WHEN_DISABLED_DRIVE": int(not disabled_clear),
+        "P_ON_RESET_OR_WHEN_DISABLED_DRIVE": max(
+            int(disable is None or inactive_checked < 8),
+            inactive_errors - max(2, inactive_checked // 50),
+        ),
         "P_TREAT_VIN_PROXY_AS_A_VOLTAGE": int(polarity_errors > max(6, checked // 80)),
         "P_GENERATE_AN_OUTPUT_DEVIATION_AROUND_VCM": int(gain_errors > max(16, checked // 25)),
         "P_REDUCE_EFFECTIVE_GAIN_WHEN_BIAS_FALLS": int(not (high_bias_seen and low_bias_seen)),
@@ -68,7 +86,8 @@ def check_v4_304_common_gate_tia_front_end(rows: list[dict[str, float]]) -> tupl
     }
     return ok, (
         f"v4_304 checked={checked} high_bias={high_bias_seen} low_bias={low_bias_seen} "
-        f"overload={overload_seen} disabled_clear={disabled_clear} polarity_errors={polarity_errors} "
+        f"overload={overload_seen} disable_seen={disable is not None} inactive_checked={inactive_checked} "
+        f"inactive_errors={inactive_errors} polarity_errors={polarity_errors} "
         f"gain_errors={gain_errors} metric_errors={metric_errors} overload_errors={overload_errors}; "
         + "; ".join(f"{key} mismatch_count={value}" for key, value in diagnostics.items())
     )

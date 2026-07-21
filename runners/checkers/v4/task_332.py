@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from ..api import Checker
 from .diagnostics import with_property_diagnostics
+from ..common.relative_events import rising_edges, sample_after_event
 VCM = 0.45
 VDD = 0.9
 VTH = 0.45
@@ -26,6 +27,60 @@ def check_v4_332_polyphase_iq_balance_monitor(rows: list[dict[str, float]]) -> t
     miss = _missing(rows, req)
     if miss:
         return False, f"v4_332 missing_signals={','.join(miss)}"
+
+    expected_streak = 0
+    oracle_checked = oracle_errors = phase_errors = output_errors = balanced_errors = 0
+    for edge_time in rising_edges(rows, "clk"):
+        edge_index = next(
+            (index for index, row in enumerate(rows) if float(row["time"]) >= edge_time),
+            None,
+        )
+        if edge_index is None:
+            continue
+        stimulus = rows[max(0, edge_index - 1)]
+        active = _high(stimulus, "enable") and not _high(stimulus, "rst")
+        if not active:
+            expected_streak = 0
+            continue
+        i_sample = max(0.0, min(VDD, float(stimulus["i_in"])))
+        q_sample = max(0.0, min(VDD, float(stimulus["q_in"])))
+        i_dev = i_sample - VCM
+        q_dev = q_sample - VCM
+        max_dev = max(abs(i_dev), abs(q_dev))
+        scale = 0.22 / max_dev if max_dev > 0.22 else 1.0
+        expected_i = max(0.0, min(VDD, VCM + i_dev * scale))
+        expected_q = max(0.0, min(VDD, VCM + q_dev * scale))
+        expected_amp = abs(abs(i_dev) - abs(q_dev))
+        expected_phase = abs(i_dev + q_dev)
+        if expected_amp < 45e-3 and expected_phase < 60e-3:
+            expected_streak += 1
+        else:
+            expected_streak = 0
+        post = sample_after_event(
+            rows,
+            edge_time,
+            clock_signal="clk",
+            fraction_of_period=0.20,
+        )
+        if post is None:
+            continue
+        output_bad = (
+            abs(float(post["i_out"]) - expected_i) > 0.07
+            or abs(float(post["q_out"]) - expected_q) > 0.07
+        )
+        phase_bad = abs(float(post["phase_error_metric"]) - expected_phase) > 0.07
+        balanced_bad = _high(post, "balanced") != (expected_streak >= 2)
+        oracle_checked += 1
+        output_errors += int(output_bad)
+        phase_errors += int(phase_bad)
+        balanced_errors += int(balanced_bad)
+        if (
+            output_bad
+            or abs(float(post["amp_error_metric"]) - expected_amp) > 0.07
+            or phase_bad
+            or balanced_bad
+        ):
+            oracle_errors += 1
     prev_clk = float(rows[0]["clk"])
     checked = norm_errors = bal_errors = clear_errors = 0
     reset_clear = disabled_clear = ever_enabled = False
@@ -108,6 +163,8 @@ def check_v4_332_polyphase_iq_balance_monitor(rows: list[dict[str, float]]) -> t
             bal_errors += 1
     ok = (
         checked >= 6
+        and oracle_checked >= 6
+        and oracle_errors == 0
         and reset_clear
         and disabled_clear
         and norm_errors <= max(3, checked // 3)
@@ -116,7 +173,8 @@ def check_v4_332_polyphase_iq_balance_monitor(rows: list[dict[str, float]]) -> t
     )
     return ok, (
         f"v4_332 checked={checked} amp_max={amp_max:.3f} phase_max={phase_max:.3f} "
-        f"norm_errors={norm_errors} bal_errors={bal_errors} "
+        f"oracle_checked={oracle_checked} oracle_errors={oracle_errors} output_errors={output_errors} "
+        f"phase_errors={phase_errors} balanced_errors={balanced_errors} norm_errors={norm_errors} bal_errors={bal_errors} "
         f"reset_clear={reset_clear} disabled_clear={disabled_clear} clear_errors={clear_errors}"
     )
 

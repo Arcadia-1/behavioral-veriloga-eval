@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from ..common.relative_events import rising_edges
 VDD = 0.9
 VTH = 0.45
 
@@ -96,6 +97,33 @@ def check_v4_327_cdr_eye_monitor(rows: list[dict[str, float]]) -> tuple[bool, st
     ]
     early_misses = sum(not flag_seen("early", t) for t in early_events)
     late_misses = sum(not flag_seen("late", t) for t in late_events)
+    early_flag_edges = rising_edges(rows, "early")
+    late_flag_edges = rising_edges(rows, "late")
+
+    def match_flag_edges(
+        expected_events: list[float], observed_edges: list[float]
+    ) -> tuple[int, int]:
+        unused = set(range(len(observed_edges)))
+        misses = 0
+        for event_t in expected_events:
+            candidates = [
+                index
+                for index in unused
+                if event_t <= observed_edges[index] <= event_t + 1.2e-9
+            ]
+            if not candidates:
+                misses += 1
+                continue
+            chosen = min(candidates, key=lambda index: observed_edges[index] - event_t)
+            unused.remove(chosen)
+        return misses, len(unused)
+
+    early_edge_misses, early_false_positives = match_flag_edges(
+        early_events, early_flag_edges
+    )
+    late_edge_misses, late_false_positives = match_flag_edges(
+        late_events, late_flag_edges
+    )
     valid_misses = sum(not flag_seen("valid", t) for t in sample_times)
     open_streak = 0
     open_streak_reached = False
@@ -126,6 +154,10 @@ def check_v4_327_cdr_eye_monitor(rows: list[dict[str, float]]) -> tuple[bool, st
         and bool(late_events)
         and early_misses == 0
         and late_misses == 0
+        and early_edge_misses == 0
+        and late_edge_misses == 0
+        and early_false_positives == 0
+        and late_false_positives == 0
         and valid_misses <= 1
         and mutex_errors == 0
         and range_errors == 0
@@ -134,10 +166,20 @@ def check_v4_327_cdr_eye_monitor(rows: list[dict[str, float]]) -> tuple[bool, st
         and lock_errors == 0
     )
     clear_mismatches = int(not reset_clear) + int(not disabled_clear)
-    timing_mismatches = early_misses + late_misses + mutex_errors
+    timing_mismatches = (
+        early_misses
+        + late_misses
+        + early_edge_misses
+        + late_edge_misses
+        + early_false_positives
+        + late_false_positives
+        + mutex_errors
+    )
     return ok, (
         f"v4_327 checked={checked} early_events={len(early_events)} late_events={len(late_events)} "
         f"early_misses={early_misses} late_misses={late_misses} lock_seen={lock_seen} "
+        f"early_edge_misses={early_edge_misses} late_edge_misses={late_edge_misses} "
+        f"early_false_positives={early_false_positives} late_false_positives={late_false_positives} "
         f"open_streak_reached={open_streak_reached} eye_max={eye_max:.3f} "
         f"early_lock_errors={early_lock_errors} missing_lock_errors={missing_lock_errors} "
         f"mutex_errors={mutex_errors} range_errors={range_errors} valid_misses={valid_misses} "

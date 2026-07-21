@@ -8,24 +8,40 @@ from ..common.v4_topup import (
     _v4_topup_near,
     _v4_topup_span,
 )
-from ..common.relative_events import active_start, latest_assertion, sample_after_event
+from ..common.relative_events import active_start, latest_assertion, sample_after_event, sample_step
 
 def check_v4_306_instrumentation_amplifier_offset_trim(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, "v4_1004 empty_trace"
     checked = vout_errors = metric_errors = premature_ready = 0
-    ready_seen = reset_clear = late_reset_clear = metric_dynamic = trim_response_seen = False
+    ready_seen = metric_dynamic = trim_response_seen = False
+    reset_checked = reset_errors = late_reset_checked = late_reset_errors = 0
     trim_adapt = 0.0
     active_corr = 0.0
     update_count = 0
     activation = active_start(rows, reset="rst", auxiliary="cal_en")
     late_reset = latest_assertion(rows, "rst")
-    previous = rows[0]
+    guard = sample_step(rows) * 8.0
+    reset_started = float(rows[0]["time"])
+    previous_reset = _v4_topup_logic_high(rows[0], "rst")
     for row in rows:
-        if _v4_topup_logic_high(row, "rst"):
-            if _v4_topup_near(row["vout"], 0.45, 0.08) and row["offset_metric"] < 0.15 and row["ready"] < 0.15:
-                reset_clear = True
-                late_reset_clear = late_reset_clear or (late_reset is not None and row["time"] >= late_reset)
+        reset = _v4_topup_logic_high(row, "rst")
+        if reset != previous_reset:
+            previous_reset = reset
+            reset_started = float(row["time"])
+        if not reset or float(row["time"]) - reset_started < guard:
+            continue
+        mismatch = not (
+            _v4_topup_near(row["vout"], 0.45, 0.08)
+            and row["offset_metric"] < 0.15
+            and row["ready"] < 0.15
+        )
+        reset_checked += 1
+        reset_errors += int(mismatch)
+        if late_reset is not None and float(row["time"]) >= late_reset + guard:
+            late_reset_checked += 1
+            late_reset_errors += int(mismatch)
+    previous = rows[0]
     for row in rows[1:]:
         clk_rise = (not _v4_topup_logic_high(previous, "clk")) and _v4_topup_logic_high(row, "clk")
         previous = row
@@ -73,8 +89,10 @@ def check_v4_306_instrumentation_amplifier_offset_trim(rows: list[dict[str, floa
     metric_dynamic = _v4_topup_span(rows, "offset_metric") > 0.03
     ok = (
         checked >= 8
-        and reset_clear
-        and late_reset_clear
+        and reset_checked >= 8
+        and reset_errors == 0
+        and late_reset_checked >= 8
+        and late_reset_errors == 0
         and ready_seen
         and metric_dynamic
         and trim_response_seen
@@ -83,7 +101,12 @@ def check_v4_306_instrumentation_amplifier_offset_trim(rows: list[dict[str, floa
         and metric_errors == 0
     )
     diagnostics = {
-        "P_ON_RESET_CLEAR_THE_TRIM_STATE": int(not reset_clear or not late_reset_clear),
+        "P_ON_RESET_CLEAR_THE_TRIM_STATE": (
+            int(reset_checked < 8)
+            + reset_errors
+            + int(late_reset_checked < 8)
+            + late_reset_errors
+        ),
         "P_DECODE_TRIM_2_TRIM_0_AS": int(not trim_response_seen),
         "P_WHILE_CAL_EN_IS_HIGH_UPDATE": int(checked < 8),
         "P_DRIVE_VOUT_FROM_THE_CORRECTED_DIFFERENTIAL": int(vout_errors),
@@ -91,7 +114,8 @@ def check_v4_306_instrumentation_amplifier_offset_trim(rows: list[dict[str, floa
         "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE": 0,
     }
     return ok, (
-        f"v4_306 checked={checked} reset_clear={reset_clear} late_reset_clear={late_reset_clear} ready_seen={ready_seen} "
+        f"v4_306 checked={checked} reset_checked={reset_checked} reset_errors={reset_errors} "
+        f"late_reset_checked={late_reset_checked} late_reset_errors={late_reset_errors} ready_seen={ready_seen} "
         f"metric_dynamic={metric_dynamic} trim_response={trim_response_seen} "
         f"premature_ready={premature_ready} vout_errors={vout_errors} metric_errors={metric_errors}; "
         + "; ".join(f"{key} mismatch_count={value}" for key, value in diagnostics.items())
