@@ -1,0 +1,144 @@
+from __future__ import annotations
+
+from pathlib import Path
+import sys
+
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "runners"))
+
+from checkers.v4.task_381 import check_v4_940_fm_vco_modulation_source
+
+
+def _level(value: float) -> bool:
+    return value > 0.45
+
+
+def _metric(mod_in: float) -> float:
+    freq = max(1.0e6, 10.0e6 + 5.0e6 * (mod_in - 0.45))
+    return min(0.9, max(0.0, freq / 20.0e6 * 0.9))
+
+
+def _legacy_weak_accepts(rows: list[dict[str, float]]) -> bool:
+    metric_errors = clear_errors = checked = 0
+    reset_clear = disabled_clear = low_metric = high_metric = valid_seen = False
+    osc_vals: list[float] = []
+    marker_vals: list[float] = []
+    metric_vals: list[float] = []
+    previous_marker_high = _level(rows[0]["phase_marker"])
+    marker_rises = 0
+    for row in rows[::6]:
+        rst = _level(row["rst"])
+        enable = _level(row["enable"])
+        if not enable or rst:
+            clear = row["osc_out"] < 0.12 and row["freq_metric"] < 0.08 and row["phase_marker"] < 0.12 and row["valid"] < 0.10
+            reset_clear = reset_clear or (rst and clear)
+            disabled_clear = disabled_clear or ((not rst) and (not enable) and clear)
+            clear_errors += int(not clear)
+            continue
+        expected_metric = _metric(row["mod_in"])
+        low_metric = low_metric or expected_metric < 0.45
+        high_metric = high_metric or expected_metric > 0.45
+        osc_vals.append(row["osc_out"])
+        marker_vals.append(row["phase_marker"])
+        metric_vals.append(row["freq_metric"])
+        valid_seen = valid_seen or _level(row["valid"])
+        checked += 1
+        metric_errors += int(abs(row["freq_metric"] - expected_metric) > 0.10)
+    for row in rows:
+        rst = _level(row["rst"])
+        enable = _level(row["enable"])
+        if not enable or rst:
+            previous_marker_high = _level(row["phase_marker"])
+            continue
+        marker_high = _level(row["phase_marker"])
+        marker_rise = not previous_marker_high and marker_high
+        marker_rises += int(marker_rise)
+        previous_marker_high = marker_high
+    return (
+        checked >= 12
+        and reset_clear
+        and disabled_clear
+        and low_metric
+        and high_metric
+        and ((max(metric_vals) - min(metric_vals)) if metric_vals else 0.0) >= 0.055
+        and max(osc_vals) > 0.65
+        and min(osc_vals) < 0.20
+        and max(marker_vals) > 0.65
+        and min(marker_vals) < 0.20
+        and marker_rises > 0
+        and valid_seen
+        and metric_errors <= 4
+        and clear_errors <= 4
+    )
+
+
+def _rows(*, constant_period_ns: float | None = None, immediate_valid: bool = False) -> list[dict[str, float]]:
+    marker_edges_ns = [125.0, 225.0, 325.0, 525.0, 605.0, 685.0, 765.0, 1855.0, 2855.0]
+    if constant_period_ns is not None:
+        marker_edges_ns = [105.0 + constant_period_ns * index for index in range(31)]
+        marker_edges_ns += [855.0 + constant_period_ns * index for index in range(24)]
+    osc_edges_ns = sorted(marker_edges_ns + [edge - 50.0 for edge in marker_edges_ns if edge < 500.0] + [edge - 40.0 for edge in marker_edges_ns if 500.0 <= edge < 900.0] + [edge - 500.0 for edge in marker_edges_ns if edge > 900.0])
+    rows: list[dict[str, float]] = []
+    for step in range(0, 3221, 5):
+        time_ns = float(step)
+        rst = 0.9 if time_ns <= 3.0 or 805.0 <= time_ns <= 830.0 else 0.0
+        enable = 0.9 if 5.0 <= time_ns <= 3200.0 else 0.0
+        active = enable > 0.45 and rst <= 0.45
+        if time_ns < 420.0:
+            mod_in = 0.45
+        elif time_ns < 840.0:
+            mod_in = 0.85
+        else:
+            mod_in = -2.0
+        if not active:
+            osc_out = freq_metric = phase_marker = valid = 0.0
+        else:
+            segment_floor = 0.0 if time_ns < 805.0 else 830.0
+            osc_out = 0.9 if sum(segment_floor < edge <= time_ns for edge in osc_edges_ns) % 2 else 0.0
+            phase_marker = 0.9 if sum(segment_floor < edge <= time_ns for edge in marker_edges_ns) % 2 else 0.0
+            freq_metric = _metric(mod_in)
+            first_cycle_done = (time_ns >= 125.0 and time_ns < 805.0) or time_ns >= 1855.0
+            valid = 0.9 if (immediate_valid or first_cycle_done) else 0.0
+        rows.append({
+            "time": time_ns * 1e-9,
+            "mod_in": mod_in,
+            "enable": enable,
+            "rst": rst,
+            "osc_out": osc_out,
+            "freq_metric": freq_metric,
+            "phase_marker": phase_marker,
+            "valid": valid,
+        })
+    return rows
+
+
+def test_task381_gold_like_trace_covers_period_valid_and_clamp() -> None:
+    ok, detail = check_v4_940_fm_vco_modulation_source(_rows())
+    assert ok, detail
+
+
+def test_task381_period_checks_are_timing_metamorphic() -> None:
+    rows = []
+    for row in _rows():
+        shifted = dict(row)
+        shifted["time"] = 1.37 * row["time"] + 2.0e-9
+        rows.append(shifted)
+    ok, detail = check_v4_940_fm_vco_modulation_source(rows)
+    assert ok, detail
+
+
+def test_task381_rejects_old_pass_constant_frequency_oscillator() -> None:
+    rows = _rows(constant_period_ns=100.0)
+    assert _legacy_weak_accepts(rows)
+    ok, detail = check_v4_940_fm_vco_modulation_source(rows)
+    assert not ok
+    assert "P_PERIOD_ORDERING" in detail
+
+
+def test_task381_rejects_old_pass_immediate_valid() -> None:
+    rows = _rows(immediate_valid=True)
+    assert _legacy_weak_accepts(rows)
+    ok, detail = check_v4_940_fm_vco_modulation_source(rows)
+    assert not ok
+    assert "P_VALID_AFTER_ENABLE" in detail
