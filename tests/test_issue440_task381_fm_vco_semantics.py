@@ -105,9 +105,12 @@ def _rows(
     *,
     clamp_period_ns: float = 1000.0,
     constant_period_ns: float | None = None,
+    extra_marker_event: bool = False,
     immediate_valid: bool = False,
+    marker_drift_ns: float = 0.0,
     marker_every_two_cycles: bool = False,
     marker_mode: str = "toggle",
+    marker_phase: str = "falling",
     one_shot_valid: bool = False,
 ) -> list[dict[str, float]]:
     nominal_edges_ns = [125.0, 225.0, 325.0]
@@ -119,13 +122,29 @@ def _rows(
         clamp_edges_ns = [855.0 + constant_period_ns * index for index in range(1, 34)]
         high_edges_ns = []
         cycle_edges_ns = nominal_edges_ns + clamp_edges_ns
-    marker_edges_ns = cycle_edges_ns
-    if marker_every_two_cycles:
-        marker_edges_ns = nominal_edges_ns[::2] + high_edges_ns[::2] + clamp_edges_ns[::2]
     if constant_period_ns is not None:
-        osc_edges_ns = sorted(cycle_edges_ns + [edge - 0.5 * constant_period_ns for edge in cycle_edges_ns])
+        nominal_rising_edges_ns = [edge - 0.5 * constant_period_ns for edge in nominal_edges_ns]
+        high_rising_edges_ns: list[float] = []
+        clamp_rising_edges_ns = [edge - 0.5 * constant_period_ns for edge in clamp_edges_ns]
     else:
-        osc_edges_ns = sorted(cycle_edges_ns + [edge - 50.0 for edge in nominal_edges_ns] + [edge - 40.0 for edge in high_edges_ns] + [edge - 0.5 * clamp_period_ns for edge in clamp_edges_ns])
+        nominal_rising_edges_ns = [edge - 50.0 for edge in nominal_edges_ns]
+        high_rising_edges_ns = [edge - 40.0 for edge in high_edges_ns]
+        clamp_rising_edges_ns = [edge - 0.5 * clamp_period_ns for edge in clamp_edges_ns]
+    rising_edges_ns = nominal_rising_edges_ns + high_rising_edges_ns + clamp_rising_edges_ns
+    marker_groups = (
+        (nominal_rising_edges_ns, high_rising_edges_ns, clamp_rising_edges_ns)
+        if marker_phase == "rising"
+        else (nominal_edges_ns, high_edges_ns, clamp_edges_ns)
+    )
+    marker_edges_ns = [edge for group in marker_groups for edge in group]
+    if marker_every_two_cycles:
+        marker_edges_ns = [edge for group in marker_groups for edge in group[::2]]
+    marker_edges_ns = [
+        edge + index * marker_drift_ns for index, edge in enumerate(marker_edges_ns)
+    ]
+    if extra_marker_event:
+        marker_edges_ns += [edge + 20.0 for edge in marker_edges_ns]
+    osc_edges_ns = sorted(cycle_edges_ns + rising_edges_ns)
     first_cycle_pre = min(edge for edge in cycle_edges_ns if edge < 805.0)
     first_cycle_post = min(edge for edge in cycle_edges_ns if edge > 830.0)
     rows: list[dict[str, float]] = []
@@ -188,12 +207,38 @@ def test_task381_accepts_narrow_pulse_phase_marker() -> None:
     assert ok, detail
 
 
+def test_task381_accepts_rising_edge_pulse_under_timing_metamorph() -> None:
+    rows = []
+    for row in _rows(marker_mode="pulse", marker_phase="rising"):
+        shifted = dict(row)
+        shifted["time"] = 1.37 * row["time"] + 2.0e-9
+        rows.append(shifted)
+    ok, detail = check_v4_940_fm_vco_modulation_source(rows)
+    assert ok, detail
+
+
 def test_task381_rejects_marker_event_only_every_two_cycles() -> None:
     rows = _rows(marker_mode="pulse", marker_every_two_cycles=True)
     assert _pre_cadence_period_accepts(rows)
     ok, detail = check_v4_940_fm_vco_modulation_source(rows)
     assert not ok
     assert "P_PHASE_MARKER_CADENCE" in detail
+
+
+def test_task381_rejects_multiple_marker_events_per_cycle() -> None:
+    ok, detail = check_v4_940_fm_vco_modulation_source(
+        _rows(marker_mode="pulse", extra_marker_event=True)
+    )
+    assert not ok
+    assert "P_PHASE_MARKER_ALIGNMENT" in detail
+
+
+def test_task381_rejects_drifting_marker_phase() -> None:
+    ok, detail = check_v4_940_fm_vco_modulation_source(
+        _rows(marker_mode="pulse", marker_drift_ns=1.0)
+    )
+    assert not ok
+    assert "P_PHASE_MARKER_ALIGNMENT" in detail
 
 
 def test_task381_rejects_old_pass_constant_frequency_oscillator() -> None:
