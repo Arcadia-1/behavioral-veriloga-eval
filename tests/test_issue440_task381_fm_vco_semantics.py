@@ -73,22 +73,61 @@ def _legacy_weak_accepts(rows: list[dict[str, float]]) -> bool:
     )
 
 
+def _pre_cadence_period_accepts(rows: list[dict[str, float]]) -> bool:
+    edge_times = {"nominal": [], "high": [], "clamp": []}
+    previous_marker_high = _level(rows[0]["phase_marker"])
+    for row in rows[1:]:
+        marker_high = _level(row["phase_marker"])
+        marker_rise = not previous_marker_high and marker_high
+        previous_marker_high = marker_high
+        if not marker_rise or not _level(row["enable"]) or _level(row["rst"]):
+            continue
+        if abs(row["mod_in"] - 0.45) <= 0.05:
+            edge_times["nominal"].append(row["time"])
+        elif row["mod_in"] >= 0.70:
+            edge_times["high"].append(row["time"])
+        elif row["mod_in"] <= -1.0:
+            edge_times["clamp"].append(row["time"])
+    expected = {"nominal": 100.0e-9, "high": 1.0 / 12.0e6, "clamp": 1.0e-6}
+    measured = {
+        bucket: sum(b - a for a, b in zip(times, times[1:])) / (len(times) - 1)
+        for bucket, times in edge_times.items()
+        if len(times) >= 2
+    }
+    if len(measured) != 3:
+        return False
+    scales = [measured[bucket] / expected[bucket] for bucket in measured]
+    reference_scale = sum(scales) / len(scales)
+    return all(abs(scale / reference_scale - 1.0) <= 0.18 for scale in scales)
+
+
 def _rows(
     *,
     clamp_period_ns: float = 1000.0,
     constant_period_ns: float | None = None,
     immediate_valid: bool = False,
+    marker_every_two_cycles: bool = False,
     marker_mode: str = "toggle",
     one_shot_valid: bool = False,
 ) -> list[dict[str, float]]:
     nominal_edges_ns = [125.0, 225.0, 325.0]
     high_edges_ns = [525.0, 605.0, 685.0, 765.0]
     clamp_edges_ns = [855.0 + clamp_period_ns * index for index in range(1, 4)]
-    marker_edges_ns = nominal_edges_ns + high_edges_ns + clamp_edges_ns
+    cycle_edges_ns = nominal_edges_ns + high_edges_ns + clamp_edges_ns
     if constant_period_ns is not None:
-        marker_edges_ns = [105.0 + constant_period_ns * index for index in range(7)]
-        marker_edges_ns += [855.0 + constant_period_ns * index for index in range(1, 34)]
-    osc_edges_ns = sorted(marker_edges_ns + [edge - 50.0 for edge in marker_edges_ns if edge < 500.0] + [edge - 40.0 for edge in marker_edges_ns if 500.0 <= edge < 900.0] + [edge - 500.0 for edge in marker_edges_ns if edge > 900.0])
+        nominal_edges_ns = [105.0 + constant_period_ns * index for index in range(7)]
+        clamp_edges_ns = [855.0 + constant_period_ns * index for index in range(1, 34)]
+        high_edges_ns = []
+        cycle_edges_ns = nominal_edges_ns + clamp_edges_ns
+    marker_edges_ns = cycle_edges_ns
+    if marker_every_two_cycles:
+        marker_edges_ns = nominal_edges_ns[::2] + high_edges_ns[::2] + clamp_edges_ns[::2]
+    if constant_period_ns is not None:
+        osc_edges_ns = sorted(cycle_edges_ns + [edge - 0.5 * constant_period_ns for edge in cycle_edges_ns])
+    else:
+        osc_edges_ns = sorted(cycle_edges_ns + [edge - 50.0 for edge in nominal_edges_ns] + [edge - 40.0 for edge in high_edges_ns] + [edge - 0.5 * clamp_period_ns for edge in clamp_edges_ns])
+    first_cycle_pre = min(edge for edge in cycle_edges_ns if edge < 805.0)
+    first_cycle_post = min(edge for edge in cycle_edges_ns if edge > 830.0)
     rows: list[dict[str, float]] = []
     for step in range(0, 4221, 5):
         time_ns = float(step)
@@ -111,9 +150,9 @@ def _rows(
             else:
                 phase_marker = 0.9 if sum(segment_floor < edge <= time_ns for edge in marker_edges_ns) % 2 else 0.0
             freq_metric = _metric(mod_in)
-            first_cycle_done = (time_ns >= 125.0 and time_ns < 805.0) or time_ns >= 1855.0
+            first_cycle_done = (time_ns >= first_cycle_pre and time_ns < 805.0) or time_ns >= first_cycle_post
             if one_shot_valid:
-                valid = 0.9 if (125.0 <= time_ns < 135.0 or 1855.0 <= time_ns < 1865.0) else 0.0
+                valid = 0.9 if (first_cycle_pre <= time_ns < first_cycle_pre + 10.0 or first_cycle_post <= time_ns < first_cycle_post + 10.0) else 0.0
             else:
                 valid = 0.9 if (immediate_valid or first_cycle_done) else 0.0
         rows.append({
@@ -130,7 +169,7 @@ def _rows(
 
 
 def test_task381_gold_like_trace_covers_period_valid_and_clamp() -> None:
-    ok, detail = check_v4_940_fm_vco_modulation_source(_rows())
+    ok, detail = check_v4_940_fm_vco_modulation_source(_rows(marker_mode="toggle"))
     assert ok, detail
 
 
@@ -147,6 +186,14 @@ def test_task381_period_checks_are_timing_metamorphic() -> None:
 def test_task381_accepts_narrow_pulse_phase_marker() -> None:
     ok, detail = check_v4_940_fm_vco_modulation_source(_rows(marker_mode="pulse"))
     assert ok, detail
+
+
+def test_task381_rejects_marker_event_only_every_two_cycles() -> None:
+    rows = _rows(marker_mode="pulse", marker_every_two_cycles=True)
+    assert _pre_cadence_period_accepts(rows)
+    ok, detail = check_v4_940_fm_vco_modulation_source(rows)
+    assert not ok
+    assert "P_PHASE_MARKER_CADENCE" in detail
 
 
 def test_task381_rejects_old_pass_constant_frequency_oscillator() -> None:
