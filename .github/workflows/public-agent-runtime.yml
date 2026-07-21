@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Check runtime contract
-        run: python3 -m pytest -q benchmark-vabench-release-v4/scripts/tests/test_public_agent_runtime.py
+        run: python3 benchmark-vabench-release-v4/scripts/tests/test_public_agent_runtime.py
 
       - name: Build pinned runtime image
         working-directory: benchmark-vabench-release-v4/public-agent-runtime
