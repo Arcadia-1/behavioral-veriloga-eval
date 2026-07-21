@@ -7,7 +7,7 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=22n maxstep=50p"
+      "tran tran stop=45n maxstep=50p"
     ],
     "body_lines": [
       "Vin (vin 0) vsource type=pwl wave=[0 0 4n 0 5n 0.9 8n 0.9 9n 0 24n 0 25n 0.9 28n 0.9 29n 0 45n 0]",

@@ -15,6 +15,50 @@ PROPERTY_IDS = (
 )
 
 
+def _sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
+    if not rows or signal not in rows[0]:
+        return None
+    if time_s < rows[0]["time"] or time_s > rows[-1]["time"]:
+        return None
+    for idx in range(1, len(rows)):
+        prev = rows[idx - 1]
+        cur = rows[idx]
+        t0 = prev["time"]
+        t1 = cur["time"]
+        if t0 <= time_s <= t1:
+            v0 = prev.get(signal)
+            v1 = cur.get(signal)
+            if v0 is None or v1 is None:
+                return None
+            if t1 == t0:
+                return v1
+            alpha = (time_s - t0) / (t1 - t0)
+            return v0 + alpha * (v1 - v0)
+    if time_s == rows[0]["time"]:
+        return rows[0].get(signal)
+    return None
+
+
+def _sampled_peak_before(
+    rows: list[dict[str, float]],
+    *,
+    segment_start: float,
+    time_s: float,
+    sample_period_s: float = 500.0e-12,
+) -> float:
+    first_index = max(0, int((segment_start + sample_period_s - 1.0e-18) // sample_period_s))
+    last_index = int((time_s + 1.0e-18) // sample_period_s)
+    peak = 0.0
+    for sample_index in range(first_index, last_index + 1):
+        sample_t = sample_index * sample_period_s
+        if sample_t < segment_start - 1.0e-18 or sample_t > time_s + 1.0e-18:
+            continue
+        vin = _sample_signal_at(rows, "vin", sample_t)
+        if vin is not None:
+            peak = max(peak, vin)
+    return peak
+
+
 def check_peak_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "rst", "vout"}
     missing = require_signals(rows, required, "P_SAMPLED_MEASUREMENT")
@@ -61,7 +105,11 @@ def check_peak_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
         span_rows = [row for row in rows if start + margin <= row["time"] <= stop - margin]
         if len(span_rows) < 4:
             continue
-        expected_peak = max(row["vin"] for row in span_rows)
+        expected_peak = _sampled_peak_before(
+            rows,
+            segment_start=start,
+            time_s=stop - margin,
+        )
         observed_peak = max(row["vout"] for row in span_rows)
         peak_checks += 1
         err = abs(observed_peak - expected_peak)
@@ -139,6 +187,7 @@ def check_v4_peak_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     for segment in segments:
         if len(segment) < 4:
             continue
+        segment_start = segment[0]["time"]
         expected_peak = 0.0
         held_vout = segment[0]["vout"]
         for row in segment[1:]:
@@ -169,6 +218,24 @@ def check_v4_peak_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
                     )
                 )
             checks += 1
+        for row in segment:
+            sampled_peak = _sampled_peak_before(
+                rows,
+                segment_start=segment_start,
+                time_s=row["time"],
+            )
+            overshoot = row["vout"] - sampled_peak
+            if overshoot > 0.12:
+                failures.append(
+                    diagnostic(
+                        "P_SAMPLED_MEASUREMENT",
+                        "value_mismatch",
+                        expected=f"vout<=sampled_peak_so_far:{sampled_peak:.3f}",
+                        observed=f"vout:{row['vout']:.3f}",
+                        event=f"timer_sample_grid@{row['time'] * 1e9:.3f}ns",
+                    )
+                )
+                break
     if checks < 12:
         failures.append(
             diagnostic(
