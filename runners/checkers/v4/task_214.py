@@ -163,7 +163,7 @@ def check_v3_comparator_reset_low_1p8(rows: list[dict[str, float]]) -> tuple[boo
             failures.append(f"reset@{probe_t * 1e9:.3f}ns outp/outn={outp:.3f}/{outn:.3f}")
     if decision_checks < 2 or reset_checks < 1:
         return False, f"insufficient_comparator_checks decisions={decision_checks} resets={reset_checks}"
-    if not (saw_positive and saw_negative):
+    if not (saw_positive and saw_negative and saw_equal):
         return False, f"missing_comparator_polarity positive={saw_positive} negative={saw_negative} equal={saw_equal}"
     if failures:
         return False, " ".join(failures[:5])
