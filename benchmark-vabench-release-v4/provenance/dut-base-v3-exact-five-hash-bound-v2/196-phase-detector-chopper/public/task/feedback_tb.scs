@@ -9,5 +9,5 @@ XDUT (vlocal_osc vin_rf vif) phase_detector_chopper
 
 simulatorOptions options evas_profile=balanced
 
-tran tran stop=2.8n maxstep=10p
+tran tran stop=3.8n maxstep=10p
 save vif vin_rf vlocal_osc

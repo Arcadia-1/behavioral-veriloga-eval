@@ -113,12 +113,12 @@ def _make_pfd_rows(*, scale: float = 1.0, shift: float = 0.0) -> list[dict[str, 
                 hide_until = -1.0
             if signal == "in1":
                 if state == -1:
-                    hide_until = event_time + 120e-12
+                    hide_until = event_time + scale * 120e-12
                 else:
                     state = 1
             else:
                 if state == 1:
-                    hide_until = event_time + 120e-12
+                    hide_until = event_time + scale * 120e-12
                 else:
                     state = -1
         if hide_until > 0.0 and time_s < hide_until:

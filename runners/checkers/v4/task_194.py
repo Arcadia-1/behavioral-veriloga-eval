@@ -57,6 +57,33 @@ def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -
             return v0 + alpha * (v1 - v0)
     return None
 
+def _check_initial_outputs(
+    rows: list[dict[str, float]],
+    probe_time: float,
+) -> tuple[bool, str]:
+    expected = {
+        "dout10": 0.0,
+        "dout11": 0.0,
+        "dout12": 0.0,
+        "dout13": 0.9,
+        **{f"gainctrl{bit}": 0.9 if (90 >> bit) & 1 else 0.0 for bit in range(7)},
+        "ddiff": 0.0,
+        "dop": 0.96,
+        "dom": 0.32,
+        "gctrlcode": 0.90,
+    }
+    for signal, wanted in expected.items():
+        observed = sample_signal_at(rows, signal, probe_time)
+        if observed is None:
+            return False, f"missing_pipe_adc_initial_output={signal}"
+        tolerance = 0.10 if signal.startswith(("dout", "gainctrl")) else 0.04
+        if abs(observed - wanted) > tolerance:
+            return False, (
+                f"initial_{signal}@{probe_time * 1e9:.3f}ns "
+                f"observed={observed:.3f} expected={wanted:.3f}"
+            )
+    return True, "initial_pipe_adc_outputs_valid"
+
 def check_v3_pipe_adc_gain_control_loop(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {
         "time",
@@ -104,6 +131,12 @@ def check_v3_pipe_adc_gain_control_loop(rows: list[dict[str, float]]) -> tuple[b
     failures: list[str] = []
     sampled_codes: set[int] = set()
     saw_minus_phase = saw_plus_phase = saw_gain_update = False
+
+    initial_probe = 0.5 * (times[0] + edges[0])
+    initial_ok, initial_detail = _check_initial_outputs(rows, initial_probe)
+    if not initial_ok:
+        return False, initial_detail
+    checked += 1
 
     for edge_index, edge_t in enumerate(edges):
         code = 0

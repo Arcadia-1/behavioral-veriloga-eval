@@ -171,6 +171,12 @@ def check_v3_sar_logic_4b_self_timed(rows: list[dict[str, float]]) -> tuple[bool
             checked += 1
 
     start_probe = _event_probe_time(rows, clkc_rises[0], delay_s=0.24e-9)
+    start_delay_probe = _event_probe_time(rows, clkc_rises[0], delay_s=0.05e-9)
+    if start_delay_probe is not None:
+        ok, detail = _assert_logic_levels(rows, {"cmpck": 0}, start_delay_probe, vhi=vhi, tol=0.12)
+        if not ok:
+            return False, f"clkc_start_logic_delay_{detail}"
+        checked += 1
     if start_probe is not None:
         ok, detail = _assert_logic_levels(rows, {"cmpck": 1}, start_probe, vhi=vhi, tol=0.12)
         if not ok:
@@ -179,6 +185,12 @@ def check_v3_sar_logic_4b_self_timed(rows: list[dict[str, float]]) -> tuple[bool
 
     for event_time, kind in comp_events:
         if kind == "rise":
+            delay_probe = _event_probe_time(rows, event_time, delay_s=0.05e-9)
+            if delay_probe is not None:
+                ok, detail = _assert_logic_levels(rows, {"cmpck": 1}, delay_probe, vhi=vhi, tol=0.12)
+                if not ok:
+                    return False, f"cmpck_close_logic_delay_step{step}_{detail}"
+                checked += 1
             dcmpp_value = sample_signal_at(rows, "dcmpp", event_time + 0.02e-9)
             dcmpn_value = sample_signal_at(rows, "dcmpn", event_time + 0.02e-9)
             if dcmpp_value is None or dcmpn_value is None:
@@ -209,6 +221,12 @@ def check_v3_sar_logic_4b_self_timed(rows: list[dict[str, float]]) -> tuple[bool
                 checked += 1
         else:
             if step > 1:
+                delay_probe = _event_probe_time(rows, event_time, delay_s=0.05e-9)
+                if delay_probe is not None:
+                    ok, detail = _assert_logic_levels(rows, {"cmpck": 0}, delay_probe, vhi=vhi, tol=0.12)
+                    if not ok:
+                        return False, f"cmpck_reopen_logic_delay_step{step}_{detail}"
+                    checked += 1
                 step -= 1
                 cmpck_high_probe = _event_probe_time(rows, event_time, delay_s=0.24e-9)
                 if cmpck_high_probe is not None:
