@@ -19,7 +19,7 @@ def check_v4_311_muxed_track_hold_array_readout(rows: list[dict[str, float]]) ->
     held = [0.45, 0.45, 0.45]
     held_valid = [False, False, False]
     expected_out = 0.45
-    checked = vout_errors = metric_errors = valid_errors = disabled_update_errors = 0
+    checked = vout_errors = metric_errors = valid_errors = disabled_update_errors = invalid_hold_errors = 0
     reset_clear = disabled_hold_seen = invalid_seen = valid_seen = False
     codes_seen: set[int] = set()
     previous = rows[0]
@@ -92,6 +92,8 @@ def check_v4_311_muxed_track_hold_array_readout(rows: list[dict[str, float]]) ->
             invalid_seen = invalid_seen or row["valid"] < 0.25
             if row["valid"] > 0.25:
                 valid_errors += 1
+            if abs(float(row["vout"]) - expected_out) > 0.12:
+                invalid_hold_errors += 1
             checked += 1
             continue
         codes_seen.add(code)
@@ -117,12 +119,13 @@ def check_v4_311_muxed_track_hold_array_readout(rows: list[dict[str, float]]) ->
         and metric_errors <= 1
         and valid_errors <= max(5, checked // 20)
         and disabled_update_errors <= 6
+        and invalid_hold_errors == 0
     )
     return ok, (
         f"v4_311 checked={checked} reset_clear={reset_clear} disabled_hold={disabled_hold_seen} "
         f"invalid_seen={invalid_seen} valid_seen={valid_seen} codes={sorted(codes_seen)} "
         f"vout_errors={vout_errors} metric_errors={metric_errors} valid_errors={valid_errors} "
-        f"disabled_update_errors={disabled_update_errors}"
+        f"disabled_update_errors={disabled_update_errors} invalid_hold_errors={invalid_hold_errors}"
     )
 
 CHECKER_ID = "v4_311_muxed_track_hold_array_readout"

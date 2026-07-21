@@ -31,7 +31,7 @@ def check_v4_316_residue_amplifier_gain_calibration(rows: list[dict[str, float]]
     times = [float(row["time"]) for row in rows]
     checked = code_errors = vout_errors = metric_errors = clear_errors = lock_errors = 0
     codes_seen: set[int] = set()
-    reset_clear = disabled_clear = high_code_seen = locked_seen = False
+    reset_clear = late_reset_clear = disabled_clear = high_code_seen = locked_seen = decrement_seen = False
     first_active_error = None
     last_active_error = None
     expected_code = 0
@@ -67,6 +67,8 @@ def check_v4_316_residue_amplifier_gain_calibration(rows: list[dict[str, float]]
             clear = code == 0 and abs(vout - 0.45) < 0.08 and metric < 0.08 and not locked
             if rst and clear:
                 reset_clear = True
+                if ever_enabled:
+                    late_reset_clear = True
             if ever_enabled and not rst and not _v4_topup_logic_high(row, "cal_en") and clear:
                 disabled_clear = True
             if (
@@ -98,6 +100,8 @@ def check_v4_316_residue_amplifier_gain_calibration(rows: list[dict[str, float]]
         if signed_error > 0.015:
             expected_code = min(7, expected_code + 1)
         elif signed_error < -0.015:
+            if expected_code > 0:
+                decrement_seen = True
             expected_code = max(0, expected_code - 1)
         lock_streak = lock_streak + 1 if err <= 0.015 else 0
         expected_locked = lock_streak >= 3
@@ -135,8 +139,10 @@ def check_v4_316_residue_amplifier_gain_calibration(rows: list[dict[str, float]]
     ok = (
         checked >= 8
         and reset_clear
+        and late_reset_clear
         and disabled_clear
         and locked_seen
+        and decrement_seen
         and error_reduced
         and code_errors == 0
         and vout_errors == 0
@@ -146,7 +152,8 @@ def check_v4_316_residue_amplifier_gain_calibration(rows: list[dict[str, float]]
     )
     return ok, (
         f"v4_316 checked={checked} codes={sorted(codes_seen)} reset_clear={reset_clear} "
-        f"disabled_clear={disabled_clear} high_code_seen={high_code_seen} locked_seen={locked_seen} "
+        f"late_reset_clear={late_reset_clear} disabled_clear={disabled_clear} "
+        f"high_code_seen={high_code_seen} locked_seen={locked_seen} decrement_seen={decrement_seen} "
         f"error_reduced={error_reduced} code_errors={code_errors} "
         f"vout_errors={vout_errors} metric_errors={metric_errors} "
         f"lock_errors={lock_errors} clear_errors={clear_errors} settle_window={settle_window:.6g}"
@@ -157,11 +164,11 @@ CHECKER: Checker = with_property_diagnostics(
     check_v4_316_residue_amplifier_gain_calibration,
     {
         "P_ON_RESET_CLEAR_GAIN_CODE_OUTPUT": (
-            "clear_errors", "!reset_clear", "!disabled_clear",
+            "clear_errors", "!reset_clear", "!late_reset_clear", "!disabled_clear",
         ),
         "P_WHILE_CAL_EN_IS_HIGH_COMPARE": "metric_errors",
         "P_INCREMENT_OR_DECREMENT_THE_GAIN_CODE": (
-            "code_errors", "!error_reduced",
+            "code_errors", "!decrement_seen", "!error_reduced",
         ),
         "P_DRIVE_VOUT_AS_A_CLAMPED_RESIDUE": "vout_errors",
         "P_ASSERT_LOCKED_AFTER_THREE_CONSECUTIVE_UPDATES": (
