@@ -70,6 +70,34 @@ def check_v4_nonoverlap_clock_generator(rows: list[dict[str, float]]) -> tuple[b
         for row in rows
     )
     valid_seen = any(row["enable"] > 0.45 and row["valid"] > 0.45 for row in rows)
+    inactive_since: float | None = None
+    reset_clear = False
+    disabled_clear = False
+    clear_errors = 0
+    valid_latched = False
+    valid_errors = 0
+    for row in rows:
+        inactive = row["rst"] > 0.45 or row["enable"] <= 0.45
+        if inactive:
+            valid_latched = False
+            if inactive_since is None:
+                inactive_since = row["time"]
+            if row["time"] - inactive_since >= 500e-12:
+                clear = all(
+                    row[name] <= 0.12
+                    for name in ("phi1", "phi2", "deadtime_metric", "valid")
+                )
+                reset_clear = reset_clear or (row["rst"] > 0.45 and clear)
+                disabled_clear = disabled_clear or (
+                    row["rst"] <= 0.45 and row["enable"] <= 0.45 and clear
+                )
+                clear_errors += int(not clear)
+            continue
+        inactive_since = None
+        if row["valid"] > 0.45:
+            valid_latched = True
+        elif valid_latched:
+            valid_errors += 1
     disable_samples = [
         _sample_after(rows, edge_t, disable_delay)
         for edge_t in _falling_times(rows, "enable")
@@ -99,11 +127,25 @@ def check_v4_nonoverlap_clock_generator(rows: list[dict[str, float]]) -> tuple[b
             checked_fall += 1
             if sample["phi2"] <= 0.45 or sample["phi1"] > 0.45:
                 errors += 1
-    ok = overlap == 0 and dead_seen and valid_seen and disable_clears and errors == 0 and checked_rise >= 3 and checked_fall >= 3
+    ok = (
+        overlap == 0
+        and dead_seen
+        and valid_seen
+        and reset_clear
+        and disabled_clear
+        and disable_clears
+        and clear_errors == 0
+        and valid_errors == 0
+        and errors == 0
+        and checked_rise >= 3
+        and checked_fall >= 3
+    )
     return ok, (
         "v4_nonoverlap_clock "
         f"rise={checked_rise} fall={checked_fall} errors={errors} overlap={overlap} "
-        f"dead_seen={dead_seen} valid_seen={valid_seen} disable_clears={disable_clears}"
+        f"dead_seen={dead_seen} valid_seen={valid_seen} reset_clear={reset_clear} "
+        f"disabled_clear={disabled_clear} disable_clears={disable_clears} "
+        f"clear_errors={clear_errors} valid_errors={valid_errors}"
     )
 
 CHECKER_ID = "v4_375_nonoverlap_clock_generator"
