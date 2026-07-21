@@ -524,7 +524,7 @@ def test_prompt_assets_keep_wrappers_and_snapshot_real_skills(tmp_path: Path) ->
     assert skill_manifest["mode_skill_matrix"]["G4"] == ["vabench-feedback"]
     veriloga_source = skill_manifest["skills"]["veriloga"]["source"]
     assert veriloga_source["upstream_commit"] == (
-        "c0f51c76d0e4dd51e8e931f404e4d52d07d49df5"
+        "bf3ee9f5c20bbefccc36f1cd58af9a48032a6ca5"
     )
     assert veriloga_source["upstream_pull_request"].endswith("/pull/17")
     assert all(

@@ -120,7 +120,7 @@ SKILL_SOURCES = {
         "type": "vendored_runtime_subset",
         "path": "skills/veriloga",
         "upstream_repository": "https://github.com/Arcadia-1/veriloga-skills",
-        "upstream_commit": "c0f51c76d0e4dd51e8e931f404e4d52d07d49df5",
+        "upstream_commit": "bf3ee9f5c20bbefccc36f1cd58af9a48032a6ca5",
         "upstream_pull_request": "https://github.com/Arcadia-1/veriloga-skills/pull/17",
         "included_paths": ["SKILL.md", "agents/**", "assets/**", "references/**"],
     },
