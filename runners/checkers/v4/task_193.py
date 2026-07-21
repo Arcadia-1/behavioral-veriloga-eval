@@ -4,7 +4,7 @@ from __future__ import annotations
 from ..api import Checker, Row
 from .trace_utils import median_step, property_diagnostics, sample_signal, threshold_crossings
 
-RESET_WINDOW_S = 120e-12
+RESET_TO_INPUT_PULSE_RATIO = 0.4
 PROPERTIES = {
     "P_LEADING_EDGE_DIRECTION": 0,
     "P_RESET_OVERLAP_WINDOW": 0,
@@ -45,7 +45,57 @@ def _check_outputs(
     return max_err
 
 
-def _edge_pairs(rows: list[Row], threshold: float) -> list[tuple[str, float, float]]:
+def _relative_reset_window(rows: list[Row], threshold: float) -> float | None:
+    pulse_widths: list[float] = []
+    for signal in ("in1", "in2"):
+        rises = threshold_crossings(rows, signal, threshold=threshold, direction=1)
+        falls = threshold_crossings(rows, signal, threshold=threshold, direction=-1)
+        for rise in rises:
+            fall = next((event_time for event_time in falls if event_time > rise), None)
+            if fall is not None:
+                pulse_widths.append(fall - rise)
+    if not pulse_widths:
+        return None
+    pulse_widths.sort()
+    middle = len(pulse_widths) // 2
+    typical_width = (
+        pulse_widths[middle]
+        if len(pulse_widths) % 2
+        else 0.5 * (pulse_widths[middle - 1] + pulse_widths[middle])
+    )
+    return RESET_TO_INPUT_PULSE_RATIO * typical_width
+
+
+def _fall_start_after(
+    rows: list[Row],
+    signal: str,
+    after_s: float,
+    high: float,
+    low: float,
+) -> tuple[float, float] | None:
+    span = high - low
+    high_falls = threshold_crossings(
+        rows, signal, threshold=low + 0.8 * span, direction=-1
+    )
+    low_falls = threshold_crossings(
+        rows, signal, threshold=low + 0.2 * span, direction=-1
+    )
+    high_crossing = next((time_s for time_s in high_falls if time_s > after_s), None)
+    if high_crossing is None:
+        return None
+    low_crossing = next(
+        (time_s for time_s in low_falls if time_s >= high_crossing), None
+    )
+    if low_crossing is None:
+        return None
+    slew_20_80 = low_crossing - high_crossing
+    fall_start = high_crossing - slew_20_80 / 3.0
+    return fall_start, slew_20_80
+
+
+def _edge_pairs(
+    rows: list[Row], threshold: float, reset_window_s: float
+) -> list[tuple[str, float, float]]:
     events = sorted(
         [
             *[(time_s, "in1") for time_s in threshold_crossings(rows, "in1", threshold=threshold, direction=1)],
@@ -68,7 +118,7 @@ def _edge_pairs(rows: list[Row], threshold: float) -> list[tuple[str, float, flo
             continue
         pairs.append((armed_signal, armed_time, event_time))
         armed_signal = None
-        suppress_until = event_time + RESET_WINDOW_S
+        suppress_until = event_time + reset_window_s
     return pairs
 
 
@@ -82,7 +132,14 @@ def check_v3_pfd_tdomain_reset_window(rows: list[Row]) -> tuple[bool, str]:
         return False, f"insufficient_excitation pfd_tdomain_reset_window rail_span={high - low:.4g}"
 
     threshold = low + 0.5 * (high - low)
-    pairs = _edge_pairs(rows, threshold)
+    reset_window_s = _relative_reset_window(rows, threshold)
+    if reset_window_s is None:
+        return (
+            False,
+            "insufficient_excitation pfd_tdomain_reset_window "
+            "complete_input_pulses=0",
+        )
+    pairs = _edge_pairs(rows, threshold, reset_window_s)
     if not pairs:
         return (
             False,
@@ -93,8 +150,11 @@ def check_v3_pfd_tdomain_reset_window(rows: list[Row]) -> tuple[bool, str]:
     counts = dict(PROPERTIES)
     tol = max(0.08, 0.12 * (high - low))
     step = median_step(rows)
-    settle = max(step * 5.0, 30e-12)
+    settle = max(step * 5.0, 0.25 * reset_window_s)
     max_err = 0.0
+    max_reset_err = 0.0
+    max_fall_slew = 0.0
+    max_timing_tol = 0.0
     checked = 0
 
     for leading_signal, leading_time, second_time in pairs:
@@ -119,7 +179,7 @@ def check_v3_pfd_tdomain_reset_window(rows: list[Row]) -> tuple[bool, str]:
             max_err = max(max_err, err)
             checked += 1
 
-        overlap_time = second_time + 0.5 * RESET_WINDOW_S
+        overlap_time = second_time + 0.5 * reset_window_s
         if overlap_time <= rows[-1]["time"]:
             err = _check_outputs(
                 rows,
@@ -136,22 +196,36 @@ def check_v3_pfd_tdomain_reset_window(rows: list[Row]) -> tuple[bool, str]:
                 max_err = max(max_err, err)
                 checked += 1
 
-        clear_time = second_time + RESET_WINDOW_S + settle
-        if clear_time <= rows[-1]["time"]:
-            err = _check_outputs(
-                rows,
-                counts,
-                clear_time,
-                up_high=False,
-                dn_high=False,
-                property_id="P_CLEAR_AFTER_RESET_WINDOW",
-                high=high,
-                low=low,
-                tol=tol,
-            )
-            if err is not None:
-                max_err = max(max_err, err)
-                checked += 1
+        clear_estimates = [
+            _fall_start_after(rows, signal, second_time, high, low)
+            for signal in ("up", "dn")
+        ]
+        if any(estimate is None for estimate in clear_estimates):
+            counts["P_CLEAR_AFTER_RESET_WINDOW"] += 1
+            counts["P_PFD_OUTPUT_LEVELS"] += 1
+            continue
+        up_estimate, dn_estimate = clear_estimates
+        assert up_estimate is not None and dn_estimate is not None
+        up_clear, up_slew = up_estimate
+        dn_clear, dn_slew = dn_estimate
+        fall_slew = max(up_slew, dn_slew)
+        timing_tol = max(
+            2.0 * step,
+            min(0.5 * fall_slew + step, 0.15 * reset_window_s),
+        )
+        max_fall_slew = max(max_fall_slew, fall_slew)
+        max_timing_tol = max(max_timing_tol, timing_tol)
+        common_clear = 0.5 * (up_clear + dn_clear)
+        observed_window = common_clear - second_time
+        reset_err = abs(observed_window - reset_window_s)
+        max_reset_err = max(max_reset_err, reset_err)
+        if (
+            reset_err > timing_tol
+            or abs(up_clear - dn_clear) > timing_tol
+            or abs(up_slew - dn_slew) > timing_tol
+        ):
+            counts["P_CLEAR_AFTER_RESET_WINDOW"] += 1
+        checked += 1
 
     if checked < 3:
         return (
@@ -164,7 +238,10 @@ def check_v3_pfd_tdomain_reset_window(rows: list[Row]) -> tuple[bool, str]:
     return (
         ok,
         f"{property_diagnostics(counts)}; pairs={len(pairs)}; "
-        f"checked_windows={checked}; max_err={max_err:.6g}",
+        f"checked_windows={checked}; max_err={max_err:.6g}; "
+        f"max_reset_err_s={max_reset_err:.6g}; "
+        f"max_fall_slew_20_80_s={max_fall_slew:.6g}; "
+        f"max_timing_tol_s={max_timing_tol:.6g}",
     )
 
 

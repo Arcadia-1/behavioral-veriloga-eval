@@ -181,6 +181,9 @@ def check_v3_sar_das_logic_6b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     coutb = 0
     checked = 0
     for event_time, kind in events:
+        prior = {f"d{idx}": b[idx] for idx in range(1, 7)}
+        prior.update({f"db{idx}": bb[idx] for idx in range(1, 7)})
+        prior.update({"co": cout, "cob": coutb})
         if kind == "sampling_rise":
             bit = 7
             b = {idx: 0 for idx in range(1, 7)}
@@ -232,6 +235,13 @@ def check_v3_sar_das_logic_6b(rows: list[dict[str, float]]) -> tuple[bool, str]:
         elif kind == "sar_fall":
             cout = 0
             coutb = 0
+
+        delay_probe = _event_probe_time(rows, event_time, delay_s=0.025e-9)
+        if delay_probe is not None:
+            ok, detail = _assert_logic_levels(rows, prior, delay_probe, vhi=vdd, tol=0.13)
+            if not ok:
+                return False, f"{kind}_output_delay_{detail}"
+            checked += 1
 
         probe_time = _event_probe_time(rows, event_time, delay_s=0.17e-9)
         if probe_time is None:
