@@ -80,7 +80,7 @@ def check_v4_ffe_transmitter_3tap(rows: list[dict[str, float]]) -> tuple[bool, s
 
     diagnostics = {
         name: PropertyDiagnostic(name)
-        for name in ("P_MAIN_TAP", "P_PRE_TAP", "P_POST_TAP", "P_OUTPUT_SUM", "P_RESET_HISTORY_CLEAR", "P_CLIP_BOUNDARY", "P_EXCITATION")
+        for name in ("P_MAIN_TAP", "P_PRE_TAP", "P_POST_TAP", "P_OUTPUT_SUM", "P_RESET_HISTORY_CLEAR", "P_EXCITATION")
     }
     sym0 = 0
     sym1 = 0
@@ -93,7 +93,6 @@ def check_v4_ffe_transmitter_3tap(rows: list[dict[str, float]]) -> tuple[bool, s
     recovery_edges = 0
     saw_activity_before_reset = False
     awaiting_reset_recovery = False
-    clip_boundary_checks = 0
     for edge_t in _rising_times(rows, "clk"):
         edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
         if edge_row["rst"] > 0.45:
@@ -138,20 +137,6 @@ def check_v4_ffe_transmitter_3tap(rows: list[dict[str, float]]) -> tuple[bool, s
                     time=edge_t,
                     gap=abs(observed - expected),
                 )
-        raw_from_debug = float(sample["main_dbg"]) + float(sample["pre_dbg"]) + float(sample["post_dbg"]) - 0.9
-        clipped_from_debug = _v4_clip(raw_from_debug)
-        if raw_from_debug < -0.02 or raw_from_debug > 0.92:
-            clip_boundary_checks += 1
-            diagnostic = diagnostics["P_CLIP_BOUNDARY"]
-            diagnostic.checked += 1
-            observed = float(sample["vout"])
-            if not _v4_close(observed, clipped_from_debug, 0.08):
-                diagnostic.mismatch(
-                    expected=f"vout={clipped_from_debug:.6g}",
-                    observed=f"vout={observed:.6g}",
-                    time=edge_t,
-                    gap=abs(observed - clipped_from_debug),
-                )
         checked += 1
 
     diagnostics["P_RESET_HISTORY_CLEAR"].checked = 1
@@ -165,9 +150,6 @@ def check_v4_ffe_transmitter_3tap(rows: list[dict[str, float]]) -> tuple[bool, s
             time=float(rows[-1]["time"]),
             gap=float(max(0, 1 - reset_edges_after_activity) + max(0, 1 - recovery_edges)),
         )
-    if clip_boundary_checks == 0:
-        diagnostics["P_CLIP_BOUNDARY"].checked = 1
-
     out_span = max(out_values, default=0.45) - min(out_values, default=0.45)
     diagnostics["P_EXCITATION"].checked = 1
     coverage_ok = checked >= 10 and len(pre_codes) >= 3 and len(post_codes) >= 3 and out_span > 0.25

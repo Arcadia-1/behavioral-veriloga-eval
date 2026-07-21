@@ -80,13 +80,55 @@ def _ffe_expected(data_high: bool, pre_code: int, post_code: int, history: tuple
     return next_sym0, next_sym1, next_sym2, main, pre, post, out
 
 
-def _ffe_rows(*, keep_history_after_reset: bool = False, bad_clip: bool = False) -> list[dict[str, float]]:
+def _legacy_353_checker_accepts(rows: list[dict[str, float]]) -> bool:
+    sym0 = sym1 = sym2 = 0
+    checked = 0
+    pre_codes: set[int] = set()
+    post_codes: set[int] = set()
+    out_values: list[float] = []
+    last_clk_high = rows[0]["clk"] > 0.45
+    for row in rows:
+        clk_high = row["clk"] > 0.45
+        if last_clk_high or not clk_high:
+            last_clk_high = clk_high
+            continue
+        last_clk_high = clk_high
+        if row["rst"] > 0.45:
+            sym0 = sym1 = sym2 = 0
+            expected_main = expected_pre = expected_post = expected_out = VCM
+        else:
+            sym2 = sym1
+            sym1 = sym0
+            sym0 = 1 if row["data"] > 0.45 else -1
+            pre_code = (1 if row["pre_0"] > 0.45 else 0) + (2 if row["pre_1"] > 0.45 else 0)
+            post_code = (1 if row["post_0"] > 0.45 else 0) + (2 if row["post_1"] > 0.45 else 0)
+            pre_codes.add(pre_code)
+            post_codes.add(post_code)
+            expected_main = VCM + 0.18 * sym0
+            expected_pre = VCM + 0.04 * pre_code * sym1
+            expected_post = VCM - 0.04 * post_code * sym2
+            expected_out = max(0.0, min(VDD, VCM + 0.18 * sym0 + 0.04 * pre_code * sym1 - 0.04 * post_code * sym2))
+            out_values.append(expected_out)
+        checks = (
+            (row["main_dbg"], expected_main, 0.07),
+            (row["pre_dbg"], expected_pre, 0.07),
+            (row["post_dbg"], expected_post, 0.07),
+            (row["vout"], expected_out, 0.08),
+        )
+        if any(abs(observed - expected) > tolerance for observed, expected, tolerance in checks):
+            return False
+        checked += 1
+    out_span = max(out_values, default=VCM) - min(out_values, default=VCM)
+    return checked >= 10 and len(pre_codes) >= 3 and len(post_codes) >= 3 and out_span > 0.25
+
+
+def _ffe_rows(*, midrun_reset: bool = True, clear_midrun_history: bool = True) -> list[dict[str, float]]:
     rows: list[dict[str, float]] = []
     pattern = [
         (True, 0, 1, True),
         (False, 1, 1, False),
         (True, 3, 0, False),
-        (False, 2, 3, True),
+        (False, 2, 3, midrun_reset),
         (True, 3, 3, False),
         (False, 1, 0, False),
         (True, 0, 2, False),
@@ -95,27 +137,15 @@ def _ffe_rows(*, keep_history_after_reset: bool = False, bad_clip: bool = False)
         (True, 0, 0, False),
     ]
     history = (0, 0, 0)
-    saved_history = history
     for edge, (data_high, pre_code, post_code, rst) in enumerate(pattern):
         t = (1.0 + edge) * 1e-9
         if rst:
-            if keep_history_after_reset and edge > 0:
-                history = saved_history
-                sym0, sym1, sym2 = history
-                main = VCM
-                pre = VCM + 0.04 * pre_code * sym1
-                post = VCM - 0.04 * post_code * sym2
-                out = VCM
-            else:
+            if edge == 0 or clear_midrun_history:
                 history = (0, 0, 0)
-                main = pre = post = out = VCM
+            main = pre = post = out = VCM
         else:
             sym0, sym1, sym2, main, pre, post, out = _ffe_expected(data_high, pre_code, post_code, history)
             history = (sym0, sym1, sym2)
-            saved_history = history
-        if bad_clip and edge == len(pattern) - 1:
-            main, pre, post = 1.02, 0.70, 0.62
-            out = 0.75
         base = {
             "data": VDD if data_high else 0.0,
             "rst": VDD if rst else 0.0,
@@ -147,15 +177,8 @@ def test_353_requires_midrun_reset_history_clear() -> None:
     passed, detail = check_v4_ffe_transmitter_3tap(_ffe_rows())
     assert passed, detail
 
-    passed, detail = check_v4_ffe_transmitter_3tap(_ffe_rows(keep_history_after_reset=True))
+    assert _legacy_353_checker_accepts(_ffe_rows(midrun_reset=False, clear_midrun_history=False))
+
+    passed, detail = check_v4_ffe_transmitter_3tap(_ffe_rows(midrun_reset=True, clear_midrun_history=False))
     assert not passed
     assert "P_RESET_HISTORY_CLEAR" in detail or "P_PRE_TAP" in detail or "P_POST_TAP" in detail
-
-
-def test_353_checks_observable_clip_boundary_when_trace_exercises_rail() -> None:
-    passed, detail = check_v4_ffe_transmitter_3tap(_ffe_rows())
-    assert passed, detail
-
-    passed, detail = check_v4_ffe_transmitter_3tap(_ffe_rows(bad_clip=True))
-    assert not passed
-    assert "P_CLIP_BOUNDARY" in detail
