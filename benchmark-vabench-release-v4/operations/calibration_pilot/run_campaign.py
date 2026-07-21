@@ -130,6 +130,10 @@ class ProviderAPIError(RuntimeError):
     """Provider returned a structured API error that is not transport failure."""
 
 
+class RuntimeExportError(RuntimeError):
+    """The isolated public runtime could not be materialized for a cell."""
+
+
 def now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -301,6 +305,20 @@ def evas_invocation_incidents(invocations: list[dict[str, Any]]) -> list[dict[st
 def classify_execution_exception(exc: Exception) -> dict[str, Any]:
     error_type = type(exc).__name__
     message = str(exc).lower()
+    if isinstance(exc, RuntimeExportError):
+        return {
+            "status": "infrastructure_failure",
+            "termination_reason": "runtime_export_failure",
+            "model_status": "runner_failure",
+            "incident": {
+                "category": "runtime_export_failure",
+                "component": "runner",
+                "error_type": error_type,
+                "phase": "setup",
+                "responsibility": "infrastructure",
+                "retryable": True,
+            },
+        }
     if isinstance(exc, ProviderRequestTimeout):
         return {
             "status": "provider_timeout",
@@ -1830,11 +1848,29 @@ def gate_agentic_submission(runtime: Path, result: dict[str, Any]) -> bool:
 
 
 def export_runtime(cell: dict[str, Any], release: Path, output: Path, *, timeout_s: int) -> None:
-    subprocess.run([
+    command = [
         sys.executable, str(EXPORTER), "--release", str(release), "--task", cell["task_id"],
         "--mode", cell["mode"], "--output", str(output), "--per-turn-max-tokens",
         str(cell_per_turn_max_tokens(cell)), "--force",
-    ], cwd=REPO, check=True, stdout=subprocess.DEVNULL, timeout=timeout_s)
+    ]
+    try:
+        completed = subprocess.run(
+            command,
+            cwd=REPO,
+            check=False,
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            timeout=timeout_s,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise RuntimeExportError(f"runtime exporter could not complete: {exc}") from exc
+    if completed.returncode != 0:
+        detail = completed.stderr.strip()[-2000:] or completed.stdout.strip()[-2000:]
+        raise RuntimeExportError(
+            f"runtime exporter exited with status {completed.returncode}: {detail}"
+        )
 
 
 def run_mini_swe_agentic_cell(
