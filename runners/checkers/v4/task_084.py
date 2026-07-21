@@ -1,8 +1,10 @@
 """Task-specific checker for canonical v4 DUT 084."""
 from __future__ import annotations
 
-from ..api import Checker
 import math
+
+from ..api import Checker
+from .stimulus_relative import sample
 
 def rising_edges(values: list[float], times: list[float], threshold: float = 0.45) -> list[float]:
     edges: list[float] = []
@@ -12,11 +14,17 @@ def rising_edges(values: list[float], times: list[float], threshold: float = 0.4
     return edges
 
 def check_bbpd_data_edge_alignment(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"clk", "data", "up", "dn"}
+    required = {"time", "vdd", "vss", "clk", "data", "up", "dn", "retimed_data"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing clk/data/up/dn"
+        return False, "missing time/vdd/vss/clk/data/up/dn/retimed_data"
 
-    vth = 0.45
+    supply_spans = [row["vdd"] - row["vss"] for row in rows]
+    supply_span = sum(supply_spans) / len(supply_spans)
+    vss = sum(row["vss"] for row in rows) / len(rows)
+    vdd = vss + supply_span
+    if supply_span < 0.2 or max(supply_spans) - min(supply_spans) > 0.02:
+        return False, f"invalid_supply_span={supply_span:.3f}"
+    vth = vss + 0.5 * supply_span
     times = [r["time"] for r in rows]
     clk_vals = [r["clk"] for r in rows]
     up = [r["up"] for r in rows]
@@ -30,6 +38,37 @@ def check_bbpd_data_edge_alignment(rows: list[dict[str, float]]) -> tuple[bool, 
     clk_period = sorted(clk_periods)[len(clk_periods) // 2] if clk_periods else 20e-9
     if clk_period <= 0:
         return False, f"bad_clk_period={clk_period:.3e}"
+
+    retimed_checks = 0
+    retimed_max_error = 0.0
+    retimed_decisions: set[int] = set()
+    for index, edge_t in enumerate(clk_edges):
+        next_edge = clk_edges[index + 1] if index + 1 < len(clk_edges) else rows[-1]["time"]
+        if next_edge - edge_t < 1.0e-9:
+            continue
+        captured = sample(rows, "data", edge_t)
+        if captured is None:
+            continue
+        expected = vdd if captured > vth else vss
+        retimed_decisions.add(1 if expected > vth else 0)
+        for fraction in (0.25, 0.70):
+            probe_t = edge_t + fraction * (next_edge - edge_t)
+            observed = sample(rows, "retimed_data", probe_t)
+            if observed is None:
+                return False, f"missing_retimed_data_probe@{probe_t:.3e}"
+            error = abs(observed - expected)
+            retimed_max_error = max(retimed_max_error, error)
+            retimed_checks += 1
+            if error > max(0.04, 0.09 * supply_span):
+                return False, (
+                    f"retimed_data_mismatch edge={index} fraction={fraction:.2f} "
+                    f"observed={observed:.4f} expected={expected:.4f}"
+                )
+    if retimed_checks < 6 or retimed_decisions != {0, 1}:
+        return False, (
+            f"insufficient_retimed_coverage checks={retimed_checks} "
+            f"decisions={sorted(retimed_decisions)}"
+        )
 
     data_edges = [
         times[i]
@@ -95,7 +134,8 @@ def check_bbpd_data_edge_alignment(rows: list[dict[str, float]]) -> tuple[bool, 
         f"data_edges={len(data_edges)} clk_period={clk_period:.3e} "
         f"up={hits['up']}/{counts['up']} dn={hits['dn']}/{counts['dn']} "
         f"none={hits['none']}/{counts['none']} "
-        f"overlap_frac={overlap_frac:.4f}"
+        f"overlap_frac={overlap_frac:.4f} retimed_checks={retimed_checks} "
+        f"retimed_max_error={retimed_max_error:.4f} supply_span={supply_span:.3f}"
     )
 
 CHECKER_ID = "v4_084_bbpd_data_edge_alignment"
