@@ -89,7 +89,7 @@ def check_v3_dac_restore_4bit_clocked(rows: list[dict[str, float]]) -> tuple[boo
     )
     if normalized is None:
         return False, "missing_restore4_clock_edges"
-    return _sample_many_within_trace(
+    ok, note = _sample_many_within_trace(
         normalized,
         {
             "vout": [(0.5, -0.84375), (1.5, -0.28125), (2.5, 0.28125), (3.5, 0.84375)],
@@ -100,6 +100,23 @@ def check_v3_dac_restore_4bit_clocked(rows: list[dict[str, float]]) -> tuple[boo
         },
         tol=0.012,
     )
+    if not ok:
+        return ok, note
+
+    expected_states = (-0.84375, -0.28125, 0.28125, 0.84375)
+    hold_checks = 0
+    for index, expected in enumerate(expected_states[:-1]):
+        for time_ns in (index + 0.80, index + 1.28):
+            observed = sample_signal_at(normalized, "vout", time_ns * 1e-9)
+            if observed is None:
+                return False, f"missing_vout_hold_sample_at={time_ns:.3f}ns"
+            if abs(observed - expected) > 0.012:
+                return False, (
+                    f"vout_hold@{time_ns:.3f}ns={observed:.5f} "
+                    f"expected={expected:.5f}"
+                )
+            hold_checks += 1
+    return True, f"{note} hold_checks={hold_checks}"
 
 CHECKER_ID = "v4_207_dac_restore_4bit_clocked"
 CHECKER: Checker = check_v3_dac_restore_4bit_clocked
