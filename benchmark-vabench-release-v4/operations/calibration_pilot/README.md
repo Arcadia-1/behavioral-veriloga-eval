@@ -241,10 +241,12 @@ receives these environment variables:
 - `VABENCH_SUBMISSION_DIR`
 - `VABENCH_EVALUATOR_DIR`
 
-The final judge adapter runs once after submission and may dispatch Spectre
-remotely. Neither its command string nor evaluator directory is sent to the
-model. A formal pilot must configure the final adapter; a provider-only smoke
-may omit it only to test API transport and artifact handling.
+The final judge adapter runs once after submission and must use the
+release-pinned strict EVAS evaluator. It may additionally dispatch Spectre as
+a non-blocking parity audit. Neither its command string nor evaluator directory
+is sent to the model. A formal pilot must configure the EVAS final adapter; a
+provider-only smoke may omit it only to test API transport and artifact
+handling.
 
 ### Result protocol
 
@@ -320,9 +322,10 @@ run from either the workspace root or `behavioral-veriloga-eval/`.
 
 `feedback_evas` reports are always marked `provisional_feedback_only`; they
 are useful for pilot tuning but are not benchmark scores. A paper-facing run
-must use `--judge-kind final_spectre` with the sealed Spectre adapter. Missing
-or invalid submissions remain explicit denominator failures and are never
-silently dropped.
+must use `--judge-kind final_trusted_replay` with the sealed, pinned strict
+EVAS adapter. `--judge-kind final_spectre` is retained only for optional parity
+audits and does not gate a score claim. Missing or invalid submissions remain
+explicit denominator failures and are never silently dropped.
 
 Historical pilot runs produced before submission-path normalization can be
 repaired without another model call when every required candidate is found

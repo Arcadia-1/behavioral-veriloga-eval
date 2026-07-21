@@ -125,7 +125,8 @@ definition.
 1. Keep the current 79-entry package aligned with the score denominator,
    certification reports, and model-baseline protocol.
 2. Run model baselines on the 66-entry / 236-form scored core denominator, with
-   Spectre as the final judge and support rows excluded from the main score.
+   pinned strict EVAS as the formal judge and support rows excluded from the
+   main score.
 3. Run same-slice speed timing for every scored form before making a
    release-wide EVAS speedup claim.
 4. Keep L0 conformance growth parallel but separate from benchmark scoring.
