@@ -195,6 +195,26 @@
       ]
     },
     {
+      "id": "P_RATIO_HALF_STEP_ROUNDING",
+      "observable_contract": "Requests immediately below a positive half-step round down while an exact positive half-step rounds up before divider selection.",
+      "required_signals": [
+        "time",
+        "ratio_ctrl",
+        "vout",
+        "fb_clk"
+      ]
+    },
+    {
+      "id": "P_RATIO_OVERRIDE_SATURATION",
+      "observable_contract": "Requests below ratio_min or above ratio_max saturate to the respective inclusive endpoint when legal non-default bounds are configured.",
+      "required_signals": [
+        "time",
+        "ratio_ctrl",
+        "vout",
+        "fb_clk"
+      ]
+    },
+    {
       "id": "P_DCO_FREQUENCY_BOUNDS",
       "observable_contract": "The behavioral DCO on vout remains within the configured f_min and f_max limits.",
       "required_signals": [
@@ -303,17 +323,17 @@
         "name": "IDUT",
         "parameter_overrides": {
           "code_center": "32",
-          "code_init": "24",
-          "code_max": "63",
-          "code_min": "0",
+                    "code_init": "20",
+                    "code_max": "44",
+                    "code_min": "20",
           "f_center": "240e6",
-          "f_max": "420e6",
-          "f_min": "120e6",
+                    "f_max": "360e6",
+                    "f_min": "180e6",
           "freq_step_hz": "5e6",
-          "lock_count_target": "5",
+                    "lock_count_target": "8",
           "lock_tol": "2n",
-          "ratio_max": "16",
-          "ratio_min": "2",
+                    "ratio_max": "12",
+                    "ratio_min": "3",
           "tedge": "200p"
         }
       }
