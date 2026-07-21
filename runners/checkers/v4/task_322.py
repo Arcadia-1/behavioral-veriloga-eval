@@ -16,6 +16,7 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
     switched_at = -1.0
     first_edge_seen = False
     checked = out_errors = glitch_errors = metric_errors = valid_errors = clear_errors = 0
+    valid_early_errors = 0
     reset_clear = disabled_clear = switch_seen = both_sources_seen = False
     src_seen: set[int] = set()
     inactive_time: float | None = None
@@ -23,7 +24,9 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
     prev_clk_b = float(rows[0].get("clk_b", 0.0))
     last_input_rise = -1.0
     prev_out = float(rows[0].get("clk_out", 0.0))
+    prev_metric_high = _v4_topup_logic_high(rows[0], "switch_metric")
     switch_windows: list[dict[str, float | bool]] = []
+    metric_high_outside_window_errors = 0
     for row in rows:
         t = float(row["time"])
         rst = _v4_topup_logic_high(row, "rst")
@@ -48,6 +51,7 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
             prev_out = float(row.get("clk_out", 0.0))
             prev_clk_a = clk_a
             prev_clk_b = clk_b
+            prev_metric_high = _v4_topup_logic_high(row, "switch_metric")
             continue
         inactive_time = None
         pending = 1 if _v4_topup_logic_high(row, "sel") else 0
@@ -57,7 +61,7 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
             switched_at = t
             switch_seen = True
             first_edge_seen = False
-            switch_windows.append({"start": t + 0.5e-9, "end": t + 4.5e-9, "seen": False})
+            switch_windows.append({"start": t, "end": t + 5.0e-9, "seen": False})
         expected = float(row["clk_b" if active else "clk_a"])
         src_seen.add(active)
         now_out = float(row["clk_out"])
@@ -71,23 +75,34 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
         prev_clk_a = clk_a
         prev_clk_b = clk_b
         metric_high = _v4_topup_logic_high(row, "switch_metric")
+        metric_in_window = False
         for window in switch_windows:
+            if float(window["start"]) <= t <= float(window["end"]):
+                metric_in_window = True
             if bool(window["seen"]):
                 continue
             if float(window["start"]) <= t <= float(window["end"]) and metric_high:
                 window["seen"] = True
+        if metric_high and not metric_in_window:
+            metric_high_outside_window_errors += 1
+        prev_metric_high = metric_high
+        valid_high = _v4_topup_logic_high(row, "valid")
+        valid_transition_grace = switched_at >= 0 and t <= switched_at + 0.35e-9
+        if not first_edge_seen and valid_high and not valid_transition_grace:
+            valid_early_errors += 1
+            valid_errors += 1
         if not first_edge_seen or (switched_at >= 0 and t < switched_at + 0.7e-9):
             continue
         checked += 1
         if abs(now_out - expected) > 0.14:
             out_errors += 1
-        valid_high = _v4_topup_logic_high(row, "valid")
         if first_edge_seen and not valid_high:
             valid_errors += 1
-        if not first_edge_seen and valid_high:
-            valid_errors += 1
     both_sources_seen = len(src_seen) >= 2
-    metric_errors = sum(not bool(window["seen"]) for window in switch_windows)
+    metric_errors = (
+        sum(not bool(window["seen"]) for window in switch_windows)
+        + metric_high_outside_window_errors
+    )
     out_budget = max(12, checked // 5)
     # Count one missing event once; dense waveform sampling must not dilute it.
     metric_budget = 0
@@ -102,18 +117,20 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
         and out_errors <= out_budget
         and glitch_errors <= 1
         and metric_errors == 0
+        and valid_early_errors == 0
         and valid_errors <= valid_budget
         and clear_errors <= clear_budget
     )
     return ok, (
         f"v4_1020 checked={checked} sources={sorted(src_seen)} reset_clear={reset_clear} "
         f"disabled_clear={disabled_clear} switch_seen={switch_seen} out_errors={out_errors} glitch_errors={glitch_errors} "
-        f"metric_errors={metric_errors} valid_errors={valid_errors} clear_errors={clear_errors}; "
+        f"metric_errors={metric_errors} metric_high_outside_window_errors={metric_high_outside_window_errors} "
+        f"valid_errors={valid_errors} valid_early_errors={valid_early_errors} clear_errors={clear_errors}; "
         f"P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count={max(0, clear_errors - clear_budget) + int(not reset_clear) + int(not disabled_clear)}; "
         f"P_ROUTE_CLK_A_WHEN_SEL_IS mismatch_count={max(0, out_errors - out_budget) + int(not both_sources_seen)}; "
         f"P_WHEN_SEL_CHANGES_WAIT_UNTIL_BOTH mismatch_count={max(0, glitch_errors - 1) + int(not switch_seen)}; "
         f"P_EXPOSE_A_SWITCH_EVENT_ON_SWITCH mismatch_count={max(0, metric_errors - metric_budget) + int(not switch_seen)}; "
-        f"P_ASSERT_VALID_AFTER_THE_SELECTED_SOURCE mismatch_count={max(0, valid_errors - valid_budget)}"
+        f"P_ASSERT_VALID_AFTER_THE_SELECTED_SOURCE mismatch_count={valid_early_errors + max(0, valid_errors - valid_budget)}"
     )
 
 CHECKER_ID = "v4_322_glitchless_clock_mux_selector"
