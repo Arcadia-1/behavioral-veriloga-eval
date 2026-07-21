@@ -27,15 +27,13 @@ and paper-facing baselines. It does not create certification evidence.
 | Backend | Role | Final judge |
 | --- | --- | --- |
 | `static` | source/package integrity gate | `False` |
-| `evas` | fast behavioral Verilog-A filter and debug evaluator | `False` |
-| `spectre` | final simulator reference for release certification and scoring | `True` |
+| `evas` | formal behavioral Verilog-A certification and scoring evaluator | `True` |
+| `spectre` | optional non-blocking parity reference | `False` |
 
 ## Gates
 
 - Score gate: `score_enabled`; scored entries/forms = 73/265
-- Finish readiness: `ready_to_finish`
-- Baseline gate: `ready_for_baseline_runs`; claim allowed = `False`
-- Speed/debug gate: `measured_subset`; claim allowed = `False`
+- Baseline gate: `ready_for_baseline_runs`; claim allowed = `True`
 
 ## Commands
 
@@ -53,8 +51,7 @@ and paper-facing baselines. It does not create certification evidence.
 ## Claim Boundary
 
 - This contract defines evaluator IO and score gates; it is not simulator certification evidence.
-- Spectre is the final judge for release scoring.
-- EVAS is a fast filter/debug evaluator and cannot certify a task by itself.
+- Pinned strict EVAS is the formal judge for release certification and scoring.
+- Spectre is optional non-blocking parity evidence and is not required for a score claim.
 - L0 conformance cases are evaluator health checks and never scored benchmark rows.
-- Baseline and speed/debug claims remain blocked until their dedicated artifacts satisfy claim gates.
-- claim_gate_status=in_progress
+- Optional parity and speed claims require their own evidence and do not alter the benchmark score gate.

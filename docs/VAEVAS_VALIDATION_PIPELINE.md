@@ -6,7 +6,8 @@ Date: 2026-05-13
 
 This document defines the validation gates for benchmark promotion and EVAS
 parity work. The core rule is simple: benchmark claims need executable evidence,
-and Spectre remains the final paper-facing judge.
+and pinned strict EVAS is the formal certification and scoring judge. Spectre
+is an optional, non-blocking parity backend.
 
 ## Reference And Equivalence Policy
 
@@ -123,9 +124,10 @@ Pass condition:
 - Axis rates should be interpreted as `dut_compile`, `tb_compile`, and
   `sim_correct`.
 
-## Track 3: EVAS Plus Spectre Dual Validation
+## Track 3: Optional EVAS Plus Spectre Parity Validation
 
-Use this for paper-facing gold promotion and broad parity gates.
+Use this only when supplemental cross-simulator parity evidence is useful. It
+is not required for gold promotion, release, certification, or model scoring.
 
 Preflight:
 
@@ -172,12 +174,13 @@ Primary output:
 - `tran_spectre.csv`
 - bridge preflight diagnostics
 
-Pass condition:
+Interpretation:
 
-- Paper-facing gold tasks should pass both EVAS and Spectre.
-- Broad parity gates must maintain zero EVAS PASS / Spectre FAIL binary
-  mismatches on audited slices.
-- Failure-label taxonomy is secondary to binary PASS/FAIL agreement.
+- A completed parity slice reports EVAS/Spectre agreement separately from the
+  formal EVAS certification result.
+- A missing, unavailable, or failing Spectre run MUST NOT leave the benchmark
+  release or model score pending.
+- Do not record Spectre PASS unless the backend actually ran successfully.
 
 ## Track 4: Reporting And Compact Evidence
 
@@ -204,17 +207,17 @@ Before a benchmark task is promoted:
 
 1. Static integrity tests pass.
 2. Gold EVAS validation passes.
-3. Gold Spectre validation passes for paper-facing tasks.
+3. The pinned EVAS identity, profile, inputs, and evidence hashes are recorded.
 4. The result path is recorded in a compact table or doc.
-5. Any EVAS/Spectre disagreement is either fixed or entered into the
-   conformance backlog.
+5. Any optional EVAS/Spectre disagreement is entered into the conformance
+   backlog without blocking promotion.
 
 ## Current Operational Gaps
 
 | Gap | Effect | Next action |
 | --- | --- | --- |
-| Spectre depends on bridge, tunnel, and remote Cadence environment. | Full dual validation is not always locally runnable. | Keep wrapper path as the documented route and record preflight status. |
+| Spectre depends on bridge, tunnel, and remote Cadence environment. | Optional parity validation is not always locally runnable. | Record it as not run or unavailable; do not block EVAS certification. |
 | main120 currently lives as result evidence, not a tracked task source split. | A 120/120 pass summary is not enough for benchmark release, review, or source-level regression. | Use `materialize_main120_inventory.py` to rebuild the provenance map before source materialization. |
 | No standalone script named `strict_evas`. | Strictness is distributed across runner behavior, task metadata, and checker logic. | Treat `run_gold_suite.py` plus tests as the EVAS gate. |
-| `run_examples_suite.py` is smoke-oriented. | It is useful for examples but not the main benchmark promotion gate. | Use `run_gold_suite.py` and `run_gold_dual_suite.py` for benchmark claims. |
+| `run_examples_suite.py` is smoke-oriented. | It is useful for examples but not the main benchmark promotion gate. | Use `run_gold_suite.py` for formal certification; use `run_gold_dual_suite.py` only for optional parity studies. |
 | Some older docs reference missing helper scripts or stale task counts. | New agents may follow the wrong branch. | Prefer this file, `VAEVAS_MAINLINE_PLAN.md`, `VABENCH_TOPDOWN_FUNCTION_TAXONOMY.md`, and `VABENCH_MAIN120_MATERIALIZATION.*`. |

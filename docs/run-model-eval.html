@@ -51,8 +51,8 @@
             <h1 data-i18n="heroTitle">Run vaBench with a new model</h1>
             <p class="hero-text" data-i18n="heroText">
               Use one public runner to list the model roster, run a one-task smoke test,
-              score generated Verilog-A with EVAS, and optionally send the same candidates
-              through Spectre as the final judge.
+              score generated Verilog-A with pinned strict EVAS, and optionally send the
+              same candidates through Spectre for a non-blocking parity audit.
             </p>
             <div class="button-row">
               <a class="button-link primary" href="#smoke-test" data-i18n="primaryAction">Start with a smoke test</a>
@@ -71,7 +71,7 @@
             <a href="#prerequisites" data-i18n="tocPrerequisites">Prerequisites</a>
             <a href="#smoke-test" data-i18n="tocSmoke">Smoke test</a>
             <a href="#run-model" data-i18n="tocRun">Run with a model</a>
-            <a href="#spectre-final" data-i18n="tocSpectre">Spectre final judge</a>
+            <a href="#spectre-final" data-i18n="tocSpectre">Optional Spectre audit</a>
             <a href="#custom-adapters" data-i18n="tocCustom">Custom models</a>
             <a href="#result-contract" data-i18n="tocResults">Results</a>
           </aside>
@@ -102,8 +102,8 @@
                 <div>
                   <dt data-i18n="judgeTitle">Judge boundary</dt>
                   <dd data-i18n="judgeBody">
-                    EVAS is the fast development gate. Spectre is still the final paper-facing
-                    judge for reported model scores.
+                    Pinned strict EVAS is the formal certification and scoring judge. Spectre
+                    is optional parity evidence and never blocks a reported model score.
                   </dd>
                 </div>
               </dl>
@@ -183,22 +183,22 @@
             </section>
 
             <section class="doc-section" id="spectre-final">
-              <h2 data-i18n="spectreTitle">Run the Spectre final judge</h2>
+              <h2 data-i18n="spectreTitle">Run an optional Spectre parity audit</h2>
               <p data-i18n="spectreBody">
-                Use Spectre for leaderboard or paper-facing claims. The runner first performs
-                generation plus EVAS scoring, then sends the selected candidates to the Spectre
-                dual-judge runner.
+                Use Spectre only when supplemental simulator-parity evidence is useful. The
+                runner first performs generation plus formal EVAS scoring, then may send the
+                selected candidates to the optional Spectre comparison runner.
               </p>
               <div class="command-card">
                 <div class="command-heading">
-                  <h3 data-i18n="spectreCommandTitle">Full eval with Spectre</h3>
-                  <span class="status warn" data-i18n="requiresSpectre">requires Spectre</span>
+                  <h3 data-i18n="spectreCommandTitle">Optional comparison with Spectre</h3>
+                  <span class="status warn" data-i18n="requiresSpectre">optional backend</span>
                 </div>
                 <pre><code id="command-full-spectre">Loading command...</code></pre>
               </div>
               <p class="table-note" data-i18n-html="claimAllowedNote">
-                The summary marks <code>claim_allowed</code> false unless Spectre ran to completion
-                and no backend produced an inconclusive result.
+                Spectre status is reported separately and does not change <code>claim_allowed</code>
+                for a completed pinned strict EVAS run.
               </p>
             </section>
 

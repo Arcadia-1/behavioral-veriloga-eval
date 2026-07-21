@@ -13,6 +13,7 @@ ALLOWED_DUT_RUNTIME_SCHEMAS = {
     "r47": {"r47-direct-evas-runtime-v2"},
     "r48": {"r48-direct-evas-runtime-v2"},
     "r49": {"r49-direct-evas-runtime-v2"},
+    "r50": {"r50-direct-evas-runtime-v2"},
 }
 ALLOWED_TESTBENCH_RUNTIME_SCHEMAS = {
     "r45": {
@@ -22,6 +23,21 @@ ALLOWED_TESTBENCH_RUNTIME_SCHEMAS = {
     "r47": {"r47-direct-evas-testbench-suite-v2"},
     "r48": {"r48-direct-evas-testbench-suite-v2"},
     "r49": {"r49-direct-evas-testbench-suite-v2"},
+    "r50": {"r50-direct-evas-testbench-suite-v2"},
+}
+AUTHORING_ONLY_PUBLIC_MARKERS = (
+    "negative_variants/",
+    "/evaluator/",
+    "vabench feedback run",
+    "vabench feedback capabilities",
+)
+REAL_SKILL_MATRIX = {
+    "G0": [],
+    "G1": ["veriloga"],
+    "G2": [],
+    "G3": ["veriloga"],
+    "G4": ["vabench-feedback"],
+    "G5": ["veriloga", "vabench-feedback"],
 }
 
 
@@ -44,6 +60,22 @@ def file_map(path: Path) -> dict[str, bytes]:
     return {item.relative_to(path).as_posix(): item.read_bytes() for item in sorted(path.rglob("*")) if item.is_file()}
 
 
+def file_index(path: Path) -> dict[str, dict[str, object]]:
+    return {
+        item.relative_to(path).as_posix(): {
+            "sha256": hashlib.sha256(item.read_bytes()).hexdigest(),
+            "bytes": item.stat().st_size,
+        }
+        for item in sorted(path.rglob("*"))
+        if item.is_file() and not item.is_symlink()
+    }
+
+
+def public_text_leaks_authoring_surface(text: str) -> bool:
+    normalized = text.lower()
+    return any(marker in normalized for marker in AUTHORING_ONLY_PUBLIC_MARKERS)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", type=Path, required=True)
@@ -55,6 +87,18 @@ def main() -> int:
     attempt = read_json(run / "evidence" / "attempt_record.json")
     mode = str(policy.get("mode") or "")
     mounts = policy.get("mounts") or []
+    available_skills = policy.get("available_skills") or {}
+    if not isinstance(available_skills, dict):
+        problems.append("model access policy available_skills must be an object")
+        available_skills = {}
+    real_skill_delivery = (
+        policy.get("schema_version") == "r50-real-skills-model-access-policy-v1"
+    )
+    expected_skill_ids = REAL_SKILL_MATRIX.get(mode, []) if real_skill_delivery else []
+    if real_skill_delivery and set(available_skills) != set(expected_skill_ids):
+        problems.append("available skills do not match the r50 mode matrix")
+    if not real_skill_delivery and available_skills:
+        problems.append("legacy runtime unexpectedly declares real skills")
     if policy.get("evaluator_mounted") is not False or any("evaluator" in str(item) for item in mounts):
         problems.append("evaluator assets are model-mounted")
     if policy.get("network") is not False:
@@ -62,6 +106,10 @@ def main() -> int:
     if mode in {"G0", "G1"}:
         if mounts:
             problems.append("direct one-shot mode has filesystem mounts")
+        if real_skill_delivery:
+            expected_tools = ["list_skills", "read_skill"] if available_skills else []
+            if policy.get("provider_tools") != expected_tools:
+                problems.append("direct skill lookup tools do not match available skills")
         if not (run / "direct_prompt.txt").is_file():
             problems.append("direct one-shot prompt is missing")
         else:
@@ -78,17 +126,28 @@ def main() -> int:
             ):
                 if marker.lower() in direct_prompt.lower():
                     problems.append(f"direct one-shot prompt leaks {marker!r}")
+            if real_skill_delivery and (
+                "Use this skill" in direct_prompt or "---\nname:" in direct_prompt
+            ):
+                problems.append("direct prompt inlines skill body")
         if (run / "public" / "evas_manifest.json").exists():
             problems.append("direct one-shot mode exposes an EVAS manifest")
         if (run / "public" / "task" / "public_contract.json").exists():
             problems.append("direct one-shot mode exposes a public contract file")
     else:
-        if mounts != [
+        expected_mounts = [
             "public/task:ro",
             "public/submission:rw",
             "public/work:rw",
-        ]:
+        ]
+        if available_skills:
+            expected_mounts.append("public/skills:ro")
+        if mounts != expected_mounts:
             problems.append("agentic model mounts differ from the public contract")
+        if real_skill_delivery:
+            expected_tools = ["list_skills", "read_skill"] if available_skills else []
+            if policy.get("provider_tools") != expected_tools:
+                problems.append("agentic skill lookup tools do not match available skills")
         if policy.get("executables") != ["evas", "vabench-submit"]:
             problems.append("agentic mode does not expose the declared shell helpers")
         if not (run / "public" / "evas_manifest.json").is_file():
@@ -101,8 +160,78 @@ def main() -> int:
             agent_prompt = (run / "agent_prompt.txt").read_text(encoding="utf-8", errors="ignore")
             if "VABENCH_PUBLIC_CONTRACT" in agent_prompt:
                 problems.append("agentic prompt redundantly inlines public_contract.json")
+            if real_skill_delivery and (
+                "Use this skill" in agent_prompt or "---\nname:" in agent_prompt
+            ):
+                problems.append("agentic prompt inlines skill body")
         if (run / "public" / "task" / "public_contract.json").exists():
             problems.append("agentic mode exposes public_contract.json in the model task mount")
+    public_root = (run / "public").resolve()
+    for skill_id, skill in available_skills.items():
+        raw_path = str(skill.get("path") or "")
+        expected_path = f"public/skills/{skill_id}"
+        if raw_path != expected_path:
+            problems.append(f"available skill has noncanonical path: {skill_id}")
+            continue
+        if skill.get("skill_file") != f"{expected_path}/SKILL.md":
+            problems.append(f"available skill has noncanonical SKILL.md path: {skill_id}")
+        unresolved_root = run / raw_path
+        cursor = run
+        for part in Path(raw_path).parts:
+            cursor /= part
+            if cursor.is_symlink():
+                problems.append(f"available skill path contains a symlink: {skill_id}")
+                break
+        skill_root = unresolved_root.resolve()
+        try:
+            skill_root.relative_to(public_root)
+        except ValueError:
+            problems.append(f"available skill escapes the public bundle: {skill_id}")
+            continue
+        if not (skill_root / "SKILL.md").is_file():
+            problems.append(f"available skill is not mounted: {skill_id}")
+        elif skill.get("tree_sha256") != tree_sha(skill_root):
+            problems.append(f"available skill hash mismatch: {skill_id}")
+    runtime_skill_manifest = run / "public" / "skills" / "SNAPSHOT_MANIFEST.json"
+    if expected_skill_ids:
+        if not runtime_skill_manifest.is_file() or runtime_skill_manifest.is_symlink():
+            problems.append("runtime skill manifest is missing or symlinked")
+        else:
+            runtime_skill_data = read_json(runtime_skill_manifest)
+            if runtime_skill_data.get("schema_version") != "v4-runtime-skill-manifest-v1":
+                problems.append("runtime skill manifest schema mismatch")
+            runtime_skills = runtime_skill_data.get("skills") or {}
+            if not isinstance(runtime_skills, dict):
+                problems.append("runtime skill manifest skills must be an object")
+                runtime_skills = {}
+            if set(runtime_skills) != set(expected_skill_ids):
+                problems.append("runtime skill manifest does not match the mode matrix")
+            for skill_id in expected_skill_ids:
+                record = runtime_skills.get(skill_id) or {}
+                if not isinstance(record, dict):
+                    problems.append(f"runtime skill record is invalid: {skill_id}")
+                    record = {}
+                skill_root = run / "public" / "skills" / skill_id
+                declared_files: dict[str, dict[str, object]] = {}
+                for item in record.get("files") or []:
+                    if not isinstance(item, dict):
+                        problems.append(f"runtime skill file record is invalid: {skill_id}")
+                        continue
+                    relative = str(item.get("path") or "")
+                    if relative in declared_files:
+                        problems.append(f"runtime skill file index has a duplicate: {skill_id}")
+                    declared_files[relative] = {
+                        "sha256": item.get("sha256"),
+                        "bytes": item.get("bytes"),
+                    }
+                if declared_files != file_index(skill_root):
+                    problems.append(f"runtime skill file index mismatch: {skill_id}")
+                if record.get("tree_sha256") != (available_skills.get(skill_id) or {}).get(
+                    "tree_sha256"
+                ):
+                    problems.append(f"runtime skill policy hash mismatch: {skill_id}")
+    elif (run / "public" / "skills").exists():
+        problems.append("skill-free mode exposes a public skills directory")
     submission = run / "public" / "submission"
     if attempt.get("initial_submission_sha256") != tree_sha(submission):
         problems.append("initial submission hash does not match the prepared workspace")
@@ -203,7 +332,7 @@ def main() -> int:
             problems.append(f"public bundle contains symlink: {path}")
         if path.is_file():
             text = path.read_text(encoding="utf-8", errors="ignore")
-            if "negative_variants/" in text or "/evaluator/" in text or "vabench feedback" in text.lower():
+            if public_text_leaks_authoring_surface(text):
                 problems.append(f"public file leaks authoring evaluator path: {path}")
     report = {"schema_version": "v4-runtime-export-audit-v1", "status": "pass" if not problems else "fail", "problems": problems}
     rendered = json.dumps(report, indent=2, sort_keys=True) + "\n"

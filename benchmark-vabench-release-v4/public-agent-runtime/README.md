@@ -52,6 +52,7 @@ Prepare three host directories:
 ```text
 task/        sanitized public material for exactly one assigned task
 submission/  final candidate artifacts
+skills/      optional read-only skill packages for skill-enabled modes
 work/        disposable agent working files
 ```
 
@@ -80,6 +81,13 @@ python3 -c 'import csv; print(next(csv.DictReader(open("/tmp/vabench-visible/eva
 Testbench tasks use the fixed `candidate_command_template` in
 `public/task/evas_runtime.json` for the named public cases.
 
+Skill-enabled benchmark modes may also mount `public/skills/<id>/SKILL.md`
+and related reference files. These are read-only, task-agnostic skill packages;
+their contents are not part of the task prompt and must not include evaluator,
+gold, checker, or hidden-case material.
+For manual runs, set `VABENCH_SKILLS_DIR=/path/to/skills` before invoking
+`run.sh` to add this optional read-only mount.
+
 ## Isolation Contract
 
 The launcher uses a read-only root filesystem, drops Linux capabilities,
@@ -87,6 +95,7 @@ enables `no-new-privileges`, disables networking by default, and mounts only:
 
 ```text
 /workspace/public/task        read-only
+/workspace/public/skills      optional read-only
 /workspace/public/submission  read-write
 /workspace/work               read-write
 /tmp                           private tmpfs

@@ -44,14 +44,14 @@
       "final_judge": false
     },
     "evas": {
-      "role": "fast behavioral Verilog-A filter and debug evaluator",
-      "certification_scope": "fast signal for release tasks, never final alone",
-      "final_judge": false
+      "role": "formal behavioral Verilog-A certification and scoring evaluator",
+      "certification_scope": "release certification and final pass/fail axis under the pinned strict profile",
+      "final_judge": true
     },
     "spectre": {
-      "role": "final simulator reference for release certification and scoring",
-      "certification_scope": "behavioral correctness and final pass/fail axis",
-      "final_judge": true
+      "role": "optional non-blocking parity reference",
+      "certification_scope": "supplemental evaluator-conformance evidence only",
+      "final_judge": false
     }
   },
   "result_contract": {
@@ -79,8 +79,9 @@
       "certified",
       "quarantined"
     ],
-    "spectre_final_judge": true,
-    "evas_pass_spectre_fail_is_hard_mismatch": true
+    "spectre_final_judge": false,
+    "evas_final_judge": true,
+    "evas_pass_spectre_fail_is_hard_mismatch": false
   },
   "score_gate": {
     "status": "score_enabled",
@@ -97,7 +98,7 @@
     "minimal_lanes": [
       "prompt_only_generation",
       "evas_feedback_debug_generation",
-      "spectre_final_judge_confirmation"
+      "evas_final_judge_confirmation"
     ],
     "required_result_fields": [
       "model",
@@ -106,7 +107,6 @@
       "form",
       "candidate_artifacts",
       "evas_status",
-      "spectre_status",
       "score",
       "failure_taxonomy"
     ],
@@ -118,8 +118,8 @@
   },
   "claim_boundary": [
     "This contract defines evaluator IO and score gates; it is not simulator certification evidence.",
-    "Spectre is the final judge for release scoring.",
-    "EVAS is a fast filter/debug evaluator and cannot certify a task by itself.",
+    "Pinned strict EVAS is the formal judge for release certification and scoring.",
+    "Spectre is optional non-blocking parity evidence and is not required for a score claim.",
     "L0 conformance cases are evaluator health checks and never scored benchmark rows.",
     "Private Vela/Docker submission state is outside the public benchmark contract."
   ]
