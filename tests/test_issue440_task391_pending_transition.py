@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 import sys
 from pathlib import Path
 
@@ -13,6 +15,18 @@ from runners.checkers.v4.task_391 import check_v4_391_lc_vco_behavioral_source
 VDD = 0.9
 VCM = 0.45
 AMP = 0.4
+TASK = (
+    ROOT
+    / "benchmark-vabench-release-v4"
+    / "provenance"
+    / "dut-base-v3-exact-five-hash-bound-v2"
+    / "391-lc-vco-behavioral-source"
+)
+PROPERTY_ID = "P_NO_RETIME_PENDING_TRANSITION"
+
+
+def _sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def _ctrl_at(time_s: float) -> float:
@@ -105,3 +119,24 @@ def test_task391_rejects_control_change_retiming_pending_transition() -> None:
     ok, note = check_v4_391_lc_vco_behavioral_source(_rows(retime_pending_edge=True))
     assert not ok
     assert "P_NO_RETIME_PENDING_TRANSITION:mismatch_count=" in note
+
+
+def test_task391_harness_profiles_and_checker_register_pending_transition_property() -> None:
+    evaluator = TASK / "evaluator"
+    harness = json.loads((evaluator / "harness_spec.json").read_text(encoding="utf-8"))
+    family = json.loads((evaluator / "family_spec.json").read_text(encoding="utf-8"))
+    feedback = json.loads((evaluator / "profiles" / "feedback.json").read_text(encoding="utf-8"))
+    score = json.loads((evaluator / "profiles" / "score.json").read_text(encoding="utf-8"))
+
+    assert PROPERTY_ID in harness["property_ids"]
+    assert PROPERTY_ID in feedback["property_ids"]
+    assert PROPERTY_ID in score["property_ids"]
+    assert PROPERTY_ID in {item["id"] for item in family["properties"]}
+    assert harness["source_contract"]["family_spec_sha256"] == _sha(evaluator / "family_spec.json")
+    assert feedback["harness_spec_sha256"] == _sha(evaluator / "harness_spec.json")
+    assert score["harness_spec_sha256"] == _sha(evaluator / "harness_spec.json")
+
+    ok, note = check_v4_391_lc_vco_behavioral_source(_rows(retime_pending_edge=False))
+    assert ok, note
+    for property_id in harness["property_ids"]:
+        assert f"{property_id}:mismatch_count=0" in note
