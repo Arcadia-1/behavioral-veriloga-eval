@@ -82,7 +82,8 @@ def check_v3_clocked_adc3bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
         return False, f"too_few_clocked_adc3bit_rising_edges={len(edges)}"
     codes: list[int] = []
     max_err = 0.0
-    for edge_t in edges:
+    hold_checks = 0
+    for edge_index, edge_t in enumerate(edges):
         vin = sample_signal_at(rows, "vin", edge_t)
         out_t = edge_t + 0.08e-9
         if vin is None:
@@ -99,12 +100,23 @@ def check_v3_clocked_adc3bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
             if got is None:
                 return False, f"missing_{signal}_sample_at={out_t * 1e9:.3f}ns"
             max_err = max(max_err, abs(got - want))
+            if edge_index + 1 < len(edges):
+                hold_t = edges[edge_index + 1] - 0.08e-9
+                held = sample_signal_at(rows, signal, hold_t)
+                if held is None:
+                    return False, f"missing_{signal}_hold_sample_at={hold_t * 1e9:.3f}ns"
+                if abs(held - want) > 0.06:
+                    return False, (
+                        f"{signal}_hold@{hold_t * 1e9:.3f}ns={held:.4f} "
+                        f"expected={want:.4f}"
+                    )
+                hold_checks += 1
         codes.append(code)
     if max_err > 0.06:
         return False, f"clocked_adc3bit_max_err={max_err:.4f} codes={codes}"
     if len(set(codes)) < 3 or min(codes) != 0 or max(codes) != 7:
         return False, f"insufficient_clocked_adc3bit_code_coverage={codes}"
-    return True, f"codes={codes} max_err={max_err:.4f}"
+    return True, f"codes={codes} hold_checks={hold_checks} max_err={max_err:.4f}"
 
 CHECKER_ID = "v4_244_clocked_adc3bit"
 CHECKER: Checker = check_v3_clocked_adc3bit

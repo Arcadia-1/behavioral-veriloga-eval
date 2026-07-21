@@ -7,7 +7,7 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=13n maxstep=20p"
+      "tran tran stop=45n maxstep=20p"
     ],
     "body_lines": [
       "XDUT (rst s sar res intg clk_sar zoom clk_zoom rst_zoom) adc_zoom_timing_sequencer",
