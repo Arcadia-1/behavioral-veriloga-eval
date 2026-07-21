@@ -170,7 +170,7 @@ def test_batch303_continuous_checkers_reject_insufficient_excitation() -> None:
 
 def _clocked_values(state: dict[str, float]) -> dict[str, float]:
     vss = 0.02
-    vdd = 1.04
+    vdd = vss + state.get("span", 1.02)
     span = vdd - vss
     return {
         "rst": state["rst"],
@@ -214,7 +214,9 @@ def _clocked_rows(*, corrupt_clear: bool = False) -> list[dict[str, float]]:
         {"rst": 0.00, "en": 0.00, "x0": 0.90, "x1": 0.10},
         {"rst": 0.00, "en": 0.90, "x0": 0.90, "x1": 0.10},
         {"rst": 0.00, "en": 0.90, "x0": 0.20, "x1": 0.80},
+        {"rst": 0.00, "en": 0.90, "x0": 0.60, "x1": 0.20, "span": 0.42},
         {"rst": 0.00, "en": 0.90, "x0": 0.55, "x1": 0.45},
+        {"rst": 0.00, "en": 0.90, "x0": 0.80, "x1": 0.10, "span": 1.48},
         {"rst": 0.00, "en": 0.90, "x0": 0.30, "x1": 0.70},
         {"rst": 0.00, "en": 0.90, "x0": 0.85, "x1": 0.15},
         {"rst": 0.00, "en": 0.90, "x0": 0.40, "x1": 0.60},
