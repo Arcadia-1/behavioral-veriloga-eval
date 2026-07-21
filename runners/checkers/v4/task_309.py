@@ -2,91 +2,113 @@
 from __future__ import annotations
 
 from ..api import Checker
-from .diagnostics import excess_count
-from ..common.v4_topup import (
-    _v4_topup_logic_high,
-    _v4_topup_near,
-    _v4_topup_span,
-)
-from ..common.relative_events import active_start, first_rising_after, latest_assertion, sample_after_event
+from ..common.v4_topup import _v4_topup_clip01, _v4_topup_logic_high
+from ..common.relative_events import event_period, rising_edges, sample_after_event, sample_step
 
 def check_v4_309_autozero_comparator_preamplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, "v4_1007 empty_trace"
-    reset_clear = any(
-        _v4_topup_logic_high(row, "rst")
-        and row["decision"] < 0.15
-        and _v4_topup_near(row["offset_store"], 0.45, 0.08)
-        and row["ready"] < 0.15
-        for row in rows
-    )
-    late_reset = latest_assertion(rows, "rst")
-    late_reset_clear = any(
-        late_reset is not None and row["time"] >= late_reset
-        and _v4_topup_logic_high(row, "rst")
-        and row["decision"] < 0.15
-        and _v4_topup_near(row["offset_store"], 0.45, 0.08)
-        and row["ready"] < 0.15
-        for row in rows
-    )
-    activation = active_start(rows, reset="rst", auxiliary="eval_en")
-    first_autozero = first_rising_after(rows, "az_en")
-    premature_ready = sum(
-        1 for row in rows
-        if first_autozero is not None and row["time"] < first_autozero and row["ready"] > 0.45
-    )
-    checked = decision_errors = 0
+    edges = rising_edges(rows, "clk")
+    period = event_period(rows, "clk")
+    guard = max(period * 0.15, sample_step(rows) * 3.0)
+    expected_offset = 0.45
+    expected_decision = False
+    expected_ready = False
+    reset_edges = autozero_edges = evaluation_edges = 0
+    edge_errors = hold_checked = hold_errors = order_errors = 0
+    captured_offsets: list[float] = []
     high_expected = low_expected = False
-    previous = rows[0]
-    for row in rows[1:]:
-        clk_rise = (not _v4_topup_logic_high(previous, "clk")) and _v4_topup_logic_high(row, "clk")
-        previous = row
-        if row["time"] < activation or not clk_rise or not _v4_topup_logic_high(row, "eval_en"):
+    for index, edge in enumerate(edges):
+        edge_index = next((i for i, row in enumerate(rows) if float(row["time"]) >= edge), None)
+        edge_row = rows[max(0, edge_index - 1)] if edge_index is not None else None
+        post = sample_after_event(rows, edge, clock_signal="clk", fraction_of_period=0.15)
+        if edge_row is None or post is None:
             continue
-        sample = sample_after_event(rows, float(row["time"]), clock_signal="clk")
-        if sample is None or sample["ready"] <= 0.45:
-            continue
-        corrected = float(row["vinp"]) - float(row["vinn"]) - (float(sample["offset_store"]) - 0.45)
-        expected_high = corrected >= 0.0
-        high_expected = high_expected or expected_high
-        low_expected = low_expected or not expected_high
-        checked += 1
-        if (float(sample["decision"]) > 0.45) != expected_high:
-            decision_errors += 1
-    offset_dynamic = _v4_topup_span(rows, "offset_store") > 0.04
-    ready_seen = any(row["time"] >= activation and row["ready"] > 0.45 for row in rows)
+        decision_check_required = True
+        if _v4_topup_logic_high(edge_row, "rst"):
+            expected_offset = 0.45
+            expected_decision = False
+            expected_ready = False
+            reset_edges += 1
+        elif _v4_topup_logic_high(edge_row, "az_en"):
+            stored = float(edge_row["vinp"]) - float(edge_row["vinn"])
+            expected_offset = _v4_topup_clip01(0.45 + stored)
+            expected_ready = True
+            autozero_edges += 1
+            captured_offsets.append(expected_offset)
+        elif _v4_topup_logic_high(edge_row, "eval_en"):
+            evaluation_edges += 1
+            if not expected_ready:
+                order_errors += 1
+            else:
+                corrected = (
+                    float(edge_row["vinp"])
+                    - float(edge_row["vinn"])
+                    - (expected_offset - 0.45)
+                )
+                expected_decision = corrected >= 0.0
+                decision_check_required = abs(corrected) > 10e-3
+                high_expected = high_expected or expected_decision
+                low_expected = low_expected or not expected_decision
+
+        edge_mismatch = (
+            abs(float(post["offset_store"]) - expected_offset) > 0.08
+            or (float(post["ready"]) > 0.45) != expected_ready
+            or (
+                decision_check_required
+                and (float(post["decision"]) > 0.45) != expected_decision
+            )
+        )
+        if edge_mismatch:
+            edge_errors += 1
+        if not decision_check_required:
+            expected_decision = float(post["decision"]) > 0.45
+
+        next_edge = edges[index + 1] if index + 1 < len(edges) else float(rows[-1]["time"])
+        for hold_row in rows:
+            hold_time = float(hold_row["time"])
+            if hold_time < edge + guard or hold_time >= next_edge - sample_step(rows) * 2.0:
+                continue
+            if _v4_topup_logic_high(hold_row, "rst"):
+                continue
+            hold_checked += 1
+            if (
+                abs(float(hold_row["offset_store"]) - expected_offset) > 0.08
+                or (float(hold_row["ready"]) > 0.45) != expected_ready
+                or (float(hold_row["decision"]) > 0.45) != expected_decision
+            ):
+                hold_errors += 1
+
+    offset_span = (
+        max(captured_offsets) - min(captured_offsets)
+        if len(captured_offsets) >= 2
+        else 0.0
+    )
+    allowed_hold_errors = max(4, hold_checked // 100)
     ok = (
-        reset_clear
-        and late_reset_clear
-        and premature_ready <= 3
-        and ready_seen
-        and offset_dynamic
-        and checked >= 4
+        reset_edges >= 1
+        and autozero_edges >= 2
+        and evaluation_edges >= 4
+        and order_errors == 0
+        and edge_errors == 0
+        and hold_checked >= 20
+        and hold_errors <= allowed_hold_errors
+        and offset_span > 0.04
         and high_expected
         and low_expected
-        and decision_errors <= 1
-    )
-    decision_mismatches = excess_count(decision_errors, 1)
-    reset_mismatches = int(not reset_clear) + int(not late_reset_clear)
-    autozero_mismatches = int(not offset_dynamic)
-    evaluation_mismatches = decision_mismatches
-    expose_mismatches = (
-        int(not offset_dynamic)
-        + int(not ready_seen)
-        + excess_count(premature_ready, 3)
     )
     diagnostics = {
-        "P_ON_RESET_CLEAR_STORED_OFFSET_DECISION": reset_mismatches,
-        "P_DURING_AN_AUTO_ZERO_CLOCK_UPDATE": autozero_mismatches,
-        "P_DURING_AN_EVALUATION_CLOCK_UPDATE_WITH": evaluation_mismatches,
-        "P_DRIVE_DECISION_HIGH_FOR_CORRECTED_NONNEGATIVE": decision_mismatches,
-        "P_EXPOSE_STORED_OFFSET_ON_OFFSET_STORE": expose_mismatches,
+        "P_ON_RESET_CLEAR_STORED_OFFSET_DECISION": int(reset_edges < 1) + edge_errors,
+        "P_DURING_AN_AUTO_ZERO_CLOCK_UPDATE": int(autozero_edges < 2) + int(offset_span <= 0.04),
+        "P_DURING_AN_EVALUATION_CLOCK_UPDATE_WITH": int(evaluation_edges < 4) + order_errors,
+        "P_DRIVE_DECISION_HIGH_FOR_CORRECTED_NONNEGATIVE": edge_errors,
+        "P_EXPOSE_STORED_OFFSET_ON_OFFSET_STORE": int(offset_span <= 0.04) + max(0, hold_errors - allowed_hold_errors),
         "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE": 0,
     }
     return ok, (
-        f"v4_309 checked={checked} reset_clear={reset_clear} late_reset_clear={late_reset_clear} premature_ready={premature_ready} "
-        f"ready_seen={ready_seen} offset_dynamic={offset_dynamic} high_expected={high_expected} "
-        f"low_expected={low_expected} decision_errors={decision_errors}; "
+        f"v4_309 reset_edges={reset_edges} autozero_edges={autozero_edges} evaluation_edges={evaluation_edges} "
+        f"order_errors={order_errors} edge_errors={edge_errors} hold_checked={hold_checked} hold_errors={hold_errors} "
+        f"offset_span={offset_span:.3f} high_expected={high_expected} low_expected={low_expected}; "
         + "; ".join(f"{key} mismatch_count={value}" for key, value in diagnostics.items())
     )
 
