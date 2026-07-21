@@ -65,13 +65,14 @@ def check_v4_343_pipeline_adc_two_stage(rows: list[dict[str, float]]) -> tuple[b
     if missing:
         return False, f"v4_343 missing_signals={','.join(missing)}"
     errors: list[str] = []
-    reset_clear = any(
-        _high(row, "rst")
+    reset_clear_rows = [
+        row for row in rows
+        if _high(row, "rst")
         and _code(row, ["code_0", "code_1", "code_2", "code_3"]) == 0
         and not _high(row, "valid_o")
         and abs(float(row["residue_dbg"])) < 0.04
-        for row in rows
-    )
+    ]
+    reset_clear = bool(reset_clear_rows)
     if not reset_clear:
         _mismatch(errors, "P_PIPE_RESET_CLEAR", 0.0, "code/valid/residue clear", "not observed")
 
@@ -92,6 +93,29 @@ def check_v4_343_pipeline_adc_two_stage(rows: list[dict[str, float]]) -> tuple[b
             _mismatch(errors, "P_PIPE_RESIDUE", float(row["time"]), expected_residue, float(observed["residue_dbg"]), _gap(expected_residue, float(observed["residue_dbg"])))
         residue_checks += 1
 
+    sample_times = [float(rows[clock_edges[sample[0]]]["time"]) for sample in samples]
+    first_sample_time = min(sample_times, default=0.0)
+    last_sample_time = max(sample_times, default=0.0)
+    mid_reset_time = next(
+        (
+            float(row["time"])
+            for row in reset_clear_rows
+            if first_sample_time < float(row["time"]) < last_sample_time
+        ),
+        None,
+    )
+    mid_reset_clear = mid_reset_time is not None
+    if not mid_reset_clear:
+        _mismatch(errors, "P_PIPE_MIDRUN_RESET_CLEAR", 0.0, "mid-run reset clears code/valid/residue between valid samples", "not observed")
+
+    expected_by_edge: dict[int, tuple[int, tuple[int, float, int]]] = {}
+    reset_blocked_samples: set[int] = set()
+    for sample_index, sample in enumerate(samples):
+        expected_edge = sample[0] + 2
+        if expected_edge >= len(clock_edges) or _high(rows[clock_edges[expected_edge]], "rst"):
+            reset_blocked_samples.add(sample_index)
+            continue
+        expected_by_edge[expected_edge] = (sample_index, sample)
     matched: set[int] = set()
     output_checks = 0
     valid_outputs_by_edge: set[int] = set()
@@ -101,15 +125,11 @@ def check_v4_343_pipeline_adc_two_stage(rows: list[dict[str, float]]) -> tuple[b
             continue
         valid_outputs_by_edge.add(edge_number)
         observed_code = _code(observed, ["code_0", "code_1", "code_2", "code_3"])
-        candidates = [
-            (sample_index, sample)
-            for sample_index, sample in enumerate(samples)
-            if sample_index not in matched and 1 <= edge_number - sample[0] <= 3
-        ]
-        selected = next((item for item in candidates if item[1][2] == observed_code), None)
-        if selected is None:
-            expected = [item[1][2] for item in candidates]
-            _mismatch(errors, "P_PIPE_ALIGNED_CODE", float(observed["time"]), expected, observed_code)
+        selected = expected_by_edge.get(edge_number)
+        if selected is None or selected[0] in matched:
+            _mismatch(errors, "P_PIPE_EXACT_LATENCY", float(observed["time"]), "valid_o only on sample_edge+2", f"valid_at_edge={edge_number}")
+        elif selected[1][2] != observed_code:
+            _mismatch(errors, "P_PIPE_ALIGNED_CODE", float(observed["time"]), selected[1][2], observed_code)
         else:
             matched.add(selected[0])
         output_checks += 1
@@ -117,19 +137,26 @@ def check_v4_343_pipeline_adc_two_stage(rows: list[dict[str, float]]) -> tuple[b
         sample[0]
         for sample_index, sample in enumerate(samples)
         if sample_index not in matched
-        and not any(1 <= edge_number - sample[0] <= 3 for edge_number in valid_outputs_by_edge)
+        and sample_index not in reset_blocked_samples
+        and sample[0] + 2 not in valid_outputs_by_edge
     ]
     if missing_valid:
         _mismatch(
             errors,
             "P_PIPE_VALID_LATENCY",
             float(rows[clock_edges[missing_valid[0]]]["time"]) if missing_valid[0] < len(clock_edges) else 0.0,
-            "valid_o within 1..3 clocks of valid_i sample",
+            "valid_o exactly two rising clocks after valid_i sample",
             f"missing_for_input_edges={missing_valid[:6]}",
             float(len(missing_valid)),
         )
+    post_reset_samples = [
+        sample for sample in samples
+        if mid_reset_time is not None and float(rows[clock_edges[sample[0]]]["time"]) > mid_reset_time
+    ]
+    if mid_reset_clear and not post_reset_samples:
+        _mismatch(errors, "P_PIPE_RESET_RECOVERY", mid_reset_time or 0.0, "post-reset valid_i sample", "not observed")
     checks = min(residue_checks, output_checks)
-    return _finish("v4_343", checks, errors, f"reset_clear={reset_clear} input_samples={len(samples)} output_valid={output_checks} matched={len(matched)}", 3)
+    return _finish("v4_343", checks, errors, f"reset_clear={reset_clear} mid_reset_clear={mid_reset_clear} post_reset_samples={len(post_reset_samples)} input_samples={len(samples)} output_valid={output_checks} matched={len(matched)}", 3)
 
 CHECKER_ID = "v4_343_pipeline_adc_two_stage"
 CHECKER: Checker = check_v4_343_pipeline_adc_two_stage

@@ -80,7 +80,7 @@ def check_v4_ffe_transmitter_3tap(rows: list[dict[str, float]]) -> tuple[bool, s
 
     diagnostics = {
         name: PropertyDiagnostic(name)
-        for name in ("P_MAIN_TAP", "P_PRE_TAP", "P_POST_TAP", "P_OUTPUT_SUM", "P_EXCITATION")
+        for name in ("P_MAIN_TAP", "P_PRE_TAP", "P_POST_TAP", "P_OUTPUT_SUM", "P_RESET_HISTORY_CLEAR", "P_CLIP_BOUNDARY", "P_EXCITATION")
     }
     sym0 = 0
     sym1 = 0
@@ -89,11 +89,19 @@ def check_v4_ffe_transmitter_3tap(rows: list[dict[str, float]]) -> tuple[bool, s
     pre_codes: set[int] = set()
     post_codes: set[int] = set()
     out_values: list[float] = []
+    reset_edges_after_activity = 0
+    recovery_edges = 0
+    saw_activity_before_reset = False
+    awaiting_reset_recovery = False
+    clip_boundary_checks = 0
     for edge_t in _rising_times(rows, "clk"):
         edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
         if edge_row["rst"] > 0.45:
             sym0 = sym1 = sym2 = 0
             expected_main = expected_pre = expected_post = expected_out = 0.45
+            if checked > 0:
+                reset_edges_after_activity += 1
+                awaiting_reset_recovery = True
         else:
             sym2 = sym1
             sym1 = sym0
@@ -107,8 +115,12 @@ def check_v4_ffe_transmitter_3tap(rows: list[dict[str, float]]) -> tuple[bool, s
             expected_post = 0.45 - 0.04 * post_code * sym2
             expected_out = _v4_clip(0.45 + 0.18 * sym0 + 0.04 * pre_code * sym1 - 0.04 * post_code * sym2)
             out_values.append(expected_out)
+            saw_activity_before_reset = True
 
         sample = _sample_after(rows, edge_t, 0.8e-9)
+        if awaiting_reset_recovery and edge_row["rst"] <= 0.45:
+            recovery_edges += 1
+            awaiting_reset_recovery = False
         checks = (
             ("P_MAIN_TAP", "main_dbg", expected_main, 0.07),
             ("P_PRE_TAP", "pre_dbg", expected_pre, 0.07),
@@ -126,7 +138,35 @@ def check_v4_ffe_transmitter_3tap(rows: list[dict[str, float]]) -> tuple[bool, s
                     time=edge_t,
                     gap=abs(observed - expected),
                 )
+        raw_from_debug = float(sample["main_dbg"]) + float(sample["pre_dbg"]) + float(sample["post_dbg"]) - 0.9
+        clipped_from_debug = _v4_clip(raw_from_debug)
+        if raw_from_debug < -0.02 or raw_from_debug > 0.92:
+            clip_boundary_checks += 1
+            diagnostic = diagnostics["P_CLIP_BOUNDARY"]
+            diagnostic.checked += 1
+            observed = float(sample["vout"])
+            if not _v4_close(observed, clipped_from_debug, 0.08):
+                diagnostic.mismatch(
+                    expected=f"vout={clipped_from_debug:.6g}",
+                    observed=f"vout={observed:.6g}",
+                    time=edge_t,
+                    gap=abs(observed - clipped_from_debug),
+                )
         checked += 1
+
+    diagnostics["P_RESET_HISTORY_CLEAR"].checked = 1
+    if not saw_activity_before_reset or reset_edges_after_activity < 1 or recovery_edges < 1:
+        diagnostics["P_RESET_HISTORY_CLEAR"].mismatch(
+            expected="mid-run reset after activity followed by recovery edge",
+            observed=(
+                f"activity_before_reset={saw_activity_before_reset} "
+                f"reset_edges_after_activity={reset_edges_after_activity} recovery_edges={recovery_edges}"
+            ),
+            time=float(rows[-1]["time"]),
+            gap=float(max(0, 1 - reset_edges_after_activity) + max(0, 1 - recovery_edges)),
+        )
+    if clip_boundary_checks == 0:
+        diagnostics["P_CLIP_BOUNDARY"].checked = 1
 
     out_span = max(out_values, default=0.45) - min(out_values, default=0.45)
     diagnostics["P_EXCITATION"].checked = 1
