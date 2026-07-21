@@ -81,8 +81,8 @@ def _task311_rows(*, wrong_metric_platform: bool = False) -> list[dict[str, floa
     for count, rst, sample_en, code, old_count in schedule:
         for offset in range(count):
             old_window = old_count > 0 and offset < old_count
-            out_code = previous_code if old_window else code
-            if not old_window:
+            out_code = previous_code if (old_window or code == 3) else code
+            if not old_window and code != 3:
                 previous_code = code
             valid = 0.0 if rst or code == 3 else VDD
             metric_code = out_code if old_window else code
@@ -129,7 +129,7 @@ def _task314_expected(vin: float, low: float, high: float, *, enabled: bool, rst
     return state
 
 
-def _task314_rows(*, plateau_error: bool = False) -> list[dict[str, float]]:
+def _task314_rows(*, plateau_error: bool = False, toggle_stuck_high: bool = False) -> list[dict[str, float]]:
     rows: list[dict[str, float]] = []
     t = 0.0
     low = 0.30
@@ -155,6 +155,8 @@ def _task314_rows(*, plateau_error: bool = False) -> list[dict[str, float]]:
                 "state_metric": _logic(observed_state),
                 "toggled": VDD if (idx == 0 and target_state != old_state and enabled and not rst) else 0.0,
             }
+            if toggle_stuck_high and enabled and not rst and old_state != target_state:
+                row["toggled"] = VDD
             if plateau_error and enabled and not rst and idx >= count - 14:
                 row["inside_flag"] = _logic(not target_state)
                 row["state_metric"] = _logic(not target_state)
@@ -181,6 +183,12 @@ def test_314_control_change_short_old_platform_is_allowed() -> None:
 def test_314_settled_plateau_tail_error_still_fails() -> None:
     ok, _note = _passes("v4_314_hysteretic_window_comparator", _task314_rows(plateau_error=True))
     assert not ok
+
+
+def test_314_stuck_high_toggle_is_rejected() -> None:
+    ok, note = _passes("v4_314_hysteretic_window_comparator", _task314_rows(toggle_stuck_high=True))
+    assert not ok
+    assert "toggle" in note
 
 
 def _ladder_taps(hi: float, lo: float) -> tuple[list[float], float]:
@@ -300,7 +308,12 @@ def _gain_bits(code: int) -> dict[str, float]:
     return {"gain_0": _logic(bool(code & 1)), "gain_1": _logic(bool(code & 2)), "gain_2": _logic(bool(code & 4))}
 
 
-def _task316_rows(*, disable_stuck_after_settle: bool = False) -> list[dict[str, float]]:
+def _task316_rows(
+    *,
+    disable_stuck_after_settle: bool = False,
+    omit_decrement: bool = False,
+    omit_late_reset: bool = False,
+) -> list[dict[str, float]]:
     rows: list[dict[str, float]] = []
     t = 0.0
     expected_code = 0
@@ -327,9 +340,13 @@ def _task316_rows(*, disable_stuck_after_settle: bool = False) -> list[dict[str,
     add_row(0.0, False, True, 0, 0.45, 0.0, False)
     add_row(VDD, False, True, 0, 0.45, 0.0, False)
     add_row(0.0, True, False, 0, 0.45, 0.0, False)
-    for err in (0.08, 0.06, 0.04, 0.02, 0.005, 0.005, 0.005, 0.005, 0.005):
+    active_errors = (0.08, 0.06, 0.04, 0.02, 0.005, 0.005, 0.005, 0.005, 0.005)
+    if not omit_decrement:
+        active_errors = (0.08, 0.06, 0.04, -0.035, 0.02, 0.005, 0.005, 0.005, 0.005, 0.005)
+    for signed_err in active_errors:
         edge_vout = max(0.0, min(VDD, 0.45 + (2.0 + 0.25 * expected_code) * (0.55 - 0.45)))
-        residue_ref = edge_vout + err
+        residue_ref = edge_vout + signed_err
+        err = abs(signed_err)
         edge = {
             "time": t,
             "clk": VDD,
@@ -344,7 +361,10 @@ def _task316_rows(*, disable_stuck_after_settle: bool = False) -> list[dict[str,
         edge.update(_gain_bits(current_code))
         rows.append(edge)
         t += 0.25e-9
-        expected_code = min(7, expected_code + 1) if err > 0.015 else expected_code
+        if signed_err > 0.015:
+            expected_code = min(7, expected_code + 1)
+        elif signed_err < -0.015:
+            expected_code = max(0, expected_code - 1)
         lock_streak = lock_streak + 1 if err <= 0.015 else 0
         current_code = expected_code
         sample_vout = max(0.0, min(VDD, 0.45 + (2.0 + 0.25 * current_code) * (0.55 - 0.45)))
@@ -363,6 +383,10 @@ def _task316_rows(*, disable_stuck_after_settle: bool = False) -> list[dict[str,
         rows.append(sample)
         t += 0.20e-9
         add_row(0.0, True, False, current_code, sample_vout, err, lock_streak >= 3)
+
+    if not omit_late_reset:
+        for _ in range(12):
+            add_row(0.0, True, True, 0, 0.45, 0.0, False)
 
     stale_vout = rows[-1]["vout"]
     stale_metric = rows[-1]["error_metric"]
@@ -386,6 +410,16 @@ def test_316_disable_transition_under_035ns_is_allowed() -> None:
 def test_316_disable_settled_stuck_output_still_fails() -> None:
     ok, _note = _passes("v4_316_residue_amplifier_gain_calibration", _task316_rows(disable_stuck_after_settle=True))
     assert not ok
+
+
+def test_316_requires_decrement_and_late_reset_coverage() -> None:
+    for rows, expected in (
+        (_task316_rows(omit_decrement=True), "decrement_seen=False"),
+        (_task316_rows(omit_late_reset=True), "late_reset_clear=False"),
+    ):
+        ok, note = _passes("v4_316_residue_amplifier_gain_calibration", rows)
+        assert not ok
+        assert expected in note
 
 
 def _task384_rows(*, stable_wrong_platform: bool = False) -> list[dict[str, float]]:
