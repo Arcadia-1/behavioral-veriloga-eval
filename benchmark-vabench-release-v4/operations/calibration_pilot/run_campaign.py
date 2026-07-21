@@ -1768,7 +1768,7 @@ def run_mini_swe_agentic_cell(
                 else "unavailable"
             ),
             "agent_scaffold": {
-                key: episode[key]
+                key: episode.get(key)
                 for key in (
                     "scaffold",
                     "scaffold_version",

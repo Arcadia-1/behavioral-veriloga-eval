@@ -83,10 +83,14 @@ def main() -> int:
         if (run / "public" / "task" / "public_contract.json").exists():
             problems.append("direct one-shot mode exposes a public contract file")
     else:
-        if mounts != ["public/task:ro", "public/submission:rw"]:
+        if mounts != [
+            "public/task:ro",
+            "public/submission:rw",
+            "public/work:rw",
+        ]:
             problems.append("agentic model mounts differ from the public contract")
-        if policy.get("executables") != ["evas"]:
-            problems.append("agentic mode does not expose only the EVAS executable")
+        if policy.get("executables") != ["evas", "vabench-submit"]:
+            problems.append("agentic mode does not expose the declared shell helpers")
         if not (run / "public" / "evas_manifest.json").is_file():
             problems.append("agentic mode lacks the direct EVAS manifest")
         if not (run / "public" / "task" / "evas_runtime.json").is_file():
