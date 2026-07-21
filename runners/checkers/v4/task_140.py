@@ -41,8 +41,6 @@ def _v3_logic_stable_rows(
         edges.extend(_v3_edge_times(rows, signal, threshold=threshold, direction=1))
         edges.extend(_v3_edge_times(rows, signal, threshold=threshold, direction=-1))
     for row in rows:
-        if any(abs(row[signal] - threshold) <= 0.12 for signal in inputs):
-            continue
         t = row["time"]
         if any(edge <= t <= edge + settle_after_edge_s for edge in edges):
             continue
