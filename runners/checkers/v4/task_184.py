@@ -87,6 +87,7 @@ def check_v4_offset_rdac_search_flow(rows: list[dict[str, float]]) -> tuple[bool
                 codes[next_bit] = 1
                 if not decision:
                     codes[iteration] = 0
+                state = decision
                 iteration -= 1
                 primary = refinement_result
             else:
