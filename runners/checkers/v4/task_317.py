@@ -6,6 +6,7 @@ from ..common.v4_topup import (
     _v4_topup_logic_high,
     _v4_rising,
 )
+from ..common.relative_events import rising_edges, sample_after_event
 
 def check_v4_317_capacitor_mismatch_calibration_engine(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
@@ -38,6 +39,50 @@ def check_v4_317_capacitor_mismatch_calibration_engine(rows: list[dict[str, floa
         return sorted(periods)[len(periods) // 2] if periods else 1.0
 
     period = clock_period()
+
+    expected_code = expected_updates = expected_tol_count = 0
+    oracle_checked = oracle_errors = 0
+    for edge in rising_edges(rows, "clk"):
+        edge_index = next(
+            (index for index, row in enumerate(rows) if float(row["time"]) >= edge),
+            None,
+        )
+        if edge_index is None:
+            continue
+        stimulus = rows[max(0, edge_index - 1)]
+        active = _v4_topup_logic_high(stimulus, "enable") and not _v4_topup_logic_high(stimulus, "rst")
+        if not active:
+            expected_code = expected_updates = expected_tol_count = 0
+            continue
+        err = float(stimulus["err_in"]) - 0.45
+        expected_updates += 1
+        expected_tol_count = expected_tol_count + 1 if abs(err) <= 20e-3 else 0
+        if err > 20e-3:
+            expected_code = min(15, expected_code + 1)
+        elif err < -20e-3:
+            expected_code = max(0, expected_code - 1)
+        expected_done = expected_updates >= 8 or expected_tol_count >= 2
+        post = sample_after_event(
+            rows,
+            edge,
+            clock_signal="clk",
+            fraction_of_period=0.15,
+        )
+        if post is None:
+            continue
+        observed_code = (
+            int(_v4_topup_logic_high(post, "cal_0"))
+            + 2 * int(_v4_topup_logic_high(post, "cal_1"))
+            + 4 * int(_v4_topup_logic_high(post, "cal_2"))
+            + 8 * int(_v4_topup_logic_high(post, "cal_3"))
+        )
+        oracle_checked += 1
+        if (
+            observed_code != expected_code
+            or abs(float(post["correction_metric"]) - 0.006 * expected_code) > 0.012
+            or _v4_topup_logic_high(post, "done") != expected_done
+        ):
+            oracle_errors += 1
     checked = metric_errors = clear_errors = done_errors = 0
     codes_seen: set[int] = set()
     reset_clear = disabled_clear = monotonic_up = high_code_seen = done_seen = False
@@ -91,6 +136,8 @@ def check_v4_317_capacitor_mismatch_calibration_engine(rows: list[dict[str, floa
             done_errors += 1
     ok = (
         checked >= 40
+        and oracle_checked >= 8
+        and oracle_errors == 0
         and reset_clear
         and disabled_clear
         and monotonic_up
@@ -104,7 +151,8 @@ def check_v4_317_capacitor_mismatch_calibration_engine(rows: list[dict[str, floa
     return ok, (
         f"v4_317 checked={checked} codes={sorted(codes_seen)} reset_clear={reset_clear} "
         f"disabled_clear={disabled_clear} monotonic_up={monotonic_up} high_code_seen={high_code_seen} "
-        f"done_seen={done_seen} metric_errors={metric_errors} done_errors={done_errors} clear_errors={clear_errors}"
+        f"done_seen={done_seen} oracle_checked={oracle_checked} oracle_errors={oracle_errors} "
+        f"metric_errors={metric_errors} done_errors={done_errors} clear_errors={clear_errors}"
     )
 
 CHECKER_ID = "v4_317_capacitor_mismatch_calibration_engine"

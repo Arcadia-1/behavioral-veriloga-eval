@@ -130,21 +130,46 @@ def check_release_threshold_comparator(rows: list[dict[str, float]]) -> tuple[bo
         )
 
     settle_s = 2.0e-9
-    rising_aligned = any(abs(ot - dt) <= settle_s for dt in diff_rises for ot in out_rises)
-    falling_aligned = any(abs(ot - dt) <= settle_s for dt in diff_falls for ot in out_falls)
-    ok = high_frac > 0.90 and low_frac > 0.90 and rising_aligned and falling_aligned
+    rising_misses = [
+        edge_t
+        for edge_t in diff_rises
+        if not any(edge_t - 1.1e-9 <= out_t <= edge_t + settle_s for out_t in out_rises)
+    ]
+    falling_misses = [
+        edge_t
+        for edge_t in diff_falls
+        if not any(edge_t - 1.1e-9 <= out_t <= edge_t + settle_s for out_t in out_falls)
+    ]
+    initial_positive = diff[0] > 0.0
+    initial_correct = (out_vals[0] > vth) == initial_positive
+    if not initial_correct:
+        expected_edges = out_rises if initial_positive else out_falls
+        initial_correct = any(times[0] <= edge_t <= times[0] + settle_s for edge_t in expected_edges)
+    rising_aligned = not rising_misses
+    falling_aligned = not falling_misses
+    ok = (
+        high_frac > 0.90
+        and low_frac > 0.90
+        and initial_correct
+        and rising_aligned
+        and falling_aligned
+    )
     note = (
         f"high_frac={high_frac:.3f} low_frac={low_frac:.3f} span={span:.3f} "
         f"diff_rises={len(diff_rises)} diff_falls={len(diff_falls)} "
         f"out_rises={len(out_rises)} out_falls={len(out_falls)} "
-        f"rising_aligned={rising_aligned} falling_aligned={falling_aligned}"
+        f"initial_correct={initial_correct} rising_misses={len(rising_misses)} "
+        f"falling_misses={len(falling_misses)}"
     )
-    if high_frac <= 0.90 or low_frac <= 0.90:
+    if high_frac <= 0.90 or low_frac <= 0.90 or not initial_correct:
         return False, diagnostic(
             "P_INITIAL_DECISION",
             "behavior_mismatch",
-            expected="high_frac>0.90,low_frac>0.90",
-            observed=f"high_frac={high_frac:.3f},low_frac={low_frac:.3f}",
+            expected="correct_initial_decision_within_2ns,high_frac>0.90,low_frac>0.90",
+            observed=(
+                f"initial_correct={initial_correct},high_frac={high_frac:.3f},"
+                f"low_frac={low_frac:.3f}"
+            ),
             event="stable_differential_regions",
         )
     if not rising_aligned:
@@ -152,7 +177,7 @@ def check_release_threshold_comparator(rows: list[dict[str, float]]) -> tuple[bo
             "P_RISING_DIFFERENTIAL",
             "behavior_mismatch",
             expected="output_rise_within_2ns_of_input_rise",
-            observed=f"input_rises={len(diff_rises)},output_rises={len(out_rises)}",
+            observed=f"unmatched_input_rises={len(rising_misses)}",
             event="rising_zero_crossing",
         )
     if not falling_aligned:
@@ -160,7 +185,7 @@ def check_release_threshold_comparator(rows: list[dict[str, float]]) -> tuple[bo
             "P_FALLING_DIFFERENTIAL",
             "behavior_mismatch",
             expected="output_fall_within_2ns_of_input_fall",
-            observed=f"input_falls={len(diff_falls)},output_falls={len(out_falls)}",
+            observed=f"unmatched_input_falls={len(falling_misses)}",
             event="falling_zero_crossing",
         )
     return ok, pass_note(PROPERTY_IDS, note)

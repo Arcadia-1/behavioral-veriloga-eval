@@ -73,6 +73,7 @@ def check_v3_tool_4bit_sar_signed_dac(rows: list[dict[str, float]]) -> tuple[boo
     weights = {3: 8.0, 2: 4.0, 1: 2.0, 0: 1.0}
     gain = high_level / 16.0
     checked = 0
+    hold_checks = 0
     max_err = 0.0
     failures: list[str] = []
     for edge_t in sample_edges:
@@ -96,11 +97,26 @@ def check_v3_tool_4bit_sar_signed_dac(rows: list[dict[str, float]]) -> tuple[boo
             failures.append(
                 f"aout@{edge_t * 1e9:.3f}ns={observed:.4f} expected={expected:.4f} bits={''.join(bit_text)}"
             )
+        next_index = checked
+        if next_index < len(sample_edges):
+            next_edge = sample_edges[next_index]
+            hold_t = next_edge - 0.08e-9
+            held = sample_signal_at(rows, "aout", hold_t)
+            if held is None:
+                return False, f"missing_aout_pre_edge_hold_at={hold_t * 1e9:.3f}ns"
+            hold_checks += 1
+            if abs(held - expected) > 0.04:
+                failures.append(
+                    f"aout_hold@{hold_t * 1e9:.3f}ns={held:.4f} expected={expected:.4f}"
+                )
     if checked < 3:
         return False, f"insufficient_signed_dac_checks={checked}"
     if failures:
         return False, " ".join(failures[:5])
-    return True, f"signed_dac_samples={checked} max_err={max_err:.4f}"
+    return True, (
+        f"signed_dac_samples={checked} hold_checks={hold_checks} "
+        f"max_err={max_err:.4f}"
+    )
 
 CHECKER_ID = "v4_213_tool_4bit_sar_signed_dac"
 CHECKER: Checker = check_v3_tool_4bit_sar_signed_dac

@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 from ..api import Checker
+
+
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -29,69 +31,88 @@ def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -
             return v0 + alpha * (v1 - v0)
     return None
 
-def _sample_many(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    details: list[str] = []
-    for signal, expected_samples in samples.items():
-        observed: list[float] = []
-        for time_ns, expected in expected_samples:
-            value = sample_signal_at(rows, signal, time_ns * 1e-9)
-            if value is None:
-                return False, f"missing_{signal}_sample_at={time_ns:g}ns"
-            observed.append(value)
-            if abs(value - expected) > tol:
-                return False, (
-                    f"{signal}@{time_ns:g}ns={value:.4f} expected={expected:.4f} "
-                    f"tol={tol:.4f}"
-                )
-        details.append(f"{signal}=" + ",".join(f"{value:.3f}" for value in observed))
-    return True, " ".join(details)
+WINDOWS_NS: dict[str, tuple[tuple[float, float], ...]] = {
+    "rst": ((0.5, 0.8),),
+    "s": ((1.5, 2.5),),
+    "sar": ((3.0, 5.4),),
+    "clk_sar": ((3.0, 3.25), (3.6, 3.85), (4.2, 4.45)),
+    "res": ((6.0, 6.6),),
+    "intg": ((8.0, 8.7),),
+    "zoom": ((9.2, 10.8),),
+    "clk_zoom": ((9.2, 9.45), (9.8, 10.05)),
+    "rst_zoom": ((11.0, 11.5),),
+}
 
-def _sample_many_within_trace(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    if not rows:
-        return _sample_many(rows, samples, tol=tol)
-    end_time = rows[-1].get("time")
-    if end_time is None:
-        return _sample_many(rows, samples, tol=tol)
-    end_ns = end_time * 1e9
-    filtered: dict[str, list[tuple[float, float]]] = {}
-    for signal, expected_samples in samples.items():
-        visible_samples = [
-            (time_ns, expected)
-            for time_ns, expected in expected_samples
-            if time_ns <= end_ns + 1e-3
-        ]
-        filtered[signal] = visible_samples or expected_samples
-    return _sample_many(rows, filtered, tol=tol)
+
+def _threshold_edges(rows: list[dict[str, float]], signal: str) -> list[float]:
+    edges: list[float] = []
+    for previous, current in zip(rows, rows[1:]):
+        v0 = previous[signal]
+        v1 = current[signal]
+        rising = v0 < 0.55 <= v1
+        falling = v0 > 0.55 >= v1
+        if not rising and not falling:
+            continue
+        t0 = previous["time"]
+        t1 = current["time"]
+        if v1 == v0:
+            edges.append(t1)
+        else:
+            edges.append(t0 + (0.55 - v0) * (t1 - t0) / (v1 - v0))
+    return edges
+
+
+def _inside_window(time_ns: float, windows: tuple[tuple[float, float], ...]) -> bool:
+    phase_ns = time_ns % 32.0
+    return any(start <= phase_ns <= stop for start, stop in windows)
+
+
+def _away_from_edges(time_ns: float, windows: tuple[tuple[float, float], ...]) -> bool:
+    phase_ns = time_ns % 32.0
+    return all(abs(phase_ns - edge) >= 0.06 for window in windows for edge in window)
 
 def check_v3_adc_zoom_timing_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "rst", "s", "sar", "res", "intg", "clk_sar", "zoom", "clk_zoom", "rst_zoom"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing adc zoom timing sequencer signals"
-    return _sample_many_within_trace(
-        rows,
-        {
-            "rst": [(0.6, 1.1), (1.0, 0.0)],
-            "s": [(1.8, 1.1), (2.8, 0.0)],
-            "sar": [(3.4, 1.1), (5.8, 0.0)],
-            "clk_sar": [(3.1, 1.1), (3.4, 0.0), (3.7, 1.1), (4.0, 0.0), (4.3, 1.1), (4.7, 0.0)],
-            "res": [(6.3, 1.1), (6.9, 0.0)],
-            "intg": [(8.3, 1.1), (9.0, 0.0)],
-            "zoom": [(9.6, 1.1), (11.0, 0.0)],
-            "clk_zoom": [(9.3, 1.1), (9.6, 0.0), (9.9, 1.1), (10.2, 0.0)],
-            "rst_zoom": [(11.2, 1.1), (11.8, 0.0)],
-        },
-        tol=0.09,
-    )
+    if rows[-1]["time"] < 44.0e-9:
+        return False, f"trace_too_short_for_second_frame={rows[-1]['time'] * 1e9:.3f}ns"
+
+    checked = 0
+    max_level_error = 0.0
+    for signal, windows in WINDOWS_NS.items():
+        for frame in (0.0, 32.0):
+            expected_edges = [frame + edge for window in windows for edge in window]
+            actual_edges = [edge * 1e9 for edge in _threshold_edges(rows, signal)]
+            frame_edges = [edge for edge in actual_edges if frame <= edge < frame + 16.0]
+            if len(frame_edges) != len(expected_edges):
+                return False, (
+                    f"{signal}_edge_count_frame={int(frame / 32)} "
+                    f"observed={len(frame_edges)} expected={len(expected_edges)}"
+                )
+            for observed, expected in zip(frame_edges, expected_edges):
+                if abs(observed - expected) > 0.055:
+                    return False, (
+                        f"{signal}_edge_time={observed:.4f}ns expected={expected:.4f}ns"
+                    )
+
+        for step in range(0, 441):
+            time_ns = step * 0.1
+            if not _away_from_edges(time_ns, windows):
+                continue
+            observed = sample_signal_at(rows, signal, time_ns * 1e-9)
+            if observed is None:
+                return False, f"missing_{signal}_sample_at={time_ns:.3f}ns"
+            expected = 1.1 if _inside_window(time_ns, windows) else 0.0
+            error = abs(observed - expected)
+            max_level_error = max(max_level_error, error)
+            checked += 1
+            if error > 0.09:
+                return False, (
+                    f"{signal}@{time_ns:.3f}ns={observed:.4f} "
+                    f"expected={expected:.4f}"
+                )
+    return True, f"frames=2 samples={checked} max_level_error={max_level_error:.4f}"
 
 CHECKER_ID = "v4_202_adc_zoom_timing_sequencer"
 CHECKER: Checker = check_v3_adc_zoom_timing_sequencer

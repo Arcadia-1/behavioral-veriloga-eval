@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import time
 from types import SimpleNamespace
 
 import pytest
@@ -27,6 +28,12 @@ RUN_CAMPAIGN_WRAPPER = (
     / "benchmark-vabench-release-v4"
     / "runners"
     / "run_benchmarkv4_campaign.py"
+)
+RUN_CAMPAIGN_DETACHED = (
+    ROOT
+    / "benchmark-vabench-release-v4"
+    / "runners"
+    / "run_benchmarkv4_campaign_detached.sh"
 )
 RUN_CAMPAIGN = (
     ROOT
@@ -783,6 +790,148 @@ def test_direct_run_cell_records_model_output_limit_without_budget_status(
     assert result["per_turn_max_tokens"] == 4096
 
 
+def test_g1_direct_run_cell_can_read_a_skill_before_submitting(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    runner = load_run_campaign()
+    cell = {
+        "cell_id": "v4-001-G1-r0",
+        "task_id": "v4-001",
+        "mode": "G1",
+        "per_turn_max_tokens": 4096,
+    }
+    args = run_args(tmp_path / "run", tmp_path / "release")
+
+    def prepare_runtime(
+        _cell: dict, _release: Path, runtime: Path, *, timeout_s: int
+    ) -> None:
+        assert timeout_s == args.setup_timeout_s
+        (runtime / "public" / "submission").mkdir(parents=True)
+        (runtime / "evaluator").mkdir(parents=True)
+        (runtime / "direct_prompt.txt").write_text(
+            "Create dut.va. The veriloga skill is available by lookup.\n",
+            encoding="utf-8",
+        )
+        (runtime / "evaluator" / "score_policy.json").write_text(
+            json.dumps({"candidate_artifacts": ["dut.va"]}), encoding="utf-8"
+        )
+        skill = runtime / "public" / "skills" / "veriloga"
+        skill.mkdir(parents=True)
+        skill_file = skill / "SKILL.md"
+        skill_file.write_text(
+            "---\nname: veriloga\n---\n# Verilog-A language\n",
+            encoding="utf-8",
+        )
+        file_bytes = skill_file.read_bytes()
+        (runtime / "public" / "skills" / "SNAPSHOT_MANIFEST.json").write_text(
+            json.dumps({
+                "schema_version": "v4-runtime-skill-manifest-v1",
+                "skills": {
+                    "veriloga": {
+                        "skill_file": "public/skills/veriloga/SKILL.md",
+                        "tree_sha256": runner.skill_tree_sha(skill),
+                        "files": [{
+                            "path": "SKILL.md",
+                            "bytes": len(file_bytes),
+                            "sha256": hashlib.sha256(file_bytes).hexdigest(),
+                        }],
+                    }
+                },
+            }),
+            encoding="utf-8",
+        )
+        (runtime / "MODEL_ACCESS_POLICY.json").write_text(
+            json.dumps({
+                "mode": "G1",
+                "available_skills": {
+                    "veriloga": {
+                        "skill_file": "public/skills/veriloga/SKILL.md",
+                        "tree_sha256": runner.skill_tree_sha(skill),
+                    }
+                },
+                "provider_tools": ["list_skills", "read_skill"],
+            }),
+            encoding="utf-8",
+        )
+
+    class SkillThenArtifactClient:
+        def __init__(self) -> None:
+            self.calls = 0
+
+        def complete(self, messages, _max_tokens, tools, **_kwargs):
+            self.calls += 1
+            names = [tool["function"]["name"] for tool in tools]
+            assert names == ["list_skills", "read_skill"]
+            if self.calls == 1:
+                return {
+                    "id": "skill-read",
+                    "model": "test-model",
+                    "choices": [{
+                        "finish_reason": "tool_calls",
+                        "message": {
+                            "role": "assistant",
+                            "content": "",
+                            "tool_calls": [{
+                                "id": "read-veriloga",
+                                "type": "function",
+                                "function": {
+                                    "name": "read_skill",
+                                    "arguments": json.dumps({
+                                        "skill": "veriloga",
+                                        "path": "SKILL.md",
+                                    }),
+                                },
+                            }],
+                        },
+                    }],
+                    "usage": {"completion_tokens": 8},
+                }
+            assert messages[-1]["role"] == "tool"
+            assert "# Verilog-A language" in messages[-1]["content"]
+            return {
+                "id": "artifact",
+                "model": "test-model",
+                "choices": [{
+                    "finish_reason": "stop",
+                    "message": {
+                        "role": "assistant",
+                        "content": (
+                            '<<<VABENCH_ARTIFACT path="dut.va">>>\n'
+                            "module dut; endmodule\n"
+                            "<<<END_VABENCH_ARTIFACT>>>"
+                        ),
+                    },
+                }],
+                "usage": {"completion_tokens": 16},
+            }
+
+    monkeypatch.setattr(runner, "export_runtime", prepare_runtime)
+    client = SkillThenArtifactClient()
+    result = runner.run_cell(cell, args, client)
+
+    assert client.calls == 2
+    assert result["status"] == "submitted"
+    assert result["submission_protocol_compliant"] is True
+    assert result["skill_lookup_events"] == [
+        {
+            "cached": False,
+            "path": "SKILL.md",
+            "schema_version": "v4-skill-lookup-event-v1",
+            "sha256": hashlib.sha256(
+                "---\nname: veriloga\n---\n# Verilog-A language\n".encode("utf-8")
+            ).hexdigest(),
+            "skill": "veriloga",
+            "timestamp": result["skill_lookup_events"][0]["timestamp"],
+        }
+    ]
+    assert any(
+        event.get("name") == "read_skill"
+        and event.get("skill") == "veriloga"
+        and event.get("path") == "SKILL.md"
+        for event in result["events"]
+    )
+
+
 def test_provider_context_window_is_a_cell_status_not_runner_error(
     tmp_path: Path, r45_release: Path
 ) -> None:
@@ -837,6 +986,18 @@ def test_provider_request_timeout_is_not_mislabeled_as_agent_walltime(
     ]
     assert result["experiment_result"]["model_execution"]["status"] == "provider_failure"
     assert result.get("termination_reason") != "agent_timeout"
+
+
+def test_runtime_export_failure_is_not_mislabeled_as_evas_failure() -> None:
+    runner = load_run_campaign()
+    classification = runner.classify_execution_exception(
+        runner.RuntimeExportError("runtime exporter failed under /tmp/vaEvas")
+    )
+
+    assert classification["status"] == "infrastructure_failure"
+    assert classification["termination_reason"] == "runtime_export_failure"
+    assert classification["incident"]["component"] == "runner"
+    assert classification["incident"]["phase"] == "setup"
 
 
 def test_agentic_run_cell_rejects_an_undeclared_file_at_finalize(
@@ -1297,6 +1458,101 @@ def test_campaign_wrapper_dry_run_exports_agentic_cells(
     assert campaign["execution_config"]["token_accounting"] == "telemetry_only"
     summary = json.loads((output / "run" / "SUMMARY.json").read_text(encoding="utf-8"))
     assert summary["statuses"] == {"prepared": 3}
+
+
+def test_detached_campaign_launcher_survives_closed_caller_stdin(tmp_path: Path) -> None:
+    assert RUN_CAMPAIGN_DETACHED.is_file()
+    output = tmp_path / "detached-campaign"
+    log = tmp_path / "detached-campaign.log"
+    pid_file = tmp_path / "detached-campaign.pid"
+    env = dict(os.environ)
+    env["VABENCH_PYTHON"] = sys.executable
+    completed = subprocess.run(
+        [
+            str(RUN_CAMPAIGN_DETACHED),
+            "--log",
+            str(log),
+            "--pid-file",
+            str(pid_file),
+            "--",
+            "--release",
+            str(R49_RELEASE),
+            "--task-id",
+            "v4-012",
+            "--mode",
+            "G2",
+            "--output-root",
+            str(output),
+            "--model",
+            "deepseek-v4-flash",
+            "--dry-run",
+            "--workers",
+            "2",
+        ],
+        cwd=ROOT,
+        env=env,
+        stdin=subprocess.PIPE,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr + completed.stdout
+    summary_path = output / "run" / "SUMMARY.json"
+    for _ in range(100):
+        if summary_path.is_file():
+            break
+        time.sleep(0.05)
+    assert summary_path.is_file(), log.read_text(encoding="utf-8", errors="replace")
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    assert summary["statuses"] == {"prepared": 1}
+    assert pid_file.read_text(encoding="utf-8").strip().isdigit()
+
+
+def test_runtime_export_isolates_exporter_standard_streams(tmp_path: Path) -> None:
+    exporter_probe = tmp_path / "exporter_probe.py"
+    exporter_probe.write_text(
+        "import os\n"
+        "for fd in (0, 1, 2):\n"
+        "    os.fstat(fd)\n",
+        encoding="utf-8",
+    )
+    helper = f"""
+import importlib.util
+import os
+from pathlib import Path
+import sys
+
+runner_path = Path({str(RUN_CAMPAIGN)!r})
+spec = importlib.util.spec_from_file_location("run_campaign_stdio_probe", runner_path)
+runner = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = runner
+spec.loader.exec_module(runner)
+runner.EXPORTER = Path({str(exporter_probe)!r})
+os.close(0)
+runner.export_runtime(
+    {{
+        "cell_id": "v4-012-G0-r00",
+        "task_id": "v4-012",
+        "mode": "G0",
+        "per_turn_max_tokens": 131072,
+    }},
+    Path({str(R49_RELEASE)!r}),
+    Path({str(tmp_path / "runtime")!r}),
+    timeout_s=30,
+)
+"""
+    completed = subprocess.run(
+        [sys.executable, "-c", helper],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+
+    assert completed.returncode == 0, completed.stdout + completed.stderr
 
 
 def test_campaign_wrapper_requires_explicit_evas_for_executable_run(

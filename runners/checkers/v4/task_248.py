@@ -80,9 +80,10 @@ def check_v3_bipolar_dff_sample(rows: list[dict[str, float]]) -> tuple[bool, str
         return False, f"too_few_bipolar_dff_edges={len(edges)}"
     max_err = 0.0
     checked = 0
+    hold_checks = 0
     high = 0
     low = 0
-    for edge_t in edges:
+    for edge_index, edge_t in enumerate(edges):
         vin = sample_signal_at(rows, "vin_d", edge_t)
         q = sample_signal_at(rows, "vout_q", edge_t + 0.10e-9)
         qb = sample_signal_at(rows, "vout_qbar", edge_t + 0.10e-9)
@@ -97,9 +98,24 @@ def check_v3_bipolar_dff_sample(rows: list[dict[str, float]]) -> tuple[bool, str
         want_qb = -want_q
         max_err = max(max_err, abs(q - want_q), abs(qb - want_qb))
         checked += 1
+        if edge_index + 1 < len(edges):
+            hold_t = edges[edge_index + 1] - 0.08e-9
+            held_q = sample_signal_at(rows, "vout_q", hold_t)
+            held_qb = sample_signal_at(rows, "vout_qbar", hold_t)
+            if held_q is None or held_qb is None:
+                return False, f"missing_bipolar_dff_hold_at={hold_t * 1e9:.3f}ns"
+            if abs(held_q - want_q) > 0.10 or abs(held_qb - want_qb) > 0.10:
+                return False, (
+                    f"bipolar_dff_hold@{hold_t * 1e9:.3f}ns="
+                    f"{held_q:.4f}/{held_qb:.4f} expected={want_q:.4f}/{want_qb:.4f}"
+                )
+            hold_checks += 1
     if checked < 3 or high == 0 or low == 0:
         return False, f"insufficient_bipolar_dff_coverage checked={checked} high={high} low={low}"
-    return max_err <= 0.10, f"edges={len(edges)} high={high} low={low} max_err={max_err:.4f}"
+    return max_err <= 0.10, (
+        f"edges={len(edges)} high={high} low={low} "
+        f"hold_checks={hold_checks} max_err={max_err:.4f}"
+    )
 
 CHECKER_ID = "v4_248_bipolar_dff_sample"
 CHECKER: Checker = check_v3_bipolar_dff_sample
