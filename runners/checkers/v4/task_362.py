@@ -122,6 +122,8 @@ def check_v4_362_frequency_word_dco_divider_monitor(rows: list[dict[str, float]]
             clear_bad += 1
             clear_gap, clear_time = max(clear_gap, gap), float(row["time"])
 
+    dco_rises = _rising_times(rows, "dco_clk")
+    dco_edges = sorted(dco_rises + _falling_times(rows, "dco_clk"))
     metric_bad = 0
     metric_checks = 0
     metric_gap = metric_time = 0.0
@@ -130,14 +132,19 @@ def check_v4_362_frequency_word_dco_divider_monitor(rows: list[dict[str, float]]
         for bit in range(6)
         for edge in (_rising_times(rows, f"fcw_{bit}") + _falling_times(rows, f"fcw_{bit}"))
     )
-    control_edges = sorted(code_edges + _rising_times(rows, "enable") + _falling_times(rows, "enable") + _rising_times(rows, "rst") + _falling_times(rows, "rst"))
+    control_edges = sorted(_rising_times(rows, "enable") + _falling_times(rows, "enable") + _rising_times(rows, "rst") + _falling_times(rows, "rst"))
+    metric_transients: list[tuple[float, float]] = []
+    for edge in code_edges:
+        applied = _first_after(dco_edges, edge)
+        if applied is not None:
+            metric_transients.append((edge, applied + 0.3e-9 * time_scale))
     for row in rows[:: max(1, len(rows) // 500)]:
         if not _active(row, enable="enable"):
             continue
-        if any(
-            abs(float(row["time"]) - edge) < 0.6e-9 * time_scale
-            for edge in control_edges
-        ):
+        sample_time = float(row["time"])
+        if any(abs(sample_time - edge) < 0.6e-9 * time_scale for edge in control_edges):
+            continue
+        if any(start <= sample_time <= end for start, end in metric_transients):
             continue
         code = _code(row, [f"fcw_{i}" for i in range(6)])
         target = min(250e6, 80e6 + 2e6 * code)
@@ -149,7 +156,6 @@ def check_v4_362_frequency_word_dco_divider_monitor(rows: list[dict[str, float]]
             if gap > metric_gap:
                 metric_gap, metric_time = gap, float(row["time"])
 
-    dco_rises = _rising_times(rows, "dco_clk")
     divider_control_edges = sorted(
         _falling_times(rows, "enable") + _rising_times(rows, "rst")
     )
@@ -219,7 +225,7 @@ def check_v4_362_frequency_word_dco_divider_monitor(rows: list[dict[str, float]]
             restart_gap = max(restart_gap, f0 - f1)
     return _finish([
         PropertyDiagnostic("P_RESET_DISABLE_STOP", int(clear_bad), "clocks=metric=0", f"max_clear_gap={clear_gap:.3g}", float(clear_time), float(clear_gap), len(clear_samples)),
-        PropertyDiagnostic("P_FREQUENCY_WORD_MAPPING", metric_bad, "metric_normalizes_80_to_250MHz", f"sampled={metric_checks}", metric_time, metric_gap, metric_checks, allowed_mismatches=max(2, metric_checks // 20)),
+        PropertyDiagnostic("P_FREQUENCY_WORD_MAPPING", metric_bad, "metric_normalizes_80_to_250MHz_outside_explicit_update_transients", f"sampled={metric_checks} excluded_transients={len(metric_transients)}", metric_time, metric_gap, metric_checks),
         PropertyDiagnostic("P_DIVIDER_MONITOR", divider_bad, "four_dco_rises_per_div_toggle", f"intervals={divider_checks}", divider_time, divider_gap, divider_checks),
         PropertyDiagnostic("P_RESTART_MONOTONICITY", restart_bad, "half_period_restart_and_nondecreasing_rate", f"codes={[code for code, _ in medians]}", restart_time, restart_gap, restart_checks),
     ])
