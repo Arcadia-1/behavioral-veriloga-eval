@@ -46,6 +46,10 @@ def check_v4_trim_ctrl_4bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
         settled.append((rows[min(probe, stop)], code))
 
     distinct_codes = {code for _, code in settled}
+    settled_inputs = [row["ain"] for row, _ in settled]
+    below_half = any(0.45 <= (value - math.floor(value)) < 0.5 for value in settled_inputs)
+    at_or_above_half = any(0.5 <= (value - math.floor(value)) <= 0.55 for value in settled_inputs)
+    wrap_covered = any(16 <= code <= 31 for code in distinct_codes)
     for row, code in settled:
         time_s = row["time"]
         for bit in range(4):
@@ -74,18 +78,34 @@ def check_v4_trim_ctrl_4bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
             )
 
     continuous.condition(
-        len(settled) >= 4 and len(distinct_codes) >= 4,
-        expected="settled_plateaus>=4_distinct_codes>=4",
+        len(settled) >= 8 and len(distinct_codes) >= 8,
+        expected="settled_plateaus>=8_distinct_codes>=8",
         observed=f"plateaus={len(settled)}_codes={sorted(distinct_codes)}",
         time_s=rows[-1]["time"],
-        gap=float(max(0, 4 - len(distinct_codes))),
+        gap=float(max(0, 8 - len(distinct_codes))),
+    )
+    rounding.condition(
+        below_half and at_or_above_half,
+        expected="fractional_inputs_below_and_at_or_above_half",
+        observed=f"below_half={below_half}_at_or_above_half={at_or_above_half}",
+        time_s=rows[-1]["time"],
+    )
+    mapping.condition(
+        wrap_covered,
+        expected="rounded_code_wrap_16_to_31_covered",
+        observed=f"codes={sorted(distinct_codes)}",
+        time_s=rows[-1]["time"],
     )
     for result in (rounding, mapping, levels):
         result.require_coverage(4)
     return finish(
         "v4_189",
         results,
-        coverage=f"plateaus={len(settled)} distinct_codes={sorted(distinct_codes)}",
+        coverage=(
+            f"plateaus={len(settled)} distinct_codes={sorted(distinct_codes)} "
+            f"below_half={below_half} at_or_above_half={at_or_above_half} "
+            f"wrap_covered={wrap_covered}"
+        ),
     )
 
 

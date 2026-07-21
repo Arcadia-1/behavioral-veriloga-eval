@@ -25,7 +25,7 @@ No overrideable public parameters are required. Drive active bits near 0.9 V and
 
 ## Required Behavior
 
-Round `ain` to the nearest integer code level and emit the low four bits on `dout0..dout3`. Update deterministically as `ain` changes and keep the output voltage-coded rather than current-domain.
+Round nonnegative `ain` to the nearest integer code level, with exact half-code values rounding upward. Emit the rounded code modulo 16 on `dout0..dout3`, so rounded codes 16 through 31 wrap once onto output codes 0 through 15. Update deterministically as `ain` changes and keep the output voltage-coded rather than current-domain.
 
 ## Modeling Constraints
 

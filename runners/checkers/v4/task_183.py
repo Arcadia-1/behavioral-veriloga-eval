@@ -81,6 +81,7 @@ def check_v4_foreground_rdac_calibrator(rows: list[dict[str, float]]) -> tuple[b
     if rises:
         initial_delay = min(initial_delay, 0.4 * (rises[0] - rows[0]["time"]))
     initial_probe = row_at_or_after(rows, rows[0]["time"] + initial_delay)
+    reference_pairs = {(round(initial_probe["vrefp"], 6), round(initial_probe["vrefn"], 6))}
     _compare_outputs(results, initial_probe, codes, active, time_s=initial_probe["time"], primary=initial)
 
     for edge in rises:
@@ -103,12 +104,19 @@ def check_v4_foreground_rdac_calibrator(rows: list[dict[str, float]]) -> tuple[b
         if probe_time > rows[-1]["time"]:
             continue
         probe = row_at_or_after(rows, probe_time)
+        reference_pairs.add((round(probe["vrefp"], 6), round(probe["vrefn"], 6)))
         _compare_outputs(results, probe, codes, active, time_s=probe_time, primary=primary)
 
     sequence.condition(
         len(rises) >= 7,
         expected="clock_rises>=7",
         observed=f"clock_rises={len(rises)}",
+        time_s=rows[-1]["time"],
+    )
+    sequence.condition(
+        len(reference_pairs) >= 3,
+        expected="reference_pairs>=3",
+        observed=f"reference_pairs={sorted(reference_pairs)}",
         time_s=rows[-1]["time"],
     )
     polarity.condition(
@@ -126,7 +134,10 @@ def check_v4_foreground_rdac_calibrator(rows: list[dict[str, float]]) -> tuple[b
     return finish(
         "v4_183",
         results,
-        coverage=f"clock_rises={len(rises)} decisions={sorted(decisions)} active={active}",
+        coverage=(
+            f"clock_rises={len(rises)} decisions={sorted(decisions)} active={active} "
+            f"reference_pairs={sorted(reference_pairs)}"
+        ),
     )
 
 

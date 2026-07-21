@@ -106,16 +106,19 @@ def check_v3_sarfend_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     clks_falls = _crossings(rows, ("clks",), -1)
     comparator_rises = _crossings(rows, ("dcomp", "dcompb"), +1)
     comparator_falls = _crossings(rows, ("dcomp", "dcompb"), -1)
-    if len(clks_rises) < 2:
-        return False, "insufficient_excitation clks_rises<2"
+    if len(clks_rises) < 3:
+        return False, "insufficient_excitation clks_rises<3"
 
     p = [0, 1, 1, 1]
     m = [0, 1, 1, 1]
     pointer = 0
     captured_dtest = [0, 0, 0, 0]
     reset_errors = decision_errors = dout_errors = clock_errors = 0
+    normal_decision_errors = test_decision_errors = 0
     rise_clock_errors = fall_clock_errors = comparator_clock_errors = 0
     normal_decisions = test_decisions = published_words = 0
+    completed_conversions = stop_checks = 0
+    post_completion_hold_checks = post_completion_hold_errors = 0
     events = (
         [(time_s, "clks_rise") for time_s in clks_rises]
         + [(time_s, "clks_fall") for time_s in clks_falls]
@@ -133,6 +136,8 @@ def check_v3_sarfend_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
         settle_delay = max(80e-12, min(5e-9, 0.25 * max(0.0, next_time - time_s)))
         probe_time = time_s + settle_delay
         if event == "clks_rise":
+            if pointer >= 4:
+                completed_conversions += 1
             dout_expected = {
                 "dout3": p[0],
                 "dout2": p[1],
@@ -173,9 +178,21 @@ def check_v3_sarfend_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
             clock_errors += error_count
         elif event == "comp_fall":
             if _logic(rows, "clks", time_s) == 0:
-                error_count = _mismatches(rows, probe_time, {"clkc": 1})
+                expected_clkc = 1 if pointer < 4 else 0
+                error_count = _mismatches(rows, probe_time, {"clkc": expected_clkc})
                 comparator_clock_errors += error_count
                 clock_errors += error_count
+                if pointer >= 4:
+                    stop_checks += 1
+                    hold_expected = {
+                        "dp4": p[0], "dm4": m[0],
+                        "dp3": p[1], "dm3": m[1],
+                        "dp2": p[2], "dm2": m[2],
+                        "dp1": p[3], "dm1": m[3],
+                    }
+                    error_count = _mismatches(rows, probe_time, hold_expected)
+                    post_completion_hold_errors += error_count
+                    post_completion_hold_checks += 1
         elif _logic(rows, "clks", time_s) == 0 and pointer < 4:
             test_mode = _logic(rows, "test", time_s) == 1
             if test_mode:
@@ -190,29 +207,65 @@ def check_v3_sarfend_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
             p[pointer] = decision
             m[pointer] = 1 - decision
             output_index = 4 - pointer
-            decision_errors += _mismatches(
+            error_count = _mismatches(
                 rows,
                 probe_time,
                 {f"dp{output_index}": decision, f"dm{output_index}": 1 - decision},
             )
-            if pointer < 3:
-                error_count = _mismatches(rows, probe_time, {"clkc": 0})
-                comparator_clock_errors += error_count
-                clock_errors += error_count
+            decision_errors += error_count
+            if test_mode:
+                test_decision_errors += error_count
+            else:
+                normal_decision_errors += error_count
+            error_count = _mismatches(rows, probe_time, {"clkc": 0})
+            comparator_clock_errors += error_count
+            clock_errors += error_count
             pointer += 1
+        elif event == "comp_rise" and _logic(rows, "clks", time_s) == 0:
+            error_count = _mismatches(rows, probe_time, {"clkc": 0})
+            comparator_clock_errors += error_count
+            clock_errors += error_count
+            stop_checks += 1
+            hold_expected = {
+                "dp4": p[0], "dm4": m[0],
+                "dp3": p[1], "dm3": m[1],
+                "dp2": p[2], "dm2": m[2],
+                "dp1": p[3], "dm1": m[3],
+            }
+            error_count = _mismatches(rows, probe_time, hold_expected)
+            post_completion_hold_errors += error_count
+            post_completion_hold_checks += 1
 
-    sufficient = published_words >= 2 and normal_decisions >= 3
-    ok = sufficient and not (reset_errors or decision_errors or dout_errors or clock_errors)
+    sufficient = (
+        published_words >= 3
+        and completed_conversions >= 2
+        and normal_decisions >= 4
+        and test_decisions >= 4
+        and stop_checks >= 2
+        and post_completion_hold_checks >= 2
+    )
+    ok = sufficient and not (
+        reset_errors
+        or decision_errors
+        or dout_errors
+        or clock_errors
+        or post_completion_hold_errors
+    )
     diagnostics = {
         "P_CONVERSION_RESET_AND_PREVIOUS_WORD": reset_errors,
-        "P_SAMPLE_AND_COMPARATOR_DECISIONS": decision_errors,
-        "P_TEST_OVERRIDE_BEHAVIOR": 0 if test_decisions == 0 else decision_errors,
+        "P_SAMPLE_AND_COMPARATOR_DECISIONS": (
+            normal_decision_errors + post_completion_hold_errors
+        ),
+        "P_TEST_OVERRIDE_BEHAVIOR": test_decision_errors,
         "P_DOUT_BIT_MAPPING": dout_errors,
         "P_LOGIC_OUTPUT_LEVELS": clock_errors,
     }
     return ok, (
         f"v4_186 clks_rises={len(clks_rises)} published_words={published_words} "
         f"normal_decisions={normal_decisions} test_decisions={test_decisions} "
+        f"completed_conversions={completed_conversions} stop_checks={stop_checks} "
+        f"post_completion_hold_checks={post_completion_hold_checks} "
+        f"post_completion_hold_errors={post_completion_hold_errors} "
         f"reset_errors={reset_errors} decision_errors={decision_errors} "
         f"dout_errors={dout_errors} clock_errors={clock_errors} "
         f"clock_breakdown={rise_clock_errors}/{fall_clock_errors}/{comparator_clock_errors}; "

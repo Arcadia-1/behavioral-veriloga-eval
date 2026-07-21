@@ -66,6 +66,17 @@ def check_v3_pipe15_data_align(rows: list[dict[str, float]]) -> tuple[bool, str]
     if len(edges) < 5:
         return False, f"too_few_sample_edges={len(edges)}"
 
+    input_signatures = {
+        bit: tuple(
+            int((sample_signal_at(rows, f"d{bit}", edge + 1e-12) or 0.0) > 0.45)
+            for edge in edges
+        )
+        for bit in range(15)
+    }
+    distinct_signatures = len(set(input_signatures.values()))
+    if distinct_signatures != 15:
+        return False, f"insufficient_bit_identity_signatures={distinct_signatures}/15"
+
     max_err = 0.0
     checked = 0
     failures: list[str] = []
@@ -103,7 +114,10 @@ def check_v3_pipe15_data_align(rows: list[dict[str, float]]) -> tuple[bool, str]
         return False, f"insufficient_pipe_align_checks={checked}"
     if failures:
         return False, " ".join(failures[:6])
-    return True, f"aligned_bit_samples={checked} max_err={max_err:.4f}"
+    return True, (
+        f"aligned_bit_samples={checked} distinct_input_signatures={distinct_signatures} "
+        f"max_err={max_err:.4f}"
+    )
 
 CHECKER_ID = "v4_181_pipe15_data_align"
 CHECKER: Checker = check_v3_pipe15_data_align

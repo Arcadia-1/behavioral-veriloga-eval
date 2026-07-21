@@ -99,8 +99,8 @@ def check_v4_clocked_mux4_sampler(rows: list[dict[str, float]]) -> tuple[bool, s
         time_s=rows[-1]["time"],
     )
     sample_result.condition(
-        sample_checks >= 3 and len(selected_codes) >= 3,
-        expected="update_samples>=3_codes>=3",
+        sample_checks >= 4 and selected_codes == {0, 1, 2, 3},
+        expected="update_samples>=4_codes=0,1,2,3",
         observed=f"samples={sample_checks}_codes={sorted(selected_codes)}",
         time_s=rows[-1]["time"],
     )

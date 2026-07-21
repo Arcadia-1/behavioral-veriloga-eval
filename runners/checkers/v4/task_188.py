@@ -107,9 +107,32 @@ def check_v3_cdac_bidirect_residue(rows: list[dict[str, float]]) -> tuple[bool, 
         return False, "missing_clks_falling_sample_event"
     if not any(signal == "dctrl7" for _, _, signal, _ in events):
         return False, "missing_dctrl7_half_scale_event"
-    lower_step_count = sum(1 for _, _, signal, _ in events if signal in {"dctrl1", "dctrl2", "dctrl3", "dctrl4", "dctrl5", "dctrl6"})
-    if lower_step_count < 3:
-        return False, f"insufficient_binary_step_coverage={lower_step_count}"
+    lower_signals = {
+        signal
+        for _, _, signal, _ in events
+        if signal in {"dctrl1", "dctrl2", "dctrl3", "dctrl4", "dctrl5", "dctrl6"}
+    }
+    lower_step_count = sum(
+        1
+        for _, _, signal, _ in events
+        if signal in {"dctrl1", "dctrl2", "dctrl3", "dctrl4", "dctrl5", "dctrl6"}
+    )
+    if lower_signals != {"dctrl1", "dctrl2", "dctrl3", "dctrl4", "dctrl5", "dctrl6"}:
+        return False, f"insufficient_binary_step_signals={sorted(lower_signals)}"
+
+    sample_values = [
+        sample_signal_at(rows, "vin", event_time)
+        for event_time, kind, _, _ in events
+        if kind == "sample"
+    ]
+    distinct_sample_values = {
+        round(value, 6) for value in sample_values if value is not None
+    }
+    if len(sample_values) < 2 or len(distinct_sample_values) < 2:
+        return False, (
+            f"insufficient_resample_coverage=samples={len(sample_values)}_"
+            f"values={sorted(distinct_sample_values)}"
+        )
 
     residue = rows[0]["vin"]
     first_probe = _event_probe_time(rows, rows[0]["time"], delay_s=0.20e-9)
@@ -144,7 +167,10 @@ def check_v3_cdac_bidirect_residue(rows: list[dict[str, float]]) -> tuple[bool, 
             return False, f"vres_after_{signal}={value:.4f} expected={residue:.4f} err={error:.4f}"
     if checked < 4:
         return False, f"insufficient_residue_checks={checked}"
-    return True, f"checked={checked} lower_steps={lower_step_count} max_residue_error={max_error:.5f}"
+    return True, (
+        f"checked={checked} lower_steps={lower_step_count} "
+        f"sample_values={sorted(distinct_sample_values)} max_residue_error={max_error:.5f}"
+    )
 
 CHECKER_ID = "v4_188_cdac_bidirect_residue"
 CHECKER: Checker = check_v3_cdac_bidirect_residue
