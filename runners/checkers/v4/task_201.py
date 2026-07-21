@@ -31,6 +31,7 @@ def check_v3_cdac_6b_stage1_up(rows: list[dict[str, float]]) -> tuple[bool, str]
     expected = float(rows[0]["vin"])
     controls_seen: set[str] = set()
     sample_events = 0
+    sampled_values: list[float] = []
 
     initial_probe = row_at_or_after(rows, rows[0]["time"] + settle)
     behavior.compare(expected=expected, observed=initial_probe["vres"], tolerance=0.03,
@@ -40,6 +41,7 @@ def check_v3_cdac_6b_stage1_up(rows: list[dict[str, float]]) -> tuple[bool, str]
         if kind == "sample":
             expected = float(stimulus["vin"])
             sample_events += 1
+            sampled_values.append(expected)
         else:
             expected += weight
             controls_seen.add(kind)
@@ -52,9 +54,15 @@ def check_v3_cdac_6b_stage1_up(rows: list[dict[str, float]]) -> tuple[bool, str]
                          time_s=probe_time, label=kind)
 
     behavior.condition(
-        sample_events >= 1 and len(controls_seen) >= 4 and "dctrl5" in controls_seen,
-        expected="falling_sample_and_four_control_weights_including_msb",
-        observed=f"sample_events={sample_events}_controls={sorted(controls_seen)}",
+        sample_events >= 2
+        and max(sampled_values, default=0.0) - min(sampled_values, default=0.0) >= 0.05
+        and len(controls_seen) >= 4
+        and "dctrl5" in controls_seen,
+        expected="two_changed_falling_samples_and_four_control_weights_including_msb",
+        observed=(
+            f"sample_events={sample_events}_sampled_values={sampled_values}"
+            f"_controls={sorted(controls_seen)}"
+        ),
         time_s=rows[-1]["time"],
     )
     return finish(

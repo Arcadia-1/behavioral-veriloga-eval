@@ -125,7 +125,7 @@ def check_v3_sar_comparator_reset_high(rows: list[dict[str, float]]) -> tuple[bo
         checked += 1
         if abs(dcmpp - expected_p) > 0.08 or abs(dcmpn - expected_n) > 0.08:
             errors += 1
-    coverage = falling > 0 and positive > 0 and negative > 0
+    coverage = falling > 0 and positive > 0 and negative > 0 and equal > 0
     ok = checked >= 3 and coverage and errors == 0
     return ok, (
         f"cmpck_events={checked} errors={errors} coverage={coverage} falling={falling} "
