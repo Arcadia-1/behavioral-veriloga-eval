@@ -1,0 +1,13 @@
+{
+  "corners": [],
+  "deck_overrides": {"analyses": ["tran tran stop=110n maxstep=40p"]},
+  "deterministic_seed": 0,
+  "generated_from": {"script": "render_v4_harness.py", "version": "v4-harness-renderer-v1"},
+  "harness_spec_sha256": "f95d792bdb294d7e9d337b3c5714df952bf4a855e98a17d157c05c2bb381ed69",
+  "parameters": {"tr": "80p"},
+  "profile_name": "score",
+  "property_ids": ["P_DIFFERENTIAL_RMS", "P_FOUR_SAMPLE_WINDOW", "P_ENABLE_FREEZE", "P_ASYNC_RESET", "P_VALID_PULSE", "P_OUTPUT_HOLD"],
+  "public_visible": false,
+  "schema_version": "v4-harness-profile-v1",
+  "simulatorOptions": {}
+}

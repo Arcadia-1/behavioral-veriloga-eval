@@ -1,0 +1,17 @@
+{
+  "artifact_hashes": {
+    "chopper_stabilized_differential_amplifier.va": "c160dfdcf244c46c537c40562ed7599de83da337cfc87b40bec6364ba18e7abb"
+  },
+  "behavior_status": "killed_behaviorally",
+  "checker_result": "checked=240 active=1 hold_edges=0 clears=2 polarity=+1/-0 settled_rows=0 errors=5",
+  "compile_status": "pass",
+  "family_id": "091",
+  "fault_class": "baseband_gain_error",
+  "profile": "score",
+  "runtime": {"evas_backend": "evas-rust", "evas_engine": "evas2", "evas_version": "0.8.3"},
+  "simulation_status": "pass",
+  "status": "pass",
+  "violated_property_ids": [
+    "P_CHOP_DEMOD_BASEBAND_GAIN"
+  ]
+}

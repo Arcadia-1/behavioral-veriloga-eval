@@ -4,8 +4,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from statistics import median
 
-from ..api import Checker
-
 
 VDD = 0.9
 VSS = 0.0
@@ -155,4 +153,4 @@ def check_chopper_stabilized_differential_amplifier(
 
 
 CHECKER_ID = "v4_091_chopper_stabilized_differential_amplifier"
-CHECKER: Checker = check_chopper_stabilized_differential_amplifier
+CHECKER = check_chopper_stabilized_differential_amplifier

@@ -1,0 +1,33 @@
+{
+  "certification_policy": "local_evas_rust_behavioral",
+  "checks": {
+    "behavior": "fail_as_expected",
+    "compile": "pass",
+    "diagnostic": "present"
+  },
+  "diagnostics": {
+    "expected": "satisfy the sampled true-RMS public port contract",
+    "observed": "mean-absolute output=0.20089 instead of RMS=0.22675",
+    "violated_property_ids": [
+      "P_DIFFERENTIAL_RMS"
+    ]
+  },
+  "evaluators": {
+    "evas_rust": "compile_pass_behavior_fail"
+  },
+  "evidence": {
+    "checker_id": "v4_074_sampled_true_rms_to_dc_converter",
+    "profile": "feedback",
+    "trace_source": "task_local_reference_deck"
+  },
+  "family_id": "074",
+  "mutation_id": "neg_002_threshold_shifted",
+  "outcome": "killed_behaviorally",
+  "runtime": {
+    "evas_backend": "evas-rust",
+    "evas_engine_used": "evas-rust",
+    "evas_version": "0.8.3"
+  },
+  "schema_version": "v4-negative-certification-rust-evas2-v2",
+  "status": "pass"
+}

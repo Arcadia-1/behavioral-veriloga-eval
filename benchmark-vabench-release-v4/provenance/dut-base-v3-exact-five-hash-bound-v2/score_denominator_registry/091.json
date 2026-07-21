@@ -5,80 +5,64 @@
     "active_mutation_count": 5,
     "active_mutations": [
       {
-        "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "dd9cadf57d6a6facd40f48687bc200676e9f2d4e94eee275df426b800633e43b",
-        "fault_class": "threshold_boundary_error",
-        "mutation_bundle_sha256": "25fdff9c0e5c4c9df5f3bc209edb54af68ac671f5bfb147cbb8f54822fb06284",
-        "mutation_id": "neg_002_threshold_shifted",
-        "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
-        "trigger_condition": "boundary stimulus crosses the public threshold conditions for Final Step File Metric",
-        "violated_property_ids": [
-          "P_RISING_EDGE_COUNT"
-        ]
+        "certification_path": "evaluator/mutation_bundles/neg_001_no_synchronous_demod/certification.json",
+        "certification_sha256": "46bee29eda831af89e9fae00b48f36b64cf0d442dffe9872d51f1ec6324a15a7",
+        "fault_class": "missing_synchronous_demodulation",
+        "mutation_bundle_sha256": "1b3840a1cfa878e126393f076ce89a2a91e0337c077f0bf6a49bb96743a2b5df",
+        "mutation_id": "neg_001_no_synchronous_demod",
+        "source_catalog_certification_path": "mutation_bundles/neg_001_no_synchronous_demod/certification.json",
+        "trigger_condition": "both chopper polarities expose missing synchronous demodulation",
+        "violated_property_ids": ["P_CHOP_DEMOD_BASEBAND_GAIN", "P_INTERNAL_OFFSET_SUPPRESSION"]
       },
       {
-        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "c1888e25aa7d548cf628d7734c66fb233dd90f0fc6dc0ff29d7707bb63cd67fa",
-        "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "029c7deaefc1f353a1beaaf2bad238f711200e1e66f32e9803b96137ff200dd3",
-        "mutation_id": "neg_005_metric_scale_low",
-        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
-        "trigger_condition": "score stimulus observes the public metric/output scaling for Final Step File Metric",
-        "violated_property_ids": [
-          "P_EVENT_UPDATED_OUTPUT",
-          "P_FINAL_TEXT_RECORD",
-          "P_NORMALIZED_METRIC",
-          "P_ZERO_INITIAL_STATE"
-        ]
+        "certification_path": "evaluator/mutation_bundles/neg_002_offset_omitted/certification.json",
+        "certification_sha256": "08e63d4fe727f4ef46c2827dc710e443a202f434d2f98d4fd8fd09381c322980",
+        "fault_class": "internal_offset_omitted",
+        "mutation_bundle_sha256": "9088a84ad270046fbb8916fb0a7ec16eed9256cfd89a75cd7eb89aa2c4039edc",
+        "mutation_id": "neg_002_offset_omitted",
+        "source_catalog_certification_path": "mutation_bundles/neg_002_offset_omitted/certification.json",
+        "trigger_condition": "alternating polarity exposes the required internal offset term",
+        "violated_property_ids": ["P_INTERNAL_OFFSET_SUPPRESSION"]
       },
       {
-        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "06bf31d1ad1a0c32126a0db5107428789c7ba957c7359347e705b94e11f367dc",
-        "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "c797bcd177091ddda33092292284c50db397a3cbbceab29c13b552487ffee2a7",
-        "mutation_id": "neg_001_zero",
-        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
-        "trigger_condition": "nonzero behavioral stimulus requires observable Final Step File Metric outputs",
-        "violated_property_ids": [
-          "P_RISING_EDGE_COUNT",
-          "P_ZERO_INITIAL_STATE"
-        ]
+        "certification_path": "evaluator/mutation_bundles/neg_003_lowpass_bypassed/certification.json",
+        "certification_sha256": "d3e64d515384df89789be61c23b6d1c75a3c98bae393226a83a2979a5a70a051",
+        "fault_class": "lowpass_state_bypassed",
+        "mutation_bundle_sha256": "7e7ae955324bf5b6b1c98d06bf490e17e0264dea402d8e9e16c92e9966f42ef5",
+        "mutation_id": "neg_003_lowpass_bypassed",
+        "source_catalog_certification_path": "mutation_bundles/neg_003_lowpass_bypassed/certification.json",
+        "trigger_condition": "edge-to-edge settling exposes bypassed retained low-pass state",
+        "violated_property_ids": ["P_EVENT_DRIVEN_LOWPASS", "P_INTERNAL_OFFSET_SUPPRESSION", "P_SETTLED_QUALIFICATION"]
       },
       {
-        "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "f000e424f273dc27d56bba7b8fa5cb3ee1d4638cdf392d4d399b9511df5c9310",
-        "fault_class": "reset_semantics_error",
-        "mutation_bundle_sha256": "685bc5cc41f9f1aa91e947fbd8b4e1048f6ce096111af7bfbcf911c863b7799e",
-        "mutation_id": "neg_004_reset_polarity_wrong",
-        "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
-        "trigger_condition": "reset/recovery stimulus exercises Final Step File Metric state override behavior",
-        "violated_property_ids": [
-          "P_ZERO_INITIAL_STATE"
-        ]
+        "certification_path": "evaluator/mutation_bundles/neg_004_gain_wrong/certification.json",
+        "certification_sha256": "02a2c980424280674ed470d27d36105b36dabccbee70300a2947548497654528",
+        "fault_class": "baseband_gain_error",
+        "mutation_bundle_sha256": "1cf50490a41833fff57a84d8fdb25dbc59680b3aa64a71912c314df7444dcd62",
+        "mutation_id": "neg_004_gain_wrong",
+        "source_catalog_certification_path": "mutation_bundles/neg_004_gain_wrong/certification.json",
+        "trigger_condition": "multiple signed input levels expose the incorrect baseband gain",
+        "violated_property_ids": ["P_CHOP_DEMOD_BASEBAND_GAIN"]
       },
       {
-        "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "2bb2d8f7a1459f0d853baaad302cbd69a4d621e7217137a5dc5ff33161bed6f6",
-        "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "e40cad2fb8b48829b6b3bcb12447960e47b917a229cf76fc49c245f5222e4d84",
-        "mutation_id": "neg_003_event_edge_wrong",
-        "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
-        "trigger_condition": "event-timing stimulus distinguishes the required active edge for Final Step File Metric",
-        "violated_property_ids": [
-          "P_NORMALIZED_METRIC",
-          "P_RISING_EDGE_COUNT",
-          "P_ZERO_INITIAL_STATE"
-        ]
+        "certification_path": "evaluator/mutation_bundles/neg_005_hold_ignored/certification.json",
+        "certification_sha256": "223e48140234901f1c998884d6d9dd1afe2e76f637db2eac03db17967842d06f",
+        "fault_class": "hold_semantics_error",
+        "mutation_bundle_sha256": "9da2611307f8f2ddadecf2705c3125e7cafa049813526124d64484f4219397e6",
+        "mutation_id": "neg_005_hold_ignored",
+        "source_catalog_certification_path": "mutation_bundles/neg_005_hold_ignored/certification.json",
+        "trigger_condition": "chopper edges during hold expose illegal state updates",
+        "violated_property_ids": ["P_HOLD_PRESERVES_STATE"]
       }
     ],
-    "bugfix_seed": "neg_002_threshold_shifted",
+    "bugfix_seed": "neg_001_no_synchronous_demod",
     "canonical_dut_id": "091",
     "hashes": {
-      "mutation_catalog_sha256": "3dd0a26ea7444914483444da7004f283069d42e9381a81221bc3195f936cdae5",
-      "score_deck_sha256": "1f5ca7b68297351b08813a8c89b65b05c105e0b5380c99c3a51d660df50c7ffb",
-      "task_certification_sha256": "94ea42c7a4aa02905cfdfedaf5e51b6f5c3f86b2735bee3da66b7d2686c79ba1",
-      "task_record_sha256": "d4fc345e8946e81f956c09618faa72d1c7fe0ce21a046b5277468ec8e76730d6"
+      "mutation_catalog_sha256": "7b7d7d49168e8a5cf70053740ad99be741d6d245e9ecc39df046e191e09a648d",
+      "score_deck_sha256": "109833a240584c3cb6b97b0746c5f6a1ba0d904090e82c1cab49f3d3ef036a91",
+      "task_certification_sha256": "df7b9139cf97c97ab5f8984da925345fc50f5e5dc7cd9116b2936aff33d6bafd",
+      "task_record_sha256": "5499a296a7ba841eca9d8eea80a6d8d9a1882a29dc582b1571a78a0c7ae4eb04"
     },
-    "release_dir": "091-final-step-file-metric"
+    "release_dir": "091-chopper-stabilized-differential-amplifier"
   }
 }

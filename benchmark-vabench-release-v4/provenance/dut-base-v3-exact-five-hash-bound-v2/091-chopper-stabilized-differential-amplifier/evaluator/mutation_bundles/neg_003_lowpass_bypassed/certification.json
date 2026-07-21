@@ -1,0 +1,19 @@
+{
+  "artifact_hashes": {
+    "chopper_stabilized_differential_amplifier.va": "aef0ec28719d1c5193915eac5dce1c6f53e89990604a2e5a99451cfe0254badc"
+  },
+  "behavior_status": "killed_behaviorally",
+  "checker_result": "checked=226 active=1 hold_edges=0 clears=2 polarity=+1/-0 settled_rows=0 errors=5",
+  "compile_status": "pass",
+  "family_id": "091",
+  "fault_class": "lowpass_state_bypassed",
+  "profile": "score",
+  "runtime": {"evas_backend": "evas-rust", "evas_engine": "evas2", "evas_version": "0.8.3"},
+  "simulation_status": "pass",
+  "status": "pass",
+  "violated_property_ids": [
+    "P_EVENT_DRIVEN_LOWPASS",
+    "P_INTERNAL_OFFSET_SUPPRESSION",
+    "P_SETTLED_QUALIFICATION"
+  ]
+}

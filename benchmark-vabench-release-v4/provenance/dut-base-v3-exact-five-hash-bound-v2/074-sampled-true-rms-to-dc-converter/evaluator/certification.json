@@ -1,0 +1,33 @@
+{
+  "certification_policy": "local_evas_rust_pending_spectre",
+  "checks": {
+    "active_negative_count": 5,
+    "active_negatives": "all_compiled_and_killed_behaviorally",
+    "diagnostic": "present",
+    "feedback_gold_behavior": "pass",
+    "score_gold_behavior": "pass",
+    "port_only_contract": "pass",
+    "spectre_gold": "pending",
+    "task_specific_ahdl_warnings": "pending_cadence_lint"
+  },
+  "evaluators": {
+    "evas_rust": {
+      "evas_backend": "evas-rust",
+      "evas_engine": "evas-rust",
+      "evas_version": "0.8.3",
+      "gold_status": "pass",
+      "negative_compile_status": "5_of_5_pass",
+      "negative_behavior_status": "5_of_5_killed",
+      "status": "pass"
+    },
+    "spectre": {"status": "not_run_by_request"}
+  },
+  "evidence": {
+    "checker_id": "v4_074_sampled_true_rms_to_dc_converter",
+    "gold_trace": "task_local_reference_deck",
+    "test": "tests/test_task_074_sampled_true_rms_to_dc.py"
+  },
+  "family_id": "074",
+  "schema_version": "v4-task-certification-rust-evas2-v1",
+  "status": "cadence_sim_pending"
+}
