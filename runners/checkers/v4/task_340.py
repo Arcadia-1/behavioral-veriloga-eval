@@ -4,12 +4,19 @@ from __future__ import annotations
 from ..api import Checker
 from .diagnostics import with_property_diagnostics
 VTH = 0.45
+SETTLE_S = 0.7e-9
 
 def _high(row: dict[str, float], name: str, thr: float = VTH) -> bool:
     return float(row.get(name, 0.0)) > thr
 
 def _rising(prev: float, now: float, thr: float = VTH) -> bool:
     return now > thr and prev <= thr
+
+def _first_after(rows: list[dict[str, float]], target_time: float) -> dict[str, float] | None:
+    for row in rows:
+        if float(row["time"]) >= target_time:
+            return row
+    return None
 
 def _missing(rows: list[dict[str, float]], required: set[str]) -> list[str]:
     if not rows:
@@ -67,12 +74,15 @@ def check_v4_340_thermal_foldback_power_limiter(rows: list[dict[str, float]]) ->
         active_edges += 1
         if active_edges == 1:
             continue
+        sample = _first_after(rows, t + SETTLE_S)
+        if sample is None:
+            continue
         checked += 1
         cmd = float(row["power_cmd"])
         temp = float(row["temp_sense"])
-        limited = float(row["limited_cmd"])
-        metric = abs(float(row["foldback_metric"]))
-        ok_flag = _high(row, "thermal_ok")
+        limited = float(sample["limited_cmd"])
+        metric = abs(float(sample["foldback_metric"]))
+        ok_flag = _high(sample, "thermal_ok")
         if temp < trip - 0.02:
             if abs(limited - cmd) > 0.06:
                 pass_errors += 1
@@ -97,7 +107,7 @@ def check_v4_340_thermal_foldback_power_limiter(rows: list[dict[str, float]]) ->
         and pass_errors <= max(2, checked // 4)
         and fold_errors <= max(2, checked // 4)
         and metric_errors <= max(3, checked // 3)
-        and thermal_errors <= max(2, checked // 4)
+        and thermal_errors == 0
         and clear_errors <= 6
     )
     return ok, (

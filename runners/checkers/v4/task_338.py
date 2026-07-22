@@ -16,14 +16,25 @@ def check_v4_1036_lna_blocker_compression_detector(rows: list[dict[str, float]])
     reset_clear = disabled_clear = compressed_seen = uncompressed_seen = False
     ever_enabled = False
     disable_time: float | None = None
-    for row in rows[::6]:
+    previous_inputs: tuple[float, float, bool, bool] | None = None
+    last_input_change = float(rows[0]["time"])
+    settle_s = 0.35e-9
+    for row in rows:
         t = float(row["time"])
         rst = _v4_topup_logic_high(row, "rst")
+        enable_high = _v4_topup_logic_high(row, "enable")
+        current_inputs = (float(row["vin"]), float(row["blocker"]), enable_high, rst)
+        if previous_inputs is not None:
+            analog_changed = abs(current_inputs[0] - previous_inputs[0]) > 1e-6 or abs(current_inputs[1] - previous_inputs[1]) > 1e-6
+            logic_changed = current_inputs[2:] != previous_inputs[2:]
+            if analog_changed or logic_changed:
+                last_input_change = t
+        previous_inputs = current_inputs
         enabled = _v4_topup_logic_high(row, "enable") and not rst
         if not enabled:
             clear = abs(row["vout"] - 0.45) < 0.08 and row["compression_metric"] < 0.10 and row["compressed"] < 0.10
             reset_clear = reset_clear or (rst and clear)
-            disabled = ever_enabled and not _v4_topup_logic_high(row, "enable")
+            disabled = ever_enabled and not enable_high
             if disabled and disable_time is None:
                 disable_time = t
             disabled_ready = (
@@ -34,6 +45,8 @@ def check_v4_1036_lna_blocker_compression_detector(rows: list[dict[str, float]])
             disabled_clear = disabled_clear or (disabled_ready and clear)
             if (rst or disabled_ready) and not clear:
                 clear_errors += 1
+            continue
+        if t < last_input_change + settle_s:
             continue
         ever_enabled = True
         disable_time = None
