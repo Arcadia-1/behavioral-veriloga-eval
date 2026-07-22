@@ -17,7 +17,13 @@ LEGACY_SYMBOL = '354-settling-progress-counter'
 
 def check_v4_263_settling_progress_counter(rows: list[Row]) -> CheckResult:
     """Check v4_263_settling_progress_counter: Settling Progress Counter clocked counter behavior."""
-    result = check_clocked_factory(rows, mode='counter', edge=1, task_name=TASK_LABEL)
+    result = check_clocked_factory(
+        rows,
+        mode='counter',
+        edge=1,
+        task_name=TASK_LABEL,
+        asynchronous_reset=True,
+    )
     if not result[0]:
         return result
     ok, hold_note = check_clocked_output_hold(rows, edge=1, task_name=TASK_LABEL)
