@@ -33,6 +33,7 @@ def check_v4_periodic_sampler_aperture_metric(rows: list[dict[str, float]]) -> t
     if missing:
         return False, missing
     hold = 0.0
+    metric = 0.0
     valid = False
     errors = 0
     checked = 0
@@ -51,12 +52,11 @@ def check_v4_periodic_sampler_aperture_metric(rows: list[dict[str, float]]) -> t
             valid = True
             metric_nonzero = metric_nonzero or metric > 0.03
         else:
-            metric = None
             disabled_hold_checks += 1
         sample = _sample_after(rows, edge_t, 0.8e-9)
         if not _v4_close(sample["vhold"], hold, 0.06):
             errors += 1
-        if metric is not None and not _v4_close(sample["aperture_metric"], metric, 0.06):
+        if not _v4_close(sample["aperture_metric"], metric, 0.06):
             errors += 1
         if (sample["valid"] > 0.45) != valid:
             errors += 1
