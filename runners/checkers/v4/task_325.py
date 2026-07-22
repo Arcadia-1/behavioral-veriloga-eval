@@ -38,6 +38,7 @@ def check_v4_325_fine_coarse_tdc_encoder(rows: list[dict[str, float]]) -> tuple[
     checked = latch_errors = fine_errors = clear_errors = valid_errors = 0
     reset_clear = disabled_clear = False
     ever_enabled = False
+    start_valid_grace_until = -1.0
     coarse_seen: set[int] = set()
     fine_max = 0.0
     valid_edges = 0
@@ -70,6 +71,7 @@ def check_v4_325_fine_coarse_tdc_encoder(rows: list[dict[str, float]]) -> tuple[
             awaiting_result = False
             ref_edges = 0
             last_ref_time = previous_ref_time = 0.0
+            start_valid_grace_until = t + 0.35e-9
         if armed and _rising(prev_ref, ref):
             ref_edges += 1
             previous_ref_time = last_ref_time
@@ -82,7 +84,7 @@ def check_v4_325_fine_coarse_tdc_encoder(rows: list[dict[str, float]]) -> tuple[
                 expected_fine = 0.0
             awaiting_result = True
             armed = False
-        if armed and not _high(row, "start") and valid:
+        if armed and valid and t > start_valid_grace_until:
             valid_errors += 1
         if awaiting_result and float(row["valid"]) > 0.8:
             awaiting_result = False
