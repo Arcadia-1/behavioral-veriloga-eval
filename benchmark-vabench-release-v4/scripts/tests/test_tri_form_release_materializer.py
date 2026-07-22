@@ -636,6 +636,31 @@ def test_direct_wrapper_defines_unambiguous_artifact_protocol(tmp_path: Path) ->
     assert "Do not include explanatory prose" in wrapper
 
 
+def test_agentic_wrapper_discloses_evas_spectre_portability_boundary(
+    tmp_path: Path,
+) -> None:
+    install_prompt_assets(tmp_path)
+    wrapper_path = tmp_path / "prompt_modes" / "wrappers" / "agentic_wrapper.md"
+    wrapper = wrapper_path.read_text(encoding="utf-8")
+    manifest = json.loads(
+        (tmp_path / "prompt_modes" / "manifest.json").read_text(encoding="utf-8")
+    )
+    record = manifest["wrappers"]["agentic_wrapper.md"]
+
+    assert "The visible closed loop runs on EVAS" in wrapper
+    assert "does not invoke Cadence Spectre" in wrapper
+    assert "adaptive time-step placement" in wrapper
+    assert all(event in wrapper for event in ("`timer`", "`cross`", "`transition`"))
+    assert "handling of `$bound_step`" in wrapper
+    assert "diagnostics for invalid models" in wrapper
+    assert "portable Verilog-A semantics" in wrapper
+    assert "raw output-row density" in wrapper
+    assert "public EVAS loop only" in wrapper
+    assert record["sha256"] == file_sha(wrapper_path)
+    assert record["bytes"] == len(wrapper_path.read_bytes())
+    assert record == manifest["components"]["agentic_wrapper.md"]
+
+
 def test_runtime_prompt_components_follow_explicit_order_with_wrapper_last() -> None:
     mode_record = {
         "component_order": [
@@ -990,6 +1015,12 @@ def test_r50_mode_matrix_exports_only_declared_real_skills(
     assert ("<<<VABENCH_SKILL_AVAILABILITY>>>" in prompt) is bool(expected_skills)
     assert "---\nname: veriloga" not in prompt
     assert "---\nname: vabench-feedback" not in prompt
+    if mode in {"G2", "G3", "G4", "G5"}:
+        assert "The visible closed loop runs on EVAS" in prompt
+        assert "does not invoke Cadence Spectre" in prompt
+        assert "raw output-row density" in prompt
+    else:
+        assert "The visible closed loop runs on EVAS" not in prompt
     monkeypatch.setattr(sys, "argv", [
         "audit_runtime_export.py", "--run", str(runtime),
     ])
