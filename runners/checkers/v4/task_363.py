@@ -133,6 +133,22 @@ def check_v4_363_fractional_n_synthesizer_mini_loop(rows: list[dict[str, float]]
     derive_checks = selection_checks = 0
     derive_gap = derive_time = selection_gap = selection_time = 0.0
     moduli: list[tuple[float, int, int]] = []
+    expected_selection: dict[float, int] = {}
+    enable_rises = _rising_times(rows, "enable")
+    stop_edges = sorted(_falling_times(rows, "enable") + _rising_times(rows, "rst"))
+    for start in enable_rises:
+        end = min((edge for edge in stop_edges if edge > start), default=float("inf"))
+        accumulator = 0
+        carry = 0
+        for edge in div_edges:
+            if not start < edge < end:
+                continue
+            expected_selection[edge] = carry
+            row = _sample_at(rows, edge + 0.25e-9 * time_scale)
+            code = _code(row, [f"frac_{bit}" for bit in range(4)])
+            accumulator += code
+            carry = int(accumulator >= 16)
+            accumulator %= 16
     for a, b in zip(div_edges, div_edges[1:]):
         if any(a < reset_time <= b for reset_time in control_resets):
             continue
@@ -144,7 +160,10 @@ def check_v4_363_fractional_n_synthesizer_mini_loop(rows: list[dict[str, float]]
         if not _active(row, enable="enable"):
             continue
         count = sum(a < edge <= b for edge in dco_rises)
-        expected = 9 if _high(row, "div_sel") else 8
+        reference_sel = expected_selection.get(b)
+        if reference_sel is None:
+            continue
+        expected = 8 + reference_sel
         moduli.append((b, count, expected))
         derive_checks += 1
         gap = abs(count - expected)
@@ -153,31 +172,11 @@ def check_v4_363_fractional_n_synthesizer_mini_loop(rows: list[dict[str, float]]
             if gap > derive_gap:
                 derive_gap, derive_time = float(gap), b
         selection_checks += 1
-        if count not in {8, 9}:
+        observed_sel = int(_high(row, "div_sel"))
+        if observed_sel != reference_sel:
             selection_bad += 1
-            selection_gap, selection_time = max(selection_gap, float(min(abs(count - 8), abs(count - 9)))), b
-
-    # A cleanly re-enabled modulo-16 accumulator commanded to code 15 must
-    # select n_int, n_int, then n_int+1 on its first three divider decisions.
-    # A threshold-at-15 mutation instead produces n_int, n_int+1, n_int.
-    selection_probes: list[tuple[float, list[int]]] = []
-    for enable_time in _rising_times(rows, "enable"):
-        probe_edges = [edge for edge in div_edges if edge >= enable_time][:5]
-        if len(probe_edges) < 5:
-            continue
-        probe_rows = [
-            _sample_at(rows, edge + 0.25e-9 * time_scale) for edge in probe_edges
-        ]
-        if any(_code(row, [f"frac_{i}" for i in range(4)]) != 15 for row in probe_rows):
-            continue
-        observed = [1 if _high(row, "div_sel") else 0 for row in probe_rows]
-        selection_probes.append((enable_time, observed))
-        for edge, actual, expected in zip(probe_edges, observed, [0, 0, 1]):
-            selection_checks += 1
-            if actual != expected:
-                selection_bad += 1
-                selection_gap = max(selection_gap, 1.0)
-                selection_time = edge
+            selection_gap = max(selection_gap, 1.0)
+            selection_time = b
 
     valid_rises = _rising_times(rows, "valid")
     ratio_bad = 0
@@ -226,8 +225,8 @@ def check_v4_363_fractional_n_synthesizer_mini_loop(rows: list[dict[str, float]]
         selection_gap = max(selection_gap, 1.0)
     return _finish([
         PropertyDiagnostic("P_RESET_DISABLE_CLEAR", clear_bad, "all_public_outputs=0", f"max_clear_gap={clear_gap:.3g}", clear_time, clear_gap, len(clear_samples)),
-        PropertyDiagnostic("P_FRACTIONAL_SELECTION", selection_bad, "code15_after_clear_selects_8_8_9", f"moduli={sorted(set(count for _, count, _ in moduli))} probes={selection_probes}", selection_time, selection_gap, selection_checks),
-        PropertyDiagnostic("P_DCO_DERIVED_DIVIDER", derive_bad, "div_edges_after_8_or_9_dco_rises", f"intervals={derive_checks}", derive_time, derive_gap, derive_checks, allowed_mismatches=max(1, derive_checks // 20)),
+        PropertyDiagnostic("P_FRACTIONAL_SELECTION", selection_bad, "div_sel_matches_independent_modulo16_accumulator", f"reference_decisions={len(expected_selection)}", selection_time, selection_gap, selection_checks),
+        PropertyDiagnostic("P_DCO_DERIVED_DIVIDER", derive_bad, "div_edges_follow_reference_selected_8_or_9_dco_rises", f"intervals={derive_checks}", derive_time, derive_gap, derive_checks),
         PropertyDiagnostic("P_RATIO_WINDOW", ratio_bad, "metric=8+frac/16_on_window_valid", f"valid_events={len(valid_rises)} high_fraction={high_fraction:.4f}", ratio_time, ratio_gap, ratio_checks),
         PropertyDiagnostic("P_FRACTION_MONOTONICITY", mono_bad, "higher_fraction_nondecreasing_metric", f"points={points}", mono_time, mono_gap, max(1, mono_checks)),
     ])

@@ -59,6 +59,41 @@ def _high_intervals(rows: list[dict[str, float]], signal: str, threshold: float 
     return intervals
 
 
+def _crossing_times(
+    rows: list[dict[str, float]], signal: str, *, rising: bool, threshold: float = 0.45
+) -> list[float]:
+    result: list[float] = []
+    for before, after in zip(rows, rows[1:]):
+        v0 = float(before[signal])
+        v1 = float(after[signal])
+        crossed = v0 <= threshold < v1 if rising else v0 >= threshold > v1
+        if not crossed:
+            continue
+        t0 = float(before["time"])
+        t1 = float(after["time"])
+        fraction = 1.0 if v1 == v0 else (threshold - v0) / (v1 - v0)
+        result.append(t0 + fraction * (t1 - t0))
+    return result
+
+
+def _sample_at(rows: list[dict[str, float]], target: float) -> dict[str, float]:
+    lo, hi = 0, len(rows) - 1
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if float(rows[mid]["time"]) < target:
+            lo = mid + 1
+        else:
+            hi = mid
+    return rows[lo]
+
+
+def _period_scale(edges: list[float], nominal_period: float = 10e-9) -> float:
+    periods = [b - a for a, b in zip(edges, edges[1:]) if b > a]
+    if not periods:
+        return 1.0
+    return sorted(periods)[len(periods) // 2] / nominal_period
+
+
 def check_v4_917_quadrature_phase_interpolator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk_i", "clk_q", "rst", "code_0", "code_1", "code_2", "code_3", "code_4", "clk_out", "quadrant_0", "quadrant_1", "phase_metric"}
     if not rows or not required.issubset(rows[0]):
@@ -70,7 +105,13 @@ def check_v4_917_quadrature_phase_interpolator(rows: list[dict[str, float]]) -> 
 
     diagnostics = {
         name: PropertyDiagnostic(name)
-        for name in ("P_RESET_CLEAR", "P_PHASE_METRIC", "P_QUADRANT_CODE", "P_CLOCK_ACTIVITY")
+        for name in (
+            "P_RESET_CLEAR",
+            "P_PHASE_METRIC",
+            "P_QUADRANT_CODE",
+            "P_CLOCK_ACTIVITY",
+            "P_SELECTED_EDGE_DELAY",
+        )
     }
     checked = 0
     code_low = code_high = clk_activity = False
@@ -169,6 +210,116 @@ def check_v4_917_quadrature_phase_interpolator(rows: list[dict[str, float]]) -> 
             time=float(rows[-1]["time"]),
             gap=float(max(0, 12 - checked) + int(not code_low) + int(not code_high) + int(not clk_activity)),
         )
+
+    i_rises = _crossing_times(rows, "clk_i", rising=True)
+    q_rises = _crossing_times(rows, "clk_q", rising=True)
+    out_rises = _crossing_times(rows, "clk_out", rising=True)
+    time_scale = _period_scale(i_rises)
+    reset_falls = _crossing_times(rows, "rst", rising=False)
+    reset_rises = _crossing_times(rows, "rst", rising=True)
+    code_edges = sorted(
+        edge
+        for bit in range(5)
+        for edge in (
+            _crossing_times(rows, f"code_{bit}", rising=True)
+            + _crossing_times(rows, f"code_{bit}", rising=False)
+        )
+    )
+    stable_edges: list[tuple[float, int, int, float, float]] = []
+    skipped_first_after_clear: set[float] = set()
+    for edge in out_rises:
+        row = _sample_at(rows, edge + 0.2e-9 * time_scale)
+        if _v4_topup_logic_high(row, "rst"):
+            continue
+        segment_start = max((t for t in reset_falls if t <= edge), default=float(rows[0]["time"]))
+        if segment_start not in skipped_first_after_clear:
+            skipped_first_after_clear.add(segment_start)
+            continue
+        last_control = max(
+            (t for t in code_edges + reset_rises + reset_falls if t <= edge),
+            default=float(rows[0]["time"]),
+        )
+        # Code changes may immediately retarget a high reference and create a
+        # non-clock output transition.  Exclude only that explicit short
+        # retargeting interval; the next selected reference edge is checked.
+        if edge - last_control < 0.4e-9 * time_scale:
+            continue
+        code = _v4_code_from_bits(row, [f"code_{bit}" for bit in range(5)])
+        quadrant = code // 8
+        references = i_rises if quadrant in (0, 2) else q_rises
+        reference = max((t for t in references if t <= edge), default=None)
+        diagnostics["P_SELECTED_EDGE_DELAY"].checked += 1
+        if reference is None or edge - reference > 1.0e-9 * time_scale:
+            diagnostics["P_SELECTED_EDGE_DELAY"].mismatch(
+                expected=f"quadrant={quadrant} selected_reference_edge",
+                observed="no_recent_selected_reference_edge",
+                time=edge,
+                gap=1.0e-9 * time_scale if reference is None else edge - reference,
+            )
+            continue
+        observed_delay = edge - reference
+        residual = observed_delay - (code % 8) * 5e-12 * time_scale
+        stable_edges.append((edge, quadrant, code, observed_delay, residual))
+
+    if stable_edges:
+        baseline = sorted(item[4] for item in stable_edges)[len(stable_edges) // 2]
+        for edge, quadrant, _, _, residual in stable_edges:
+            gap = abs(residual - baseline)
+            if gap > 35e-12 * time_scale:
+                diagnostics["P_SELECTED_EDGE_DELAY"].mismatch(
+                    expected=f"delay=inferred_baseline+intra_code*5ps baseline={baseline:.6g}",
+                    observed=f"quadrant={quadrant} residual={residual:.6g}",
+                    time=edge,
+                    gap=gap,
+                )
+
+    slope_checks = 0
+    by_quadrant_code: dict[tuple[int, int], list[float]] = {}
+    for _, quadrant, code, observed_delay, _ in stable_edges:
+        by_quadrant_code.setdefault((quadrant, code), []).append(observed_delay)
+    for quadrant in range(4):
+        points = [
+            (code, sorted(delays)[len(delays) // 2])
+            for (point_quadrant, code), delays in sorted(by_quadrant_code.items())
+            if point_quadrant == quadrant
+        ]
+        for (code0, delay0), (code1, delay1) in zip(points, points[1:]):
+            expected_step = (code1 - code0) * 5e-12 * time_scale
+            observed_step = delay1 - delay0
+            gap = abs(observed_step - expected_step)
+            slope_checks += 1
+            diagnostics["P_SELECTED_EDGE_DELAY"].checked += 1
+            if gap > 8e-12 * time_scale:
+                diagnostics["P_SELECTED_EDGE_DELAY"].mismatch(
+                    expected=(
+                        f"quadrant={quadrant} delay_step="
+                        f"({code1}-{code0})*5ps={expected_step:.6g}"
+                    ),
+                    observed=f"delay_step={observed_step:.6g}",
+                    time=float(rows[-1]["time"]),
+                    gap=gap,
+                )
+    represented_quadrants = {item[1] for item in stable_edges}
+    if diagnostics["P_SELECTED_EDGE_DELAY"].checked < 5 or len(represented_quadrants) < 3:
+        diagnostics["P_SELECTED_EDGE_DELAY"].mismatch(
+            expected="paired_edges>=5 represented_quadrants>=3",
+            observed=(
+                f"paired_edges={len(stable_edges)} "
+                f"represented_quadrants={sorted(represented_quadrants)}"
+            ),
+            time=float(rows[-1]["time"]),
+            gap=float(max(0, 5 - len(stable_edges)) + max(0, 3 - len(represented_quadrants))),
+        )
+    if slope_checks < 2:
+        diagnostics["P_SELECTED_EDGE_DELAY"].mismatch(
+            expected="intra_quadrant_slope_comparisons>=2",
+            observed=f"intra_quadrant_slope_comparisons={slope_checks}",
+            time=float(rows[-1]["time"]),
+            gap=float(2 - slope_checks),
+        )
+    diagnostics["P_SELECTED_EDGE_DELAY"].checked = max(
+        1, diagnostics["P_SELECTED_EDGE_DELAY"].checked
+    )
     ok = all(item.checked > 0 and item.mismatch_count == 0 for item in diagnostics.values())
     return ok, " ; ".join(item.render() for item in diagnostics.values())
 
