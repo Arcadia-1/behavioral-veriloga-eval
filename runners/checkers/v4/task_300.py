@@ -48,6 +48,7 @@ def check_v3_503_differential_vco_clip_idtmod(rows: list[dict[str, float]]) -> t
     max_err = 0.0
     outp_span_lo: float | None = None
     outp_span_hi: float | None = None
+    saw_lower_clamp_case = any(fnom + dfdv * (row["vinp"] - row["vinm"]) < fmin for row in rows)
     saw_upper_clamp_case = any(fnom + dfdv * (row["vinp"] - row["vinm"]) > fmax for row in rows)
     for index in range(0, len(rows), stride):
         if rows[index]["time"] < 8.0e-9:
@@ -85,7 +86,12 @@ def check_v3_503_differential_vco_clip_idtmod(rows: list[dict[str, float]]) -> t
     outp_span = (outp_span_hi - outp_span_lo) if (outp_span_lo is not None) else 0.0
     if outp_span < 0.5 * vac:
         return False, f"insufficient_outp_dynamic_range={outp_span:.4f}"
-    clamp_note = " upper_clamp_exercised" if saw_upper_clamp_case else ""
+    if not (saw_lower_clamp_case and saw_upper_clamp_case):
+        return False, (
+            "insufficient_clamp_coverage="
+            f"lower:{saw_lower_clamp_case},upper:{saw_upper_clamp_case}"
+        )
+    clamp_note = " lower_clamp_exercised upper_clamp_exercised"
     return True, f"samples={checked} outp_span={outp_span:.4f} max_err={max_err:.4f}{clamp_note}"
 
 CHECKER_ID = "v4_300_differential_vco_clip_idtmod"
