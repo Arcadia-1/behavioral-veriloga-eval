@@ -97,8 +97,10 @@
       "observable_contract": "A rising a crossing arms a fresh measurement and clears seen_out until completion.",
       "required_signals": [
         "time",
-        "a",
-        "seen_out"
+        "a_default",
+        "seen_out_default",
+        "a_override",
+        "seen_out_override"
       ]
     },
     {
@@ -106,10 +108,14 @@
       "observable_contract": "The first rising b crossing after an armed a edge captures their elapsed time; b edges before arming do not complete a measurement.",
       "required_signals": [
         "time",
-        "a",
-        "b",
-        "delay_out",
-        "seen_out"
+        "a_default",
+        "b_default",
+        "delay_out_default",
+        "seen_out_default",
+        "a_override",
+        "b_override",
+        "delay_out_override",
+        "seen_out_override"
       ]
     },
     {
@@ -117,11 +123,18 @@
       "observable_contract": "Delay_out equals the VDD-to-VSS rail span multiplied by measured delay in picoseconds divided by scale_ps.",
       "required_signals": [
         "time",
-        "vdd",
-        "vss",
-        "a",
-        "b",
-        "delay_out"
+        "scale_ps_ref_default",
+        "vdd_default",
+        "vss_default",
+        "a_default",
+        "b_default",
+        "delay_out_default",
+        "scale_ps_ref_override",
+        "vdd_override",
+        "vss_override",
+        "a_override",
+        "b_override",
+        "delay_out_override"
       ]
     },
     {
@@ -129,11 +142,16 @@
       "observable_contract": "Seen_out is rail-high after a valid a-then-b capture and rail-low while a newly armed measurement is incomplete.",
       "required_signals": [
         "time",
-        "vdd",
-        "vss",
-        "a",
-        "b",
-        "seen_out"
+        "vdd_default",
+        "vss_default",
+        "a_default",
+        "b_default",
+        "seen_out_default",
+        "vdd_override",
+        "vss_override",
+        "a_override",
+        "b_override",
+        "seen_out_override"
       ]
     },
     {
@@ -141,10 +159,14 @@
       "observable_contract": "Additional b crossings after completion do not change delay_out until the next rising a edge rearms the timer.",
       "required_signals": [
         "time",
-        "a",
-        "b",
-        "delay_out",
-        "seen_out"
+        "a_default",
+        "b_default",
+        "delay_out_default",
+        "seen_out_default",
+        "a_override",
+        "b_override",
+        "delay_out_override",
+        "seen_out_override"
       ]
     }
   ],
@@ -199,12 +221,24 @@
   "trace_contract": {
     "required_signals": [
       "time",
-      "vdd",
-      "vss",
-      "a",
-      "b",
-      "delay_out",
-      "seen_out"
+      "vth_ref_default",
+      "scale_ps_ref_default",
+      "tedge_ps_ref_default",
+      "vdd_default",
+      "vss_default",
+      "a_default",
+      "b_default",
+      "delay_out_default",
+      "seen_out_default",
+      "vth_ref_override",
+      "scale_ps_ref_override",
+      "tedge_ps_ref_override",
+      "vdd_override",
+      "vss_override",
+      "a_override",
+      "b_override",
+      "delay_out_override",
+      "seen_out_override"
     ]
   }
 }

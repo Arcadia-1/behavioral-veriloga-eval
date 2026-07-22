@@ -39,12 +39,25 @@
     "testbench_and_checker_split_required": true
   },
   "public_observables": [
-    "vdd",
-    "vss",
-    "a",
-    "b",
-    "delay_out",
-    "seen_out"
+    "time",
+    "vth_ref_default",
+    "scale_ps_ref_default",
+    "tedge_ps_ref_default",
+    "vdd_default",
+    "vss_default",
+    "a_default",
+    "b_default",
+    "delay_out_default",
+    "seen_out_default",
+    "vth_ref_override",
+    "scale_ps_ref_override",
+    "tedge_ps_ref_override",
+    "vdd_override",
+    "vss_override",
+    "a_override",
+    "b_override",
+    "delay_out_override",
+    "seen_out_override"
   ],
   "schema_version": "v4-public-contract-v1",
   "score_oracle": {

@@ -122,8 +122,10 @@
       "observable_contract": "With jitter_en below vth, clk_out has a constant 10 ns half-period and 20 ns full period.",
       "required_signals": [
         "time",
-        "jitter_en",
-        "clk_out"
+        "jitter_en_default",
+        "clk_out_default",
+        "jitter_en_override",
+        "clk_out_override"
       ]
     },
     {
@@ -131,16 +133,26 @@
       "observable_contract": "Seed7:seed0 is sampled through vth only at each output transition and interpreted as one unsigned eight-bit seed with seed7 as MSB; seed changes affect the next scheduled half-period, not the already scheduled current edge.",
       "required_signals": [
         "time",
-        "jitter_en",
-        "seed0",
-        "seed1",
-        "seed2",
-        "seed3",
-        "seed4",
-        "seed5",
-        "seed6",
-        "seed7",
-        "clk_out"
+        "jitter_en_default",
+        "seed0_default",
+        "seed1_default",
+        "seed2_default",
+        "seed3_default",
+        "seed4_default",
+        "seed5_default",
+        "seed6_default",
+        "seed7_default",
+        "clk_out_default",
+        "jitter_en_override",
+        "seed0_override",
+        "seed1_override",
+        "seed2_override",
+        "seed3_override",
+        "seed4_override",
+        "seed5_override",
+        "seed6_override",
+        "seed7_override",
+        "clk_out_override"
       ]
     },
     {
@@ -148,16 +160,26 @@
       "observable_contract": "For edge index k, the next half-period is 10 ns plus (((seed + 3*k) modulo 5) minus 2) times 0.8 ns.",
       "required_signals": [
         "time",
-        "jitter_en",
-        "seed0",
-        "seed1",
-        "seed2",
-        "seed3",
-        "seed4",
-        "seed5",
-        "seed6",
-        "seed7",
-        "clk_out"
+        "jitter_en_default",
+        "seed0_default",
+        "seed1_default",
+        "seed2_default",
+        "seed3_default",
+        "seed4_default",
+        "seed5_default",
+        "seed6_default",
+        "seed7_default",
+        "clk_out_default",
+        "jitter_en_override",
+        "seed0_override",
+        "seed1_override",
+        "seed2_override",
+        "seed3_override",
+        "seed4_override",
+        "seed5_override",
+        "seed6_override",
+        "seed7_override",
+        "clk_out_override"
       ]
     },
     {
@@ -165,16 +187,26 @@
       "observable_contract": "With constant seed and enable history, the modulo-5 half-period sequence repeats every five output transitions; identical input histories also produce the same edge-time sequence on repeated runs.",
       "required_signals": [
         "time",
-        "jitter_en",
-        "seed0",
-        "seed1",
-        "seed2",
-        "seed3",
-        "seed4",
-        "seed5",
-        "seed6",
-        "seed7",
-        "clk_out"
+        "jitter_en_default",
+        "seed0_default",
+        "seed1_default",
+        "seed2_default",
+        "seed3_default",
+        "seed4_default",
+        "seed5_default",
+        "seed6_default",
+        "seed7_default",
+        "clk_out_default",
+        "jitter_en_override",
+        "seed0_override",
+        "seed1_override",
+        "seed2_override",
+        "seed3_override",
+        "seed4_override",
+        "seed5_override",
+        "seed6_override",
+        "seed7_override",
+        "clk_out_override"
       ]
     },
     {
@@ -182,8 +214,10 @@
       "observable_contract": "Every jitter-enabled half-period remains within the public modulation range from 8.4 ns through 11.6 ns.",
       "required_signals": [
         "time",
-        "jitter_en",
-        "clk_out"
+        "jitter_en_default",
+        "clk_out_default",
+        "jitter_en_override",
+        "clk_out_override"
       ]
     },
     {
@@ -191,7 +225,12 @@
       "observable_contract": "clk_out uses 0 V and vdd levels with finite transition smoothing set by tr.",
       "required_signals": [
         "time",
-        "clk_out"
+        "vdd_ref_default",
+        "tr_ps_ref_default",
+        "clk_out_default",
+        "vdd_ref_override",
+        "tr_ps_ref_override",
+        "clk_out_override"
       ]
     }
   ],
@@ -266,16 +305,32 @@
   "trace_contract": {
     "required_signals": [
       "time",
-      "jitter_en",
-      "seed0",
-      "seed1",
-      "seed2",
-      "seed3",
-      "seed4",
-      "seed5",
-      "seed6",
-      "seed7",
-      "clk_out"
+      "vdd_ref_default",
+      "vth_ref_default",
+      "tr_ps_ref_default",
+      "jitter_en_default",
+      "seed0_default",
+      "seed1_default",
+      "seed2_default",
+      "seed3_default",
+      "seed4_default",
+      "seed5_default",
+      "seed6_default",
+      "seed7_default",
+      "clk_out_default",
+      "vdd_ref_override",
+      "vth_ref_override",
+      "tr_ps_ref_override",
+      "jitter_en_override",
+      "seed0_override",
+      "seed1_override",
+      "seed2_override",
+      "seed3_override",
+      "seed4_override",
+      "seed5_override",
+      "seed6_override",
+      "seed7_override",
+      "clk_out_override"
     ]
   }
 }
