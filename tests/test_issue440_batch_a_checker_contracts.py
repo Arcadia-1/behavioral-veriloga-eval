@@ -90,24 +90,38 @@ def test_068_checks_all_cycles_duty_and_common_parameterized_rails() -> None:
 _SEQ_077 = (-1.0, -0.5, 0.0, 0.5, 1.0, 0.5, 0.0, -0.5)
 
 
-def _sequence_rows(*, sigma: float, dt_ns: float, shortcut: bool) -> list[dict[str, float]]:
-    step_ns = dt_ns / 10.0
+def _sequence_rows(*, override_ignores_parameters: bool, shortcut: bool) -> list[dict[str, float]]:
+    step_ns = 0.05
     rows = []
-    for index in range(181):
+    for index in range(401):
         time_ns = index * step_ns
+        default_delta = 0.01 * _SEQ_077[
+            int((time_ns + 1e-10) / 0.5) % len(_SEQ_077)
+        ]
+        override_sigma = 0.01 if override_ignores_parameters else 0.037
+        override_dt_ns = 0.5 if override_ignores_parameters else 0.8
         if shortcut:
-            delta = sigma * math.sin(2.0 * math.pi * time_ns / (8.0 * dt_ns))
+            override_delta = override_sigma * math.sin(
+                2.0 * math.pi * time_ns / (8.0 * override_dt_ns)
+            )
         else:
-            sequence_index = int((time_ns + 1e-10) / dt_ns) % len(_SEQ_077)
-            delta = sigma * _SEQ_077[sequence_index]
-        rows.append({"time": time_ns * 1e-9, "vin_i": 0.2, "vout_o": 0.2 + delta})
+            sequence_index = int((time_ns + 1e-10) / override_dt_ns) % len(_SEQ_077)
+            override_delta = override_sigma * _SEQ_077[sequence_index]
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "vin_i": 0.2,
+                "vout_default": 0.2 + default_delta,
+                "vout_override": 0.2 + override_delta,
+            }
+        )
     return rows
 
 
-def test_077_checks_sequence_and_hold_without_hardcoding_sigma_or_dt() -> None:
-    _assert_passes(check_077, _sequence_rows(sigma=0.10, dt_ns=0.5, shortcut=False))
-    _assert_passes(check_077, _sequence_rows(sigma=0.037, dt_ns=0.8, shortcut=False))
-    _assert_fails(check_077, _sequence_rows(sigma=0.10, dt_ns=0.5, shortcut=True))
+def test_077_checks_default_and_override_parameter_behavior() -> None:
+    _assert_passes(check_077, _sequence_rows(override_ignores_parameters=False, shortcut=False))
+    _assert_fails(check_077, _sequence_rows(override_ignores_parameters=True, shortcut=False))
+    _assert_fails(check_077, _sequence_rows(override_ignores_parameters=False, shortcut=True))
 
 
 _DATA_EDGES_NS = (20.0, 30.0, 40.0, 50.0, 60.0, 70.0)

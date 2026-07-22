@@ -17,12 +17,14 @@
     "public_observables": [
       "time",
       "vin_i",
-      "vout_o"
+      "vout_default",
+      "vout_override"
     ],
     "required_signals": [
       "time",
       "vin_i",
-      "vout_o"
+      "vout_default",
+      "vout_override"
     ]
   }
 }

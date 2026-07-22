@@ -8,5 +8,5 @@ XDUT (vin vout) source_single_shot
 
 simulatorOptions options evas_profile=balanced
 
-tran tran stop=22n maxstep=50p
+tran tran stop=45n maxstep=50p
 save vin vout
