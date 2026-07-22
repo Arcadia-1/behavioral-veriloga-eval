@@ -27,7 +27,8 @@ module programmable_frequency_divider(clk_in, rst, enable, n_3, n_2, n_1, n_0, c
             metric_value = vss;
         end
 
-        @(cross(V(clk_in) - vth, +1)) begin
+        @(cross(V(clk_in) - vth, +1) or cross(V(rst) - vth, +1) or
+          cross(V(enable) - vth, -1)) begin
             if (V(rst) > vth || V(enable) <= vth) begin
                 count = 0;
                 divisor = 1;
