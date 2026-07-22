@@ -16,7 +16,7 @@ module fm_vco_modulation_source(mod_in, enable, rst, osc_out, freq_metric, phase
                 freq = f0 + kvco * (V(mod_in) - vcm); if (freq < 1.0e6) freq = 1.0e6;
                 metric_v = min2(vdd, max2(vss, freq / 20.0e6 * vdd));
                 phase = phase + freq * tick;
-                if (phase >= 0.5) begin phase = phase - 0.5; osc_v = (osc_v > vth) ? vss : vdd; if (osc_v <= vth) begin cycles = cycles + 1; marker_v = (marker_v > vth) ? vss : vdd; end end
+                if (phase >= 0.5) begin phase = phase - 0.5; osc_v = (osc_v > vth) ? vss : vdd; cycles = cycles + 1; marker_v = (marker_v > vth) ? vss : vdd; end
                 valid_v = (cycles >= 1) ? vdd : vss;
             end
         end

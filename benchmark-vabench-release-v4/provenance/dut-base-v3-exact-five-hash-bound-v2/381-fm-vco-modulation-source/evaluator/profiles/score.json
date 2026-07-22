@@ -6,10 +6,10 @@
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "23d66bd20df43f31c21163b017b989736799e3e829bdabffd279d25e1da7603e",
+  "harness_spec_sha256": "7f5b7782983ce6efef29f7b240ec59a175ade3f7577b0ebc32f651055c39efda",
   "parameters": {
-    "maxstep": "100p",
-    "stop_time": "100n"
+    "maxstep": "1n",
+    "stop_time": "4220n"
   },
   "profile_name": "score",
   "property_ids": [

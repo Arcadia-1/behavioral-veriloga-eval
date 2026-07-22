@@ -167,7 +167,7 @@
     },
     {
       "id": "P_CLAMP_THE_COMMANDED_FREQUENCY_TO_A",
-      "observable_contract": "Clamp the commanded frequency to a nonnegative range and expose the normalized command on `freq_metric`.",
+      "observable_contract": "Clamp the commanded frequency to a minimum of 1 MHz and expose the normalized command on `freq_metric`.",
       "required_signals": [
         "time",
         "mod_in",
@@ -209,7 +209,7 @@
     },
     {
       "id": "P_ASSERT_VALID_AFTER_THE_FIRST_COMPLETED",
-      "observable_contract": "Assert `valid` after the first completed oscillator cycle following enable.",
+      "observable_contract": "Assert `valid` only after the first completed oscillator cycle following enable or reset recovery, then hold it high until reset or disable.",
       "required_signals": [
         "time",
         "mod_in",
