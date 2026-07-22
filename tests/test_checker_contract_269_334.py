@@ -27,22 +27,33 @@ def _clip01(value: float) -> float:
 def _gm_rows() -> list[dict[str, float]]:
     rows: list[dict[str, float]] = []
     diffs = (0.05, -0.07, 0.18, -0.22)
-    for index in range(100):
-        enabled = 0.9 if 10 <= index < 80 else 0.0
-        diff = diffs[index % len(diffs)]
-        limited = diff / (1.0 + abs(diff) / 0.12)
-        separation = 4.0 * limited if enabled else 0.0
-        rows.append(
-            {
-                "time": index * 1e-10,
-                "vinp": 0.45 + 0.5 * diff,
-                "vinn": 0.45 - 0.5 * diff,
-                "bias": 0.45,
-                "enable": enabled,
+    held = {
+        "voutp": 0.45,
+        "voutn": 0.45,
+        "gm_metric": 0.0,
+        "limit_flag": 0.0,
+    }
+    for index in range(1521):
+        enabled = 0.9 if 82 <= index < 1002 or index >= 1142 else 0.0
+        cycle, phase = divmod(index, 10)
+        diff = diffs[(cycle + phase // 2) % len(diffs)]
+        if index % 10 == 0:
+            limited = diff / (1.0 + abs(diff) / 0.12)
+            separation = 4.0 * limited if enabled else 0.0
+            held = {
                 "voutp": 0.45 + 0.5 * separation,
                 "voutn": 0.45 - 0.5 * separation,
                 "gm_metric": 0.9 * 0.12 / (0.12 + abs(diff)) if enabled else 0.0,
                 "limit_flag": 0.9 if enabled and abs(diff) > 0.12 else 0.0,
+            }
+        rows.append(
+            {
+                "time": index * 5e-11,
+                "vinp": 0.45 + 0.5 * diff,
+                "vinn": 0.45 - 0.5 * diff,
+                "bias": 0.45,
+                "enable": enabled,
+                **held,
             }
         )
     return rows
@@ -50,24 +61,31 @@ def _gm_rows() -> list[dict[str, float]]:
 
 def _tia_rows() -> list[dict[str, float]]:
     rows: list[dict[str, float]] = []
-    for index in range(100):
-        active = 10 <= index < 80
-        bias = 0.28 if index % 4 < 2 else 0.62
-        vin = (0.08, 0.38, 0.54, 0.86)[index % 4]
-        gain_scale = _clip01((bias - 0.3) / 0.15)
-        gain_scale = max(gain_scale, 0.35)
-        gain = 3.0 * gain_scale
-        raw = 0.45 + gain * (vin - 0.45)
+    held = {"vout": 0.45, "transimpedance_metric": 0.0, "overload": 0.0}
+    for index in range(1561):
+        active = 82 <= index < 1042 or index >= 1162
+        cycle, phase = divmod(index, 10)
+        bias = 0.28 if cycle % 4 < 2 else 0.62
+        vin_values = (0.08, 0.38, 0.54, 0.86)
+        vin = vin_values[(cycle + phase // 2) % len(vin_values)]
+        if index % 10 == 0:
+            gain_scale = _clip01((bias - 0.3) / 0.15)
+            gain_scale = max(gain_scale, 0.35)
+            gain = 3.0 * gain_scale
+            raw = 0.45 + gain * (vin - 0.45)
+            held = {
+                "vout": _clip01(raw) if active else 0.45,
+                "transimpedance_metric": _clip01(0.9 * gain / 3.0) if active else 0.0,
+                "overload": 0.9 if active and (raw > 0.9 or raw < 0.0) else 0.0,
+            }
         rows.append(
             {
-                "time": index * 1e-10,
+                "time": index * 5e-11,
                 "vin_proxy": vin,
                 "bias": bias,
                 "enable": 0.9 if active else 0.0,
                 "rst": 0.0 if active else 0.9,
-                "vout": _clip01(raw) if active else 0.45,
-                "transimpedance_metric": _clip01(0.9 * gain / 3.0) if active else 0.0,
-                "overload": 0.9 if active and (raw > 0.9 or raw < 0.0) else 0.0,
+                **held,
             }
         )
     return rows
@@ -241,12 +259,45 @@ def test_task_303_rejects_mostly_wrong_disabled_window() -> None:
     assert not check_303(bad)[0]
 
 
+def test_task_303_rejects_combinational_tracking_in_place_of_timer_hold() -> None:
+    bad = _gm_rows()
+    for row in bad:
+        if row["enable"] <= 0.45:
+            continue
+        diff = row["vinp"] - row["vinn"]
+        limited = diff / (1.0 + abs(diff) / 0.12)
+        separation = 4.0 * limited
+        row.update(
+            voutp=0.45 + 0.5 * separation,
+            voutn=0.45 - 0.5 * separation,
+            gm_metric=0.9 * 0.12 / (0.12 + abs(diff)),
+            limit_flag=0.9 if abs(diff) > 0.12 else 0.0,
+        )
+    assert not check_303(bad)[0]
+
+
 def test_task_304_rejects_mostly_wrong_inactive_window() -> None:
     rows = _tia_rows()
     assert check_304(rows)[0]
     bad = deepcopy(rows)
     for row in bad[88:-1]:
         row.update(vout=0.9, transimpedance_metric=0.9, overload=0.9)
+    assert not check_304(bad)[0]
+
+
+def test_task_304_rejects_combinational_tracking_in_place_of_timer_hold() -> None:
+    bad = _tia_rows()
+    for row in bad:
+        if row["enable"] <= 0.45 or row["rst"] > 0.45:
+            continue
+        gain_scale = max(_clip01((row["bias"] - 0.3) / 0.15), 0.35)
+        gain = 3.0 * gain_scale
+        raw = 0.45 + gain * (row["vin_proxy"] - 0.45)
+        row.update(
+            vout=_clip01(raw),
+            transimpedance_metric=_clip01(0.9 * gain / 3.0),
+            overload=0.9 if raw > 0.9 or raw < 0.0 else 0.0,
+        )
     assert not check_304(bad)[0]
 
 

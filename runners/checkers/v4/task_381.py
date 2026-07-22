@@ -1,6 +1,9 @@
 """Task-specific checker for canonical v4 DUT 381."""
 from __future__ import annotations
 
+from bisect import bisect_left
+import math
+
 from ..api import Checker
 
 
@@ -9,6 +12,10 @@ KVCO = 5.0e6
 VCM = 0.45
 MIN_FREQUENCY = 1.0e6
 VALID_TRANSITION_GRACE = 2.0e-9
+TICK = 500.0e-12
+METRIC_TRANSITION = 200.0e-12
+METRIC_SETTLE_WINDOW = TICK + METRIC_TRANSITION
+METRIC_PROBE_INTERVAL = 1.0e-9
 
 
 def _level(row: dict[str, float], name: str, threshold: float = 0.45) -> bool | None:
@@ -38,6 +45,96 @@ def _mod_bucket(mod_in: float) -> str | None:
 def _expected_period(mod_in: float) -> float:
     frequency = max(MIN_FREQUENCY, F0 + KVCO * (mod_in - VCM))
     return 1.0 / frequency
+
+
+def _sample_signal(
+    rows: list[dict[str, float]],
+    times: list[float],
+    signal: str,
+    time_s: float,
+) -> float | None:
+    index = bisect_left(times, time_s)
+    if index < len(times) and abs(times[index] - time_s) <= 1.0e-18:
+        return float(rows[index][signal])
+    if index == 0 or index >= len(times):
+        return None
+    left = rows[index - 1]
+    right = rows[index]
+    t0 = times[index - 1]
+    t1 = times[index]
+    if t1 == t0:
+        return float(right[signal])
+    alpha = (time_s - t0) / (t1 - t0)
+    return float(left[signal]) + alpha * (float(right[signal]) - float(left[signal]))
+
+
+def _metric_stable_probes(
+    rows: list[dict[str, float]],
+) -> tuple[int, int, int, bool, bool, bool, list[float]]:
+    """Check metric on a fixed grid after inputs are stable for tick + transition."""
+    times = [float(row["time"]) for row in rows]
+    first_probe = times[0] + METRIC_SETTLE_WINDOW
+    probe_count = math.floor((times[-1] - first_probe + 1.0e-18) / METRIC_PROBE_INTERVAL) + 1
+    checked = metric_errors = lower_clamp_errors = 0
+    low_metric = high_metric = lower_clamp_seen = False
+    metric_values: list[float] = []
+    for probe_index in range(max(0, probe_count)):
+        probe_time = first_probe + probe_index * METRIC_PROBE_INTERVAL
+        stable_since = probe_time - METRIC_SETTLE_WINDOW
+        midpoint = 0.5 * (stable_since + probe_time)
+        rst_samples = [
+            _sample_signal(rows, times, "rst", time_s)
+            for time_s in (stable_since, midpoint, probe_time)
+        ]
+        enable_samples = [
+            _sample_signal(rows, times, "enable", time_s)
+            for time_s in (stable_since, midpoint, probe_time)
+        ]
+        mod_samples = [
+            _sample_signal(rows, times, "mod_in", time_s)
+            for time_s in (stable_since, midpoint, probe_time)
+        ]
+        actual_metric = _sample_signal(rows, times, "freq_metric", probe_time)
+        if (
+            any(value is None for value in rst_samples + enable_samples + mod_samples)
+            or actual_metric is None
+        ):
+            continue
+        rst_values = [float(value) for value in rst_samples if value is not None]
+        enable_values = [float(value) for value in enable_samples if value is not None]
+        mod_values = [float(value) for value in mod_samples if value is not None]
+        if (
+            max(rst_values) - min(rst_values) > 1.0e-6
+            or max(enable_values) - min(enable_values) > 1.0e-6
+            or max(mod_values) - min(mod_values) > 1.0e-6
+        ):
+            continue
+        rst = rst_values[-1]
+        enable = enable_values[-1]
+        mod_in = mod_values[-1]
+        if 0.1 < rst < 0.8 or 0.1 < enable < 0.8:
+            continue
+        if enable <= 0.45 or rst > 0.45:
+            continue
+        frequency = max(MIN_FREQUENCY, F0 + KVCO * (mod_in - VCM))
+        expected_metric = min(0.9, max(0.0, frequency / 20.0e6 * 0.9))
+        low_metric = low_metric or expected_metric < 0.45
+        high_metric = high_metric or expected_metric > 0.45
+        if expected_metric <= 0.06:
+            lower_clamp_seen = True
+            lower_clamp_errors += int(abs(actual_metric - expected_metric) > 0.025)
+        metric_values.append(actual_metric)
+        checked += 1
+        metric_errors += int(abs(actual_metric - expected_metric) > 0.10)
+    return (
+        checked,
+        metric_errors,
+        lower_clamp_errors,
+        low_metric,
+        high_metric,
+        lower_clamp_seen,
+        metric_values,
+    )
 
 
 def _active_edge_events(
@@ -138,11 +235,10 @@ def check_v4_940_fm_vco_modulation_source(rows: list[dict[str, float]]) -> tuple
     if not rows:
         return False, _property_note("P_TRACE_CONTRACT", 1, "non_empty_trace", "empty_trace")
 
-    checked = metric_errors = clear_errors = lower_clamp_errors = 0
-    reset_clear = disabled_clear = low_metric = high_metric = lower_clamp_seen = valid_seen = False
+    clear_errors = 0
+    reset_clear = disabled_clear = valid_seen = False
     osc_vals: list[float] = []
     marker_vals: list[float] = []
-    metric_vals: list[float] = []
     for row in rows:
         rst = _level(row, "rst")
         enable = _level(row, "enable")
@@ -158,21 +254,19 @@ def check_v4_940_fm_vco_modulation_source(rows: list[dict[str, float]]) -> tuple
             if clear is False:
                 clear_errors += 1
             continue
-        freq = max(MIN_FREQUENCY, F0 + KVCO * (float(row["mod_in"]) - VCM))
-        expected_metric = min(0.9, max(0.0, freq / 20.0e6 * 0.9))
-        low_metric = low_metric or expected_metric < 0.45
-        high_metric = high_metric or expected_metric > 0.45
-        if expected_metric <= 0.06:
-            lower_clamp_seen = True
-            if abs(float(row["freq_metric"]) - expected_metric) > 0.025:
-                lower_clamp_errors += 1
         osc_vals.append(float(row["osc_out"]))
         marker_vals.append(float(row["phase_marker"]))
-        metric_vals.append(float(row["freq_metric"]))
         valid_seen = valid_seen or bool(_level(row, "valid"))
-        checked += 1
-        if abs(float(row["freq_metric"]) - expected_metric) > 0.10:
-            metric_errors += 1
+
+    (
+        checked,
+        metric_errors,
+        lower_clamp_errors,
+        low_metric,
+        high_metric,
+        lower_clamp_seen,
+        metric_vals,
+    ) = _metric_stable_probes(rows)
 
     valid_early_errors = valid_hold_errors = valid_late_errors = 0
     active_segment_started = False
@@ -293,8 +387,8 @@ def check_v4_940_fm_vco_modulation_source(rows: list[dict[str, float]]) -> tuple
         and period_order_errors == 0
         and period_model_errors == 0
         and valid_errors == 0
-        and metric_errors <= 24
-        and lower_clamp_errors <= 18
+        and metric_errors == 0
+        and lower_clamp_errors == 0
         and clear_errors <= 24
     )
     notes = [
@@ -304,9 +398,9 @@ def check_v4_940_fm_vco_modulation_source(rows: list[dict[str, float]]) -> tuple
             "clear_on_reset_and_disable",
             f"reset_clear={reset_clear},disabled_clear={disabled_clear},raw_clear_errors={clear_errors}",
         ),
-        _property_note("P_FREQUENCY_TRANSFER", max(0, metric_errors - 24), "freq_metric=f(mod_in)", f"checked={checked},raw_errors={metric_errors}"),
+        _property_note("P_FREQUENCY_TRANSFER", metric_errors, "freq_metric=f(mod_in)", f"stable_probes={checked},probe_errors={metric_errors}"),
         _property_note("P_METRIC_COVERAGE", coverage_errors, "low_high_lower_clamp_and_span", f"span={metric_span:.6g},lower_clamp_seen={lower_clamp_seen}"),
-        _property_note("P_LOWER_CLAMP", max(0, lower_clamp_errors - 18), "freq_metric_tracks_1MHz_lower_clamp", f"raw_errors={lower_clamp_errors}"),
+        _property_note("P_LOWER_CLAMP", lower_clamp_errors, "freq_metric_tracks_1MHz_lower_clamp", f"probe_errors={lower_clamp_errors}"),
         _property_note("P_OSCILLATOR_ACTIVITY", int(not osc_activity), "osc_out_has_low_high_activity", str(osc_activity)),
         _property_note("P_PHASE_MARKER_ACTIVITY", int(not marker_activity), "phase_marker_has_low_high_activity", str(marker_activity)),
         _property_note("P_PHASE_MARKER_ALIGNMENT", alignment_errors, "marker_rise_aligned_with_stable_osc_cycle_phase", f"phase={marker_phase},marker_rises={len(marker_rises)},cycle_anchors={len(completed_cycles)},misaligned={marker_alignment_errors}"),

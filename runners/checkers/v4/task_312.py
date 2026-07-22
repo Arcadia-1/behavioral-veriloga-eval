@@ -1,10 +1,10 @@
 """Task-specific checker for canonical v4 DUT 312."""
 from __future__ import annotations
 
+import math
+
 from ..api import Checker
-from ..common.v4_topup import (
-    _v4_topup_logic_high,
-)
+from .stimulus_relative import crossings, require_signals, sample
 
 
 PROPERTY_IDS = (
@@ -16,11 +16,46 @@ PROPERTY_IDS = (
     "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE",
 )
 
+TICK_S = 500e-12
+TRANSITION_S = 200e-12
+PROBE_DELAY_S = TRANSITION_S + 50e-12
+TIME_EPS_S = 1e-15
+VTH = 0.45
+VCM = 0.45
+SKEW_LIMIT = 40e-3
+
+
+def _sample(rows: list[dict[str, float]], signal: str, time_s: float) -> float:
+    value = sample(rows, signal, time_s)
+    assert value is not None
+    return float(value)
+
 
 def check_v4_312_interleaved_adc_skew_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    if not rows:
-        return False, "v4_1010 empty_trace"
-    sa = sb = 0.45
+    missing = require_signals(
+        rows,
+        {
+            "time",
+            "vin_a",
+            "vin_b",
+            "clk_a",
+            "clk_b",
+            "rst",
+            "enable",
+            "skew_metric",
+            "magnitude_metric",
+            "alarm",
+        },
+        PROPERTY_IDS[0],
+    )
+    if missing:
+        return False, missing
+
+    clock_events = sorted(
+        [(time_s, "a") for time_s in crossings(rows, "clk_a", threshold=VTH, direction="rising")]
+        + [(time_s, "b") for time_s in crossings(rows, "clk_b", threshold=VTH, direction="rising")]
+    )
+    sa = sb = VCM
     ready_a = ready_b = False
     consecutive = 0
     checked = skew_errors = mag_errors = alarm_errors = 0
@@ -29,69 +64,86 @@ def check_v4_312_interleaved_adc_skew_monitor(rows: list[dict[str, float]]) -> t
     first_high_alarm_low_seen = False
     first_mismatch = ""
     saw_active = False
-    previous = rows[0]
-    for index, row in enumerate(rows[1:], start=1):
-        clk_a_rise = (not _v4_topup_logic_high(previous, "clk_a")) and _v4_topup_logic_high(row, "clk_a")
-        clk_b_rise = (not _v4_topup_logic_high(previous, "clk_b")) and _v4_topup_logic_high(row, "clk_b")
-        if clk_a_rise or clk_b_rise:
-            if _v4_topup_logic_high(row, "rst") or not _v4_topup_logic_high(row, "enable"):
-                sa = sb = 0.45
+    event_index = 0
+    tick_index = max(0, math.ceil((float(rows[0]["time"]) - TIME_EPS_S) / TICK_S))
+    stop_time = float(rows[-1]["time"])
+
+    while True:
+        tick_time = tick_index * TICK_S
+        probe_time = tick_time + PROBE_DELAY_S
+        if probe_time > stop_time + TIME_EPS_S:
+            break
+
+        while (
+            event_index < len(clock_events)
+            and clock_events[event_index][0] <= tick_time + TIME_EPS_S
+        ):
+            event_time, channel = clock_events[event_index]
+            rst_at_edge = _sample(rows, "rst", event_time) > VTH
+            enabled_at_edge = _sample(rows, "enable", event_time) > VTH
+            if rst_at_edge or not enabled_at_edge:
+                sa = sb = VCM
                 ready_a = ready_b = False
                 consecutive = 0
             else:
-                saw_active = True
-                if clk_a_rise:
-                    sa = float(row["vin_a"])
+                if channel == "a":
+                    sa = _sample(rows, "vin_a", event_time)
                     ready_a = True
-                if clk_b_rise:
-                    sb = float(row["vin_b"])
+                else:
+                    sb = _sample(rows, "vin_b", event_time)
                     ready_b = True
-        previous = row
-        if index % 8 != 0:
-            continue
-        if _v4_topup_logic_high(row, "rst"):
+            event_index += 1
+
+        rst = _sample(rows, "rst", tick_time) > VTH
+        enabled = _sample(rows, "enable", tick_time) > VTH
+        observed_skew = _sample(rows, "skew_metric", probe_time)
+        observed_mag = _sample(rows, "magnitude_metric", probe_time)
+        observed_alarm = _sample(rows, "alarm", probe_time) > VTH
+
+        if rst:
             cleared = (
-                row["skew_metric"] < 0.1 and row["magnitude_metric"] < 0.1 and row["alarm"] < 0.1
+                observed_skew < 0.1 and observed_mag < 0.1 and not observed_alarm
             )
             if saw_active:
                 late_reset_clear = late_reset_clear or cleared
                 late_reset_violation = late_reset_violation or not cleared
             else:
                 reset_clear = reset_clear or cleared
-            # The public stimulus asserts reset again after valid traffic.  A
-            # reset implementation that only clears at initial_step must not
-            # pass by relying on the first reset window.
+            consecutive = 0
+            tick_index += 1
             continue
-        if not _v4_topup_logic_high(row, "enable"):
+        if not enabled:
             disabled_clear = disabled_clear or (
-                row["skew_metric"] < 0.1 and row["magnitude_metric"] < 0.1 and row["alarm"] < 0.1
+                observed_skew < 0.1 and observed_mag < 0.1 and not observed_alarm
             )
             consecutive = 0
+            tick_index += 1
             continue
         if not (ready_a and ready_b):
+            consecutive = 0
+            tick_index += 1
             continue
+
+        saw_active = True
         expected_skew = abs(sa - sb)
-        expected_mag = 0.5 * (abs(sa - 0.45) + abs(sb - 0.45))
-        if expected_skew > 0.04:
+        expected_mag = 0.5 * (abs(sa - VCM) + abs(sb - VCM))
+        if expected_skew > SKEW_LIMIT:
             consecutive += 1
             high_skew_seen = True
         else:
             consecutive = 0
             low_skew_seen = True
         expected_alarm = consecutive >= 2
-        if expected_skew > 0.04 and consecutive == 1 and row["alarm"] < 0.35:
+        if expected_skew > SKEW_LIMIT and consecutive == 1 and not observed_alarm:
             first_high_alarm_low_seen = True
         checked += 1
-        alarm_seen = alarm_seen or row["alarm"] > 0.45
-        observed_skew = float(row["skew_metric"])
-        observed_mag = float(row["magnitude_metric"])
-        observed_alarm = float(row["alarm"]) > 0.45
+        alarm_seen = alarm_seen or observed_alarm
         if abs(observed_skew - expected_skew) > 0.08:
             skew_errors += 1
             if not first_mismatch:
                 first_mismatch = (
                     "P_DRIVE_SKEW_METRIC_WITH_THE_ABSOLUTE "
-                    f"signal=skew_metric time={float(row['time']):.6e} "
+                    f"signal=skew_metric time={probe_time:.6e} "
                     f"expected={expected_skew:.6g} observed={observed_skew:.6g} tolerance=0.08"
                 )
         if abs(observed_mag - expected_mag) > 0.08:
@@ -99,7 +151,7 @@ def check_v4_312_interleaved_adc_skew_monitor(rows: list[dict[str, float]]) -> t
             if not first_mismatch:
                 first_mismatch = (
                     "P_DRIVE_SKEW_METRIC_WITH_THE_ABSOLUTE "
-                    f"signal=magnitude_metric time={float(row['time']):.6e} "
+                    f"signal=magnitude_metric time={probe_time:.6e} "
                     f"expected={expected_mag:.6g} observed={observed_mag:.6g} tolerance=0.08"
                 )
         if observed_alarm != expected_alarm:
@@ -107,9 +159,10 @@ def check_v4_312_interleaved_adc_skew_monitor(rows: list[dict[str, float]]) -> t
             if not first_mismatch:
                 first_mismatch = (
                     "P_ASSERT_ALARM_WHEN_SKEW_METRIC_EXCEEDS "
-                    f"signal=alarm time={float(row['time']):.6e} "
+                    f"signal=alarm time={probe_time:.6e} "
                     f"expected={int(expected_alarm)} observed={int(observed_alarm)} tolerance=logic"
                 )
+        tick_index += 1
     ok = (
         checked >= 20
         and reset_clear
@@ -120,9 +173,9 @@ def check_v4_312_interleaved_adc_skew_monitor(rows: list[dict[str, float]]) -> t
         and low_skew_seen
         and alarm_seen
         and first_high_alarm_low_seen
-        and skew_errors <= max(14, checked // 8)
-        and mag_errors <= max(5, checked // 20)
-        and alarm_errors <= 14
+        and skew_errors == 0
+        and mag_errors == 0
+        and alarm_errors == 0
     )
     summary = (
         f"v4_312 checked={checked} reset_clear={reset_clear} late_reset_clear={late_reset_clear} "
