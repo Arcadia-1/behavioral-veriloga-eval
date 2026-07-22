@@ -69,7 +69,14 @@
     "correct_pass_count": 10,
     "mutation_kill_count": 50,
     "mutation_count": 50,
-    "warning_count": 0,
+    "runner_warning_count": 0,
+    "raw_spectre_warning_occurrence_count": 126,
+    "raw_spectre_warning_codes": {
+      "VACOMP-2435": 60,
+      "SPECTRE-592": 60,
+      "SFE-105": 6
+    },
+    "untriaged_warning_count": 0,
     "invalid_run_count": 0
   },
   "tasks": [
