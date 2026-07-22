@@ -184,15 +184,15 @@ def test_195_still_rejects_semantic_mutations_on_coarse_grid(mutation: str) -> N
     assert not passed
 
 
-def test_695_canonical_decks_cover_a_complete_16ns_frame() -> None:
+def test_695_canonical_decks_keep_the_source_12ns_contract() -> None:
     harness = json.loads(
         (TASK_695 / "evaluator/harness_spec.json").read_text(encoding="utf-8")
     )
-    assert harness["deck"]["analyses"] == ["tran tran stop=16.5n maxstep=20p"]
+    assert harness["deck"]["analyses"] == ["tran tran stop=12n maxstep=20p"]
 
     for deck_name in ("reference_tb.scs", "score_tb.scs"):
         deck = (TASK_695 / "evaluator" / deck_name).read_text(encoding="utf-8")
-        assert "tran tran stop=16.5n maxstep=20p" in deck
+        assert "tran tran stop=12n maxstep=20p" in deck
 
     evaluator = TASK_695 / "evaluator"
     harness_sha = hashlib.sha256(

@@ -19,7 +19,7 @@ analog begin
     @(cross(V(clks) - 0.45, -1)) clkcval=1;
     @(cross(V(dcomp)+V(dcompb)-0.45, -1)) if (V(clks)<0.45) clkcval=1;
     @(cross(V(dcomp)+V(dcompb)-0.45, +1)) begin
-        if (V(clks)<0.45) begin
+        if ((V(clks)<0.45) && (pointer<4)) begin
             dcmp = V(dcompb)>V(dcomp);
             if (V(test)<0.45) begin p[pointer]=dcmp; m[pointer]=1-dcmp; end
             else begin p[pointer]=dtest[pointer]; m[pointer]=1-dtest[pointer]; end

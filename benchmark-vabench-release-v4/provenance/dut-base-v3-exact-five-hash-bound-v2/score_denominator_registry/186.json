@@ -8,7 +8,7 @@
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_dout_mapping/certification.json",
         "certification_sha256": "ccdb1de0032f3a8d547cb3a2aa203f9075e47c91cdd7387c47c43be6d53bba18",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "687a3e7672c2163a2ce1a7b36518de047c4d349d02024cc94d19ecb39eb52164",
+        "mutation_bundle_sha256": "d50f8ff47890485b678fa21275169ade3a854196283fd6b2483c7f74757a7509",
         "mutation_id": "neg_004_wrong_dout_mapping",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_dout_mapping/certification.json",
         "trigger_condition": "Maps the previous p state to dout in the wrong bit order.",
@@ -20,7 +20,7 @@
         "certification_path": "evaluator/mutation_bundles/neg_003_no_test_override/certification.json",
         "certification_sha256": "d02b28b2b425bade79dcc886714f919c2377227799b60fa218789db92b87fc42",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "15cb1c36a31bbd9b4cf691a28082f50abf585fd3ea0adc003efae5be7136cd44",
+        "mutation_bundle_sha256": "066c771156de59e1c6156ca8bc15c357adf305b704a5c3d484e248911ac9d02f",
         "mutation_id": "neg_003_no_test_override",
         "source_catalog_certification_path": "negative_variants/neg_003_no_test_override/certification.json",
         "trigger_condition": "Drives the internal conversion clock output at half amplitude.",
@@ -33,7 +33,7 @@
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
         "certification_sha256": "d748573d9c178218d9b36f9183d29b4ff22b431a5703472a971aeb43b71c6209",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "3834ea23df19899b85846a824a1073930b7cb8e79a58a9427928569f5690eaf7",
+        "mutation_bundle_sha256": "eebe9c10c994394b28d975722b049a0cc7e6b2e97a07bb2b532b35baed99de29",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "SARFEND Logic 4b: scales the metric output, preserving the main path while failing measurement checks.",
@@ -45,7 +45,7 @@
         "certification_path": "evaluator/mutation_bundles/neg_002_inverted_comparator/certification.json",
         "certification_sha256": "ead7e86ff3fdcc8454678f664ea8bee519913b0ca151136db29b3666460dcf66",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "33b31f157e56e71bdde1eacd38510a32b77cfc1bea095f88a52e332722c9506f",
+        "mutation_bundle_sha256": "297acbb2cf2c0cf69f9de1c412107bc04f487e02698d3bddcb883a074ea5056a",
         "mutation_id": "neg_002_inverted_comparator",
         "source_catalog_certification_path": "negative_variants/neg_002_inverted_comparator/certification.json",
         "trigger_condition": "Uses dcompb>dcomp as the SAR comparator decision.",
@@ -69,10 +69,10 @@
     "bugfix_seed": "neg_004_wrong_dout_mapping",
     "canonical_dut_id": "186",
     "hashes": {
-      "mutation_catalog_sha256": "ecf8e89f0ae3a351f55a3e16a2bcf227459ccbd6c2fef0af43536bf8211b3164",
+      "mutation_catalog_sha256": "67655f9564344526b509405c926c7a4abef9d08607f961bbdd7a5af526a791a1",
       "score_deck_sha256": "025b147d082a73a2ab0cd6e59d28e08ad0a373d9627fd43a617330e98ddc7c68",
       "task_certification_sha256": "5d0f704232e998c94d736c588952b4ef1931a64095f0dad00d620f7e570bfa4e",
-      "task_record_sha256": "3c3c635dcda9218b048bcb3f7eb66f1e634b754fdb9c1ff3d6a9ed45d615f3bf"
+      "task_record_sha256": "946dbb56a80d2ab0452f59f2a63b8a42492b2c439c0f9fa39c03697fdec91045"
     },
     "release_dir": "186-sarfend-logic-4b"
   }
