@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_bisection_halving/certification.json",
-        "certification_sha256": "9fb17601ac648906d5e7794e1256e0d73a6f1d0f498a8e9381ac0f07059881b7",
+        "certification_sha256": "06603b12456dd22aebf751fcc1d86295c6a07511f69367493dbd87ca63772008",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "7ca0cc114d1e1ea5c690075edf7a6508fd8d3afd9845a08ef96958947e414c12",
+        "mutation_bundle_sha256": "895f44c3a48deba9c15b35778bc65ffc668670ca95ea5e0d18e1e1d7a7265739",
         "mutation_id": "neg_002_no_bisection_halving",
         "source_catalog_certification_path": "negative_variants/neg_002_no_bisection_halving/certification.json",
         "trigger_condition": "Uses full differential search amplitude instead of half-scale around common mode.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "2e47f3c27f7f440d39d6a2b2895b7ce21f51074b472473e45c164b192b37ffd3",
+        "certification_sha256": "976335311b5961d9dec1eefa4be35b9d5b9daa218fc172e5b81c66a8080747c5",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "680f1b88017391e85bf22dadd93a06f965bf7344fd5aa3cc17aad8b53f8257fc",
+        "mutation_bundle_sha256": "8e790bacacd71a2c3dfdfcd87ee59032b80658236d47522f45d8bfd446024a48",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_reference_advance/certification.json",
-        "certification_sha256": "05c0aa7b0be1e84daeb4ae9979ceaf570cd16f6b9d0d3efccd01f6725530cbc1",
+        "certification_sha256": "993ac2f0dd2afd6fa7ad432e8e1df0b03e1d00e1719c3ca26d20f9834e520b47",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "20e8900e565e9cbd36ff5b996cf416083019941eb11d6fbb761d354d3db60d19",
+        "mutation_bundle_sha256": "7ad1733827b7380ce78e5c39713edfeeabff69ce4d9ad764db0b5d78d1f8fed5",
         "mutation_id": "neg_004_no_reference_advance",
         "source_catalog_certification_path": "negative_variants/neg_004_no_reference_advance/certification.json",
         "trigger_condition": "Collapses the differential reference outputs to common mode.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_inverted_search_sign/certification.json",
-        "certification_sha256": "910af31d2d4aa4e2ca4dab8c32b7eb5a274e8f751b57971df27e21cf9d8e9808",
+        "certification_sha256": "c8e7baa7aba8bfd8200bf7f6adb7ee1233c1eb2e27fba027aaddc8c5ec6c4046",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "b0a2b0b8ef678a09511cb409d27c62abf6f6723f48553108b0736cd510beef80",
+        "mutation_bundle_sha256": "fd74cef6c2cf745288e13f60ff76f3dd19bc7a445e07cda699075eb60d671d4e",
         "mutation_id": "neg_003_inverted_search_sign",
         "source_catalog_certification_path": "negative_variants/neg_003_inverted_search_sign/certification.json",
         "trigger_condition": "Uses the opposite comparator polarity for both RDAC and offset search decisions.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "a7dafe1abb0de00abe72aad52e4cef90066a71ebccc1f70703575170c966cdfa",
+        "certification_sha256": "07c49d19b0abadaaaba9991a45ce2797d615aabbc7878af3fed38422334b6583",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "2fd72606d61d5efe447f93daf90d81df4a3dec89e0c070c27c8f8fd171ec61c7",
+        "mutation_bundle_sha256": "714822bbd206d08d22587df86437e57ba2d2bffaa51885b7c5a744757cb9486d",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Offset RDAC Search Flow: scales the metric output, preserving the main path while failing measurement checks.",
@@ -69,10 +69,10 @@
     "bugfix_seed": "neg_002_no_bisection_halving",
     "canonical_dut_id": "184",
     "hashes": {
-      "mutation_catalog_sha256": "ee6a2af9117ec67ce29b60dcac0e61bc06cf9a2bf7f998447cbaf4b5dae82fa3",
-      "score_deck_sha256": "20191c28a71979b278e026309bd277e52380e6b6509a7f5ade9d7fd643947635",
-      "task_certification_sha256": "39aa35f0ce5fc5d51e65955f9fa971c69a624b5d3031a771e32ac4716f966693",
-      "task_record_sha256": "12ab257605f25d9924b339393f35f9c0b475e1bb54ae34351093c3c2c863582b"
+      "mutation_catalog_sha256": "1d4d8cb9a07023646662a53e0c142bff19a45a31b1f881bdbed196827e195963",
+      "score_deck_sha256": "e46d54501f39811b43ba51a85f2ddfeae7034bbe3e774d5b08884fcd582f6cfd",
+      "task_certification_sha256": "5d5f38f76d5b45c3d985048a340063b0cc230319ec9d82f079a456a867c31b51",
+      "task_record_sha256": "63d14b8b9b33abf84a864c276cda38e2f49cebbefd81b9babbbcb32f284eed8c"
     },
     "release_dir": "184-offset-rdac-search-flow"
   }

@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_ALTERNATING_TEST_DAC_PHASES, P_GAIN_CONTROL_INITIAL_STATE satisfy the public contract; fault class scalar_monitor_scale_error is rejected",
-    "observed": "EVAS: dout10@0.290ns observed=0.378 expected=0.900 code=20 phase=1 dout11@0.290ns observed=0.378 expected=0.900 code=20 phase=1 dout12@0.290ns observed=0.378 expected=0.900 code=20 phase=1 gainctrl1@0.290ns observed=0.378 expected=0.900 code=20 phase=1 gainctrl3@0.290ns observed=0.378 expected=0.900 code=20 phase=1 gainctrl4@0.290ns observed=0.378 expected=0.900 code=20 phase=1 gainctrl6@0.290ns observed=0.378 expected=0.900 code=20 phase=1 dop@0.290ns observed=0.403 expected=0.960 code=20 phase=1",
+    "observed": "EVAS: initial_dout13@0.105ns observed=0.378 expected=0.900",
     "violated_property_ids": [
       "P_ALTERNATING_TEST_DAC_PHASES",
       "P_GAIN_CONTROL_INITIAL_STATE"
@@ -18,10 +18,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_194_pipe_adc_gain_control_loop",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "06d620060a5e6a5c573a7832c4f7489a218814a65395a108d5019fde14f09f02",
     "trace_row_count": 294
   },
   "family_id": "194",
@@ -37,6 +37,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

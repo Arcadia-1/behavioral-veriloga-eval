@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_stage1_threshold_shift/certification.json",
-        "certification_sha256": "1669fd36e921b665f11458064545fe3dd80004e1f04875e340fe2d136a5aa3e0",
+        "certification_sha256": "ae4528935b83c29fdf7da6e724d76097434cd6e1998608764051bdfc4d89c436",
         "fault_class": "decision_threshold_error",
-        "mutation_bundle_sha256": "0ee31135f864021712e3b61cf6edf78b2f30c41c2d692e29f8dcd4eb73d1303c",
+        "mutation_bundle_sha256": "a888a1842c31758ec8f1ce2dba60a51f56edc8e543609803d8ca8241a005254f",
         "mutation_id": "neg_001_stage1_threshold_shift",
         "source_catalog_certification_path": "negative_variants/neg_001_stage1_threshold_shift/certification.json",
         "trigger_condition": "vin lies near a quarter-scale boundary",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_residue_gain_low/certification.json",
-        "certification_sha256": "2431615d4db73cc7617e85fc9061654fd6e808cd1fb884297ec10184f973e0eb",
+        "certification_sha256": "ca57e0acbae811a39e31fac1a6df258b0615796015454000008be1f2c07c8f58",
         "fault_class": "residue_gain_error",
-        "mutation_bundle_sha256": "941d46c309f23b5d4133c287bc9ed7dd9c5c59bac98333e71322f24d6b4760ac",
+        "mutation_bundle_sha256": "e84a942bcb5fa7dfbe8bb2077855e40d307992ca63a553f21b8284d76e3e347f",
         "mutation_id": "neg_002_residue_gain_low",
         "source_catalog_certification_path": "negative_variants/neg_002_residue_gain_low/certification.json",
         "trigger_condition": "vin is away from a coarse boundary",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_stage2_threshold_shift/certification.json",
-        "certification_sha256": "3a1000f1f8d6a388d4ddb13ddcd5f2c72a32e48a02192737b86a5651ff93c75e",
+        "certification_sha256": "4a3ce9e8f54d82565eca77786d7101007fe1756716d0b5042f0b939d0d779141",
         "fault_class": "fine_quantizer_error",
-        "mutation_bundle_sha256": "1b12abf4704dadb9ad11bdabab10e27e320b6c9ddf60de44b4571229932ff859",
+        "mutation_bundle_sha256": "97b9f9b4052aad20e04f43078ec5486695f091bca34ed06f45aea13546ce547b",
         "mutation_id": "neg_003_stage2_threshold_shift",
         "source_catalog_certification_path": "negative_variants/neg_003_stage2_threshold_shift/certification.json",
         "trigger_condition": "residue lies near a fine boundary",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_coarse_alignment_weight/certification.json",
-        "certification_sha256": "bec1258e1abac565f99986dc5f4475a32153afd4b221a9dca8a5bf646305ff87",
+        "certification_sha256": "a78f91498b6cc83820893272815b109425f04a9e1a98738e03a8a2c5bd76048b",
         "fault_class": "code_alignment_error",
-        "mutation_bundle_sha256": "0813894a9e5a3f53e968b62a5580e0ed3929733f6566f6f99ee88d4bc57e4d0e",
+        "mutation_bundle_sha256": "29e2143d1673a3bd59b62bd2167e8946453e759b649868e908e430b43db99187",
         "mutation_id": "neg_004_coarse_alignment_weight",
         "source_catalog_certification_path": "negative_variants/neg_004_coarse_alignment_weight/certification.json",
         "trigger_condition": "coarse code is nonzero",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_valid_stuck_low/certification.json",
-        "certification_sha256": "714b026b987cea383c585ee42d68fa3f4a65be03226638200da187a569ca9f26",
+        "certification_sha256": "e85bd956628e324dd9b20a8e05a69a21162b5cdeadddd3403271dc15651601f6",
         "fault_class": "pipeline_valid_latency_error",
-        "mutation_bundle_sha256": "f2e56c50546ead4890d34a6bcaf86825d87cb24940f106c41a087bf655a84de4",
+        "mutation_bundle_sha256": "5a975ede8a5833d88c8687d0317244b135af998087b444514c8debb0ace34801",
         "mutation_id": "neg_005_valid_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_005_valid_stuck_low/certification.json",
         "trigger_condition": "completed stage-2 result should assert valid_o with the aligned code",
@@ -71,9 +71,9 @@
     "canonical_dut_id": "343",
     "hashes": {
       "mutation_catalog_sha256": "65cac52ff1fcc455b7e0a57344648fdbe8670e30ae9b6afd0fbde30036d7b8b8",
-      "score_deck_sha256": "af04b5988f86b67ef89fd64ad1187ac59250fe89521d48d9d74da618b0b15ef2",
-      "task_certification_sha256": "aafcd78a457502af7d0c9f0e4cea088e06b97c878318e7551f76d084a8363672",
-      "task_record_sha256": "75f853719a9c2bc30c2889eff9dec800ef38cde23e9e86d96497e0145c27cdb4"
+      "score_deck_sha256": "92770c776a8505a5900fd65b2ec6d25e986fda0eba4a54b40f1b132a9c9a3814",
+      "task_certification_sha256": "453dc6c8736b5c0f610d39782cd4f3cbbc620df2a4f0412e81af58cb8828534a",
+      "task_record_sha256": "0264cd7d1ee923ec99fcc362d23953337553f2dbc9bfe6e375f7b196723959e7"
     },
     "release_dir": "343-pipeline-adc-two-stage"
   }

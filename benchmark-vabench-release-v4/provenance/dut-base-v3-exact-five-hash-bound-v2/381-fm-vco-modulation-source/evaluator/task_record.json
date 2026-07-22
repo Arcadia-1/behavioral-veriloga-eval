@@ -3,28 +3,28 @@
   "checker_task_id": "v4_381_fm_vco_modulation_source",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "1be4eaf5e582a8843c4abf159127ef5c20565274eacff345d443e80c4b024a0f",
+    "certification.json": "0db9625c1de7a23fde926359c8d2371e71a0bd3d4c833c9bb4a0e554b0a7c4d1",
     "checker_profile.json": "27d94a40f7d4383b4acd98ba3c5548ad1302777f1df3d419f067db7a808714e8",
-    "derivation_manifest.json": "4641ded441f2ab9f73162e466b69fa710cd3fe6779019077ca761943b5ece314",
-    "family_spec.json": "f2451f43e5f762418f1748235736da9e22edfd3b6fc5a778dfb1da6eea61e2f6",
-    "harness_spec.json": "23d66bd20df43f31c21163b017b989736799e3e829bdabffd279d25e1da7603e",
-    "mutation_catalog.json": "981bdc0c5a8da8db144983274dd5820454c4962eef1f2d17eaa51bd26f91926b",
-    "profiles/feedback.json": "792406ecb6a11044e4febebb99ae281a1ecd84d52070b508ce5754fa7e10f249",
-    "profiles/score.json": "f1f1078f1d221567091d06eb957ae5304c61fc948c4c8dad862a72bf6e7cdc9f",
-    "score_tb.scs": "2e7fe1f78c564acb09f8bbfc2fc4234ed2b4876a1fd8069b672e24aa48a4ca9c",
+    "derivation_manifest.json": "3fb85871c7086be98f71d9fa7ac1e8d1b73d899604dedb1f128c79a50727adf9",
+    "family_spec.json": "1e6be83d26aa0132656ee27fcbd176477c2d5a0133a8b5d06f7122b9635e511e",
+    "harness_spec.json": "7f5b7782983ce6efef29f7b240ec59a175ade3f7577b0ebc32f651055c39efda",
+    "mutation_catalog.json": "6c445dafea8984bcc3da7cc833d8b75128a61a07984c36144fb95ebc7477a833",
+    "profiles/feedback.json": "8b1a528c42bdda9dc6b3adb698dbeb14e0ab446d5ad4018c72b456581a045236",
+    "profiles/score.json": "cb79342e887d8fe2725db78d72a5cf292c4d6c5078f3201dfe0f7f9211b8527d",
+    "score_tb.scs": "fc553eed4b56bd0f5c0a95702929968b0732af1a6a4d4d25c2a8cc0962aede0a",
     "solution_tree": "8df65fc0f0c8942566c0d7dfda1d8dc634c76e53520e6ad7e88c183a13926b47",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
   "form": "dut",
   "public_hashes": {
-    "feedback_tb.scs": "f04f89080b97daf723dbf5e0efc7d4c7d7fe693541cd1515f1b2ba72652a7570",
-    "instruction.md": "9d81fda2f35dba786f83e18d949605ea427c2751961ee71db74392d74949f439",
-    "public_contract.json": "574ecd1f720d4a9592a7ef1a2c350b4b950c77677c6f082595da947108bebe50"
+    "feedback_tb.scs": "2ca7571011fa348b83a2bd20c20931b7fec6e19491dac21b7406a199f4a77c87",
+    "instruction.md": "b10cfc7943986c741f39f005554b97913648139d3cf5fc9bb40bef5911223604",
+    "public_contract.json": "55921bf197ed9625e104caef94d95fe700c9f3d952416eeb16f736e831436851"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "1be4eaf5e582a8843c4abf159127ef5c20565274eacff345d443e80c4b024a0f"
+    "sha256": "0db9625c1de7a23fde926359c8d2371e71a0bd3d4c833c9bb4a0e554b0a7c4d1"
   },
   "release_dir": "381-fm-vco-modulation-source",
   "schema_version": "v4-canonical-dut-release-task-v1",

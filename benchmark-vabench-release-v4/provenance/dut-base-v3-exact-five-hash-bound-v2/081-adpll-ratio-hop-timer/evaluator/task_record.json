@@ -3,28 +3,28 @@
   "checker_task_id": "v4_081_adpll_ratio_hop_timer",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "d6a7cad4776441bde2c0091c7fc2bc39d3482a10a8df929bbf0f3752744ff986",
-    "checker_profile.json": "c47ba58602b06f5e29b62ef6fd17d36891720113a24327c94eff94233c595c2b",
+    "certification.json": "a3a5b0a0d45d54a15c0342c392214c4aa23a9fb5a4a704fea1fe3851ce7c952f",
+    "checker_profile.json": "baba4219541c98569d638f6f57d26c3bf5b91f4924b269439bf77c04cab8cdc5",
     "derivation_manifest.json": "05d763097432d15a3273b1de261c4e6189b1b73af20998620be689b277310e20",
-    "family_spec.json": "d07fa8463ddeece6bc4c013e0c2b99f84de80476d922533781f8c48ca72c0df0",
-    "harness_spec.json": "ecfc1c66ac901d317136ca36e7498d7affb8b88f60072a6d45ede81e9b10737e",
+    "family_spec.json": "116e910c6836a1300aa4c5a7d0d73766fbd49996519b600c6fbb078f76301e0b",
+    "harness_spec.json": "5e16f189b30dcaa744be7fc7f2fad22b6373dc1f91fedfcef2cd725b035b9366",
     "mutation_catalog.json": "421ddb2bd55e49180c27ecf7970d6f50662754ae72d4e2ca388bcbe86ba587c2",
-    "profiles/feedback.json": "cb9a7d0b8b2d5c15eb924480db89a59e214ce7640c54eea29bf13aa270df98aa",
-    "profiles/score.json": "9d1c99401bedeca80025d8e41c6c419be14bdf62e75c4d726661da0e25346e58",
-    "score_tb.scs": "05e3cb1d2c284a1ee97719ab15a152c898e924408d90bc69d11461b685c22917",
+    "profiles/feedback.json": "efe6aee15681b9389fce376cb8d7ba2c742e0fb07f9da52103318f068abe6b3c",
+    "profiles/score.json": "b9d62a903461bd887b09176b8eef6bd5c94cc9dd403a7185bffe94798371cf46",
+    "score_tb.scs": "80db1c86ddf3234a9b1e11dbfc95f9a39322b017f6f1f9f6c90a44aed8f8c6d1",
     "solution_tree": "bb8c3ba2c3efccf044ab601c2c0fd9797f2bf7ef98b093248c17f462776780c9",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
   "form": "dut",
   "public_hashes": {
-    "feedback_tb.scs": "cd64980eabc90e08fe1bc506dc4d22db646e4a04d14d8d47b43a90244d58089d",
-    "instruction.md": "2a22640529d66b801db51b0a509fedf36ebd69d1662918d4de729782c29b94e3",
+    "feedback_tb.scs": "f1efae13619c87145ff2dbda59a6836d5aaeb2f1ccc2e9de4e1a85a1c56ed7ed",
+    "instruction.md": "f98e51aeb731661c52c09c04d84a24dc96b63d831502573f8680de19c826ae40",
     "public_contract.json": "16f2ea3a90730c93763696d0f903dd7bf8dd9678ae37a7ce53a39aa92a01f74b"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "d6a7cad4776441bde2c0091c7fc2bc39d3482a10a8df929bbf0f3752744ff986"
+    "sha256": "a3a5b0a0d45d54a15c0342c392214c4aa23a9fb5a4a704fea1fe3851ce7c952f"
   },
   "release_dir": "081-adpll-ratio-hop-timer",
   "schema_version": "v4-canonical-dut-release-task-v1",

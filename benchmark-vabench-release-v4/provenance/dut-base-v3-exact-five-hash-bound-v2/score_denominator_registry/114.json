@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "2c5a4b820ea1535b9d583a067f8a514bda3ee1d37a9f3f40412b0721f2a647af",
+        "certification_sha256": "70fa791f0714f4b27bba361a0114a6e74f4dfb8465b9a427c73b3bf8d6f86761",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "fb4515e5dd8843da1a8c6094dab36bbfc916c888c7e4f26d860636dbbf12d5f4",
+        "mutation_bundle_sha256": "87eb1e93fb5bb5515aa720d926eb7cfd68a9153676785c182ddd6b6475baef7a",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_rising_only_select/certification.json",
-        "certification_sha256": "44a6270792c76bf52fb2b03ddf1f537540c657a3d96aae3833d7731a153735cc",
+        "certification_sha256": "146cd1e2c22f0fa517299610b838d5315c7f575ef6b96f5a7e7979da49ca0630",
         "fault_class": "fault_003_rising_only_select",
-        "mutation_bundle_sha256": "ca0d830420c78b3a3ef4f640dfb49179a0fa16717c04ea01f6fa6bb3451c5c54",
+        "mutation_bundle_sha256": "acc15f43eab2eb7f1c839e4c8caa9a6e6e5c97df19d8fdf5db8656d274f76783",
         "mutation_id": "neg_003_rising_only_select",
         "source_catalog_certification_path": "negative_variants/neg_003_rising_only_select/certification.json",
         "trigger_condition": "Never updates selection on falling threshold crossings.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_average_instead_of_select/certification.json",
-        "certification_sha256": "b235c11bbba2fedcf8d6bca4d2e3ac487d9a556937f8c082767169df4c5e325d",
+        "certification_sha256": "849afec066c8ff47dfe674054b2e2ed90e0e689818290bcff7e416a622f8080e",
         "fault_class": "fault_004_average_instead_of_select",
-        "mutation_bundle_sha256": "319d23903bada29eb679a54a7c0357e31d6fe4dd232124859a33bff56280c847",
+        "mutation_bundle_sha256": "ff9e52c2ef3eb15231e1f00b9d1ff0331adc3112ec37e13aeaed7f8bf03afb41",
         "mutation_id": "neg_004_average_instead_of_select",
         "source_catalog_certification_path": "negative_variants/neg_004_average_instead_of_select/certification.json",
         "trigger_condition": "Averages both inputs instead of selecting one.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "d3997eca524b3fe20b7a03cfaa57ca3f6d1b218bed3980179e10ac1e72909a4e",
+        "certification_sha256": "e9434de88ee21dd3ecb2e76200573ad44499e4d01cba50ae1c3651aae6115ffd",
         "fault_class": "fault_005_metric_scale_low",
-        "mutation_bundle_sha256": "7767c96ee7db949bc47517f90ffbc6ba736e24bc1da9dac0301681f6d9e61a88",
+        "mutation_bundle_sha256": "87ed09e85c95c40749ca3b41f3d3d1457b3e9635d63cb1333e6c66eeb66be0f6",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Analog Mux Threshold: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_swapped_mux_inputs/certification.json",
-        "certification_sha256": "701a56298dea6c5178be5233a9ff9b0b65d7af3a82bc8db5ff0b8bbe9ab2bd4d",
+        "certification_sha256": "9047d4b3417fc22898a7ac7be736d0b4652c453ea2d57beaa83136d4bb768cae",
         "fault_class": "fault_002_swapped_mux_inputs",
-        "mutation_bundle_sha256": "250d67aaa6834bd861e311dc26dc365290b52ea801fd67991fa4f74aa653185f",
+        "mutation_bundle_sha256": "4ff066b24b959179eb8f37514095d44f3ddd8599fa0e9e5a144f0170bd157a17",
         "mutation_id": "neg_002_swapped_mux_inputs",
         "source_catalog_certification_path": "negative_variants/neg_002_swapped_mux_inputs/certification.json",
         "trigger_condition": "Selects the opposite mux input.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "19bde8d36ffa73ea91f81236d9205174eb546eb79e8329b7e37603ddb0de0a76",
       "score_deck_sha256": "608e4f8c442c72503667f20ab2045ac804cc3d05eef3fb85076095388027df1b",
-      "task_certification_sha256": "045a4d40830d3191254f94ee7d8c9c8ee47ca1bfc20532118425b83a8d460039",
-      "task_record_sha256": "1074bb2c5d9b58f7d43df2ac224018bd858833f18793762cb44e4714d8d2ff0d"
+      "task_certification_sha256": "6ee870b43cc0f9248e20fb0055373fc4406916f69855acb744ea41abe25e786b",
+      "task_record_sha256": "634f178c0ef8039ab81f193455dde2caffd000b28574dcff26570e417e4956e5"
     },
     "release_dir": "114-analog-mux-threshold"
   }

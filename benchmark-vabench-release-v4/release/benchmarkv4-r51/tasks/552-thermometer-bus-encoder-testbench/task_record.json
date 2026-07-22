@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "052-thermometer-bus-encoder",
+  "checker_task_id": "v4_052_thermometer_bus_encoder",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "e9a2949991b0f66a5c1650dcbdc9a9af97d57cc67e7658120777690e636d0236",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "123b539c9a99d5c5f49f0b22412f4fdd80b771a6818018586e2f702b83c52ff2",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "052",
+  "family_spec_sha256": "18add0d9bb52d1b9aba2e435cb1d0a204657718c6a18c6850fdc6070786acf3f",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "cb4f9750eca91be2052b53d5dbfbcd213e6bf892e96286df6e0c4bf668db9336",
+  "public_contract": "tasks/552-thermometer-bus-encoder-testbench/public_contract.json",
+  "public_contract_sha256": "85925cb5b2532097fa3de38dc25fe1b42ada02fe4642ffa7aadbfd34efb85f7c",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/552-thermometer-bus-encoder-testbench",
+  "task_id": "v4-552"
+}

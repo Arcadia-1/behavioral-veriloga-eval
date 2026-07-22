@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "7131d59c67b48b249b87dda997b771e14f25f0147c768c302fda504a69b12082",
+        "certification_sha256": "f65b59227c08d24311129b6e24e41d4d8e00a99a5d38f906196dcd8751a518cd",
         "fault_class": "zero_output_stub_fails_the_baseline_plus_noise_source_contract",
-        "mutation_bundle_sha256": "c2b663e9ecc85df7cfeeee9dd9361bc6eaf142e833f385b0562b23a845fe7a37",
+        "mutation_bundle_sha256": "5a87163527691b529281c7e04b6b72908915e7c30210a5741487c4052f5e1d3e",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "stimulus exercises Zero output stub; fails the baseline-plus-noise source contract. against the public observable contract",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_too_large_noise/certification.json",
-        "certification_sha256": "4243ac773d69d8067039f4954f35490f5e9c1c5c1bf06cb3a84a0a574039d938",
+        "certification_sha256": "a27d89f8103d1aa1604f720a403e2476c95d372a0b176f3259739ce5a575dcf5",
         "fault_class": "adds_sampled_perturbation_with_far_too_much_variance",
-        "mutation_bundle_sha256": "3f74b389f3b7826b8ac40994783714c545326520590a55de533c30104be06ff1",
+        "mutation_bundle_sha256": "2a17be6a6b242fa2f521c7c70a6a800143298d64baf65f7a2a21b0d1df2e922b",
         "mutation_id": "neg_003_too_large_noise",
         "source_catalog_certification_path": "negative_variants/neg_003_too_large_noise/certification.json",
         "trigger_condition": "stimulus exercises Adds sampled perturbation with far too much variance. against the public observable contract",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_biased_noise/certification.json",
-        "certification_sha256": "cec8e6805bad8899582c34bfe57b6f90444046a6d85a46aa11c6ba2d4bd05a94",
+        "certification_sha256": "fec8862d914148e9371f254be918ee70819ac623c9412ca2cab81274104bf695",
         "fault_class": "adds_sampled_perturbation_with_a_dc_bias_instead_of_zero_mean",
-        "mutation_bundle_sha256": "dcaf4f5a432a5918b0105fdcb7227a626f8de8760e5d72754e6343f624503569",
+        "mutation_bundle_sha256": "def2a9ccd3df4ac8dc42f02e38c5dff464ddcd5e553f2de857eb45f89c0c3b62",
         "mutation_id": "neg_004_biased_noise",
         "source_catalog_certification_path": "negative_variants/neg_004_biased_noise/certification.json",
         "trigger_condition": "stimulus exercises Adds sampled perturbation with a DC bias instead of zero mean. against the public observable contract",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "bc00211822eb5c526d53cb179a6a41d67bbfb81f055f8ef4778b8632a4959c3d",
+        "certification_sha256": "6cd4a16f1f7a40fd243169da84e464444bc2126b5a9bdb43050a30daa90142a0",
         "fault_class": "scales_the_generated_output_amplitude_preserving_the_sample_timing_while_violati",
-        "mutation_bundle_sha256": "bedcf66f7465498e26c19a54832ab259877c96ac3107fbd02ad2c0b673a2609c",
+        "mutation_bundle_sha256": "855ce9b136566694acb83876fc0693c17cae9ccd94e94faa8aecbd5638cf9dbe",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "stimulus exercises Scales the generated output amplitude, preserving the sample timing while violating the dither-source amplitude contract. against the public observable contract",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_passthrough/certification.json",
-        "certification_sha256": "35c04702c8b7c3acfa00a1e89774827d62bb4ba3e96aa7c0a8b8da1099ea654f",
+        "certification_sha256": "918e52d0b118d888cf3ff98e0e7bb5f85e5d6ae892eb024d49a4b653d414f22f",
         "fault_class": "passes_the_input_through_with_no_sampled_perturbation",
-        "mutation_bundle_sha256": "420c2b3d67379f12e6b528935a97392dcd8dedf17947bc881c8a037fcdef86d9",
+        "mutation_bundle_sha256": "6d93163f78517e6425f8f7daa4a995861c9e7a67fe09714643ca428c7ebb49f4",
         "mutation_id": "neg_002_passthrough",
         "source_catalog_certification_path": "negative_variants/neg_002_passthrough/certification.json",
         "trigger_condition": "stimulus exercises Passes the input through with no sampled perturbation. against the public observable contract",
@@ -69,9 +69,9 @@
     "canonical_dut_id": "077",
     "hashes": {
       "mutation_catalog_sha256": "dd2f0aca151b249dffbf81a6d7ddad1b48c92f683331aa632c32ba3b8a10be1d",
-      "score_deck_sha256": "e8a4928fc7fbae5183e9cf5f74c18f6bb1cc16ac5da64d9a1771b08c0ac0e459",
-      "task_certification_sha256": "f9852a204370a79229082fd986f6d668f2c9b84031510dd1319ae4cbb16098db",
-      "task_record_sha256": "91ff42428f8acee5088349e43c24668f5c9aabeea93088b292fa40defd2d7361"
+      "score_deck_sha256": "af5ff3cdd14d9f3b5799f2befbb98ed86b4b27707986dae858fdd137b84c337d",
+      "task_certification_sha256": "a77830c8ebe213b1765b0ae90c746206058c447b708acb539bb74e4041f27b91",
+      "task_record_sha256": "6e37f1f932cf30229fe25ad92ef438990e3c79c3a560f1cd15d249e89f598c0b"
     },
     "release_dir": "077-dither-noise-like-deterministic-source"
   }

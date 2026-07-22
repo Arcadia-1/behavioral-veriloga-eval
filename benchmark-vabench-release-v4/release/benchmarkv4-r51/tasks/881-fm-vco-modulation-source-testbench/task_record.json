@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "381-fm-vco-modulation-source",
+  "checker_task_id": "v4_381_fm_vco_modulation_source",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "c7fc826020cd9d59b44d7b7e07fab62f5b933550673ef22f93828a38f2a4bd59",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "c7cf04e1792fc8ba7c1e1a6f64a07ab860dc57ad47708b3609f37e33774862fa",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "381",
+  "family_spec_sha256": "1e6be83d26aa0132656ee27fcbd176477c2d5a0133a8b5d06f7122b9635e511e",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "cdccbf0cdfd9d92c36dbe741fe37322fd3b78d3a433bde153cd4e979f76ab1b0",
+  "public_contract": "tasks/881-fm-vco-modulation-source-testbench/public_contract.json",
+  "public_contract_sha256": "97a5439d47a52a77b0d3cc003eba2f3c28f6b4a817154e677183816e59dbb191",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/881-fm-vco-modulation-source-testbench",
+  "task_id": "v4-881"
+}

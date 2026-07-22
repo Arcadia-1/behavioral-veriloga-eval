@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "87247858a6fc1a92c4ab81bab9d1987bcd13d1bc3254fd83d529ce111c269aa2",
+        "certification_sha256": "956827d809d6c0bc0d52a5917eaf8487e92ca60ffe95b1518688223dd4a12f40",
         "fault_class": "no_clocks",
-        "mutation_bundle_sha256": "c74ac65b8dc267b80cfa2dc391d820c5afe34d3f1efe02ceb4a3785b2e0e8259",
+        "mutation_bundle_sha256": "0423d4c713dde6f6b2501f653fe67ef85edb4bf9d631a3adc21dd94c5cdc6d53",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "stimulus exercises no clocks against the public observable contract",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_90/certification.json",
-        "certification_sha256": "a5e6c05c8c1a1f7c6a6e555ed69266a65c943c55632e30ee4e06bd651277ae22",
+        "certification_sha256": "7176d8e52d22cc34b6f5280efd11362aeeaacb582fbae954a16b5e438abd9710",
         "fault_class": "wrong_quarter_phase",
-        "mutation_bundle_sha256": "673a11eb6266cfd743bbabdcfb0921a2ae7fd607d25a542d6d460978ee7b1e98",
+        "mutation_bundle_sha256": "0a5639cd048764329296965e0c11739d0701909318a2c5d1beeaf7a88e08acac",
         "mutation_id": "neg_003_wrong_90",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_90/certification.json",
         "trigger_condition": "stimulus exercises wrong quarter phase against the public observable contract",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_period/certification.json",
-        "certification_sha256": "f2c6f8a645a97e0d9b368c07dd3460e806ea39db5fc82169ee472cbdf003aefe",
+        "certification_sha256": "f6d966ee211deefd70e184fd8fc3cfa365076b11710b2638a37a154e90d4ad04",
         "fault_class": "uses_25ns_period",
-        "mutation_bundle_sha256": "05fa9a39a787bdc494d82fd8a93e3e2444b24761ffa898082fece1e6a709ff39",
+        "mutation_bundle_sha256": "4280d69e4929cb1e9124a3b8c71c1349587cfbc453b4c7f431bb2b822c355739",
         "mutation_id": "neg_004_wrong_period",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_period/certification.json",
         "trigger_condition": "stimulus exercises uses 25ns period against the public observable contract",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_inverted_180/certification.json",
-        "certification_sha256": "33c81384d11b718ae79e7a9aa3fefc65eca852db70227fdaa8296b4c23ef0c3f",
+        "certification_sha256": "ae94f1708104d3020663fae7bc22d608607ae7b326a4e068fd29034f7723f0de",
         "fault_class": "inverts_clk180",
-        "mutation_bundle_sha256": "5937db3093ce53e5eee69605bee0503713b8238048f6ff0fc4ddd6093a68bb4c",
+        "mutation_bundle_sha256": "220506c65cbb9ebec18989f54172938176ee59d399a58278fb700d57a07ce160",
         "mutation_id": "neg_005_inverted_180",
         "source_catalog_certification_path": "negative_variants/neg_005_inverted_180/certification.json",
         "trigger_condition": "stimulus exercises inverts clk180 against the public observable contract",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_same_phase/certification.json",
-        "certification_sha256": "8df9157822247e968ca3201d4bd161462fc786127575a2ba61246625961c7729",
+        "certification_sha256": "c35d9bee721865ab24c0f3bb31d5d0a18cc5fa5d52e02d81b93a18256695a792",
         "fault_class": "all_phases_equal",
-        "mutation_bundle_sha256": "4ae5acb2e9d43a1e61074408cbc58b4578bec22604d41a9434d216de25bfefbd",
+        "mutation_bundle_sha256": "f2e13a040067b9433e786e23f9e8bd92a23c7ae75c7e706b405fdee6ded4d051",
         "mutation_id": "neg_002_same_phase",
         "source_catalog_certification_path": "negative_variants/neg_002_same_phase/certification.json",
         "trigger_condition": "stimulus exercises all phases equal against the public observable contract",
@@ -69,9 +69,9 @@
     "canonical_dut_id": "068",
     "hashes": {
       "mutation_catalog_sha256": "a481264bb37cf3217549b9872449bd87eddaea053f789ec55e43ca24b5f2ca99",
-      "score_deck_sha256": "acc3efb3bed54a1a4f4da8e13076798c90dd97d3d696369337aa1ae457b783e6",
-      "task_certification_sha256": "496f05685180293f68b259e93c7890298f9ad9cbfd07fba1687eeb878d98ffa5",
-      "task_record_sha256": "c9624dd91eaff51833739879e99bafb1c9064006aa849680e5f920b1078c2a9d"
+      "score_deck_sha256": "a9a0fbdc013614f4a4d0a0f80aff235adb01851156d413096fe818d91909bc1f",
+      "task_certification_sha256": "9841e196495f98d785fafdd45fd45ca7f8216833f11e500dd647defd23d76166",
+      "task_record_sha256": "5694ba114988c5ffc33ef03d84e77ad60d18fe737d2de8bb3af2f8adf66036c5"
     },
     "release_dir": "068-multiphase-clock-generator-4ph"
   }

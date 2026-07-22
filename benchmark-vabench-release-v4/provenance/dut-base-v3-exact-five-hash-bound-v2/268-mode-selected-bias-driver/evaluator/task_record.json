@@ -3,28 +3,28 @@
   "checker_task_id": "v4_268_mode_selected_bias_driver",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "b4c6b49a6313ab69502fbebdc994a6fa6575cab637c6de4b79f281284c14f9f8",
+    "certification.json": "c05a3bb354423af9d73a246e3451ebbdb5fbc52969d375dc0e948c0932654cfa",
     "checker_profile.json": "5e67aed73287452c7ff8c715774edc44d47b033dd356411f14cd75815239ad5f",
     "derivation_manifest.json": "60fcf79011855f7bcf3fbabe48dfefce74b1b2086f10d4327d89eec0fa5c950a",
     "family_spec.json": "e6f0414c910eabdc107a2c05337e8b1d4aad373c35499c88ecb7b27300bf9b6d",
-    "harness_spec.json": "914c7d7ea2edc3207ee2bbc2c9322d8bff03a1a01f644cd6fd25a865020b84f2",
+    "harness_spec.json": "4ab70fb24a12c287359057028082c6a9a7177ae12e0c4ef916325197fe0a23d5",
     "mutation_catalog.json": "fffb51c77f1de4340b21cb4e8e9c4002581abdc7ce1aaf6914929b7fab4648fb",
-    "profiles/feedback.json": "35d97d068b1fc103584354cfdbe193e1ab7d6dc29b64303b8b618cd0dd16c75d",
-    "profiles/score.json": "02aeb16239ba1739a99bd5827f035ca8647bf3ba062db532f7a74040edffc313",
-    "score_tb.scs": "d05898e05381c6d385f30c833f0864b1d7492b5b8e4e6caf8c3970a24afa2730",
+    "profiles/feedback.json": "098d8b9c74aec722744077d8342ca789572313190812cf86083c1a62030880dc",
+    "profiles/score.json": "37aac038d9ce75e59ea3dc4e4c462241bedc66874ce567e7e1b970bbdebeb00d",
+    "score_tb.scs": "968d792e6757d34c4b29944e5d3bba245c6af952d18723ac2a1755aceaa50c13",
     "solution_tree": "80d4b8ce5ae997e8b6264613025c31bb746f4330f941a3b97a820b1203e0c09d",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
   "form": "dut",
   "public_hashes": {
-    "feedback_tb.scs": "79cbfaf4df082cb5b2ac93c630509ea557af35ea8960a081a62df0792adeec8f",
+    "feedback_tb.scs": "9005e6946e30708e46c6b550548456b776a1bb028d55d507783bdb05e928e7b0",
     "instruction.md": "d17a2e25b07f46db7d989624b2dd76fa89a760cc13b23f67614b6868cbf57bb7",
     "public_contract.json": "0d00a8ab7c4dbcdd0e933ed5493c392a4e3aa4841b89193e3c6ffb4e2fa91c05"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "b4c6b49a6313ab69502fbebdc994a6fa6575cab637c6de4b79f281284c14f9f8"
+    "sha256": "c05a3bb354423af9d73a246e3451ebbdb5fbc52969d375dc0e948c0932654cfa"
   },
   "release_dir": "268-mode-selected-bias-driver",
   "schema_version": "v4-canonical-dut-release-task-v1",

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_swapped_outputs/certification.json",
-        "certification_sha256": "93301f0df26c08ca9bffc8fc3859c45bf408424aec03e872efc274e0a14e4118",
+        "certification_sha256": "93077da55347384aa901c8fc2e29c94c51c07a497a82f6edb8f802e004111f10",
         "fault_class": "output_polarity_swap",
-        "mutation_bundle_sha256": "9a1a143e1b8f6e40c01103487c50163b7932d1b519f81903ac4f45f7c2ec0076",
+        "mutation_bundle_sha256": "493601e2118f0069b1838b0b0fb7ba56498d6a9d11b3914b1fddadfc6b98cc7a",
         "mutation_id": "neg_001_swapped_outputs",
         "source_catalog_certification_path": "negative_variants/neg_001_swapped_outputs/certification.json",
         "trigger_condition": "a REF-leading or DIV-leading cycle expects the corresponding UP or DN pulse before mutual clear.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_div_lead_clear_leaves_up/certification.json",
-        "certification_sha256": "a90c822451027475ea0449e107afee9b94661e3d7bb49c7266a4346e37bbb3a4",
+        "certification_sha256": "29a3fe234e6e681c3fcb9b577ead641ed151e6ae89071fd816099de98ebfddb6",
         "fault_class": "div_lead_mutual_clear_incomplete",
-        "mutation_bundle_sha256": "767a957588e0ea2d284b10993d7dd04b98a10b2503ab9f4e824cc6e06b0454f7",
+        "mutation_bundle_sha256": "cda12a50dc746b8447ac663fa463407804abe0a5598e53a5bc3181c4ef1da6c4",
         "mutation_id": "neg_005_div_lead_clear_leaves_up",
         "source_catalog_certification_path": "negative_variants/neg_005_div_lead_clear_leaves_up/certification.json",
         "trigger_condition": "a REF rising edge arrives after DN has been asserted by a DIV-leading cycle.",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_fixed_nominal_rails/certification.json",
-        "certification_sha256": "9d6b5f3de192b71b5309c422e22b9130746aa2da71e6c782fc33c60ecd3e68aa",
+        "certification_sha256": "22333fe20fc6272e576b952b320640a1ee2cab5c7f033752d6fea2a7ac0cf9bf",
         "fault_class": "local_rail_reference_omission",
-        "mutation_bundle_sha256": "2832e358809f067b4ab7954c01c3274cf0bd5de56f491633d3a13afa5d5a3f98",
+        "mutation_bundle_sha256": "0c0d0904ebd42d45a52914dfdc9800c16ffaaeb7846c06e46b1059237f1e157d",
         "mutation_id": "neg_006_fixed_nominal_rails",
         "source_catalog_certification_path": "negative_variants/neg_006_fixed_nominal_rails/certification.json",
         "trigger_condition": "the local supply rails differ from nominal 0 V and 0.9 V while UP or DN is driven.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_missing_ref_lead_clear/certification.json",
-        "certification_sha256": "0e88197726cead69b098433f89f1374323a66aa1c88190b642fd110c8bd9931c",
+        "certification_sha256": "7a387bd29424e594f3b914e108086c9d397ded2ec60a637538344c50186c8342",
         "fault_class": "ref_lead_mutual_clear_omission",
-        "mutation_bundle_sha256": "c17469fee54948364c577dee1e80cb3e1c4cc43fbd26c9010baca63358bd8bca",
+        "mutation_bundle_sha256": "4415efbe85d1e78f313790922e2a36a10236ec0fcb04cfeeb9490a1b82e78fc2",
         "mutation_id": "neg_002_missing_ref_lead_clear",
         "source_catalog_certification_path": "negative_variants/neg_002_missing_ref_lead_clear/certification.json",
         "trigger_condition": "a DIV rising edge arrives after UP has been asserted by a REF-leading cycle.",
@@ -57,9 +57,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_div_falling_edge/certification.json",
-        "certification_sha256": "bdfa3dec1cda7c49b92fbbb354cfa3ddd60791f25eaf2cf05aff34ea954af42b",
+        "certification_sha256": "e3f3cb09c0991d66b4f81b52df23d0e7a709b7441a9c73b45b7fd5e09cc25659",
         "fault_class": "div_falling_edge_trigger",
-        "mutation_bundle_sha256": "6e89ad3d77a8c7dc4e98d61452c1cfb0461f55acba94cb2c610deafa2ce5431f",
+        "mutation_bundle_sha256": "2619c17dbaedc3f75d7ca5161f8ebd4285801e32d74df77c5e4346b5afc797c2",
         "mutation_id": "neg_003_div_falling_edge",
         "source_catalog_certification_path": "negative_variants/neg_003_div_falling_edge/certification.json",
         "trigger_condition": "dIV falls after a legal rising-edge window while no new DIV rising edge should assert DN.",
@@ -73,8 +73,8 @@
     "hashes": {
       "mutation_catalog_sha256": "d1eca271b4428f7ba48c853c619c88c8dd9c0a5dd5e1854ca62ab29fee51bd43",
       "score_deck_sha256": "4cabb00598110cae7a2cbd401d9de68fd79b549247ff1bf2c2f9706dac1ccd5c",
-      "task_certification_sha256": "e7e8c13b87ed7eef89a7224f7b7afa2c098f81c1d3b4d6fb9b75ee23ddcafb1c",
-      "task_record_sha256": "1d81dfd2c377c78cbd853d9901ebce916b8d374fbd386f6e57febb9e8285038d"
+      "task_certification_sha256": "65978b665ad22a099e7cc6596ba50ff79155d65455a7375bff3115b9ce1d0a15",
+      "task_record_sha256": "fc3652cf380fd6fe0cd42775e42b943af15bf42a138ad68f341aeefef95f8f82"
     },
     "release_dir": "011-pfd-up-dn-logic"
   }

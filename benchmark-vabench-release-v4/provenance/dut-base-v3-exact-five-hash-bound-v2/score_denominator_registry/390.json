@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_reversed_trim_direction/certification.json",
-        "certification_sha256": "d2d88edb8a93d8c03e4c7c661091da9eef8f45a7c01bca97441d6b77ff4f702f",
+        "certification_sha256": "d5cc6f57b4d44a5b3685f8a37d85e2f63d62f5c1417725d960635e1e6447a2d1",
         "fault_class": "wrong_control_polarity",
-        "mutation_bundle_sha256": "7106304081929637d2a38b70aa7a929db6c061c9d7bfbe5ab4afc7de3ce06113",
+        "mutation_bundle_sha256": "feacd5612e56f92db1b6c093078fbbacaea988e16d8845530a8da0e65598c2d3",
         "mutation_id": "neg_001_reversed_trim_direction",
         "source_catalog_certification_path": "negative_variants/neg_001_reversed_trim_direction/certification.json",
         "trigger_condition": "positive common-mode error is applied",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_lock_after_one_update/certification.json",
-        "certification_sha256": "451d14aa06fdf0bee1d315865fca5d3e290f0664d32639209eb065293bf18bff",
+        "certification_sha256": "810cf18424276dec286129dae67aef972c3d176577545c00b490cb22e0a78dd4",
         "fault_class": "early_lock",
-        "mutation_bundle_sha256": "5c475d78e68568e86ad8e6a22e1a0bacb438d480ce38ddeb8a3041c808d030d5",
+        "mutation_bundle_sha256": "9167caa48d1d855ae5d702069c2e17a80fc702241d0ea2f6ab01a1a698a322dc",
         "mutation_id": "neg_003_lock_after_one_update",
         "source_catalog_certification_path": "negative_variants/neg_003_lock_after_one_update/certification.json",
         "trigger_condition": "the residual first enters lock tolerance",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_cm_error_reports_input/certification.json",
-        "certification_sha256": "93cb67b9e185ca7344bced3a92f35e4ff9390afb4dbeb5b72fa08c4fed299199",
+        "certification_sha256": "f4767c58afba35fb9455c1c4f9bfca9156cf64397f6e0a247664cadacfdd608a",
         "fault_class": "wrong_common_mode_metric",
-        "mutation_bundle_sha256": "8c9f3452f90ede5969783d87d06f990fab641c6594f7d427776541d8d038e855",
+        "mutation_bundle_sha256": "c469a452ed6ee3ee3d26821fe1bf575a4300bbd9763ec65f6c2ae14eccc6d48f",
         "mutation_id": "neg_004_cm_error_reports_input",
         "source_catalog_certification_path": "negative_variants/neg_004_cm_error_reports_input/certification.json",
         "trigger_condition": "trim correction reduces output common-mode error",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_disable_keeps_trim/certification.json",
-        "certification_sha256": "831b61aee7d88e2dd803d37e6b3343dd65ae9c64518074cda29d138758f58aba",
+        "certification_sha256": "9d773bb93c0f52e136548d59cb00113d30badab2a9eae128f71befb1b03ac043",
         "fault_class": "missing_disable_clear",
-        "mutation_bundle_sha256": "544c6dd8e39f644afde1f9d3f720a9c806b1008db0c0235e4cd0b688b6706ef1",
+        "mutation_bundle_sha256": "1440543bcf06b7c58a147b5a8bd3016f947eb5f7096fc8f708a20535a73a72d2",
         "mutation_id": "neg_005_disable_keeps_trim",
         "source_catalog_certification_path": "negative_variants/neg_005_disable_keeps_trim/certification.json",
         "trigger_condition": "enable is deasserted after trim activity",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_same_sign_output_correction/certification.json",
-        "certification_sha256": "eeed3fe25f10bef8df73a6c6ed0ccc14442434a0046045e7e2c915d38202dae6",
+        "certification_sha256": "05b5c4b0a6b5f190efeced81d15979f50891626bbc3a5624e3326ee00a1c17cd",
         "fault_class": "wrong_output_polarity",
-        "mutation_bundle_sha256": "0ce31e1f4393b082af1a35cc458f2dd0cd7879ed8cfcf3de804c97d307fc6354",
+        "mutation_bundle_sha256": "55cf0220219e5ebcd9788f6e0c5416aaa6faa4f1a19e8e9f30511c17bc6b10dc",
         "mutation_id": "neg_002_same_sign_output_correction",
         "source_catalog_certification_path": "negative_variants/neg_002_same_sign_output_correction/certification.json",
         "trigger_condition": "nonzero trim correction is active",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "be3d0221117f218e8ae4530207e3544f03e33d3eda9d4c5bbb47a999cb6bd68a",
       "score_deck_sha256": "134dfe2a45cbb96cc923bf8a76b18896b1e26890db6515b790520adc0e3c6478",
-      "task_certification_sha256": "1e180eaa8f0faeed909b47a6ead181c69daa05c8985c8b8b03b2b389dbe4ac6a",
-      "task_record_sha256": "d12bc2a15e86d7b216df1ab353c49f87eb2fdcdbadbfc1a63e110fd19234f9ca"
+      "task_certification_sha256": "c34ee61bc00658f0282dc1403245c579b2fbc09b6bc6a397da4dc906f80cbbc4",
+      "task_record_sha256": "247de2f332b5d7100829d4a079b869a1e2e431f0c46e2bb2179e6b8512a3f2a2"
     },
     "release_dir": "390-common-mode-feedback-loop"
   }

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_threshold/certification.json",
-        "certification_sha256": "4bac2d8ae603134460a888df56331c25b0ab6ce829001ea568ee3f0463d18657",
+        "certification_sha256": "7ee631c042b55dc3a8648846c89298ed5efef9e1597e04e664b1e23027e6f912",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "e55ddca66c1136468a7f33b2ceac93ca0ada0c31971981ba295c9d68323266ef",
+        "mutation_bundle_sha256": "9106a279f10e17bf7f1165f378517e1e43fbc460fdd6e8ede333d624ea409f57",
         "mutation_id": "neg_003_wrong_threshold",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_threshold/certification.json",
         "trigger_condition": "Compares against the full differential reference instead of the midpoint threshold.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "05a8c5c72d5fd3f1d6d44fba1547c7623ed06189c02ea83ddc379986337baec2",
+        "certification_sha256": "8200a462eb6b55aaac99707a81d4657b42187175b28080442d5be383feff4556",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "05c7933985efb4c57330b8cce25a09f5eeb82dde9b41a3fa9b553dfc2e99e348",
+        "mutation_bundle_sha256": "69d788ac1840b3e28c98f6f139d7eebf2c6639247115f557065b1497fbdc1253",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_unipolar_output/certification.json",
-        "certification_sha256": "0bc01828f8094a2fc4d129ee11f3d6905ea41b79c8d9a3e055ddfdc582a02ead",
+        "certification_sha256": "e4d1d93595a360be04f1cca17d916154fff4676e1e24c95dabd0a5c525cf6495",
         "fault_class": "unipolar_output",
-        "mutation_bundle_sha256": "fe501d4a20a4a9937446460d475e9b00c9765ebba725ffde449be01cc0dfb452",
+        "mutation_bundle_sha256": "9dd181a6840542172710d4f51b8403867f4e29d2ff4145c6aee69b4eef1aa273",
         "mutation_id": "neg_004_unipolar_output",
         "source_catalog_certification_path": "negative_variants/neg_004_unipolar_output/certification.json",
         "trigger_condition": "Outputs 0/1 instead of -0.5/+0.5 quantizer levels.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "a438dcaa8a8fbdbfd79e77ce5058855c717107677b3aabc8caa0e1645bf54eab",
+        "certification_sha256": "9c7a728c2c6894a3220390e654cb0dcd6f12c473e0756fe479dab17807069d3a",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "be13e6d92eb2ef7454f231b309a42bf45ba07317928a25baeab3d43ef0b464dc",
+        "mutation_bundle_sha256": "ed3d575248e929f233f461998d8571c966b084393cfcbb2837535a7b9c3fbeb8",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "QTZ Differential 2level: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_invert_decision/certification.json",
-        "certification_sha256": "a0e46272ba002d97bb8ce53e4c553ebf5d2a8b995efc4795b4b45763190a3a2a",
+        "certification_sha256": "14623382871256eb77f46beacaa780003ca84484490aa3c57e458e8fa69e3992",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "99b40638ca3143ada831a0cdd5b007a4838d947f15edc5cfe507e2b3d5c72f5f",
+        "mutation_bundle_sha256": "3c82514f26e22fa2fe2f8941d31535c1ac773c48a7a8df6dc8c3e59d453a27fa",
         "mutation_id": "neg_002_invert_decision",
         "source_catalog_certification_path": "negative_variants/neg_002_invert_decision/certification.json",
         "trigger_condition": "Inverts the two-level quantizer decision.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "1d5bf6c57dc488d2cd84b5493a23a430bcebee7d1cd90d7fb178328d3d1491b4",
       "score_deck_sha256": "5441154257f0e3cba4f9a184bd71cbffdccc6128143947e5b8aff4c6660c1ca4",
-      "task_certification_sha256": "f59ebec7b05fe47e62484d295ccb2343349067416ba1d49ace22b465828b456d",
-      "task_record_sha256": "94758eec3f546eaf6b5637cf5f8e6b2b4c7a53928defe37f3ddf41280c04a374"
+      "task_certification_sha256": "07242c51e9b33e400840d792964859fae98c83f6e1467eaa4fc66c85e88575fb",
+      "task_record_sha256": "f414e420fac937b32ad1eaebf757a7440a6988c7780c2a92942016ab71ab8ac6"
     },
     "release_dir": "198-qtz-differential-2level"
   }

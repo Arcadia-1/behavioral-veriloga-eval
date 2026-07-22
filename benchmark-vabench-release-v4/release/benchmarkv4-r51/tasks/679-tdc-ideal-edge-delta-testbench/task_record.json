@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "179-tdc-ideal-edge-delta",
+  "checker_task_id": "v4_179_tdc_ideal_edge_delta",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "cc3ce5d7b21b4872edf168f26ef8bcb88efa1e45bb8c88cab2b02d189988258f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "82bd3f85fdac3b130c62923aee11ba972ae10990258f4f6a0a961c367ff8795e",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "179",
+  "family_spec_sha256": "4a489ba23af77f83eb11e6e79b58466807bb58fc2f606343eb6ff4b1b222490a",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "09b872f6fb8c6d78f53a55ea31c508e72cc65b946d028a79f174168fec7b9eed",
+  "public_contract": "tasks/679-tdc-ideal-edge-delta-testbench/public_contract.json",
+  "public_contract_sha256": "ebb65697ae5bcb8100a2a99fdc84a4435a80f1a80c8095980fbbbdd672d5620f",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/679-tdc-ideal-edge-delta-testbench",
+  "task_id": "v4-679"
+}

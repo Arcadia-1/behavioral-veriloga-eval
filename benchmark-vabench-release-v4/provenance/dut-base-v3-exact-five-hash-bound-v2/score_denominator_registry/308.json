@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_offset_debug_tracks_signal_sample/certification.json",
-        "certification_sha256": "a2e4327c3946c57cb4361654fd9841649ee7475f60048e997bbd30f9f0f39242",
+        "certification_sha256": "1a2a1e6874474c299a8787b820bf9f4089f12b3fbfb257ae04f138a87436d0c7",
         "fault_class": "offset_debug_tracks_signal_sample",
-        "mutation_bundle_sha256": "81c6cc9b01b9a9a630b848de686f7b4944ff185b81d1b09a0da03e2c0394ef73",
+        "mutation_bundle_sha256": "d90452a3ab69a7e6dc4f8464e53da553cf2d00b0813ee86aa4c27c8ff1231192",
         "mutation_id": "neg_003_offset_debug_tracks_signal_sample",
         "source_catalog_certification_path": "negative_variants/neg_003_offset_debug_tracks_signal_sample/certification.json",
         "trigger_condition": "offset_debug_tracks_signal_sample",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_output_tracks_input_directly/certification.json",
-        "certification_sha256": "582c9d523c941f368f13ed4c30e61db11d413652ab0bf925423a9dc3f0fc1ec6",
+        "certification_sha256": "07116a86509b3326bcfc08884c272c9dc3ceafd3e239edc3956f0fc6f97ecc70",
         "fault_class": "output_tracks_input_directly",
-        "mutation_bundle_sha256": "320ea73f7de8de07af73b0ffb2c1715bafacac84de42e3955ba1f08e738b5044",
+        "mutation_bundle_sha256": "84755d1edaf7731fa89ba6cd1c71b2f1b09a45094b1b9f3f59021ebb8f47c9c5",
         "mutation_id": "neg_005_output_tracks_input_directly",
         "source_catalog_certification_path": "negative_variants/neg_005_output_tracks_input_directly/certification.json",
         "trigger_condition": "output_tracks_input_directly",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_valid_before_complete_pair/certification.json",
-        "certification_sha256": "1cef0099278a201114e2ce0a087dc65e8bb7c824213a5f41dc83f2a2863bc967",
+        "certification_sha256": "fff509d47adf8064809d21d4f067c4ea11687b13b1bcc409b12d6537ef8ada80",
         "fault_class": "valid_before_complete_pair",
-        "mutation_bundle_sha256": "92d8533bfed86def92a3d226c43882cec981ff3bc122bbbcf5403adcc78e3dc6",
+        "mutation_bundle_sha256": "dcaa4ce4996716844f0448500da7ea211d2fc25ced1ebea9523af7644b148515",
         "mutation_id": "neg_002_valid_before_complete_pair",
         "source_catalog_certification_path": "negative_variants/neg_002_valid_before_complete_pair/certification.json",
         "trigger_condition": "valid_before_complete_pair",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_does_not_clear/certification.json",
-        "certification_sha256": "e37e436bff0708cb8c9237b3339a0ef34d997b2ca8fa2c395b81eb4e78ac60f6",
+        "certification_sha256": "9419bf7e4bb1ea51ae9bf2c36624b43284fee909032ea356e6b0a74c2f06e58f",
         "fault_class": "reset_does_not_clear",
-        "mutation_bundle_sha256": "4227854dd71af6c6f8b44a3aaeca80cb31661efe18b5aaff7d2e3294e2fc3b7b",
+        "mutation_bundle_sha256": "b72e30a10868b6db90c1e350cbef3e010079ef2c79dde83543bd8acfb5fac29e",
         "mutation_id": "neg_004_reset_does_not_clear",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_does_not_clear/certification.json",
         "trigger_condition": "reset_does_not_clear",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_difference_polarity_inverted/certification.json",
-        "certification_sha256": "e6087e652e44f7e8c316c0e92987b4747347fc8d76585a0bce7a066b749d8a32",
+        "certification_sha256": "ad2ca68feee45ff755d106526ce8dc0c4b77c8a97d4e5ddf996a03cd9db20116",
         "fault_class": "difference_polarity_inverted",
-        "mutation_bundle_sha256": "768ad3cbf4293da242a272009cd999065945d28e044a871be4369d2e52ab3b9e",
+        "mutation_bundle_sha256": "6b140135f6594b3bdc3ba366f92bea17a67cb451eb20db160ad80e5cfbab4476",
         "mutation_id": "neg_001_difference_polarity_inverted",
         "source_catalog_certification_path": "negative_variants/neg_001_difference_polarity_inverted/certification.json",
         "trigger_condition": "difference_polarity_inverted",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "db2072f9044436d118d272de8007a9a259959f74f457a365d786de69aac8dc67",
       "score_deck_sha256": "48fb62baf42277dcc7ab78133166d08171c7d5788191d9a421eebf90a50854af",
-      "task_certification_sha256": "0af91b020e5505b2b3081ddc9167c37fc20c3bb042d6321a41c8d8a56161fccd",
-      "task_record_sha256": "00f8c50890636426d5763312a6e354d81a64f1b5157f27f00472f0883ce19e70"
+      "task_certification_sha256": "92808d90072c099a28536c3d7ce9ebc013c8b13c7f498bca807240084afd97a1",
+      "task_record_sha256": "7cf6f8e7eeb76a206e4c5f15db88c4941514a3405123f14daecbeba2de289a63"
     },
     "release_dir": "308-correlated-double-sampler-offset-cancel"
   }

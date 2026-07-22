@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "038-programmable-gain-amplifier",
+  "checker_task_id": "v4_038_programmable_gain_amplifier",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "f61a6456dfaeea581633c21ca6363294e758fb163b41d576749b487048680535",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "2d9e6897c903aab9d85b45d28d91f84234e5038c2150b86ecd707b171de87b5e",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "038",
+  "family_spec_sha256": "92867b2063aa3caab38f38af3085ab6fb3a594a755a3d36237a274338399ce0c",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9ebf6805058726a3b7e32d93157fae36a73766a734e8b674440f2c974af4f83f",
+  "public_contract": "tasks/538-programmable-gain-amplifier-testbench/public_contract.json",
+  "public_contract_sha256": "8a208c517653bff7c0ca894c499c3d6d4a840b18527237707e5ffb6c02427fe6",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/538-programmable-gain-amplifier-testbench",
+  "task_id": "v4-538"
+}

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "566c3ba9dce369d9b29e882b7e6ca599e3fafc32d48b06781f5e271c1e3b4d3d",
+        "certification_sha256": "2b38fd0ded4d83d971ac040041aa9430518697d5505a0a9ed5a58e9a3674e1cc",
         "fault_class": "no_pulse_train",
-        "mutation_bundle_sha256": "8477ba36023773cc0aca5cb1adf99d62ad6f8d5cd91e2c872a845605cc65f2ef",
+        "mutation_bundle_sha256": "15df13d32549503e8dfe2344e3e80216b5bffb27589da64d31f11fb3dbb259a5",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "an accepted start command must produce the requested pulse train",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_period/certification.json",
-        "certification_sha256": "fdc3d7f699040ff8046e82a7a09456b654b5cd3fc04387308d2096dbcd73bf3f",
+        "certification_sha256": "de20e7d2d85badb474716358c1757695c9cf8b58ff62f97409961bf53df408bb",
         "fault_class": "uses_period_plus_one",
-        "mutation_bundle_sha256": "367dd72f78ec2e5a5142d79b0b1177db3ac0f6e3a05c669fb66279abc3a2d0c6",
+        "mutation_bundle_sha256": "348cf3943786cb6486d012497fadb78d534fbbdbf8ad355c40157cdd14cd9aa7",
         "mutation_id": "neg_003_wrong_period",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_period/certification.json",
         "trigger_condition": "pulse starts must be separated by the captured period in clock samples",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_done/certification.json",
-        "certification_sha256": "22f25671e7876252f6f7280302ca88f3c1aaca0842d9b1a695d46d3e151cf0d8",
+        "certification_sha256": "a67066111157e4e3c3c2f1cf4d17441347905a5901cbf03c0f53fd53e8870e7d",
         "fault_class": "never_asserts_done",
-        "mutation_bundle_sha256": "5f89f81c40b203fc0e4b2219b48aa7b2f97e4a2a1a9a62598b75ff2e74c223c0",
+        "mutation_bundle_sha256": "9a5637427647c0c1f8c0722c3e3da98651adee72296e36c3906f76d18d4f076f",
         "mutation_id": "neg_004_no_done",
         "source_catalog_certification_path": "negative_variants/neg_004_no_done/certification.json",
         "trigger_condition": "after the final pulse completes, done must assert while pulse is low",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_extra_pulse/certification.json",
-        "certification_sha256": "0505abc6a19b2a6022dd99214c01d4bfd3e27b461a611feb8790168d330c06d8",
+        "certification_sha256": "e2f1129870fffe56dd94d1a6630e014a90cb9c91fa6770a28717270552343f35",
         "fault_class": "emits_one_extra_pulse",
-        "mutation_bundle_sha256": "e669d816f08e0e7f6b1e84b7303c33afdf56ddcb601b83d1d4fc8498c0bcae57",
+        "mutation_bundle_sha256": "1f811805cb1f2bd3114bcbbea1a3efae54c6dd6a84b8d933bca1c7393d130957",
         "mutation_id": "neg_005_extra_pulse",
         "source_catalog_certification_path": "negative_variants/neg_005_extra_pulse/certification.json",
         "trigger_condition": "each accepted command must emit exactly the captured count number of pulses",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_zero_code_width_not_minimum/certification.json",
-        "certification_sha256": "9272796e3e237fe8fa39a245df68bbb6b7bccff5773b100c6eb49c1324494332",
+        "certification_sha256": "5670995bc15b20b80fbc316b42e50f2824d70e11d65c86063c84799b46e31a76",
         "fault_class": "zero_width_code_produces_no_minimum_pulse",
-        "mutation_bundle_sha256": "073574332c43fef4704f672dff0b5121bea866007b4001c4b8d71023d11e8301",
+        "mutation_bundle_sha256": "dda1994c5701997eac442ca860e93033a1c8f828d402b20805f456dba2e75fa9",
         "mutation_id": "neg_006_zero_code_width_not_minimum",
         "source_catalog_certification_path": "negative_variants/neg_006_zero_code_width_not_minimum/certification.json",
         "trigger_condition": "zero-coded period, width, and count must each clamp to one clock sample",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "00d671e419b27c292ee275cb5cc3e8a6df3ca2ee1feb3c62883a85943c2cbb06",
       "score_deck_sha256": "2836831be437319131f669e19de600d0cebd865f5026fa4ed1b89d878506d6a4",
-      "task_certification_sha256": "18b52b572bf545d4df13af9b8954006592aabd84bc23728ae068def7e609c8b5",
-      "task_record_sha256": "86e470e4937e6e412d674ca7865102e897bc75516b92ec56bfacd8332cbc5785"
+      "task_certification_sha256": "f2feabb3a01769def2b4bfab9df6725d0731308124eeab460b6ea0414313cc68",
+      "task_record_sha256": "9974adfad28e732eaaf61e749b192095f307976ca6d27aa630174f4fc9f1f383"
     },
     "release_dir": "069-configurable-pulse-train-generator"
   }

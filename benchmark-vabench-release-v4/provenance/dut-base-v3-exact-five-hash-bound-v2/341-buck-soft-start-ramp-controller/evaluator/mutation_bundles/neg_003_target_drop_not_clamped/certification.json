@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_NEVER_ALLOW_SOFT_REF_TO_EXCEED satisfy the public contract; fault class soft_reference_not_clamped_after_target_drop is rejected",
-    "observed": "EVAS: v4_1039 checked=22 reset_clear=True disabled_clear=True done_seen=True not_done_seen=True ramp_seen=True target_drop_seen=True soft_errors=3 metric_errors=0 done_errors=0 clear_errors=0 step_errors=0 clamp_errors=3",
+    "observed": "EVAS: v4_1039 checked=22 reset_clear=True disabled_clear=True done_seen=True not_done_seen=True ramp_seen=True target_drop_seen=True soft_errors=3 metric_errors=0 done_errors=0 clear_errors=0 step_errors=3 clamp_errors=3",
     "violated_property_ids": [
       "P_NEVER_ALLOW_SOFT_REF_TO_EXCEED"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_341_buck_soft_start_ramp_controller",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "06d620060a5e6a5c573a7832c4f7489a218814a65395a108d5019fde14f09f02",
     "trace_row_count": 1406
   },
   "family_id": "341",
@@ -36,6 +36,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

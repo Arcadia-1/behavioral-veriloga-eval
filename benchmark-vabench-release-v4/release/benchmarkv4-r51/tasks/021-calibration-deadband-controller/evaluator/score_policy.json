@@ -1,0 +1,13 @@
+{
+  "candidate_artifacts": [
+    "calibration_deadband_controller.va"
+  ],
+  "certification_evaluator": "rust_evas2",
+  "checker_profile_sha256": "ecd992a74aac810f6e5ecf29360301c343b7592bcb33ca2f18fb7edd5c736756",
+  "full_contract_pass_required": true,
+  "gold_dut_certification_sha256": "6897cdc6fb1d6d53cffc230b4df39f953bf4c25d1d6f210476b05e600d9d5b0e",
+  "gold_solution_tree_sha256": "d9b885ebd74b5ef4f82f8ecef8fff7a5fe58878e95d98745ca7eb9ad913b3b40",
+  "materialized_checker_profile": "evaluator/checker_profile.json",
+  "schema_version": "v4-dut-score-policy-v1",
+  "task_id": "v4-021"
+}

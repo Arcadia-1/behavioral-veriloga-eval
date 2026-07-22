@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_DRIVE_VOUT_AS_A_CLAMPED_RESIDUE satisfy the public contract; fault class lock_qualification_too_early is rejected",
-    "observed": "EVAS: v4_316 checked=15 codes=[1, 2, 3, 4] reset_clear=True disabled_clear=True high_code_seen=True locked_seen=True error_reduced=True code_errors=6 vout_errors=0 metric_errors=0 lock_errors=5 clear_errors=0 settle_window=5e-10; P_ON_RESET_CLEAR_GAIN_CODE_OUTPUT mismatch_count=0; P_WHILE_CAL_EN_IS_HIGH_COMPARE mismatch_count=0; P_INCREMENT_OR_DECREMENT_THE_GAIN_CODE mismatch_count=6; P_DRIVE_VOUT_AS_A_CLAMPED_RESIDUE mismatch_count=0; P_ASSERT_LOCKED_AFTER_THREE_CONSECUTIVE_UPDATES mismatch_count=5; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0; diagnostic_schema=v4-checker-diagnostic-v1 status=fail category=behavior_mismatch event=stimulus_relative event_context=stimulus_relative expected=public_contract observed=trace",
+    "observed": "EVAS: v4_316 checked=14 codes=[1, 2, 3, 4] reset_clear=True late_reset_clear=True disabled_clear=True high_code_seen=True locked_seen=True decrement_seen=True error_reduced=True code_errors=3 vout_errors=0 metric_errors=0 lock_errors=8 clear_errors=0 settle_window=5e-10; P_ON_RESET_CLEAR_GAIN_CODE_OUTPUT mismatch_count=0; P_WHILE_CAL_EN_IS_HIGH_COMPARE mismatch_count=0; P_INCREMENT_OR_DECREMENT_THE_GAIN_CODE mismatch_count=3; P_DRIVE_VOUT_AS_A_CLAMPED_RESIDUE mismatch_count=0; P_ASSERT_LOCKED_AFTER_THREE_CONSECUTIVE_UPDATES mismatch_count=8; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0; diagnostic_schema=v4-checker-diagnostic-v1 status=fail category=behavior_mismatch event=stimulus_relative event_context=stimulus_relative expected=public_contract observed=trace",
     "violated_property_ids": [
       "P_DRIVE_VOUT_AS_A_CLAMPED_RESIDUE"
     ]
@@ -17,18 +17,18 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_316_residue_amplifier_gain_calibration",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "06d620060a5e6a5c573a7832c4f7489a218814a65395a108d5019fde14f09f02",
     "trace_row_count": 837
   },
   "family_id": "316",
   "inputs": {
     "checker_profile_sha256": "3ead6cb439284eebf0a6250310b26b4d118766da09644bc356fce5291d32e65e",
-    "harness_spec_sha256": "32cd5ba72aad565c3bbe60ca4f5cd2285f4d47488384a9b6f997e01abe6f9803",
+    "harness_spec_sha256": "53b732ded6255408d6286a50bc0d3aa1712d061727e35dfbfff0687684b95b16",
     "mutation_bundle_sha256": "f43f1ff3a19698ed0fd4def9df1d47218a805ecba04b210631168afdd6f023b9",
-    "profile_sha256": "ac2386fbc96ecc10826ca0a53067910b1b1b7e3210559af79d5949af728bd31f"
+    "profile_sha256": "10fc2bf326564b9e774bf9806d8fc72f3bf90c6f0de76c7f0284c297eec1f6bf"
   },
   "mutation_id": "neg_004_lock_qualification_too_early",
   "outcome": "killed_behaviorally",
@@ -36,6 +36,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_ref_scaling/certification.json",
-        "certification_sha256": "a2ef20df006f2bc2f1985e4b254b75e4484b209164778fd3048f949a19978e81",
+        "certification_sha256": "e76ee28e6d2e710970b75261390fb698212f07ee22798c6720795019b02b8659",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "6222e27be2c93ca11fe99b123183931c27a7f5ef68c0029052cfdbe5a318ef56",
+        "mutation_bundle_sha256": "3deff16d2b2df81a88bc416cb8cd6defb221d305f59c63a590fb56ecc85426bd",
         "mutation_id": "neg_002_wrong_ref_scaling",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_ref_scaling/certification.json",
         "trigger_condition": "Uses full reference scaling instead of ref_scaling.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_delay_equals_current/certification.json",
-        "certification_sha256": "963dd476a8ad293cd8214cccce810a0c6af287f9147424bf951e9bde06caf080",
+        "certification_sha256": "860776266bc40869db2a605f3c910cd98f169a20e1c5a9edc33c511b38e37907",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "777d7fc1d044d8ad280d1b56ef4ae70051ff18ad77afd8c4622a55f55bb76779",
+        "mutation_bundle_sha256": "ba8ad885a4246b94c01c9ce7eadfdf444acda9939a9ad346b2121c42bceb01d1",
         "mutation_id": "neg_003_delay_equals_current",
         "source_catalog_certification_path": "negative_variants/neg_003_delay_equals_current/certification.json",
         "trigger_condition": "Drives delayed sum equal to current sum.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "a0a86f840f3a22ded41960956c060d9afbc4adff2bd019b248ecf1675ed53d6a",
+        "certification_sha256": "ab6441bb1b011ea0c6bb3c564fb2e6e22ae84be273a7aad614ddd812d9b213fc",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "d57258b6a945d8821f149e290fda6dea8c89e7b168bb0cabf46b011d0fea3393",
+        "mutation_bundle_sha256": "f060809d3e6ce82f0e5015af3e6070de75a4d3139127f487139e8720e74383eb",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_normalization/certification.json",
-        "certification_sha256": "a7ece849878a4e778feff3bd5dfe7435029e4928aa5394bd01551e083a79bb3f",
+        "certification_sha256": "4c72f050dff4eadfbb69c228febd15888873bd1ddf85c00bb4361816c873bb05",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "d658c11fa179bb03f749bb1ef4b5c03654aa039465e32de49792d0d7e7118082",
+        "mutation_bundle_sha256": "68274f4afc5c5757618f80f32e75a53958c1df26f6273b6b87b32468bea5abf8",
         "mutation_id": "neg_004_wrong_normalization",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_normalization/certification.json",
         "trigger_condition": "Divides the thermometer count by 4 instead of 8.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "0768a58b78b497f02c5bfe87e56d90854446828922445f83fbd2ba39c529f286",
+        "certification_sha256": "7d022c4158a591677be354d023a586eced56596d4e08856e51ea38baa6554fa8",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "9f49784d4b2f5fc6b50e8fec7776088c357703278378ee4dd7347577e95772e6",
+        "mutation_bundle_sha256": "a9c68765b81bea8361252bad8993b0b36b35cbf53dcaa862a26e0b2765ecd345",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Flash 8level Sum Delay: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "e8128824d0da598f7f7f260b010412e1f6cedb502687755ba7bdca5c1b0f1e91",
       "score_deck_sha256": "a0bde569a873520bd269f8ae080eb03da1b07920eb34b943b876a9ec1475ae9d",
-      "task_certification_sha256": "fff8a5062d2717a4c76e9a26a2617c942eb7bdbc2bd9e3c3ec2a030d4e800bd5",
-      "task_record_sha256": "3f48a04aa0c3da39a9b0b140730ab9731ac38bd4e459a25ea725089b0732ab55"
+      "task_certification_sha256": "560678b8d18c5b4982d0590382ca4b562be0998943059fe887becfa21767a6f0",
+      "task_record_sha256": "e50a247c52386f1588d0be6b3fc253d63d0b3c8921dbf5e640b3d77697ce1085"
     },
     "release_dir": "151-flash-8level-sum-delay"
   }

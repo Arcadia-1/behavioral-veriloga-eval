@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_OUTPUT_NORMALIZATION satisfy the public contract; fault class metric_or_observable_fault is rejected",
-    "observed": "EVAS: checked=4 max_dout_error=0.58000 max_res_error=0.00000",
+    "observed": "EVAS: checked=8 independent_one_hot_taps=8 max_dout_error=0.07250 max_res_error=0.00000",
     "violated_property_ids": [
       "P_OUTPUT_NORMALIZATION"
     ]
@@ -17,18 +17,18 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_158_ref_flash_8level_decoder",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
-    "trace_row_count": 2032
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "06d620060a5e6a5c573a7832c4f7489a218814a65395a108d5019fde14f09f02",
+    "trace_row_count": 2165
   },
   "family_id": "158",
   "inputs": {
     "checker_profile_sha256": "e18a3546a15664dbeccfb2aae8f01c5fbfd08b0c2c07253d2c24216bc2edf3f7",
-    "harness_spec_sha256": "bad8b3a72ca6e492e65a75f6eb1961fce4c82c2e51fc58e7780a67a21cdae126",
+    "harness_spec_sha256": "393f9c87f03cca7e2f961a9a8939ef7f933d3b8ea3d58af4ab058fb8d8a1710e",
     "mutation_bundle_sha256": "ee591aef4c8fdc2cfcee7d2a4967a68e93b69d2cdfedd8baa6b4b24c86ef9f7b",
-    "profile_sha256": "a722a3867d32f43dbde9791d44a782abd8539139d2dede260f0687a9c1722fba"
+    "profile_sha256": "d274430438804ca4cd1b4d4e83aabb7d9304521a7a42182c1d27545694ad5953"
   },
   "mutation_id": "neg_005_metric_scale_low",
   "outcome": "killed_behaviorally",
@@ -36,6 +36,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

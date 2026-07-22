@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_reset_ignored/certification.json",
-        "certification_sha256": "b10c6ff8f73da8f8edf6c19759e0aeb4ee7f3b85def5bcc3ec80b0860ea1d693",
+        "certification_sha256": "89f5e106472e65bd9785ac07c45aecb1ff23b30e522366fbb379a9bc5f0b1a1f",
         "fault_class": "missing_reset",
-        "mutation_bundle_sha256": "d20e95613ccbe6e5f89ba50f7951661d1af879598dd0b3de15d5e41f40c30877",
+        "mutation_bundle_sha256": "a0eb1508ebbe3a8566f69eab222d4ad4994611a21f8e9c325cd7e3b2df708790",
         "mutation_id": "neg_001_reset_ignored",
         "source_catalog_certification_path": "negative_variants/neg_001_reset_ignored/certification.json",
         "trigger_condition": "reset is asserted while enable is high",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_half_overload/certification.json",
-        "certification_sha256": "4dec2003cfb214930610cba557707a4a6ed46a3fac03bb66333ec5d50d1cc58f",
+        "certification_sha256": "dca1a117b280cfbfa7820801ccb1e299dd17278cf1a3323d01654aeb3206d7ad",
         "fault_class": "wrong_gain",
-        "mutation_bundle_sha256": "82fb4a3b7f88c761765b51ffa8c42221cc5408286f74b41f7133f620bc1410ca",
+        "mutation_bundle_sha256": "1129570803e0798a52f0275bd635cc52ff229ef1e67542c48515c33c422eb8c3",
         "mutation_id": "neg_003_half_overload",
         "source_catalog_certification_path": "negative_variants/neg_003_half_overload/certification.json",
         "trigger_condition": "load_demand exceeds demand_limit",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_regulation_always_ok/certification.json",
-        "certification_sha256": "9977ad5b6f199238871f27f0f1a15aac171de668e1eac37d7c0e085bca9bc05c",
+        "certification_sha256": "bfbf2505a39402d1172ea8c5a476e4e1226eaa220b1a57a73c16ad8106daa607",
         "fault_class": "qualification_error",
-        "mutation_bundle_sha256": "1b262b80f5ddb62ba592dd1f846918c77b7b3911a4be03a33da9891216940ebb",
+        "mutation_bundle_sha256": "0e0101b752891363ed7c22b02ab0a19f64734f1f9caa7dc399b1f4b4d10cc4e4",
         "mutation_id": "neg_004_regulation_always_ok",
         "source_catalog_certification_path": "negative_variants/neg_004_regulation_always_ok/certification.json",
         "trigger_condition": "the regulator is enabled in dropout or overload",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_wrong_reference/certification.json",
-        "certification_sha256": "ae053c001d87beabdffcc35da2efce08215c8c458968ec312be7998b2cee0525",
+        "certification_sha256": "8a76f94b179ebbcfb6c86b14d6656ac6a90e9d37283d2ee9aad14d81bfbe5e96",
         "fault_class": "wrong_target",
-        "mutation_bundle_sha256": "5c78b54a0862768931b80bd2b78e93969932415c3516215b3b48379556255d54",
+        "mutation_bundle_sha256": "967774ff760cfcf956e406b4d7b8687df316d5a2a6a72fcec6967e16923fb97c",
         "mutation_id": "neg_005_wrong_reference",
         "source_catalog_certification_path": "negative_variants/neg_005_wrong_reference/certification.json",
         "trigger_condition": "normal enabled operation has adequate headroom",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_dropout_sign/certification.json",
-        "certification_sha256": "ff3ee2200a73fd6d9d9cd17b58d29e6b841ac996c0760bf4742eeba95432d7c3",
+        "certification_sha256": "6f4e200bb95acc9d2225447fa5b745928f4a274fc78a4c28c7196af17fab127c",
         "fault_class": "wrong_polarity",
-        "mutation_bundle_sha256": "a065beeb7965927a9e4dfa37c60f2cfaa749d5da73df97837cb6f0316e2818bc",
+        "mutation_bundle_sha256": "8c742b610f8f347404cc1b1a0a8434096bec71486b2078102456a81bf6fda419",
         "mutation_id": "neg_002_wrong_dropout_sign",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_dropout_sign/certification.json",
         "trigger_condition": "vin is below vref plus dropout",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "3c9a6d1b5f346194d33a0bd809e1144a7ce899e422efe3043b6a2530bee78038",
       "score_deck_sha256": "f6c3af69eab80b17a5231c3f289d739c0f02eca00edd1bbc7b8179c1c09840ec",
-      "task_certification_sha256": "6a63d3bce316070df417dad10452d72270502f4eb8fefca50f2d478521edfe61",
-      "task_record_sha256": "257a9ec62cabac92548ccc4a1d0ad4229abf26f006241a582fdab6f34754e9f9"
+      "task_certification_sha256": "f0c6abb380c297425d610fd25bf3261ee51c13079dca3584bba7025196faedca",
+      "task_record_sha256": "8d5228b4c40bbc22efca41b2b31f71dd2abd4110116aff1952e9d235be55ef25"
     },
     "release_dir": "378-current-limited-regulator-macro"
   }

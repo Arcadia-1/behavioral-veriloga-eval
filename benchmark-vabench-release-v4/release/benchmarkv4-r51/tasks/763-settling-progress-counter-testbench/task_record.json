@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "263-settling-progress-counter",
+  "checker_task_id": "v4_263_settling_progress_counter",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "a896e408933620d8eeb3a6b91a7b3c64557848b45a5aaacdf0c2e80372e377a1",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "6aaf2e484cd288e969433a25bd00ce2900fd5a212eaf73d35732c59e054cd0f2",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "263",
+  "family_spec_sha256": "d2b935612cb88bc2f0314531aff94ff77bbcc4b826a6ff6c65e028470e67aba6",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "85628a20bde92e66560b574796a61e154c0d0152b72d466818f7579382944979",
+  "public_contract": "tasks/763-settling-progress-counter-testbench/public_contract.json",
+  "public_contract_sha256": "c3db0b20b684182ab20b3917a5b20ed081d92cbc12ece66ef884023d22e0e686",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/763-settling-progress-counter-testbench",
+  "task_id": "v4-763"
+}

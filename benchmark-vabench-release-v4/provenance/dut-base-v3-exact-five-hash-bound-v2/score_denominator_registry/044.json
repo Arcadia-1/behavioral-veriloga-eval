@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001/certification.json",
-        "certification_sha256": "08c59a56961e4de2d54aa443df5f6822e0cc352f2bb3eb0d2fdc957c813f6c7b",
+        "certification_sha256": "ed02a4ad812ba370ab370c01d23cd6bb5ffea6ad3ccb869aef85fc1d87c24d6d",
         "fault_class": "passes_nominal_smoke_cases_but_fails_an_endpoint",
-        "mutation_bundle_sha256": "7ec12b74455a64d12cb62d180092ccc607a3b32e231afd185bbbbfc3fb87d4c9",
+        "mutation_bundle_sha256": "379273ee9b226680e3c8e038e15af227215c92ff8df11f726faa83c6abf5920d",
         "mutation_id": "neg_001",
         "source_catalog_certification_path": "negative_variants/neg_001/certification.json",
         "trigger_condition": "Passes nominal/smoke cases but fails an endpoint, threshold, saturation, or settling boundary.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003/certification.json",
-        "certification_sha256": "d2896a13b201e2a567b4adb3345ddd61eaf144182f9b0d52542f174845f3ef4d",
+        "certification_sha256": "cf974db3544099e76032be90fe75d325739ceed79f69207ca9262962cf26acd4",
         "fault_class": "passes_positive_or_nominal_path_but_fails_sign_f",
-        "mutation_bundle_sha256": "0b0d1ebb53f0e189f356ee7eebe011e4b47174eaf3e830878e5c802991160f31",
+        "mutation_bundle_sha256": "1a75772446da2d6310636b04419ecb0b24b4d094f05ecc87f39307f76e214e30",
         "mutation_id": "neg_003",
         "source_catalog_certification_path": "negative_variants/neg_003/certification.json",
         "trigger_condition": "Passes positive or nominal path but fails sign, feedback direction, I/Q polarity, or trim direction.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004/certification.json",
-        "certification_sha256": "66ca9a47ab20287dfb108c007ca77f5f9cf3a9c6438b52a81027cd0d8441b364",
+        "certification_sha256": "3fa1952bc66a3a91a5865625ccadb6e1d88b22c28db1cac04b02a25de236941d",
         "fault_class": "passes_steady_state_behavior_but_fails_reset_ena",
-        "mutation_bundle_sha256": "b8b29461a296b4f323aba1ba5031d48e1822261d8a8f6fc78d93be44796c11e2",
+        "mutation_bundle_sha256": "28daeeac857391772b52c0f746d8951fe9714c11d20c0532e469052a7d1cfeec",
         "mutation_id": "neg_004",
         "source_catalog_certification_path": "negative_variants/neg_004/certification.json",
         "trigger_condition": "Passes steady-state behavior but fails reset, enable, initial condition, or done/ready assertion.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005/certification.json",
-        "certification_sha256": "f32decd59108218c64615968f37e607a62a1814b27f461f31b1d64a201e32688",
+        "certification_sha256": "46593576c3fe199b127a9eb5fe9a24bbff99701fa9afe40c2a85667fdf7558be",
         "fault_class": "produces_plausible_behavior_but_fails_a_metric_w",
-        "mutation_bundle_sha256": "e05977ec5ac130fd9280ede675aae02375e68946eb5cf6933a9b6e1b404c5bb1",
+        "mutation_bundle_sha256": "8134e2e4e0398d85741c22ecd4a88b566f9548c61aa970bbcd3140be8bd88179",
         "mutation_id": "neg_005",
         "source_catalog_certification_path": "negative_variants/neg_005/certification.json",
         "trigger_condition": "Produces plausible behavior but fails a metric writer, latency, count, or measurement output.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002/certification.json",
-        "certification_sha256": "ac973bb4a6861d8833e5c8a3e9ac536c4937f3b9658126c07facf884f393ffe3",
+        "certification_sha256": "2342b31d0dfcd6a63e3675af6a2ef297a3a68dac6783fc96b004b0a1ac7c216b",
         "fault_class": "passes_interface_and_broad_waveform_checks_but_f",
-        "mutation_bundle_sha256": "9662e5c2b7af93344b90c7c969ce3dcdaa838b2d3fbdcec09136fcfb07520909",
+        "mutation_bundle_sha256": "25029d02869e4aa2dcd720fdacfe2a906765c069e5796ce1e0e44527f8eab58d",
         "mutation_id": "neg_002",
         "source_catalog_certification_path": "negative_variants/neg_002/certification.json",
         "trigger_condition": "Passes interface and broad waveform checks but fails one edge, timer, sample, lock, or reacquire window.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "592f3789038597b21114022d9987b41b99e25154cf567d8adcd34dbbd5602892",
       "score_deck_sha256": "f617f5e76bd6eda3afded60069dfa3c03375ca92bc75c3ca36f14657838fd4fb",
-      "task_certification_sha256": "1cbc5b7f3c7c9681cc609a6e9e58c11ef919e79c6c0c4cdf580a329470d7d931",
-      "task_record_sha256": "c249e639619a17525869c326db7363252002366eb26b0be00f6134e0fc7971aa"
+      "task_certification_sha256": "d81109f7c913068c70a278ea09e0e98201449c89e865f4fd11afc53f434027c1",
+      "task_record_sha256": "4655f16711578651c259382865299b08d1022143b5552d5a7528a24d5ad6dadc"
     },
     "release_dir": "044-successive-approximation-calibration-search-fsm"
   }

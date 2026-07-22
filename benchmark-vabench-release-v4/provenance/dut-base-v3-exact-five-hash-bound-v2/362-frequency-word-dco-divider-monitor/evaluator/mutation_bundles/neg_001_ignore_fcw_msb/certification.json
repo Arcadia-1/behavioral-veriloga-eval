@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_FREQUENCY_WORD_MAPPING, P_RESTART_MONOTONICITY satisfy the public contract; fault class code_decode_error is rejected",
-    "observed": "EVAS: P_RESET_DISABLE_STOP status=PASS mismatch_count=0 allowed=0 checks=4 expected=clocks=metric=0 observed=max_clear_gap=0 time=0 gap=0 | P_FREQUENCY_WORD_MAPPING status=FAIL mismatch_count=257 allowed=23 checks=477 expected=metric_normalizes_80_to_250MHz observed=sampled=477 time=8.385e-08 gap=0.338824 | P_DIVIDER_MONITOR status=PASS mismatch_count=0 allowed=0 checks=2 expected=four_dco_rises_per_div_toggle observed=intervals=2 time=0 gap=0 | P_RESTART_MONOTONICITY status=FAIL mismatch_count=3 allowed=0 checks=5 expected=half_period_restart_and_nondecreasing_rate observed=codes=[0, 21, 46] time=1.7105e-07 gap=1.4e+07",
+    "observed": "EVAS: P_RESET_DISABLE_STOP status=PASS mismatch_count=0 allowed=0 checks=4 expected=clocks=metric=0 observed=max_clear_gap=0 time=0 gap=0 | P_FREQUENCY_WORD_MAPPING status=FAIL mismatch_count=246 allowed=0 checks=469 expected=metric_normalizes_80_to_250MHz_outside_explicit_update_transients observed=sampled=469 excluded_transients=8 time=8.42e-08 gap=0.338824 | P_DIVIDER_MONITOR status=PASS mismatch_count=0 allowed=0 checks=2 expected=four_dco_rises_per_div_toggle observed=intervals=2 time=0 gap=0 | P_RESTART_MONOTONICITY status=FAIL mismatch_count=3 allowed=0 checks=5 expected=half_period_restart_and_nondecreasing_rate observed=codes=[0, 21, 46] time=1.7105e-07 gap=1.4e+07",
     "violated_property_ids": [
       "P_FREQUENCY_WORD_MAPPING",
       "P_RESTART_MONOTONICITY"
@@ -18,10 +18,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_362_frequency_word_dco_divider_monitor",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "06d620060a5e6a5c573a7832c4f7489a218814a65395a108d5019fde14f09f02",
     "trace_row_count": 3957
   },
   "family_id": "362",
@@ -37,6 +37,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

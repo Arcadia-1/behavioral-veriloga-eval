@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_low_marker_count/certification.json",
-        "certification_sha256": "a05ad545a43332a42302e430ed8cfd18e5cd3d05d1d9a7c6e83de3dddbe01883",
+        "certification_sha256": "c259e2328e032ab079e86c552dec1f42a4909fcf40809fd9a6c6d18df382644e",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "7bb3aef9ae9ef6524901975c44287078c5295aa92a2b2afdde320744899ad753",
+        "mutation_bundle_sha256": "7e3a070b44748a505ef3110515810e3ce3b30b84128958bd708333bd664c5c57",
         "mutation_id": "neg_004_wrong_low_marker_count",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_low_marker_count/certification.json",
         "trigger_condition": "Drops the output low at count 7 instead of count 8.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_always_divide_by_16/certification.json",
-        "certification_sha256": "d876cfadf4795b360c138b6a5327bcacf326feed6d79a07709902f4b3544e260",
+        "certification_sha256": "186a58d3c2b5e527a032f638434984dbee49b50e15a18813f46d4d32afb3c736",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "6efead77dc7821efec4d8fb010a379cee23a3f903589921d2f30f111aa6a7f85",
+        "mutation_bundle_sha256": "3cf73d771cd7e3236dc34a49cc491be3df029a0269827a9defae7e033103811b",
         "mutation_id": "neg_002_always_divide_by_16",
         "source_catalog_certification_path": "negative_variants/neg_002_always_divide_by_16/certification.json",
         "trigger_condition": "Ignores mc and always resets at divide-by-16.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "cb78be0987da3c40af1bc287c57351305f52514d94e7b8439558a89d5b17dd2a",
+        "certification_sha256": "1d67aada61f7e0657c7c3cce2c690f5d0a9f3defe76f9b6d25b64c2f54b5aa86",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "20c555c47c1479cac26f02f35d24828e424847e791bfb2e26756e0e9f2f5d439",
+        "mutation_bundle_sha256": "bf3c0b19978285e6387a3a9513a6eeae710a2127487c3b7d3cd36df0629e68f1",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Dual Modulus Divider 16 17: scales the metric output, preserving the main path while failing measurement checks.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "366914938971dbe27b9e5000dbc9f11ae6084d4299a8c61ad1904728275eb66b",
+        "certification_sha256": "8013476f7e7ab1795d6cfe4f389853e20dfbd31d1cdef52f286e454961af3bba",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "df14da20b3aca843c90d33ca63f883009c8d983458f58e181b501290a46a66a8",
+        "mutation_bundle_sha256": "49e2477033af12173a24dadd528df8f929cd325226471400389d7a658a012b91",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_always_divide_by_17/certification.json",
-        "certification_sha256": "89e470655c8a34249342b6e2dd7bcd91ffbe1f958d1e52e1db4c2bc2ad35e8bb",
+        "certification_sha256": "2155a24f5a9ee633b5aa69261807729bc28b34640cc1c63afe331e2518b5a9a1",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "862aa8f925d5e82bcba6021a1e3a2a85f1196738991d5cfc1b6e592d99b5ddfb",
+        "mutation_bundle_sha256": "b254caf2a711fbcb90818d7ea2366ce7b5c33861dd0a433ee95bc2660cf69fa3",
         "mutation_id": "neg_003_always_divide_by_17",
         "source_catalog_certification_path": "negative_variants/neg_003_always_divide_by_17/certification.json",
         "trigger_condition": "Ignores mc and always extends to divide-by-17.",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "b9e8e52d74a5153e030347c5f915f8be4e5d15126b3d194ebc6d7834871945ed",
       "score_deck_sha256": "8b17a83c3be1a5360b608aa829c8b7003c8a8668de6b1a8eb8e0b1137f1f9a32",
-      "task_certification_sha256": "620a552877cae87dd0ed44cb21cdbfeebcf72e74e2e62fc12c82676335f9e6e8",
-      "task_record_sha256": "de5f5cb757b6ab179ddf7873f664787e9570f07c4e446d3fc2b79704755afc25"
+      "task_certification_sha256": "6fb503127e73500d4d0bda3f5dae275c9626b096af6357ee62dec0c1ba38c532",
+      "task_record_sha256": "f298e4ca151b10cf1f53a71a7b9c0d4a4c7843ddb9f7392684c7bc1e9ba96103"
     },
     "release_dir": "149-dual-modulus-divider-16-17"
   }

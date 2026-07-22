@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_GENERATE_CLK_OUT_EDGES_DELAYED_FROM, P_PHASE_METRIC_MUST_EXPOSE_THE_DECODED, P_QUADRANT_1_QUADRANT_0_MUST_EXPOSE satisfy the public contract; fault class metric_or_observable_fault is rejected",
-    "observed": "EVAS: P_RESET_CLEAR checked=2 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0 ; P_PHASE_METRIC checked=239 mismatch_count=178 expected=phase_metric=0.203226 observed=phase_metric=0.101613 sample_time=1.95e-08 metric_gap=0.101613 ; P_QUADRANT_CODE checked=239 mismatch_count=143 expected=quadrant_1/0=0/1 observed=quadrant_1/0=0/0 sample_time=2.94e-08 metric_gap=1 ; P_CLOCK_ACTIVITY checked=1 mismatch_count=1 expected=checked>=12 code_low=true code_high=true clk_activity=true observed=checked=239 code_low=True code_high=True clk_activity=False sample_time=9.2e-08 metric_gap=1",
+    "observed": "EVAS: P_RESET_CLEAR checked=2 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0 ; P_PHASE_METRIC checked=239 mismatch_count=178 expected=phase_metric=0.203226 observed=phase_metric=0.101613 sample_time=1.95e-08 metric_gap=0.101613 ; P_QUADRANT_CODE checked=239 mismatch_count=143 expected=quadrant_1/0=0/1 observed=quadrant_1/0=0/0 sample_time=2.94e-08 metric_gap=1 ; P_CLOCK_ACTIVITY checked=1 mismatch_count=1 expected=checked>=12 code_low=true code_high=true clk_activity=true observed=checked=239 code_low=True code_high=True clk_activity=False sample_time=9.2e-08 metric_gap=1 ; P_SELECTED_EDGE_DELAY checked=1 mismatch_count=2 expected=paired_edges>=5 represented_quadrants>=3 observed=paired_edges=0 represented_quadrants=[] sample_time=9.2e-08 metric_gap=8",
     "violated_property_ids": [
       "P_GENERATE_CLK_OUT_EDGES_DELAYED_FROM",
       "P_PHASE_METRIC_MUST_EXPOSE_THE_DECODED",
@@ -19,10 +19,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_358_quadrature_phase_interpolator",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "06d620060a5e6a5c573a7832c4f7489a218814a65395a108d5019fde14f09f02",
     "trace_row_count": 1795
   },
   "family_id": "358",
@@ -38,6 +38,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

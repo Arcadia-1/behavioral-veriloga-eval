@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_temperature_subsampled_on_falling_edge/certification.json",
-        "certification_sha256": "f30204cdf33109e1f86c87fdaa97a03987b0feb4f26606b38b123d325a7ca30e",
+        "certification_sha256": "42cafb734b2457a17005800ddc620139eb75b51f11d4e78661e0ea034ac95d93",
         "fault_class": "temperature_compared_only_every_fourth_falling_edge",
-        "mutation_bundle_sha256": "e7377c497e7addb3411f8d9d1452ca5ed7d77b73caca6721589bf0b1380cd39c",
+        "mutation_bundle_sha256": "3c78fa30c4e32e9f7394477dcffb20a20b99fafa2774e1fef60cad610c1a6238",
         "mutation_id": "neg_002_temperature_subsampled_on_falling_edge",
         "source_catalog_certification_path": "negative_variants/neg_002_temperature_subsampled_on_falling_edge/certification.json",
         "trigger_condition": "temp_sense changes before an enabled rising clock edge",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_below_trip_command_attenuated/certification.json",
-        "certification_sha256": "22b08cdc843e36400cc4427267349a41520e0e1c5f3de8f9712360a5be8d6ded",
+        "certification_sha256": "a71ec6d243253e58a7be82796fbea0eb27f78bd47b0b6f45ebdbefe03a812e2a",
         "fault_class": "below_trip_command_incorrectly_attenuated",
-        "mutation_bundle_sha256": "90bd62ff88935e09d532c9354b774f2f642b68081fb3a6efebe97e510553ff6f",
+        "mutation_bundle_sha256": "92211a899cbfe33e39dbcc9021000cdb651952b6cc77cc993265871090fe4ed8",
         "mutation_id": "neg_003_below_trip_command_attenuated",
         "source_catalog_certification_path": "negative_variants/neg_003_below_trip_command_attenuated/certification.json",
         "trigger_condition": "temperature is below temp_trip while the limiter is enabled",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_foldback_state_stuck_after_overtemperature/certification.json",
-        "certification_sha256": "df7727e8e2727a3e169539b736b4d80c6d23c678ad299ea11221fb90f23b2112",
+        "certification_sha256": "709a559b2acd634bfbe6d86314bc91f240397d081346c9e2232fdcbf404e13e4",
         "fault_class": "foldback_reduction_bypassed_and_metric_stuck_after_overtemperature",
-        "mutation_bundle_sha256": "3a376f0e0640f3e27a6ab0a38ef46021825e859b9d9cb44c605d1740dd6e7d56",
+        "mutation_bundle_sha256": "94318dfbff88777d451f05c059d1624a2103e2a8d55b8998e8019094d9132846",
         "mutation_id": "neg_004_foldback_state_stuck_after_overtemperature",
         "source_catalog_certification_path": "negative_variants/neg_004_foldback_state_stuck_after_overtemperature/certification.json",
         "trigger_condition": "temperature rises above temp_trip and later returns below the threshold while the limiter remains enabled",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_thermal_ok_stuck_high/certification.json",
-        "certification_sha256": "f77305735bc0250b0186c33c810f6c67ba61a290b960d38ce3459b7fc4692152",
+        "certification_sha256": "b30136b68654992bf188b27c2ba5ebbfd8711e9a5a85b3dd64526467a034c316",
         "fault_class": "thermal_ok_ignores_foldback_activity",
-        "mutation_bundle_sha256": "cf74182ab65bbcc8112a398e2d6300f9e3c2939784b2fba4b7f954046929f35f",
+        "mutation_bundle_sha256": "ae673da6a18ca27dacea64210c05ddf4130bf6cf33ac2038bf9e7596a18b1084",
         "mutation_id": "neg_005_thermal_ok_stuck_high",
         "source_catalog_certification_path": "negative_variants/neg_005_thermal_ok_stuck_high/certification.json",
         "trigger_condition": "temperature exceeds the foldback trip point while the controller is enabled",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_disable_retains_limited_command/certification.json",
-        "certification_sha256": "bdc7785ba0e4ab904d8a7515eb8db84deefcae0ffbbf9abb0326a5eb8d2de5bc",
+        "certification_sha256": "0d3dce2095e4dc2e4df19a1e0209d97d936bf679ee443c194b69a1ab3511f4fa",
         "fault_class": "disable_clear_retains_limited_command",
-        "mutation_bundle_sha256": "7229f90c34bdf311e41f21dd3f9db3df1f74e4fb0d669f70bd86ed051795219c",
+        "mutation_bundle_sha256": "af4bb089090b6c6e9c2a7e861ec1cdd9cde53c77b8dc71104d99bea734d59c98",
         "mutation_id": "neg_001_disable_retains_limited_command",
         "source_catalog_certification_path": "negative_variants/neg_001_disable_retains_limited_command/certification.json",
         "trigger_condition": "reset is asserted or enable is low while power_cmd remains nonzero",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "22b8a3fd1eaa9281a4cd2502f83d167fe8533ba72549415d1d1a7f2228be55a6",
       "score_deck_sha256": "64f538d862a0944bf18f37a084d62ef2399d3df32d43d1e2fcd05eb351108d62",
-      "task_certification_sha256": "96fa09030606fa5f5235dd5569cbfd61f6d002dcc995e128c937bd505f925ee4",
-      "task_record_sha256": "f75ba5a59b1c99b68178e4672e361befac23cd42c5296f0061ff54262535cedc"
+      "task_certification_sha256": "6d0c1c764043dce43cafd084ea2d749d93659362b257dd03a926ba0eca6bf60e",
+      "task_record_sha256": "0be4a0d9a47bc4711f183cfe65b6b5746ebc131a1f91f3e8df478fd0d4aa70c5"
     },
     "release_dir": "340-thermal-foldback-power-limiter"
   }

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "1d81e20c3b14516f7d65ac4f12ae3234c1b6b0de4052ea71e5a35fedf2a28f56",
+        "certification_sha256": "d064d875b1937abf72af56c93399ebd2ca02f0b929454013907dcb738f543013",
         "fault_class": "never_settles",
-        "mutation_bundle_sha256": "9fa8b74ec64f2c4dd77965547bd9260862eee9ab915afeb0a6b8c01044947a66",
+        "mutation_bundle_sha256": "db2a585e6b6cd2dd3ac0d2646b520cf69f119e6ee41ca1cd224478c2b56f4b8f",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "stimulus exercises never settles against the public observable contract",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wide_tol/certification.json",
-        "certification_sha256": "9215d2781e6ee0790b3c8b0f975f478e45343bff6f9ad80e51323356101d0b8a",
+        "certification_sha256": "9f8337ab40c4b816a4e76ee48146c0374cb26d46d6647125708a3dd6e676663b",
         "fault_class": "uses_double_tolerance",
-        "mutation_bundle_sha256": "979350324fe7cb80fa6b0e765f622ab645b118b99bcbdc8d0d6d1cc6d2d4ae7e",
+        "mutation_bundle_sha256": "d8e1074bd953d8833b174ed73546a15ff13398f2fad58fb120f5c59491a7c9f3",
         "mutation_id": "neg_003_wide_tol",
         "source_catalog_certification_path": "negative_variants/neg_003_wide_tol/certification.json",
         "trigger_condition": "stimulus exercises uses double tolerance against the public observable contract",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_reset/certification.json",
-        "certification_sha256": "8c490346220ce85efb2ae322764f4f3d4834ab498c658b323cf1682937315f13",
+        "certification_sha256": "ed8a0c9c7458666d7a79a97bca905b5e063b28c15741f9ea6dc9789ce455cde5",
         "fault_class": "does_not_clear_outside_window",
-        "mutation_bundle_sha256": "da417dbdc957373adba2a589cf35422fb0389f29734d8a0108292a321497048b",
+        "mutation_bundle_sha256": "d9a406d3bbd4c61324ab2f755ee280402ed0d02afe3b4b061d4c2c2175ea5082",
         "mutation_id": "neg_004_no_reset",
         "source_catalog_certification_path": "negative_variants/neg_004_no_reset/certification.json",
         "trigger_condition": "stimulus exercises does not clear outside window against the public observable contract",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_wrong_code/certification.json",
-        "certification_sha256": "d321617d40090ab9e735cff168d2ca0c54efcf7292f2b985982d55d67ad42a39",
+        "certification_sha256": "52aa207160a82e44481b9d3f6761dc5b6aa776ffbbef045d8bacc14ad83a3aa6",
         "fault_class": "reports_settle_time_instead_of_entry_time",
-        "mutation_bundle_sha256": "991e513ea13957cf6da68ce348b81b0fc93f5f21168d04aa5a914b7e1252ddd5",
+        "mutation_bundle_sha256": "cda350839c673eb99b12c3fd9cbd25a56a14bfa3baac3a48eba4f3b5c6f7acf0",
         "mutation_id": "neg_005_wrong_code",
         "source_catalog_certification_path": "negative_variants/neg_005_wrong_code/certification.json",
         "trigger_condition": "stimulus exercises reports settle time instead of entry time against the public observable contract",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_reversed_code_bits/certification.json",
-        "certification_sha256": "1f1e3433ae9ef14ef5443152ee0e657e646a9322f77eea945c7a2a229e8cb9d6",
+        "certification_sha256": "671da254b596ab897cd7fcd5fac65b872ff26b47d802c3efc1c8735f4715d94d",
         "fault_class": "reversed_time_code_bit_order",
-        "mutation_bundle_sha256": "6b100f18ce633265d4f35f68251208fa401868d82ba2f4bdbddd998b33da0a73",
+        "mutation_bundle_sha256": "d62e0102f45f2dd47fb704661f6a2bdeabcc7b318d0bf2276974eeb3fcc8225b",
         "mutation_id": "neg_006_reversed_code_bits",
         "source_catalog_certification_path": "negative_variants/neg_006_reversed_code_bits/certification.json",
         "trigger_condition": "stimulus exercises reversed t_code bit significance against the public observable contract",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "3271c591af8ab46415f347c71e55c52f7e1367dfca807af96e46ec4986eef373",
       "score_deck_sha256": "94080a248dbd399c246eb503ada221c6031d6f1472d4061bfd2678b62e743849",
-      "task_certification_sha256": "7c83d05147571040b2ca15016fcd1ca93e81f807283141df80d7522078db7ac9",
-      "task_record_sha256": "6329bb4edbc5ea035079d686ecaa1daad5bfe2c227519f2aea6cbaef772ab1fe"
+      "task_certification_sha256": "34734f8bf791c52789725a0ed1b0bf6ebfd18f94ac8ea6d2421f78f6e112204d",
+      "task_record_sha256": "faaad7e80531943ea96a5b80c5735921c935267c1b10a61b2bb5e7a77cdcda43"
     },
     "release_dir": "063-settling-window-detector"
   }

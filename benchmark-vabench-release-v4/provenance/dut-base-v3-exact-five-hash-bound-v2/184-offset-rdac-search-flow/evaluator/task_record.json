@@ -3,28 +3,28 @@
   "checker_task_id": "v4_184_offset_rdac_search_flow",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "39aa35f0ce5fc5d51e65955f9fa971c69a624b5d3031a771e32ac4716f966693",
+    "certification.json": "5d5f38f76d5b45c3d985048a340063b0cc230319ec9d82f079a456a867c31b51",
     "checker_profile.json": "e7b954cd6e435183bc7247d9d313b67cbd9f748055dce4574744bd48e25bc6c4",
-    "derivation_manifest.json": "e33529fad3499128c6a28badf975616cc4502eb860a2e83a569938eaa18a70b3",
+    "derivation_manifest.json": "e60d5b58b1da478334913b328b34bd930dfd4076a43e7d5d62dadd3bdff28479",
     "family_spec.json": "03ee1f041a7dc9e6df6a957e5ed30e34f054883cdab2ab3be90eadd1fa3a7544",
     "harness_spec.json": "94132070bf63ce336c7aabf394bc1348fd64a67950dc2dd2ab551ffac3a6ce92",
-    "mutation_catalog.json": "ee6a2af9117ec67ce29b60dcac0e61bc06cf9a2bf7f998447cbaf4b5dae82fa3",
+    "mutation_catalog.json": "1d4d8cb9a07023646662a53e0c142bff19a45a31b1f881bdbed196827e195963",
     "profiles/feedback.json": "576e72baa786a8f4746bf802f07e0548bd907512079d7c8b4e4481046d07f67d",
     "profiles/score.json": "d5ae5c4d7ab7d0219fd1de1011970276e2a239f0a130313841ccaf22a7bc9016",
-    "score_tb.scs": "20191c28a71979b278e026309bd277e52380e6b6509a7f5ade9d7fd643947635",
+    "score_tb.scs": "e46d54501f39811b43ba51a85f2ddfeae7034bbe3e774d5b08884fcd582f6cfd",
     "solution_tree": "e78c4d141aaf9efcf1fe37409e1905dd2f02d70f486845d69b0a671a24d81794",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
   "form": "dut",
   "public_hashes": {
-    "feedback_tb.scs": "081cfbf4b7c60a61ac351649b8f275ec054f9ac2141d03214bce7bdbc0d6e4cd",
+    "feedback_tb.scs": "7275d43024f2f75bb75bf16d7811a5140f3b96cf6164053edbc5370ae8e921eb",
     "instruction.md": "096339d5a15a34be0e821b8113dae98e8b94b74acf8e2370828a35f2b5642c12",
     "public_contract.json": "b16df999115cf02f1e15c5a588cd60d83dcb7e1bce6988078bc3e00b08856985"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "39aa35f0ce5fc5d51e65955f9fa971c69a624b5d3031a771e32ac4716f966693"
+    "sha256": "5d5f38f76d5b45c3d985048a340063b0cc230319ec9d82f079a456a867c31b51"
   },
   "release_dir": "184-offset-rdac-search-flow",
   "schema_version": "v4-canonical-dut-release-task-v1",

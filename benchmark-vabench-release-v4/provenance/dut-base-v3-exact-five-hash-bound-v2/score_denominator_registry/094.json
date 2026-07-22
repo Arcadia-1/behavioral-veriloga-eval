@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "66ec86a19b64966801ca03f77bea32ac9afbe7c0af5d6308e7ef6cfe9cdb0781",
+        "certification_sha256": "792c43a590b64e4d5f7f7efe90fceaddda1039ac30d03f13d024e812ef46def8",
         "fault_class": "threshold_boundary_error",
-        "mutation_bundle_sha256": "cb5c8e996c0aba00790b1a3f3c1bd99e3859d87b8b2e95cd845a1f47bd645729",
+        "mutation_bundle_sha256": "d3429b96eaebe816337b154a5a9c07b528d2c126756208d9de5900e6cdad86ed",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "boundary stimulus crosses the public threshold conditions for IQ Downconversion Chain",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "48bce8bbcc52ae1ee71a5ec4addf33b8f191654e300c90044211c36d7c0184b0",
+        "certification_sha256": "3706b0be03edb57a7969d1cbc350a695baad3b8a0925abc191f06746d1d085a9",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "13188074c2c9dcf2ae60a16e9ec9e9a7e9362972d8d857220c54ade634946b0f",
+        "mutation_bundle_sha256": "05b9696a042343bff0d5ade4794d1ff0c473a9687a1dfa8152608ea90aa91e5a",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for IQ Downconversion Chain",
@@ -34,9 +34,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "07b88179fec98d20820aa134f9b75bc7798c791ab31803a89a7f4cac1c290eae",
+        "certification_sha256": "884264cb523baa37a86ff6e769e5ce9df222af6f5ae2fcf5b2649fbe4ade3680",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "809788489fb88c58e599374915f35b3bcf6e3d34936e51a9b2b45969af5a265c",
+        "mutation_bundle_sha256": "584fe318a0c44bf90e54375c92f68a3ebcb03ee2b5a8e76b4bffa90e2b458078",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "nonzero behavioral stimulus requires observable IQ Downconversion Chain outputs",
@@ -47,9 +47,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "0b847a40cede1821e168c085f40c268d85724e653ae4fe1e5c22716d3d47c1bf",
+        "certification_sha256": "cef9e122a4f30d277c664aa9f8434685362edf1c0d2967a45ec85666953ee068",
         "fault_class": "reset_semantics_error",
-        "mutation_bundle_sha256": "c0b287686299f244b00e6d79658060c0ac0807fb407d78ca659d93ce0f8ddb11",
+        "mutation_bundle_sha256": "5486db034fcbc7fa7d6d9ef47eca47c17b6c4dced7b3c1f86bb393afc3da2cbe",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "reset/recovery stimulus exercises IQ Downconversion Chain state override behavior",
@@ -60,9 +60,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "1cad26b454f3bf26eed53049f69aee1c08a3b4a8be3c2103d781ba954c12762f",
+        "certification_sha256": "317dbceaadf6ff30160edef2e56a7bf45b4803cb40a913239998b2ae1d330519",
         "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "2fa9327c21c46936593e50ab86cd49471ba1f501600a4999cfe7099e8a1de350",
+        "mutation_bundle_sha256": "2cfdf75e97c8ea0fb307d6a793cbf14c3e020642773fb3ace13a42beb7675787",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "score stimulus observes the public metric/output scaling for IQ Downconversion Chain",
@@ -77,8 +77,8 @@
     "hashes": {
       "mutation_catalog_sha256": "6674edfac98ee0093c08820fdaae5c16801a3ec565bbe3ebbfd4f50de952037a",
       "score_deck_sha256": "22482296baeefd60cf09a9bb01af4a54ee4fefb791ec5463ef0c29620cee7a1b",
-      "task_certification_sha256": "2587749f98c46798ebce4abb7842bd71427ed401fcfe978b134c25b88ab7eac0",
-      "task_record_sha256": "07bb2e65d0bd07b32b25b7b7c4654e6a6bf72e0608d3a59ebc9b9c3ad22bbbbd"
+      "task_certification_sha256": "2713354ea83772f2b85f42172bc59d4746291e328765b9786e62dc22ff9f24ff",
+      "task_record_sha256": "72e045afa5516a7f2b2cc07139fe4fc989fb7b8dc87b9f747f6bd70303161a20"
     },
     "release_dir": "094-iq-downconversion-chain"
   }

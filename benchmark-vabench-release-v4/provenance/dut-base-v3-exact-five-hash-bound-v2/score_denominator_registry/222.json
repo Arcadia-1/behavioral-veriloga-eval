@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_code_offset_plus_one/certification.json",
-        "certification_sha256": "0fa9481aa310b4f75c41d3cd66e0302146ea828fa7bd6f31d5504d5845c2200f",
+        "certification_sha256": "abbca93f38f6b763f811eb99961adb2d0a0592ccd16a455fce2b7891fb694b94",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "e9f86e61fee1d79a3b830b021b05dc280c7d26908c5cc342bb2e7cc633f6068d",
+        "mutation_bundle_sha256": "8487cccb288fe90f43b6e4fc4e7bdefddc747c1d2ac336f588753ccfe81de8af",
         "mutation_id": "neg_002_code_offset_plus_one",
         "source_catalog_certification_path": "negative_variants/neg_002_code_offset_plus_one/certification.json",
         "trigger_condition": "Adds an erroneous +1 offset after rounding the trim code.",
@@ -21,9 +21,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "d31439a5871a81d66f6a3351fdefe27d9bb6e3a08c0f2fc56eed153baf2905a2",
+        "certification_sha256": "5abfe18a21c8f4cb63e5a7d0e0f8df3b5f1fe2a8af668753d5a74893ed54f197",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "4f2e68e86fcf9a3de52bf25441dd5717c6e36082fdea7aaf4766f25bf02edbb7",
+        "mutation_bundle_sha256": "35e33f6d613ac2806b8f6abf4b9e3e803e43af0eef4de7aa0454a30eb0fb2114",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Trim Ctrl 5bit: scales the metric output, preserving the main path while failing measurement checks.",
@@ -33,9 +33,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_clamp_to_15/certification.json",
-        "certification_sha256": "c5283d67721aa7f66ae8caa3793fcebd1d4da9653ced87429b510c678a292b3c",
+        "certification_sha256": "ac6d0ead7f7e894018fec2a917b492d6848d1e34cbb8c307c5b5decda21eecde",
         "fault_class": "clamp_to_15",
-        "mutation_bundle_sha256": "35cbcd0c3b6c066fcd88ee528e888418e6bf22e9f593ada1d9f6969b1a5feca1",
+        "mutation_bundle_sha256": "b0e41ca49be953caa822b878de92986b390a8590e0671441a0fb12bbf114d956",
         "mutation_id": "neg_003_clamp_to_15",
         "source_catalog_certification_path": "negative_variants/neg_003_clamp_to_15/certification.json",
         "trigger_condition": "Incorrectly clamps the maximum trim code to 15 rather than 31.",
@@ -46,9 +46,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reversed_bit_order/certification.json",
-        "certification_sha256": "cd5937415c198ffd4981ba552ce94673383cbf91348a269bafa867505123c9e4",
+        "certification_sha256": "ae2eed8ab770689a2b09528e9eee62515b9c14914d323a50b46a3487abe0d64c",
         "fault_class": "reversed_bit_order",
-        "mutation_bundle_sha256": "73778ce52ce7fc27c5295bc3910dd0fc9c6cdbe9851f31deb8b3f6840bd89a6f",
+        "mutation_bundle_sha256": "d5b3b29eb039b5d753a6548f4b8ed8abb3252b42537fe356ca10461366da9333",
         "mutation_id": "neg_004_reversed_bit_order",
         "source_catalog_certification_path": "negative_variants/neg_004_reversed_bit_order/certification.json",
         "trigger_condition": "Drives DOUT0..DOUT4 in reversed bit order.",
@@ -58,9 +58,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "15c1a51d87bdcd61493555e1a5561c44d9a285952c686f1bbdfa7464f6fd2c0c",
+        "certification_sha256": "fcc32e25a4c77673749f3680d967b66a63bebac04ec99b646a6e10a0c7ceef4e",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "f87a993d7572cadd3eb721dc791eab19a0f006fb5a2ca6b2f55d5ef13d5323bf",
+        "mutation_bundle_sha256": "1f8cf5062279258a005e912fcfdd6789bbb0142587748b8e4b7d797d256ccd9d",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -77,8 +77,8 @@
     "hashes": {
       "mutation_catalog_sha256": "aa52eb253c2b16cc4560661b38b5a4e7515fb7a43f62e490d91e37be4ad26995",
       "score_deck_sha256": "593ce080425b1da16295bdd64fbf7b470d7c200fdb35197e2c34ab8360f3f7f1",
-      "task_certification_sha256": "73c708371b0445b0e2638354730174c31dbbb52944927d524950a172167bdf92",
-      "task_record_sha256": "062e6c32ede47c87a21f04e47f045edf2f567e5413c879545652b737dc1d450d"
+      "task_certification_sha256": "876c66d7e5eb8e1c7170eaf3e2b11092f216afa26cc36d57c65ea8a7158dbdd3",
+      "task_record_sha256": "9eb05f9fe4aa4d0c8ff09dbdb8a03a9a3eab080d48f2b7421466e284ce4840f5"
     },
     "release_dir": "222-trim-ctrl-5bit"
   }

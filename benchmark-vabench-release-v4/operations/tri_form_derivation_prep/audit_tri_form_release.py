@@ -29,6 +29,7 @@ DEFAULT_RELEASES = {
     "r48": PACKAGE_ROOT / "release" / "benchmarkv4-r48",
     "r49": PACKAGE_ROOT / "release" / "benchmarkv4-r49",
     "r50": PACKAGE_ROOT / "release" / "benchmarkv4-r50",
+    "r51": PACKAGE_ROOT / "release" / "benchmarkv4-r51",
 }
 DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 FORMS = ("dut", "testbench", "bugfix")
@@ -103,12 +104,26 @@ def valid_git_oid(value: object) -> bool:
     return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", value) is not None
 
 
-def rust_evas2_runtime(payload: object, *, backend_key: str = "evas_backend") -> bool:
-    return isinstance(payload, dict) and (
+def rust_evas2_runtime(
+    payload: object,
+    *,
+    backend_key: str = "evas_backend",
+    require_source_revision: bool = False,
+) -> bool:
+    markers_valid = isinstance(payload, dict) and (
         payload.get("evas_engine") == "evas2"
         and payload.get("evas_engine_used") == "evas2"
         and payload.get("evas_version") == "0.8.3"
         and payload.get(backend_key) == "evas-rust"
+    )
+    if not markers_valid or not require_source_revision:
+        return markers_valid
+    repository = payload.get("evas_source_repository")
+    return (
+        isinstance(repository, str)
+        and bool(repository.strip())
+        and valid_git_oid(payload.get("evas_source_revision"))
+        and payload.get("evas_source_tree") == "clean"
     )
 
 
@@ -236,7 +251,7 @@ def prompt_component_path(release: Path, component_id: str) -> Path:
 
 
 def release_uses_real_skills(release_revision: str) -> bool:
-    return release_revision == "r50"
+    return int(release_revision.removeprefix("r")) >= 50
 
 
 def materialized_artifacts_for_revision(release_revision: str) -> tuple[str, ...]:
@@ -418,13 +433,29 @@ def audit_release_evidence(
                     f"declared={payload.get('schema_version')!r} expected={expected_schema!r}"
                 )
 
-        if rust and not rust_evas2_runtime(rust.get("runtime")):
+        require_source_revision = release_revision == "r51"
+        if rust and not rust_evas2_runtime(
+            rust.get("runtime"),
+            require_source_revision=require_source_revision,
+        ):
             problems.append(f"{release_revision} Rust certification lacks EVAS 0.8.3 Rust runtime markers")
-        if metamorphic and not rust_evas2_runtime(metamorphic):
+        if metamorphic and not (
+            rust_evas2_runtime(metamorphic)
+            and (
+                not require_source_revision
+                or rust_evas2_runtime(
+                    metamorphic.get("runtime"),
+                    require_source_revision=True,
+                )
+            )
+        ):
             problems.append(f"{release_revision} metamorphic evidence lacks EVAS 0.8.3 Rust runtime markers")
         if parity and not (
             rust_evas2_runtime(parity, backend_key="evas_backend_required")
-            and rust_evas2_runtime(parity.get("runtime"))
+            and rust_evas2_runtime(
+                parity.get("runtime"),
+                require_source_revision=require_source_revision,
+            )
         ):
             problems.append(f"{release_revision} profile evidence lacks EVAS 0.8.3 Rust runtime markers")
 

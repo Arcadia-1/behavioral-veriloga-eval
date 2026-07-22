@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "103-clocked-sar-comparator",
+  "checker_task_id": "v4_103_clocked_sar_comparator",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "eee5812c624cc5996d6fd4648b22dfd6eaca8e472ff3cda82e5cf6baa1bac084",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "de1271ab6c12c6c4452276a16b2af71f91f6c1b3b512a6f788bb6f1d539a9a4a",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "103",
+  "family_spec_sha256": "be226a164ed3ef04554aa3ea70e84dc099a65a6ac10ab1104c72fcf8b35bc200",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c6fa432867943d9a06ff2e75c76f3968438f7377e9dfde6e4a01a37c13028a5f",
+  "public_contract": "tasks/603-clocked-sar-comparator-testbench/public_contract.json",
+  "public_contract_sha256": "6f7a921b68483301b2c52ea597801ac93c485a5203c922126771867015055459",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/603-clocked-sar-comparator-testbench",
+  "task_id": "v4-603"
+}

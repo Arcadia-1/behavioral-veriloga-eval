@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_initial_count/certification.json",
-        "certification_sha256": "33255d9751f7df22377ead59c1108ab56cc19da5151a3a15ec357fb795911bf3",
+        "certification_sha256": "810b5df92a8f6a4cceba501c91b84d6ec6c33e241815abb1dda297be496f301a",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "15233c835b22c309d4469d7561f5bc3bcd119a24c3367a8a3d67e2bb18f1443a",
+        "mutation_bundle_sha256": "47f59c747561bedad383e8c1e61b6d2584086c3b113babddea27aa55f9ff14aa",
         "mutation_id": "neg_002_wrong_initial_count",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_initial_count/certification.json",
         "trigger_condition": "Starts the modulo accumulator at zero instead of seven.",
@@ -20,9 +20,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_pulse_count/certification.json",
-        "certification_sha256": "37ea7bd0b4886fa5863a29fd23b89bf17f19f412ffc40125d191f633409377ff",
+        "certification_sha256": "77e1e0af5c7d8a96b65ee5b2ca35bc8d238d34f84819a2e4f493cd38a6f354a1",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "30147fddd6394bf844a505f40c4569975d9bb04fe35de602eb947973d821d1fd",
+        "mutation_bundle_sha256": "eaf67e56194027b4ea0104bef30889d233b8058cb6068b0b44345757fb58c1ca",
         "mutation_id": "neg_003_wrong_pulse_count",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_pulse_count/certification.json",
         "trigger_condition": "Asserts OUT at count 1 instead of count 0.",
@@ -33,9 +33,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "0d79a23d9f2c3ed76967a2aaa415f60f30c187b51cbd8c41abc15d6a27320ff5",
+        "certification_sha256": "c7e1a0168ffbadd9234da18744aa1dfb3ee42d351c4fbec5fac86f16317fc22e",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "8ea4edc12e76da7638d212dcf01442ef4f803087e8aeef61afce3434bdc01eda",
+        "mutation_bundle_sha256": "223ae67209b98d3518398592edff359bf105db4ec95f2badebd7cd67c8cee023",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Accum3 Pulse: scales the metric output, preserving the main path while failing measurement checks.",
@@ -45,9 +45,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_active_high_window/certification.json",
-        "certification_sha256": "650060c40c6b608b3254698500ca5b9d68f3503e97bd35f53adc6c666a408ac0",
+        "certification_sha256": "acea18c900517cc68b5db866d0d41b4bab98b5c8e81c59d84931b66410e3b0b9",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "9266b880199e4e18ff28d724e188562abd7fc7f148c4e428745755b6c3306fab",
+        "mutation_bundle_sha256": "2054cf922025b5fa95440e624385d35d9a1a5474b3a964ca2c966f02a4a59c0d",
         "mutation_id": "neg_004_active_high_window",
         "source_catalog_certification_path": "negative_variants/neg_004_active_high_window/certification.json",
         "trigger_condition": "Drives OUT high for counts below 2 instead of only count zero.",
@@ -58,9 +58,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "7f767626b5931ce2facf13b888eb6512edbac3bb70f5eaa8f534f0bc16a055b7",
+        "certification_sha256": "a233e7ed4bf28ae483cbee1a3a63bec0a033e65f66cac0a067f645cbd700eeab",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "929f034638c8eecf1b5636ac167413a9d81dda2a008d685c02852e9e6fc93daf",
+        "mutation_bundle_sha256": "b76babab7efd03b5c16d6cd18c93ad7b59fb58eb7771b53dde5a6671b2454994",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -76,8 +76,8 @@
     "hashes": {
       "mutation_catalog_sha256": "bfc9002afacd714d66f6401982b1f1dcf945fef7849e063ea221f61c8238fa34",
       "score_deck_sha256": "e82b95f6ca83c94ea102cb97e47725f44a8c1e7439b403a0267177219a318330",
-      "task_certification_sha256": "94f9bb3f47320daf7fe39ade5933f13e73516502fa44c60bb0cd8eeedcaafd1e",
-      "task_record_sha256": "e8cc3f14dc614c38b9c9d48abf4a4b8ffadb4c5ab15e5d089e7b2e40a2a34bda"
+      "task_certification_sha256": "dae2177abbd6fb3a83d1f3b8b6d593958af7302c14a01438c904b2754ef7d29e",
+      "task_record_sha256": "e9a5bd61cdfe9b953398f67aa8dee913d6c767489fad6adb2dcf6d30e4325901"
     },
     "release_dir": "229-accum3-pulse"
   }

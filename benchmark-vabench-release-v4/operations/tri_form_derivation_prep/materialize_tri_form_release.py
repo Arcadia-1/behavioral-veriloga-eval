@@ -45,11 +45,12 @@ DEFAULT_OUTPUTS = {
     "r48": PACKAGE_ROOT / "release" / "benchmarkv4-r48",
     "r49": PACKAGE_ROOT / "release" / "benchmarkv4-r49",
     "r50": PACKAGE_ROOT / "release" / "benchmarkv4-r50",
+    "r51": PACKAGE_ROOT / "release" / "benchmarkv4-r51",
 }
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
 SKILLS_ROOT = PACKAGE_ROOT.parent / "skills"
 SKILL_IDS = ("veriloga", "vabench-feedback")
-REAL_SKILL_REVISIONS = frozenset({"r50"})
+REAL_SKILL_REVISIONS = frozenset({"r50", "r51"})
 REAL_SKILL_MODES = {
     "G0": {"process": "direct_one_shot", "skills": [], "evas_cli": False},
     "G1": {"process": "direct_one_shot", "skills": ["veriloga"], "evas_cli": False},
@@ -66,8 +67,8 @@ LEGACY_MODES = {
     "G4": {"process": "agentic", "form_skill": False, "evas_guide": True, "evas_cli": True},
     "G5": {"process": "agentic", "form_skill": True, "evas_guide": True, "evas_cli": True},
 }
-# The active comparison contract is the real-skill r50 registry.  The legacy
-# registry remains available only to reproduce sealed pre-r50 releases.
+# The active comparison contract is the real-skill registry introduced in r50.
+# The legacy registry remains available only to reproduce sealed pre-r50 releases.
 MODES = REAL_SKILL_MODES
 FORM_SKILLS = {
     "dut": "dut_modeling.md",

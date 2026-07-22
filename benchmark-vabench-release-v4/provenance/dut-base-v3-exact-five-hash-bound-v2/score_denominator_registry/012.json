@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_ratio_decode_bit_drop/certification.json",
-        "certification_sha256": "870eba9518f4f82ede93307b3ea04e6672e32a485d7d250491ac73041007ba32",
+        "certification_sha256": "134e0bb57606c5e2d16f43ff80c173586658c678b56ed06774f79d0cc997781a",
         "fault_class": "ratio_decode_bit_drop",
-        "mutation_bundle_sha256": "f4decf4b07df49c57bd5ba13782c2d4ffd0e76812b1fd03fdaf6ff2eebaf2dbf",
+        "mutation_bundle_sha256": "24f53a4290a04c146119e76b780cb7f9ecc2f631c9bcc47c0cfc43eec2bef6cf",
         "mutation_id": "neg_001_ratio_decode_bit_drop",
         "source_catalog_certification_path": "negative_variants/neg_001_ratio_decode_bit_drop/certification.json",
         "trigger_condition": "div_code_2 is asserted as part of an LSB-first divide-ratio code",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_output_stuck_high_after_start/certification.json",
-        "certification_sha256": "7f4adf54318d224bdcead9c21071ae71f67a56212d9b08483d42d96d8db46e0b",
+        "certification_sha256": "0c228d8387bd5855da93a18d4c970a7c1c5ccefa542edf10a185bf7259392a31",
         "fault_class": "output_stuck_high_after_start",
-        "mutation_bundle_sha256": "30b1b139e4545716f64896201315e0c564989e248f906cb156c5ef875c8f6227",
+        "mutation_bundle_sha256": "c46a399f8a9ceeeed8abe7bb80a8c9c6ee44a07578dbfb4f10f12b697df67588",
         "mutation_id": "neg_005_output_stuck_high_after_start",
         "source_catalog_certification_path": "negative_variants/neg_005_output_stuck_high_after_start/certification.json",
         "trigger_condition": "successive divided-clock output phases are required after startup",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_lock_never_asserts/certification.json",
-        "certification_sha256": "f66b83a377838a3e090fb75b02ff5100ad234033b17a89636c9e94fb127b8803",
+        "certification_sha256": "0991c9d9651e8eef081133ef5e2e8312c83fe123d638054b486d54db5a4e1b63",
         "fault_class": "lock_assertion_omission",
-        "mutation_bundle_sha256": "28be1b75552f57a55cf7e01f1a5532fb438200c5eb9407a45ae08874bec453a4",
+        "mutation_bundle_sha256": "e400c5a37b3e51ff5c25a48c728fcb6551e4766acb56709f653c872509627c56",
         "mutation_id": "neg_004_lock_never_asserts",
         "source_catalog_certification_path": "negative_variants/neg_004_lock_never_asserts/certification.json",
         "trigger_condition": "the first complete divided output period completes after reset release",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_reset_ignored/certification.json",
-        "certification_sha256": "b2d51adc1fa7b7507c6271f36cf9937c5212be98cd80f0621e55c73dc3fbb51d",
+        "certification_sha256": "35f72dd785d61fd785cd9c7f92156304b6fb1d4acdc99a5fc153b37f15bbb8d8",
         "fault_class": "reset_ignored_after_activity",
-        "mutation_bundle_sha256": "73cdbd4ca5183bdbdefc52a753e978278278f83b1613dfdfd117b327216d7a17",
+        "mutation_bundle_sha256": "0e96900324b42ce49f5432433adb371eb52ca034fba6db980bf509d29eadaf40",
         "mutation_id": "neg_006_reset_ignored",
         "source_catalog_certification_path": "negative_variants/neg_006_reset_ignored/certification.json",
         "trigger_condition": "an active-low reset is asserted after at least one divider output transition",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_off_by_one_divide_ratio/certification.json",
-        "certification_sha256": "208955cf0444d2ae2c3f6e241d5c70dda8f750facff2d7e150ca43eefa857cef",
+        "certification_sha256": "2f913a4db40b842c2d2d276de45b7d2112a8975521d1342dbf5f2751267306f2",
         "fault_class": "off_by_one_divide_ratio",
-        "mutation_bundle_sha256": "48c73fe1c95259ac691cb4e0bf51066d025fd317a9b533c056d29d24c8afcb18",
+        "mutation_bundle_sha256": "7c00e14c789da08c60da73d2597bf36b858c7f93a385bed2aef1655380e01124",
         "mutation_id": "neg_002_off_by_one_divide_ratio",
         "source_catalog_certification_path": "negative_variants/neg_002_off_by_one_divide_ratio/certification.json",
         "trigger_condition": "a nonzero decoded divide ratio is exercised after reset release",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "2de9ad91f1351a784483fcb8c09222324bb63f5030a1fd8848f0469d75b20e6c",
       "score_deck_sha256": "fdc7011f6a6afa0d1d40489aa56c74cb911558d3a1eb9964f022694434ab4e2d",
-      "task_certification_sha256": "a1957fbb11d35d34a5d54650a7ab86f7c5487472cd9a5f88798b8a0dd3143619",
-      "task_record_sha256": "157fbd79854547492a83dfb536fcd6c4efb2fe01d19e14d3c5c946a0bc06b14c"
+      "task_certification_sha256": "6dab63ccac03a07de141dbca4367afde90ada00886e11d13b5f67f746b4855f8",
+      "task_record_sha256": "bd763412260368f7d37f0ac88d7be2325d88b914cc5e66166d37f2bd10294b3e"
     },
     "release_dir": "012-clock-divider"
   }

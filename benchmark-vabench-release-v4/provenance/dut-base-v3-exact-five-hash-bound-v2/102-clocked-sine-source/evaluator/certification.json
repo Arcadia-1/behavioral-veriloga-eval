@@ -10,14 +10,14 @@
   },
   "component_fingerprints": {
     "task_inputs": {
-      "checker_profile_sha256": "64d5252fcf0fac86d3093564cd74efb9312f05cf4be945567792201d029aef92",
-      "family_spec_sha256": "bb97d3e27e2b374578a8ccbdef291d3f69e090493e2101a12ab02e43247c646a",
-      "feedback_deck_sha256": "442109447be72d8d2efead65f75008818cc889c41063695f2cf4cbd51f41ae6f",
-      "feedback_profile_sha256": "05378d7b50164d98f019661831bccb9acd1a8dd465de402a21ec526422211c58",
-      "gold_bundle_sha256": "df9f041b7ff968034ad5e4ffdc2676dd266174724649e543925a2c609e2ae66c",
-      "harness_spec_sha256": "c3cb916ab1e55c8c14cf994e006749f95b0aa504b340533eee84ff34bd87e597",
-      "score_deck_sha256": "44fa3a8016adbe54e49d1be45fdc05d6a3f1cddc7a9fabac5b0aa1bcb8c3850e",
-      "score_profile_sha256": "88af42f480a4fa57f2a4bd75978ad8b375f11789e2a076b81bb0bef0a9efea51"
+      "checker_profile_sha256": "b28c64c108cd4cbbc17f1462ce6cd59edc9e3fa8a7979036ebd7110375f02354",
+      "family_spec_sha256": "0597281586c6201a3efc1c0e0a5e8b46dfad7f89249fd733097e9732917bf7f6",
+      "feedback_deck_sha256": "d1862885ef56441a48588a21ab12e0a47a87369364ba08ba4a3fc48ce032237e",
+      "feedback_profile_sha256": "d43401ecc4e95108ed061c3f8a270e2c247b74fe6c269ef0edb7a4d02332f8a8",
+      "gold_bundle_sha256": "69b087012d32f72c5152523693d5ad29143aecde1ae49c72255ff7fc9b7b004a",
+      "harness_spec_sha256": "771602d8303d66c4c84d1f2dd8ef853418f201f328339a861be18724afa3edbc",
+      "score_deck_sha256": "ecd9cf3217ad5512824c71753beaec74c28fc3e624e4ae6a661325fc83663eac",
+      "score_profile_sha256": "e4913c9eee4f3a34e545512722ccfb3c060211cdef674460c99bea4b0f3f41ec"
     }
   },
   "evaluators": {
@@ -25,25 +25,28 @@
       "evas_backend": "evas-rust",
       "evas_engine": "evas2",
       "evas_engine_used": "evas2",
+      "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+      "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+      "evas_source_tree": "clean",
       "evas_version": "0.8.3",
       "status": "pass"
     }
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_102_clocked_sine_source",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "06d620060a5e6a5c573a7832c4f7489a218814a65395a108d5019fde14f09f02",
     "trace_row_count": 1198
   },
   "family_id": "102",
   "input_hashes": {
-    "checker_profile": "64d5252fcf0fac86d3093564cd74efb9312f05cf4be945567792201d029aef92",
-    "family_spec": "bb97d3e27e2b374578a8ccbdef291d3f69e090493e2101a12ab02e43247c646a",
-    "feedback_profile": "05378d7b50164d98f019661831bccb9acd1a8dd465de402a21ec526422211c58",
-    "gold_bundle": "df9f041b7ff968034ad5e4ffdc2676dd266174724649e543925a2c609e2ae66c",
-    "harness_spec": "c3cb916ab1e55c8c14cf994e006749f95b0aa504b340533eee84ff34bd87e597",
-    "score_profile": "88af42f480a4fa57f2a4bd75978ad8b375f11789e2a076b81bb0bef0a9efea51"
+    "checker_profile": "b28c64c108cd4cbbc17f1462ce6cd59edc9e3fa8a7979036ebd7110375f02354",
+    "family_spec": "0597281586c6201a3efc1c0e0a5e8b46dfad7f89249fd733097e9732917bf7f6",
+    "feedback_profile": "d43401ecc4e95108ed061c3f8a270e2c247b74fe6c269ef0edb7a4d02332f8a8",
+    "gold_bundle": "69b087012d32f72c5152523693d5ad29143aecde1ae49c72255ff7fc9b7b004a",
+    "harness_spec": "771602d8303d66c4c84d1f2dd8ef853418f201f328339a861be18724afa3edbc",
+    "score_profile": "e4913c9eee4f3a34e545512722ccfb3c060211cdef674460c99bea4b0f3f41ec"
   },
   "schema_version": "v4-task-certification-rust-evas2-v1",
   "status": "gate2_pass"

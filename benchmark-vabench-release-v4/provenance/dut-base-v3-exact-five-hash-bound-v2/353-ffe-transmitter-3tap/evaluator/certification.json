@@ -16,7 +16,7 @@
       "feedback_profile_sha256": "584f1c8030cc94679464744fa47d7211dbaf61c8c93ad9e84275554282d17baa",
       "gold_bundle_sha256": "cd8a411afaccb0e9931e02500aa445b1af6dcf0def2a7a4a18963159141bdd92",
       "harness_spec_sha256": "d5790b0c13a84725146ecfbcb4036a07d308a208639e13bb8588a2a793c7f155",
-      "score_deck_sha256": "e28de0bc065e3741eaee6199056bc958c1215f1c701cb67eb709c6d30faadb31",
+      "score_deck_sha256": "d3635160a4ec152c424f095d6f794eba90055097403c99edcbb4a3d6970e0c89",
       "score_profile_sha256": "02df32da206e0d222a672b97bbfe3c71258f9da47caf05adc398a6008e18d26d"
     }
   },
@@ -25,15 +25,18 @@
       "evas_backend": "evas-rust",
       "evas_engine": "evas2",
       "evas_engine_used": "evas2",
+      "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+      "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+      "evas_source_tree": "clean",
       "evas_version": "0.8.3",
       "status": "pass"
     }
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_353_ffe_transmitter_3tap",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "06d620060a5e6a5c573a7832c4f7489a218814a65395a108d5019fde14f09f02",
     "trace_row_count": 1170
   },
   "family_id": "353",

@@ -17,18 +17,18 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_267_clocked_power_ready_sampler",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
-    "trace_row_count": 1685
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "06d620060a5e6a5c573a7832c4f7489a218814a65395a108d5019fde14f09f02",
+    "trace_row_count": 1698
   },
   "family_id": "267",
   "inputs": {
     "checker_profile_sha256": "c4469fd3fb849699d85b58acc9930771c5bc9f6ecf7c517753cdff24a98fb61a",
-    "harness_spec_sha256": "2bc9256bc0aeca9344274fdc9b5673d9d60e40660e354d07739bed4134beab44",
+    "harness_spec_sha256": "f328e87297d0833716ee11a60f2ab2336384fdac198efbf3cbe4eb8a64c35206",
     "mutation_bundle_sha256": "6efbe3dda7cb9aad9c0f6a10206944b64e1455bcce8fb26db38b9aff36080ebe",
-    "profile_sha256": "9e94ed2b6cafb689d4340bbe30a0e5196483296c73d5726af7f0fd54dbd0e1d1"
+    "profile_sha256": "815d2d315e376a21e0605bcf3ccf3c4b2152da3e71c111d78f8cb0501434e88c"
   },
   "mutation_id": "neg_005_wrong_flag_metric",
   "outcome": "killed_behaviorally",
@@ -36,6 +36,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

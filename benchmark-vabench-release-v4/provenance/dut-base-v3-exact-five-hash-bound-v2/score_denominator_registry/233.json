@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_missing_input_offset/certification.json",
-        "certification_sha256": "ac58f470eaa048c1e48e9bd10632e73260219b590f69b8489e265a14bc1b4ebb",
+        "certification_sha256": "72465b352daafc882d5e6c8150b26759441b49777be32d51dca6cbd2b1c5dca1",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "0d0147e96cc4df272e2e9f18c2cee5355e99c98bc176399e7e7715399547eb61",
+        "mutation_bundle_sha256": "a34623a8b0c3e34926e2bbd6240d3de1c4378b89312f1825202625974dcf802b",
         "mutation_id": "neg_002_missing_input_offset",
         "source_catalog_certification_path": "negative_variants/neg_002_missing_input_offset/certification.json",
         "trigger_condition": "Omits the required 50 mV input offset.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "1f9a6c27e7939692802f887cec8a5d16e2a0550a4074e464f4cae45ccd36846e",
+        "certification_sha256": "67f29936da02cea56385552b3ac43628d16a8ef806e0405b570769371a9fae93",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "d4515cab110d7852a98de509ff29fa10d945a07e0ff3943692443d956ad172df",
+        "mutation_bundle_sha256": "a43c5fc60b9a659316d079d02c83ec5f7327ef6410386335fefb0cb5e659a5d5",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_inverted_control_polarity/certification.json",
-        "certification_sha256": "3f090294b83fbeea65ecc1a5c33ee43570d12e80561a5a4cbfeabb6df507a443",
+        "certification_sha256": "b4cca889f2a9d8a10e7b478c4d70564caca15b95577d832bd214161ad823e7c4",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "4e7aae261a10108b52ccb349b63f37954190f46b0fec89436c373141828be512",
+        "mutation_bundle_sha256": "e71440a30e3eab169cfd84091a9593e41debca2615ba5586513b64fa8660ba65",
         "mutation_id": "neg_003_inverted_control_polarity",
         "source_catalog_certification_path": "negative_variants/neg_003_inverted_control_polarity/certification.json",
         "trigger_condition": "Reverses the control differential polarity.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_positive_clip/certification.json",
-        "certification_sha256": "dfcecda27135c033b652c3e6e47f4c5373dbc9daf1f614dd135620138d87d07a",
+        "certification_sha256": "f143ffdfcf261bd0870072a87da1ed21de4c4bfba1a2933c20d3107f51e7f846",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "f74ea823b04859a752fe7f2488326ea0e752bd579000dc47c5a24ac7bd6356e1",
+        "mutation_bundle_sha256": "ece9157efcbe83fab86dfc5b1dd839ac81808834192f7e82baeac498c34e5844",
         "mutation_id": "neg_004_no_positive_clip",
         "source_catalog_certification_path": "negative_variants/neg_004_no_positive_clip/certification.json",
         "trigger_condition": "Clips only the negative rail and leaves positive outputs unclamped.",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "b38611b3509e20d4c5c0d9c2b9166f7f0cf32ed1ca319ae003ca7b7a9dd9ca85",
+        "certification_sha256": "d00d8dc793d78c67aaea87f9e094dfd83a9a5c5d5c2c31781a7055ffae75c5e6",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "0395b0e4d903dce0270be852f27419f919780324a2e520587f39580ae87ee078",
+        "mutation_bundle_sha256": "b875170106c121a6f5bc141b99972ff3910e9061434e4390e7371388e7653489",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales the clipped variable-gain output too low while preserving the module/interface shape.",
@@ -73,8 +73,8 @@
     "hashes": {
       "mutation_catalog_sha256": "8a2d53b80905825118aafc50379bc6d40aed82b46a5ea6a4886cd25fe9985423",
       "score_deck_sha256": "c564e109b72585d8177f58c216f09711c4811c6d7dc5f0f039fcae5aa593fa25",
-      "task_certification_sha256": "09a25baf22535b5ac6691df1e93bf3f432c7aca05fa89625db2f551bfec2c98f",
-      "task_record_sha256": "1c08ac3c0f857ea1f70ed9c3c46fe5982b69ac7441eed905d6612249d994d239"
+      "task_certification_sha256": "661281671361ffd2c7ac8b0cb8929df0c67a7f4b06c1a844e42ce8dd3afecd8e",
+      "task_record_sha256": "7e7e580cf27253df49424758b7933b472d4a709ba5b6a982c5eb9672c9736ea1"
     },
     "release_dir": "233-vargain-diffamp-clip"
   }

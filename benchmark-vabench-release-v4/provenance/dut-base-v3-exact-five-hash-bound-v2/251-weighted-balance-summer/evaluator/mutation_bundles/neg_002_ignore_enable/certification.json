@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_COMPUTE_THE_WEIGHTED_BALANCE_SUM_AS, P_VTH_0_45_V_LOGIC_THRESHOLD satisfy the public contract; fault class state_reset_or_enable_error is rejected",
-    "observed": "EVAS: v4_251_weighted_balance_summer: max_error=0.90000 time=6.0051e-09 signal=flag expected=0.00000 observed=0.90000 mismatch=0.90000; P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE mismatch_count=5; P_COMPUTE_THE_WEIGHTED_BALANCE_SUM_AS mismatch_count=0",
+    "observed": "EVAS: v4_251_weighted_balance_summer: max_error=0.90000 time=6.1685e-09 signal=flag expected=0.00000 observed=0.90000 mismatch=0.90000; P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE mismatch_count=13; P_COMPUTE_THE_WEIGHTED_BALANCE_SUM_AS mismatch_count=0",
     "violated_property_ids": [
       "P_COMPUTE_THE_WEIGHTED_BALANCE_SUM_AS",
       "P_VTH_0_45_V_LOGIC_THRESHOLD"
@@ -18,18 +18,18 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_251_weighted_balance_summer",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
-    "trace_row_count": 1201
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "06d620060a5e6a5c573a7832c4f7489a218814a65395a108d5019fde14f09f02",
+    "trace_row_count": 1601
   },
   "family_id": "251",
   "inputs": {
     "checker_profile_sha256": "50764feb382f4c0b393caf8f44be126d86e756db1d3d7fe1b6db71de5a0d996b",
-    "harness_spec_sha256": "40396b46b8d69a2956006b90f7fb94a7a6228d956f44a08de153bf79394dabf2",
+    "harness_spec_sha256": "b516c19253b5647a76406a446e2f2185022ec4599e8dc56ccca6bd9fbc7aa269",
     "mutation_bundle_sha256": "124a694faa5eb5a579e0e565f81e649d1207092116ebfba69bfe7206ad64489f",
-    "profile_sha256": "95662303998d5abf97be81fea0f9217156e106fb6874e5f60af2d6fbc7c7639a"
+    "profile_sha256": "bef153c1e023ee68719a3d10b1d83cdfb7e1a2bc2990d425a546201f66401402"
   },
   "mutation_id": "neg_002_ignore_enable",
   "outcome": "killed_behaviorally",
@@ -37,6 +37,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

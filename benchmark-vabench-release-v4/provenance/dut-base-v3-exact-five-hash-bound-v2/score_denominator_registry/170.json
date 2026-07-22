@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_edge/certification.json",
-        "certification_sha256": "c298e693c13ca222ed2acf8a5d27d53a8bc54e8a444f23402682e37239f0cced",
+        "certification_sha256": "f9fd2674ea9392b22ded5c6dc13f5a430d204245ed81a8917fe9569201d6869a",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "1da5e407f3fe108796a0e2098fcfb1105126bf6b5a1b7c52f366b66bf88c1fde",
+        "mutation_bundle_sha256": "c154643fc1518fb891db317d5658f238f270d9b9bc03ccdf0f13d8a9250992a5",
         "mutation_id": "neg_002_wrong_edge",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_edge/certification.json",
         "trigger_condition": "Measures delay from the wrong clock edge.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "f8c8797783be4665699d387a7a0daee93897f4f3860138db2d44029527558ace",
+        "certification_sha256": "899c2e846d46063f684e34df8dc08ed62dcc48e503302679a5983cd84f8012f1",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "1ec5048f69ff445beba2a6e1b04d8d8100978a7435f829bde8e6474ecbce4a15",
+        "mutation_bundle_sha256": "a6a9452ba3584034e4c28e029b0964801a80fbb450bcbb89536fbb8f422691bd",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Leaves all measurement outputs at zero.",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_overdrive_abs/certification.json",
-        "certification_sha256": "c8bdc8a23997447a47e34b8d977e2c579959ab126aa06a1e2870509e39bf1d6b",
+        "certification_sha256": "7d8c3e2742cddc2b438cbd0c235fbd359ed0a379f77dba626dff0d49e8e2cd53",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "f2115ab3cb99e20d0d03313371f7f238f0f70b1b7c5e03ef5d1de60fc189dbd9",
+        "mutation_bundle_sha256": "dc99c16e32e2469e2acc3f1cb972b07996962ff77ed82c31caa713a33a4b299d",
         "mutation_id": "neg_003_no_overdrive_abs",
         "source_catalog_certification_path": "negative_variants/neg_003_no_overdrive_abs/certification.json",
         "trigger_condition": "Reports signed overdrive instead of absolute overdrive.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "b3d38d4760ce0a217e8977e88a3f44f96b5f827212ec789166d26c8d087e515f",
+        "certification_sha256": "1bd269f2bf847f3a6cd0d92ce127161e40248ec65f7d331f8fcbc5ce86b77a8b",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "36934c50c835b4a917f5e56755b14a60096e7afce4668c7069946e484001b367",
+        "mutation_bundle_sha256": "1f3e228af8ebc719599848be81c12839234b1b8a0a9011c399e74ca20dd1b5f3",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales the reported delay too low.",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_polarity/certification.json",
-        "certification_sha256": "925ab56bb7831ffac54eff7fad15510939173d3e3cbf1b07a97c124015a00ad3",
+        "certification_sha256": "e49b4fe7d67e24c325c4c4c5e276295aae50007b16e1031bda09af74c23745b4",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "67d2c3117494c42645ba17b6b97babc700d77afaa88a6f0c3a7c6dabc5b26fa0",
+        "mutation_bundle_sha256": "d76001edea5da3ff3886a3c681b7e7acb87bfbca73880655ef1b2f23b169246c",
         "mutation_id": "neg_004_wrong_polarity",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_polarity/certification.json",
         "trigger_condition": "Flips the reported decision polarity.",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "60bb5a4471a8bd5bdce8eb1c3a7d10b9b1bbc8a3a62c494e178bed9af12e8bcd",
       "score_deck_sha256": "528991ac32da9307005e2479b3025ada9e190f727bad1d33fc91e85468db2d4e",
-      "task_certification_sha256": "e8b219739fd0ebdffbf4a1ede6617d9d589fa9b7405484903eb8657709a14550",
-      "task_record_sha256": "7afe6b94472b6f7345c1aebe95ef8b7285e9ae83adce4a0badf4030bc8ae00dd"
+      "task_certification_sha256": "3c0bf5aced2daff4d60d3b8eaccbe64c7d012800ffe0c2170199f854abdbb4f7",
+      "task_record_sha256": "7ee3152f2cc5b782a78285019f8b71a5d698c13af34a1de16690e0b2dc90ca90"
     },
     "release_dir": "170-comparator-delay-overdrive-meter"
   }

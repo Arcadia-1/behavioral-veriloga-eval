@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_boundary/certification.json",
-        "certification_sha256": "e9ba792e69920fad67d9ab2101512b529a1421c544d9f5529ea0a57453a8e635",
+        "certification_sha256": "91dee029f4276fcd9e07521cf1bf0fe4ff6ab37a70f4e377545e3b724d74ab5f",
         "fault_class": "boundary_semantic_error",
-        "mutation_bundle_sha256": "e84c61d332de344b1c7e1ca12f1e5207460ad35d20ceed61303ddb4f71498ebf",
+        "mutation_bundle_sha256": "4e425f6155d536731650204ee175bccfeb01eba46b6e0424b98816119f890459",
         "mutation_id": "neg_001_boundary",
         "source_catalog_certification_path": "negative_variants/neg_001_boundary/certification.json",
         "trigger_condition": "a public endpoint, threshold, saturation, or settling boundary is exercised",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_polarity_direction/certification.json",
-        "certification_sha256": "9e595a7c4e1e497b6c69325992c3e1d257f088130019e0aa16061f2a7f7f98f7",
+        "certification_sha256": "a38f4ff26d0eed925ed029ddfd27d1a2bff74e73f40cf7826ffe63da3de50cef",
         "fault_class": "logic_threshold_too_high",
-        "mutation_bundle_sha256": "b634b1d436421b33875c61fc6f1eaf379cfcf4d88988285e605d844ba44c20f4",
+        "mutation_bundle_sha256": "fa349b4c86e1f02e0c19e67e20e4d975c55228f46d7e61b6b9d4a1edd83ec50d",
         "mutation_id": "neg_003_polarity_direction",
         "source_catalog_certification_path": "negative_variants/neg_003_polarity_direction/certification.json",
         "trigger_condition": "b0 is driven above the public 0.45 V threshold but below the mutant threshold",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_state_reset/certification.json",
-        "certification_sha256": "6257fdeeb7565bcc7b150be1cae171aa06ed916907cbb649ecf4c3f9944c7d19",
+        "certification_sha256": "d97d7a11e2292a4dc4a6690e4bb02346143851a0beab6e5b7c498f04ac8fa662",
         "fault_class": "full_scale_overrange_error",
-        "mutation_bundle_sha256": "851b2c46f7dbc21aef1dd3ee4a1924fbeeb31185bf3d9aac9c1e727b52e7535c",
+        "mutation_bundle_sha256": "2ac16957648ca9e755551288c03ef0e997fcd386f3ff573110c625532b74e771",
         "mutation_id": "neg_004_state_reset",
         "source_catalog_certification_path": "negative_variants/neg_004_state_reset/certification.json",
         "trigger_condition": "a nonzero code, including full scale, drives the output above the documented reconstruction",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_writeout/certification.json",
-        "certification_sha256": "2f40adc956d6780c8082aec33b02c2a88d6f12f5c2320037a9bd37af80399597",
+        "certification_sha256": "5eedeeb40c6675a0cb9f3dadda68305fbd083190f733b11eaec88681f33ab4cc",
         "fault_class": "nonideal_increment_erasure",
-        "mutation_bundle_sha256": "fec1c24f308e44198d15601734eb72ce9d528a4e215ef82239c9b07d131a155e",
+        "mutation_bundle_sha256": "750e289812b2f02d453113ec5cf6723cb269a32919558205ad2306a461b70b99",
         "mutation_id": "neg_005_metric_writeout",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_writeout/certification.json",
         "trigger_condition": "single-bit and mixed-bit codes expose an incorrect b1 increment",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_timing_window/certification.json",
-        "certification_sha256": "4fb886258ca55f10ddb40fa46d15567f0056e696f204aed21a793f90a29f8cf7",
+        "certification_sha256": "cdfd52ec08f67121c1b70d5d712935695c84b72788b9056285e10b4a0308f07c",
         "fault_class": "idealized_weight_error",
-        "mutation_bundle_sha256": "67b1fa77f88788d97ac34afbfe4db0152b2143470d813e8f4cbd135d1b515203",
+        "mutation_bundle_sha256": "e6106390951023bdfa2dc72d1f4bcb346bc97bed716c9005ec937bf7ed448f7c",
         "mutation_id": "neg_002_timing_window",
         "source_catalog_certification_path": "negative_variants/neg_002_timing_window/certification.json",
         "trigger_condition": "single-bit and mixed-bit codes expose idealized weights instead of the documented nonideal weights",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "28a723c2573a524b571f29b6d373e4a2e8d28cc9247b4add39f06983afa54dec",
       "score_deck_sha256": "24ad1f5ba8e56329c6d9f0d3ddba49cebaa8c939bdfb9fda3cf38e66bf3ca30d",
-      "task_certification_sha256": "f8038fa088b7efe60db1a5c3d5cd4f2b057b1545eb92d1797c2ea6fd7e50dcc7",
-      "task_record_sha256": "923668d9053ff4646730695e214bb12e8a9bde98b28baf29f0e7c4169e4f9e11"
+      "task_certification_sha256": "382299dff27d72b0a8d8e42dfde96eb698c9c7c07a02c60e52818832f23119ed",
+      "task_record_sha256": "101eced6e30cb2623a934d5b55414e8f388e1bf56347bd9008251b316ec779a6"
     },
     "release_dir": "025-dac-mismatch-unit-weighting-model"
   }

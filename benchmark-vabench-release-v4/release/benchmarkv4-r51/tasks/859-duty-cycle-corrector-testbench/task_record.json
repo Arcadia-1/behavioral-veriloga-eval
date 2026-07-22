@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "359-duty-cycle-corrector",
+  "checker_task_id": "v4_359_duty_cycle_corrector",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "28999b71118e72b88e1e7334d4c5a9653a4f6fe3d961305c51e8a2e3088dbe28",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "7a83f88e1d327c1a7267019a2d2cc6fa0114f3e62b01722b05d15e204af8850c",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "359",
+  "family_spec_sha256": "9bb9f40c1808fef363c5e6546ea3f8edfafe09f2c4a32d73c475d0b6a7956870",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "acf4708cfd44199da61b586c299bcd13728e1beeb25e618f60bea2427941a77b",
+  "public_contract": "tasks/859-duty-cycle-corrector-testbench/public_contract.json",
+  "public_contract_sha256": "59710ac8b4dd5b9a4425ff0a7a6d75ccc076b745063ceacf42c026cc383a2230",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/859-duty-cycle-corrector-testbench",
+  "task_id": "v4-859"
+}

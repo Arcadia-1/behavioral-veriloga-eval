@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "099-reference-startup-enable-flow",
+  "checker_task_id": "v4_099_reference_startup_enable_flow",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "e2f2711e25de0b5b16ffd5bd74e13998462ad48ae285ab5f7eed596fedeaef28",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "1a192ef4f724b9f1eb1ff473d2a176b23efcb9cbaf5071331579edb9a3fd8ff3",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "099",
+  "family_spec_sha256": "fe844945a0460dd22430069c2f6141657ba81855d809562081b459c90485deb3",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8e30a1a62638ca9d9ba3806d322c86260a81908e7bdb59fefbb39fd53ab88a65",
+  "public_contract": "tasks/599-reference-startup-enable-flow-testbench/public_contract.json",
+  "public_contract_sha256": "7b1b683114ef0239ec602654c92d193b26bde0a591f7b5c2bdf9ad341ce52cc2",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/599-reference-startup-enable-flow-testbench",
+  "task_id": "v4-599"
+}

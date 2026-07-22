@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_stuck_low_on_clock/certification.json",
-        "certification_sha256": "46aa31f525657d32da52e2934e2c1a3b93cc2d78f7030fa2ae7a812fd837cb55",
+        "certification_sha256": "e24de400f08dfcb5496fb32f3245ef8566d211ebc3ba9f15fa0f889e7bb5fa91",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "e5571bda1ca9fb6119384826f2440c0ac1fce3004abfbbab047a3ed8dafc641b",
+        "mutation_bundle_sha256": "119463ae21f1f9b148137f73c0ce8635b9ad4c153e9a0df56f584bc9197fc7d6",
         "mutation_id": "neg_002_stuck_low_on_clock",
         "source_catalog_certification_path": "negative_variants/neg_002_stuck_low_on_clock/certification.json",
         "trigger_condition": "Forces the divider state low on each clock instead of toggling.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_starts_high/certification.json",
-        "certification_sha256": "8853bcfe878b47628541b8bfb82e8502be81c46a2473120cc9253b226002246a",
+        "certification_sha256": "e74c240a60da73fd48002e60f71c7dec910acf2089f126334884287d81b02850",
         "fault_class": "starts_high",
-        "mutation_bundle_sha256": "13ea348df3693d6a13dd23d7285035af53a22795a34cedbee1e0ed3e3ba1fcb1",
+        "mutation_bundle_sha256": "2c0fd2227937041e36d52d0abaf08b94f7afac8d13e0e021ce7f96baef386688",
         "mutation_id": "neg_003_starts_high",
         "source_catalog_certification_path": "negative_variants/neg_003_starts_high/certification.json",
         "trigger_condition": "Starts the divide-by-two state high rather than low.",
@@ -33,9 +33,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "10169430394c027ed8b53ecace9100993e438b750f94be8a753ed9de47593c27",
+        "certification_sha256": "a40a4b3459fb2de9d6b7dbbce36617df2fc8234d35e1f7a75871792d0e0f9b38",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "89f0240f1470449fe51aac6200042b3f9d6edcba048562b823729a1b2697c3fb",
+        "mutation_bundle_sha256": "dba9e87c3a4d43945d3562de75960ef10b8074b1709c8bfaf28be6067969193a",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Divide By Two Toggle: scales the metric output, preserving the main path while failing measurement checks.",
@@ -45,9 +45,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "61f43ab185233be37099eace90c07eae25fc06ebef5f612385124e4853c6cc33",
+        "certification_sha256": "866c9d8a59374764f7db9f60300088667199c851de2c1f9186e91173dc933bc4",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "f47ff60dcedd4ee4a64de6c76e20005b8bfca5ef4dc8b2a03a994aca94fcc98d",
+        "mutation_bundle_sha256": "67817738c3e5f543831cd98760346387aa195aeac9005dbcf44bc2e3d975d497",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -59,9 +59,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_toggle/certification.json",
-        "certification_sha256": "b8d64774fc7b9680e4f601165385a5bd6bf63037bb0083c429cc62e2a4f66a29",
+        "certification_sha256": "889fe48ce2cf6e520ff6971095cd50e95a96b3ca581546ec2cd4e9196c6f2b11",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "ad0900121a87cc5cef5b9ec7042c707f35cab9e43ee8ff7c0e012867905d9b01",
+        "mutation_bundle_sha256": "8853428c2aefc8801c22ced4a869875533ea5fe88c6ebc5025fe5520ec50b846",
         "mutation_id": "neg_004_no_toggle",
         "source_catalog_certification_path": "negative_variants/neg_004_no_toggle/certification.json",
         "trigger_condition": "Forces the state high on each clock instead of toggling.",
@@ -76,8 +76,8 @@
     "hashes": {
       "mutation_catalog_sha256": "5b7e2e719e30f98bd0ba92699f09e8f95a98b3f9e13b788dce35f1c3fb9c6b99",
       "score_deck_sha256": "7f5b134ee83340278923f5b2b5caef4ff1c8d78e169152562a0b6ab59e3c8638",
-      "task_certification_sha256": "ba756d9b690223f80d57f166957fb73799b12d49a2e9a143e9fdd06b87de649c",
-      "task_record_sha256": "2aad24300b2007106825a827abfd5d3eaa30a142628315a5d6e12f4cc2daea21"
+      "task_certification_sha256": "108444e88c6ce83c1268b781fbaaa5df9ef286c3e5953163617ec18719b17408",
+      "task_record_sha256": "73c55311633c9e9169be9b8378881b8f5dfff2e9ae5fbdf40964c2b2b660d013"
     },
     "release_dir": "228-divide-by-two-toggle"
   }

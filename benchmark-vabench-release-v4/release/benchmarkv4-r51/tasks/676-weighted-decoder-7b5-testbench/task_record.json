@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "176-weighted-decoder-7b5",
+  "checker_task_id": "v4_176_weighted_decoder_7b5",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "cc754ba5f58ca9e4fdaa9fda5e0781bb5e21ed99dfc0e1291659907c3b388f29",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "fd384cb8f5daf2f96bb0c56449fa95da67982fc4c270953ffe932e3abd6c92ba",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "176",
+  "family_spec_sha256": "9f12dffffcd5a8760bbfab45382bb15165792d0381a8f735d4fbf45bd6237d68",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2125d8f5faf26746cc12f75ee6f8a3f02ef2926fbdea5fcff1f918033827fcf4",
+  "public_contract": "tasks/676-weighted-decoder-7b5-testbench/public_contract.json",
+  "public_contract_sha256": "d91aebd937886f450cd950ae64d742beeaaa4a2c505bdc52187396c7d75bb5c0",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/676-weighted-decoder-7b5-testbench",
+  "task_id": "v4-676"
+}

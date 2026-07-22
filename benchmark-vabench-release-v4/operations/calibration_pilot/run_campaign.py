@@ -34,7 +34,7 @@ from mini_swe_vabench import (  # noqa: E402
 )
 
 EXPORTER = PACKAGE / "operations" / "tri_form_derivation_prep" / "export_tri_form_runtime.py"
-DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r49"
+DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r51"
 DEFAULT_BASE_URL = "https://www.cun.ai/v1"
 DEFAULT_API_KEY_ENV = "VAEVAS_API_KEY"
 DEFAULT_AGENT_TIMEOUT_S = 5400
@@ -49,6 +49,8 @@ DIRECT_DUT_RUNTIME_SCHEMAS = {
     "r47-direct-evas-runtime-v2",
     "r48-direct-evas-runtime-v2",
     "r49-direct-evas-runtime-v2",
+    "r50-direct-evas-runtime-v2",
+    "r51-direct-evas-runtime-v2",
 }
 DIRECT_TESTBENCH_RUNTIME_SCHEMAS = {
     "r45-direct-evas-testbench-suite-v1",
@@ -56,6 +58,8 @@ DIRECT_TESTBENCH_RUNTIME_SCHEMAS = {
     "r47-direct-evas-testbench-suite-v2",
     "r48-direct-evas-testbench-suite-v2",
     "r49-direct-evas-testbench-suite-v2",
+    "r50-direct-evas-testbench-suite-v2",
+    "r51-direct-evas-testbench-suite-v2",
 }
 ARTIFACT_RE = re.compile(
     r'(?m)^<<<VABENCH_ARTIFACT path="([^"\r\n]+)">>>\r?\n'

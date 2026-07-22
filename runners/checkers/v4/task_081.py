@@ -8,10 +8,10 @@ from pathlib import Path
 
 
 _RATIO_CONFORMANCE_CASES = (
-    ("round_below_half", 3.49, 3, 5.35e-6, 5.90e-6),
-    ("round_half_up", 3.50, 4, 6.17e-6, 6.72e-6),
-    ("clamp_low_override", 2.20, 3, 6.99e-6, 7.54e-6),
-    ("clamp_high_override", 13.20, 12, 7.81e-6, 8.36e-6),
+    ("round_below_half", 3.49, 3),
+    ("round_half_up", 3.50, 4),
+    ("clamp_low_override", 2.20, 3),
+    ("clamp_high_override", 13.20, 12),
 )
 
 _OVERRIDE_F_MIN_HZ = 180.0e6
@@ -19,6 +19,7 @@ _OVERRIDE_F_MAX_HZ = 360.0e6
 _FREQ_BOUND_TOL = 0.07
 _INITIAL_VCTRL_MAX = 0.12
 _EARLY_RELOCK_MAX_HIGH_FRACTION = 0.20
+_RATIO_STIMULUS_MATCH_TOL = 0.0025
 
 
 def _ratio_tolerance(expected: int) -> float:
@@ -33,6 +34,71 @@ def _freq_in_bounds(freq_hz: float) -> bool:
         and freq_hz >= _OVERRIDE_F_MIN_HZ * (1.0 - _FREQ_BOUND_TOL)
         and freq_hz <= _OVERRIDE_F_MAX_HZ * (1.0 + _FREQ_BOUND_TOL)
     )
+
+def _inner_plateau_window(start: float, stop: float) -> tuple[float, float] | None:
+    duration = stop - start
+    if duration <= 0.0:
+        return None
+    pad = min(max(0.10 * duration, 20.0e-9), 200.0e-9)
+    if duration <= 2.0 * pad:
+        pad = 0.10 * duration
+    return start + pad, stop - pad
+
+def _ratio_conformance_windows(
+    ratio_samples: list[tuple[float, float]],
+) -> tuple[dict[str, tuple[float, float]], list[str]]:
+    windows: dict[str, tuple[float, float]] = {}
+    notes: list[str] = []
+    if len(ratio_samples) < 2:
+        return windows, ["missing_ratio_ctrl_samples"]
+
+    ordered = sorted(ratio_samples)
+    sample_gaps = [b[0] - a[0] for a, b in zip(ordered, ordered[1:]) if b[0] > a[0]]
+    if not sample_gaps:
+        return windows, ["missing_ratio_ctrl_sample_progress"]
+    sample_gaps.sort()
+    max_contiguous_gap = max(20.0e-9, 5.0 * sample_gaps[len(sample_gaps) // 2])
+    cursor = float("-inf")
+    for label, expected_raw, _expected_ratio in _RATIO_CONFORMANCE_CASES:
+        match: tuple[float, float] | None = None
+        run_start: float | None = None
+        run_stop: float | None = None
+        previous_time: float | None = None
+        for time_s, value in ordered:
+            is_match = (
+                time_s > cursor
+                and abs(value - expected_raw) <= _RATIO_STIMULUS_MATCH_TOL
+            )
+            if is_match and previous_time is not None and time_s - previous_time > max_contiguous_gap:
+                if run_start is not None and run_stop is not None:
+                    inner = _inner_plateau_window(run_start, run_stop)
+                    if inner is not None and inner[1] - inner[0] >= 50.0e-9:
+                        match = inner
+                        break
+                run_start = None
+                run_stop = None
+            if is_match:
+                if run_start is None:
+                    run_start = time_s
+                run_stop = time_s
+            elif run_start is not None and run_stop is not None:
+                inner = _inner_plateau_window(run_start, run_stop)
+                if inner is not None and inner[1] - inner[0] >= 50.0e-9:
+                    match = inner
+                    break
+                run_start = None
+                run_stop = None
+            previous_time = time_s
+        if match is None and run_start is not None and run_stop is not None:
+            inner = _inner_plateau_window(run_start, run_stop)
+            if inner is not None and inner[1] - inner[0] >= 50.0e-9:
+                match = inner
+        if match is None:
+            notes.append(f"{label}_stimulus_plateau_missing expected={expected_raw:.2f}")
+            continue
+        windows[label] = match
+        cursor = match[1]
+    return windows, notes
 
 def _csv_header_indices(csv_path: Path) -> tuple[list[str], dict[str, int]]:
     with csv_path.open(newline="", encoding="utf-8") as f:
@@ -237,8 +303,13 @@ def _stream_adpll_ratio_hop_csv(csv_path: Path) -> tuple[float, list[str]]:
     if post_fb_ref_note != "ok":
         return 0.0, [f"post_feedback_window_{post_fb_ref_note}"]
 
+    conformance_windows, conformance_window_notes = _ratio_conformance_windows(ratio_samples)
+    if conformance_window_notes:
+        return 0.0, conformance_window_notes
+
     conformance_notes: list[str] = []
-    for label, expected_raw, expected_ratio, start, stop in _RATIO_CONFORMANCE_CASES:
+    for label, expected_raw, expected_ratio in _RATIO_CONFORMANCE_CASES:
+        start, stop = conformance_windows[label]
         observed_raw = stream_median_signal("ratio_ctrl", start, stop)
         if observed_raw is None or abs(observed_raw - expected_raw) > 0.05:
             return 0.0, [
@@ -407,8 +478,15 @@ def check_adpll_ratio_hop(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if post_fb_ref_note != "ok":
         return False, f"post_feedback_window_{post_fb_ref_note}"
 
+    conformance_windows, conformance_window_notes = _ratio_conformance_windows(
+        [(row["time"], row["ratio_ctrl"]) for row in rows]
+    )
+    if conformance_window_notes:
+        return False, "; ".join(conformance_window_notes)
+
     conformance_notes: list[str] = []
-    for label, expected_raw, expected_ratio, start, stop in _RATIO_CONFORMANCE_CASES:
+    for label, expected_raw, expected_ratio in _RATIO_CONFORMANCE_CASES:
+        start, stop = conformance_windows[label]
         observed_raw = median_signal("ratio_ctrl", start, stop)
         if observed_raw is None or abs(observed_raw - expected_raw) > 0.05:
             return False, (

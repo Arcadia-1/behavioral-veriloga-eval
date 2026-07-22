@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_selected_source_mapping_wrong/certification.json",
-        "certification_sha256": "0850adb921199835943027bb378c813739e4ffca55fdd013f62d4be5cc021117",
+        "certification_sha256": "ca64bfc7964b065afd84b6771fb5159b43ae19e23b89865fc26e317cd2f24b48",
         "fault_class": "selected_source_mapping_wrong",
-        "mutation_bundle_sha256": "263a3539959318902a7c3b238c1e731db03035a27f808725cfedc3a806c8dd01",
+        "mutation_bundle_sha256": "132b9a5f902b1b9b83e9bd3dd3415c533cfc2f1990de4d8bac8b65ad2948608c",
         "mutation_id": "neg_002_selected_source_mapping_wrong",
         "source_catalog_certification_path": "negative_variants/neg_002_selected_source_mapping_wrong/certification.json",
         "trigger_condition": "selected_source_mapping_wrong",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_reset_disable_clear_missing/certification.json",
-        "certification_sha256": "31fee2523b97f184d1e693be065551deb19541a05d89999a63667f9cd2a90092",
+        "certification_sha256": "5bbe1cd18411f0c8f8f98aac1258cce6b8fe4cc4ad2e9ee29382aacbfc17a488",
         "fault_class": "reset_disable_clear_missing",
-        "mutation_bundle_sha256": "9688a7b0af18ee6f65475a6f066603f4af4dfcaa1d9006d5b90842333fe7903f",
+        "mutation_bundle_sha256": "8ef9e6fa5bdc758b059cb34c69eb26e7f58f243ad3f9ff433cb3dc5dfb9330aa",
         "mutation_id": "neg_003_reset_disable_clear_missing",
         "source_catalog_certification_path": "negative_variants/neg_003_reset_disable_clear_missing/certification.json",
         "trigger_condition": "reset_disable_clear_missing",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_switch_metric_missing/certification.json",
-        "certification_sha256": "fa919bb769b6feead4e1cd31195eb74655ccffb20e26460989f63ee3544ec644",
+        "certification_sha256": "6fd910119e7151525d3f1c49072fce62b5f8080fd80383bbc596c1da169e5c53",
         "fault_class": "switch_metric_missing",
-        "mutation_bundle_sha256": "81532271e6524595e427f7f4d7655284467482a2b96f9861946cd9ffa9bcae06",
+        "mutation_bundle_sha256": "4dbfa075ca72d4e60788ce004985326248a4185bf6b40b7f7ef03e6b2ceff755",
         "mutation_id": "neg_004_switch_metric_missing",
         "source_catalog_certification_path": "negative_variants/neg_004_switch_metric_missing/certification.json",
         "trigger_condition": "switch_metric_missing",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_valid_flag_missing/certification.json",
-        "certification_sha256": "987869b7d25fb30944b3d4d9f3fd82def4b4c5d03a3b5519c37ea76af616a595",
+        "certification_sha256": "6b92cc372fc2b7fb041aa680dab2cb02ed5144c2000a574d3c9427284ae3e2f1",
         "fault_class": "valid_flag_missing",
-        "mutation_bundle_sha256": "f7373a27a26603fc68b1ecbec2a087868d8810f0f32b4fe3ec922891e4e03ad0",
+        "mutation_bundle_sha256": "5382957c8e4fa373a1cf6e8348bd6ee1b5f205c4fc91c38de22115b3eebb0827",
         "mutation_id": "neg_005_valid_flag_missing",
         "source_catalog_certification_path": "negative_variants/neg_005_valid_flag_missing/certification.json",
         "trigger_condition": "valid_flag_missing",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_glitchless_wait_missing/certification.json",
-        "certification_sha256": "c5070aaeb9f0fa1fbaa2147f57cf0f0aafed49fb993725d1444674466a00bb4e",
+        "certification_sha256": "e3f234b1e1c99295fdcf55022fa561d6ffe59e861672127c5c80a42f7f8fc45f",
         "fault_class": "glitchless_wait_missing",
-        "mutation_bundle_sha256": "123219e66670cd5c7f21aa243f202fabc120282fecec2429c613c310ee6b50cb",
+        "mutation_bundle_sha256": "96f56404e92c8e47e59d436476c6ae17cc8a5d5bdb2eab37f55121ebc98a88e3",
         "mutation_id": "neg_001_glitchless_wait_missing",
         "source_catalog_certification_path": "negative_variants/neg_001_glitchless_wait_missing/certification.json",
         "trigger_condition": "glitchless_wait_missing",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "e492aa9ccf08403f377d9a89ebd53b1743736ba7c2001437938c52365201c8e2",
       "score_deck_sha256": "2381142b6879f80121ef64379da945dcfccf50055457c892aa524987077f016d",
-      "task_certification_sha256": "eb98c4185501772de5751b5c2a87f1ab33904c85f698b3ac1698194ae752415f",
-      "task_record_sha256": "7cf6385ac8493c36c2a8ab1ef259ea08b35f1e33a9ce3064ad827ca1ce155e13"
+      "task_certification_sha256": "feaff8b6c08401a4e4a1617cc8f6747f4379ce24769e1bf0775349ade9483ed9",
+      "task_record_sha256": "882bcb2e6d13aa617d570e19e8d2cf43bf023896cf53926b59682d33dd17b0e7"
     },
     "release_dir": "322-glitchless-clock-mux-selector"
   }

@@ -302,18 +302,19 @@ def test_active_agent_tools_expose_restricted_evas_not_feedback() -> None:
     assert names == ["list_files", "read_file", "write_file", "run_evas", "finalize"]
 
 
-def test_campaign_runner_defaults_to_latest_r49_release() -> None:
+def test_campaign_runner_defaults_to_latest_r51_release() -> None:
     runner = load_run_campaign()
     wrapper = load_run_campaign_wrapper()
 
-    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r49"
+    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r51"
     assert runner.DEFAULT_RELEASE.is_dir()
     assert wrapper.DEFAULT_RELEASE == runner.DEFAULT_RELEASE
+    assert (runner.DEFAULT_RELEASE / "RELEASE_SEAL.json").is_file()
 
 
 @pytest.mark.parametrize(
     ("release_revision", "runtime_version"),
-    [("r45", 1), ("r45", 2), ("r47", 2)],
+    [("r45", 1), ("r45", 2), ("r47", 2), ("r50", 2), ("r51", 2)],
 )
 def test_run_evas_dut_uses_fixed_public_contract(
     tmp_path: Path, release_revision: str, runtime_version: int,
@@ -395,7 +396,7 @@ def test_run_evas_rejects_candidate_source_escape_before_execution(
 
 @pytest.mark.parametrize(
     ("release_revision", "runtime_version"),
-    [("r45", 1), ("r45", 2), ("r47", 2)],
+    [("r45", 1), ("r45", 2), ("r47", 2), ("r50", 2), ("r51", 2)],
 )
 def test_run_evas_testbench_uses_candidate_and_public_case_only(
     tmp_path: Path, release_revision: str, runtime_version: int,

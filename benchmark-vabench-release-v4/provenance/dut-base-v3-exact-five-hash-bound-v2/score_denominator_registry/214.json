@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_falling_reset/certification.json",
-        "certification_sha256": "920cae9ebcd4e95ffe3ef5bc66b03e188d75e9765d4cd1a3c6ecf66758ce427a",
+        "certification_sha256": "a22b981439415e5015987f6f32ba76b0af877a4afad913df9b88f3ab65a3be8a",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "a06b8ce5438807cf4c13bf9fab7aa5aa6368bb7e6bacbe07f927636ba7395091",
+        "mutation_bundle_sha256": "85e66c8149139bc11260c6fe88a475a7017935ece496d08b8fe4bb25d76f9d53",
         "mutation_id": "neg_002_no_falling_reset",
         "source_catalog_certification_path": "negative_variants/neg_002_no_falling_reset/certification.json",
         "trigger_condition": "Keeps the latched comparison through clock falling edges instead of resetting both outputs low.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "1af0052501c24b325f8ee4e7716fd8c7f3d139d159b542e5117d9645220d48a6",
+        "certification_sha256": "517c97abffd8ef55150162a34bf777b16c6a82485f408b6f16fcac4cc2e16c28",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "e76a6c1f15a0c3de7c549d9d9db393d1284b543d5687a285881e6ccb32160a9b",
+        "mutation_bundle_sha256": "31d799fb5a2ae77a68dfabae9fc6d0b1b40089b54c3304d359e659cd161d4b91",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "e7fab87054fa8abb414853175784493f702780c79dcdd055f8eaf540a2c2c3d8",
+        "certification_sha256": "ad43ac8547c415b29c84184e3131f12b2460f1f2dc1162e025eabb21e5f7ed50",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "a1648b982aa20cce6df3c29b4d278924893f75e56dd8303710aa43317e774351",
+        "mutation_bundle_sha256": "ed4e2d7d08d76c3a81f261519500099359d73d7bc9eb84d277629c8689c57038",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Comparator Reset Low 1p8: scales the metric output, preserving the main path while failing measurement checks.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_swapped_outputs/certification.json",
-        "certification_sha256": "716e4350d95d21c8bd3c0e839a21f0d400232fc35bee89e7c2eae6e38487b54d",
+        "certification_sha256": "9f5e61c70269169dea81ce34046452d3f2e885fc417cfdde361d9c289d5aa9ce",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "87bf245c1e8fae02fb4c84fd139c2f544e2f6b666c5fb8ee354c3dfa100e26b0",
+        "mutation_bundle_sha256": "5c48ce0943621bd0d455bbe4552faa77412ac2b5721511340d1b06587cd47195",
         "mutation_id": "neg_004_swapped_outputs",
         "source_catalog_certification_path": "negative_variants/neg_004_swapped_outputs/certification.json",
         "trigger_condition": "Drives DCM/P and DCM/N from the opposite latched states.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_inverted_compare/certification.json",
-        "certification_sha256": "881f35ade417bf14d8c747a1e90bc10ff1a2cb7f93b4403eecb5630a273149f8",
+        "certification_sha256": "6b603b774c1563f33e9f4e80abf746a4a247f212e5cbd074de2b01c79d44f44c",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "e8b59f2ad23d0cc1c08cfc741b2623024bd2b7b77be312f5ba22501216adad2b",
+        "mutation_bundle_sha256": "cbe59e3ebbfc3b1af3798f6c5e0c7a3ab84edf5ffac2598fd15b0263366966d9",
         "mutation_id": "neg_003_inverted_compare",
         "source_catalog_certification_path": "negative_variants/neg_003_inverted_compare/certification.json",
         "trigger_condition": "Inverts the VINP/VINN comparison polarity.",
@@ -69,9 +69,9 @@
     "canonical_dut_id": "214",
     "hashes": {
       "mutation_catalog_sha256": "4a543b384acd5e3499f1f4eed9cbf25da62389ae594d2df16feb1350635de4aa",
-      "score_deck_sha256": "429796c15c2defb0cc97d7fe6a724bf22807c34d3d3ab1cc033dc5d94fa00040",
-      "task_certification_sha256": "bcb88545f42a4e21b8bd9cf87e9ce42f867e9b75bed15f8426567cf23f31231c",
-      "task_record_sha256": "c741b7806914847f3de9ca13d66e08f54071409cdbe3a54dd73e3e92c63a0400"
+      "score_deck_sha256": "3e11334cc3579a85742e9402c907b0071265944390af8d57b52f36f7220522d2",
+      "task_certification_sha256": "81c5283ed4860d8b6467172e1ec6783b45a7aa2751da3fcd9bbc8f765a175a9c",
+      "task_record_sha256": "ce599c6b402a0b7fb23e68b23fd283a532a14fbf208c1f8df470405008516632"
     },
     "release_dir": "214-comparator-reset-low-1p8"
   }

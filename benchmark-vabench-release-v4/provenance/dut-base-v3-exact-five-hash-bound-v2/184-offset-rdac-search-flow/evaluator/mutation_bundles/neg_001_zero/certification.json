@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_REFERENCE_AND_CODE_INITIALIZATION satisfy the public contract; fault class zero_stub_output is rejected",
-    "observed": "EVAS: v4_184 checked=388 mismatch_count=269 coverage=clock_rises=17 decisions=[0, 1] offset_steps=8 phase_transitions=2; P_TWO_PHASE_CLOCKED_FLOW checked=210 mismatch_count=146 expected=vinp=0.334375+/-0.025 observed=vinp=0 sample_time=1.16e-09 metric_gap=0.334375; P_REFERENCE_AND_CODE_INITIALIZATION checked=11 mismatch_count=5 expected=vinp=0.334375+/-0.025 observed=vinp=0 sample_time=1.6e-10 metric_gap=0.334375; P_RDAC_REFINEMENT_SEQUENCE checked=78 mismatch_count=50 expected=vinp=0.334375+/-0.025 observed=vinp=0 sample_time=1.16e-09 metric_gap=0.334375; P_OFFSET_SEARCH_BISECTION checked=89 mismatch_count=68 expected=vinp=0.324375+/-0.025 observed=vinp=0 sample_time=8.16e-09 metric_gap=0.324375",
+    "observed": "EVAS: v4_184 checked=388 mismatch_count=249 coverage=clock_rises=17 decisions=[0, 1] offset_steps=8 phase_transitions=2; P_TWO_PHASE_CLOCKED_FLOW checked=210 mismatch_count=135 expected=vinp=0.334375+/-0.025 observed=vinp=0 sample_time=1.16e-09 metric_gap=0.334375; P_REFERENCE_AND_CODE_INITIALIZATION checked=11 mismatch_count=5 expected=vinp=0.334375+/-0.025 observed=vinp=0 sample_time=1.6e-10 metric_gap=0.334375; P_RDAC_REFINEMENT_SEQUENCE checked=78 mismatch_count=48 expected=vinp=0.334375+/-0.025 observed=vinp=0 sample_time=1.16e-09 metric_gap=0.334375; P_OFFSET_SEARCH_BISECTION checked=89 mismatch_count=61 expected=vinp=0.344375+/-0.025 observed=vinp=0 sample_time=8.16e-09 metric_gap=0.344375",
     "violated_property_ids": [
       "P_REFERENCE_AND_CODE_INITIALIZATION"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_184_offset_rdac_search_flow",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "06d620060a5e6a5c573a7832c4f7489a218814a65395a108d5019fde14f09f02",
     "trace_row_count": 935
   },
   "family_id": "184",
@@ -36,6 +36,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

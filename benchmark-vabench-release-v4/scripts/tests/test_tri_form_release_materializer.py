@@ -51,6 +51,8 @@ from run_campaign import (  # noqa: E402
     skill_tree_sha,
 )
 from audit_runtime_export import (  # noqa: E402
+    ALLOWED_DUT_RUNTIME_SCHEMAS,
+    ALLOWED_TESTBENCH_RUNTIME_SCHEMAS,
     main as audit_runtime_export,
     public_text_leaks_authoring_surface,
 )
@@ -69,8 +71,48 @@ from audit_tri_form_release import (  # noqa: E402
     expected_buggy_artifact_hashes,
     file_sha,
     prompt_component_path,
+    release_uses_real_skills,
+    rust_evas2_runtime,
     valid_git_oid,
 )
+
+
+def test_r51_release_plumbing_preserves_real_skill_and_runtime_contracts() -> None:
+    assert DEFAULT_OUTPUTS["r51"].name == "benchmarkv4-r51"
+    assert REBUILD_DEFAULT_RELEASES["r51"].name == "benchmarkv4-r51"
+    assert release_uses_real_skills("r51") is True
+    assert allowed_runtime_schemas("r51", "dut") == {
+        "r51-direct-evas-runtime-v2"
+    }
+    assert allowed_runtime_schemas("r51", "testbench") == {
+        "r51-direct-evas-testbench-suite-v2"
+    }
+    assert ALLOWED_DUT_RUNTIME_SCHEMAS["r51"] == {
+        "r51-direct-evas-runtime-v2"
+    }
+    assert ALLOWED_TESTBENCH_RUNTIME_SCHEMAS["r51"] == {
+        "r51-direct-evas-testbench-suite-v2"
+    }
+
+
+def test_r51_evas_runtime_provenance_requires_a_clean_git_revision() -> None:
+    runtime = {
+        "evas_engine": "evas2",
+        "evas_engine_used": "evas2",
+        "evas_version": "0.8.3",
+        "evas_backend": "evas-rust",
+    }
+    assert rust_evas2_runtime(runtime)
+    assert not rust_evas2_runtime(runtime, require_source_revision=True)
+
+    runtime.update(
+        {
+            "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+            "evas_source_revision": "a" * 40,
+            "evas_source_tree": "clean",
+        }
+    )
+    assert rust_evas2_runtime(runtime, require_source_revision=True)
 
 
 def write_runtime_skill_manifest(runtime: Path, skill_id: str = "veriloga") -> None:

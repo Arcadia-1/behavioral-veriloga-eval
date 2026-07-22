@@ -1,0 +1,13 @@
+{
+  "candidate_artifacts": [
+    "first_order_sigma_delta_modulator.va"
+  ],
+  "certification_evaluator": "rust_evas2",
+  "checker_profile_sha256": "ab1e3bdb9e4b584d3e9171810dcc771098f9a839d43d7aa673bee12476829929",
+  "full_contract_pass_required": true,
+  "gold_dut_certification_sha256": "5d0b1ec3c7c69dbd3465b4a2885ea1df584b55724ad180d853f481789a205204",
+  "gold_solution_tree_sha256": "9f44ef454119437c5c48863b9bc877925299991f726588f65c7115305b14dd46",
+  "materialized_checker_profile": "evaluator/checker_profile.json",
+  "schema_version": "v4-dut-score-policy-v1",
+  "task_id": "v4-055"
+}

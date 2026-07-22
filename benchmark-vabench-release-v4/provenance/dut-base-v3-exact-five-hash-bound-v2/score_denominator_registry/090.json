@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_polarity/certification.json",
-        "certification_sha256": "dd41d99af4294a4c3f1eb5cb9ed78ec2e3b5091ee2448a990cd5c05e7210bc02",
+        "certification_sha256": "56a583a6486b165b2f22fd9405e928580fcb42f333f66d7c2388757d6c59a639",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "cdbd32047410e2c509470287ea53ae5bc1a801e3a199ec2d4370cc0ce0365e99",
+        "mutation_bundle_sha256": "d957ba46a5eb71569e09f489e5045ac265c8a8d47cd392fad0823b8c6c838481",
         "mutation_id": "neg_002_wrong_polarity",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_polarity/certification.json",
         "trigger_condition": "targeted stimulus exercises the violated observable contract for Dither Adder",
@@ -20,9 +20,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_fixed_positive_dither/certification.json",
-        "certification_sha256": "4679c1b9651ed284829b2dbfaee0be7683704082bf23d60ad02715c8f7f5b9ff",
+        "certification_sha256": "2f5b6e2676f4095d6feeafb4ce580c4adbd9d1f756a932753b18b39d21abee64",
         "fault_class": "behavioral_contract_near_miss",
-        "mutation_bundle_sha256": "4b419fdcabaadd663622a812733769857409f33bbf247ab1c30859e43f25584a",
+        "mutation_bundle_sha256": "0807d99fcd27cb5e2cf6de5c611b8c22f067bf922f5701c9b2577913d6c9830e",
         "mutation_id": "neg_004_fixed_positive_dither",
         "source_catalog_certification_path": "negative_variants/neg_004_fixed_positive_dither/certification.json",
         "trigger_condition": "targeted stimulus exercises the violated observable contract for Dither Adder",
@@ -34,9 +34,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "8e7e83b47e4a97a55bf37f08f33b5971f82141449f35bf6cf9454c3a3e82ef1f",
+        "certification_sha256": "fb1559a3aeea4b7bbeaefd9898f64c1ebeb02c4ab67ed900f6760d4487db1774",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "a06fd4adce58721e7271b91494541046cd30dd758f17c93199463185c478b334",
+        "mutation_bundle_sha256": "e99b66de8aee43bcc99769d5b0cd4da2e04da0d074c2d81f14dce945367b5e32",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "nonzero behavioral stimulus requires observable Dither Adder outputs",
@@ -47,9 +47,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "5df339f840767182938f70e03c4ec8b57da4a8a180c8f179941f0d8fa59c9844",
+        "certification_sha256": "5b19b2409c7bfecd15282aa16d89102f015ee0dcf6071838b8f09ca5cd7bf75e",
         "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "ff7f7a69902ca6fde821f4b740cee91a132bbbaa45b7ecba0c17aa103c23a256",
+        "mutation_bundle_sha256": "d0891b22d2c316f699165742d78cbb0dfac9e6170390e282cb84c57558d8583d",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "score stimulus observes the public metric/output scaling for Dither Adder",
@@ -61,9 +61,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_common_mode_shift/certification.json",
-        "certification_sha256": "7bf6b52702a4678bd2ec58db979a8d9004e2d379b97b38ad0d36d957ffbf3653",
+        "certification_sha256": "70b53652dd20ec3e6ebf0ccab2efdf691201bff4daa0845a41bbbfb84c53f694",
         "fault_class": "behavioral_contract_near_miss",
-        "mutation_bundle_sha256": "427bab346a0b9433ed7f8c5eb01767d6e6dff6f6b7d375cae3fe7f5fc0c33f22",
+        "mutation_bundle_sha256": "4ee5cd5e7c28806b071c6dfc46832ee057a850c13034f78f51607909f32ca5bd",
         "mutation_id": "neg_003_common_mode_shift",
         "source_catalog_certification_path": "negative_variants/neg_003_common_mode_shift/certification.json",
         "trigger_condition": "targeted stimulus exercises the violated observable contract for Dither Adder",
@@ -79,8 +79,8 @@
     "hashes": {
       "mutation_catalog_sha256": "b37f2d0cbd916d0ab2b05dbb98ede3694f7a3445deaaf4b8c54e0cd81f12679d",
       "score_deck_sha256": "9b1f2e5f9fbf27f5c89dc865396dab89a93d13593e7eef6f41340d860af67640",
-      "task_certification_sha256": "3399a1a75687d3290d8cd9c658791e855bf279cb31bb7a12cd2af383de972d5f",
-      "task_record_sha256": "4072018d5ea4c93a9ccb8cb11d41f28666e7dc010187f6bea60aa40a90375686"
+      "task_certification_sha256": "ed533abefb8ce5dc6c04e89a249595fcb6cf3166d9eecf59b6b44b1cc9192a3b",
+      "task_record_sha256": "e1cce9b73ee0cfc9a59b84ae44fa1be43bd6f61a167b9ac8fa46e23b8cfc7892"
     },
     "release_dir": "090-dither-adder"
   }

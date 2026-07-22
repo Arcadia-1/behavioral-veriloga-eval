@@ -14,6 +14,7 @@ ALLOWED_DUT_RUNTIME_SCHEMAS = {
     "r48": {"r48-direct-evas-runtime-v2"},
     "r49": {"r49-direct-evas-runtime-v2"},
     "r50": {"r50-direct-evas-runtime-v2"},
+    "r51": {"r51-direct-evas-runtime-v2"},
 }
 ALLOWED_TESTBENCH_RUNTIME_SCHEMAS = {
     "r45": {
@@ -24,6 +25,7 @@ ALLOWED_TESTBENCH_RUNTIME_SCHEMAS = {
     "r48": {"r48-direct-evas-testbench-suite-v2"},
     "r49": {"r49-direct-evas-testbench-suite-v2"},
     "r50": {"r50-direct-evas-testbench-suite-v2"},
+    "r51": {"r51-direct-evas-testbench-suite-v2"},
 }
 AUTHORING_ONLY_PUBLIC_MARKERS = (
     "negative_variants/",
@@ -96,7 +98,7 @@ def main() -> int:
     )
     expected_skill_ids = REAL_SKILL_MATRIX.get(mode, []) if real_skill_delivery else []
     if real_skill_delivery and set(available_skills) != set(expected_skill_ids):
-        problems.append("available skills do not match the r50 mode matrix")
+        problems.append("available skills do not match the real-skill mode matrix")
     if not real_skill_delivery and available_skills:
         problems.append("legacy runtime unexpectedly declares real skills")
     if policy.get("evaluator_mounted") is not False or any("evaluator" in str(item) for item in mounts):

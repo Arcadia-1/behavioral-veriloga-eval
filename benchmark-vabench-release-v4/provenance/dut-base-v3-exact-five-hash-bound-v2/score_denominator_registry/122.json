@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_leak_inside_deadband/certification.json",
-        "certification_sha256": "0d6bcddc30d3c755abb948197bf3b4b656b59392e02f4f64c7ed44d12eeae343",
+        "certification_sha256": "bf889aa12c452240f5f2f2ca08c29b80b1cf60fe2f36d7a699fe6de1238c6908",
         "fault_class": "deadband_leak_omission",
-        "mutation_bundle_sha256": "f1c45db7e6a4cfd5a6067c767dfd039b7f7471d8c1d88d14cf26462072e5ff9a",
+        "mutation_bundle_sha256": "c1a5f2310242f5696219cc0d05c40ffbdd8f45b34066549e43153de9674c4a41",
         "mutation_id": "neg_002_no_leak_inside_deadband",
         "source_catalog_certification_path": "negative_variants/neg_002_no_leak_inside_deadband/certification.json",
         "trigger_condition": "Outputs zero inside the deadband instead of the leak value.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_offsets/certification.json",
-        "certification_sha256": "4b5c40dd8fcd44237514f40a37f701bf777947adab5c5b13abad49ec6207ee1f",
+        "certification_sha256": "8124fccaddc30547086adacce17c04f8bd272965e485b87bdf5b3770bded2030",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "11099fcf4b5fd268f5eb96cdffea6150f8926adad3065270f26fbfe673434e6a",
+        "mutation_bundle_sha256": "9f916b8424b1362c9adb681dc471834b8ffdeb7e154905abf7b61d1cf1618196",
         "mutation_id": "neg_003_wrong_offsets",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_offsets/certification.json",
         "trigger_condition": "Subtracts the wrong deadband edge outside the window.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_single_ended_input/certification.json",
-        "certification_sha256": "3d1124f6e21fb2d356322cd84582dac453db8f645dc5adba8d826e2136dc7284",
+        "certification_sha256": "480631b36a69d4a969546f708fcda7af6ecf33ed198a4d3bd14f3d355ef394c0",
         "fault_class": "single_ended_input",
-        "mutation_bundle_sha256": "054633ef974ac4c1f027b46fa7dec9b26b1b8a41ea79f5041bde7d258733b039",
+        "mutation_bundle_sha256": "48e7beb37404c1142476d6bcd49c83fd962c52474b747e7d9b08a5949f776429",
         "mutation_id": "neg_004_single_ended_input",
         "source_catalog_certification_path": "negative_variants/neg_004_single_ended_input/certification.json",
         "trigger_condition": "Uses only the positive input instead of the differential input.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "c65be2f58bf1e9df1214f3b321371bad5ea283e734520d437e9c9269e074b6b7",
+        "certification_sha256": "ea4f418d98c36475c5713395a80be1156fe5d78ab10557286516cc8b10377f00",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "eadb11acc5a8e78cbe9b40ec404221ea93135cfd53bd809e55434b8c4e800469",
+        "mutation_bundle_sha256": "1c0f14a465a12ce0f814affdf4ec4d555e4e3d019819cd3a3a4d451e1bc3f01e",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "521e68cf80ae2de13e3de5b313d25f409346633f63fd734bc01c818afaa51896",
+        "certification_sha256": "8de9ded5e4eb915faaa5521498313937be5a0a22cac94798b32647921c97b5d7",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "9aca1c48ab482e93f31059951c5ab9c6e8da1e62b53e494b4cb6ba3c162611ed",
+        "mutation_bundle_sha256": "0fc69e4c8e672edf1dd6d98495468de7b9e5b24df37ada133cf09d5948c87e0c",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Differential Deadband: scales the metric output, preserving the main path while failing measurement checks.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "9103af68e31b8730c56a72640775eb7e58a1a64a12add70f806bbddd37354a8e",
       "score_deck_sha256": "0d9af50bf46bf8e5887302e7d12fe8a23d72aa3608ca6ae81dac26280d2f47be",
-      "task_certification_sha256": "58fea2771662900c6a82caeae609ff404b8dfcd39958a2749de69b51d15a686e",
-      "task_record_sha256": "e783593adb2c2a1f0de907b073d326317e558e35bfe4a2a52cc0f34d2f74cb3a"
+      "task_certification_sha256": "2d98c389b71f3ef951e9cd230af6071c3146564e7157683a3fb3b95b75678465",
+      "task_record_sha256": "ee58b01d115a1158e4a3768df3f22524e696b09c5acb387b7d3db9887634d2a1"
     },
     "release_dir": "122-differential-deadband"
   }
