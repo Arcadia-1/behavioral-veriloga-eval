@@ -72,8 +72,21 @@ def _inactive_settled(rows: list[dict[str, float]], index: int, delay: float = 5
             return not _active(previous)
     return False
 
+def _clamped_ctrl(row: dict[str, float]) -> float:
+    return min(VDD, max(VSS, float(row["vctrl"])))
+
+def _half_period_for_ctrl(ctrl: float) -> float:
+    return 0.5 / (5e6 + 20e6 * min(VDD, max(VSS, ctrl)) / VDD)
+
 def check_v4_391_lc_vco_behavioral_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    properties = ["P_RESET_DISABLE_CENTER", "P_CONTROL_FREQUENCY_MAP", "P_COMPLEMENTARY_AMPLITUDE", "P_METRIC_REPORTING", "P_VALID_AFTER_TWO_CYCLES"]
+    properties = [
+        "P_RESET_DISABLE_CENTER",
+        "P_CONTROL_FREQUENCY_MAP",
+        "P_COMPLEMENTARY_AMPLITUDE",
+        "P_METRIC_REPORTING",
+        "P_VALID_AFTER_TWO_CYCLES",
+        "P_NO_RETIME_PENDING_TRANSITION",
+    ]
     required = {"time", "vctrl", "enable", "rst", "osc_p", "osc_n", "freq_metric", "amp_metric", "valid"}
     valid, note = _required(rows, required, "v4_391")
     if not valid:
@@ -85,25 +98,54 @@ def check_v4_391_lc_vco_behavioral_source(rows: list[dict[str, float]]) -> tuple
     enable_start: float | None = None
     last_osc_transition = -1e99
     last_ctrl_transition = -1e99
+    last_edge_ctrl: float | None = None
+    pending_expected_edge: float | None = None
+    pending_ctrl_change_time: float | None = None
     half_edges = 0
     for index, row in enumerate(rows):
         if not _active(row):
             coverage["inactive_rows"] += 1
             enable_start = None
             half_edges = 0
+            last_osc_transition = -1e99
+            last_edge_ctrl = None
+            pending_expected_edge = None
+            pending_ctrl_change_time = None
             if _inactive_settled(rows, index) and (abs(float(row["osc_p"]) - VCM) > 0.04 or abs(float(row["osc_n"]) - VCM) > 0.04 or abs(float(row["freq_metric"])) > 0.04 or abs(float(row["amp_metric"])) > 0.04 or _high(row, "valid")):
                 _add(mismatches, "P_RESET_DISABLE_CENTER", row, "osc_p=osc_n=0.45,metrics=0,valid=0", f"osc_p={row['osc_p']:.4g},osc_n={row['osc_n']:.4g},freq_metric={row['freq_metric']:.4g},amp_metric={row['amp_metric']:.4g},valid={int(_high(row,'valid'))}", max(abs(float(row["osc_p"])-VCM), abs(float(row["osc_n"])-VCM), abs(float(row["freq_metric"])), abs(float(row["amp_metric"]))))
         else:
             if enable_start is None:
                 enable_start = float(row["time"])
                 rising_edges = []
+                last_osc_transition = -1e99
+                last_edge_ctrl = None
+                pending_expected_edge = None
+                pending_ctrl_change_time = None
             if index and not _active(previous):
                 last_ctrl_transition = float(row["time"])
             if abs(float(row["vctrl"]) - float(previous["vctrl"])) > 0.01:
                 last_ctrl_transition = float(row["time"])
+                if last_edge_ctrl is not None and pending_expected_edge is None:
+                    pending_expected_edge = last_osc_transition + _half_period_for_ctrl(last_edge_ctrl)
+                    pending_ctrl_change_time = float(row["time"])
             osc_transition = _rising(previous, row, "osc_p", VCM) or _falling(previous, row, "osc_p", VCM)
             if osc_transition:
+                if pending_expected_edge is not None:
+                    actual_edge = float(row["time"])
+                    tolerance = max(2e-9, 0.10 * _half_period_for_ctrl(last_edge_ctrl or 0.0))
+                    if abs(actual_edge - pending_expected_edge) > tolerance:
+                        _add(
+                            mismatches,
+                            "P_NO_RETIME_PENDING_TRANSITION",
+                            row,
+                            f"next_edge={pending_expected_edge:.6g} from prior_ctrl={last_edge_ctrl:.4g}",
+                            f"next_edge={actual_edge:.6g} ctrl_changed_at={pending_ctrl_change_time:.6g}",
+                            actual_edge - pending_expected_edge,
+                        )
+                    pending_expected_edge = None
+                    pending_ctrl_change_time = None
                 last_osc_transition = float(row["time"])
+                last_edge_ctrl = _clamped_ctrl(row)
                 half_edges += 1
             if _rising(previous, row, "osc_p", VCM):
                 rising_edges.append((float(row["time"]), float(row["vctrl"])))
@@ -125,7 +167,12 @@ def check_v4_391_lc_vco_behavioral_source(rows: list[dict[str, float]]) -> tuple
                 if metric_settled and (abs(float(row["freq_metric"]) - ctrl) > 0.04 or abs(float(row["amp_metric"]) - 0.4) > 0.04):
                     _add(mismatches, "P_METRIC_REPORTING", row, f"freq_metric={ctrl:.4g},amp_metric=0.4", f"freq_metric={row['freq_metric']:.4g},amp_metric={row['amp_metric']:.4g}", max(abs(float(row["freq_metric"])-ctrl), abs(float(row["amp_metric"])-0.4)))
                 observed_amp = abs(float(row["osc_p"])-VCM)
-                if observed_amp >= 0.32 and (abs((float(row["osc_p"]) + float(row["osc_n"])) - 0.9) > 0.07 or abs(observed_amp-0.4) > 0.07):
+                observed_sum = float(row["osc_p"]) + float(row["osc_n"])
+                near_expected_edge = False
+                if last_edge_ctrl is not None and last_osc_transition > -1e90:
+                    expected_next_edge = last_osc_transition + _half_period_for_ctrl(last_edge_ctrl)
+                    near_expected_edge = abs(float(row["time"]) - expected_next_edge) <= 1.0e-9
+                if half_edges > 0 and not near_expected_edge and (abs(observed_sum - 0.9) > 0.07 or abs(observed_amp-0.4) > 0.07):
                     _add(mismatches, "P_COMPLEMENTARY_AMPLITUDE", row, "osc_p+osc_n=0.9,half_amplitude=0.4", f"sum={float(row['osc_p'])+float(row['osc_n']):.4g},amp={abs(float(row['osc_p'])-VCM):.4g}", max(abs(float(row["osc_p"])+float(row["osc_n"])-0.9), abs(abs(float(row["osc_p"])-VCM)-0.4)))
                 observed = _high(row, "valid")
                 expected_valid = half_edges >= 4
