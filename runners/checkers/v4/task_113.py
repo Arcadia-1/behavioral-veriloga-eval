@@ -13,6 +13,8 @@ PROPERTY_IDS = (
     "P_CONTINUOUS_DECODE",
 )
 
+_EXPECTED_VTH = 0.65
+
 
 def check_v3_sar_weighted_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "d10", "d9", "d8", "d7", "d6", "d5", "d4", "d3", "d2", "d1", "d0", "vout"}
@@ -22,7 +24,16 @@ def check_v3_sar_weighted_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
 
     bit_signals = ["d10", "d9", "d8", "d7", "d6", "d5", "d4", "d3", "d2", "d1", "d0"]
     weights = [448, 256, 128, 80, 48, 32, 16, 8, 4, 2, 1]
-    vth = 0.5 * max_signal_value(rows, bit_signals, default=0.9)
+    max_input = max_signal_value(rows, bit_signals, default=0.0)
+    if max_input <= _EXPECTED_VTH:
+        return False, diagnostic(
+            "P_THRESHOLD_DECODE",
+            "missing_vth_override_high_level",
+            expected=f"some_input>{_EXPECTED_VTH:.3f}",
+            observed=f"max_input={max_input:.3f}",
+            event="stimulus_levels",
+        )
+    vth = _EXPECTED_VTH
     change_times: list[float] = []
     for signal in bit_signals:
         change_times.extend(crossings(rows, signal, threshold=vth, direction="rising"))
@@ -37,6 +48,7 @@ def check_v3_sar_weighted_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
 
     checked = 0
     distinct_codes: set[int] = set()
+    code_states: list[tuple[int, float]] = []
     max_err = 0.0
     for index, t in enumerate(candidates):
         code_weight = 0
@@ -56,6 +68,7 @@ def check_v3_sar_weighted_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
             err = abs(observed - expected)
             max_err = max(max_err, err)
             distinct_codes.add(code_bits)
+            code_states.append((code_bits, observed))
             checked += 1
             if err > 0.025:
                 return False, diagnostic(
@@ -65,23 +78,67 @@ def check_v3_sar_weighted_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
                     observed=f"vout={observed:.4f},err={err:.4f}",
                     event=f"code_state[{index}]",
                 )
-    if checked < 4:
+
+    covered_bits: set[str] = set()
+    max_step_err = 0.0
+    lsb = 1.0 / 512.0
+    for index, ((previous_code, previous_vout), (code, vout)) in enumerate(
+        zip(code_states, code_states[1:]),
+        start=1,
+    ):
+        changed_mask = previous_code ^ code
+        if changed_mask == 0 or changed_mask & (changed_mask - 1):
+            continue
+        code_bit = changed_mask.bit_length() - 1
+        signal_index = len(bit_signals) - 1 - code_bit
+        signal = bit_signals[signal_index]
+        direction = 1.0 if code & changed_mask else -1.0
+        expected_delta = direction * weights[signal_index] * lsb
+        observed_delta = vout - previous_vout
+        step_err = abs(observed_delta - expected_delta)
+        step_tolerance = max(0.25 * lsb, 0.05 * abs(expected_delta))
+        max_step_err = max(max_step_err, step_err)
+        covered_bits.add(signal)
+        if step_err > step_tolerance:
+            return False, diagnostic(
+                "P_WEIGHT_ORDER",
+                "per_bit_step_mismatch",
+                expected=f"bit={signal},delta={expected_delta:.7f},tol={step_tolerance:.7f}",
+                observed=f"bit={signal},delta={observed_delta:.7f},err={step_err:.7f}",
+                event=f"isolated_code_step[{index}]",
+            )
+
+    required_states = len(bit_signals) + 1
+    if checked < required_states:
         return False, diagnostic(
             "P_CONTINUOUS_DECODE",
             "insufficient_checks",
-            expected="checked>=4",
+            expected=f"checked>={required_states}",
             observed=f"checked={checked}",
             event="code_state_set",
         )
-    if len(distinct_codes) < 4:
+    if len(distinct_codes) < required_states:
         return False, diagnostic(
             "P_BIPOLAR_ENDPOINTS",
             "insufficient_code_coverage",
-            expected="distinct_codes>=4",
+            expected=f"distinct_codes>={required_states}",
             observed=f"distinct_codes={len(distinct_codes)}",
             event="code_state_set",
         )
-    detail = f"checked={checked} distinct_codes={len(distinct_codes)} max_err={max_err:.5f}"
+    missing_bit_steps = [signal for signal in bit_signals if signal not in covered_bits]
+    if missing_bit_steps:
+        return False, diagnostic(
+            "P_WEIGHT_ORDER",
+            "missing_isolated_bit_steps",
+            expected="isolated_step_per_bit=d10..d0",
+            observed=f"missing={','.join(missing_bit_steps)}",
+            event="isolated_code_step_set",
+        )
+    detail = (
+        f"checked={checked} distinct_codes={len(distinct_codes)} "
+        f"covered_bit_steps={len(covered_bits)} max_err={max_err:.5f} "
+        f"max_step_err={max_step_err:.7f}"
+    )
     return True, pass_note(PROPERTY_IDS, detail)
 
 CHECKER_ID = "v4_113_sar_weighted_sum"
