@@ -18,8 +18,8 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE_ROOT = ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
-DEFAULT_RELEASE = ROOT / "release" / "benchmarkv4-r45"
-DEFAULT_RELEASE_REVISION = "r45"
+DEFAULT_RELEASE = ROOT / "release" / "benchmarkv4-r51"
+DEFAULT_RELEASE_REVISION = "r51"
 FORMS = ("dut", "testbench", "bugfix")
 REQUIRED_EVAS_ENGINE = "evas2"
 REQUIRED_EVAS_VERSION = "0.8.3"

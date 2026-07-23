@@ -22,11 +22,12 @@ artifacts. Do not add new v3 tasks there.
 five candidate tasks have been absorbed into v3.
 
 The active benchmarkv4 release package lives at
-`benchmark-vabench-release-v4/release/benchmarkv4-r45/`. The frozen r44 package
-remains at `benchmark-vabench-release-v4/release/benchmarkv4/` only for
-historical reproduction and immutable release verification. An r47 candidate
-must remain explicitly selected until its certification artifacts and seal are
-complete.
+`benchmark-vabench-release-v4/release/benchmarkv4-r51/`. It is the immutable,
+EVAS2-certified release used by the operator-facing experiment entrypoints.
+The frozen r44 package remains at
+`benchmark-vabench-release-v4/release/benchmarkv4/`, and the other revisioned
+predecessors remain available only for explicit historical reproduction and
+immutable release verification.
 
 ## Stable Top-Level Directories
 

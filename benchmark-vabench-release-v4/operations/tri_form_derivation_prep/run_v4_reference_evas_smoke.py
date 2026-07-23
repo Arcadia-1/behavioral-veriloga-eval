@@ -39,7 +39,7 @@ from runners.simulate_evas import (  # noqa: E402
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4-r45"
+DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4-r51"
 REQUIRED_EVAS_ENGINE = "evas2"
 REQUIRED_EVAS_VERSION = "0.8.3"
 RUST_EVAS_LOG_ENGINE = "evas-rust"

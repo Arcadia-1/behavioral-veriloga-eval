@@ -20,12 +20,12 @@ runner = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(runner)
 
 
-def test_profile_evidence_uses_evas_083_rust_runtime() -> None:
+def test_profile_evidence_defaults_to_r51_evas_083_rust_runtime() -> None:
     assert runner.REQUIRED_EVAS_VERSION == "0.8.3"
     assert runner.REQUIRED_EVAS_ENGINE == "evas2"
     assert runner.RUST_EVAS_LOG_ENGINE == "evas-rust"
-    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r45"
-    assert runner.DEFAULT_RELEASE_REVISION == "r45"
+    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r51"
+    assert runner.DEFAULT_RELEASE_REVISION == "r51"
 
 
 def test_profile_evidence_labels_are_revision_scoped() -> None:
