@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero_offset/certification.json",
-        "certification_sha256": "511354825906845c55513df40ba82dcf1003d84e55546bfcbe66d625bed1f5bf",
+        "certification_sha256": "266c337dc9f27ff8820b360c87164ce8a415a9c164cd54ddfd95efdea3ad526e",
         "fault_class": "offset_threshold_zero",
-        "mutation_bundle_sha256": "e8c1aee59013555ec0489c10e333c49d090cdac48fe3ab15149857abf8ef8528",
+        "mutation_bundle_sha256": "bdc71c0b830f64ffccac4746d0128538af2cedf7ffa76165d6c729e60aa5efbb",
         "mutation_id": "neg_001_zero_offset",
         "source_catalog_certification_path": "negative_variants/neg_001_zero_offset/certification.json",
         "trigger_condition": "a sampled differential input is positive but below vos",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_fixed_clock_midpoint/certification.json",
-        "certification_sha256": "58c0ba8af211c3f73eebd7f4c1411f99cf7678559713b137cd9623faa31d74f5",
+        "certification_sha256": "ed1457e72cabc5e1a0ce49417e9b0f5ecfe70ab82c6b1aa93ddbbc3b94a00baa",
         "fault_class": "fixed_clock_midpoint",
-        "mutation_bundle_sha256": "df7c30786957e1fd483ec7d98ac8f3491094895825d51a04e3a98851e8388ec0",
+        "mutation_bundle_sha256": "827889436f5da21b8914c665962878b30d60fad13ed522e147fee58a3f45dc45",
         "mutation_id": "neg_006_fixed_clock_midpoint",
         "source_catalog_certification_path": "negative_variants/neg_006_fixed_clock_midpoint/certification.json",
         "trigger_condition": "CLK is sampled with a non-nominal local VDD/VSS midpoint",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_falling_edge/certification.json",
-        "certification_sha256": "2a811adea89170ebcc4f58abd45c276096bf58040b22bf0b6ebc55c806802e66",
+        "certification_sha256": "d71d037924bde1261277ae7db6c29f60c3dd16c08ff2ae22fe27a440b3c4c99d",
         "fault_class": "falling_edge_sampling",
-        "mutation_bundle_sha256": "83e0e08e1b78cbc3a4ba6f423117c24154e0de34216ac497c43cd4bc852962a1",
+        "mutation_bundle_sha256": "c37f8118090ebc1055b11511a135526f10d609af8b55b64a0c127b6b04198874",
         "mutation_id": "neg_003_falling_edge",
         "source_catalog_certification_path": "negative_variants/neg_003_falling_edge/certification.json",
         "trigger_condition": "CLK has a rising sampling edge followed by an input transition before its falling edge",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_large_offset/certification.json",
-        "certification_sha256": "f7d39da9be7edf71984681613e4c353d824d942a309e628338f432e78dcb4e07",
+        "certification_sha256": "4d628795c477defa04ff28e7579ebe54b9eff3aa66e23f6d8c2ca8c8c3e687b5",
         "fault_class": "offset_threshold_excessive",
-        "mutation_bundle_sha256": "b9cfd1a6d113b5e6a8d1cdca3773124d1e6260e465d07429e17b434a8dd57da8",
+        "mutation_bundle_sha256": "0109e81242088ad9235643cd69125cd72545131e3c20cbb68303b6f23f0f443d",
         "mutation_id": "neg_002_large_offset",
         "source_catalog_certification_path": "negative_variants/neg_002_large_offset/certification.json",
         "trigger_condition": "a sampled differential input exceeds vos but not the erroneous 15 mV threshold",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_async_response/certification.json",
-        "certification_sha256": "7fa7cf24e8e179765431a03bc4b4c19e8f1d2d1885cdf2239303a79c2e250326",
+        "certification_sha256": "621aac9dffb413a05b97e6faf835ef4e83a15d39682ef3dfe02ab12fe07af4fa",
         "fault_class": "asynchronous_decision",
-        "mutation_bundle_sha256": "1caad935f918e87c29a60d78d715788c22a013d02e361c520af717c971e7f1f2",
+        "mutation_bundle_sha256": "8a81338621735d9c23e4c845f86b920a612574ec89e8bc197abcff4f0c28e976",
         "mutation_id": "neg_004_async_response",
         "source_catalog_certification_path": "negative_variants/neg_004_async_response/certification.json",
         "trigger_condition": "VINP changes between rising CLK edges",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "607c89e938fa32d961562b21d63c6cfb63e0ac0095df33e62d36bb6c523817b0",
       "score_deck_sha256": "97e3390ea4969c90e721c3821963606bae733c80095dece1a981c40c1791ce52",
-      "task_certification_sha256": "34166be1379a42423649f8f9a4e61377f098d665a5a58614906f9742291ff484",
-      "task_record_sha256": "c4daab6b39bc314bbfaaf1a62d553b799771f2302b071c668580e0ce1b8f8c60"
+      "task_certification_sha256": "fd90c4c7dbd5e2711b63fb5ef4737c921c3e0647150cb991f2d880b1f57c0c6e",
+      "task_record_sha256": "4069777feee689d4fafe9ad8b09e67011a991976d5e991de6bf25d6d9efe881a"
     },
     "release_dir": "010-offset-comparator"
   }

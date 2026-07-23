@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "9e6fd06cbafd30975e268faa2dc27c5f560fc47664c4d31e001dc965b4c658b4",
+        "certification_sha256": "eadf0b182fd8a2d0c2e448a23a79b8fa8e7f9869522b5efb49e92a938cdc1c98",
         "fault_class": "never_counts_in_window",
-        "mutation_bundle_sha256": "2d7966bb62e2915ab8f926327a61f174358f43c9a8597d09c8cb23fb94757b25",
+        "mutation_bundle_sha256": "75f54cd7bae79c8e22e4cef1f0b9cc563d044cdfa7257cca59789819660f31ce",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "rising event crossings inside an open gate window must increment the held count",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_clear/certification.json",
-        "certification_sha256": "0e3ee6bb78a76ea16db57a5e18eafdf1ba601f9e165f6cf78bbdf755c1849561",
+        "certification_sha256": "bcae447b9f91bd3adc20c09c98cbb771e83920aebed9003c4f55a146b8153ce7",
         "fault_class": "does_not_clear_at_new_gate",
-        "mutation_bundle_sha256": "84b704fa590a746d8c6ec0a2eb648b5153df12dd8f210d66122b15e10324a409",
+        "mutation_bundle_sha256": "2d00745f875f32db0fd4641a151a5b6a1972d0927c030c14325a6ef4d7b0ccdf",
         "mutation_id": "neg_003_no_clear",
         "source_catalog_certification_path": "negative_variants/neg_003_no_clear/certification.json",
         "trigger_condition": "a rising gate crossing must clear the count before the new measurement window",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_done/certification.json",
-        "certification_sha256": "f1d7e06aa4a95a2e679ec1b23414de1898e7d033c3314da8c2d64f6dfe95c91b",
+        "certification_sha256": "0593e6f5ddaed61325120317fb86c9ca88c9e4426e3c2c74f91953d17109320e",
         "fault_class": "does_not_assert_done",
-        "mutation_bundle_sha256": "5d5a592d56b130dd38a591ab11cc58d050d24602498fe6f525d360f008ee6e7f",
+        "mutation_bundle_sha256": "fad921ceea8a47632df70beec2dc9ed9069fad17f9f0014f153bc9408c29d1ec",
         "mutation_id": "neg_004_no_done",
         "source_catalog_certification_path": "negative_variants/neg_004_no_done/certification.json",
         "trigger_condition": "a falling gate crossing must close the window and assert done",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_swapped_count0_count1/certification.json",
-        "certification_sha256": "e40a6c119288c84de25c66f789da521190ec787fd294d7ed29f11aa6dabe1973",
+        "certification_sha256": "11d708d36627dccdc0cd9885050194e3aa15dd1899bd7b8f85c6f8ce1e79e7b6",
         "fault_class": "swapped_count0_count2_significance",
-        "mutation_bundle_sha256": "020ed498e684232e113cc2b0e4583518ed87e56b166298b1441ea0776c7dfedb",
+        "mutation_bundle_sha256": "26034ed3d76be2f75166afc7574cef627b3759e1c4ecc88b2cb045dce8272a76",
         "mutation_id": "neg_006_swapped_count0_count1",
         "source_catalog_certification_path": "negative_variants/neg_006_swapped_count0_count1/certification.json",
         "trigger_condition": "count0 must be the least-significant count bit and count2 the four-count bit",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_count_all/certification.json",
-        "certification_sha256": "a3bf1efeadee60b04175fe661c9b75ac61f40f86c5b22d38bffe942209bf5dab",
+        "certification_sha256": "a4a12d4b2cfff59184f6514832605fb1d5c20fe687265dde5070e91c7bc73fee",
         "fault_class": "counts_events_outside_gate",
-        "mutation_bundle_sha256": "9964210ff297c713d3c378b781dd099737ffeb2f39cc2d32f422a2a1796febee",
+        "mutation_bundle_sha256": "7eef04dd911a81635a8703ef21454c0112f90af7b8b38252ae05759ace759a3c",
         "mutation_id": "neg_002_count_all",
         "source_catalog_certification_path": "negative_variants/neg_002_count_all/certification.json",
         "trigger_condition": "events outside the active gate window must not change the held result",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "b4d6304d3029462e9132bcd62dec1a4a4aa261d1efd1dc33e932279e057a59c4",
       "score_deck_sha256": "22920c20dc19b0d3badb01c3c029c985b8df4976ec90e0f4e47e18db55722707",
-      "task_certification_sha256": "8502193cf5cdfc9269402b31d04802bc8fa81d8a01129b4859d098e24183f7b9",
-      "task_record_sha256": "c6eb397d91135bd3d135fbf7110fa34a85b93a808b944b5820aa6152262683ee"
+      "task_certification_sha256": "bb9f62117f6c0021a00e50108d0106fa3f1ba1109d91790349058ff15df5b76a",
+      "task_record_sha256": "4ae40fbd38a646ea64eee86e5d35827d62d7be05c703d2d1d3fa846c638d7f78"
     },
     "release_dir": "061-event-counter-windowed-16b"
   }

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_modulo_seven/certification.json",
-        "certification_sha256": "d62311d45199356fa69d0e9f5ad25d910e81d49e556c86c5e7b66b2f60303ca0",
+        "certification_sha256": "ecf85319baf17ce46a284e90c40e732932161859a1d90524da15a13e047481e2",
         "fault_class": "modulo_seven",
-        "mutation_bundle_sha256": "aba256957a4c47527e892a30db26f4cd667b1cd584b8185a70cfa18e8538ad20",
+        "mutation_bundle_sha256": "ca16ae6293204451bd73b1e97ea6d787e933eaec761bd8b02cdb17979b45029c",
         "mutation_id": "neg_002_modulo_seven",
         "source_catalog_certification_path": "negative_variants/neg_002_modulo_seven/certification.json",
         "trigger_condition": "Wraps the channel counter modulo seven, skipping channel 7.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "663aaf655c06725951c37b924079a0850e1b0d536e294ec0c1b20b2bf35a4fa7",
+        "certification_sha256": "beb5109119c4bf97e1ccbcf51d9cd30523a0153fc40cee0e88ed4fdb6d18924b",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "627bf17edc7d4225c3adde853ca26cfc3870d6737328d977d90c7e6ba0d9e643",
+        "mutation_bundle_sha256": "6bdfe0bc08ca0797039cf0f72bd8dda3271a342a697165147f3444676dcab94c",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_initial_increment/certification.json",
-        "certification_sha256": "71c12a07778263c5733736cec0004d2481eaba5fa5a07ca4c63a2046e6e867dd",
+        "certification_sha256": "b98dbd22384e84678403998bfa69f15d921ee020ebbcdfba44f4b199567cddf2",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "d07a6114ee9f5e4dc3729528ada9420e70e21170c5fa2c20b79a9a3853fc8309",
+        "mutation_bundle_sha256": "fb24133567336db7ba909386e71c9807428d1cb26f5a1de80582886a6a54de61",
         "mutation_id": "neg_003_no_initial_increment",
         "source_catalog_certification_path": "negative_variants/neg_003_no_initial_increment/certification.json",
         "trigger_condition": "Samples channel 0 on the first clock instead of incrementing before mux selection.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_count_output/certification.json",
-        "certification_sha256": "31b6c69fef516e67d88212033fb359cd95298a8eb0b983795f2f9d50eb80ca39",
+        "certification_sha256": "73bc6c850d363e76b6bb3ead821a0826120eb205a30ec391349510b751f19f88",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "f1fb140188c30f98d162be01d34cb7338197c6596e40d0cab436a48bfed3046f",
+        "mutation_bundle_sha256": "abfadbe3f7e83e76b5b54e571d5194eb5a12fbe79fdbeb8e92f05f506673edf4",
         "mutation_id": "neg_004_half_count_output",
         "source_catalog_certification_path": "negative_variants/neg_004_half_count_output/certification.json",
         "trigger_condition": "Reports the counter monitor at half amplitude.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "27d15f12fcaf44bbf69a4b5d06d6188d384a3acf2d0886aff81d3d6ca2e1742b",
+        "certification_sha256": "8b30158fe83c6fc3c8fb3c935ce41aa56e9390e7dfb8ff78bfb991b63aba54fb",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "a0f23ae68f721cd1185086e34211a53d6eee271497e6fe2704211a206d496dc8",
+        "mutation_bundle_sha256": "fbf0b0d94f535c8a9c78b28d69e0f2158cf84ca12cc289f9eeb26180b450d01e",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Ideal Clkmux 8channel: scales the metric output, preserving the main path while failing measurement checks.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "13e090683972275527f436865b1a95420bff22f94f45c5f348cc42fb9465f178",
       "score_deck_sha256": "c26d626840681c151c482501a0fae997fd887865cca04dc9beb9d7d42e19be5b",
-      "task_certification_sha256": "cf413013700e5bc671549726e9af94c0bd2e162874c8bf4c62647522b1d83fe3",
-      "task_record_sha256": "527359123b74a47a28b6f04286aa0ca6ef1ea3006da4474d8818a3c5b6e95168"
+      "task_certification_sha256": "c32dc810ccfee122542d79ae7f6673beee9726074842f7f6d0179f37fbababdf",
+      "task_record_sha256": "6d09f9aab4a60ba462c8f7c66bb62a8aa50dfe5c62f8c2a593caca5c24d24324"
     },
     "release_dir": "167-ideal-clkmux-8channel"
   }

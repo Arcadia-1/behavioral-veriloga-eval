@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_missing_half_factor/certification.json",
-        "certification_sha256": "4bededdd9800555794d973316c44a350601452b0ddf4e7c4b9853fdfea568348",
+        "certification_sha256": "df181a9fc6dc8931f2c8c2fd19cd339dce07da19615b854a8e6c693a3b753fb5",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "9d5d57aad1415eba9d331c17f4bac8c1beffc9719819bfca0bf8572ce4d8d9d2",
+        "mutation_bundle_sha256": "d10c870dcd407eb32dcdf8686f6fb6335393a89786f43df27ad7b93471a491a3",
         "mutation_id": "neg_002_missing_half_factor",
         "source_catalog_certification_path": "negative_variants/neg_002_missing_half_factor/certification.json",
         "trigger_condition": "Uses the full polynomial as vod instead of half.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "88355e69083a19a6f79e1da4720ba31f3a7efd68e5e2aac61f3f4878d1b96698",
+        "certification_sha256": "18cbf440147afa4bac86f51a1a4380dec75d9453459213351102e70de1103535",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "bc3a0733a6eb4491e19cf872c18dd5d31fbc316aaf32d3eedc65e72037a1cded",
+        "mutation_bundle_sha256": "377f30fc8691146d8eae1359d82b85a68e4558aa1aa16e1930fb27e59707cdf0",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Polynomial Differential VCVS: scales the metric output, preserving the main path while failing measurement checks.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_common_mode_zero/certification.json",
-        "certification_sha256": "d4c777bf8eb546ae17b9c511581a090e1e29f5a898aece2c04cee720ee58a68f",
+        "certification_sha256": "c80c0816a95d5893258b145764afc1e51f09dea46ee550e96190435244651ae3",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "cd342cde498c0011aa6f87624314a187c188017e38169ffa38aad2af8bdf6026",
+        "mutation_bundle_sha256": "f5a3997f9c9b56c614b4bd45b2b22a84206e0ddfcda90862c7e30e1eb498a8c5",
         "mutation_id": "neg_004_common_mode_zero",
         "source_catalog_certification_path": "negative_variants/neg_004_common_mode_zero/certification.json",
         "trigger_condition": "Drives outputs around zero common mode instead of vcmo.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_inverted_output_polarity/certification.json",
-        "certification_sha256": "b2e1f9124f42e00112855a02e2b9fa58decf4f0acdc5b6165070fa6b22059278",
+        "certification_sha256": "03ca0867fd96dc994acff744b9bd1b7906fa1a005b5a3a38efc90ee1a0b5dd30",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "432388c99d1c912667ecf1c2649a67dcdc0b6b6cd2de7ee58cb04ddc1891ce84",
+        "mutation_bundle_sha256": "ad704956f048cd3acdd9344842f9c0e22ca7a1fd69faeb1252d7a761a1f5927b",
         "mutation_id": "neg_003_inverted_output_polarity",
         "source_catalog_certification_path": "negative_variants/neg_003_inverted_output_polarity/certification.json",
         "trigger_condition": "Inverts the differential output polarity.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "b76ebbdad53d7b618a389398e8d0696b870d1e1b996c0acf48797c231ddcf756",
+        "certification_sha256": "6bd85134a8d54c6cb121a6773150a169e0e1e72364fe5c6e7552023f31bc0771",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "4b7bbdff480f21c25ee80791e396c277a54146bddd62e10ee95c838b21d5a0c5",
+        "mutation_bundle_sha256": "618d5df96a4a16dded23080a473425287fae63d594920ce4072b2aea66165bc8",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "de660fcd9a9bc9078a93da3fa914e4801285c23fdfadc84ba66b4f712a1c42a1",
       "score_deck_sha256": "1258974348c6df6ea806a9f6d5156ea4153a1174ad4d39448e7792b7b05a9ddf",
-      "task_certification_sha256": "085c193f29e7a9fd68a101e9ce17d4d61fb2122a8c208831d878545f438f4c91",
-      "task_record_sha256": "ae98141aa348c7e8bd2ca00a4d098114618a80033f4ac7606781b616fb7d55dc"
+      "task_certification_sha256": "65172927bd2ca2a3a04648c3c3a70303bb5614302686fce54101c14986e34872",
+      "task_record_sha256": "08ec08e115b007c892b52bf8a8270db199579942c1d5c5e89dad4b8df77580e6"
     },
     "release_dir": "129-polynomial-differential-vcvs"
   }

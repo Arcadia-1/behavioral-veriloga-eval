@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_ignore_valid_for_x/certification.json",
-        "certification_sha256": "3f8dd911fa757a8bc6320647b6af8546c2a6d677481d887d0e71500b7b9e71d2",
+        "certification_sha256": "51fc2b6c8b218ee9c4177f0d445c86ada2d2a53f75a92d677bdb5d2b9f69e93e",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "db0cadc48e8706a7fae521bd42e0df9f0ea6c798948e64311f7b69691f4f08a7",
+        "mutation_bundle_sha256": "ae937aa10dac5bbf1c82e686036e178643728a1a4f9e63cd2493347a20e77acc",
         "mutation_id": "neg_002_ignore_valid_for_x",
         "source_catalog_certification_path": "negative_variants/neg_002_ignore_valid_for_x/certification.json",
         "trigger_condition": "Asserts X for input 00 even when VALID is low.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "a936fd05ebfd78d1a5d963a3bdf9f1c9413d37bc05a0e4d6e8973e423a4c78a8",
+        "certification_sha256": "36116dc919111a91bca30f9e69e89acbea62abc8efd2c786a9f3c670f61fbd67",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "9a525ac59302d2e01c02975389b123df0fe31455c88cfc9e347b708d63ecda96",
+        "mutation_bundle_sha256": "4a42a28d1d116a773069c6397f7904672e332e6302d193e29993b8dcbd779074",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -35,9 +35,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_swap_dm_dl/certification.json",
-        "certification_sha256": "49764a23d98ee3c330d584c70a848242563f2113ae489b07c904f255fc7d27d3",
+        "certification_sha256": "1d9de98aa32f6525f72c8a80fc64b818b1dbb1d7ea5460476d52a18732da2b3c",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "395c4709cc62cebccde3f7c47e653c5474a0fc79245560153947e1471f79f343",
+        "mutation_bundle_sha256": "0c909fb94e53f354cab6e139e2dd779e7e6638812e61ab2d5126723f1c7835a2",
         "mutation_id": "neg_003_swap_dm_dl",
         "source_catalog_certification_path": "negative_variants/neg_003_swap_dm_dl/certification.json",
         "trigger_condition": "Swaps the DM and DL output equations.",
@@ -48,9 +48,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_y_for_a_only/certification.json",
-        "certification_sha256": "54f3f8a89b053c0abfd4a0f605e1b01155eb7c3a82a2bca1ea582d07b2752d2e",
+        "certification_sha256": "710db0a234f4813530ad73a192861159dbfde68324b2e19773f3bce98f8691fb",
         "fault_class": "y_for_a_only",
-        "mutation_bundle_sha256": "2f7c176d29ff4c43b6589c54573e0978dfd5e4aa3b69c9b603aa3a2574ea37b9",
+        "mutation_bundle_sha256": "8ef076eba4a48f498c7dc561ad77158b4640cb77cac4b7e4dae9908bf14fcdbc",
         "mutation_id": "neg_004_y_for_a_only",
         "source_catalog_certification_path": "negative_variants/neg_004_y_for_a_only/certification.json",
         "trigger_condition": "Asserts Y for A regardless of B instead of only A&B&VALID.",
@@ -60,9 +60,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "ddd826d2734991b39b82772bd02628927cb11db04f97498e64f0c7a4559904fa",
+        "certification_sha256": "f0e175fce400f2176cf5bc8043b2841a8621d78533313a6c357113ef0882eba1",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "5b233dc4ac39bb53a9a4874149e10098c67f54d20dbb2434f9d20bcf3d4ca9b6",
+        "mutation_bundle_sha256": "7adf1542e0a0206a3387fa6fa4d0a4f8c259a597f793af683897db1b71b36b9b",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Decision Router Logic: scales the metric output, preserving the main path while failing measurement checks.",
@@ -80,8 +80,8 @@
     "hashes": {
       "mutation_catalog_sha256": "ead5cd400c44dc5c567b9f6349e620fa2cfff30a91271efe1e5b165202fda129",
       "score_deck_sha256": "05563860279a9e78a860e6acce6419aeb35a633d2c590ca70776650c8481481a",
-      "task_certification_sha256": "08f99867a3b41458bafa36f82e825a8ea12e14e1d5aebc824aef05376b6c031a",
-      "task_record_sha256": "9d0964170a8b943620f3e5dd600775c57b6df75ba710ffdc58426950dfc8ff89"
+      "task_certification_sha256": "7ee667ceb4be94c09fc80f4283f883bc531117f905a8aa4728f51fbd8ec1280c",
+      "task_record_sha256": "e26cfefc4c1809cf066d4c580368ebdec1d341dd581ca4ba416e9db48db5fcee"
     },
     "release_dir": "231-decision-router-logic"
   }

@@ -3,7 +3,7 @@
   "checker_task_id": "v4_161_dac_restore_10bit_offset",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "b0fc7e967fbaf052dfd04d527c3bb0ffb365d2f2ed5fb0e25007a75829a175c4",
+    "certification.json": "0bd5e475b0e1dea5a308e94a2c02d881fd3d73be398cb20fdc2cef00d9bd152b",
     "checker_profile.json": "24e4c299b79458d0a1afdaceb1ae03a059753531744289f50b5e9f6e9c3ecf91",
     "derivation_manifest.json": "675fe3e23e43ad4b05ba83e4f673e3b7964075eb3a117f9f7d28aadef95b1a35",
     "family_spec.json": "6ca0061e4ba76f5cc3e2cd154dd4c514debcd81e61e5d258cc90e9a59c2b4ed1",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "b0fc7e967fbaf052dfd04d527c3bb0ffb365d2f2ed5fb0e25007a75829a175c4"
+    "sha256": "0bd5e475b0e1dea5a308e94a2c02d881fd3d73be398cb20fdc2cef00d9bd152b"
   },
   "release_dir": "161-dac-restore-10bit-offset",
   "schema_version": "v4-canonical-dut-release-task-v1",

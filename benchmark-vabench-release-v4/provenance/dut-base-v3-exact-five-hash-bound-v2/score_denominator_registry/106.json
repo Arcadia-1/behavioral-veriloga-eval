@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "30826b2d515b0ff366d5b61f696d8d2db6642e8897c3f5e1f50ec64ceebcff8f",
+        "certification_sha256": "930e1771f296f3eef133e9698314ef822bfec1418e4d700537e11e6627d502c1",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "010e49818e3862c7e1cdb22ba9f6c5130605b5ef489e3147afdd37153afcabe3",
+        "mutation_bundle_sha256": "a43981bfd6029512f3f619a63f960b7c9f28a612366b6646527baa4283b00894",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Existing concrete negative.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_swapped_decision/certification.json",
-        "certification_sha256": "ffa745c0f69dae405feba0a48fc715c99cd7526b2cc0c4ecde9296aa0ad44bf9",
+        "certification_sha256": "6328b80fe94f5e0b86fdb2840a25c99d8c8e206f17ab64a49a4ab0fa87ed9fa8",
         "fault_class": "fault_003_swapped_decision",
-        "mutation_bundle_sha256": "f99713f37351461b5a1e270edba318de82ec4372132c5c76bfc6639babb4bb2b",
+        "mutation_bundle_sha256": "0aadd8888dab4def2e8a2856a30c8da29970e651299459e7a29a1d283d17d600",
         "mutation_id": "neg_003_swapped_decision",
         "source_catalog_certification_path": "negative_variants/neg_003_swapped_decision/certification.json",
         "trigger_condition": "Swaps positive and negative comparator outputs.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_equal_outputs_high/certification.json",
-        "certification_sha256": "fd5931eb448206faf4ee08e1bcd8e0225a8efa4853e3ea63a5a62e61c0a42475",
+        "certification_sha256": "16528d85cb25e6141bfe00f24dfd7ec689d87397531d9799c83eff0236788000",
         "fault_class": "fault_004_equal_outputs_high",
-        "mutation_bundle_sha256": "f3ebe6cc2996d8d554ab33e5fdcda805725788731914c92056a97b40c443973b",
+        "mutation_bundle_sha256": "ee62b0b1bad8835edfd5f058f08e95aa2b0263e463b22c99a1090aff9349bea4",
         "mutation_id": "neg_004_equal_outputs_high",
         "source_catalog_certification_path": "negative_variants/neg_004_equal_outputs_high/certification.json",
         "trigger_condition": "Suppresses the negative output decision, so negative comparisons are missed.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "3248bb78d2c9b9668be18c47a3a8b164bc1e86e889fbadf7a5dca9722ccc2f0d",
+        "certification_sha256": "7abbd0b2bb085d7ad32d309ccf38df1095b122dcb24701483faa654a0fa6c16a",
         "fault_class": "fault_005_metric_scale_low",
-        "mutation_bundle_sha256": "53ea67585eabb5de33e9eb1f4bb76cdf4c0b20af08a11f1b1069db92efcac513",
+        "mutation_bundle_sha256": "ff204b04b5af7b2b7e927508bcdb8869653fad5758bb3660b82034e8636aa5d9",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Clocked Comparator Reset Low: scales the metric output, preserving the main path while failing measurement checks.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_reset_high/certification.json",
-        "certification_sha256": "de860cd40065b9b3e0b9caad19ba070df78c968082294471684daba5b80884e2",
+        "certification_sha256": "8c74fa86253019846f9d6c44f28028f03ec1b5c751131f2e0ac4d22d2775e95f",
         "fault_class": "fault_002_reset_high",
-        "mutation_bundle_sha256": "f40567257ce85b279d75631a5aeedda20ed003133908ce09c06b4a279eaceff2",
+        "mutation_bundle_sha256": "b072bf69111ca750984d0462d9a48f6c35f8a7537ae9b6c0f6c9f84600446f4e",
         "mutation_id": "neg_002_reset_high",
         "source_catalog_certification_path": "negative_variants/neg_002_reset_high/certification.json",
         "trigger_condition": "Reset phase incorrectly drives both outputs high.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "f28f35715315d4679986444b9a8043859af0c10249a47e30828c0db7d6da8d56",
       "score_deck_sha256": "469955cb41a6f41de22363e38c26d401340011e7d01964bf3c260205503ec832",
-      "task_certification_sha256": "c4a8426f66c2e87bcb9b19ac5511bcd57082d401a62b6e62ca05fb51469052c5",
-      "task_record_sha256": "c437e30e503cb4c1b2fd8f774fcf8c2269ee00f380d4a843b07fe71ef1f09eae"
+      "task_certification_sha256": "bcc9d09593434f628c1b5363416c56e48cedaaa22caa8b99146bc27259dcaff1",
+      "task_record_sha256": "808f042026be99af5f0cd6109de98c3e1e042af12f9855179652aa0c2100d0ba"
     },
     "release_dir": "106-clocked-comparator-reset-low"
   }

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_denominator_guard/certification.json",
-        "certification_sha256": "3e9ddc1e108fbdae92ef282aa963b954e9cd2291725af0954c53920bd31e192c",
+        "certification_sha256": "86dd9ac1e38f3064ec047e866b6f4f41dd5ee0c5143ee842f0d229ead181d4a7",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "91a4d996889a3622a0d22b1ed26d5fbb2ea19f31a3b1ce16e9a84c031026ba98",
+        "mutation_bundle_sha256": "e8053a4729c5c62adebe533a47cdcffea951ca3d42172ed8426015e7ba1172dc",
         "mutation_id": "neg_002_no_denominator_guard",
         "source_catalog_certification_path": "negative_variants/neg_002_no_denominator_guard/certification.json",
         "trigger_condition": "Uses an under-sized 20 mV denominator guard instead of the required 200 mV small-signal clamp.",
@@ -20,9 +20,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_gain/certification.json",
-        "certification_sha256": "3b55e08f0599d01040ef5c84a62860aeeca0d6333c07dcc4a95514ef72c8e67b",
+        "certification_sha256": "91e5be0505ce71db0fc3322ff247310e815bbcad0566d5864c2ec8cb065f839e",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "a4cd2945339b122796c9c65e4f35369455b17af6f9e9e4616cfb8db43c7af7d7",
+        "mutation_bundle_sha256": "a3edf56940ebe13a97b0a1a37bc17872aafc097a2ac2ac4c362f00601e366837",
         "mutation_id": "neg_004_half_gain",
         "source_catalog_certification_path": "negative_variants/neg_004_half_gain/certification.json",
         "trigger_condition": "Uses half the required divider gain.",
@@ -33,9 +33,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_positive_guard_only/certification.json",
-        "certification_sha256": "e11123914066dc8212268504d0b16675d517eadcd51af7e551e45305349f36f9",
+        "certification_sha256": "637a9c6901cef8d5921813fb657253bf33a7d6d85467e94d71d565dd95129e82",
         "fault_class": "positive_guard_only",
-        "mutation_bundle_sha256": "ac7b6194a3dc631c4e78540c2d8b0843c5822591f96b6ee07b7a35bbb8723128",
+        "mutation_bundle_sha256": "f52cda749e77f1ac7162a7a5ae60d1d59dd606eef39a14bb2fbfa604798abf6b",
         "mutation_id": "neg_003_positive_guard_only",
         "source_catalog_certification_path": "negative_variants/neg_003_positive_guard_only/certification.json",
         "trigger_condition": "Clamps both small positive and small negative denominators to +0.2 V.",
@@ -45,9 +45,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "b4f5c44fdd4d523fb951d214c7e1e9cde0455c6a3592dd003cbbf3fedd008cd9",
+        "certification_sha256": "b3dcf4bcf06f8dc933646568c105806c524fa484af898a3ad4c9d46ea4bd8da9",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "fd601b81b6ddb356154742d5fece8120522a06e82cc55bc3af27225b2f0fcfba",
+        "mutation_bundle_sha256": "b5959ffd82eb173d8bc18632aeaae2d221d74553879be9454cdeed8dc55a82b9",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -58,9 +58,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "9b073a058c686a0d1c8630c6a3435908eac96e4e176a87f0d4641aab46b12dd3",
+        "certification_sha256": "403d844fd66a2980c22f007f1518972cae1fe58b09345efd256e4f48adc643e4",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "fe1068f1adc24e5299933adf4b870bff94c0ad74c1a6b5638ed3f9f98d5d42c5",
+        "mutation_bundle_sha256": "da86ea444aa71256e24f3c325d19c05c96bd2adfd6d0f855c73a3f9eb142f9c7",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Safe Analog Divider: scales the metric output, preserving the main path while failing measurement checks.",
@@ -74,8 +74,8 @@
     "hashes": {
       "mutation_catalog_sha256": "52f22885ece355cb0b12dc6c4cd5001cc49426da6ea4748301ad57c143dd95a7",
       "score_deck_sha256": "2f75709a0d04745a11f9d9d18a5909e99f1b0f7ce697e96ed4fc1d99fbd382e5",
-      "task_certification_sha256": "8e21ba82a5a26b9a1612161a49b1f27d9eb03f2c824e75b5d3e3d8d65a787ef2",
-      "task_record_sha256": "202759722113a2b199f2808266fe52053529002c6cf348e33d15505ac508b1cd"
+      "task_certification_sha256": "b533272091144033901f3898b2f375bca0247097555ef3facb77d4d0633b248f",
+      "task_record_sha256": "9e9626e38d81580a1527561feaf7f23a67f8bd6839ba9eb328b9da5c1cccfc61"
     },
     "release_dir": "232-safe-analog-divider"
   }

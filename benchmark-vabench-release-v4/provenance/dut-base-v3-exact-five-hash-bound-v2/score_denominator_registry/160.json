@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_duty/certification.json",
-        "certification_sha256": "27d67736fa24871dee1123431c41ecd64669bd65bdc6772f2e090ddebf2f95c2",
+        "certification_sha256": "56234a02eb8c5d23513af7179964388264f2ca8748b5f40dc39d2b7283db29c7",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "1ed5525db1e4419c3066a0a0fad60076bb8e5ea93fdfec0b64586213a4812772",
+        "mutation_bundle_sha256": "57275ab2b070d09142dd2dfb37b0c04eaed6161a520492a95bceab439b96609d",
         "mutation_id": "neg_003_wrong_duty",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_duty/certification.json",
         "trigger_condition": "Drives high for only two counts.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "a200c99dc859ae666257cd436909efe5ed649bd4fd3f9401858c6695d107acdc",
+        "certification_sha256": "7c1fcebb4edbec1e68f0e8c99b6496a2e15af3cef2cadf8015ec797e2c55ed97",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "88102c078746147df64f6e73e357dfb14223e2cc721582cc084c408b6aefbc99",
+        "mutation_bundle_sha256": "18c5843c9a02ccfad277bd045756034bdfee48d13041a86c0cfab5ca6e70d638",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Divide By 8 9 Switch: scales the metric output, preserving the main path while failing measurement checks.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "dec5e95927df9b17357e74b16f56866bc1757dca0835366575d3894cf3d3c2b6",
+        "certification_sha256": "76c7c6e2c1fcba83074613d8a3f35752bb295a15225da6b6f2e36294a37f4ffd",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "2c7217d59e4d3ff18546581bfa5edeb0a3d2fe5d382442ba78629ab1ef15afd8",
+        "mutation_bundle_sha256": "7f0b22fd0298b99ef7fc86415c0f15551596ce6dc7a8fc424dc251d3d5089df1",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_restore_to_divide_by_8/certification.json",
-        "certification_sha256": "8eca46bf37d982c6f6e8544f9ef5345bea8652b75a3cf8111cd1f43d0e741128",
+        "certification_sha256": "87f376d362b5fa9b2821bb3eefa7cdefe70e3949128cec7c97083dd04ecb6d6d",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "78dd9106cae2c3567814953d43165ed6186e7b676b34605c81f59c24199ae715",
+        "mutation_bundle_sha256": "eca53d70746f2dfddaf4588426d7a42fb3cc90edd3608ed21c453a3fdd0588fb",
         "mutation_id": "neg_004_no_restore_to_divide_by_8",
         "source_catalog_certification_path": "negative_variants/neg_004_no_restore_to_divide_by_8/certification.json",
         "trigger_condition": "Does not switch back to divide-by-8 when mc falls.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_half_high_level/certification.json",
-        "certification_sha256": "eb20d567b83e048adaa8c68177bac3cda06bbae5dd25be5ebd55a18f514ca323",
+        "certification_sha256": "89291113ba760ba36bdda0a3fe9fa71d46e7013655d1150bff50e0b63eb4cd6e",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "7d77fb0925c6a3f416777b37da2f46b550bbe6175cf79e17cd22f58585c34bbe",
+        "mutation_bundle_sha256": "e8c8f68bf6300326bc152148653f30914db2c45f0d847b3484f8e9f5c7c93a3e",
         "mutation_id": "neg_002_half_high_level",
         "source_catalog_certification_path": "negative_variants/neg_002_half_high_level/certification.json",
         "trigger_condition": "Uses half the output high level.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "b5d117dd13a74fd31445aee32228eb434ef40eed7185b95af3d5b546090ecfdf",
       "score_deck_sha256": "425a9d36630143de392a4544b4d355eb356961ebd2678863889f401ed4309719",
-      "task_certification_sha256": "5a9d83a16be6f39ef8fc32d9ed6f6a44f95e5320474d39742ec1f5a843d69d7c",
-      "task_record_sha256": "3c2eed3436976048aeff60f1aaebb0be7505948a1aa8bc518c49e837dfd8d525"
+      "task_certification_sha256": "82d3f56600420afb96cf3808372cd01bd46a73ffad1dbcc7f3fd5b64ff000950",
+      "task_record_sha256": "a8921cb9c68130ba02a39536e5f536d318480d04143f861fbb254b841d5b8d05"
     },
     "release_dir": "160-divide-by-8-9-switch"
   }
