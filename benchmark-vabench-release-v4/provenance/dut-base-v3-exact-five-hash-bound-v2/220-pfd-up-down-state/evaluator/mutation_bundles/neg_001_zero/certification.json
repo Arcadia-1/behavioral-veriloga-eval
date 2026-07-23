@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_DETECT_RISING_REF_AND_FB_CROSSINGS satisfy the public contract; fault class zero_stub_output is rejected",
-    "observed": "EVAS: t=0.505ns up/down=0.000/0.000 expected=0.000/1.200 t=0.510ns up/down=0.000/0.000 expected=0.000/1.200 t=0.515ns up/down=0.000/0.000 expected=0.000/1.200 t=0.520ns up/down=0.000/0.000 expected=0.000/1.200 t=0.705ns up/down=0.000/0.000 expected=0.000/1.200 t=0.710ns up/down=0.000/0.000 expected=0.000/1.200 checked=269 up=True down=True zero=True up_errors=4 down_errors=67 zero_errors=0 max_err=1.200 coverage_errors=0; P_DETECT_RISING_REF_AND_FB_CROSSINGS mismatch_count=71; P_MAINTAIN_AN_INTEGER_DETECTOR_STATE_BOUNDED mismatch_count=0; P_A_RISING_REF_EDGE_INCREMENTS_THE mismatch_count=4; P_A_RISING_FB_EDGE_DECREMENTS_THE mismatch_count=67; P_DRIVE_UP_HIGH_WHEN_THE_STATE mismatch_count=4; P_DRIVE_DOWN_HIGH_WHEN_THE_STATE mismatch_count=67",
+    "observed": "EVAS: t=0.505ns up/down=0.000/0.000 expected=0.000/1.200 t=0.510ns up/down=0.000/0.000 expected=0.000/1.200 t=0.515ns up/down=0.000/0.000 expected=0.000/1.200 t=0.520ns up/down=0.000/0.000 expected=0.000/1.200 t=0.525ns up/down=0.000/0.000 expected=0.000/1.200 t=0.530ns up/down=0.000/0.000 expected=0.000/1.200 checked=407 up=True down=True zero=True up_errors=34 down_errors=103 zero_errors=0 max_err=1.200 coverage_errors=0; P_DETECT_RISING_REF_AND_FB_CROSSINGS mismatch_count=137; P_MAINTAIN_AN_INTEGER_DETECTOR_STATE_BOUNDED mismatch_count=0; P_A_RISING_REF_EDGE_INCREMENTS_THE mismatch_count=34; P_A_RISING_FB_EDGE_DECREMENTS_THE mismatch_count=103; P_DRIVE_UP_HIGH_WHEN_THE_STATE mismatch_count=34; P_DRIVE_DOWN_HIGH_WHEN_THE_STATE mismatch_count=103",
     "violated_property_ids": [
       "P_DETECT_RISING_REF_AND_FB_CROSSINGS"
     ]
@@ -20,7 +20,7 @@
     "campaign": "r51-full400",
     "checker_id": "v4_220_pfd_up_down_state",
     "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "06d620060a5e6a5c573a7832c4f7489a218814a65395a108d5019fde14f09f02",
+    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
     "trace_row_count": 561
   },
   "family_id": "220",

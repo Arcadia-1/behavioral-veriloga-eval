@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "3dbd707558413e24c8d15e1dd5b1a1388218577304ffadb5945889ed8cebcacc",
+        "certification_sha256": "eb61decff57058d99506e511aa06d3248d7d4acb2451e55c0458428f952c07d0",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "1094d78ea061496c31313824f18b055d3d05cdc5f963aec8338745de3cbadf9c",
+        "mutation_bundle_sha256": "686d1adb2fac3b117d9c047e0b066d495351de6400b9c16c2d8ed4f955c66410",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Bipolar DFF Sample: scales the metric output, preserving the main path while failing measurement checks.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "dfd1d9a1d50bfde3c93f7be551fb82a030c21b0e124f62d1dd94d36856978542",
+        "certification_sha256": "f58530d0365b651b727def84f3f7e0373fa74b472d1060779e4f386eb8a14c25",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "07616dd93df0d96cb4de8177eb7eec820c7b06dcec7d97884e14485a681c2094",
+        "mutation_bundle_sha256": "41fe035b1e195d976836e198e1fffbb4087a78f9f70ecc9d6325573b07c2c28c",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_transparent_latch/certification.json",
-        "certification_sha256": "7f26ca47a840ff5b28f333b9d5fb01e47a2f508016bb9f26d3b7449689bb7f66",
+        "certification_sha256": "ccefac8c31aad2a05296773a9bd5811cea65b5289cbdaf29b15493d30289c204",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "6772c220c26396e7fcd618a6cc793536af0b3eb2d9e233a9667d19d514217d52",
+        "mutation_bundle_sha256": "3f43be435340cb9c0824093bd2c6e86b0386175df305beae0051ffff665d3d67",
         "mutation_id": "neg_003_transparent_latch",
         "source_catalog_certification_path": "negative_variants/neg_003_transparent_latch/certification.json",
         "trigger_condition": "Tracks D continuously instead of sampling only on rising clock edges.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_qbar_same_as_q/certification.json",
-        "certification_sha256": "ad1525899928009eb5e1c8a88664aabc58e61d06614083ab8210a5f1911add4e",
+        "certification_sha256": "c4a15fee8620737f1dcb2b01c89513f0e116c2a93fcdbabdbcc8c6da30e7d88a",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "bae9f4fd732672465c999b32884f18a23954a796ae205a5b890b541ffefcd09e",
+        "mutation_bundle_sha256": "895d1a8f78c30fac93d9142d41b2d045f0d0a7e235bbc9f03f96f15e1b89756a",
         "mutation_id": "neg_002_qbar_same_as_q",
         "source_catalog_certification_path": "negative_variants/neg_002_qbar_same_as_q/certification.json",
         "trigger_condition": "Drives QBAR with the same polarity as Q.",
@@ -57,9 +57,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_falling_edge_sample/certification.json",
-        "certification_sha256": "6be1cb6e82ca568a3150759f0f4f3da1cec798924a9ffc67f985cdc2489210b8",
+        "certification_sha256": "da5302602c384755dadb353660c7daf087d8b53d1547acb5464b5f2fb6c10db5",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "1fe3592b7f0805f983f7667de0f132556804aa6fdf88650e73ce57e78a641701",
+        "mutation_bundle_sha256": "b466c0605a3f5cc4a4c8e651093852d3d1d8fb1da5f999cb4f9a7a2d9abd31df",
         "mutation_id": "neg_004_falling_edge_sample",
         "source_catalog_certification_path": "negative_variants/neg_004_falling_edge_sample/certification.json",
         "trigger_condition": "Samples on falling clock edges.",
@@ -74,8 +74,8 @@
     "hashes": {
       "mutation_catalog_sha256": "c8ab16945b74f47a4a06021f4181fe36fd096948db863eedbe4a8e87953e5a1e",
       "score_deck_sha256": "2662beca03af443f45c677b81fd8c20a59fe420af849781bc2667ac188c5d927",
-      "task_certification_sha256": "4ba90387ec8738e3529461492e45f72eaee6cd1957ac0344a8ed1db73d143331",
-      "task_record_sha256": "0195262e6faca80bd7db0311dde5eb3013dc45416301de77b3a3f27df2f684f4"
+      "task_certification_sha256": "dfe563a243f3fd589de677e33f30b9d4038332e7744f702fe63a5a6ebe8aeda6",
+      "task_record_sha256": "d2b643ec3716dea7fdb8f8c01e17de26522967ccb4a60a0b2ef584e0be345337"
     },
     "release_dir": "248-bipolar-dff-sample"
   }

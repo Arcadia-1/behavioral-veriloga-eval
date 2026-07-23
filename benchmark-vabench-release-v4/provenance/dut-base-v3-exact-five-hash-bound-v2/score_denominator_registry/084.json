@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "d8ee339a9729a1a89b37a43e43037cfc93b1ced8fd015d794470815e6722d510",
+        "certification_sha256": "900f0c8ebde972fd4b7ba999ba68a48c1c76aeb5a0f8aad75df2de7ade0e4232",
         "fault_class": "threshold_boundary_error",
-        "mutation_bundle_sha256": "1d5e64616c49ac1332e79e7fe3fee4832011ca2095e20210ae7639f44eba326f",
+        "mutation_bundle_sha256": "8c85badee7dc09aab40137f07bc4d462eaf5b006f76240bb6dde85a1d502df58",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "boundary stimulus crosses the public threshold conditions for BBPD Data Edge Alignment",
@@ -20,9 +20,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "673dc038b53ba3b20cbbbf3039e1d65f3d4d44356bc35a7cf92be63fd47834af",
+        "certification_sha256": "7fdf06c84ff4045f059df402fe9c06795cc53c5f85eddd1abfb97043c0f2bf6f",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "01086871c177f00d5e2234ab289db8f1f2929d1deb3a5c2d0270dbc110ab981c",
+        "mutation_bundle_sha256": "eedfde632c4182081e48edb2351cace02fdfe7f0592555c5482258ecaf9c68d1",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for BBPD Data Edge Alignment",
@@ -35,9 +35,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "2deec0c7057ddb0770e53e853875553603832de71014a5f642bcea8960ac5d39",
+        "certification_sha256": "4db1ca90820ad7c88e7ae6eba81a76ceb739d19fb04c60009bd48aac904ab7f5",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "0eb83fb23cb399e05dbd57b74df72c9d4d3ede3a4139c0c89b98cd93a3ed5cf0",
+        "mutation_bundle_sha256": "cb1890acf6bdc6449234e291f970c54012365740a6f20f64e4918620ff69f6d2",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "nonzero behavioral stimulus requires observable BBPD Data Edge Alignment outputs",
@@ -48,9 +48,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "5d6fb0fcf8c2cbbe23e1d6f2eec1130b2ec473491386660540df416c6815232d",
+        "certification_sha256": "6c9554bdd0fc25dd1eff405f6db8dc7ea8ddc37831304cb5e4aa5f53425b408b",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "17967894abeb7ee4150451caa4a2ff91b41e3e48d83f4a5f84ccef98f4ea673b",
+        "mutation_bundle_sha256": "91dd4a453193871a7d3e3a675d3eedd4b8c1925f9576f634dbb14e48d17f4d6b",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for BBPD Data Edge Alignment",
@@ -63,9 +63,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "49489c554983df17b5ad8e9ffa3adbf3e2c491c02638b3034e6afdb71f3a4ab8",
+        "certification_sha256": "ab77c89fce28daa8aa08c1e3d99acc44777169583543c93fd74a15da93876232",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "690d63733c7b039220a7c15d53c8757bb53f2991f57bbdf3c9faa02d679421d7",
+        "mutation_bundle_sha256": "d742145e5cba80e52f1e629d836850c2bf379ff445cecd21b1c3a3f00ec32541",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "reset/recovery stimulus exercises BBPD Data Edge Alignment state override behavior",
@@ -80,8 +80,8 @@
     "hashes": {
       "mutation_catalog_sha256": "3e3b882f47a34ffe0443f1d995681bac87a6ebf36c28d37036ebc002b842ffcd",
       "score_deck_sha256": "5000e61316a94134b1949276c8cdf79a20180319a3a2e7b2d8aba38bd47a21ba",
-      "task_certification_sha256": "3a9ad93164a92fff0525dc353b9d5684003ba4d5a526d0a5d0d29437d614d98a",
-      "task_record_sha256": "4eac4849af19c8666333e873f6b930d8ecc556b1c74b8efa6d4322d5ea3498d2"
+      "task_certification_sha256": "72e436fd867d7736e174ebdad382c9304e444eb7dfbbd13ee094bfc67e9ca079",
+      "task_record_sha256": "941c83b43621d6a9bc1088cb8345c0140592bc2e1ee2f5c6ab81024391f0ebcb"
     },
     "release_dir": "084-bbpd-data-edge-alignment"
   }

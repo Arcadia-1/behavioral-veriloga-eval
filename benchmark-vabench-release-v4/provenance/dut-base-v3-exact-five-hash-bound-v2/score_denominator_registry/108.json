@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "dedb67b6ec4357e8a4ec293aabb1aed51e15c075425edcd46973e5ca0a69ced5",
+        "certification_sha256": "fb3f8305a1a7d13085dc7a00b9a2a32fbd1b1282cf987f1b0202dbc0cba0932c",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "10fffe72a161a45d3fc579e5a6fa386f97c7b3c7059163c5c7a6e71c748c5ceb",
+        "mutation_bundle_sha256": "2a22e4d4d22a638582687d2585c4d33e8fe54b6d2b31cca6d7fad4f46fd7fc7b",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Existing concrete negative.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_rising_only/certification.json",
-        "certification_sha256": "ff59f4efa0c90411250c153baf349f1c97d23a28d9ee316b8bd6d8004161ad65",
+        "certification_sha256": "bed214f0857bb2d4cd5f77c15209c394a53324653ed1321a1ac34906a47bf410",
         "fault_class": "fault_002_rising_only",
-        "mutation_bundle_sha256": "8a9885819291fa630095520a0452d50e9b7457efd20040e1397464c23ad2dc02",
+        "mutation_bundle_sha256": "f153f9fd9de35462112a0665c0db10e3eedbf24a8a6adea0bc47e7ed2860cb0c",
         "mutation_id": "neg_002_rising_only",
         "source_catalog_certification_path": "negative_variants/neg_002_rising_only/certification.json",
         "trigger_condition": "Triggers only on rising crossings, missing falling crossings.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_short_pulse/certification.json",
-        "certification_sha256": "43107ea1258bffd27775afa35e8a707582f2ec4d5d39f4c28a093b39be6984b5",
+        "certification_sha256": "88a178791a2052515d2557bc0c09a3113dea74d26000d68049f5069c7a462c0d",
         "fault_class": "fault_003_short_pulse",
-        "mutation_bundle_sha256": "965b00cdb4ee4f6c832c3d6a8963c2ce08c722688cd504f0307bd7e794287e5d",
+        "mutation_bundle_sha256": "7d71e748d21cecfd07ad17cc2b81ea00c321662517c29a038387c5fd74a67bca",
         "mutation_id": "neg_003_short_pulse",
         "source_catalog_certification_path": "negative_variants/neg_003_short_pulse/certification.json",
         "trigger_condition": "Uses a pulse width that is too short.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_delay/certification.json",
-        "certification_sha256": "e9481a644d4d607bab1774c6f7f1f07408ae366e568461c3ed11d66f55884eb5",
+        "certification_sha256": "eaed19d2b57478edd64a5a01075cc09d68adabfe26844d819ffacb5b7a5f2c29",
         "fault_class": "fault_004_no_delay",
-        "mutation_bundle_sha256": "0fdb62877d4bde6f588c12222562964435e858f34c9715f2daa7ba82d952b8f5",
+        "mutation_bundle_sha256": "03ab5b89b4a5783a18a7f214643bcc24b13c9e2014c81428beaf5dfa07b69198",
         "mutation_id": "neg_004_no_delay",
         "source_catalog_certification_path": "negative_variants/neg_004_no_delay/certification.json",
         "trigger_condition": "Latches high after the first crossing instead of producing bounded pulses.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_no_output_delay/certification.json",
-        "certification_sha256": "63dd0373bc56bc6782eda4339792624117588a5657715f12f5aea662ed7b20fe",
+        "certification_sha256": "0fb888444384a3376c05fe2d12cd1c3d7d1a3a29580af36a0ee1f206ba4b7eec",
         "fault_class": "missing_output_delay",
-        "mutation_bundle_sha256": "3e68690b5b7501f7f5d93bb4fd6bce45842a3799f98cfa318ede3fb9f60aa9f4",
+        "mutation_bundle_sha256": "2efc146e3117ca4e78d504aff105b0f51f88f6e561f816a3c9ded3e29f95d908",
         "mutation_id": "neg_006_no_output_delay",
         "source_catalog_certification_path": "negative_variants/neg_006_no_output_delay/certification.json",
         "trigger_condition": "An input threshold crossing exposes an immediate output edge instead of the declared delayed transition.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "f92ced667b1bfb31e7216e64a38f3d0fd963e0d360686984cba0a3c0ddbf1749",
       "score_deck_sha256": "26e367466a5b1228709d5d8c2147e2d264ad61c522b47e140e9b52eef62c9e5a",
-      "task_certification_sha256": "73b6f1bebf061c5ab406088d886ded6a027b579cb501f544d601cb68807032f0",
-      "task_record_sha256": "d5c377bebf4eb1375dc72dc65245cbb8c6492e76ab424da5b38669369717b53f"
+      "task_certification_sha256": "453b78642722add6f19a5455ed0b2fd291c455b6017c6372ec1198a763042265",
+      "task_record_sha256": "675fd963103531c66d2027c751c72d3c9706636db6ef7845c129b53dac25cd22"
     },
     "release_dir": "108-crossing-pulse-detector"
   }

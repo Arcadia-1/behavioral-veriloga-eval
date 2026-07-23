@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_refn/certification.json",
-        "certification_sha256": "deb8dd3b4da096e5ffdc56074ebe791352c27a9b0001e15b74c792bb6890ef32",
+        "certification_sha256": "3378c570604807a454bd746f7aff08b24b39364bedaf7dac5a8306a3de4252cc",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "a06072355fccadbf4d51d9fcbac7b6e51ed6ad74f4f22448648c87482378dc39",
+        "mutation_bundle_sha256": "01bd20de6a39aa46e6a114a020dceb89354abcf8f30efc0d9db4c6f4e5aaa26c",
         "mutation_id": "neg_004_wrong_refn",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_refn/certification.json",
         "trigger_condition": "Uses zero as the low reference.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_missing_msb_contribution/certification.json",
-        "certification_sha256": "2db3b24900e4c6b66fef1050dbdc7bdc0fd7cb25774165032f2cff211fcd39f6",
+        "certification_sha256": "d8b88881bde29e9042cfd5a4d28272e35a3153b17142f3a72c04554cf9b4fd90",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "e1d6ccfa532e4b9786b37b49ca4293218e83f42cc96b6b1ab7ca50f9137400aa",
+        "mutation_bundle_sha256": "df840634cef15fcc8c02411db269a078d8b38e80b159ee942e7d50279ac19dbd",
         "mutation_id": "neg_003_missing_msb_contribution",
         "source_catalog_certification_path": "negative_variants/neg_003_missing_msb_contribution/certification.json",
         "trigger_condition": "Omits the din0 MSB contribution.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_half_output_scale/certification.json",
-        "certification_sha256": "6862d0773b7ca162a307ac7326a402905aa7152217903f278e2fc73d86be1447",
+        "certification_sha256": "f2cb5155a4b6df2a03ae773d55e5fc63279c4afd23b6a19b6a4eee7aa1dfc242",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "0c3a4a4bf012690ac1c03b80d0fa45e15130bf9460207c98ca0393d6a8516cab",
+        "mutation_bundle_sha256": "d5ca08c74994cf59867fc5daf0e3b19956caf84b83a35ece06d7b0bc1c075111",
         "mutation_id": "neg_002_half_output_scale",
         "source_catalog_certification_path": "negative_variants/neg_002_half_output_scale/certification.json",
         "trigger_condition": "Scales the final DAC output by half.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "6d8d7fadf3f560acf92807a96e410a5b1c4c09273c881051085b1f9644d134b9",
+        "certification_sha256": "5d2db7b3a1066de97bc963c2a0e5d03b397a5016d0358903429d7dedcaefcf1e",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "52f476a648fef0db3720c25e7eee178cf9ded4417ee9636c274e213c11596704",
+        "mutation_bundle_sha256": "d22544e68275366f0732abf121b2f69a193047a4d8673658a250a03ff47dc67a",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "3e8a8b0fc7aa40ff99a019299fd1b2c9f0a1fe5a9cfe5e9762c9781d1216af03",
+        "certification_sha256": "2fe7a21f0726cc37f86cbd888c0810e8338517a6b27366f890c67cb0dab6e2a8",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "608ab444cf6862d11a7fb9cd8830f0c0fc2e6472c41cb8735954b78cbc4bf85f",
+        "mutation_bundle_sha256": "2159394f70125e5657fd965506e5690759b90e14e9c2b147b356a051f708f2e8",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "DAC 5V Weighted 7b: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "a12abb9a4f53bdc38e4f137b2ecee88ee421595964349f7e149225fbc650ce82",
       "score_deck_sha256": "32d849e47d2db8c3cc23a3d6bebdb33a46c9d1ce52c8fc6bffc2ed3afa27ac9d",
-      "task_certification_sha256": "a930d7ae708ae1cd0600c7dfdd73ddc450a4a601ad1daf53d7c4c3e5e74ebded",
-      "task_record_sha256": "eab42ccc54b5aa1d5ef708e5529f553f502abce7498e289e36cadb0363e33cd8"
+      "task_certification_sha256": "997cda7b756087e123a0eed687d9d943f19892cd27a1f21a86dd3e28c830e997",
+      "task_record_sha256": "a781e625e5f171381d0d777d2b1482b2d7259f0964643784bc31299b84106dda"
     },
     "release_dir": "156-dac-5v-weighted-7b"
   }

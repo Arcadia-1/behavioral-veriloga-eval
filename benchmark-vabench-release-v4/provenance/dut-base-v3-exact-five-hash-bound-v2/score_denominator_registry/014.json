@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_boundary/certification.json",
-        "certification_sha256": "aed0e0042d07f8e311c2a71c1fe48c1d918c87b34dfd23619d2deb4d2523fcc5",
+        "certification_sha256": "22a3d81a331e2e95981fe696dfc002455aee320558a5f0655e0d3ed5c4597601",
         "fault_class": "full_scale_divisor_error",
-        "mutation_bundle_sha256": "ee153c149c39868722c6de4127c4198e81fcb667260e5539f16ca6338be7c49c",
+        "mutation_bundle_sha256": "95320afdc06f4416d8918dccd570a30355b8a59918f5793b80b31e9c230609fb",
         "mutation_id": "neg_001_boundary",
         "source_catalog_certification_path": "negative_variants/neg_001_boundary/certification.json",
         "trigger_condition": "the public full-scale and intermediate segment codes are sampled after settling",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_polarity_direction/certification.json",
-        "certification_sha256": "386324cc2af697a35cc769c78e10f03c0bccea3401831ad0f168a339162a9f33",
+        "certification_sha256": "a5dd20716e69c7075d5d55dbdf5ae4ce71d80cc2af95d29e68cf60f54d6bbb4c",
         "fault_class": "binary_lsb_weight_swap",
-        "mutation_bundle_sha256": "061c48ba9abf4781e40e8f89d47448e2c8d1e8ea5ffe587a74331bf3aa2f4e60",
+        "mutation_bundle_sha256": "d9c14848093928c2a7d17d4f3d6e0e8490f3887e28567dd5fdd26f9d9a1324fc",
         "mutation_id": "neg_003_polarity_direction",
         "source_catalog_certification_path": "negative_variants/neg_003_polarity_direction/certification.json",
         "trigger_condition": "the code sequence distinguishes b0 from b1 weighting",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_writeout/certification.json",
-        "certification_sha256": "91f4f07cc0ed06813c192c5f7fd2bbff76ad3cacfbd741738ab27b8ba47e17b5",
+        "certification_sha256": "d9bb6ba626f2f3ed95acbd1c9d26ac0a321f0b4c59e82538c39eca18093e9f2a",
         "fault_class": "overrange_divisor_error",
-        "mutation_bundle_sha256": "5e7ef26fb2c6d485e71c24721e8f345296e9dcfe307bf6247fc99b1452993823",
+        "mutation_bundle_sha256": "65cdf223a416441cc8c07798a115fbb0797d7332f634dbdda82e3f7aabf4d5b1",
         "mutation_id": "neg_005_metric_writeout",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_writeout/certification.json",
         "trigger_condition": "the full-scale code is mapped relative to vref and vss",
@@ -46,9 +46,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_state_reset/certification.json",
-        "certification_sha256": "e85b484e295404d05bdfa107e41cf0f92559808fd11029a9bc9efada8f96d5b9",
+        "certification_sha256": "80e9b03d7490b6213d04b8eb1ad29a264a07ad5e8ecd1b505033923c98adabaf",
         "fault_class": "missing_thermometer_segment",
-        "mutation_bundle_sha256": "e27b4cf6834643d67c05296ecae2cbfb82e2fd14e1073910a1d8ce92d271bbf3",
+        "mutation_bundle_sha256": "57857a45a5c8ef83688e5ae9ed8d6ec4643b085e0392857627f8d9ac38bc1674",
         "mutation_id": "neg_004_state_reset",
         "source_catalog_certification_path": "negative_variants/neg_004_state_reset/certification.json",
         "trigger_condition": "t2 is asserted in the public high-code stimulus",
@@ -59,9 +59,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_timing_window/certification.json",
-        "certification_sha256": "85640fd622d1a681f1bdc8dd5025e3a5cc6bb47d9ed0dd4609db7fc01a300739",
+        "certification_sha256": "1e26f6588b3e66d7cea34f00985ad11d0b6fc305430e66ed1dc02bda321324b4",
         "fault_class": "timing_window_error",
-        "mutation_bundle_sha256": "6732473bf8f80bd62af67e666453a26e5222ffa8711617bad7ae2f1bb32458e9",
+        "mutation_bundle_sha256": "5665bdbc42e701514b02933e4e5550e6c91ad0a143350a7e09b94b16bd36afce",
         "mutation_id": "neg_002_timing_window",
         "source_catalog_certification_path": "negative_variants/neg_002_timing_window/certification.json",
         "trigger_condition": "a code transition is observed at the public settled sample time",
@@ -75,8 +75,8 @@
     "hashes": {
       "mutation_catalog_sha256": "4c60e8005f82a0e4d02895b9f67b1f15de6195e789b1c9ca59073d0eab12e44a",
       "score_deck_sha256": "05fb4d65ae86af1016acc065aa2c28d1caf15c8ea34a9cf06467d6a6b8930296",
-      "task_certification_sha256": "5e493fa49422ec39bc43eea9d725f2dd2b7fd9212b7eaeb84dc3c1d7ab00992f",
-      "task_record_sha256": "3e3f9bb22fdabc4b86d371e78ecff8be01c607089659330e93466019b43a5a48"
+      "task_certification_sha256": "2244530a80c83e42244fc0c41b54aae8fd66ffec4a034783c350716f3fae6172",
+      "task_record_sha256": "5ef88996667afc163b1b2c8854d11aea8f3e2ab93faff5ac2a85f08172236bd9"
     },
     "release_dir": "014-segmented-dac"
   }

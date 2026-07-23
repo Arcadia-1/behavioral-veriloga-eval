@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_omit_msb/certification.json",
-        "certification_sha256": "bee9ee9dd044b29599d08d4132fdea336818a1d74c05439a6ed90904764c22a5",
+        "certification_sha256": "6b0c0ce28b5b1bec36288009c422a4c9a80237945803a9545a55d06b2ee5ccd3",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "3df81c110ddcf0cb6c75314b93dbe848efcc4afe570c4134066b1e948956bb62",
+        "mutation_bundle_sha256": "24127ebc064087ac21a80540f01d3336b40efa3d4cc33da48534001e80a76666",
         "mutation_id": "neg_002_omit_msb",
         "source_catalog_certification_path": "negative_variants/neg_002_omit_msb/certification.json",
         "trigger_condition": "Drops the din6 MSB contribution from the weighted scalar output.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_reverse_lsb_msb/certification.json",
-        "certification_sha256": "969db636a96c797ff447754900c9d79877ceb6e97eef28264379cca9a61a45fb",
+        "certification_sha256": "300643572bc9593184fbe0ec3d1a6a5268c5551b95fddb81a0d6746fb6cdae66",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "cb96a051282a6107722896a6e25a1ae23b343edb501b8110f58b5bda128f5fbb",
+        "mutation_bundle_sha256": "a2be9fac7478e8e96bbbc3687a872cd818db4cc5c3bf13513f4ee656ca60651d",
         "mutation_id": "neg_003_reverse_lsb_msb",
         "source_catalog_certification_path": "negative_variants/neg_003_reverse_lsb_msb/certification.json",
         "trigger_condition": "Adds a fixed offset to every decoded scalar output code.",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_scale/certification.json",
-        "certification_sha256": "7da64a5913586da6c789ea1d456fe5c14185edd96fde6f9b569402f8ff03d450",
+        "certification_sha256": "032a907581d14bfbb7383787d1d3e16cc92d2f161faa128e619e0897651fcef2",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "65c7000d07a5f3950b2cc7ca02e27010c2b0fb18f3eace40c1793da1ee2c427e",
+        "mutation_bundle_sha256": "0ebbf4166e17b8b05a26b88a37e776dc3e7fb62a1d3e59a6c03b0b554c79f020",
         "mutation_id": "neg_004_half_scale",
         "source_catalog_certification_path": "negative_variants/neg_004_half_scale/certification.json",
         "trigger_condition": "Uses a denominator twice as large, halving every nonzero output code.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "ea7b486eaa82e6840d4b467e4b316308a79466ce4934abbffb5a57ea8e3e46eb",
+        "certification_sha256": "a274aa394b779f75f108f3a79ef4c9867f95194c27d7b9eb6eca27f96c2fd25d",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "cddc1a5208b8aba48d6132753fc837261462faebeeb0147377ee2279b8fff268",
+        "mutation_bundle_sha256": "7aa3f50c43c4fdd0714e049d40ab3fa63b2a5b84884056d3625fcad6194b0ca8",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Ideal ADC Out 7bits: scales the metric output, preserving the main path while failing measurement checks.",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "002dde298f6eea3650173a5d7ed46da37b61d0d562721287f3f9d99927db723e",
+        "certification_sha256": "4c026c5d4bd31fca9ac335106cfc214fd83634359aa5406a8c618d3867c122b1",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "a2cbe7efb6094f528f248e9dae3c995c8d46b519c92a4d38602171856f9927dc",
+        "mutation_bundle_sha256": "1ae7b9fd2659e30f8e42c702f3f70de0a09d28a4cd37f7177566f4b32c7c86c0",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "9b128d1b377460256119ecf9821f7fce5811d63897ad2ab5cc83084a6839ae19",
       "score_deck_sha256": "82f1d877d31bb7ab9307971b44371f695441a81de31fb87e2c5c31736417bf1a",
-      "task_certification_sha256": "58afd6e04486baa40ee458cfe83023285eb51199d189acbb435bdb236e093608",
-      "task_record_sha256": "45bf1e1542c7eba707f118f0744bd276805cace44261afb4867f3e27c8e41d29"
+      "task_certification_sha256": "7d28d7651fc334d3eec016e33eb7369547ebf780ac4700272977444fef4c33cb",
+      "task_record_sha256": "7302234ccff3ec6b4919d10ad467895c0915ef64fcbfe953b243e09e04ea6ec6"
     },
     "release_dir": "164-ideal-adc-out-7bits"
   }

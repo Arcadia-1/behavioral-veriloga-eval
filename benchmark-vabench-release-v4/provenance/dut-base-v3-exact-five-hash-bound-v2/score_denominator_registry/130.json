@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_single_ended_gain/certification.json",
-        "certification_sha256": "b3bb26f161c7f7e45776407843a3df751e4d8491e2f85cdd48df37f85fdc614a",
+        "certification_sha256": "4b2af1c70f1c77bd8b2cfca3006be85576479feb9447d2f151b9f38ae45d3721",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "ef62860292d6c3121bdb0fadffe9d5773887fc1cb3b7a0d70bfc5e0ab281e496",
+        "mutation_bundle_sha256": "702f235ab56802e5a207ac8adb3c3fb43c64cebb52c3fc7536d1dcc3400b0ac2",
         "mutation_id": "neg_002_single_ended_gain",
         "source_catalog_certification_path": "negative_variants/neg_002_single_ended_gain/certification.json",
         "trigger_condition": "Drives only the positive output and leaves the negative output at the reference.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_inverted_polarity/certification.json",
-        "certification_sha256": "8a872bb02c5b6e78e5a4edadc17cdd0b0e2c56ada02e148efdfe642522f7565a",
+        "certification_sha256": "4312c61818ff2c16e38c96c052d118f2af99b332caf3b7d2692e5e547732c5e5",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "bef120574ddacac8b2cc9b9b653c077b72e9872b7688089eacecfc0e495ad434",
+        "mutation_bundle_sha256": "ac114e6acc3a823ec319d40850e7f62002a17864962ff11a099afaa8f9981dcc",
         "mutation_id": "neg_004_inverted_polarity",
         "source_catalog_certification_path": "negative_variants/neg_004_inverted_polarity/certification.json",
         "trigger_condition": "Inverts the differential output polarity.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "aa6a877f15278d636b9b9d35fe7c687a7ec767902aaa5839912b52494db1462f",
+        "certification_sha256": "3c134cbd17af769987bc1a74ce1823bc9fca9ed6d39e5969901a5f616be6e42e",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "74a9391a98e48d84b9992b160a4f353062c390f3caff4f737fc80d97fb6b8d11",
+        "mutation_bundle_sha256": "a39de9857f7e5e7a2827b4694d12b051ca996b6c54d2a8f3cbf2b8ba8dd32570",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_missing_half_split/certification.json",
-        "certification_sha256": "f7daaf8196c12599ac9a7a76f58ef28d8aefd012af897d175a0afe04a723e28e",
+        "certification_sha256": "4053fc1aaf8833f86e832fa4e7bf80c4818f4f3c5ad2adcc627b8fa1e1eacfb1",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "979fa0ff8940a8c623a1ebe83692f2d09d601b7be348cc95fd512ffe53f6b9e5",
+        "mutation_bundle_sha256": "e1e58b171c643faa281b73ad1c4b6ae0a345177be97ed7843d1479f2d7f96ac6",
         "mutation_id": "neg_003_missing_half_split",
         "source_catalog_certification_path": "negative_variants/neg_003_missing_half_split/certification.json",
         "trigger_condition": "Applies full gain to both output halves.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "87d361a6376060ac545efc7404d6d7fe20c25334d3c7b8c4d505c99316115b10",
+        "certification_sha256": "1a8ec966a42ff14f88bf19395b4bc52bf49c8bb8c50e4339d9afdffafcc84288",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "3b7f014e075754a3f654bc39af42ba6c6111bd6ae941e5a9074c972db07adb06",
+        "mutation_bundle_sha256": "1a7c061e0d30427e7a7e941cb1e143314135cd1b157ef00093efc3660b14eb68",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales both differential output halves too low while preserving the module/interface shape.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "7281839e82cf3e05c5c7fe551410204edfbfd1ea5cfd03c11d718f4a3f6cc540",
       "score_deck_sha256": "d5a50ca73eec689494c9f99a218639bc86568aa183e55ed4a6e250e8dfbfc99f",
-      "task_certification_sha256": "f29bbae3b21d7fe7ca46c76b6844717dc9298e012fc805cbb17c915b7aa825fd",
-      "task_record_sha256": "b77a0b0a7b0723bf49066fa023dd1ca66d613066caf60d43308591e9b7787636"
+      "task_certification_sha256": "21ebdca5cca3ac3fc40665c332da33d6e9522ecd4f250381fb68f2221a9aacbb",
+      "task_record_sha256": "a40d0dfc96ac0fcdec9f7fbb87cb20ce455998222a7caf4c9abb9535936685f0"
     },
     "release_dir": "130-differential-gain-driver"
   }

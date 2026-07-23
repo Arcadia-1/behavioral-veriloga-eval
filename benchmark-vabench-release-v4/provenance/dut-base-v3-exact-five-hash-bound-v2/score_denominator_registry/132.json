@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_adds_inputs/certification.json",
-        "certification_sha256": "dfd050ac05afd241450cac7b29b29eb7a4c4c2e5b81e4282926246edf53fc019",
+        "certification_sha256": "2497c417d6a921223f0766d96c070e59d4fc7a9790f1ecb86953a1ab004df892",
         "fault_class": "adds_inputs",
-        "mutation_bundle_sha256": "a8daf276d7a46bef90a4d5447568ad8086b147dad562cfc7e8b3c9e816bd7c16",
+        "mutation_bundle_sha256": "0dc91fb66aad58fe96a87b40b6d8f331e8fd9518cf0d4bdbad851b47d3f9debe",
         "mutation_id": "neg_002_adds_inputs",
         "source_catalog_certification_path": "negative_variants/neg_002_adds_inputs/certification.json",
         "trigger_condition": "Adds the inputs instead of multiplying them.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_missing_gain/certification.json",
-        "certification_sha256": "f1388a8577f2832527f8a475a5df2a2183aec4c3a997de290d7e7e45063f284a",
+        "certification_sha256": "7cbb4f87c361ba0efb8e91eb8500a74b61fd3b11f6c9cfe45a2cb40b3bf54f58",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "d07f5887a959c88b7d18e0ada5e5419424fbf078fe5d7a48e77762ed6405408d",
+        "mutation_bundle_sha256": "ac70220634159e8bd22fc64a6bffd2dfc38e5e57ab02b92dfe1226a30c30e227",
         "mutation_id": "neg_003_missing_gain",
         "source_catalog_certification_path": "negative_variants/neg_003_missing_gain/certification.json",
         "trigger_condition": "Omits the multiplier gain parameter.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "db4ae1eecdb6ccbbac58193fafb0a44b14cf69537977782301dbd9db48063091",
+        "certification_sha256": "89114e63cb2e2888ba8eca6e7b52cddcdb9a08bbae367f89a06f478d0210e9da",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "339a69987a777f9b14c480695be13ac04289f3e176b34aeb4267c27d4c4a3e47",
+        "mutation_bundle_sha256": "5802dc14da7ceb67791d868866d07b9ebca19c4280154e81ad2bf40f678059c0",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_square_first_input/certification.json",
-        "certification_sha256": "dab08cfe1d57ae0403054631dc0303f567a4a92da5b48fd7c50c7b873060b8c1",
+        "certification_sha256": "83c30e44b0757433a212ec8c4d97c636a625c108b644b4b173549d803ecf47e5",
         "fault_class": "square_first_input",
-        "mutation_bundle_sha256": "d53217ba130ef923f1109d60702ec51123a45070072983fb40d0ca2dcb0e3fd2",
+        "mutation_bundle_sha256": "472e6d86800424f14ab90b756cf2a8507c7586459033ad153e56885bd424b4be",
         "mutation_id": "neg_004_square_first_input",
         "source_catalog_certification_path": "negative_variants/neg_004_square_first_input/certification.json",
         "trigger_condition": "Squares the first input instead of multiplying both inputs.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "061689aadc94ca6e208eecad598f4a87b695823e45be7351563bf3e907d2611d",
+        "certification_sha256": "0b54e436bc2af9fe436feaba891d212b72a704889628d8bdb88e4d3b104e9378",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "546eb6f0e1f318aa5a4be91bc7525e5aa056321e0d7dee06b378b0d46c9b7922",
+        "mutation_bundle_sha256": "f5b7caa188e912392d254bf91e14a6037414b2097655ec4b4fe77cf8d20b3beb",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Analog Multiplier: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "0be2fa6543f91accc7726cd9e59ceac04b48a80036453beb124ec11c2024d311",
       "score_deck_sha256": "b9adac6ab09a3eea2365f4bdf1e1eae16f4e6032605caae647f2a92e614a85f0",
-      "task_certification_sha256": "5d7296ee35281f953fc990454351bee82e17c3a6c314c6c1e82af14a60539550",
-      "task_record_sha256": "75b1837c6c58a561117e69740711e98148a65bf5090f4ca64a0fcb38766828ac"
+      "task_certification_sha256": "07d4d68332f6c7c89445c6791c0ddf0387e0133e3475bfe438b1639f3eb0a27e",
+      "task_record_sha256": "546f2a0af00d8f471972eb2ffeacc012634480c884f443627a87bdfff8cbaed6"
     },
     "release_dir": "132-analog-multiplier"
   }

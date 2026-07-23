@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_ASSERT_LIMIT_FLAG_ONLY_WHEN_COMPRESSION satisfy the public contract; fault class outputs_stuck_common_mode is rejected",
-    "observed": "EVAS: v4_303 checked=871 pos=True neg=True compressed=True disable_seen=True inactive_checked=138 inactive_errors=0 polarity_errors=871 gain_errors=838 metric_errors=871 flag_errors=545; P_WHEN_DISABLED_DRIVE_BOTH_OUTPUTS_TO mismatch_count=0; P_WHEN_ENABLED_CONVERT_THE_SAMPLED_DIFFERENTIAL mismatch_count=1; P_SCALE_SMALL_SIGNAL_OUTPUT_SEPARATION_BY mismatch_count=1; P_DRIVE_GM_METRIC_AS_A_VOLTAGE mismatch_count=1; P_ASSERT_LIMIT_FLAG_ONLY_WHEN_COMPRESSION mismatch_count=1; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
+    "observed": "EVAS: v4_303 checked_events=129 hold_probes=304 pos=True neg=True compressed=True disable_seen=True inactive_checked=23 inactive_errors=0 polarity_errors=124 gain_errors=118 metric_errors=129 flag_errors=78; P_WHEN_DISABLED_DRIVE_BOTH_OUTPUTS_TO mismatch_count=0; P_WHEN_ENABLED_CONVERT_THE_SAMPLED_DIFFERENTIAL mismatch_count=124; P_SCALE_SMALL_SIGNAL_OUTPUT_SEPARATION_BY mismatch_count=118; P_DRIVE_GM_METRIC_AS_A_VOLTAGE mismatch_count=129; P_ASSERT_LIMIT_FLAG_ONLY_WHEN_COMPRESSION mismatch_count=78; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
     "violated_property_ids": [
       "P_ASSERT_LIMIT_FLAG_ONLY_WHEN_COMPRESSION"
     ]
@@ -20,7 +20,7 @@
     "campaign": "r51-full400",
     "checker_id": "v4_303_differential_pair_gm_limiter",
     "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "06d620060a5e6a5c573a7832c4f7489a218814a65395a108d5019fde14f09f02",
+    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
     "trace_row_count": 1068
   },
   "family_id": "303",

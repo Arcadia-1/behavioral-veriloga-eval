@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_xnor_up/certification.json",
-        "certification_sha256": "65ae36ec052a54892b1f8c1037c35863af3e323411cb307fc29a4357a6b29d0d",
+        "certification_sha256": "5cdb98ab7bf91a551cf54283ae71b44b881e8b298eb6bab3a8d6f7c60e9f3144",
         "fault_class": "xnor_up",
-        "mutation_bundle_sha256": "ed6830b3c6c253e9f12b89e18758fbaef8d49d6a741eaaedfb6af39efb19a875",
+        "mutation_bundle_sha256": "51da136de0aa4bb3baa01903ba5d108fa251254239f60f68009999e37725d45a",
         "mutation_id": "neg_002_xnor_up",
         "source_catalog_certification_path": "negative_variants/neg_002_xnor_up/certification.json",
         "trigger_condition": "Drives UP on matches instead of mismatches.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_ignore_fb/certification.json",
-        "certification_sha256": "3b9985f25271e91847406f63f774e26df337521b3b4739e94e625a0863eb7e5b",
+        "certification_sha256": "47c8e3cfc74fb3632363b67fab5e0dc9508745df35e56f5e6d111c6d616a3d58",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "5943cd3c78ae418c9a933ce4b0e2ce03abc91f503d22ada61820d02fd58bfbc1",
+        "mutation_bundle_sha256": "3e5f03ddd8786329dff3f36898c7e53cdc5ca8828789637f7c2ef55a5ee197b5",
         "mutation_id": "neg_004_ignore_fb",
         "source_catalog_certification_path": "negative_variants/neg_004_ignore_fb/certification.json",
         "trigger_condition": "Ignores FB and compares REF against constant zero.",
@@ -34,9 +34,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_down_not_complement/certification.json",
-        "certification_sha256": "c4206e4bd0686b9262eeceb819d97a77f852c390ad7fabd3ae563a834fbf4145",
+        "certification_sha256": "e8a3988e733f8793e4d12baeea999166e2c560989c57a55361ae90528a728d85",
         "fault_class": "down_not_complement",
-        "mutation_bundle_sha256": "32bc34658c4f1db24290a64ac981ffc4078077772dcdec5aaaf32714d51e6572",
+        "mutation_bundle_sha256": "42c77eb36c364f8bd97fdcbe17dfb2b391630e4fa1519b1601cd96af0e8c6bf0",
         "mutation_id": "neg_003_down_not_complement",
         "source_catalog_certification_path": "negative_variants/neg_003_down_not_complement/certification.json",
         "trigger_condition": "Drives DOWN equal to UP instead of complement.",
@@ -46,9 +46,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "c5b9d21786039a093ba9ffa29427a11b38cbe8de4da6b86554d1012ab0184807",
+        "certification_sha256": "377b90f27c41fd6888b27b56ad229d5b5436fb823a87f69f07906a37ecff0070",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "0d85ac39e0e693c30eab7396fa6cfafd1f31b067b7089e6881da859061055973",
+        "mutation_bundle_sha256": "5d00b5b5530ccdf63e0dc968538ffe129ec06a5facec8f9026eb9c05a5332f4c",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "XOR Phase Detector: scales the metric output, preserving the main path while failing measurement checks.",
@@ -58,9 +58,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "a2496498e236511c3a5e2bd5fa6415ff63f5f7224e66fac61d52194dde926164",
+        "certification_sha256": "ead09b99b1b31a4d97cb73f963d8d2de2de31fc0cdb3ca769c1fcdd2a7ba6fab",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "e1b22e38fc06094ce03a3ebe2571b036a9c8f48314bce1077033ec9ace2b17cd",
+        "mutation_bundle_sha256": "193ae452454b63ce670b574df098acca3d37aec996a78cdc1c94cb7e14681aa8",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -75,8 +75,8 @@
     "hashes": {
       "mutation_catalog_sha256": "d1610897478b4bfef883bd7b1716075055fd0bcc8b890a6cb6ca0c4994302f29",
       "score_deck_sha256": "af7c999b614b4d5fa13249cb4c3c4bc932e0d3bd00a1ef9204a7d8f47c8a9265",
-      "task_certification_sha256": "77cd1dbada71a4a0131be01d8a800caf7e8bb68265a040a57f156e698ea6a03b",
-      "task_record_sha256": "8deb14e61924c6c11929900a11e6c39a5c67bf3171f9ca87b535f73e248843a4"
+      "task_certification_sha256": "8ab3de1e4b420eff1765b8722d3b6b1cedebd102881a3a26b0db8b28fc5a9f13",
+      "task_record_sha256": "1117d5b3e277bb529c936d80b530a33b40fa1ff87e77176a4499b79973d2d12a"
     },
     "release_dir": "230-xor-phase-detector"
   }

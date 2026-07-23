@@ -236,5 +236,20 @@
     "spectre_simulations": "6/6",
     "classification": "mutation-fixture executability repair; not a checker-semantic alias family"
   },
-  "claim_boundary": "This artifact establishes direct correct-plus-five Spectre classification for all 36 public task forms bound to the twelve checker families repaired in r51, plus references the separately verified v4-686 fixture repair. It does not claim alias-specific EVAS reruns, sample-by-sample waveform identity, a full 400-task Spectre rerun, or a refreshed r51 release seal."
+  "latest_checker_revision_coverage": {
+    "execution_revision": "46a3ccaf2de5b9fd9e97fe622b24dd8431b6b512",
+    "superseding_artifact": "SPECTRE_AFFINE_CHECKER_RECERTIFICATION.json",
+    "superseded_family_ids": [
+      "303",
+      "304",
+      "312"
+    ],
+    "task_count": 9,
+    "case_count": 54,
+    "correct_pass_count": 9,
+    "mutation_kill_count": 45,
+    "mutation_count": 45,
+    "interpretation": "The superseding artifact replaces the earlier results for all three forms of families 303, 304, and 312 after their affine timing checker changes. The remaining nine checker families retain the original direct evidence because their executable inputs did not change."
+  },
+  "claim_boundary": "Together with SPECTRE_AFFINE_CHECKER_RECERTIFICATION.json, this artifact establishes direct correct-plus-five Spectre classification for all 36 public task forms bound to the twelve checker families repaired in r51, plus references the separately verified v4-686 fixture repair. It does not claim alias-specific EVAS reruns, sample-by-sample waveform identity, full 400-family Spectre recertification, or inclusion of supplemental Spectre evidence in the formal release seal."
 }

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_lsb/certification.json",
-        "certification_sha256": "3bf6577510b11838148e5a0cdea4df6198ee85728b68fd5e590cbec053310585",
+        "certification_sha256": "67ca520312d1b2a75ebd7147fe822fcc033234c0547990cb581397701d9d3cd9",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "f563628108ab0a4253f458430c68d02bc306e9027a3dfb979814597cba2ca0bc",
+        "mutation_bundle_sha256": "cfdb6709f4036c86089c58ab631a02e778d60ffef41a597661f2370e76d61448",
         "mutation_id": "neg_004_wrong_lsb",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_lsb/certification.json",
         "trigger_condition": "Uses the wrong ADC LSB size.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_unipolar_range/certification.json",
-        "certification_sha256": "f306b6cde942b7caaaabb180d51c409576ea6ee5a274d712a37a9e2c03224195",
+        "certification_sha256": "dd3af665829880fdc1230b61cb63c08602aca0bbd0a87964686517e4d4c9a317",
         "fault_class": "unipolar_range",
-        "mutation_bundle_sha256": "d2af14b30953a5448b9bb3cc6ab521e7df12471b9040bc0797f43f8dbd726a45",
+        "mutation_bundle_sha256": "ae9e01ee9a571deaebea98c5063c431e9ecc625f66f4e4096ca5da4f0a4d676a",
         "mutation_id": "neg_003_unipolar_range",
         "source_catalog_certification_path": "negative_variants/neg_003_unipolar_range/certification.json",
         "trigger_condition": "Quantizes over 0..vref instead of -vref..+vref.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "d314b6351d8c98360b52fd6216a8a733e31a939c29f163d5fedf160b2ba3d619",
+        "certification_sha256": "48a059778688d124948e7ccaba20534ca0445c1a8d2a2036d68eb03c5d900d81",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "a7af658e5c3029d5ea538317e6e8f6778bd5e90b97141103cdaa4211371e90e7",
+        "mutation_bundle_sha256": "41b83373c16ff536931eb155a95c45429f8da6af72fc8f24564514e83afc80e3",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_half_scale_code/certification.json",
-        "certification_sha256": "018bbeec29b922547395188272a50c427b48b0494869a5ff6ffe2afa7acf4874",
+        "certification_sha256": "9f4ed3a7fa517de0583f465dedfd4cdcf22040a73c3185b6b462fc5b0412675e",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "79ec871537600695b9151346814b1ce4293c48cc0e97215c1fa5b81956df362d",
+        "mutation_bundle_sha256": "e66043802c9a35dbb535ce1fa6f3ff84a84dc3e08ab172fc6a9e03d8868d0ece",
         "mutation_id": "neg_002_half_scale_code",
         "source_catalog_certification_path": "negative_variants/neg_002_half_scale_code/certification.json",
         "trigger_condition": "Uses half-scale output codes.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "8377e9ef266ecdadf829ffc60b969da7ad856e54d893d36e8b92543c7af6d366",
+        "certification_sha256": "36291ebe55a76712f4b848a3cc7bb6f1cffc60bc52466e4bdb6acce7a8142d4a",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "822d4147718b3c3c5d246bdcd069ed418b9c1709cc77e1cefd4d2def03c6e985",
+        "mutation_bundle_sha256": "e948ac483183dd5af3ca145a7267befd3916d47beb1bfd2a9e11f4cf384e1b11",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Ideal ADC 4bit Quantizer: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "da131fec3436f665079c9e934db5af841908c426056188926160b55cc6f168ec",
       "score_deck_sha256": "521cc00e1d54410c8af7a5442af96e3cb62f6881508c54556297a34234a95d66",
-      "task_certification_sha256": "826616c6465a35a52371197dccd88732c58bb92065d9adf9b387e9df5a255f76",
-      "task_record_sha256": "f79e4d95402e188596ec972c268d2866b359106445331d9cb83e5d637f7f6ac6"
+      "task_certification_sha256": "f3197ddd2ba72fc06fa05f93d7e6a103ddd97659aa875f168428c6d7edcaff9f",
+      "task_record_sha256": "34fa72a40e9dbf19858c97ceb9adbaee9e0dd13e9038b84c3145e265aff9393e"
     },
     "release_dir": "141-ideal-adc-4bit-quantizer"
   }

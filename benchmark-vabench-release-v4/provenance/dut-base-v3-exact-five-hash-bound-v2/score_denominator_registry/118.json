@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "341ddb84a086bb018ab462c2a73d161cb4f80e0b4b3ee96e4bf94c7aa6952e72",
+        "certification_sha256": "ec8f12dcdaaa1d5cf16e6cc3431f5c3d582f0adaecb7e09a6b8d25b3a5d92657",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "1fa0393c07bebbebc7fa45a541855e1a42c1fa1e6790ed804d915fa224284cf4",
+        "mutation_bundle_sha256": "16d4b230d9bf8da799aeece722e7f0ecc39880c03a7cedfe2abf783eac1bbc16",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_half_gain/certification.json",
-        "certification_sha256": "afce477088971f5a7799f509697cff4c79909d54ce8aa23126febed636feb72b",
+        "certification_sha256": "11ef1c71e1756fb97d2b9228907ec1f0505c8aa15f6afd381fab93d088231164",
         "fault_class": "fault_003_half_gain",
-        "mutation_bundle_sha256": "e413885489ae2d33140abaa19ed6b007b0735270a62f5e693ed4577acc427639",
+        "mutation_bundle_sha256": "b6704333fc0352f4def0b6ebc6dacfbb63b4712ec93cdb497e3e259c767f0984",
         "mutation_id": "neg_003_half_gain",
         "source_catalog_certification_path": "negative_variants/neg_003_half_gain/certification.json",
         "trigger_condition": "Copies both inputs with half gain.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_common_mode_only/certification.json",
-        "certification_sha256": "41dc250245b6e4760fe7997fe662a07fe2f196b4399601430ac91b82569c41d2",
+        "certification_sha256": "8eaf07f3bb4c1601b297fe3beab87bd46c7abc260e00b8394b0e24833790a6cc",
         "fault_class": "fault_004_common_mode_only",
-        "mutation_bundle_sha256": "ca6c516eda6e35c6f2d936f78e66d1f1a92b7125174ebf7108ce1dd38e29ea25",
+        "mutation_bundle_sha256": "018487c89ebd61abecbb2093de7e846ff85518c5e2b1a577ba73ed5e4e4315aa",
         "mutation_id": "neg_004_common_mode_only",
         "source_catalog_certification_path": "negative_variants/neg_004_common_mode_only/certification.json",
         "trigger_condition": "Outputs only the common-mode average.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "555e48b1c6c7cf334726ee4ce65d7f7355eb25c0696b1c41376684efad826c0e",
+        "certification_sha256": "1b070b6b8e2f68764f7fbc974409c82476b0795942f1e9153c197ec5efc8caad",
         "fault_class": "fault_005_metric_scale_low",
-        "mutation_bundle_sha256": "ef70e9e45d377b7529eb896e432935a5b9076b64f3149f573c51abc334c9037f",
+        "mutation_bundle_sha256": "68f38e30187e70d34526cddd8d39e1fca18008e2807487a5a87549d443c62780",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Differential Buffer: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_swapped_outputs/certification.json",
-        "certification_sha256": "a4da466a6cd9e8a0fb25b7c16c1353f6e2713a70ea0de99201071d13723c667c",
+        "certification_sha256": "89f86c9200812fc484124f425793ddc4582f4ef652d20384dc89ccb9a26ba139",
         "fault_class": "fault_002_swapped_outputs",
-        "mutation_bundle_sha256": "0579c17a19011d7ec474d75aa823ec48fbbed295b2e64bac2500ff2d1538cc12",
+        "mutation_bundle_sha256": "f9c9717aaae28902b11f077cd45b556ba7f12f035638080eeef178ccc0a9005f",
         "mutation_id": "neg_002_swapped_outputs",
         "source_catalog_certification_path": "negative_variants/neg_002_swapped_outputs/certification.json",
         "trigger_condition": "Swaps positive and negative outputs.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "7dc3349e68c72b124df9e44fe0e69b992fc5716f5559eddb23bc66af724d709e",
       "score_deck_sha256": "4287ac933332b93b91e2eaae770091df5eec601a545d01da56cb4efceae86e66",
-      "task_certification_sha256": "fc52c3f8ee31e7d2486cf972ca059ccc1ff0b5599bf2ae13c276fc3b75df44e8",
-      "task_record_sha256": "58a65c0fd0b70e4c0d08d43ee9422d2fd46e8e489fd5e0ff260ec8ab542b14ef"
+      "task_certification_sha256": "eb54aaab90e2636b9f33f0753ad35d2b88fd6bdb9a158e458456177f21a8bfba",
+      "task_record_sha256": "adf3f8b5c44cdd5d293cb6b46327ab5b952accc33b11e913458b1bd8c0706f95"
     },
     "release_dir": "118-differential-buffer"
   }

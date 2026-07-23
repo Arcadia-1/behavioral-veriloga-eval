@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_sum/certification.json",
-        "certification_sha256": "02f2cd39176c06304f24ede581be75cfd1ee34c1fc042814b25291dfc13c2680",
+        "certification_sha256": "79d5b27126249741a2bb1505dc96228fe7648288fc54cdfe0a80422549be1546",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "ec7000ceae7f673bb9ed5b4abb0c8e6cccb8583f8d46d042acd43f74899660df",
+        "mutation_bundle_sha256": "c16e674f4af73ec16227a633171627d8feaf7ff2e3f4a17ce74531d7fb999992",
         "mutation_id": "neg_003_wrong_sum",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_sum/certification.json",
         "trigger_condition": "Reports one less than the active progress count.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "f79ee883a147a7f469cc7b8b66cdd9793b4d8e8b04b2757239aaefcafc62b2e4",
+        "certification_sha256": "6ed6974c693f9ddee5a27f80fdc3753f8968feedf4e7b47f0fc4ded474f62a09",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "876fced39fe53d553e2c9b38b38661efeb44298902fa73f4752d1f7b3228fd79",
+        "mutation_bundle_sha256": "68222fcfb566c777f14bbf6b521872a22f8fc800fc87a100caa4cbd055a7430a",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_clear_previous_bits/certification.json",
-        "certification_sha256": "c8d21bce0018a80c68875e3c7da7449688a945d9f201c8c90134566082771bae",
+        "certification_sha256": "67c6348074c8feaea1a395544e09dc28a91b2aeb90e4fdd809cada9e3d009189",
         "fault_class": "clear_previous_bits",
-        "mutation_bundle_sha256": "dfd783a06d04c4e609fbd431d3d40d5863ff38a2fad794654b9240e3ac42dc00",
+        "mutation_bundle_sha256": "5631e1dd90e796ed00f7e2ce5c123bd384b66392dc3dc3acacf9a24809fe3eb1",
         "mutation_id": "neg_004_clear_previous_bits",
         "source_catalog_certification_path": "negative_variants/neg_004_clear_previous_bits/certification.json",
         "trigger_condition": "Clears the previous one-hot/progress bits before setting the next bit.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_start_at_one/certification.json",
-        "certification_sha256": "edda5de3c13d66bcc692c65d833139a848c6562b7f29c424ab1e14e45b2d0bb4",
+        "certification_sha256": "faa13541c0fcd5a3560cea50ff16b1eb7343e0b9dab743a0ba4ef618a6af538a",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "87f12a3fff2a4c92ce65085fea4937c5d1ec23d629209f9a54b4ee7452664909",
+        "mutation_bundle_sha256": "0648649f722d6f6d7172ba60213991b93a59f1230735f9d4295f1c121ec354d3",
         "mutation_id": "neg_002_start_at_one",
         "source_catalog_certification_path": "negative_variants/neg_002_start_at_one/certification.json",
         "trigger_condition": "Starts progress at index 1, skipping d0 on the first clock.",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "4fff0eec8c774b726b285b8360d19c87544effdab3ce9c4058371e0bdcbe6988",
+        "certification_sha256": "3b21ac0369ac658516deb83d05d74dc5fc8c79009b0adcd364e989e612da2e07",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "6b5aa372d0cddcd5e070670d4ee1fe315c78acfb0becee98587d34a69fd7ab31",
+        "mutation_bundle_sha256": "caeee0121373b138261cabcccad78b9f3d7143d283a1dd3a92bc19efe5473427",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Onehot Progress Encoder: scales the metric output, preserving the main path while failing measurement checks.",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "8a1a2c441455b26a3af4b886bfadf3070766bd7de57f2d27059ab2f5ee02a1cf",
       "score_deck_sha256": "a156bc41b5ba2baf7f10765ec5dc1fed07ca8d541918ac240ab34de2c7372583",
-      "task_certification_sha256": "eaa46f9ed71ce0be1c4a948c1674d2d2e8bdacf976779bf86962baccb4b4b3fb",
-      "task_record_sha256": "f7abfa3cd9d365c7b0873f9a1c4cc2480c2fbbbbd87dd668d77f5e9ffb0384be"
+      "task_certification_sha256": "e1d1998729fd4fab434fe393e6199e81f16d596a552935d371baaa3139c93752",
+      "task_record_sha256": "1012399fd3f4d0bc106adce7f954d229a00d52057643864ff106beb452eccc55"
     },
     "release_dir": "178-onehot-progress-encoder"
   }

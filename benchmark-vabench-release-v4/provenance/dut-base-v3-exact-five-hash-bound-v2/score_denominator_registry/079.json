@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "1980690f1c8afd8269d6d459436cdb0abbd5fe5c34c6fb30326387b0a4d60412",
+        "certification_sha256": "79d6cdff105c039772117c3f3bb9e3e8205992addbe7b064b9d1160654a1c35a",
         "fault_class": "zero_output_stub",
-        "mutation_bundle_sha256": "dff8fe74765bf7f9b16f0ce85dd6d93dbc1b1dd63e24b12c54beb79855993355",
+        "mutation_bundle_sha256": "4734f2f5a26e52e64f88efe3a42649c94802f34ad918acd7d5894a67b38c40ea",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "stimulus exercises Zero output stub. against the public observable contract",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_guard_width/certification.json",
-        "certification_sha256": "3d4096ad4088784211bf93ff8a6f07693fa6545338b571cf383210d296c7fc56",
+        "certification_sha256": "2c4760a5d472132586f4e8751c7dec5b986da2fcd4c89773527835fa2c2aeb8c",
         "fault_class": "guard_pulse_width_too_wide_for_public_pulse_window",
-        "mutation_bundle_sha256": "dce4361d9550600eeda470a2b4f4ed56f05226757083fb2f2e51cbfe95e23fe5",
+        "mutation_bundle_sha256": "2238e64780a2d82695c4fdeb8a6d5b97243a9b6b4b67ff72f568e1440454ee1d",
         "mutation_id": "neg_004_wrong_guard_width",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_guard_width/certification.json",
         "trigger_condition": "Uses a half-period guard pulse instead of the declared pulse_w window.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_wrap/certification.json",
-        "certification_sha256": "1913b8496c8b501397e4227d522379ed0f2a811fd2230f71dbe1796460c4bd16",
+        "certification_sha256": "97e3ba62f1fd5c4c7780e595b1bb9887bb140516a2c283964dc157cc00e48c39",
         "fault_class": "one_shot_phase_ramp_and_guard_without_periodic_wrap",
-        "mutation_bundle_sha256": "330e4bc1e4cc774a92381c7204c715a1bd7a75b50ac8f186651551783251908f",
+        "mutation_bundle_sha256": "1fa6fc5eeeb4d6616a942048d7f1d6802bbd6c004b33d9ef74aa6468996f4cb3",
         "mutation_id": "neg_002_no_wrap",
         "source_catalog_certification_path": "negative_variants/neg_002_no_wrap/certification.json",
         "trigger_condition": "Generates only the first ramp/guard interval and then clamps instead of wrapping every period.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "b3e23170619f91cb57cb57b0669430d09cf20d4b71f6ad287b64c41e71b65181",
+        "certification_sha256": "2ebae194e9a2a8e5580aab0684c6791905171b3036ae8abc2d5474c18bf8fabb",
         "fault_class": "mirrored_phase_ramp_with_periodic_guard_preserved",
-        "mutation_bundle_sha256": "166010b4a3f6bf4ac4bba3fb063b8b52c40e3bb987148a697ccaec7246a92599",
+        "mutation_bundle_sha256": "35963ea201dac7a7934485515535fb585f9552542c9d8aa894aafb31314cacfb",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Preserves periodic guard pulses but reports a descending phase ramp, breaking rail-relative phase tracking.",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_guard_always_low/certification.json",
-        "certification_sha256": "0fb9ea15d4aef2fc99f85b0d6f3cb424373fa6001ac22eabd39a7e0bc1977de1",
+        "certification_sha256": "514780c8e773e47ae7481dd83d9517046437d7b58dd64dd595d244d5f6a1dde1",
         "fault_class": "keeps_the_phase_ramp_but_never_asserts_the_guard_pulse",
-        "mutation_bundle_sha256": "860b5efa4302e469f3c3591d659d8381446247b5b4d1e333d9b55eaaefb148cb",
+        "mutation_bundle_sha256": "19da4f2811ce23e2747fe6c65db7cd77b627efee180a14864945e7c8a1c352d1",
         "mutation_id": "neg_003_guard_always_low",
         "source_catalog_certification_path": "negative_variants/neg_003_guard_always_low/certification.json",
         "trigger_condition": "stimulus exercises Keeps the phase ramp but never asserts the guard pulse. against the public observable contract",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "24db5590b3897d7c24ae978be2333a5bc137e12e628a262b767c7855b8ccaad7",
       "score_deck_sha256": "1794d4707975e35673c234c8cbe45e284113f7a9a0c2f52e0090064aa14feb7f",
-      "task_certification_sha256": "0a1a9ad90ae9ebfcd7ae05c445b362b224359f3d83569b4da298e65ed8795583",
-      "task_record_sha256": "e351dad3078c2d8fd57469d383353ff56650301ec30d484d51237f5724bcc51f"
+      "task_certification_sha256": "6bd79b5efd8faa139e75a8fc7a52c4e666b971be3179142d1dc599b0f2c94229",
+      "task_record_sha256": "7cd19de541a00e68fb39a1fdcbd93aa652aedb3508ded2eb7c569a4c1354fdd9"
     },
     "release_dir": "079-ramp-step-source"
   }

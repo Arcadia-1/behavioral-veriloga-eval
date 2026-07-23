@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_absolute_rail_outputs/certification.json",
-        "certification_sha256": "429c9426e91a8a5b2dc5bf0e0db9e3f46d397102b0186061601302e7139a1f2c",
+        "certification_sha256": "023455f5ef6d578fd8c8f930e88e042390b911a65901e179fdd866297cbbcd3b",
         "fault_class": "local_rail_reference_omission",
-        "mutation_bundle_sha256": "cd6255f6e97e7539cb236d6a86c76131172710aeca637f2ec0ed2ae51f540973",
+        "mutation_bundle_sha256": "dce6a7ce29d6601ac01c1e17cf4b0eefbdbe38304609706870417da6677aff80",
         "mutation_id": "neg_005_absolute_rail_outputs",
         "source_catalog_certification_path": "negative_variants/neg_005_absolute_rail_outputs/certification.json",
         "trigger_condition": "VSS is nonzero while the comparator drives either complementary output state.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_initial_state_inverted/certification.json",
-        "certification_sha256": "af8d201e25205209824a6135f2af69ad213d0282f2378e65aefcb68804def7de",
+        "certification_sha256": "cd2773e3409e7c087ef5750e5ca65656b404cac047def2078cada43860f9a824",
         "fault_class": "initial_decision_polarity_error",
-        "mutation_bundle_sha256": "562c68ed728aef025639046de3ecedd149e1978680f44f4d7c68d1146f0203e4",
+        "mutation_bundle_sha256": "fad390c23e4af59a9402d81de9fa77d627df2fb8af11451fe22528533468b6cb",
         "mutation_id": "neg_001_initial_state_inverted",
         "source_catalog_certification_path": "negative_variants/neg_001_initial_state_inverted/certification.json",
         "trigger_condition": "The initial differential is below positive vhys over two before any threshold crossing.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_positive_threshold_too_high/certification.json",
-        "certification_sha256": "86c871ed2e8dfdb2dad18a8225b0cc3390932881c019c44558d65694e7ce2abc",
+        "certification_sha256": "71a7bd761c2094d107fa6c5546a1314d9de72d8a1104fa595dcba1d9bcca27a3",
         "fault_class": "positive_threshold_scale_error",
-        "mutation_bundle_sha256": "a3a896368ea5b895e3e8d560d448d764a7d761e9b8f568aeaaba2ac5f95fb97d",
+        "mutation_bundle_sha256": "e5593cbd9554b5fb093c82a89cb4a0870a74d8a85bea380b0b742be98e0a96f3",
         "mutation_id": "neg_002_positive_threshold_too_high",
         "source_catalog_certification_path": "negative_variants/neg_002_positive_threshold_too_high/certification.json",
         "trigger_condition": "The rising differential enters the interval from positive vhys over two to positive vhys.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_negative_threshold_at_zero/certification.json",
-        "certification_sha256": "0c80543b211e2f856a336b6147ae75870c9ec04a3221a6705da130950bad9592",
+        "certification_sha256": "ade7565c103344b5c048923432302538387bb914f11ec96c71044299594337f0",
         "fault_class": "negative_threshold_offset_error",
-        "mutation_bundle_sha256": "e61a7c6d976eb993d9c8cecf14aa70af9b17335419b500f0ea9732331c39459d",
+        "mutation_bundle_sha256": "29a4f477f7e0afa3b4a22e9c2c4a0a141fa7f5f191e165df0005b7b31db475fa",
         "mutation_id": "neg_003_negative_threshold_at_zero",
         "source_catalog_certification_path": "negative_variants/neg_003_negative_threshold_at_zero/certification.json",
         "trigger_condition": "A previously high decision falls through zero but not through negative vhys over two.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_hysteresis_hold/certification.json",
-        "certification_sha256": "9d8141812acf3dce48c27f787ff1663bede19458c91e3b3e7c005c622c31f553",
+        "certification_sha256": "13500b1f31666cee1539cf9f09f8cd5506363e97fc05c711f19f9794a0576166",
         "fault_class": "hysteresis_state_hold_omission",
-        "mutation_bundle_sha256": "4e79c33d9f32e1cd9de26a0f709fe197305067257c528c99916c9233d6432dcf",
+        "mutation_bundle_sha256": "b6cf8879515f07744ae94a3c672800468837655a0259a3079463b715212f06d9",
         "mutation_id": "neg_004_no_hysteresis_hold",
         "source_catalog_certification_path": "negative_variants/neg_004_no_hysteresis_hold/certification.json",
         "trigger_condition": "The differential reverses inside the documented hysteresis band after a legal positive trip.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "1f98d419fa875ebe6d554e38a376ab409e432d9dd1adadb530146f4d8c311c43",
       "score_deck_sha256": "1bebd7be80b220fcb8c6e23657c4c521783070c6a11e0f379d242c5bf2eed46f",
-      "task_certification_sha256": "e0ffb7344b4aaa8048bb1eebf6dabe6329352abce9f5f51f1bb2deabc354bed7",
-      "task_record_sha256": "e44f911309da28dbf3f9f98dbfe1490faf2f7a5cfed561706059ae4bae6fedc3"
+      "task_certification_sha256": "3fbf95811950e16c705e5ac441c041a3459450350371ddfd70d829460579ba21",
+      "task_record_sha256": "0803fa297c00843dcf7b05b88e62a20a0f55492290c9c27a049fcf4ba0bcbee5"
     },
     "release_dir": "029-hysteresis-comparator"
   }

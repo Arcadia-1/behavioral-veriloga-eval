@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_offset/certification.json",
-        "certification_sha256": "5915211da9a292dd0447dd6d21d9149a3adc459949df97cacfdb04e4f6571afc",
+        "certification_sha256": "89acee9aea45d493d3e8d6319eba8c22986d877ffd6b553dfbd237bd6f56a52a",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "ce7f720f3706c8f5d7bf4d98c2759470aca590baecb0714aea5ea0b2aa8c7983",
+        "mutation_bundle_sha256": "ef37baebe8f73135d59bcb99852c88316d211bfb33c576666be7a009d1657043",
         "mutation_id": "neg_004_wrong_offset",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_offset/certification.json",
         "trigger_condition": "Uses zero offset instead of subtracting 0.2.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_abs/certification.json",
-        "certification_sha256": "bb22b154b5b214e79f5a7553ffbd94c39830d7a163e735ae8c2807039d8e834d",
+        "certification_sha256": "3efb8efbad231b7539ef0910c530fd194bcde2bafe030932f3004863d0d51525",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "4c7d906484c510e9f35cc339c40deea74e4309b00b9174096b54935a7c817b80",
+        "mutation_bundle_sha256": "f8a5e0bab2fcadf39e67b356d64a60c8ee2ce470bae25f49c55e37ba44e054c3",
         "mutation_id": "neg_002_no_abs",
         "source_catalog_certification_path": "negative_variants/neg_002_no_abs/certification.json",
         "trigger_condition": "Uses signed adjusted input without absolute value.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "b000e3adbde5f9cd351fb0b3e1c3fe0a8917a70c3dbd972e39ec953dcf98576c",
+        "certification_sha256": "0f6e44e46230c44f5acda994466f13ab21327ae6e970880beb1bd8bb550d7609",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "9b771db8503a3b42d631a155f792142511c999117db23cf4d2ad289bf728461a",
+        "mutation_bundle_sha256": "35eb8d02c741b1a0925d179a3457c31808504552f7f0e73c64b4deafb532399d",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales the logarithmic output too low while preserving the module/interface shape.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_missing_floor/certification.json",
-        "certification_sha256": "bb9d9f7ac565e5a040d25ccccdf62ba5d53116804da0f08c599b31a2ee66bab5",
+        "certification_sha256": "9dc231ed9a30ad675be98e8f36d0225ebc0f061ddfcbab48927ff9fadf16a749",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "8309b4ad493de2167540280fce98f582fcaaadd464f3cfaed7b8bfcaf3fe4ce7",
+        "mutation_bundle_sha256": "aff4a309bd77753526ada360211a53cfa0ea9e1437f3b0fb40369d747435df29",
         "mutation_id": "neg_003_missing_floor",
         "source_catalog_certification_path": "negative_variants/neg_003_missing_floor/certification.json",
         "trigger_condition": "Does not floor the logarithm argument at 0.1.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "f4c47b7dd63277fa17dfd890951e34b47dd76ad4f68b9a552d1a5c98e08668f6",
+        "certification_sha256": "4e296ba2123f5b3e84ffedcb9ded21fe3442baa209c505a61d65c5e4162d7a53",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "e9dd7fb9bfc89952ec285b98ea34a04b502e397426b1f923f38726744ca092a0",
+        "mutation_bundle_sha256": "2a948c9ba934fbdf23ff4cc74d992c0cd5e651b66f05d87ce761690c6b8323b7",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "a4d6463287638a2f29b925661e0dcb3616b5d2f3c85013b77838931f4cc6dc00",
       "score_deck_sha256": "623e70d9aa46227628c89faed86f3b71c0a4f80a72a25742043739df6839aa0f",
-      "task_certification_sha256": "41f41343118d5581bc52ddcac54fff3a698781dab352364a5457ceb41dc1ce4d",
-      "task_record_sha256": "d890f2da1f971b44a87f3da15adc2248df146a74a3311c4a39fc775cd8f9fd09"
+      "task_certification_sha256": "81e1293eeb840750f7266c67eed2212c1215d6fcc67d8a2589cd6357ec03a3a8",
+      "task_record_sha256": "46564dee010307e9b2d17e36f57bc59ceb29339e7e52d0ab4f5a249a66d868c1"
     },
     "release_dir": "135-logarithmic-amplifier"
   }

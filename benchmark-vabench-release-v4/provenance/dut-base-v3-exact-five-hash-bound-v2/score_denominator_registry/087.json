@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "f2103a71f82571798b6809ebb92564dabd023f8c6b65cf3800ad6c3d1838f708",
+        "certification_sha256": "0d1d60fe946507bc41938f66908bc391b9316f8e44f72b2d74116c8fdda76752",
         "fault_class": "threshold_boundary_error",
-        "mutation_bundle_sha256": "cd4223a8ce52c642b1e666f2088ea49af86dc8294759ad5faa521a948f771fd3",
+        "mutation_bundle_sha256": "4f862ce35141174d598123cb71cb3170e0b414f1136d26b22bfb5d3ab5d51fc5",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "boundary stimulus crosses the public threshold conditions for Converter Static Linearity Measurement",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "82740646447e20350518398ab70cf4558b6a103875b65ef2ee55a34bb123ea49",
+        "certification_sha256": "4939a92f23b88d22cbfd080414329f3f839f8eeb5831a64894074affba789a83",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "180f9da57f1cb6a6e60f8ace9bfa6aaa2055d20c98c670083262d45adbf0617a",
+        "mutation_bundle_sha256": "6f31eb14a7091a5226533798e31fa82f0e6ec48899ea840c46a17db887fa57dd",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "nonzero behavioral stimulus requires observable Converter Static Linearity Measurement outputs",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "4d6557cfbce8c7e696f627f36c293b5266ae79765e0d102efae0acdf759f23eb",
+        "certification_sha256": "62dad56695e91396b2f1f1f7240e688636d6e9d41b3dd1e0395671897d105f30",
         "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "d1ca2aca2b402aee6b2007611b7cf8c3d9836611eb3eb3a9d84da9a914435161",
+        "mutation_bundle_sha256": "ff8675596aa21d2785ad50c30202c0fc327c6d9381ce805250b541da8701a755",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "score stimulus observes the public metric/output scaling for Converter Static Linearity Measurement",
@@ -47,9 +47,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "0de19d6fa2823edf5a7598f1cb2f8865eea182e9c6805294fbc20c8e67108080",
+        "certification_sha256": "1a92f7c1b3ba981a93c9f29a317d9fd67ba8c04a2d1be96af0e48160a6dba46d",
         "fault_class": "reset_semantics_error",
-        "mutation_bundle_sha256": "5916452f56b89a73ee84709fb882d6f0ff2b4013426433ae0e82ee10202d88c4",
+        "mutation_bundle_sha256": "43b5a841464fad7910432ef383da5ed01a79fba61a5228cf5e6a674f33040674",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "reset/recovery stimulus exercises Converter Static Linearity Measurement state override behavior",
@@ -60,9 +60,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "8be38a232a37975bdd98f8b24d9112e1a07b0d23728859163bcc8a92af76a3ea",
+        "certification_sha256": "9409256e821802dcd9aca7ff4dda6e294ba467439defdf14d29888d0f1f93793",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "bb3673fcba9e75f7c5422f145b4542d1046ba2600604fc11e86d0c0f5aab5484",
+        "mutation_bundle_sha256": "c14519fdcad75a0c8adcaaa4049f58ac28cbc616fe21c026eb87398a38a0ceb0",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for Converter Static Linearity Measurement",
@@ -76,8 +76,8 @@
     "hashes": {
       "mutation_catalog_sha256": "792f42b0646913a30d397bf4541fb1661b1b21cd6d202efc4f80b128144df9d1",
       "score_deck_sha256": "6d3d703d44464093d4123ba8f323f9622d8bd4c735f1f37101e11778458c7222",
-      "task_certification_sha256": "8c38f77324840b17fc137c8427ac435d0a436407e4b3753fa230f757ec0ee57e",
-      "task_record_sha256": "724d755073e000972aa72cc2575c432f0657ae2c8da6adb13f25a0c403f9f9ca"
+      "task_certification_sha256": "faa1bdfe24e4303628af50555c42e856c8ad5aba9c9098736bfaf838a1d1fb57",
+      "task_record_sha256": "39f56f8f42dcdd3263389a3f807c93ecb1c26174c09fa9b3488feb9ff514d432"
     },
     "release_dir": "087-converter-static-linearity-measurement"
   }

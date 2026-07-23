@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_unity_gain/certification.json",
-        "certification_sha256": "6ab42a7f27f9dae3c5fb65de02ab33670177c0056007fb141aafb508c2309b3e",
+        "certification_sha256": "208bf860c15cc86a50d0a593881dda9f9e215e587da52e0ba7a8e5711684e730",
         "fault_class": "gain_transfer_error",
-        "mutation_bundle_sha256": "0777a11cd56a17552707cdf7db2e603249fc7512b83dee13069aae6a3fa6f952",
+        "mutation_bundle_sha256": "9ebf9f406cdc00de10b75fcfc98a2598ac887c832240c6c8b73ad95b0858fd44",
         "mutation_id": "neg_002_unity_gain",
         "source_catalog_certification_path": "negative_variants/neg_002_unity_gain/certification.json",
         "trigger_condition": "targeted stimulus exercises the violated observable contract for Fixed Gain Amplifier",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "b682ca06dc3ad68c2b12ab0e099ceeb738301f2f9db7c6dd3528a8d440bf7af7",
+        "certification_sha256": "c613cf7f710d606f0332dfbab6ea5c1ef3e91afb9184bf347fdf06805919ce5a",
         "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "6d8704730eba118c3d8ad3b36856306e9a80048ad777976d5d6724c89a232ce2",
+        "mutation_bundle_sha256": "10ebabb5d889bfcb30f9a0eddbeb89e27224bd4415906751f7df46941511bf64",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "score stimulus observes the public metric/output scaling for Fixed Gain Amplifier",
@@ -34,9 +34,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "16ff0c344fc637b8570a4056aedd50356a973e50f17a9790996889e332ccf24f",
+        "certification_sha256": "e63f9b4197d9776842055a5d8c9e0667e575a0c6ecb0d6b4598fd9434bf1f6fc",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "be446627b90a0f78b9e8ac33ca1098fe2710070d3aff8d29ab31277352ac88ae",
+        "mutation_bundle_sha256": "5238971f6281378e1f70adfc3daf27c80d3e48ce4b4c42dae466cf0fbd139352",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "nonzero behavioral stimulus requires observable Fixed Gain Amplifier outputs",
@@ -47,9 +47,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_inverted_polarity/certification.json",
-        "certification_sha256": "1a2c34a4d2e98cab6bb7b31ed941a09348652306e58b4836892016358f977180",
+        "certification_sha256": "76b37bfe0e241dc6403899a7431a4e53cfbc258938500ecace71f619f68fdc8b",
         "fault_class": "polarity_error",
-        "mutation_bundle_sha256": "bdca38ccddbd5e74d47d54d87b49ac74629ee983e501efea95a3911073e3e06c",
+        "mutation_bundle_sha256": "dad827b541cea9e78e63efaa593b3e03fee794d5ba80bd6cb048c0c545c5878c",
         "mutation_id": "neg_003_inverted_polarity",
         "source_catalog_certification_path": "negative_variants/neg_003_inverted_polarity/certification.json",
         "trigger_condition": "targeted stimulus exercises the violated observable contract for Fixed Gain Amplifier",
@@ -60,9 +60,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_ignores_gain_parameter/certification.json",
-        "certification_sha256": "42cf75dd61faae9c3f9649b72db70d2e753a6b90789a2935f503ed6a16d59c83",
+        "certification_sha256": "4df1a6977f34dc5a3db6052fdee1c0a270452e4a8df54e485e47b038e2cbc169",
         "fault_class": "gain_transfer_error",
-        "mutation_bundle_sha256": "5dca21a3dc479d2a5a8bd0aa6892f3759480b9e5fa6745a4194ac8e085b7e959",
+        "mutation_bundle_sha256": "a5a54408faec4e0eb9779b947bb1d0efcef13cca92a96cd026d5fcf72629c4f9",
         "mutation_id": "neg_004_ignores_gain_parameter",
         "source_catalog_certification_path": "negative_variants/neg_004_ignores_gain_parameter/certification.json",
         "trigger_condition": "targeted stimulus exercises the violated observable contract for Fixed Gain Amplifier",
@@ -77,8 +77,8 @@
     "hashes": {
       "mutation_catalog_sha256": "910edd77d2e53c85a7b798d2ceffbe0d33a996aaa8f5bb562e23965e78a153e5",
       "score_deck_sha256": "45aec88b425b22ec48aab672dd8eff5ed8584167325d03ec641d89a87f4fed15",
-      "task_certification_sha256": "a141f25299238b99c4d2ab2b237441c05d2c2aff99242470c8f2c695ba703b84",
-      "task_record_sha256": "213361f6529c51912a14eba7d4c69b788d3590a12321d70faaf9edc7915dc9bf"
+      "task_certification_sha256": "db0a8f8e909c6d1db886ebb77625e4218fa1c7882e3737bebb0cdbdc07c38e4a",
+      "task_record_sha256": "78c1163dc7599b512063201b4a6e514e48328ad5d0b786514caab1769ee8b47f"
     },
     "release_dir": "092-fixed-gain-amplifier"
   }

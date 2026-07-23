@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_target_diff/certification.json",
-        "certification_sha256": "7f483c743d1bd44ee98a13b2809da868dccbd256a1c67b3f78796034cb60edd8",
+        "certification_sha256": "8c5fe841b4ee9f3d2e4bcee7295d7c75b08cac53c54923c4eb42fe9d51584a9a",
         "fault_class": "adaptation_target_error",
-        "mutation_bundle_sha256": "318f72aafecf616a59a242af3842032dd3b400520ee76774f1ac0cebf3ab17c2",
+        "mutation_bundle_sha256": "a703a7f3d68a3423231efb1fdf4df1e175170c0f903375e29b4527bfcb9079a5",
         "mutation_id": "neg_002_wrong_target_diff",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_target_diff/certification.json",
         "trigger_condition": "Uses target difference 32 instead of 64 for gain correction.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "93897323665de1f6a7a2e35268fb55a43076f2bb996258356e2eb8fbf0bc5bfc",
+        "certification_sha256": "08089a5580b2e09584297a995dbbfd3493683d1a529bf1640766ff6238bb67f0",
         "fault_class": "scalar_monitor_scale_error",
-        "mutation_bundle_sha256": "5c0a9b68c8d0170465713b89d50d24ebf2cf01eaf8f82f6470414cd524ff1b6d",
+        "mutation_bundle_sha256": "5fa0b93456411a79a76add681260bd7efdd8e6225f31a727df3fae482e451c92",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Pipe ADC Gain Control Loop: scales the metric output, preserving the main path while failing measurement checks.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_gain_outputs/certification.json",
-        "certification_sha256": "851c593f6d5cad59267456143837da3dd84d6c9b5a4346162cdc189b0e96a6b8",
+        "certification_sha256": "b96ca90afe5a3417eb2ee656fb65dd2fdd2b5553f8f40b5f2e45136797ae2b12",
         "fault_class": "gain_code_rail_error",
-        "mutation_bundle_sha256": "a9ae0d6174a31219b2b93c1255f7ac124b28007250244c708e952a8917082911",
+        "mutation_bundle_sha256": "0a71594223aaf6a5fdb35309121430806b46efd882b119dc8de526eb78e3c18b",
         "mutation_id": "neg_004_half_gain_outputs",
         "source_catalog_certification_path": "negative_variants/neg_004_half_gain_outputs/certification.json",
         "trigger_condition": "Drives gainctrl6 at half logic level.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_gain_update/certification.json",
-        "certification_sha256": "7513f67e67b8616aaacc2345d50c86de49a0aabd88f81a38caf1bd11a83097f5",
+        "certification_sha256": "43503ebaa66e89adff71a133fbcff28e75df1c95d7bc7ae6f4b8f3c9b5d470a2",
         "fault_class": "adaptation_update_disabled",
-        "mutation_bundle_sha256": "ba037233bcc0710e869430a37d5d522ec7e19d326aa16137444b0bedd9ee2005",
+        "mutation_bundle_sha256": "3060d35af5dd6f261360e1593a42264c3f2114ece6c319d11ce00aaabf595b93",
         "mutation_id": "neg_003_no_gain_update",
         "source_catalog_certification_path": "negative_variants/neg_003_no_gain_update/certification.json",
         "trigger_condition": "Leaves gainctrlcode unchanged during closed-loop correction.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "14791eedd78571c2f8a3e84c9bd5f42295f14b1694ff24ca4a0d236fa2445c29",
+        "certification_sha256": "7ced7a819195872851a5aeec77cebf20d35ccac94d5753cffac71f117b17c58f",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "9f0ffe9ac9c125aaeedb44874a5ecd4dfe2b4cb818078b04862e0635b871c4dd",
+        "mutation_bundle_sha256": "8fa1a4f46fc6c0f772ab805cc7236017d74b07d6ba08572c0eb4427a5d4888ef",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "31d55fdd285ae3f4b0781270d42bb796005f6b36154d47bf339fd3b2b4c1dbea",
       "score_deck_sha256": "279907a7a491471c20ac9e7cf96b8aa53c6394748b501561563014a756013fd9",
-      "task_certification_sha256": "abaf2cd6b74c7c45f189b245c44079a97184f40564c2f353d5b0b4e02b841ff7",
-      "task_record_sha256": "5eec8d79b96cad84d1a0bb5d779b0d347ce1e97894b4cc1090f13345e3c49edd"
+      "task_certification_sha256": "39ecfe301fb6f9ca67c1291730cfa2cf69edac62b4d64d998289d5ce166ec65e",
+      "task_record_sha256": "c2998ddb7fa9f80c99d4bfd2b5ff78de340e0a0bb479a01ae3f509d9e812649f"
     },
     "release_dir": "194-pipe-adc-gain-control-loop"
   }

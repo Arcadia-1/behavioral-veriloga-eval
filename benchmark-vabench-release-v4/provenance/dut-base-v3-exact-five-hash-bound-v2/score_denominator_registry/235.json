@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_delayed_reset/certification.json",
-        "certification_sha256": "772821c206670dd417ce8f45151ea5613072f2e40ebd9f9655a254e37ebca553",
+        "certification_sha256": "9a30d5ee2f4107a415b014bf94d30398e0621845495d77178c070d9273571a7e",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "f154c778488051101b5433ab7ad3baa247f751835f79276529d88f00aa245042",
+        "mutation_bundle_sha256": "eb6c2c61c92d26816c40de475f2110fe715dc09489b236429a1468a61a231bfb",
         "mutation_id": "neg_002_no_delayed_reset",
         "source_catalog_certification_path": "negative_variants/neg_002_no_delayed_reset/certification.json",
         "trigger_condition": "Never schedules the delayed reset when both PFD sides have occurred.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "860432ebaeb5e7756a44357874a0b7877615961da9d0a0b5bf8dc383b5a14cd2",
+        "certification_sha256": "14ab2a34125badbd55b34c5e2371a4c9783a400a205944dbde4f8b3af58a647a",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "83452961717ce52f4f898a42475c1f190850a2421f7fad13d94d5e14a4ddeab3",
+        "mutation_bundle_sha256": "64060f11b246b07186bf81ecd6049abe1362eb83906e5cd987caa42cef2249ff",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_active_high_up_output/certification.json",
-        "certification_sha256": "32981d3d9246bf2336fd1289caa6270b138436813d92d2662135f1c9faea3c10",
+        "certification_sha256": "012d8eb932abb7df065deb4527c0496071df27e5a47fe8cd9e142e8246351558",
         "fault_class": "active_high_up_output",
-        "mutation_bundle_sha256": "80de856c2a3b2adb582b9a8f4df7e9be50b550faaff15cdfca2dba5629b757c9",
+        "mutation_bundle_sha256": "7556918045a830fb915046ac2120184ed401d183904777395bcb561dac038df6",
         "mutation_id": "neg_003_active_high_up_output",
         "source_catalog_certification_path": "negative_variants/neg_003_active_high_up_output/certification.json",
         "trigger_condition": "Drives UB active-high instead of active-low.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_zero_reset_delay/certification.json",
-        "certification_sha256": "abda5b8c981a6bbdef30ff0aba21cc214e1fd861363294ee286317aa49212347",
+        "certification_sha256": "137fedca82562ced7d119d9155d25e324f5ea4680e1a77808f5ac3eb1bcb12c8",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "45787e5b8e6e500270bd12b4a2d876fcd63ca79f61bb3973e57cd49482cfe67b",
+        "mutation_bundle_sha256": "7c8969ed36924177ba2238477c2c36bae56cb725e65a1c19fd642a08bc1afbbc",
         "mutation_id": "neg_004_zero_reset_delay",
         "source_catalog_certification_path": "negative_variants/neg_004_zero_reset_delay/certification.json",
         "trigger_condition": "Resets immediately instead of after the 100 ps delay.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "81db06e09c8516b36ce495db859c46f1482d0c901697945604dca0dccf5eeedf",
+        "certification_sha256": "636210e8a47de0545e9349c1fc17573929d0eaa9f17cd6d86efbe8e1124af563",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "2251b7620846fae0595abc2e8bf3417d36ca4b1ab36737fc54bd655a42d26c2a",
+        "mutation_bundle_sha256": "7692c07030d1e48a77d2012b75d341c2c3d565d9eccca9baff8081ec11af8859",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "PFD Timer Reset: scales the metric output, preserving the main path while failing measurement checks.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "cf3fabff215aeb309468d446bf4e472c1ae3eff5e246cc3b31482448d6b9a794",
       "score_deck_sha256": "e9abf5aca50cba198ba444e23e48b12c51b4ac9cf18b3ead3f0b23d8d342001c",
-      "task_certification_sha256": "79e607812d70c3517d358f6da712edc787c19112d752a5a18865253ede2a9e1e",
-      "task_record_sha256": "ab80ad89977360b67bd5cc48681e4c736b66f91d7b609000f028057ce775d486"
+      "task_certification_sha256": "ed591477d723cacc9203a9784a742dc25564eb61ea08cc9591353d40a852bb85",
+      "task_record_sha256": "f5c558cf05d34c8ca0000b36ffa66961bc7df64ca9daa09e9e73d6b4d223c4b8"
     },
     "release_dir": "235-pfd-timer-reset"
   }

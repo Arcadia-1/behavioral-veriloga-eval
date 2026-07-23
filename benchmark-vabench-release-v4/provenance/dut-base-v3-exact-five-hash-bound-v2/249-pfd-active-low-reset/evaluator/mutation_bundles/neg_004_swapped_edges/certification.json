@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_TR_10_PS_FROM_0_INF, P_WHEN_RSTB_IS_BELOW_VTH_CLEAR satisfy the public contract; fault class polarity_or_direction_error is rejected",
-    "observed": "EVAS: pfd_external_reset_level_error=0.9000 checked=1091",
+    "observed": "EVAS: pfd_external_reset_level_error=0.9000 probes=12 raw_checked=1091",
     "violated_property_ids": [
       "P_TR_10_PS_FROM_0_INF",
       "P_WHEN_RSTB_IS_BELOW_VTH_CLEAR"
@@ -21,7 +21,7 @@
     "campaign": "r51-full400",
     "checker_id": "v4_249_pfd_active_low_reset",
     "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "06d620060a5e6a5c573a7832c4f7489a218814a65395a108d5019fde14f09f02",
+    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
     "trace_row_count": 1535
   },
   "family_id": "249",

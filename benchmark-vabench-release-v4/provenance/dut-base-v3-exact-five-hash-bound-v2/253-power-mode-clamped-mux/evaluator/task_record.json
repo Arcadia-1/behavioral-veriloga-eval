@@ -3,7 +3,7 @@
   "checker_task_id": "v4_253_power_mode_clamped_mux",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "d29652dea8088cfa2e25d2e94b20d55b5a59ae317f9cf6a53bcfc7adb4aca7dc",
+    "certification.json": "21281aa1b9cf15447bd6b9afec4a326c515d688d6ff5f0a7d9da528c0a2cbbf7",
     "checker_profile.json": "cbd12506200b7ba9dd9ea5bbdd1596b76e82df29fc96cccb7f612f4973108757",
     "derivation_manifest.json": "a89f57c660fa80b218fbba68b4232b50a20456c5bd3d3111b12b0fba2d9c5ce6",
     "family_spec.json": "9f39e60427cabea339f974b898f49eb91d182d8f8ee6112019ea0cbff0524b45",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "d29652dea8088cfa2e25d2e94b20d55b5a59ae317f9cf6a53bcfc7adb4aca7dc"
+    "sha256": "21281aa1b9cf15447bd6b9afec4a326c515d688d6ff5f0a7d9da528c0a2cbbf7"
   },
   "release_dir": "253-power-mode-clamped-mux",
   "schema_version": "v4-canonical-dut-release-task-v1",

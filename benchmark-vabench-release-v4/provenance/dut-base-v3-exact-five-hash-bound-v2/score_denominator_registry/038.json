@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_inverted_gain_select/certification.json",
-        "certification_sha256": "4d44ca9af153c068dc3f25f8e106c1f996f0de79db70088d46da35e609d1f29e",
+        "certification_sha256": "d7c55d5bdf8de8fefec54b28a33ef1e469aee89751b2685057c4fc989dd153d0",
         "fault_class": "gain_select_polarity_error",
-        "mutation_bundle_sha256": "8a90a5d4b41b3a4c99423857f7c3c79425dab1a22fe1d10f8512f874d0839e55",
+        "mutation_bundle_sha256": "9e81f3ac67ab7bc308cec5c5025b57349bc8b6dc2f91ca8bca234465e0ece5ba",
         "mutation_id": "neg_002_inverted_gain_select",
         "source_catalog_certification_path": "negative_variants/neg_002_inverted_gain_select/certification.json",
         "trigger_condition": "gain_sel changes state before an active rising clock edge",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_clip_metric_stuck_low/certification.json",
-        "certification_sha256": "37cd441d344cabb0b9ee6b6b7b20f02fd096b575b6287d50d39fb55d88b8e73f",
+        "certification_sha256": "de28cbfb22d0f907493e516bb012e149621de077dde2ad2d1f4f75939480618e",
         "fault_class": "clip_metric_omission",
-        "mutation_bundle_sha256": "9b5685ab04b6e25443e2260114b9614af03ec7773fe6e42d3b92dff36a9902ff",
+        "mutation_bundle_sha256": "2b8d592cde22d7b5affde17ff5747500d89672ef6b6bc5e1a6104c034d59eac7",
         "mutation_id": "neg_005_clip_metric_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_005_clip_metric_stuck_low/certification.json",
         "trigger_condition": "the sampled gain and vin produce an unclamped target outside a clamp limit",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_007_output_clamp_bypass/certification.json",
-        "certification_sha256": "765f13a38a22dc3d6fbbcba84f79219d07013f6dcfcbf5f0fb12a4d28a2ee23c",
+        "certification_sha256": "7bff7e30ae7b98f8429668daf1061bde293db5356c72805674328397647632e4",
         "fault_class": "output_clamp_omission",
-        "mutation_bundle_sha256": "88260e1f44b90ecc9fd5dab5dcd816bf9bbca2d98ef683d99d42a311eb30d46b",
+        "mutation_bundle_sha256": "2b3451858260359eaf167cace7278872838d24ff31b065e8546faebb600c630d",
         "mutation_id": "neg_007_output_clamp_bypass",
         "source_catalog_certification_path": "negative_variants/neg_007_output_clamp_bypass/certification.json",
         "trigger_condition": "the sampled gain and vin produce an unclamped target above vmax or below vmin",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_reset_ignored/certification.json",
-        "certification_sha256": "4e0f7650dd9584180c81635994afb0510b22b9260b1802377d9f5236d38cb9b2",
+        "certification_sha256": "f9987a6a984e590b1a5f084a677fc58bd4799a3262c8592ece0b8b47ab2f5cd2",
         "fault_class": "reset_override_omission",
-        "mutation_bundle_sha256": "22fc4426c28862738ad7cf77483f274bf7f7305673e132340fa1ee69cc71aa42",
+        "mutation_bundle_sha256": "a1bf4c0aa11e1007a97335a757c4bbf83ce63ab0559f2ef0e0352de4097f033b",
         "mutation_id": "neg_006_reset_ignored",
         "source_catalog_certification_path": "negative_variants/neg_006_reset_ignored/certification.json",
         "trigger_condition": "rst is active during a clock crossing or between sampled gain updates",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_fixed_unity_gain/certification.json",
-        "certification_sha256": "b69aa57d7369d9173a9e1037f198d8124d52416aa1360dd301c543a5e745e28a",
+        "certification_sha256": "32bfd10b0ceca5631d64db29d40d1b36f77b5660c66c287828b4840ec1f6e40b",
         "fault_class": "gain_state_stuck_unity",
-        "mutation_bundle_sha256": "8644fd3c3009016862bd008c6e834161ee8a4c893292eda9ebb29396838fce4f",
+        "mutation_bundle_sha256": "eb37621230e466779eb22fedda2697b4633099356ce97e9194db5ab9a41c597f",
         "mutation_id": "neg_003_fixed_unity_gain",
         "source_catalog_certification_path": "negative_variants/neg_003_fixed_unity_gain/certification.json",
         "trigger_condition": "gain_sel requests either configured gain after reset has deasserted",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "62ac1f400c3882f7916c05d3fbaba9600452e53dd41b41dec46e2bf10518f1b2",
       "score_deck_sha256": "e33ca664e43cb945f0af1e5f21d66fd5f10127417f2d3a945739e8ae7a9c8622",
-      "task_certification_sha256": "0a873273b70906741051a94282dc4882cd58d35ff97978c3b493c1c127ed15cd",
-      "task_record_sha256": "96faff91ddd7cc62058da3e033b5fcb2281d0f827b21f79d08f78b0138ef72f4"
+      "task_certification_sha256": "5b35f090a1b689d5af14ef7303fd7611fbeccff8ab0d738134d9c93cc4db8456",
+      "task_record_sha256": "b745451cabb532bfb1c0d443256e0a5fc6c97b9bd0c7baad80fee2809f80f9d3"
     },
     "release_dir": "038-programmable-gain-amplifier"
   }

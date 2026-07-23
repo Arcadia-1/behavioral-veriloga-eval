@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "c61c731aa7d85521865b85e597fc337d0776f6cb03bca66afa059a475f14df0a",
+        "certification_sha256": "3cb953a4c6d15ef6b85046bb2d96c63c8eaa64ee1d0ebddb4ff70d443c72df32",
         "fault_class": "zero_output_stub",
-        "mutation_bundle_sha256": "af25b42a188390908b301925abc6287d94fa57cd7ffd4dc653d9a12981114058",
+        "mutation_bundle_sha256": "15daef8f7efee8a41b19e96b9625879561d7a0c716acd3b1d333eaf377c18fdb",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "stimulus exercises Zero output stub. against the public observable contract",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_frequency/certification.json",
-        "certification_sha256": "e1d0de36bafcb2f8121e7ddcfd3013712842149080c4812db039d153bbceb461",
+        "certification_sha256": "c748c0c7e71bc92b473484d036cd0fb1ede46f724f50de0caac18076a1ed881f",
         "fault_class": "uses_the_wrong_third_tone_frequency",
-        "mutation_bundle_sha256": "0dd32e4fb484895906e29b2c61fcc46083f0c24dabd3df5f92473d37406f18d7",
+        "mutation_bundle_sha256": "430660084dd9e98faef52f516e433fe29a0e23a6bd8048c697d81df3a69163c3",
         "mutation_id": "neg_003_wrong_frequency",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_frequency/certification.json",
         "trigger_condition": "stimulus exercises Uses the wrong third-tone frequency. against the public observable contract",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_amplitude/certification.json",
-        "certification_sha256": "f933c9dae2b37ff4cf2da4ed1d2043467ee448ad14f20f7b815ffa85497652d2",
+        "certification_sha256": "74d55845f970bb55c189052fb3a26c4f6fad1e6adcc245c29c671b8f790317ba",
         "fault_class": "scales_every_tone_amplitude_by_one_half",
-        "mutation_bundle_sha256": "9a7e5e8b9f05f41020659148024483a43912b15deba7b8d81afd384c907285fc",
+        "mutation_bundle_sha256": "a6588665ce08653d470b5c66eace1986323a3866319a4e4c3a333e3e7298f6e4",
         "mutation_id": "neg_004_half_amplitude",
         "source_catalog_certification_path": "negative_variants/neg_004_half_amplitude/certification.json",
         "trigger_condition": "stimulus exercises Scales every tone amplitude by one half. against the public observable contract",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "895b65e25262bf4fd34dacace5aca2c400beb62fbf468288d7f7c189d10d34ad",
+        "certification_sha256": "c62d6511e4334a4929f33a54338084967c5dc38a00f2a84d298d96b285f86d5b",
         "fault_class": "sine_periodic_voltage_source_scales_the_metric_output_preserving_the_main_path_w",
-        "mutation_bundle_sha256": "a3df738420d2fd0f7454aeb2d81a06de0e4eedffa67a0c955f5c9b00c9949597",
+        "mutation_bundle_sha256": "d4cf2a4d315b9bc7ce6cf320340d886bee6611f4f052be336fcf9aa95a578432",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "stimulus exercises Sine Periodic Voltage Source: scales the metric output, preserving the main path while failing measurement checks. against the public observable contract",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_missing_third_tone/certification.json",
-        "certification_sha256": "ff356eae77be0c43342b7fc2c896cbcf0cae23988e109b84efe98d817b51570c",
+        "certification_sha256": "6e7d9f6f7a77a15eb7c31563ece3800d1c9a2005ad99a6079e677b8f2e43f5a4",
         "fault_class": "omits_the_f3_a3_tone_from_the_public_three_tone_source",
-        "mutation_bundle_sha256": "47887aaf3a67c47891661683f322d860cd6a892643f5eb32ccb946d8eee6321f",
+        "mutation_bundle_sha256": "92022db2a817bfce2d8bda9be4a31380a610d7d596ae974ba8e1e8c85eb14b08",
         "mutation_id": "neg_002_missing_third_tone",
         "source_catalog_certification_path": "negative_variants/neg_002_missing_third_tone/certification.json",
         "trigger_condition": "stimulus exercises Omits the f3/a3 tone from the public three-tone source. against the public observable contract",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "1d26dacd9f4a0a0e07d739baa347c66fffb18c687f1cec6be8032895343a5934",
       "score_deck_sha256": "5e99ef8f8a25ad17ef47b4b479757e8d2818f202241650e5d431701a09ee6713",
-      "task_certification_sha256": "acc6ad4795e52d075b029d02f86c6e3cf84fa90a867725b18525b91cfb1c262d",
-      "task_record_sha256": "dbc412bd3ba03374944eafedf6590b019c0d1e336af24815a8d65ea95bc8200c"
+      "task_certification_sha256": "6214574bdd4b4acc5bc630aa4fc2510ef627b196334977272f0a80bb551a3dfd",
+      "task_record_sha256": "65fa3a18b60e78cdc25aa32a63e89958ed9ad1b439fca298a4cab70163161fb9"
     },
     "release_dir": "080-sine-periodic-voltage-source"
   }

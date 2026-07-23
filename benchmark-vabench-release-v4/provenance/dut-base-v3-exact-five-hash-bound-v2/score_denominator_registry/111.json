@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "09ada14c01ae5935f437b9b23d8cf8d882afcf00e5b1c9acf74acb46c37f64ea",
+        "certification_sha256": "dba0713c8faa3a781e5c4d1142903afae64fb6f2b9f835bcabe2fab88afc4c1c",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "606392800675dbb7dab5bc725c04b47b43e8af4ec3577784d54377c3bcc1e898",
+        "mutation_bundle_sha256": "1e38cc5373a2612e5e9ca3708fef97b7bdd49b290c8ca0a2bcc2ee0512a65e8a",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Leaves all measurement outputs at zero.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_no_valid/certification.json",
-        "certification_sha256": "0e5b5fa1a50ede1f7ee1bbed5f850d74169f7f3159057fac537cf58beb9c6ecf",
+        "certification_sha256": "3b3ccf8e1ac9a306b85c88358e4f6529e1d92f48fe16173238bb7c34f60b99cb",
         "fault_class": "fault_005_no_valid",
-        "mutation_bundle_sha256": "5cac00bea3cdf2d68d8108331c10663cb37e84f72fcf2d5803abad6e5b17c093",
+        "mutation_bundle_sha256": "8f670d0b90d5ac9d6298c72a1d5918647d25edd1a5d541a928a07d230b4f4b51",
         "mutation_id": "neg_005_no_valid",
         "source_catalog_certification_path": "negative_variants/neg_005_no_valid/certification.json",
         "trigger_condition": "Captures trip voltages but never asserts valid.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_width_sign/certification.json",
-        "certification_sha256": "8778bfeb71e3979e9b138534929073fc88dca5d64d4dcfacf2d41a30ce2b4151",
+        "certification_sha256": "61ef4f71c2d26339589c14521c93ad41f591091e3805696e164e919c621f5160",
         "fault_class": "fault_003_wrong_width_sign",
-        "mutation_bundle_sha256": "618dea3613e1d326c869ca6dafa9990c79fe8e81b2b1b74a7774aa61535898f4",
+        "mutation_bundle_sha256": "b3c75a6f589dda3b625b1c89f89ae5bc9e0a7ed7b4303f0a6a61fef0e14e532d",
         "mutation_id": "neg_003_wrong_width_sign",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_width_sign/certification.json",
         "trigger_condition": "Computes hysteresis width with the wrong sign.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_capture_output/certification.json",
-        "certification_sha256": "3816fecda633cf3c166847494c2a476bd158a3ba72bea3640f853ec175599a32",
+        "certification_sha256": "35fee80b63e1b10ccfbca39576ec87680a1168e8133cc04bc8089e64246a56a5",
         "fault_class": "fault_004_capture_output",
-        "mutation_bundle_sha256": "c7d5a6959868aff8a70f38e406a34e20761fe5cb9b4040fe4826230283d9d123",
+        "mutation_bundle_sha256": "3c7b12b198067f2a119115225d4cd6431779478acdd9971df9c5073c07c17999",
         "mutation_id": "neg_004_capture_output",
         "source_catalog_certification_path": "negative_variants/neg_004_capture_output/certification.json",
         "trigger_condition": "Captures comparator output rail levels instead of the input voltage at each trip event.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_swap_edges/certification.json",
-        "certification_sha256": "59baa7adfe6f07af82fe433e71c97ef6b76b0fdfea2f134e93b3356b225fc2a2",
+        "certification_sha256": "676cff4158e89b1b3ff82b67652a9aeba0cf12dfa97294b2d0a1a88ed9a58267",
         "fault_class": "fault_002_swap_edges",
-        "mutation_bundle_sha256": "2e2b4418c23a9bdf7ebfb9f371befaf6b3545c22a88408aa949f76f5456b3055",
+        "mutation_bundle_sha256": "fcd830dbedc00be3d9d93f3faf74e68f3f1a23c03900a1b64f41f3d1f62a5c5b",
         "mutation_id": "neg_002_swap_edges",
         "source_catalog_certification_path": "negative_variants/neg_002_swap_edges/certification.json",
         "trigger_condition": "Swaps the rising and falling trip captures.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "aa6e53958e471bc569741accc3cca13ffb9aef95d5d9a30b4b630cab458bc96c",
       "score_deck_sha256": "7d9ab99a5b0fbb2eae137a8607f59f15403b5c1b28a06382af419a1e67a1ae80",
-      "task_certification_sha256": "81f94dc6a6d33937127a0507a617a58cf1b83df4c73b58c058932031b945d288",
-      "task_record_sha256": "167c48f7335ddcc2db7a4972f7341cdfa23d7942b88458e8d701fc72b9f775b2"
+      "task_certification_sha256": "901855fa70aabc28dff4f3098925f4d92db05391c2f00c6af98e0fba2a7fa282",
+      "task_record_sha256": "e8aaf068c11d1e16c6f5eed0b767f699a0db0074f17181b60a1d2be60f44341d"
     },
     "release_dir": "111-hysteresis-trip-characterizer"
   }

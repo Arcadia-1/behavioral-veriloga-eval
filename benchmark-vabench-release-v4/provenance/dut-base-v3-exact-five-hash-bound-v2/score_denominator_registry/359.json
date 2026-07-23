@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_reports_low_fraction/certification.json",
-        "certification_sha256": "7b7ab79c63940332cf1a8a126a87e59a8ad50191783900089c70f6ca276702fc",
+        "certification_sha256": "a22c84a2d575b0ebc823e8a05ae026eb4440059f5c930079104d1f7646a6a134",
         "fault_class": "metric_error",
-        "mutation_bundle_sha256": "47e335fb4a45aab649330b7d811176fa77fbbb83a88131fbfb4d590ed800b8b6",
+        "mutation_bundle_sha256": "1bcf69bf3549fb3cfe817b74f7fe5757765238923cd88d2f283755f3cde6e426",
         "mutation_id": "neg_001_reports_low_fraction",
         "source_catalog_certification_path": "negative_variants/neg_001_reports_low_fraction/certification.json",
         "trigger_condition": "a complete asymmetric input cycle occurs",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_falling_edge_not_delayed/certification.json",
-        "certification_sha256": "94a25607d0438c9eee1bfe4518f4d99e19481331cc246cbf9868fba0eedbf1a6",
+        "certification_sha256": "b99f7d09e83b3de9257f2d35e59eb09daa24ac634eda57cd915b63d0a2f633de",
         "fault_class": "timing_error",
-        "mutation_bundle_sha256": "c6b1277fb882ecd560dcdd03761651e19a81f7b3207856c46a0b4974f85c15cc",
+        "mutation_bundle_sha256": "e230b7f94570b6ad787a6308f774d91be6cccdfca040a940fb8c3027b0f34df6",
         "mutation_id": "neg_003_falling_edge_not_delayed",
         "source_catalog_certification_path": "negative_variants/neg_003_falling_edge_not_delayed/certification.json",
         "trigger_condition": "falling input edge occurs with nonzero trim",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_lock_asserts_early/certification.json",
-        "certification_sha256": "674c15eb218c703bab90083cbcada500ddb1ba2daf779f41cd0be35654060003",
+        "certification_sha256": "20ecabb517d116c537671978324ed94c5a4a588d741d797b11e618279663f965",
         "fault_class": "wrong_qualification",
-        "mutation_bundle_sha256": "9e403a9b6b9bf36d882347d03176aecf8bd94d5d8d5a9ef7bcba9d12e6024a20",
+        "mutation_bundle_sha256": "0a3cc743245bc4fe5b1df589827b727d07faf7068488363bac6f02e7eb93404c",
         "mutation_id": "neg_004_lock_asserts_early",
         "source_catalog_certification_path": "negative_variants/neg_004_lock_asserts_early/certification.json",
         "trigger_condition": "one in-window cycle completes",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_reset_trim_fullscale/certification.json",
-        "certification_sha256": "cc4764db415483ff50766d17a51be89ef3f67c63003f9e03bb273b108224bd35",
+        "certification_sha256": "fda11bacba09de7a0281150f55c3c4125a0879477ec6c61e248f3a0ae095c957",
         "fault_class": "missing_reset",
-        "mutation_bundle_sha256": "cee31a8760c9cb840da3bdd5a198c9456a12cc0be5f1755df98929d1bfee9c2d",
+        "mutation_bundle_sha256": "aba6c90da91d7baaddd7238149f113ee47dac58e88e1ae408b0fb07e111e2e93",
         "mutation_id": "neg_005_reset_trim_fullscale",
         "source_catalog_certification_path": "negative_variants/neg_005_reset_trim_fullscale/certification.json",
         "trigger_condition": "reset or disable is asserted",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_trim_direction_reversed/certification.json",
-        "certification_sha256": "1f978513d6c6829d88b4aba2f96d06fa69a79e92ddc127713105bff760d599f9",
+        "certification_sha256": "a72d75427438b849e636fe231b3895cc38ee1dea25077dfa27e6dc52b1e2f3a4",
         "fault_class": "wrong_polarity",
-        "mutation_bundle_sha256": "7ed44ba3557d44661ad332e34351e2fd08f1f9c33387974de20d369a5d6fc658",
+        "mutation_bundle_sha256": "dfae76803addcdfda4cff0e8c89087132b11db555f95e28852b0f7b3f195bd1b",
         "mutation_id": "neg_002_trim_direction_reversed",
         "source_catalog_certification_path": "negative_variants/neg_002_trim_direction_reversed/certification.json",
         "trigger_condition": "measured duty is below target",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "28cf247b36cff9d5f08db1c2f5650bab9a7d1ee2b66bb2c25adb36db822dedcb",
       "score_deck_sha256": "2ce576096f164dde90a930deccae28e455b0688b581d5a241966798e7f173e96",
-      "task_certification_sha256": "012262b3f718d702e0ef9496f93a7571bf95fdd0c91cf175d53adcf68865995e",
-      "task_record_sha256": "a964c3f5f5260ea16927dd2719653409a714f4ef77969863b3d620d5e30a5b10"
+      "task_certification_sha256": "36c9963eab76cc448890feaf34b0b6a8dafcbb0c08cb1a95471e6b68e7679749",
+      "task_record_sha256": "64b89d733fbab54e441a58811939df4373632e95c6dd03129d65caa9b5c4d45a"
     },
     "release_dir": "359-duty-cycle-corrector"
   }

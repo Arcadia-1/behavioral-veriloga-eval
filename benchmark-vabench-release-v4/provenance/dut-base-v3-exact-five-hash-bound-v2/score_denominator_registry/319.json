@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_unary_transfer_scale_wrong/certification.json",
-        "certification_sha256": "9c93d7b6563961aa4c4c50e09f77a02fb55470fc40c4b3dcd6f8748064bc08ad",
+        "certification_sha256": "29b5d710bd064901ae7c6fe30c018bb7c86b4357bd29e192121d2524aa472360",
         "fault_class": "unary_transfer_scale_wrong",
-        "mutation_bundle_sha256": "0a63a7581acbaa24575a3b4a6f58e55dbdf182974999188caa77ae6f41be760c",
+        "mutation_bundle_sha256": "eabaaf1ce452abfd95dbb67139e370a56978a35dc9e7c2dc64c1c696115b7394",
         "mutation_id": "neg_001_unary_transfer_scale_wrong",
         "source_catalog_certification_path": "negative_variants/neg_001_unary_transfer_scale_wrong/certification.json",
         "trigger_condition": "unary_transfer_scale_wrong",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_glitch_metric_missing/certification.json",
-        "certification_sha256": "9618b65429d310579ed3b82d45c8e40b3b42158f0ba7c165f2e8778141e496ca",
+        "certification_sha256": "fde1aca1fbb351be62fa8403412253bfa4e5bc0315ea2cd5da7640d35ccfb5d4",
         "fault_class": "glitch_metric_missing",
-        "mutation_bundle_sha256": "70ad88787f57789a8a40d0c0015813115a135ab361d86d4ea310bb2c512326d4",
+        "mutation_bundle_sha256": "f68cc12bc6b2e3fe1498acc6ab1db7a5e04cb88b92f88871e02f0d9116992792",
         "mutation_id": "neg_002_glitch_metric_missing",
         "source_catalog_certification_path": "negative_variants/neg_002_glitch_metric_missing/certification.json",
         "trigger_condition": "glitch_metric_missing",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_reset_disable_clear_missing/certification.json",
-        "certification_sha256": "7cad1ee460042723f56eceb35833db076ad2071c58bfd7d9dfbac6b5e98d03c0",
+        "certification_sha256": "1f60deeab9a3ef2d550d96692c16559f2757ae19a5bd3bcbbb47c4d662ac3859",
         "fault_class": "reset_disable_clear_missing",
-        "mutation_bundle_sha256": "1ed3db2afd456b88f29cbc84ad0624ad55344fc2db9bfb86e9bda4f869b30387",
+        "mutation_bundle_sha256": "7517619622efc557d24de0ca350991a5f19e310f82dd4c5d4398ec385a35e982",
         "mutation_id": "neg_003_reset_disable_clear_missing",
         "source_catalog_certification_path": "negative_variants/neg_003_reset_disable_clear_missing/certification.json",
         "trigger_condition": "reset_disable_clear_missing",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_valid_flag_missing/certification.json",
-        "certification_sha256": "e6253a3b4af2238715ffc4f6bf7bd8820c3e64c41c0e74d17310035e2e2b7ccf",
+        "certification_sha256": "0bec781a604e5a4106b0086c536f3dcfb40f275394c7cf6e38e58e623f005a22",
         "fault_class": "valid_flag_missing",
-        "mutation_bundle_sha256": "21675437e133047070e62d870f9518473b04c0327d9546d833a2dd638b615b38",
+        "mutation_bundle_sha256": "76858b119a285144ff431e9357251c4a99451bf6431b02b325e65a1fe78fa342",
         "mutation_id": "neg_004_valid_flag_missing",
         "source_catalog_certification_path": "negative_variants/neg_004_valid_flag_missing/certification.json",
         "trigger_condition": "valid_flag_missing",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_code_mapping_reversed/certification.json",
-        "certification_sha256": "9b93a644cbd13a7bb796ddff84433aa145dfc80506f994f6d152db88127a95ff",
+        "certification_sha256": "a0da6c7033833c8baf7e110af137619daf1a5874a13e3c4e98ce8ddfce5a87e4",
         "fault_class": "code_mapping_reversed",
-        "mutation_bundle_sha256": "4f81871b19b3cf17566ceaddf5d266986bb19a819a1d5a65c544023db1291944",
+        "mutation_bundle_sha256": "b1d4aaed7441b3002838def9e6c017554b35bba4c366113970b6e169a9db96b2",
         "mutation_id": "neg_005_code_mapping_reversed",
         "source_catalog_certification_path": "negative_variants/neg_005_code_mapping_reversed/certification.json",
         "trigger_condition": "code_mapping_reversed",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "400218ad054855993c0180a181324f874fe424a1c2818d5a43ce2cc4ee1d09db",
       "score_deck_sha256": "7d5ec9f790ca71ed36f6bcb89f6befb5b20f24195117cfd4f5a9c3652e210934",
-      "task_certification_sha256": "d36333f892198c8117f51dd4c7d96082df639112dfd42062bcdacaee97006dc2",
-      "task_record_sha256": "6ca2a8f52649b00ffbd2eb88fc7326d11b217c4835b6706cc458ada18fac234d"
+      "task_certification_sha256": "c4b93554646e5930fd2b09b3d7ba0ed8aa639ed0516d06a01d58e4bd62c3c4e2",
+      "task_record_sha256": "288746bc1264e1070e3d5fc76e086953f7b85c1ac101fc30000c9359035272b8"
     },
     "release_dir": "319-unary-dac-glitch-energy-metric"
   }

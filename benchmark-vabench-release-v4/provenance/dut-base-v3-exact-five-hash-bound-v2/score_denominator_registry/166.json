@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_msb_step/certification.json",
-        "certification_sha256": "3eab82ef5ed9986b17080723b4fb3958e5c19222f1241c843ded4fb09400f377",
+        "certification_sha256": "152ba042c57a7bf1e2a3b4ed4ee450f51ba2b4fd9afb3af999b70d66bd88eeef",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "6b5f355b5793fc490436ec1a0a95751cbdc411c26ce088320faf217ca05ee914",
+        "mutation_bundle_sha256": "ef8301be85f34b7c95ef70ea84bc96cb500165f6f5642364d33368c7eff53952",
         "mutation_id": "neg_002_wrong_msb_step",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_msb_step/certification.json",
         "trigger_condition": "Applies a quarter-reference dctrl3 step instead of the required half-reference step.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_sample_on_rising_clock/certification.json",
-        "certification_sha256": "f26fe52e224e17a71b44f520ae3d07da2241efa829de490442d9f4bee44378fd",
+        "certification_sha256": "6f75b8854e3b802eee1ef6ec2ac76c06f291441b7ebeee642dfe7719682ad3ab",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "958a3049e976e9ba1021dd21a8f55ea52cd40168de3791aea0d55b6494d97252",
+        "mutation_bundle_sha256": "5b30d2c0d59e6679e8181f58df1fcf4453dd1f832ed4b27a16338b641416f8ce",
         "mutation_id": "neg_004_sample_on_rising_clock",
         "source_catalog_certification_path": "negative_variants/neg_004_sample_on_rising_clock/certification.json",
         "trigger_condition": "Omits the dctrl1 one-eighth residue increment.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "1f801e2038582291b9845296b8c54bab1a4fea19931aadfe3a713a3dc68c8424",
+        "certification_sha256": "9494c86fdf6a653b30c8d50e7c18a2893c63f1ce6f146f4658bf15a0dac69dba",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "03ba3b44ed5d6451f60980928c13500b76c48d0c88b5a39c90091f23248a5377",
+        "mutation_bundle_sha256": "6e02c6a3aaae35841c215d42635d51db4bb079bc5a9dcfce18cadccfa09d0833",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "L2 CDAC 4b Residue: scales the metric output, preserving the main path while failing measurement checks.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_subtract_control_steps/certification.json",
-        "certification_sha256": "d689e453afc9702c93479302467aa104e0ce34881cd5680ebe1144b7bac2ef0a",
+        "certification_sha256": "328e9532ea21fa29f8047005e8b6e18a34d51757f3f6001b8e509c739d41a3c5",
         "fault_class": "subtract_control_steps",
-        "mutation_bundle_sha256": "606628f4eb46bed314c7757e26ad503bb377ea1ecfae6897a8e09165f161b758",
+        "mutation_bundle_sha256": "ed2499f8d732f58ef1a736cbff5023f8404e294fd2b232368082dfeb6e02ce0d",
         "mutation_id": "neg_003_subtract_control_steps",
         "source_catalog_certification_path": "negative_variants/neg_003_subtract_control_steps/certification.json",
         "trigger_condition": "Subtracts the dctrl2 control step instead of adding it to the residue.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "86b151c65ffbdca32c67d643cbd86e86c9cb27e63275483f1e86249a2e17b28c",
+        "certification_sha256": "fa4973804bfcab1910c4adaa1385aafd4aeb1df7f7d3aece2aff349048570700",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "5de872d40c3bacf42d2e1328c35304b6e3e6313870787cb21a2aec2e28b77a19",
+        "mutation_bundle_sha256": "21c06f7814a6cd563812f37b9763c1ef6eb7cdb606540edc3e31abcda66b24ad",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "28490aa9d837dfbac7f92280f308316b9da35dd13a3ebc515d188cb079c831b7",
       "score_deck_sha256": "38ad8708f07cb46f03ae0860031d15bc5fd2a0116797bcc944f0ce70d6401105",
-      "task_certification_sha256": "313164e234d11efe3683bf97b8dcff4a0bd3883b6c044fce130b63e1daf85a20",
-      "task_record_sha256": "9e2fda27d01bee222992a6794268723e7dcf4ddbe081580a22e292e987f08ebc"
+      "task_certification_sha256": "7bac81c2b5884dc6ab38dbe7ad746b67079595144cbc05f9d643bdadea5d822c",
+      "task_record_sha256": "a453400633d887a8ffdb7b254101845111a477e82915a3db278a4e7e3e9ad8b5"
     },
     "release_dir": "166-l2-cdac-4b-residue"
   }

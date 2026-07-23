@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_half_offset/certification.json",
-        "certification_sha256": "6ad3ff20493f799e8e5ac2e24c99be61591b3d65575c32530b28715be94c0a48",
+        "certification_sha256": "50955505ae3eb5b14d2d96fcd81ccc6a6588fdb7d8114308ab93ace293a95fb6",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "27eb69dde7ee6e4d75b0d0627d8d91474e4b81c3d69c4eeea2effee70966f5eb",
+        "mutation_bundle_sha256": "bed5d0bc8aad3554350157bf196a98c661a2dff5056891244ef958a06923f6b1",
         "mutation_id": "neg_003_half_offset",
         "source_catalog_certification_path": "negative_variants/neg_003_half_offset/certification.json",
         "trigger_condition": "Uses -0.5*vref offset instead of -vref.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_half_scale/certification.json",
-        "certification_sha256": "1ad874f97af9879de80e47e9500021f5e32ebfa8c645c164dce6f177f7884d00",
+        "certification_sha256": "a7c943b0396b3f8314fac970401842b7404065146b4fcaeb969d0f659615b4c0",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "e8de250e17555333a033436b2954814b23c33d7fcc92608c1471fedba1d78728",
+        "mutation_bundle_sha256": "48e399a1e5fde43bf99742979c459196094eb8c66230904d21dbb5634a4ad65e",
         "mutation_id": "neg_002_half_scale",
         "source_catalog_certification_path": "negative_variants/neg_002_half_scale/certification.json",
         "trigger_condition": "Scales the weighted output by 0.5, preserving syntax but violating every nonzero level.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reversed_endpoint_weights/certification.json",
-        "certification_sha256": "217d5fbf181e4771f9b1b6401e7b88d8d55b3eb9fb51be38bf9f7b2f9e8bbb3e",
+        "certification_sha256": "bcc153e6040dd57a249d5ae07d994d83dc17946cbcab1a8dab58adfc386d3382",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "4924bdbe789fb82e7812e40b901c30b6eec12d1a8dfb667ac00dc1f789eaf46e",
+        "mutation_bundle_sha256": "395a9740fa27384407c2aa0328727bcc881350a013997de0385d7174ed6026d2",
         "mutation_id": "neg_004_reversed_endpoint_weights",
         "source_catalog_certification_path": "negative_variants/neg_004_reversed_endpoint_weights/certification.json",
         "trigger_condition": "Swaps D7 and D0 weights.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "862aa361ad76c90843a898d20d76525f60202eded6a4702b19fb536ff9ba2518",
+        "certification_sha256": "173ee32e22bb51ecf6f69d640a167049aa62afdaefc194dfc3bbefa2b75bdde7",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "36226b108a7b4fc60517751c7d1a64bc8ef0dc415e903261f7e88a0a2b444201",
+        "mutation_bundle_sha256": "47377f2564cda85b6365325043bd3b2faeeb2e73e3892d11e2343c502e1896d8",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "LT Read SAR7B Weighted: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "4120eef44c720b9e96ad6bb23e776bde72044a277ee2b2e3b1312f74c5458f02",
+        "certification_sha256": "f29bfdf401a0258046639ca47c8a7c3fe4103259813da2103632b6f8d945e060",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "ba995b6c98405e04082a5c09a17aa068693b02adbcd005d092f37dd064378992",
+        "mutation_bundle_sha256": "5c80263d3cdb131434a70f2c159477ea94c2b8318b0b2427dde6f77879e234b2",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "830c7fa05bf5e9092aabef4018d71a7b9f081d6ba60428725ffe3ad9c437f82e",
       "score_deck_sha256": "98c657a4737d881ab9e42fe97f974cf166a60d95de36e8e78552790c55d30cf2",
-      "task_certification_sha256": "9130d20840bec7307aab54c97e3e3d77321ddcbae172c4b809c101d2bcbf80c7",
-      "task_record_sha256": "4cd97c6c566c80277e67cd016d5cc717e3c9a3e2e4222cfe96d5a35e1b21293e"
+      "task_certification_sha256": "295f0582cbb0497e365cd0bcb8775243fc4c634f1d23641c857350fe7a3c7ece",
+      "task_record_sha256": "25cf7e542e3303a191c3051020da144ca46232e2b7b5a4bf55aa0e9eb44bff84"
     },
     "release_dir": "215-lt-read-sar7b-weighted"
   }

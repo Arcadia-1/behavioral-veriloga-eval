@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_dout_mapping/certification.json",
-        "certification_sha256": "ccdb1de0032f3a8d547cb3a2aa203f9075e47c91cdd7387c47c43be6d53bba18",
+        "certification_sha256": "78a9caef772a699d022e6bf219026ca008fea3e768e97755f979e56297838607",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "d50f8ff47890485b678fa21275169ade3a854196283fd6b2483c7f74757a7509",
+        "mutation_bundle_sha256": "b506b6665ee102e355ae1d7bd1a4ca4624968a18496f65249520486bb4881de8",
         "mutation_id": "neg_004_wrong_dout_mapping",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_dout_mapping/certification.json",
         "trigger_condition": "Maps the previous p state to dout in the wrong bit order.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_test_override/certification.json",
-        "certification_sha256": "d02b28b2b425bade79dcc886714f919c2377227799b60fa218789db92b87fc42",
+        "certification_sha256": "89aba326e8b8b8b9cf5219ed5a161f9601d534f6cfb6d2a3c9ea1c421e1b5127",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "066c771156de59e1c6156ca8bc15c357adf305b704a5c3d484e248911ac9d02f",
+        "mutation_bundle_sha256": "858f1883b4bc370c3dc553964ed218b4d3570be4b2a92a613aeac622e64b6e63",
         "mutation_id": "neg_003_no_test_override",
         "source_catalog_certification_path": "negative_variants/neg_003_no_test_override/certification.json",
         "trigger_condition": "Drives the internal conversion clock output at half amplitude.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "d748573d9c178218d9b36f9183d29b4ff22b431a5703472a971aeb43b71c6209",
+        "certification_sha256": "9e11a2d6081712037cfb70e59e05d974b15167cfb5a8029d2fae5c49587293f5",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "eebe9c10c994394b28d975722b049a0cc7e6b2e97a07bb2b532b35baed99de29",
+        "mutation_bundle_sha256": "6406c1e99e85329a2a41cb992c71fc572b6945663e07a48cb026b4f92a434971",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "SARFEND Logic 4b: scales the metric output, preserving the main path while failing measurement checks.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_inverted_comparator/certification.json",
-        "certification_sha256": "ead7e86ff3fdcc8454678f664ea8bee519913b0ca151136db29b3666460dcf66",
+        "certification_sha256": "cbf7f60b8e19c641693980ef38579c6dae302c506a6bc8c453cd2d3800091d8a",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "297acbb2cf2c0cf69f9de1c412107bc04f487e02698d3bddcb883a074ea5056a",
+        "mutation_bundle_sha256": "eff320f6094bc4a94a271a160342318b86652dc175c0b7f97c45f3df9a517ab2",
         "mutation_id": "neg_002_inverted_comparator",
         "source_catalog_certification_path": "negative_variants/neg_002_inverted_comparator/certification.json",
         "trigger_condition": "Uses dcompb>dcomp as the SAR comparator decision.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "e9b0bb5edf3c9c51aa0d534ff477129b4681f35adf934054f656316f1c954852",
+        "certification_sha256": "668785435dbd6e2551ce36fe6d4b26497afa317374ec0af82ace777ce0ce42d3",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "c4bcadb561234466a344192acdd451fae485ed3e7efae34603b0ebc8bd04b495",
+        "mutation_bundle_sha256": "7a10791e67f8c142d8975f6ede385d579049841de7086afcb0ae8d060ec4dee0",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "67655f9564344526b509405c926c7a4abef9d08607f961bbdd7a5af526a791a1",
       "score_deck_sha256": "025b147d082a73a2ab0cd6e59d28e08ad0a373d9627fd43a617330e98ddc7c68",
-      "task_certification_sha256": "5d0f704232e998c94d736c588952b4ef1931a64095f0dad00d620f7e570bfa4e",
-      "task_record_sha256": "946dbb56a80d2ab0452f59f2a63b8a42492b2c439c0f9fa39c03697fdec91045"
+      "task_certification_sha256": "cbc242bdb1a999dd577299a3d7de0f4ef43dc2d3e3300206562a6f14806c42b5",
+      "task_record_sha256": "0fa453d587dbc5345b6ac7d1086a84e6e7265bb72aaea490e609740ac83564f1"
     },
     "release_dir": "186-sarfend-logic-4b"
   }

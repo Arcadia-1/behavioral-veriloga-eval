@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_track_phase/certification.json",
-        "certification_sha256": "5dd760153bfa12bd3a95dc863e3ee7d9b00614ac18ecc04ce146154742fef9e6",
+        "certification_sha256": "f7f4005991ac1cb2393a8a04fc8008b2a51f25c5166e068ec534748caf4bbd7c",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "dcfe79827125e24dce30a79c06b18ae6dd7254ba922ff5076feab94e413fa1fe",
+        "mutation_bundle_sha256": "6784f51f5518ed16b4df8105f4015bf207efe8723268838c3965a7a6b2ec715b",
         "mutation_id": "neg_003_wrong_track_phase",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_track_phase/certification.json",
         "trigger_condition": "Tracks the two internal stages in the wrong clock phases.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_output_hold/certification.json",
-        "certification_sha256": "4faa035e8a4cd103eedbe36d72f252901ef7ce6293e4d5056f8edc5b93b608dc",
+        "certification_sha256": "d0acba74aeec4aeca57b0ddf582de51c2a7b3d307f9c7eb9d3dba62b58a1285a",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "e962823b7488680366b53fe6720c8c0a48f07cf72cf66411e1037bc8e1daf3cc",
+        "mutation_bundle_sha256": "beab528a9a1b0bb3a490b697ac6066410f53f4b5c4c785a3f159629e524e600c",
         "mutation_id": "neg_004_no_output_hold",
         "source_catalog_certification_path": "negative_variants/neg_004_no_output_hold/certification.json",
         "trigger_condition": "Lets the output stage keep tracking outside the output-track phase.",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_phase_monitor_wrong/certification.json",
-        "certification_sha256": "b1d2d5f12a5aa4ea11a11812244d54f42cad5bb9203aca037add18cf547e823a",
+        "certification_sha256": "68a214b920a7c334ab1a77736a8b085c51537dc82e123ca80fcca2e5dbbe03fa",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "1219e5c3fc7a54e4c6072e59f3b69069945a56fc8d515fb1f2eeb928ff38fe70",
+        "mutation_bundle_sha256": "d5fe0b30fc3bd3e67a76568e2d63df9917580db62d6acf1b4b6f52a6597566e5",
         "mutation_id": "neg_005_phase_monitor_wrong",
         "source_catalog_certification_path": "negative_variants/neg_005_phase_monitor_wrong/certification.json",
         "trigger_condition": "Implements the main signal path but reports the phase monitor with inverted polarity.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_transparent_output/certification.json",
-        "certification_sha256": "c767903120fd30b5c955345b636c7db1163134daa0b072b39bb9c2398b8d90f0",
+        "certification_sha256": "5f86e8e692cd554c84a9af16e685b86d329f4c347df4e8885ff1f714a3ef1e07",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "1f636d83dfa8ecbfabd216da2a166e46ddb8217fb6e51ca2a376f7956713b0ec",
+        "mutation_bundle_sha256": "53e2f02373cebfa9760082d4ed553634ed06b783ae71706338d222d15c46500c",
         "mutation_id": "neg_001_transparent_output",
         "source_catalog_certification_path": "negative_variants/neg_001_transparent_output/certification.json",
         "trigger_condition": "Continuously updates the output from vin, so the low-clock hold phase is transparent.",
@@ -57,9 +57,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_single_edge_sampler/certification.json",
-        "certification_sha256": "32990cb023450de1a85b7d9ef31d079c38a950c37852a120f6b052eda1742f13",
+        "certification_sha256": "267bbe509a9340cb4da9129261ef75fd92f82ed4c72f608f3b5b1592a5b1fa22",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "170dfc893a748dc65a6498a67af3ab5fd9ac3b131ae847384c215c45ed4e5f38",
+        "mutation_bundle_sha256": "5ea3affdc78d314a5cbbf7045fec8e8766223d690a3dc14e54208b9995a6997e",
         "mutation_id": "neg_002_single_edge_sampler",
         "source_catalog_certification_path": "negative_variants/neg_002_single_edge_sampler/certification.json",
         "trigger_condition": "Uses a single ideal rising-edge sampler instead of the dual complementary track/hold behavior.",
@@ -74,8 +74,8 @@
     "hashes": {
       "mutation_catalog_sha256": "ef749f368a583c6a32734df2608ad115ba878f7a3c125399a6329ba7c4812b7f",
       "score_deck_sha256": "41c0a4c2d482000dcf1ae3c36121b28a0e2a53e541e8264e41202826f0badbd6",
-      "task_certification_sha256": "4a58fec23c5ed95dd1ef3c5e7999d70852f2c1d3a874bed4d28dcdd5b1f38ad2",
-      "task_record_sha256": "d55ce535d6a0d470dacacc4c22a70b79add4ea3542cc3665c9dc567c5fea1f1e"
+      "task_certification_sha256": "34a33ba19d618d6d0f303ca06880004ea3a97135ce92c0e140d2c20aff6b9ab3",
+      "task_record_sha256": "7241c1ed674e695a23095a21e493efd4b9dcc73fdb8abfbac6fe5ae978cba353"
     },
     "release_dir": "236-dual-track-sample-hold"
   }

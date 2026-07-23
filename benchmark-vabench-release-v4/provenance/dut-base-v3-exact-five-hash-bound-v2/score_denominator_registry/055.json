@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_force_zero/certification.json",
-        "certification_sha256": "2f1902d2f9ef7106b08c9ad10614d808a57a62f659596c2a3e94febf914c4314",
+        "certification_sha256": "76a8ffb8f07d6a225515855c81156960f74868671ce79cadaf2f4826bcacb5ca",
         "fault_class": "force_zero",
-        "mutation_bundle_sha256": "67a576f74c35e8101c8028efd4aed7eba0e40ac60abc51b95c7bed882ad0c294",
+        "mutation_bundle_sha256": "8fc0c4da6078b8ccc5d602140ba9b0b9b165314c63c190db49c5064a5d2d000f",
         "mutation_id": "neg_001_force_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_force_zero/certification.json",
         "trigger_condition": "First Order Sigma Delta Modulator: never emits high bits, so it compiles but fails density and edge-by-edge behavior.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_feedback/certification.json",
-        "certification_sha256": "5339cf3876ea20a44fa2ecefbc915496552eaf6fa3a4f4af9cbf50d9b9088795",
+        "certification_sha256": "fbe9a9b86e096a708688383a36e42c24db81b463347d8ba99a0f8b388a52aa39",
         "fault_class": "no_feedback",
-        "mutation_bundle_sha256": "96fae985b7c58db3d514daa2cc5b91934f17b7c2e7c988aab6e30d9911631e14",
+        "mutation_bundle_sha256": "e594da7ff18924e3ba33b93be1eb16bfed036e598477d29d94889dca28677978",
         "mutation_id": "neg_002_no_feedback",
         "source_catalog_certification_path": "negative_variants/neg_002_no_feedback/certification.json",
         "trigger_condition": "First Order Sigma Delta Modulator: accumulates the input without subtracting feedback, passing clock syntax while saturating the loop.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_falling_edge_update/certification.json",
-        "certification_sha256": "b79b8193ecc39806d5521bb93f29a9f58bbc6ac1768c9f1445ee1d6305b1aee1",
+        "certification_sha256": "2ed61e621d2f1cde942ff996a06597aa87b355f110ce3e276ca69f614acbacd5",
         "fault_class": "falling_edge_update",
-        "mutation_bundle_sha256": "3a32475d5a77c586014fdcc1b83b3683d6836a3441b0fd1af973d107bb94c748",
+        "mutation_bundle_sha256": "89595cc08f29072dceeda0103a8fcb24206216c0431546a9e961af7818bc56c2",
         "mutation_id": "neg_004_falling_edge_update",
         "source_catalog_certification_path": "negative_variants/neg_004_falling_edge_update/certification.json",
         "trigger_condition": "First Order Sigma Delta Modulator: updates on falling clock crossings, so simple toggling works but rising-edge state checks fail.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_half_feedback/certification.json",
-        "certification_sha256": "bc02355bba7ba66cf8e20162c1aec39952332fc8c780966954e0b75aa8a03445",
+        "certification_sha256": "18cab5a916328f1ea63572de617ec42be1cc76fe20dd46b93ffade057da5b230",
         "fault_class": "half_feedback",
-        "mutation_bundle_sha256": "b4515a1b31816495514bea656450edbed8802b50d12c41591108a42e9986f561",
+        "mutation_bundle_sha256": "51175948ec7f4ec0dcb514d650742d8153d5eebad699c9fb4cf9aec9891fb132",
         "mutation_id": "neg_005_half_feedback",
         "source_catalog_certification_path": "negative_variants/neg_005_half_feedback/certification.json",
         "trigger_condition": "First Order Sigma Delta Modulator: subtracts only half of the previous feedback bit, leaving density plausible but breaking the certified loop state.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_inverted_decision/certification.json",
-        "certification_sha256": "ab609f8b6e0519288efb9c7f53760addc902e24ee676e50107b9fdfdb3529135",
+        "certification_sha256": "198ca0652beb81b8c553bda29e6dc38c6f10534680eca4003e54d96fe17e5c36",
         "fault_class": "inverted_decision",
-        "mutation_bundle_sha256": "a7b04d1566c0189c24864da610c26a49663e1add0625ed81448336e74fbf6716",
+        "mutation_bundle_sha256": "4d926516d50af82978179873cf563b07a8f3279ec059d2261a2de31b7aad1652",
         "mutation_id": "neg_003_inverted_decision",
         "source_catalog_certification_path": "negative_variants/neg_003_inverted_decision/certification.json",
         "trigger_condition": "First Order Sigma Delta Modulator: uses the opposite comparator polarity, producing a plausible stream with inverted loop decisions.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "13a6eec865d069559871252601ec5016edd226cc4c33732c9ea0331290407327",
       "score_deck_sha256": "9cad43568e5e9a65c841f3df95a50b8eb60fd203cafbb863940e9ac7e5b31ac1",
-      "task_certification_sha256": "5d0b1ec3c7c69dbd3465b4a2885ea1df584b55724ad180d853f481789a205204",
-      "task_record_sha256": "804621f207a55333a8ced9c95c6bbe5544363ea64f0a6aa5d494df443ccb6fc2"
+      "task_certification_sha256": "ea8f3f7b5cb5ef4bca2ccffe3e7244eeb63aef2cde4303e64d9d1aa176c950ac",
+      "task_record_sha256": "db7cf59eda7b1b40f3104897fa7c2b4d6d7b2efd02232ddc3614d1eb46482b65"
     },
     "release_dir": "055-first-order-sigma-delta-modulator"
   }

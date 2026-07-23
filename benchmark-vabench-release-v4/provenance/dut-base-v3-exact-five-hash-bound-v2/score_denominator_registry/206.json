@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_swap_decision_outputs/certification.json",
-        "certification_sha256": "581fd8f1ff909406f5640cd054f81be33e17cf22780603f0fa7b083bac831d3c",
+        "certification_sha256": "18a36b4ff0601921cec45705ed67477e3e3a3be0a33edb81f27a472f14834f5d",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "1dd6b810e6f43e846092e85f0a44eddcc4855a481a013f275983e795ae3a12e9",
+        "mutation_bundle_sha256": "119901aa22bd9ea8a8436918027eca1835f7343591b713ae973db702b3737c7c",
         "mutation_id": "neg_002_swap_decision_outputs",
         "source_catalog_certification_path": "negative_variants/neg_002_swap_decision_outputs/certification.json",
         "trigger_condition": "Swaps comparator decision polarity.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_no_reset_high/certification.json",
-        "certification_sha256": "bda600ec746522de74bf439dce22272aaf923604bb7fc90e2ada208fdcec149c",
+        "certification_sha256": "b14ea7e35937405195ba90839e7b88bcc9b4f8c13ba9ef2b87eebed93ee7b334",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "9b902873103c6c0196f6e8fcd521bdf17ce05961ba5215d3ec979158ee57ad34",
+        "mutation_bundle_sha256": "4db416e502fd8228e47e468683d5ee443b2283df22edf77379253ab6f82a4d08",
         "mutation_id": "neg_003_no_reset_high",
         "source_catalog_certification_path": "negative_variants/neg_003_no_reset_high/certification.json",
         "trigger_condition": "Does not reset comparator outputs high on falling cmpck.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_output/certification.json",
-        "certification_sha256": "da4674d9b79d197c93f79983ddf3390406cf5c842855b997905721955c01f23e",
+        "certification_sha256": "2fd1ca0a5f6fdfb4815c7549ca36f690eed64db8d2504b6ea95ac8137b278981",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "5001566c107fe8436269df6e92181c985de616130cfb5a4499b2251fe7c6af0d",
+        "mutation_bundle_sha256": "95f0e039cded38ab07bee2934ec20251bb88093c4c6c438eb261d17703f3a0cc",
         "mutation_id": "neg_004_half_output",
         "source_catalog_certification_path": "negative_variants/neg_004_half_output/certification.json",
         "trigger_condition": "Drives comparator logic highs at half vdd.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "c580c7cd85d3faff62063f15bd2a664365c9bb13a6f4d8acd0290e607fddd409",
+        "certification_sha256": "4519c387acf31f3f891ce080b8043c02b39e80283546b08e60a5a6af9fe55e58",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "a821cfe59adacdab2c79f415aa4fa67a036188f56b7c61f0d0ee543f0f1900c5",
+        "mutation_bundle_sha256": "57934c6fd0cde1844562baeb5458f4ac9adbe7258027cafd155fc5a9bb0c9f5e",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "8682a28d51718bda29f471b984cd92880d640200399bc2237e01befd78e42fe8",
+        "certification_sha256": "2f7d1aef0f13fc4d265722985eb6d7d49541ce92dbea3b3c086a2f13d3e0dc89",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "7d2f5b45a0aae9de7d0a6900174891655c8a5ea732b445cdebc79dc7e8053cf2",
+        "mutation_bundle_sha256": "3c60d13b99fde0d50a0c1be7d16bb7d3fb6e4e7bf2f0157715cbe0a29a45bdb7",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "SAR Comparator Reset High: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "25f4220b1aa035e643479fbabdf9a0b5e55e798d514c42e9623bd66b2804711f",
       "score_deck_sha256": "5ea9c9d0aa643edd5f3f15e00da7dace6516a9b80f88d32f18e856dc9ae3bbcf",
-      "task_certification_sha256": "7393e9f1320bc8b935491aab6fd6f494099e47c3a4fe80a06837433f2f306b9e",
-      "task_record_sha256": "c234818f25ae114267e6cd504036dda4e5e5540579c676ec459103d4f6c3f4c8"
+      "task_certification_sha256": "22a6b3f44c5999d456f38ade1a6a7cb1b8f3070b31c4674ad5b812ede95dee87",
+      "task_record_sha256": "de8671ccee86041b36bc7dff9c5d4fed6d2b4106e7b83db718a5871f8e28f829"
     },
     "release_dir": "206-sar-comparator-reset-high"
   }

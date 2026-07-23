@@ -6,21 +6,14 @@
       "rust_evas2"
     ],
     "policy": "source_transitive_input_hash_bound",
-    "simulation_rerun_required_for_materialization": true,
+    "simulation_rerun_required_for_materialization": false,
     "source_dut_gold_certification_count": 400,
     "source_dut_gold_certification_total": 400,
-    "source_negative_certification_count": 1996,
+    "source_negative_certification_count": 2000,
     "source_negative_certification_total": 2000,
-    "stale_certification_family_ids": [
-      "186"
-    ],
+    "stale_certification_family_ids": [],
     "stale_gold_family_ids": [],
-    "stale_negative_case_ids": [
-      "186/neg_004_wrong_dout_mapping",
-      "186/neg_003_no_test_override",
-      "186/neg_005_metric_scale_low",
-      "186/neg_002_inverted_comparator"
-    ]
+    "stale_negative_case_ids": []
   },
   "family_count": 400,
   "materialized_artifact_sha256": {
@@ -43,14 +36,14 @@
     "tasks": "tasks"
   },
   "release_revision": "r51",
-  "release_status": "materialized_certification_refresh_required",
+  "release_status": "r51_materialized_rust_evas2_audit_pending",
   "release_surface": "benchmarkv4_package",
   "schema_version": "r51-benchmarkv4-release-manifest-v1",
   "simulation_rerun_count_for_materialization": 0,
-  "simulation_rerun_required_for_materialization": true,
+  "simulation_rerun_required_for_materialization": false,
   "source_active_mutation_count": 2000,
   "source_release_label": "dut-base-v3-exact-five-hash-bound-v2",
-  "source_score_denominator_registry_sha256": "8d58e61aa725a4c338a78fbd9a42f57cc6cdc0f6636775e19605811ff6b99843",
+  "source_score_denominator_registry_sha256": "c050fb3c59ed19535f1e6a08d55e8effc547821b12eae4728beb201faf8c05e6",
   "task_count": 1200,
   "task_counts": {
     "bugfix": 400,

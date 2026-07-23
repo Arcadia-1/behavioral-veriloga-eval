@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_initial_counter/certification.json",
-        "certification_sha256": "fcde32f7417df1a8f35e34cbb8d73a7d4f9200badca55c727789d81f4bb737ac",
+        "certification_sha256": "8f740f876285e95b8b752b45dcf161214842737f2d4d9a3ed2685f88617f648d",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "1335a21153b4d5987276cb26cdcc7f4999638a86a334302aa07da5188c7ff300",
+        "mutation_bundle_sha256": "494929ac2dd52353afacd7cbb051133ed73b7d72f64476f95eb8acd4b6c9a5a4",
         "mutation_id": "neg_003_wrong_initial_counter",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_initial_counter/certification.json",
         "trigger_condition": "Starts accumulation at bit 11 instead of bit 12.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_counts_low_decisions/certification.json",
-        "certification_sha256": "d9274f8873eed03a38bc2f6d0674a5dd5ef818bc51d929faa14e3e668c293d77",
+        "certification_sha256": "b717f4c405ce995ad4a6471ad88dc2e933a970d440d887d635022680e05447b5",
         "fault_class": "counts_low_decisions",
-        "mutation_bundle_sha256": "d57149b5600547fc2f89fc5a87f5337b226feed50153e147d919500dd9366cf6",
+        "mutation_bundle_sha256": "eb7688bad022091de0397bd9263c087c4fbb1ecba8c2c6c46d0dd6f93b0434ae",
         "mutation_id": "neg_002_counts_low_decisions",
         "source_catalog_certification_path": "negative_variants/neg_002_counts_low_decisions/certification.json",
         "trigger_condition": "Accumulates bit weights when DIN is low instead of high.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_unipolar_result/certification.json",
-        "certification_sha256": "b10eb33544d8a94db9bfd5eff7d6f4ad6010e992f5f12d7873510ea3fd316b0f",
+        "certification_sha256": "b829db5048f501fc25eaebb6e6c0532f31f85e16debff896bc58bc4a379709bb",
         "fault_class": "unipolar_result",
-        "mutation_bundle_sha256": "c18aacc9bfab4745d22bed58aa31022cb1a33bdf1791ad58b9a1eb9e53a4c4d4",
+        "mutation_bundle_sha256": "4ef358d429945b97ebbc9a752ad247c50ae6dcfd269594b2025416b5c577eea5",
         "mutation_id": "neg_004_unipolar_result",
         "source_catalog_certification_path": "negative_variants/neg_004_unipolar_result/certification.json",
         "trigger_condition": "Publishes a unipolar normalized result rather than subtracting 0.5.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "228c2bd4488e41894f9d6c90271382fa5595023d042825eba318d202a507209e",
+        "certification_sha256": "e41d749bbd4d49860c854bbec7dcf6e1f4680782c26841732b98a431985aa962",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "2baa31fc709d3da79dd204b9e06049abb83216fd57684162ff49dfa4ad959e2a",
+        "mutation_bundle_sha256": "5b2f06aa02fcd242e54c5b193c5d4c4752ccfd1609e51de8d7ac1d652844c1ea",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "SAR 13bit Serial Decoder: scales the metric output, preserving the main path while failing measurement checks.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "c0dcb374d68813eb19e351830ff3aa319f10ffdb9e7d5bfcd4b05fbf46bc5a42",
+        "certification_sha256": "8e33d83a7df64836db618a91087349cf991e7dbc3a3c551db23bc5829aef448b",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "01e29ab465d03919e2b29f91ee5441ec0dd5940d607e3d8402c1f96a606cca8c",
+        "mutation_bundle_sha256": "52ab9d5820eec9b5b45808a415b674b97efcf452e197e812e64a4f4984675b51",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "2692c1cc5c656dcc9e38f0e5a02ca2f1e26cfe8ecd12fd2fa7467f4511235c93",
       "score_deck_sha256": "1c91b40c9547d0ae9f76fcfb2f5d391e5e5a6ebe2c75659be40c7b09280bf10d",
-      "task_certification_sha256": "11df87a1b62d3d29d2ed7a3f308365200e19a27b3dae2f867f8674852cb8a49f",
-      "task_record_sha256": "86bc26c7467237d0713486490e85642d872eb15650cf39efdfbe7bc3d975aff1"
+      "task_certification_sha256": "c7749eb1ae239b663b518bba4174e6f75c41d9bb60ddc6477eaa3ec725dbc493",
+      "task_record_sha256": "c3dc9f424358949a0dbf0e1c8a7cda0e4a7d42bf003b8767828030f19574454b"
     },
     "release_dir": "216-sar-13bit-serial-decoder"
   }

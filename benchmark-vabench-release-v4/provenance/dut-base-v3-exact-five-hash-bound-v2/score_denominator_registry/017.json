@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001/certification.json",
-        "certification_sha256": "de6e8cc40fe4c709046557a24d3f41cd4f6a065432ee3780d5e7b6055f76cf37",
+        "certification_sha256": "389f272fc905b131f31d0fca66dcc502f2b3d014098106dcd14c30f60c2f23d6",
         "fault_class": "applies_a_nonzero_comparator_offset_that_changes_the_near_threshold_latch_decision",
-        "mutation_bundle_sha256": "2b748a23242680d0e9420a271661d1d17f677719d7ed7de0417dbbb05ce75ab3",
+        "mutation_bundle_sha256": "5bd80510f9a1494deef79dfc444c1f643285aff10b89ee72e4c0893f5d1a79ce",
         "mutation_id": "neg_001",
         "source_catalog_certification_path": "negative_variants/neg_001/certification.json",
         "trigger_condition": "Applies a nonzero comparator offset that changes the near-threshold latch decision.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004/certification.json",
-        "certification_sha256": "64b68bba1d58b42952b5957494e7ec7eedbafb66eba94e7ffc1c4b2fa5965c39",
+        "certification_sha256": "0669c48a76549d1e86c6cbaecd0fc262d7b7d4b26b33b570fb902c2f07aa4886",
         "fault_class": "breaks_reset_hold_behavior_after_comparator_clock_transitions",
-        "mutation_bundle_sha256": "c92ed97c8000f3b626ee86633023a6add06b48e7a817cbbfb0cb139b5ea40cb9",
+        "mutation_bundle_sha256": "6e731a0ac3937529bb52f6634fa529db64dc196986d28af29bd109c52ef1be13",
         "mutation_id": "neg_004",
         "source_catalog_certification_path": "negative_variants/neg_004/certification.json",
         "trigger_condition": "Breaks reset/hold behavior after comparator clock transitions.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002/certification.json",
-        "certification_sha256": "8b76664f50a6ea74490c99d0dbb3813f308291f6d3d1d6d6b7742e032dbd6d20",
+        "certification_sha256": "41e7ea98c75975135a6229cffa01f4482c8c73fc44f58d7f3eb1c46b287983f5",
         "fault_class": "breaks_edge_latched_timing_behavior_while_preserving_the_public_module_interface",
-        "mutation_bundle_sha256": "880f626995deaabccdcd4de00c9bba7b83c94f6f9642a8bfb182b7caabfdd9cf",
+        "mutation_bundle_sha256": "5bba6ecd5b5f90c024c2277393b3c1ee80d585668294a8d3675da2d9fc550fe0",
         "mutation_id": "neg_002",
         "source_catalog_certification_path": "negative_variants/neg_002/certification.json",
         "trigger_condition": "Breaks edge-latched timing behavior while preserving the public module interface.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005/certification.json",
-        "certification_sha256": "a42e32af6fa908a86c012fb01e1ab6b2adc474a0e43e87d45dcac090bdfed194",
+        "certification_sha256": "87ba4d48ac94dd8913d779be68ae747173fe7661cbf78980f045821f00680b32",
         "fault_class": "fails_complementary_latch_state_behavior_on_the_public_decision_outputs",
-        "mutation_bundle_sha256": "eedc72a80521be1293409f371ffb536664243961e8470f1f592480cc53876ca3",
+        "mutation_bundle_sha256": "65630465e8ee266a0a2ee882aaa9352e49d303cee39da272fde4bb9532fc1c19",
         "mutation_id": "neg_005",
         "source_catalog_certification_path": "negative_variants/neg_005/certification.json",
         "trigger_condition": "Fails complementary latch-state behavior on the public decision outputs.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003/certification.json",
-        "certification_sha256": "5a26f0c43d29ad8e9cd25f96de88e49cfa8f45fa79eb10d96f06deb89dcdb28e",
+        "certification_sha256": "0cb64dfb587e7eb2ab410e2dfcee6c471e2597f29be7fe7f32dc749ac157ec48",
         "fault_class": "inverts_or_misroutes_the_positive_negative_differential_decision_polarity",
-        "mutation_bundle_sha256": "b97f6eb6d42a06cfebee2bd26fff5d226e15b92322883165d3d9486198fb56a2",
+        "mutation_bundle_sha256": "2144e7f03eda57526f824ddb3d89a2d947d54a4ec147284d9f89131cd0828d62",
         "mutation_id": "neg_003",
         "source_catalog_certification_path": "negative_variants/neg_003/certification.json",
         "trigger_condition": "Inverts or misroutes the positive/negative differential decision polarity.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "a526182a28621bfcf12b8781110d5cba32bc611a9e752adbe48e4515be20e5e7",
       "score_deck_sha256": "033974764333f063812d1f12535d1eb39cc2f6b8c1137f718b1a368819b1ce15",
-      "task_certification_sha256": "09e78603836313f9e048da3fc6a812ca2a96c65f7062ab41b10bd40c8ed5b8aa",
-      "task_record_sha256": "cf9cea808795387c0a001e475dba2941463b3b83d4e0f168987ce7b62bdf46b2"
+      "task_certification_sha256": "ebcdec6a78149e09541de0923795eb4c505eb1e3f7ab325a340719cd348cc06b",
+      "task_record_sha256": "90462b1dc8a83588a21e110ae01bf2f170cff658953f35aafc7846b403f77798"
     },
     "release_dir": "017-strongarm-style-latch-comparator"
   }

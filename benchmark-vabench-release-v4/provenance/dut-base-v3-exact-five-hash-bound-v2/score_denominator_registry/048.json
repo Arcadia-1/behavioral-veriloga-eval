@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_off_by_one_count/certification.json",
-        "certification_sha256": "641faa0f141e00113e5bd29088f1edad65aa5e78a51ac25caaaa0eb0157ca5cf",
+        "certification_sha256": "f3b70f07379fcdc262e3f86f3046e8fcb2be8afe6f26b67b952893104e2a4bbc",
         "fault_class": "off_by_one_count",
-        "mutation_bundle_sha256": "afb40f44c70cc4acda790f158831923f92c0a91af43d26d6c9c30e8d2487917b",
+        "mutation_bundle_sha256": "448621ddd999277a7742f056ace9a1231419eb7e4c20c498a74124b2916471c4",
         "mutation_id": "neg_001_off_by_one_count",
         "source_catalog_certification_path": "negative_variants/neg_001_off_by_one_count/certification.json",
         "trigger_condition": "Drives code+1 outputs high when enabled.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_reversed_thermometer_bus/certification.json",
-        "certification_sha256": "d6004198e21d4577d9ad43dc9c0ac3b19669726d2d0f25ff31bda16221c4780b",
+        "certification_sha256": "96a298ab3ede8944eba2c5b5a0bc176b007a9428bc176732635a60a383e67ce3",
         "fault_class": "reversed_thermometer_bus",
-        "mutation_bundle_sha256": "f2216381e8f0ed22c83a71da5d964a0e5eca07c0ce5ee2db394d43df76367553",
+        "mutation_bundle_sha256": "dc203295ad185d9717c7c6e78641cd9805413cfc82f931a0eb988c3cc2c0d33c",
         "mutation_id": "neg_002_reversed_thermometer_bus",
         "source_catalog_certification_path": "negative_variants/neg_002_reversed_thermometer_bus/certification.json",
         "trigger_condition": "Drives a cumulative count from th255 downward instead of from th0 upward.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_enable_ignored/certification.json",
-        "certification_sha256": "81e561ed8cb655b58426772be501f8b08ab88922871b853a431ece87d24fbef0",
+        "certification_sha256": "f217ff601682f82513d2595f83b4e4139eeb200b89de96d5f93d0d4011062d4c",
         "fault_class": "enable_ignored",
-        "mutation_bundle_sha256": "59a8d13f84298f5e8b67d7adedc64426ef6a02b6eff0ec5586c1a75bb1e29fda",
+        "mutation_bundle_sha256": "c07ead05062731da5f02fbf42d43eca1626544f3048077cfb38f5ddee2a92e9c",
         "mutation_id": "neg_003_enable_ignored",
         "source_catalog_certification_path": "negative_variants/neg_003_enable_ignored/certification.json",
         "trigger_condition": "Decodes the code even when en is low.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_reversed_bit_order/certification.json",
-        "certification_sha256": "321e114445928c7af50e8dd6563b85e8f5e458f5f3794659df5c23bb8311a5cb",
+        "certification_sha256": "c5421da6096085602c2ed055e5d783b53542b8401354c4d9f4dff6ebd1debb29",
         "fault_class": "reversed_bit_order",
-        "mutation_bundle_sha256": "aad345675c6ba6727da3af38f6e0a6a1dee70bd0d21273af99199079d274779f",
+        "mutation_bundle_sha256": "f54d8d493c850891dd9a6aa1a3dd6933a887c4d0414c6fc2c821bb0a7edb4d2a",
         "mutation_id": "neg_005_reversed_bit_order",
         "source_catalog_certification_path": "negative_variants/neg_005_reversed_bit_order/certification.json",
         "trigger_condition": "Treats b0 as the most significant bit and b7 as the least significant bit.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_weak_high_level/certification.json",
-        "certification_sha256": "b0bb19149f1dc75d71503a6962cffe280f0f2e0e3c00d671a70e40960f9015c9",
+        "certification_sha256": "84d968c83cdece4c58436c10d17b61474268000749ffdc9c2e161190108f48c2",
         "fault_class": "weak_high_output_level",
-        "mutation_bundle_sha256": "bd3e649fb10cb22c114c931aba55115ea0bf5bbe15199a76793bdb481cb438a6",
+        "mutation_bundle_sha256": "d5cfa58cfeb6861d4b444728b4927b0ab62c1c1f1688baf7f507168e82389b7e",
         "mutation_id": "neg_006_weak_high_level",
         "source_catalog_certification_path": "negative_variants/neg_006_weak_high_level/certification.json",
         "trigger_condition": "Drives asserted thermometer elements to 0.3 V instead of the declared vdd level.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "9bcfa85c327e8d17c8202215599ce4ca5a2384e5bf91345e9cbec17cb3b91d1e",
       "score_deck_sha256": "25f7848515a01dda897a2ec4547b623165131747d574b705c86d26f62eb40fc3",
-      "task_certification_sha256": "a11fb16e4a6dca2b09790e593e673a6a25f9b4f8f3bceec2c7aedc65190787b7",
-      "task_record_sha256": "e90a63311b56b8d78d327e1eef3047862c71baecf17fe95fda30bb562ffbbd45"
+      "task_certification_sha256": "3a02191dabed8addf043933d204c29a028f7e7701baff3ccc8a73f45b2a9596d",
+      "task_record_sha256": "ff056e13b63f7ad0d7a6262cc6e5ff5348698f70fb7e86cdd3146bb32e1f54d4"
     },
     "release_dir": "048-bin-to-thermometer-decoder-8b"
   }

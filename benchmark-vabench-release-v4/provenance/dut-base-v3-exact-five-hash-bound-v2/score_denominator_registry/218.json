@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_falling_reset/certification.json",
-        "certification_sha256": "2d3eadd12d8e6f182eedd676542f8cfd5e8c235cf6a67cd9448ecf0c2e6c6172",
+        "certification_sha256": "daeec1d60d9f2b6829e84e9e63f5927e8c14ee5d16f93918bc1199efeb47adac",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "0895b500c53a06b446ce214b3336436b68971604fbe78bc469c4f80b333e7e93",
+        "mutation_bundle_sha256": "3e8978bef4914ccdb19761b9df44f77b5c01586b89b5ef275fdd644e1017f35c",
         "mutation_id": "neg_002_no_falling_reset",
         "source_catalog_certification_path": "negative_variants/neg_002_no_falling_reset/certification.json",
         "trigger_condition": "Holds comparator outputs after clock falling edges instead of resetting low.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "5b88a6440cbbb6d65df63eb3fd9a584245b242ec9eb66cca1881fb331f8908d5",
+        "certification_sha256": "81e91b63b20482f6b17d24d64579a38e715145e23d657d6aae1dd15702b964f1",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "3319aae4601deec8ac16bd614772c8cc820706f925e5ff3d46b8e56b49a0c5dc",
+        "mutation_bundle_sha256": "6c8b424734c46ac864e5c6a32fa1778a009b0afad2516a02fdb523b5656cd5e6",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "bb8e4498c1271516872d6a4809e8b0f3a7491ec8b30b0214469a61da64fa4571",
+        "certification_sha256": "3eac069ac3518c3faff2a7ee375721a19381c990bc6777efd59ff2b6ff9d9699",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "1d260db9da67e370060327c5fa6d59382f3f637b0da04e6397911c0ac4aded33",
+        "mutation_bundle_sha256": "8523af8987cbda055481bc0be762b614226db899d8f4b511282012b4ec44a4d4",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Clocked Comparator Dual Output: scales the metric output, preserving the main path while failing measurement checks.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_equal_input_bias/certification.json",
-        "certification_sha256": "7150db0ae2a1d73c893aff782d606c67221ba2a736704fb5e1c9338e807ffb04",
+        "certification_sha256": "dbc5a08d20e4e0729407096d5f3e78ab1965f00f57fdebb5f50187beeecfcdd4",
         "fault_class": "threshold_boundary_error",
-        "mutation_bundle_sha256": "1f95178fbd793495c1dbf1cbbc87f58dd8648ba48248403df2822edba6013687",
+        "mutation_bundle_sha256": "e919bfc1843b7a649088635d951bce7f40c67eb94da0f5c34b67d9b6e0c00bdf",
         "mutation_id": "neg_006_equal_input_bias",
         "source_catalog_certification_path": "negative_variants/neg_006_equal_input_bias/certification.json",
         "trigger_condition": "Treats equal inputs as a positive decision instead of driving both outputs low.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_swapped_outputs/certification.json",
-        "certification_sha256": "91d2c6e27942d2dc236255058a6e24a264394c1d12c53348870380423e3712c7",
+        "certification_sha256": "3e7a84341eb87be413ac93e362c56d1c6fa13747e67bffbf42c5f43e9ab21c7f",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "4325471fa78b788a25cc105bef3d992cf2b75a222689b7720fa50fc89467fd06",
+        "mutation_bundle_sha256": "07f90e11388d7150c14c61517715a9556b18200b6ddd1394819fcb509f27564c",
         "mutation_id": "neg_004_swapped_outputs",
         "source_catalog_certification_path": "negative_variants/neg_004_swapped_outputs/certification.json",
         "trigger_condition": "Swaps OUTP and OUTN drive states.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "24e368419e7fa0a374c82b1248e69d13af162cb11361a4f7595e1789e1591741",
       "score_deck_sha256": "ca34bea18d84659e8f7db69b852b38ef635b1b28f74b541b3cae6f012acb46da",
-      "task_certification_sha256": "f66927eafec6dd202b561b9156f6e1577bb97cf346394a42293a04aa74e9c9c0",
-      "task_record_sha256": "91b78405033659b331b07a2a7745f6eec0759fd0021acbe330fdf0fd8e8fb12f"
+      "task_certification_sha256": "c63f03f0545e4afa147e99826ec57f10b8a48c1979acc3439faada9ef2249594",
+      "task_record_sha256": "d6139bd4b7b725e0203c8764a95b8669906b4d0943eca9e9271a2745ed37199a"
     },
     "release_dir": "218-clocked-comparator-dual-output"
   }

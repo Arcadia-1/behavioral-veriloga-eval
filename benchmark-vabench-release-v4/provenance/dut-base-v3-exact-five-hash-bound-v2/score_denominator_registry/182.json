@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_rising_edge_sample/certification.json",
-        "certification_sha256": "9c0f2f188e9d5b15f3bc6ec9860ac1105749e90496550306b39b24bb76f0ea6b",
+        "certification_sha256": "b753e73801a9f105f18a1cff17df47be128f5852ae94fccd8d05b18640e81145",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "d6b07822ae5ca065146b9c7c639db06397abdc0eb7c9ac71030b8906b26f9d21",
+        "mutation_bundle_sha256": "faa9b8be081646835330a4ea591dd75020b80c9997d2f7d50adf91fd7430ac48",
         "mutation_id": "neg_002_rising_edge_sample",
         "source_catalog_certification_path": "negative_variants/neg_002_rising_edge_sample/certification.json",
         "trigger_condition": "Samples on rising clks instead of falling clks.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_ignore_update/certification.json",
-        "certification_sha256": "e31104363ff1cbb259eca8cb06c776efeb687fd1c0aa79f9874c6367ed607fcf",
+        "certification_sha256": "e5185463c5e0531f287bd833e4e3fb487b2f0ab48eab244833402d9d003fea79",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "4912b714bff24d5d0dde851d1970bc6cefdce3718b06ca47bf7ed16697e531ce",
+        "mutation_bundle_sha256": "207f20d5cb7efc4c457fc2fe622668b685c9067d5ca822f23ef5152024b30d42",
         "mutation_id": "neg_003_ignore_update",
         "source_catalog_certification_path": "negative_variants/neg_003_ignore_update/certification.json",
         "trigger_condition": "Ignores the update qualifier and applies select changes on every falling clock.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_ignore_reset/certification.json",
-        "certification_sha256": "36ad337b54b03cd52a74db061dfb4077ed999598258283ec09e723d8ff31b9f7",
+        "certification_sha256": "0a51a632f0a8b3d00903321f001482cffafa88cfcc6918e22fc9c3330e64b3e2",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "c2338b3198c1be559ed02a3db5a29e80022d0baa64ec5d89b22355ed369a3724",
+        "mutation_bundle_sha256": "604d0024107e3b8a18ff8e4be4088e148d33e45325845c5c4eedfab23ad6f51f",
         "mutation_id": "neg_004_ignore_reset",
         "source_catalog_certification_path": "negative_variants/neg_004_ignore_reset/certification.json",
         "trigger_condition": "Ignores the active-high reset default to din0.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "f25b767cbdbb5c8d3bbc9d491ca9ff295d580dc4b18744b44ee8bdaacbe466b7",
+        "certification_sha256": "b468c7606c201156a0052d04ff4d9437f00631c198ef6e6e811c1865e45baf6a",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "89f6b2a18a16ba6f850e0fe05d9e60a6cde19a57e48b3ceedadf4b41a353fb4c",
+        "mutation_bundle_sha256": "a8b5032886df7f88e4947740a0deb44b1eef38fec203d1db96a9a293ee54cb7e",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_swap_select_lsb/certification.json",
-        "certification_sha256": "058a36b7f17767b18c9f99c7985af919f98a218ea86cb9f555fbd6a2ab54edd3",
+        "certification_sha256": "b649028afa0351f58414ef494e0bc9febd1658004d694de30687210d91e08a1c",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "23c487d2f386ae7939098e57bdff9cf423f0f711b97519f7f570f48ec5571001",
+        "mutation_bundle_sha256": "90a51ac06ed99ea4b7bbec502d998dde482100807814615e68d4fac4dfe0dccf",
         "mutation_id": "neg_005_swap_select_lsb",
         "source_catalog_certification_path": "negative_variants/neg_005_swap_select_lsb/certification.json",
         "trigger_condition": "Swaps the least-significant select-bit mapping for din1/din2.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "a6a3299d3e6d3c4474da3ce416cc4c07325b21beafe3823b05566ec57cd84b34",
       "score_deck_sha256": "fb80204580eaaf49002ef4dbd2946f1b731ac1adcbc7b00500783e2402e62f3d",
-      "task_certification_sha256": "8af5c1e4b18bc0236587f5bc4c19d6b62e554ffcc39ca6dc2bf81f7e258d8800",
-      "task_record_sha256": "975c20f1e4376fd52b3e572fad3f4b739f3a562771f60cf3a54cc436cc87f10e"
+      "task_certification_sha256": "1ef02e9a91ccb4f67faa9b0792751864d964309ac45c9d32cf6c3dd4b6ede4a9",
+      "task_record_sha256": "03e4e1886da72e6662aab317f98a26ec49e0cc65d5a25cecf5e80444220d5168"
     },
     "release_dir": "182-clocked-mux4-sampler"
   }

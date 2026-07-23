@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_missing_top_tap/certification.json",
-        "certification_sha256": "4bf53973f79a4d26c3cbc2ac49710b1830241c220afffa62134fc12506626253",
+        "certification_sha256": "d5a2244656c05757cd4470d0730cfb7fea5974304ed92c5f558fa62e92bb9703",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "714513647f6485df88585da027143773edb5bbaf4e4e2518592ee9850e80f53a",
+        "mutation_bundle_sha256": "3185217ec43c2ddb70c8d63c931d1613dfee8c206b9bc071561f1065c9576b89",
         "mutation_id": "neg_002_missing_top_tap",
         "source_catalog_certification_path": "negative_variants/neg_002_missing_top_tap/certification.json",
         "trigger_condition": "Forces the top threshold tap low.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "5b71bc7bd5f060c9b669d171d942891d0e44d6a05bda7a3effb9c1ba078671fa",
+        "certification_sha256": "58c371ead93b1e68bb522b858a555b9baa69faa5546f50cb97d8e0c5421446cf",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "c5c478d83e723f2dbefe138e29a48083fe523bd976b268783e04ac1268cdf194",
+        "mutation_bundle_sha256": "7838cafd2a7ad186be4a06ed5c92c6920a3689ee8806663a7e0e70359c75f373",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_inverted_outputs/certification.json",
-        "certification_sha256": "51ab8fdd727faa2cc392a6bf86b9b9635d22cfef448ddb5f093db70c0b88ec47",
+        "certification_sha256": "0b71b714ee3226ed8fed922396bd7aed0d57e3418785a31330816d8fbd15726a",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "ed8bb4871aee8723e01af74a65ac865581ac1e24d7e2062e495170d237ecab05",
+        "mutation_bundle_sha256": "cd0e21d62c5740a43bfd4dd270d4fa0430ee1363d2b5c043a4eb9f80edff9c9f",
         "mutation_id": "neg_003_inverted_outputs",
         "source_catalog_certification_path": "negative_variants/neg_003_inverted_outputs/certification.json",
         "trigger_condition": "Inverts all thermometer output polarities.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_high_level/certification.json",
-        "certification_sha256": "315db92142db12a8a1dc1a553e995ff51f5a40dcf22a698c9512c3ff8aab5a02",
+        "certification_sha256": "1258318932035c304f4ff303d25ab95fa76443ac4e16a24ab4f3e538e0b8b983",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "4371ce7c2c0f9806027e189b8604881580da4280bd820216f7f685d57e9d0767",
+        "mutation_bundle_sha256": "e958fbf5e563f1ab733bee82c766bf3a65708420a1ab259d15cee674d5f91d10",
         "mutation_id": "neg_004_half_high_level",
         "source_catalog_certification_path": "negative_variants/neg_004_half_high_level/certification.json",
         "trigger_condition": "Uses half high level for asserted thermometer outputs.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "d96179787185f65e7253c7b1c9d186e05d003906dc9b735726bddd1af950e099",
+        "certification_sha256": "f7025bc3335947a9f5a7d9a12dd789a2ccef9e46e4ced754a31a981fd3669a4a",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "acfe1cbdbec41c0493730f7afdf230fd82be75ede2a0b632749cd9b7dadc982e",
+        "mutation_bundle_sha256": "a296a472d20c22740510141e4c9a39a54ff7bef18ca159ba974768a1ec413f88",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Flash ADC Threshold Taps: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "4d6a87df4096990e4b106eaafa451b76aca054c0fa8f359293b88e4a0e614cd9",
       "score_deck_sha256": "27ec32befe86dd8ec14c001440eadbff253f0e14f3b3b6b617d9c8cfbfd0396c",
-      "task_certification_sha256": "5e58608a1b9cf9d13ea0346d5a1141226f6eb6fdf3bc46591c70526c3607eeec",
-      "task_record_sha256": "d161b11464f0fb004f2afccda2ac651f3344c5a03764d9723166ac185d10acb5"
+      "task_certification_sha256": "6d59f0932a9f173fa531db202fbb8b309ffed9187179bb88b6fbf5810b3410d8",
+      "task_record_sha256": "c5e81adc4ae0c8a8025e5dc2da2a09ced3d15125a39c65027dbe7ba854d0e5db"
     },
     "release_dir": "154-flash-adc-threshold-taps"
   }

@@ -171,5 +171,18 @@
       "confirmation": "frequency transfer, timing, period, phase marker, and valid properties all have mismatch_count=0"
     }
   ],
-  "claim_boundary": "This artifact establishes fresh EVAS/Spectre verdict parity for the ten exposed tasks at correct-plus-five scope. It does not claim waveform identity, alias-wide checker recertification, full 400-task Spectre rerun, or a refreshed r51 release seal."
+  "latest_checker_revision_coverage": {
+    "execution_revision": "46a3ccaf2de5b9fd9e97fe622b24dd8431b6b512",
+    "superseding_artifact": "SPECTRE_AFFINE_CHECKER_RECERTIFICATION.json",
+    "superseded_task_ids": [
+      "v4-803",
+      "v4-804",
+      "v4-812"
+    ],
+    "case_count": 18,
+    "correct_pass_count": 3,
+    "mutation_kill_count": 15,
+    "mutation_count": 15
+  },
+  "claim_boundary": "This artifact establishes fresh EVAS/Spectre verdict parity for the ten exposed tasks at correct-plus-five scope. SPECTRE_AFFINE_CHECKER_RECERTIFICATION.json supersedes the v4-803, v4-804, and v4-812 Spectre rows after their checker timing changes. It does not claim waveform identity, alias-wide EVAS reruns, full 400-family Spectre recertification, or inclusion of supplemental Spectre evidence in the formal release seal."
 }

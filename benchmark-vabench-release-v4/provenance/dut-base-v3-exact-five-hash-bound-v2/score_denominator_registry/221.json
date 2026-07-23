@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_threshold/certification.json",
-        "certification_sha256": "be1084d7381ea1bf4e46ba345e603d4a6a8fae27657bafff2e160b99465baaae",
+        "certification_sha256": "9710ffd578e8b49b703cfb5f8399cf6f38ba4e872c350afebfc308c32c4a7672",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "d47909f95e425ccc0d14d396eb4593d7edd9cd849f7e24a8a4bf0ef73a395f75",
+        "mutation_bundle_sha256": "a0a087477b04e90a7d842f976f03d6c0548d8b123251497fc841fbddd54e5ece",
         "mutation_id": "neg_004_wrong_threshold",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_threshold/certification.json",
         "trigger_condition": "Uses a threshold above the control high level and never captures after initialization.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_track_input/certification.json",
-        "certification_sha256": "6ff00283545d7caaa4b3a67fd360d0b83294967f111dd3d97b01e207a9896f15",
+        "certification_sha256": "1fc6e0e81128640dddb217a5d1209bcabf56bb6a0c310e2eca8c76f2336682fb",
         "fault_class": "track_input",
-        "mutation_bundle_sha256": "799066bf918afd4ff9855f75c28356e87c6571670db7b400c89adadc1d8e98f5",
+        "mutation_bundle_sha256": "1df339a7ac8e02fca454b6a1fde2de8dca396466a0838697400c36d9ed596883",
         "mutation_id": "neg_003_track_input",
         "source_catalog_certification_path": "negative_variants/neg_003_track_input/certification.json",
         "trigger_condition": "Tracks VIN continuously instead of holding sampled values.",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "2a0c61f2769c228fdbdad37d2b6d28a14baed0b4813f61f4d825b6be48f015e8",
+        "certification_sha256": "5d3564632a99a5559c9dd1962c19cc078783de5993827bddd29b806d5a049ab9",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "8d77c0311bada9fd9b9dad08f0893f8fc8f00f522e8b1fca44cc75f63231fedc",
+        "mutation_bundle_sha256": "d88665667839e7751e33b7ac079f01e333a4accd0b81cb8931def021f71f2040",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Samplehold Rising Edge: scales the metric output, preserving the main path while failing measurement checks.",
@@ -45,9 +45,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "63e18fb2b32ab6e8cb07f8ba998abf7014398c45f3884b8a22be37ce3409cfb9",
+        "certification_sha256": "4878b70f42e3836c71e85558e5e37728d2aa691b8a0ebff7c51ae0e1e2a7cab6",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "99efdea97ec6f7a9c60f6a93ad37dd3fbec8178b3fe34ea6f678e84392995d76",
+        "mutation_bundle_sha256": "f382e92e1c6e617133d032fd63a0427d60b9f0379815accef1c6918bf3d45024",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -59,9 +59,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_half_scale_capture/certification.json",
-        "certification_sha256": "a486cd6fa32f7263a44c75a3d1a8d63ed3c280bd0212b3a1a83cf2275415ad79",
+        "certification_sha256": "b6823be22cc331d4eff1a36d06046d9529c72f29c95dea86135cceb3535b4e3e",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "46fc2f21cad72f215a2c3f7455a08287781923cd2ac09490886ef25c3d8efd9b",
+        "mutation_bundle_sha256": "6f56b54d9ba1526b5bb199a7f9fb282fa8aad961349b3f286bb6c2d07c20f411",
         "mutation_id": "neg_002_half_scale_capture",
         "source_catalog_certification_path": "negative_variants/neg_002_half_scale_capture/certification.json",
         "trigger_condition": "Captures half of VIN on rising control edges instead of the full held voltage.",
@@ -76,8 +76,8 @@
     "hashes": {
       "mutation_catalog_sha256": "1cd8ca87e97b671751b037f051a543eeb87866be1d8c32b7ddb65c9bc98f5012",
       "score_deck_sha256": "59f926861593a0daa818da1db2230c70b9a4bd3c630a6aeb95362765fd92c8c0",
-      "task_certification_sha256": "829a62e9c4cdb9e6457a726747d0dd73fbc4da323d8f65566ebe9c7f32d7b18d",
-      "task_record_sha256": "32495fd3a8121f9a8aa44bbc52367ed840d7d8c88466612df69676c13a960af1"
+      "task_certification_sha256": "caf57cd2aac82cdb40101a758073e41f4238a0dade46e66adb2ba1f81cfcdea2",
+      "task_record_sha256": "6567f052ec87a931546072d9c2e43d749031f1e64d7914baba2e5547026f1abe"
     },
     "release_dir": "221-samplehold-rising-edge"
   }

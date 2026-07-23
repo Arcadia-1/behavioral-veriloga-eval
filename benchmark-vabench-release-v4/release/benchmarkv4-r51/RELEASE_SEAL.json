@@ -1,10 +1,10 @@
 {
   "artifact_sha256": {
-    "AUDIT_REPORT.json": "84cec1eb0b536bd7f486f8d835b2b7c6795784c6ac3f6134e0df8611dfd1acdc",
-    "MANIFEST.json": "c8892200e78950e044c6c9bac0cdd33db4391f386e1ef373cc8a47b7345d913f",
-    "RUNTIME_INGESTION_EVIDENCE.json": "4299b722bfa1ed39ff3a4239134bd5745af2a210ba858bfd655f113d827ad73a",
+    "AUDIT_REPORT.json": "be7ef53b62e2fc8f844c85a2979c52a9dfeed4e1380b7980cdd2b4ef002cab8c",
+    "MANIFEST.json": "bfbde156418f7e7482d0142e2ebee3e9f34613f6064b6380a34e135dd738dc2e",
+    "RUNTIME_INGESTION_EVIDENCE.json": "02387c5b2cd18c92da715028968f5f667ef2ce0eaf73490f4df29d80a7117413",
     "TASK_INDEX.json": "fafec13e234980f26daaca71d873c154163bc8512111db6d380c558a63184197",
-    "prompt_modes/manifest.json": "97755f691b785422ef1519fe89d06953bcdb898e1cca1577851f90e882bedf97",
+    "prompt_modes/manifest.json": "65fe9ad8965aec81b1ce8fe45d7c4ea837d3a6df974c2e80c9c28e579bc94db2",
     "prompt_modes/modes.json": "3d5a0a8452ae998d85566d3bc85ae227dd9df33e003b0a03750ac67470423218",
     "skills/SNAPSHOT_MANIFEST.json": "4511879936adecf88ff4bda9723175e43f10edc2d9a9aa00d10d89055eb68d7f"
   },
@@ -23,14 +23,14 @@
     "stale_negative_case_ids": []
   },
   "evidence_sha256": {
-    "evidence/r51/PROFILE_PARITY.json": "9d88e32aeb353aa7af6713669115afad982db7b416eb4c6fc3ab9b31a6709005",
-    "evidence/r51/RUST_EVAS2_CERTIFICATION.json": "06d620060a5e6a5c573a7832c4f7489a218814a65395a108d5019fde14f09f02",
-    "evidence/r51/STIMULUS_METAMORPHIC.json": "b7386d4469acb2af35733342fa0c57a62854acd660c1c7ae9a70d243531053d0"
+    "evidence/r51/PROFILE_PARITY.json": "f10e27ed0666344a1a29dab3e16b3e8a51d18b0c4e186c5d3372fe43e3b34862",
+    "evidence/r51/RUST_EVAS2_CERTIFICATION.json": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
+    "evidence/r51/STIMULUS_METAMORPHIC.json": "5159931bed054f46ca1979b8c2c7ba4d9b2b28eb857b746086ccacdc97bd4953"
   },
   "immutable": true,
   "release_revision": "r51",
   "release_status": "r51_immutable_rust_evas2_certified",
   "schema_version": "v4-benchmarkv4-release-seal-v1",
   "simulation_claim": "fresh full400 Rust EVAS2 evidence with hash-bound source inputs",
-  "source_score_denominator_registry_sha256": "dcc453ef0861c2e95ea3e82e84aa33c345d8d8606f3605883b6972fb71ffc139"
+  "source_score_denominator_registry_sha256": "c050fb3c59ed19535f1e6a08d55e8effc547821b12eae4728beb201faf8c05e6"
 }

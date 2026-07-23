@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_pm_metric_stuck_low/certification.json",
-        "certification_sha256": "eb31dd064415233efd917761f1acf9615c0e4463001b718263433e6228f81b65",
+        "certification_sha256": "8fe02c340dbea39c269a8249bbe955a4d08483530898a48448caceaa3373cb38",
         "fault_class": "pm_metric_stuck_low",
-        "mutation_bundle_sha256": "44b88c76cb76595f0ca81703ac34864e00dbe9ebe7109f1cbe395aeea2e23881",
+        "mutation_bundle_sha256": "5c07e6e04590f619eeff304f83784797ddf193a69b2bc9768201c2b746c28164",
         "mutation_id": "neg_002_pm_metric_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_002_pm_metric_stuck_low/certification.json",
         "trigger_condition": "pm_metric_stuck_low",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_missing_clear/certification.json",
-        "certification_sha256": "73e7cd7c106fe05579f64927dfc720d1c71fccb974f488ff83549f5563194353",
+        "certification_sha256": "6900cc2b239cb37067a44efb34eb8d8a1fec9c031d2fc6eb1fa940b01c500165",
         "fault_class": "missing_clear",
-        "mutation_bundle_sha256": "4538c59d040dc0b2ad8b77084a7f9fe1be39f2a9127664b1cf8ffe56679c3e8e",
+        "mutation_bundle_sha256": "bf08e520641a4c9b3cbe80df21b6e760ea65ad75c95aa48f1a8291cbf4a5b0bd",
         "mutation_id": "neg_004_missing_clear",
         "source_catalog_certification_path": "negative_variants/neg_004_missing_clear/certification.json",
         "trigger_condition": "missing_clear",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_memory_missing/certification.json",
-        "certification_sha256": "aa15621848308922532dd74e5c18eaa48547b9c38238a6643be9aa040d34abb8",
+        "certification_sha256": "902013e78937c0c4db5af24a8469c8a252e7561da7095a2f7ac02adb0909787a",
         "fault_class": "memory_missing",
-        "mutation_bundle_sha256": "32fe4060f0a28e2da99ad2d80b10faf00b8ed28fb820f4b09b67055a56446eec",
+        "mutation_bundle_sha256": "5ce16981d3af7c6608eb8a340108dac492b633604f70823fb9317a5c143e7df2",
         "mutation_id": "neg_005_memory_missing",
         "source_catalog_certification_path": "negative_variants/neg_005_memory_missing/certification.json",
         "trigger_condition": "memory_missing",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_no_compression/certification.json",
-        "certification_sha256": "f61ae941560e11fe1518164cc19cb3ccfe8f47c249d25b934fe16d675cdc7f4c",
+        "certification_sha256": "0bba47d3bddf42f84344b73b3437e83cb4508cd873b7442e45279de0b9ec0d99",
         "fault_class": "no_compression",
-        "mutation_bundle_sha256": "0e81af617d78a9da9eb1732caf0138145f814eaea4355cc16bda852272b526b1",
+        "mutation_bundle_sha256": "db984714752988e0e785111076bb0496f09d1a6bda4b091610ecdf48fac4ec3f",
         "mutation_id": "neg_001_no_compression",
         "source_catalog_certification_path": "negative_variants/neg_001_no_compression/certification.json",
         "trigger_condition": "no_compression",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_valid_stuck_low/certification.json",
-        "certification_sha256": "e51d54d457e5229e1c7e6e1ab8af3acbf1ed3b568469d3542313dc999d1cfb26",
+        "certification_sha256": "3659e23de3005ff40cdd5fe89d4211c883369db23d4e2a030d5aa5d23635b805",
         "fault_class": "valid_stuck_low",
-        "mutation_bundle_sha256": "9091a11a5e7e9e4eca3d05fd459169e1171f730a0ab3c4335e7f8402bd404bb8",
+        "mutation_bundle_sha256": "ded04108ea0d749a0f95998314318ea36aa99fd37cdc5f2cfd51390f131c4810",
         "mutation_id": "neg_003_valid_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_003_valid_stuck_low/certification.json",
         "trigger_condition": "valid_stuck_low",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "d274272687e4a5c0bf172a8ff4fd4095e812594b40246b7f2f2b81b0e4fb29b2",
       "score_deck_sha256": "ed8bd2300938681f20dcb306204082999e1265d326976b4e1f64502df52098fe",
-      "task_certification_sha256": "7f356d23e0d7d248fc2cbae30eec73844db5ec1848fac3cfc04c218b9f70bb29",
-      "task_record_sha256": "b04dbb3caa240653c3c6ba8db9ab3de4d0a6214e7e2d3c562b4e8b22ff5d9d56"
+      "task_certification_sha256": "ef3e886258b5c43dc941c622acff23c911a734104ce79e37b8c89d44e1fa9dc4",
+      "task_record_sha256": "f8a5483fc09f0c47990289b6e9f103220378fda1691a8cb8ef95c2deb0b4dd9a"
     },
     "release_dir": "339-pa-ampm-memory-tap-macro"
   }
