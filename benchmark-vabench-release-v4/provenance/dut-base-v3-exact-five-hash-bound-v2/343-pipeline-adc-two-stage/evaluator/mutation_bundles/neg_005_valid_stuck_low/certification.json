@@ -20,15 +20,15 @@
     "campaign": "r51-full400",
     "checker_id": "v4_343_pipeline_adc_two_stage",
     "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
+    "report_sha256": "1cdaaeb1a3e3a513e6cea90ab0c002640e7cab8950314dca3831dde279c900c6",
     "trace_row_count": 2077
   },
   "family_id": "343",
   "inputs": {
     "checker_profile_sha256": "885e607c4633206e4f0799d4fc98aec3569454ad0d668934be59f8994a26c3e5",
-    "harness_spec_sha256": "b3b6581ac97df7fd708f978ce61e62336819d8e6fb474b137291f25b6156e192",
+    "harness_spec_sha256": "51ddbeba0e2ba2209f0d89e55bb4fb5efb08baed1a94e385b821aaf3c2e16cd8",
     "mutation_bundle_sha256": "285930a8b35675eb9f91ab3e5b761c49ba2ef3d7f78f8674dfb7c4af61348130",
-    "profile_sha256": "a909bcbc7787ea097887ebdc4a3c7f4824a3a77c1a6cf783a1b6827539daa480"
+    "profile_sha256": "47b1b5a6c1467607ff8c2617ff5e7a22f5c4965f05046ff88584502481ffa052"
   },
   "mutation_id": "neg_005_valid_stuck_low",
   "outcome": "killed_behaviorally",
@@ -37,7 +37,7 @@
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
     "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
-    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_revision": "91c268bc221cbb6b24fbe414196b5bdfe958fbad",
     "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },

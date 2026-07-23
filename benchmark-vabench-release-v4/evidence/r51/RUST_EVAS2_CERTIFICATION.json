@@ -28804,8 +28804,8 @@
   "certification_policy": "rust_evas2_only",
   "input_report_sha256": [
     {
-      "name": "RUST_EVAS2_FULL400_CURRENT_CHECKERS_RAW.json",
-      "sha256": "d34b7c46f209a084cf90010542054ee79290589df162c64b6d06c6345099bf9e"
+      "name": "pr478-r51-full400-fixed-v2.json",
+      "sha256": "7a9b67b9fe40a2cdfaa91f63ff45203e3b61ed52a6c3f26194c2addac13df2af"
     }
   ],
   "release_candidate": "r51",
@@ -28814,12 +28814,12 @@
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
     "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
-    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_revision": "91c268bc221cbb6b24fbe414196b5bdfe958fbad",
     "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-r51-rust-evas2-certification-report-v2",
-  "source_certification_definition_sha256": "ddf3fa9a2aada9f25f2a2287feb06fc600555e79ad9c630a6fc843e3cdbdb17d",
+  "source_certification_definition_sha256": "f5f81b56adcef912b03577ad47bfed9df6d097c84250547e2872498c110e55c7",
   "source_certifications_updated": true,
   "status": "pass",
   "summary": {
