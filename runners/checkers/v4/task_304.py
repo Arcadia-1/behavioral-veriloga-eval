@@ -9,7 +9,6 @@ from ..common.v4_topup import (
 from .trace_utils import sample_signal
 
 
-_NOMINAL_STOP = 78e-9
 _TICK = 500e-12
 _PROBE_OFFSETS = (300e-12, 450e-12)
 
@@ -21,9 +20,12 @@ def _timer_events(rows: list[dict[str, float]]) -> list[tuple[float, tuple[float
     if duration <= 0.0:
         return []
 
-    scale = duration / _NOMINAL_STOP
-    tick = _TICK * scale
-    offsets = tuple(offset * scale for offset in _PROBE_OFFSETS)
+    # The DUT owns its timer cadence through the Verilog-A ``tick`` parameter.
+    # Stimulus affine transforms stretch the deck sources and stop time, but
+    # they do not rewrite this parameter, so checker probes must stay on the
+    # physical 500 ps timer grid.
+    tick = _TICK
+    offsets = _PROBE_OFFSETS
     events: list[tuple[float, tuple[float, ...]]] = []
     index = 0
     while True:

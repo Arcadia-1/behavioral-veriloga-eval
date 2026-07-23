@@ -91,6 +91,150 @@ def _tia_rows() -> list[dict[str, float]]:
     return rows
 
 
+def _pwl_value(points: tuple[tuple[float, float], ...], time_s: float) -> float:
+    if time_s <= points[0][0]:
+        return points[0][1]
+    for (left_t, left_v), (right_t, right_v) in zip(points, points[1:]):
+        if time_s <= right_t:
+            if right_t == left_t:
+                return right_v
+            alpha = (time_s - left_t) / (right_t - left_t)
+            return left_v + alpha * (right_v - left_v)
+    return points[-1][1]
+
+
+def _affine_points(
+    points: tuple[tuple[float, float], ...],
+    *,
+    scale: float,
+    shift_s: float,
+) -> tuple[tuple[float, float], ...]:
+    return tuple((scale * time_s + shift_s, value) for time_s, value in points)
+
+
+def _transition_value(
+    previous: float,
+    target: float,
+    elapsed_s: float,
+    *,
+    tr_s: float = 200e-12,
+) -> float:
+    if elapsed_s <= 0.0:
+        return previous
+    if elapsed_s >= tr_s:
+        return target
+    return previous + (target - previous) * (elapsed_s / tr_s)
+
+
+def _tia_affine_rows() -> list[dict[str, float]]:
+    scale = 1.37
+    shift_s = 2e-9
+    stop = 78e-9 * scale + shift_s
+    vin_points = _affine_points(
+        (
+            (0.0, 0.42),
+            (10e-9, 0.42),
+            (18e-9, 0.72),
+            (30e-9, 0.72),
+            (40e-9, 0.16),
+            (52e-9, 0.16),
+            (66e-9, 0.62),
+            (78e-9, 0.62),
+        ),
+        scale=scale,
+        shift_s=shift_s,
+    )
+    bias_points = _affine_points(
+        (
+            (0.0, 0.24),
+            (14e-9, 0.24),
+            (24e-9, 0.68),
+            (45e-9, 0.68),
+            (58e-9, 0.28),
+            (78e-9, 0.62),
+        ),
+        scale=scale,
+        shift_s=shift_s,
+    )
+    enable_points = _affine_points(
+        (
+            (0.0, 0.0),
+            (4e-9, 0.0),
+            (4.1e-9, 0.9),
+            (52e-9, 0.9),
+            (52.1e-9, 0.0),
+            (58e-9, 0.0),
+            (58.1e-9, 0.9),
+            (78e-9, 0.9),
+        ),
+        scale=scale,
+        shift_s=shift_s,
+    )
+    rst_points = _affine_points(
+        (
+            (0.0, 0.9),
+            (1.7e-9, 0.9),
+            (1.8e-9, 0.0),
+            (78e-9, 0.0),
+        ),
+        scale=scale,
+        shift_s=shift_s,
+    )
+
+    target = previous = {"vout": 0.45, "transimpedance_metric": 0.0, "overload": 0.0}
+    transition_start = 0.0
+    rows: list[dict[str, float]] = []
+    for index in range(int(stop / 50e-12) + 1):
+        time_s = index * 50e-12
+        tick_index = int(time_s / 500e-12)
+        if abs(time_s - tick_index * 500e-12) < 1e-18:
+            previous = {
+                key: _transition_value(previous[key], target[key], time_s - transition_start)
+                for key in target
+            }
+            transition_start = time_s
+            vin = _pwl_value(vin_points, time_s)
+            bias = _pwl_value(bias_points, time_s)
+            enable = _pwl_value(enable_points, time_s)
+            rst = _pwl_value(rst_points, time_s)
+            if rst > 0.45 or enable <= 0.45:
+                target = {"vout": 0.45, "transimpedance_metric": 0.0, "overload": 0.0}
+            else:
+                gain_scale = max(_clip01((bias - 0.3) / 0.15), 0.35)
+                gain = 3.0 * gain_scale
+                raw = 0.45 + gain * (vin - 0.45)
+                target = {
+                    "vout": _clip01(raw),
+                    "transimpedance_metric": _clip01(0.9 * gain / 3.0),
+                    "overload": 0.9 if raw > 0.9 or raw < 0.0 else 0.0,
+                }
+        values = {
+            key: _transition_value(previous[key], target[key], time_s - transition_start)
+            for key in target
+        }
+        rows.append(
+            {
+                "time": time_s,
+                "vin_proxy": _pwl_value(vin_points, time_s),
+                "bias": _pwl_value(bias_points, time_s),
+                "enable": _pwl_value(enable_points, time_s),
+                "rst": _pwl_value(rst_points, time_s),
+                **values,
+            }
+        )
+    rows.append(
+        {
+            "time": stop,
+            "vin_proxy": _pwl_value(vin_points, stop),
+            "bias": _pwl_value(bias_points, stop),
+            "enable": _pwl_value(enable_points, stop),
+            "rst": _pwl_value(rst_points, stop),
+            **target,
+        }
+    )
+    return rows
+
+
 def _clocked_rows(
     cycles: list[dict[str, float]],
     update,
@@ -299,6 +443,10 @@ def test_task_304_rejects_combinational_tracking_in_place_of_timer_hold() -> Non
             overload=0.9 if raw > 0.9 or raw < 0.0 else 0.0,
         )
     assert not check_304(bad)[0]
+
+
+def test_task_304_accepts_affine_shifted_stimulus_on_physical_timer_grid() -> None:
+    assert check_304(_tia_affine_rows())[0]
 
 
 def test_task_305_rejects_combinational_outputs_in_place_of_sample_and_hold() -> None:

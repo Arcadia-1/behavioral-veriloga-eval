@@ -23,6 +23,8 @@ R51_SPECTRE_CASES = (
 )
 
 NS = 1e-9
+TICK_NS = 0.5
+TRANSITION_NS = 0.2
 VIN_A = [(0.0, 0.70), (10.0, 0.70), (10.1, 0.46), (26.0, 0.46), (26.1, 0.72), (45.0, 0.72)]
 VIN_B = [(0.0, 0.40), (12.0, 0.40), (12.1, 0.44), (26.0, 0.44), (26.1, 0.40), (45.0, 0.40)]
 CLOCK_EVENTS = sorted(
@@ -71,6 +73,30 @@ def _clock(time_ns: float, delay_ns: float) -> float:
     if phase < 1.62:
         return 0.9 * (1.0 - (phase - 1.56) / 0.06)
     return 0.0
+
+
+def _clock_from_edges(time_ns: float, edges_ns: list[float]) -> float:
+    for edge_ns in edges_ns:
+        rise_start = edge_ns - 0.03
+        rise_end = edge_ns + 0.03
+        fall_start = edge_ns + 0.62
+        fall_end = edge_ns + 0.68
+        if rise_start <= time_ns <= rise_end:
+            return 0.9 * (time_ns - rise_start) / (rise_end - rise_start)
+        if rise_end < time_ns < fall_start:
+            return 0.9
+        if fall_start <= time_ns <= fall_end:
+            return 0.9 * (1.0 - (time_ns - fall_start) / (fall_end - fall_start))
+    return 0.0
+
+
+def _transition(old_value: float, new_value: float, start_ns: float, time_ns: float) -> float:
+    if time_ns <= start_ns:
+        return old_value
+    fraction = (time_ns - start_ns) / TRANSITION_NS
+    if fraction >= 1.0:
+        return new_value
+    return old_value + (new_value - old_value) * max(0.0, fraction)
 
 
 def _synthetic_rows(step_ns: float, *, alarm_after_one: bool) -> list[dict[str, float]]:
@@ -143,6 +169,105 @@ def _synthetic_rows(step_ns: float, *, alarm_after_one: bool) -> list[dict[str, 
     ]
 
 
+def _ready_transition_boundary_rows() -> list[dict[str, float]]:
+    clk_a_edges = [4.0, 8.0, 13.0, 18.0, 22.0, 26.0, 30.0, 42.0, 46.0, 52.0, 56.0]
+    clk_b_edges = [5.0, 9.0, 14.95, 19.0, 23.0, 27.0, 31.0, 43.0, 47.0, 53.0, 57.0]
+    clock_events = sorted([(time_ns, "a") for time_ns in clk_a_edges] + [(time_ns, "b") for time_ns in clk_b_edges])
+    vin_a_points = [(0.0, 0.70), (24.0, 0.70), (24.1, 0.47), (40.0, 0.47), (40.1, 0.72), (60.0, 0.72)]
+    vin_b_points = [(0.0, 0.40), (24.0, 0.40), (24.1, 0.44), (40.0, 0.44), (40.1, 0.39), (60.0, 0.39)]
+
+    def rst(time_ns: float) -> float:
+        return 0.9 if time_ns < 1.0 or 10.0 <= time_ns < 12.0 else 0.0
+
+    def enable(time_ns: float) -> float:
+        return 0.0 if time_ns < 2.0 or 36.0 <= time_ns < 38.0 else 0.9
+
+    sa_start = sb_start = sa_target = sb_target = 0.45
+    sa_start_ns = sb_start_ns = 0.0
+    ready_a = ready_b = False
+    ready_start = ready_target = 0.0
+    ready_start_ns = 0.0
+    metric_targets: list[tuple[float, tuple[float, float, float], tuple[float, float, float]]] = []
+    current_metric = (0.0, 0.0, 0.0)
+    consecutive = 0
+    event_index = 0
+
+    def set_ready_target(target_ns: float) -> None:
+        nonlocal ready_start, ready_target, ready_start_ns
+        new_target = 0.9 if ready_a and ready_b else 0.0
+        if new_target != ready_target:
+            ready_start = _transition(ready_start, ready_target, ready_start_ns, target_ns)
+            ready_target = new_target
+            ready_start_ns = target_ns
+
+    for tick_index in range(int(60.0 / TICK_NS) + 1):
+        tick_ns = tick_index * TICK_NS
+        while event_index < len(clock_events) and clock_events[event_index][0] <= tick_ns + 1e-12:
+            event_ns, channel = clock_events[event_index]
+            if rst(event_ns) > 0.45 or enable(event_ns) <= 0.45:
+                sa_start = _transition(sa_start, sa_target, sa_start_ns, event_ns)
+                sb_start = _transition(sb_start, sb_target, sb_start_ns, event_ns)
+                sa_target = sb_target = 0.45
+                sa_start_ns = sb_start_ns = event_ns
+                ready_a = ready_b = False
+                consecutive = 0
+            elif channel == "a":
+                sa_start = _transition(sa_start, sa_target, sa_start_ns, event_ns)
+                sa_target = _pwl(event_ns, vin_a_points)
+                sa_start_ns = event_ns
+                ready_a = True
+            else:
+                sb_start = _transition(sb_start, sb_target, sb_start_ns, event_ns)
+                sb_target = _pwl(event_ns, vin_b_points)
+                sb_start_ns = event_ns
+                ready_b = True
+            set_ready_target(event_ns)
+            event_index += 1
+
+        ready_at_tick = _transition(ready_start, ready_target, ready_start_ns, tick_ns)
+        if rst(tick_ns) > 0.45 or enable(tick_ns) <= 0.45 or ready_at_tick <= 0.45:
+            consecutive = 0
+            next_metric = (0.0, 0.0, 0.0)
+        else:
+            sa = _transition(sa_start, sa_target, sa_start_ns, tick_ns)
+            sb = _transition(sb_start, sb_target, sb_start_ns, tick_ns)
+            skew = abs(sa - sb)
+            magnitude = 0.5 * (abs(sa - 0.45) + abs(sb - 0.45))
+            consecutive = consecutive + 1 if skew > 0.04 else 0
+            next_metric = (skew, magnitude, 0.9 if consecutive >= 2 else 0.0)
+        metric_targets.append((tick_ns, current_metric, next_metric))
+        current_metric = next_metric
+
+    def output(time_ns: float, output_index: int) -> float:
+        tick_index = min(int((time_ns + 1e-12) / TICK_NS), len(metric_targets) - 1)
+        tick_ns, old_metric, new_metric = metric_targets[tick_index]
+        return _transition(old_metric[output_index], new_metric[output_index], tick_ns, time_ns)
+
+    times_ns = {round(index * 0.05, 12) for index in range(int(60.0 / 0.05) + 1)}
+    for tick_index in range(int(60.0 / TICK_NS) + 1):
+        tick_ns = tick_index * TICK_NS
+        times_ns.update((tick_ns, tick_ns + 0.25))
+    for edge_ns in clk_a_edges + clk_b_edges:
+        times_ns.update((edge_ns - 0.03, edge_ns, edge_ns + 0.03, edge_ns + 0.62, edge_ns + 0.68))
+    times_ns.update((1.0, 2.0, 10.0, 12.0, 14.95, 15.0, 15.25, 15.5, 36.0, 38.0))
+
+    return [
+        {
+            "time": time_ns * NS,
+            "vin_a": _pwl(time_ns, vin_a_points),
+            "vin_b": _pwl(time_ns, vin_b_points),
+            "clk_a": _clock_from_edges(time_ns, clk_a_edges),
+            "clk_b": _clock_from_edges(time_ns, clk_b_edges),
+            "rst": rst(time_ns),
+            "enable": enable(time_ns),
+            "skew_metric": output(time_ns, 0),
+            "magnitude_metric": output(time_ns, 1),
+            "alarm": output(time_ns, 2),
+        }
+        for time_ns in sorted(time_ns for time_ns in times_ns if 0.0 <= time_ns <= 60.0)
+    ]
+
+
 def test_task312_r51_spectre_reference_passes_and_early_alarm_is_killed() -> None:
     reference_ok, reference_note = check_v4_312_interleaved_adc_skew_monitor(
         _load_spectre_rows("correct")
@@ -154,6 +279,16 @@ def test_task312_r51_spectre_reference_passes_and_early_alarm_is_killed() -> Non
     assert reference_ok, reference_note
     assert not mutation_ok, mutation_note
     assert "P_ASSERT_ALARM_WHEN_SKEW_METRIC_EXCEEDS" in mutation_note
+
+
+def test_task312_models_ready_transition_when_second_edge_is_near_tick() -> None:
+    ok, note = check_v4_312_interleaved_adc_skew_monitor(
+        _ready_transition_boundary_rows()
+    )
+
+    assert ok, note
+    assert "alarm_errors=0" in note
+    assert "skew_errors=0" in note
 
 
 @pytest.mark.parametrize("step_ns", [0.02, 0.37])

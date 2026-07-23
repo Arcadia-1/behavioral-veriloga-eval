@@ -21,6 +21,8 @@ TRANSITION_S = 200e-12
 PROBE_DELAY_S = TRANSITION_S + 50e-12
 TIME_EPS_S = 1e-15
 VTH = 0.45
+VDD = 0.9
+VSS = 0.0
 VCM = 0.45
 SKEW_LIMIT = 40e-3
 
@@ -29,6 +31,17 @@ def _sample(rows: list[dict[str, float]], signal: str, time_s: float) -> float:
     value = sample(rows, signal, time_s)
     assert value is not None
     return float(value)
+
+
+def _transition_value(
+    start_value: float, target_value: float, start_time_s: float, time_s: float
+) -> float:
+    if time_s <= start_time_s:
+        return start_value
+    fraction = (time_s - start_time_s) / TRANSITION_S
+    if fraction >= 1.0:
+        return target_value
+    return start_value + (target_value - start_value) * max(0.0, fraction)
 
 
 def check_v4_312_interleaved_adc_skew_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -55,7 +68,10 @@ def check_v4_312_interleaved_adc_skew_monitor(rows: list[dict[str, float]]) -> t
         [(time_s, "a") for time_s in crossings(rows, "clk_a", threshold=VTH, direction="rising")]
         + [(time_s, "b") for time_s in crossings(rows, "clk_b", threshold=VTH, direction="rising")]
     )
-    sa = sb = VCM
+    sa_start = sb_start = sa_target = sb_target = VCM
+    sa_start_time = sb_start_time = float(rows[0]["time"])
+    ready_start = ready_target = VSS
+    ready_start_time = float(rows[0]["time"])
     ready_a = ready_b = False
     consecutive = 0
     checked = skew_errors = mag_errors = alarm_errors = 0
@@ -67,6 +83,16 @@ def check_v4_312_interleaved_adc_skew_monitor(rows: list[dict[str, float]]) -> t
     event_index = 0
     tick_index = max(0, math.ceil((float(rows[0]["time"]) - TIME_EPS_S) / TICK_S))
     stop_time = float(rows[-1]["time"])
+
+    def update_ready_target(event_time_s: float) -> None:
+        nonlocal ready_start, ready_target, ready_start_time
+        new_target = VDD if ready_a and ready_b else VSS
+        if new_target != ready_target:
+            ready_start = _transition_value(
+                ready_start, ready_target, ready_start_time, event_time_s
+            )
+            ready_target = new_target
+            ready_start_time = event_time_s
 
     while True:
         tick_time = tick_index * TICK_S
@@ -82,16 +108,28 @@ def check_v4_312_interleaved_adc_skew_monitor(rows: list[dict[str, float]]) -> t
             rst_at_edge = _sample(rows, "rst", event_time) > VTH
             enabled_at_edge = _sample(rows, "enable", event_time) > VTH
             if rst_at_edge or not enabled_at_edge:
-                sa = sb = VCM
+                sa_start = _transition_value(sa_start, sa_target, sa_start_time, event_time)
+                sb_start = _transition_value(sb_start, sb_target, sb_start_time, event_time)
+                sa_target = sb_target = VCM
+                sa_start_time = sb_start_time = event_time
                 ready_a = ready_b = False
                 consecutive = 0
             else:
                 if channel == "a":
-                    sa = _sample(rows, "vin_a", event_time)
+                    sa_start = _transition_value(
+                        sa_start, sa_target, sa_start_time, event_time
+                    )
+                    sa_target = _sample(rows, "vin_a", event_time)
+                    sa_start_time = event_time
                     ready_a = True
                 else:
-                    sb = _sample(rows, "vin_b", event_time)
+                    sb_start = _transition_value(
+                        sb_start, sb_target, sb_start_time, event_time
+                    )
+                    sb_target = _sample(rows, "vin_b", event_time)
+                    sb_start_time = event_time
                     ready_b = True
+            update_ready_target(event_time)
             event_index += 1
 
         rst = _sample(rows, "rst", tick_time) > VTH
@@ -119,14 +157,19 @@ def check_v4_312_interleaved_adc_skew_monitor(rows: list[dict[str, float]]) -> t
             consecutive = 0
             tick_index += 1
             continue
-        if not (ready_a and ready_b):
+        expected_ready = _transition_value(
+            ready_start, ready_target, ready_start_time, tick_time
+        ) > VTH
+        if not expected_ready:
             consecutive = 0
             tick_index += 1
             continue
 
         saw_active = True
-        expected_skew = abs(sa - sb)
-        expected_mag = 0.5 * (abs(sa - VCM) + abs(sb - VCM))
+        expected_sa = _transition_value(sa_start, sa_target, sa_start_time, tick_time)
+        expected_sb = _transition_value(sb_start, sb_target, sb_start_time, tick_time)
+        expected_skew = abs(expected_sa - expected_sb)
+        expected_mag = 0.5 * (abs(expected_sa - VCM) + abs(expected_sb - VCM))
         if expected_skew > SKEW_LIMIT:
             consecutive += 1
             high_skew_seen = True

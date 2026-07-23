@@ -9,7 +9,6 @@ from ..common.v4_topup import (
 from .trace_utils import sample_signal
 
 
-_NOMINAL_STOP = 76e-9
 _TICK = 500e-12
 _PROBE_OFFSETS = (300e-12, 450e-12)
 
@@ -17,16 +16,15 @@ _PROBE_OFFSETS = (300e-12, 450e-12)
 def _timer_events(rows: list[dict[str, float]]) -> list[tuple[float, tuple[float, ...]]]:
     start = float(rows[0]["time"])
     stop = float(rows[-1]["time"])
-    duration = stop - start
-    if duration <= 0.0:
+    if stop <= start:
         return []
 
-    # Checker timing metamorphs uniformly scale and translate the complete
-    # trace.  Derive the physical-time scale from that trace envelope while
-    # retaining the DUT's declared 500 ps timer cadence.
-    scale = duration / _NOMINAL_STOP
-    tick = _TICK * scale
-    offsets = tuple(offset * scale for offset in _PROBE_OFFSETS)
+    # The DUT owns its timer cadence through the Verilog-A ``tick`` parameter.
+    # Stimulus affine transforms stretch the deck sources and stop time, but
+    # they do not rewrite this parameter, so checker probes must stay on the
+    # physical 500 ps timer grid.
+    tick = _TICK
+    offsets = _PROBE_OFFSETS
     events: list[tuple[float, tuple[float, ...]]] = []
     index = 0
     while True:
