@@ -1,9 +1,0 @@
-`include "disciplines.vams"
-module safe_analog_divider(signumer, sigdenom, sigout);
-input signumer, sigdenom;
-output sigout;
-electrical signumer, sigdenom, sigout;
-analog begin
-    V(sigout) <+ 0.0;
-end
-endmodule

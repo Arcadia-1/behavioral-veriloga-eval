@@ -49,9 +49,6 @@ DIRECT_DUT_RUNTIME_SCHEMAS = {
     "r47-direct-evas-runtime-v2",
     "r48-direct-evas-runtime-v2",
     "r49-direct-evas-runtime-v2",
-    "r50-direct-evas-runtime-v2",
-    "r51-direct-evas-runtime-v2",
-    "r51-direct-evas-runtime-v3",
 }
 DIRECT_TESTBENCH_RUNTIME_SCHEMAS = {
     "r45-direct-evas-testbench-suite-v1",
@@ -59,9 +56,6 @@ DIRECT_TESTBENCH_RUNTIME_SCHEMAS = {
     "r47-direct-evas-testbench-suite-v2",
     "r48-direct-evas-testbench-suite-v2",
     "r49-direct-evas-testbench-suite-v2",
-    "r50-direct-evas-testbench-suite-v2",
-    "r51-direct-evas-testbench-suite-v2",
-    "r51-direct-evas-testbench-suite-v3",
 }
 ARTIFACT_RE = re.compile(
     r'(?m)^<<<VABENCH_ARTIFACT path="([^"\r\n]+)">>>\r?\n'
@@ -942,35 +936,25 @@ def run_public_evas(
         raise ValueError("empty EVAS executable command")
 
     schema_version = str(contract.get("schema_version") or "")
-    runtime_version = schema_version.rsplit("-v", 1)[-1]
-    portable_runtime = runtime_version == "3"
-    if portable_runtime:
-        if contract.get("compatibility_mode") != "portable":
-            raise ValueError("v3 public EVAS runtimes must declare portable compatibility mode")
-        strict_args: list[str] = []
-    else:
-        strict_args = ["--spectre-strict"]
     requested_case = arguments.get("case")
     if schema_version in DIRECT_DUT_RUNTIME_SCHEMAS:
         if requested_case not in (None, ""):
             raise ValueError("DUT and bugfix visible tests do not accept a case")
         expected_output = (
-            "public/submission/evas-output"
-            if schema_version.endswith("-v1")
-            else "/tmp/vabench-visible/evas-output"
+            "/tmp/vabench-visible/evas-output"
+            if schema_version.endswith("-v2")
+            else "public/submission/evas-output"
         )
-        expected_command = (
+        if contract.get("command") != (
             "evas simulate public/task/visible_test.scs -o "
-            f"{expected_output}"
-            + ("" if portable_runtime else " --spectre-strict")
-        )
-        if contract.get("command") != expected_command:
+            f"{expected_output} --spectre-strict"
+        ):
             raise ValueError("unrecognized public EVAS command contract")
         deck = confined_path(runtime, "public/task/visible_test.scs")
         output = confined_path(runtime, ".vabench-visible/evas-output")
         if not deck.is_file():
             raise FileNotFoundError("visible_test.scs is missing")
-        argv = [*executable, "simulate", str(deck), "-o", str(output), *strict_args]
+        argv = [*executable, "simulate", str(deck), "-o", str(output), "--spectre-strict"]
         result = argv_result(argv, runtime, timeout_s)
         result.update({
             "status": "pass" if result.get("returncode") == 0 else "fail",
@@ -985,10 +969,6 @@ def run_public_evas(
         raise ValueError("unsupported public fixture policy")
     if contract.get("candidate") != "public/submission/testbench.scs":
         raise ValueError("unrecognized testbench candidate path")
-    if portable_runtime and not str(contract.get("candidate_command_template") or "").endswith(
-        "-o /tmp/vabench-visible/evas-output/{case}"
-    ):
-        raise ValueError("unrecognized portable testbench EVAS command contract")
     case = str(requested_case or "")
     cases = {
         str(row.get("case")): str(row.get("dut_root"))
@@ -1025,16 +1005,16 @@ def run_public_evas(
         str(run_dir / "testbench.scs"),
         "-o",
         str(output),
-        *strict_args,
+        "--spectre-strict",
     ]
     result = argv_result(argv, runtime, timeout_s)
     result.update({
         "status": "pass" if result.get("returncode") == 0 else "fail",
         "case": case,
         "test": (
-            f"submission/runs/{case}/testbench.scs"
-            if schema_version.endswith("-v1")
-            else f".vabench-visible/runs/{case}/testbench.scs"
+            f".vabench-visible/runs/{case}/testbench.scs"
+            if schema_version.endswith("-v2")
+            else f"submission/runs/{case}/testbench.scs"
         ),
     })
     return result

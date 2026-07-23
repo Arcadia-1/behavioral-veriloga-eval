@@ -3,28 +3,28 @@
   "checker_task_id": "v4_105_single_shot_pulse",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "e970b41662ac2d686ae55ba3dcb46e2b69361c06293c8ab967833d60b33aa066",
+    "certification.json": "d0f4065bde96f53ca8be622f13415f235418780c661b109efb80fc8a00a418fa",
     "checker_profile.json": "1dbf9962735fc7ba189599e294fec2777e3847ab3cc0609fd33bbe94921439bb",
     "derivation_manifest.json": "08b22c2a2967458368412d13cab5c31d1394faddb3624c974221722a294ceff1",
     "family_spec.json": "c0e105c64eeababe7a964807753465f3fa9fb9154360b5ab5a63dad02ab18c25",
-    "harness_spec.json": "7eccd0bfcb4cb71a6ab13eea48c73edfd3fe3a1f3614c813b8778651356cfca4",
+    "harness_spec.json": "e294201489dbe817c146bd436c22e979e6b30d54190703c4e65db2d31e6201ac",
     "mutation_catalog.json": "b03d577db8c847405ed9fe74692daeb1a5b67e80509d7acd9cf9aa38bbb6ef8f",
-    "profiles/feedback.json": "e627f03e2f29781a62778ed5b26fae72eeb8b09f48eabff12b3f80d693ed5786",
-    "profiles/score.json": "dddb96dfff4ce1b8a74636584fbee20e3a9eda274c72bf9036eb4f954d112e86",
-    "score_tb.scs": "94327a3380bcf9ce8d1902d03750978ca019b7caad6dfbba132be35a5db1faa5",
+    "profiles/feedback.json": "57a229dfdda3ea9e161e7c7e0de323241bcaa98bd3eb674fbf3cbf727d652ca3",
+    "profiles/score.json": "c3a07c418ec20dfd0887f84134908373cb93bd3144347b4fe092768a8f988b96",
+    "score_tb.scs": "df013a9038164fca58ed112d6ef20b0115ab00ef7611837bd89d15ec6cf7a3d1",
     "solution_tree": "75ff2d6a2950b70c5f574cdc1af3f2b562dd8ce948bb9a2f3c4e08f2205c0504",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
   "form": "dut",
   "public_hashes": {
-    "feedback_tb.scs": "9d47de344d6d2cd764b29e798d43a8596e5378e8cf6ac0dbfa3b58072c2546ca",
+    "feedback_tb.scs": "76e29e0c8c60e7079628fde3269af05f73e8504c940341691a88795b6bd0685c",
     "instruction.md": "29c9eda16344bf3a10797f0cdf1c683785269339647933a058c7c03e7ad972ba",
     "public_contract.json": "853533eed1e5af8eb005834e20b0496450d5ad83c6fdf49956fe154d4e0b353a"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "e970b41662ac2d686ae55ba3dcb46e2b69361c06293c8ab967833d60b33aa066"
+    "sha256": "d0f4065bde96f53ca8be622f13415f235418780c661b109efb80fc8a00a418fa"
   },
   "release_dir": "105-single-shot-pulse",
   "schema_version": "v4-canonical-dut-release-task-v1",

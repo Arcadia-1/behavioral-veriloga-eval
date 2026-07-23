@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_wrong_msb_weight/certification.json",
-        "certification_sha256": "3840adac164991663612c7e017faafcb0fc3c41f067c87ed4865ae7464ca3686",
+        "certification_sha256": "2e9555f6082e6f9d85109fd20ed8c261ca5870eb0bb1521c617d2f289d153eed",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "b2c51f353c8219f2e5ab52e60d89dfd45628a7c7319fa57ec10999954a32956d",
+        "mutation_bundle_sha256": "20eadafecdddb05a6083b26d817d1a6798ca22f5eea737131477e6641e8bdaaa",
         "mutation_id": "neg_002_wrong_msb_weight",
         "source_catalog_certification_path": "negative_variants/neg_002_wrong_msb_weight/certification.json",
         "trigger_condition": "Uses a quarter-scale dctrl5 addition instead of half-scale.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_sign/certification.json",
-        "certification_sha256": "b0061b64de036f86e4f147fc60697c97e758bdeef2b417e784dbdb947cb0a4fd",
+        "certification_sha256": "eabefda9c70ec454fa30158177e59247b2ffdb3b58dbb2568f22b763a930fe21",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "9a703391bc58020baf9bdc231458d3cf76f2b6d3826533e05416fbe8e899bee2",
+        "mutation_bundle_sha256": "707d66c89a28c5d8d5c12908a30fa70ed1a9ca91d8ec3ea4870c582daeca64c0",
         "mutation_id": "neg_003_wrong_sign",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_sign/certification.json",
         "trigger_condition": "Subtracts the dctrl4 residue step instead of adding it.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "7a3deaebceca8278a76abbaae2551f7a571d44e2dbcf100a23d33206500ac729",
+        "certification_sha256": "f8325e96219aea9cecdd8bc151f530bb1467d8b6c2591e0ad3dc298d42ac1693",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "d12b48f98edb178a8506fd54e702992e5f937babff3b03b29245e149dece2a39",
+        "mutation_bundle_sha256": "4e5bdf046f2803be8836b79c68d0e0df9d381ce079e68e17c9bbd082ead1be33",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_output/certification.json",
-        "certification_sha256": "cfb6155eed120817e680042de8454d00b381c004eab394776e65b996e0174b78",
+        "certification_sha256": "06d5d5738b9c75c0456b88cd75390257792476b6013bd57417ffeb97b6517f54",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "da98fbad3f5169b7cd089e62e7c6b947d1b7499d40d3c9b47628e87ad5c1bc00",
+        "mutation_bundle_sha256": "bc739af4a891deb9d3026bf57ea4be8f3cbddf47bebe025652cce0b6596f6047",
         "mutation_id": "neg_004_half_output",
         "source_catalog_certification_path": "negative_variants/neg_004_half_output/certification.json",
         "trigger_condition": "Drives the residue output at half amplitude.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "bf63b15af741817c6a09682aea1cc79a911d02d85958f4986ac5d394fb27d842",
+        "certification_sha256": "b83f625bba4c54505758f7e71aed505a17dddeac711467cfb04058d3153378fa",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "d487bcf187adc02112b090ba7f1ed4ed7690d8d32f407c0844c40f47cb699c70",
+        "mutation_bundle_sha256": "b2ee55539ff3c9293a8830f296186d1b31c0087c140eea2d3fc843ead0e4e25a",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "CDAC 6b Stage1 Up: scales the metric output, preserving the main path while failing measurement checks.",
@@ -69,9 +69,9 @@
     "canonical_dut_id": "201",
     "hashes": {
       "mutation_catalog_sha256": "71ff7032a516ff03d53b57074af03cf0013e5571d2f0419d951098d216030e7d",
-      "score_deck_sha256": "0cad6bc43a79395fd33f419a8690e8dce8e3d48cb40ce8175e2d2444d6eb124e",
-      "task_certification_sha256": "edfd6f4ff2e1b2dcb090d9c96daedf9af569333257dbac060f4fabf61a8fa1c7",
-      "task_record_sha256": "3fcc7f5c756b022d3d5d70b37af1f15d359723e845c1db7b89b4cce8ec65ce0d"
+      "score_deck_sha256": "691f6de6a9688e24ea09206675aa1be990d94b665c7fd5d6dacfe145bb12fe49",
+      "task_certification_sha256": "4eeebff93f2e62acf62521a302d4c46b449871167457db7dcf78a489ece25a8d",
+      "task_record_sha256": "64a453e52c3eafbe3ab261ca695a8e7e0b6ee412006ceddef847b8465c962d03"
     },
     "release_dir": "201-cdac-6b-stage1-up"
   }

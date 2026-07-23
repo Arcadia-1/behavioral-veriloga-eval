@@ -1,8 +1,8 @@
 # DUT EVAS Guide
 
-Write the declared DUT artifacts under `public/submission/`, then run the exact
-`command` in `public/task/evas_runtime.json`. Do not add
-`--spectre-strict` when that task-local command omits it.
+Write the declared DUT artifacts under `public/submission/`, then run:
+
+`evas simulate public/task/visible_test.scs -o /tmp/vabench-visible/evas-output --spectre-strict`
 
 The visible deck includes the current submission by relative path. Use the
 simulation log and saved public traces to check interface, event, level,

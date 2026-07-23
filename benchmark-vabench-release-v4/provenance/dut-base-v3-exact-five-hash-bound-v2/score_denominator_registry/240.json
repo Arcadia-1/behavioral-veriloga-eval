@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_gain/certification.json",
-        "certification_sha256": "8731ed9c6d951c187f33b5e13b05cef4728c1e7cef69498931a2ef6601f909ba",
+        "certification_sha256": "2a30c81c0d79537168ec60501418ff54d721e53d571f36e8137457475af39a2f",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "e4b6c2a0af658b813ba51960faab5715af2e1818077d80a0264901cb512cf457",
+        "mutation_bundle_sha256": "1b1ba35de2ef732fa82a529e2d66d8496c543c8672bed264d57f0dab54b35997",
         "mutation_id": "neg_003_wrong_gain",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_gain/certification.json",
         "trigger_condition": "Uses an incorrect small-signal gain.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "c32dbdfe87df76609f31834569e90e2fd98b6820bcef9791f97f4d380881b46c",
+        "certification_sha256": "1b68ecfaafafbca1c8cf5b764f2fdc43eddd37a10ac4ffb389790d563e1cdfb7",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "b01abd837cbfa843934945616d5dcfc777a00e0d3c63e9689f01b4ebd0e0e172",
+        "mutation_bundle_sha256": "65db87d971c19655618c15debd3b90f50857117296bfaeb87931599b1e0d918a",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_inverted_polarity/certification.json",
-        "certification_sha256": "30d4fcb9d8db52c4abc687f3e7d6584bb9ffbc05965cafed05738211f0476145",
+        "certification_sha256": "bf5f02fdc33eefa816410eb22636b7b6b57eed41f34c6a1082fd41da88e4fa43",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "d50163072df49afdecaa87b69e442e44188090d12cc300e2397e5054e98268c8",
+        "mutation_bundle_sha256": "c31a26680f6e612e3beefba7cb22d54cd76faec6895bf2f9745b5962c84d9ad9",
         "mutation_id": "neg_004_inverted_polarity",
         "source_catalog_certification_path": "negative_variants/neg_004_inverted_polarity/certification.json",
         "trigger_condition": "Uses reversed input polarity.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_hard_clamp/certification.json",
-        "certification_sha256": "5c7f0e50a4ee9520a6571a1d2eb15005bf5651b0538755e3121749ea07ff9844",
+        "certification_sha256": "d728e67c2fbb58521c9133437e30b969930f0f8d2706d5b89ab943ca10b18908",
         "fault_class": "hard_clamp",
-        "mutation_bundle_sha256": "1ce6a41bed0d408ca9eb3705279767c67f17f10da389602988c16e18dbc45bf5",
+        "mutation_bundle_sha256": "eed3e9bd662a1fd278a4893105f91075c97a04e4dbdc461b62aa7dadbf23d5d7",
         "mutation_id": "neg_002_hard_clamp",
         "source_catalog_certification_path": "negative_variants/neg_002_hard_clamp/certification.json",
         "trigger_condition": "Uses a hard clamp instead of the required smooth tanh limiting.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "de0609d61d4ee4ebb680e945fd3497867c8d71f7ecec774b94021cf95803fa0a",
+        "certification_sha256": "f6d96595dd8f4df0bfa3945c1d7661f26ced66975113a152750371de9d365b7e",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "83a6d889382c6e6b8bd6a14c0af6439e3c3bbfeb8d7e76a87bcac0f59c9bc4c1",
+        "mutation_bundle_sha256": "629f5470cf70353896d96d0c0b8eb881df1d9a27d3d3d45f52cf9f1ebd3adc58",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales the smooth limiting amplifier transfer by the wrong output gain.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "34895be27443a505cf7115563192c237181235a28653f924790a9302a253967e",
       "score_deck_sha256": "8befe4f5ab9fafa01febf3cc328c87a443378f409817cc6a4e1337e363f40923",
-      "task_certification_sha256": "d8bef96a4630011bbd189a5a6f347a4966fd07d7760d9eac6e1bcd1a43a327c3",
-      "task_record_sha256": "fe0ed6ed9637b08fd1723f1b0223f3b6aa2cceeabe7d02aa1a9bfcdc32e68f00"
+      "task_certification_sha256": "173672d706dbbfe3bbfd2b9c231587bc3fdad7c57d5bc3f9ceb62036f4ee567d",
+      "task_record_sha256": "8b1e61fd8315b0a40b5bc4c459011b44d056b4587453b2ecdfd9ca69308b0b61"
     },
     "release_dir": "240-limiting-diffamp"
   }

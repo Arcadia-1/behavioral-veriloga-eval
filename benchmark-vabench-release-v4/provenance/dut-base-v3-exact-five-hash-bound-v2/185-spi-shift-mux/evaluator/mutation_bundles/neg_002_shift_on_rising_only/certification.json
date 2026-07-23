@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_SHIFT_ON_SCKI_TRANSITIONS satisfy the public contract; fault class polarity_or_direction_error is rejected",
-    "observed": "EVAS: v4_185 checked=193 mismatch_count=54 coverage=rises=3 falls=3 shifts=4 reset_checks=4 reset_clock_checks=2 sdi=[0, 1]; P_RESET_LOADS_DEFAULT_WORD checked=34 mismatch_count=12 expected=out3=0+/-0.08 observed=out3=0.9 sample_time=4.575e-09 metric_gap=0.9; P_SHIFT_ON_SCKI_TRANSITIONS checked=39 mismatch_count=14 expected=out1=0.9+/-0.08 observed=out1=0 sample_time=1.625e-09 metric_gap=0.9; P_SHIFT_DIRECTION_AND_SDI_INSERTION checked=57 mismatch_count=26 expected=shifted_out1=0.9+/-0.08 observed=shifted_out1=0 sample_time=1.625e-09 metric_gap=0.9; P_SDO_EXPOSES_SHIFTED_OUT_BIT checked=7 mismatch_count=2 expected=sdo_out7=0.9+/-0.08 observed=sdo_out7=0 sample_time=1.625e-09 metric_gap=0.9; P_OUTPUT_RAIL_LEVELS checked=56 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0",
+    "observed": "EVAS: v4_185 checked=192 mismatch_count=57 coverage=rises=3 falls=3 shifts=6 reset_checks=2 sdi=[0, 1]; P_RESET_LOADS_DEFAULT_WORD checked=17 mismatch_count=4 expected=out3=0+/-0.08 observed=out3=0.9 sample_time=4.725e-09 metric_gap=0.9; P_SHIFT_ON_SCKI_TRANSITIONS checked=55 mismatch_count=23 expected=out1=0.9+/-0.08 observed=out1=0 sample_time=1.625e-09 metric_gap=0.9; P_SHIFT_DIRECTION_AND_SDI_INSERTION checked=57 mismatch_count=27 expected=shifted_out1=0.9+/-0.08 observed=shifted_out1=0 sample_time=1.625e-09 metric_gap=0.9; P_SDO_EXPOSES_SHIFTED_OUT_BIT checked=7 mismatch_count=3 expected=sdo_out7=0.9+/-0.08 observed=sdo_out7=0 sample_time=1.625e-09 metric_gap=0.9; P_OUTPUT_RAIL_LEVELS checked=56 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0",
     "violated_property_ids": [
       "P_SHIFT_ON_SCKI_TRANSITIONS"
     ]
@@ -17,18 +17,18 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r51-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_185_spi_shift_mux",
-    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 404
   },
   "family_id": "185",
   "inputs": {
     "checker_profile_sha256": "e5e75c2df9351a70530d633bc8a488d72b76c785e6c611dc5847a8c64a6e821b",
-    "harness_spec_sha256": "29b2482624259958b5902f9ba942348108cd2b7a47f6776f36c75b8608bd907e",
+    "harness_spec_sha256": "512ed741df50c324a8510aaf3177eef365fac236d437ff7ba06d13fef0cb7ebe",
     "mutation_bundle_sha256": "a8967aeca96a9325a3bf08b7747b0eed3004fde311676d13a0d3fa3ec42dd266",
-    "profile_sha256": "08f3289f1aa5463fd1bb8654634f6a407fdbd196af10e86cbcddfce019f68bc7"
+    "profile_sha256": "6374c5af2bb2abc43c5359b4c0594c8c9939f467c6311c2fa0b398364b3f7d09"
   },
   "mutation_id": "neg_002_shift_on_rising_only",
   "outcome": "killed_behaviorally",
@@ -36,9 +36,6 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
-    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
-    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

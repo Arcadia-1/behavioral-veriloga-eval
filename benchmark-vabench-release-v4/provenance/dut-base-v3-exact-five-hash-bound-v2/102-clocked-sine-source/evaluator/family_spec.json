@@ -100,7 +100,6 @@
   },
   "modeling_constraints": [
     "Sample the sine and optional seeded perturbation only on rising CLK crossings after reset release.",
-    "Initialize an instance-local integer RNG state from SEED and use it for deterministic seeded perturbations.",
     "Use deterministic seeded behavior and smoothed voltage contributions only.",
     "Do not use transistor-level devices, AC/noise analysis, waveform files, validation artifacts, or simulator-specific side channels."
   ],
@@ -112,13 +111,7 @@
         "time",
         "rst_n",
         "vinp",
-        "vinn",
-        "vinp_seed_b",
-        "vinn_seed_b",
-        "vinp_seed_alt",
-        "vinn_seed_alt",
-        "vinp_sigma0",
-        "vinn_sigma0"
+        "vinn"
       ]
     },
     {
@@ -168,13 +161,7 @@
         "clk",
         "rst_n",
         "vinp",
-        "vinn",
-        "vinp_seed_b",
-        "vinn_seed_b",
-        "vinp_seed_alt",
-        "vinn_seed_alt",
-        "vinp_sigma0",
-        "vinn_sigma0"
+        "vinn"
       ]
     }
   ],
@@ -239,114 +226,12 @@
           }
         ],
         "module_ref": "vin_src",
-        "name": "IVIN_SEED_A",
+        "name": "IVIN",
         "parameter_overrides": {
-          "SEED": "17",
+          "SEED": "0",
           "ampl": "0.02",
           "freq": "fin",
           "sigma": "VIN_NOISE",
-          "vdd": "vdd",
-          "vth": "0.45"
-        }
-      },
-      {
-        "connections": [
-          {
-            "net": "clk",
-            "port_ref": "CLK",
-            "position": 0
-          },
-          {
-            "net": "rst_n",
-            "port_ref": "RST_N",
-            "position": 1
-          },
-          {
-            "net": "vinp_seed_b",
-            "port_ref": "VOUT_P",
-            "position": 2
-          },
-          {
-            "net": "vinn_seed_b",
-            "port_ref": "VOUT_N",
-            "position": 3
-          }
-        ],
-        "module_ref": "vin_src",
-        "name": "IVIN_SEED_B",
-        "parameter_overrides": {
-          "SEED": "17",
-          "ampl": "0.02",
-          "freq": "fin",
-          "sigma": "VIN_NOISE",
-          "vdd": "vdd",
-          "vth": "0.45"
-        }
-      },
-      {
-        "connections": [
-          {
-            "net": "clk",
-            "port_ref": "CLK",
-            "position": 0
-          },
-          {
-            "net": "rst_n",
-            "port_ref": "RST_N",
-            "position": 1
-          },
-          {
-            "net": "vinp_seed_alt",
-            "port_ref": "VOUT_P",
-            "position": 2
-          },
-          {
-            "net": "vinn_seed_alt",
-            "port_ref": "VOUT_N",
-            "position": 3
-          }
-        ],
-        "module_ref": "vin_src",
-        "name": "IVIN_SEED_ALT",
-        "parameter_overrides": {
-          "SEED": "29",
-          "ampl": "0.02",
-          "freq": "fin",
-          "sigma": "VIN_NOISE",
-          "vdd": "vdd",
-          "vth": "0.45"
-        }
-      },
-      {
-        "connections": [
-          {
-            "net": "clk",
-            "port_ref": "CLK",
-            "position": 0
-          },
-          {
-            "net": "rst_n",
-            "port_ref": "RST_N",
-            "position": 1
-          },
-          {
-            "net": "vinp_sigma0",
-            "port_ref": "VOUT_P",
-            "position": 2
-          },
-          {
-            "net": "vinn_sigma0",
-            "port_ref": "VOUT_N",
-            "position": 3
-          }
-        ],
-        "module_ref": "vin_src",
-        "name": "IVIN_SIGMA0",
-        "parameter_overrides": {
-          "SEED": "17",
-          "ampl": "0.02",
-          "freq": "fin",
-          "sigma": "0",
           "vdd": "vdd",
           "vth": "0.45"
         }
@@ -362,13 +247,7 @@
       "vinp",
       "vinn",
       "vamp_p",
-      "vamp_n",
-      "vinp_seed_b",
-      "vinn_seed_b",
-      "vinp_seed_alt",
-      "vinn_seed_alt",
-      "vinp_sigma0",
-      "vinn_sigma0"
+      "vamp_n"
     ]
   }
 }

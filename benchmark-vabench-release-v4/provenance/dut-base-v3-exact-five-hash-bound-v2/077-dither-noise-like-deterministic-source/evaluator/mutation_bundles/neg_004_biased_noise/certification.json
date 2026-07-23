@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_DETERMINISTIC_SEQUENCE satisfy the public contract; fault class adds_sampled_perturbation_with_a_dc_bias_instead_of_zero_mean is rejected",
-    "observed": "EVAS: property_id=P_SAMPLE_HOLD category=default_level_or_hold_mismatch expected=public_level_throughout_stable_interval observed=interval=0,row=2 event=default",
+    "observed": "EVAS: property_id=P_ZERO_MEAN_DITHER category=value_mismatch expected=std:0.025..0.12,abs_mean<=0.025,max_abs:0.05..0.22 observed=std:0.0711,mean:0.1220,max_abs:0.2783 event=full_trace",
     "violated_property_ids": [
       "P_DETERMINISTIC_SEQUENCE"
     ]
@@ -17,18 +17,18 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r51-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_077_dither_noise_like_deterministic_source",
-    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
-    "trace_row_count": 401
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "trace_row_count": 1001
   },
   "family_id": "077",
   "inputs": {
-    "checker_profile_sha256": "9b60e91ee0cefab7b855c7ec54d3635f228f9dac0d450417b50bc1e802e72b67",
-    "harness_spec_sha256": "acb4bb7fdf5233587b1f35615c7aa8e5f6e0dc1a5dee12eb1722be096cb6f2ec",
+    "checker_profile_sha256": "e1d5aae1f685d6eb083c6cd7eabe7d2694b003995b37c8708c94c7f3ba6a1a4c",
+    "harness_spec_sha256": "8378cbc64fcd2bfc97d910ed6a9e126ab9df02640d496a84fa742ee3503683b8",
     "mutation_bundle_sha256": "836ef2a2e38a8bd34aefc967fd2aec81136ea8e441c5878c1735474a70180ba5",
-    "profile_sha256": "019910633bf1dc4f7b7a1c306dae84e071492846b9ceb1902388cf0a38399a60"
+    "profile_sha256": "e25092e724fbecb4a7f8b6137e4708875d51dd68aa4649ecdf303760814d95d6"
   },
   "mutation_id": "neg_004_biased_noise",
   "outcome": "killed_behaviorally",
@@ -36,9 +36,6 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
-    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
-    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

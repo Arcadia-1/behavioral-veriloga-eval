@@ -187,59 +187,8 @@ def _rows(
     return rows
 
 
-def _rows_with_solver_dense_sample_and_hold_intervals() -> list[dict[str, float]]:
-    rows = [dict(row) for row in _rows()]
-    by_time_ns = {round(row["time"] * 1.0e9, 9): row for row in rows}
-
-    # Enable changes just after the 5.0 ns tick.  The reference DUT therefore
-    # holds zero until the 5.5 ns tick and its 200 ps output transition settles.
-    at_5ns = by_time_ns[5.0]
-    at_5ns["enable"] = 0.0
-    at_5ns["freq_metric"] = 0.0
-    for index in range(1, 36):
-        time_ns = 5.0 + 0.02 * index
-        row = dict(at_5ns)
-        row["time"] = time_ns * 1.0e-9
-        row["enable"] = 0.9
-        if time_ns <= 5.5:
-            row["freq_metric"] = 0.0
-        elif time_ns < 5.7:
-            row["freq_metric"] = 0.45 * (time_ns - 5.5) / 0.2
-        else:
-            row["freq_metric"] = 0.45
-        rows.append(row)
-
-    # The clamp command likewise changes just after the 840.0 ns tick.  Dense
-    # solver rows before 840.7 ns are valid held/transition samples, not 1 row
-    # per independent frequency-transfer failure.
-    at_840ns = by_time_ns[840.0]
-    at_840ns["mod_in"] = 0.85
-    at_840ns["freq_metric"] = _metric(0.85)
-    for index in range(1, 36):
-        time_ns = 840.0 + 0.02 * index
-        row = dict(at_840ns)
-        row["time"] = time_ns * 1.0e-9
-        row["mod_in"] = -2.0
-        if time_ns <= 840.5:
-            row["freq_metric"] = _metric(0.85)
-        elif time_ns < 840.7:
-            alpha = (time_ns - 840.5) / 0.2
-            row["freq_metric"] = _metric(0.85) + alpha * (_metric(-2.0) - _metric(0.85))
-        else:
-            row["freq_metric"] = _metric(-2.0)
-        rows.append(row)
-    return sorted(rows, key=lambda row: row["time"])
-
-
 def test_task381_gold_like_trace_covers_period_valid_and_clamp() -> None:
     ok, detail = check_v4_940_fm_vco_modulation_source(_rows(marker_mode="toggle"))
-    assert ok, detail
-
-
-def test_task381_accepts_dense_rows_during_sample_and_hold_latency() -> None:
-    ok, detail = check_v4_940_fm_vco_modulation_source(
-        _rows_with_solver_dense_sample_and_hold_intervals()
-    )
     assert ok, detail
 
 

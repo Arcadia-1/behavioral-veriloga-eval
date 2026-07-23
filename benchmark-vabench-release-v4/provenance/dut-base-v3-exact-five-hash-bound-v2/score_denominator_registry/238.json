@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_deadband/certification.json",
-        "certification_sha256": "b21dd6fa32c90134c98d8b80c8b0d21fe4eaf3911380dfba0680e00172e834d8",
+        "certification_sha256": "bd08797707db8b19b71a88bbd45b46fa2ca61726f7de416099ff6a2d92898502",
         "fault_class": "deadband_omission",
-        "mutation_bundle_sha256": "d587e98c0261ffde0370c35632593e38ed568f05990d70a85e05d96ef76d4fb3",
+        "mutation_bundle_sha256": "f60e91d284942c2957a94a1fd2b4349c8ca0152d681171bba7df39eaddaf8fb2",
         "mutation_id": "neg_002_no_deadband",
         "source_catalog_certification_path": "negative_variants/neg_002_no_deadband/certification.json",
         "trigger_condition": "Passes the input through and ignores the deadband.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_thresholds/certification.json",
-        "certification_sha256": "e2b4cb417e7ba3f8e23967aa4778c7e2dc98183ffe553dd557c03191bdc8b18a",
+        "certification_sha256": "3d874967945b3412bb2bc766eada9862712041551a2e8d76ec77d26ef70b8627",
         "fault_class": "deadband_threshold_error",
-        "mutation_bundle_sha256": "b3e11490e1ed573482bc28687e2e0fd63d31ca36f9ed7435fcc5afece774e171",
+        "mutation_bundle_sha256": "d40e39cb80bf5447b5e518b27e1d8edc1120ab772d1d606bde4d0f1a50bf7a27",
         "mutation_id": "neg_003_wrong_thresholds",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_thresholds/certification.json",
         "trigger_condition": "Uses too-wide deadband thresholds.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_rectifies_below_deadband/certification.json",
-        "certification_sha256": "5b3a186275045ed8b3abdbcebf82921face08a35e13e535b743c5a8a32d3b7bd",
+        "certification_sha256": "2a312bd725890f56a318e1ae2dbc12908e1e1892b23803438f0a2236b44358fd",
         "fault_class": "lower_residue_polarity_error",
-        "mutation_bundle_sha256": "6a827a3e2cc2238aaf65a97f9f62cdd61e6cd571e3d51813f88f979f96575fc8",
+        "mutation_bundle_sha256": "6de31984b4648068564cc2c5a5b8b68b8f4b5fee1fa046b5e5971cc2cf98d3d6",
         "mutation_id": "neg_004_rectifies_below_deadband",
         "source_catalog_certification_path": "negative_variants/neg_004_rectifies_below_deadband/certification.json",
         "trigger_condition": "Uses the wrong sign for the lower-side residue.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "4e0685b62db37ab75ca53f76f683218d5052c77ddaf7fcdb15220dc5395530a6",
+        "certification_sha256": "449cc6729fabb3be04dfc9cc34f1b67bf9b2a5a2dc3f647e4bb8c92a8094cc24",
         "fault_class": "output_scale_error",
-        "mutation_bundle_sha256": "6495de35bdaa8a89dc463fea6ab03172738c8c0c81c95007353346a0983a35c0",
+        "mutation_bundle_sha256": "8db9f24a3968e1936b374218b2ff51448d6fe407b425203459e9c5660fd74186",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Deadband Voltage: scales the metric output, preserving the main path while failing measurement checks.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "6f98ea95c06f3625869af9b2764af3f071b00221a3dc80bc6f1daa71c48a0aa6",
+        "certification_sha256": "95d87d5007c4d61f777ade82ca1592a63bf3ef25de316c3b95339b2fdfdbd36b",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "2a8e4d23523f38f403fa36296f8ae391a10d2dde2e0dd7ca49205a3ababa69d6",
+        "mutation_bundle_sha256": "91de508a70f74bb351e653fa1392c06dda38c12c700d8db5fae448673d669533",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "e708aeb9bc912348103d97c94e84090263bc196a53346c8d6630dd92932a57cc",
       "score_deck_sha256": "492a80565f4821bb0e1ba0164bf725f8dee170dde9a3284afa84dde05df8c804",
-      "task_certification_sha256": "7f7dd682ca399a4a99b01f3960f05e754a44fe68d579db0615fc1e448ca3d890",
-      "task_record_sha256": "ab07397cda637185e538d28c760d8edf7b85ed552d591c62c2d17c5fddfc03c4"
+      "task_certification_sha256": "8268a5807413322c512f1d7eab74675e83427c7aee1db1431eb1d20d9103ad2a",
+      "task_record_sha256": "0f2ccf9bd3d899527ceba8d7e376980602ebc7e18be4c19796baf3ba2e8ad2ef"
     },
     "release_dir": "238-deadband-voltage"
   }

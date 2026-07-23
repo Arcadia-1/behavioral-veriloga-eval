@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_force_zero/certification.json",
-        "certification_sha256": "6351e7bd7a8bfc9c0533558ae4353387a2b4024de583ea1257bff8e5e0e3f991",
+        "certification_sha256": "0c517bb00048c5b402d38be69457ba14b62576b383b8046793ab938ab5f3ba23",
         "fault_class": "never_reports_nonzero_code_error",
-        "mutation_bundle_sha256": "e8a27e35eb77a80d84da3841ee3793c13a9b5a8f2d5a20186437699d7a133e2a",
+        "mutation_bundle_sha256": "9c2cf175242d88c56b245b7ff0fc13bfc06264535f78689fcf0bc3c4e084412d",
         "mutation_id": "neg_001_force_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_force_zero/certification.json",
         "trigger_condition": "a sampled nonzero code error must update the retained maxerr metric",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_instantaneous_error_only/certification.json",
-        "certification_sha256": "dfb1b47b5aa185b1d2e9dd633cc41b61aaeae4c6e8945acfaab16edd9823d79a",
+        "certification_sha256": "c82a30d87a127aa0920748f03f18ce29763694089a4753e6d114bfa3a04dc2a8",
         "fault_class": "forgets_retained_max_error",
-        "mutation_bundle_sha256": "23eba022842638affd39622cf6cb32b51f9874f263cf5ab098de68035c29ce0e",
+        "mutation_bundle_sha256": "1e987063a0bfc20d92cbea57f15f431ac0e4fbed3f2b2fc585df76d80bc32437",
         "mutation_id": "neg_002_instantaneous_error_only",
         "source_catalog_certification_path": "negative_variants/neg_002_instantaneous_error_only/certification.json",
         "trigger_condition": "maxerr must retain the maximum sampled absolute code error after later smaller errors",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_reversed_observed_bits/certification.json",
-        "certification_sha256": "44ba70742fad26376018fa33407383fe4c7e894768f8c81927137c84bf6ca31e",
+        "certification_sha256": "f54987f6bfcb9734e529200a3357835ed12e69dcd6b75a6c6df10f73ddd48522",
         "fault_class": "reversed_observed_bit_order",
-        "mutation_bundle_sha256": "b34c3c3ba81d1ca431993e47e3c7247fea76725c3e4821b8f46ea3964780c4ce",
+        "mutation_bundle_sha256": "dd108ebddf57322e9b164b3846b52909a828c12c586869e114129b88fa442003",
         "mutation_id": "neg_003_reversed_observed_bits",
         "source_catalog_certification_path": "negative_variants/neg_003_reversed_observed_bits/certification.json",
         "trigger_condition": "d2 through d0 must decode as an unsigned word with d2 as MSB and d0 as LSB",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_rounds_ideal_code/certification.json",
-        "certification_sha256": "053b00cc3848868ccdcf444c773382f439ade8ed7d2a1b3bfca678ca7490e96b",
+        "certification_sha256": "80e52ae95a581afa31406e80326a9b0f2fa6eb20315999eb443acf51e2a37e4d",
         "fault_class": "rounds_ideal_code_instead_of_floor",
-        "mutation_bundle_sha256": "1dc2bd9d520537413e1b8441f4db63204bc87067a9534274ad8fd9a2e967e42a",
+        "mutation_bundle_sha256": "c93144139ffae5482f3456f4002f5a3feaa7f2796a3c75608a7001d7beb01ed4",
         "mutation_id": "neg_004_rounds_ideal_code",
         "source_catalog_certification_path": "negative_variants/neg_004_rounds_ideal_code/certification.json",
         "trigger_condition": "vin must map to the ideal three-bit bin-floor code at each strobe",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_signed_error_only/certification.json",
-        "certification_sha256": "105398994621f4096d7ada33b945ef0b1f0924b1a2c5e6c2497b09353c41b99e",
+        "certification_sha256": "9d19784a9fe1d51de5f80a814d399ea6655088bb5e174e6a067c82bc66d38693",
         "fault_class": "retains_signed_error_instead_of_absolute_error",
-        "mutation_bundle_sha256": "96b71824379cc4e00a23234edfe40cd6538298f2e7c378692b7e5144a6f5178a",
+        "mutation_bundle_sha256": "e5dda9e81acf74c95c5cd259b61eedb7ff4af60b977ff039e97610d24181a3e5",
         "mutation_id": "neg_006_signed_error_only",
         "source_catalog_certification_path": "negative_variants/neg_006_signed_error_only/certification.json",
         "trigger_condition": "negative observed-minus-ideal code errors must contribute their absolute magnitude",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "b6e53a59899d19a479b6f0b153ddd8a63239c31d3f288ceba87a64931977948e",
       "score_deck_sha256": "ada737255dd765cb1d09bd954519a784a7890df4fe50b9eb4f723ba341df1311",
-      "task_certification_sha256": "9ada3dac4f9173dbbf47d4955e01ea92a4cfc6e41e4b03fa4d2bcf9141e44635",
-      "task_record_sha256": "37ddbed03e1113334464e283080e07f5ec7c082736cb0681e41f1543ea0ec885"
+      "task_certification_sha256": "26e0388b49c634e9e675de9bee3baa5c3403c416481612aaacea6a424880462c",
+      "task_record_sha256": "aa12847363540c78dc76610b1cbec5a26e266ff98129914e7efa68d6560f7962"
     },
     "release_dir": "067-adc-static-linearity-monitor"
   }

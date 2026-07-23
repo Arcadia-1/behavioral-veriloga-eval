@@ -3,28 +3,28 @@
   "checker_task_id": "v4_265_dynamic_supply_enable_driver",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "3d6486723fd58cf60c220a880b879bae3f3eb7db5b53f19c1bd86c949a216107",
+    "certification.json": "c190ac07a6cc226a8c7527e5c184b36baded26d1e9d4582deb1403a678ab6ef0",
     "checker_profile.json": "49ab8f24591cff85663bfc91f444532c7773c4d5ef119cec530f6ae1796866d9",
     "derivation_manifest.json": "69d17779f080a97d88d824e98f94c755acfa1aaa1ae8d41b804a6d34c0823438",
     "family_spec.json": "9fbddca3f0dfeae842de1992205ae0b5755d68decfb577735384cf6d968b1547",
-    "harness_spec.json": "bd55b33e78436aca17aebf680f11ecff23291515464b712b8f21effff09fbf1a",
+    "harness_spec.json": "b5ab442b1797f7288749abdb807cab017039c2893d23d8e0a84785cd538f4804",
     "mutation_catalog.json": "c6086746411ad673f29dcac8554cf25bebaf29e4d5e8f7ef4b27d66b9405a80b",
-    "profiles/feedback.json": "1de6a0ab14cb7fd225304dc704f67d62d5f8e26d6c0555e1cb3646854392a853",
-    "profiles/score.json": "cbcc532e8e0a672ba1974876219a895b6c20526780a02af57014ca57ca3987eb",
-    "score_tb.scs": "9978e2241a147dfadcd25925aea3b059d2cc224b7abd0599795cb603032feb60",
+    "profiles/feedback.json": "eef61f3a3a923f267671fd44b0b8161666d5ae19595ebec625dd9b36bf416860",
+    "profiles/score.json": "a78d5b9ee112f75857e503a3aac96a028786e2bb1aeb390701c6b468821829a7",
+    "score_tb.scs": "de11cae6b0737b294f8e611f3bb773517f8591cbe6162e455b8bfb119b4ccaa3",
     "solution_tree": "1a1fa5e30fa305f97c6ca651dd0e5391d306f7701a99fca80148c71dc57c3a66",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
   "form": "dut",
   "public_hashes": {
-    "feedback_tb.scs": "fcb9f992dbce56d1592673ff38d060d8151319fd1d75285f2b2e2720eece953b",
+    "feedback_tb.scs": "550983e85a5dc13dc53309a81ed51fb99cdb6c4a96aa5e5f4afe19e043688b86",
     "instruction.md": "4df7feb57a4ef63f36b159e2fab86ac3ca17e40caf8327011fed672131e757a7",
     "public_contract.json": "b59902294fddc4722c439b3a21fee050465a656ebcbb8235b23818dbf7a8af14"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "3d6486723fd58cf60c220a880b879bae3f3eb7db5b53f19c1bd86c949a216107"
+    "sha256": "c190ac07a6cc226a8c7527e5c184b36baded26d1e9d4582deb1403a678ab6ef0"
   },
   "release_dir": "265-dynamic-supply-enable-driver",
   "schema_version": "v4-canonical-dut-release-task-v1",

@@ -69,14 +69,9 @@ def check_v3_pfd_up_down_state(rows: list[dict[str, float]]) -> tuple[bool, str]
     if vdd < 0.6:
         vdd = 1.2
     threshold = 0.5 * vdd
-    state_update_times: list[float] = []
+    edge_times: list[float] = []
     for signal in ("ref", "fb"):
-        # Only rising crossings update the specified detector state.  Input
-        # falling edges do not move the state or start an output transition,
-        # so guarding around them can erase a valid short-lived state.
-        state_update_times.extend(
-            _signal_threshold_edges(rows, signal, threshold=threshold, directions=("rising",))
-        )
+        edge_times.extend(_signal_threshold_edges(rows, signal, threshold=threshold, directions=("rising", "falling")))
 
     state = 0
     checked = 0
@@ -94,9 +89,7 @@ def check_v3_pfd_up_down_state(rows: list[dict[str, float]]) -> tuple[bool, str]
         if prev["fb"] <= threshold < row["fb"]:
             state = max(-1, state - 1)
         prev = row
-        if row["time"] < 0.05e-9 or not _v3_away_from_edges(
-            row["time"], state_update_times, margin_s=90e-12
-        ):
+        if row["time"] < 0.05e-9 or not _v3_away_from_edges(row["time"], edge_times, margin_s=90e-12):
             continue
         exp_up = vdd if state == 1 else 0.0
         exp_down = vdd if state == -1 else 0.0

@@ -4,7 +4,7 @@ from __future__ import annotations
 from ..api import Checker, Row
 from .trace_utils import median_step, property_diagnostics, sample_signal, threshold_crossings
 
-PUBLIC_TON_S = 120e-12
+RESET_TO_INPUT_PULSE_RATIO = 0.4
 PROPERTIES = {
     "P_LEADING_EDGE_DIRECTION": 0,
     "P_RESET_OVERLAP_WINDOW": 0,
@@ -45,14 +45,25 @@ def _check_outputs(
     return max_err
 
 
-def _has_complete_input_pulse(rows: list[Row], threshold: float) -> bool:
+def _relative_reset_window(rows: list[Row], threshold: float) -> float | None:
+    pulse_widths: list[float] = []
     for signal in ("in1", "in2"):
         rises = threshold_crossings(rows, signal, threshold=threshold, direction=1)
         falls = threshold_crossings(rows, signal, threshold=threshold, direction=-1)
         for rise in rises:
-            if any(event_time > rise for event_time in falls):
-                return True
-    return False
+            fall = next((event_time for event_time in falls if event_time > rise), None)
+            if fall is not None:
+                pulse_widths.append(fall - rise)
+    if not pulse_widths:
+        return None
+    pulse_widths.sort()
+    middle = len(pulse_widths) // 2
+    typical_width = (
+        pulse_widths[middle]
+        if len(pulse_widths) % 2
+        else 0.5 * (pulse_widths[middle - 1] + pulse_widths[middle])
+    )
+    return RESET_TO_INPUT_PULSE_RATIO * typical_width
 
 
 def _fall_start_after(
@@ -121,13 +132,13 @@ def check_v3_pfd_tdomain_reset_window(rows: list[Row]) -> tuple[bool, str]:
         return False, f"insufficient_excitation pfd_tdomain_reset_window rail_span={high - low:.4g}"
 
     threshold = low + 0.5 * (high - low)
-    if not _has_complete_input_pulse(rows, threshold):
+    reset_window_s = _relative_reset_window(rows, threshold)
+    if reset_window_s is None:
         return (
             False,
             "insufficient_excitation pfd_tdomain_reset_window "
             "complete_input_pulses=0",
         )
-    reset_window_s = PUBLIC_TON_S
     pairs = _edge_pairs(rows, threshold, reset_window_s)
     if not pairs:
         return (

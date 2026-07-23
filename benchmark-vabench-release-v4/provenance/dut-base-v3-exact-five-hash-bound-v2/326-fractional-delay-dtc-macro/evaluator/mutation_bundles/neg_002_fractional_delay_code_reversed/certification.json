@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_DECODE_FRAC_3_FRAC_0_AS satisfy the public contract; fault class fractional_delay_code_reversed is rejected",
-    "observed": "EVAS: v4_1024 checked=366 codes=[0, 2, 3, 5, 8, 12, 15] input_edges=8 output_edges=8 matched=8 monotonic_pairs=0 reset_clear=True disabled_clear=True delay_errors=7 edge_count_errors=0 metric_errors=314 valid_errors=14 clear_errors=0; P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count=0; P_DECODE_FRAC_3_FRAC_0_AS mismatch_count=5; P_FOR_EACH_INPUT_EDGE_EMIT_ONE mismatch_count=5; P_EXPOSE_THE_FRACTIONAL_DELAY_AS_PHASE mismatch_count=290; P_PRESERVE_INPUT_EDGE_ORDER_AND_ASSERT mismatch_count=10",
+    "observed": "EVAS: v4_1024 checked=366 codes=[0, 2, 3, 5, 8, 12, 15] input_edges=8 output_edges=8 matched=8 monotonic_pairs=0 reset_clear=True disabled_clear=True delay_errors=7 metric_errors=314 valid_errors=14 clear_errors=0; P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count=0; P_DECODE_FRAC_3_FRAC_0_AS mismatch_count=5; P_FOR_EACH_INPUT_EDGE_EMIT_ONE mismatch_count=5; P_EXPOSE_THE_FRACTIONAL_DELAY_AS_PHASE mismatch_count=290; P_PRESERVE_INPUT_EDGE_ORDER_AND_ASSERT mismatch_count=10",
     "violated_property_ids": [
       "P_DECODE_FRAC_3_FRAC_0_AS"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r51-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_326_fractional_delay_dtc_macro",
-    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 531
   },
   "family_id": "326",
@@ -36,9 +36,6 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
-    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
-    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

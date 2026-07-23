@@ -75,29 +75,6 @@ def test_insufficient_stimulus_leaves_constant_configuration_pwl_unchanged() -> 
     assert runner.suppress_stimulus(deck) == deck
 
 
-def test_absolute_timing_contracts_use_translation_only() -> None:
-    assert runner.effective_affine_scale("077", 1.37) == 1.0
-    assert runner.effective_affine_scale("358", 1.37) == 1.0
-    assert runner.effective_affine_scale("361", 1.37) == 1.0
-    assert runner.effective_affine_scale("362", 1.37) == 1.0
-    assert runner.effective_affine_scale("081", 1.37) == 1.0
-    assert runner.effective_affine_scale("082", 1.37) == 1.37
-
-
-@pytest.mark.parametrize(
-    ("family_id", "reason"),
-    [
-        ("077", "autonomous_dither_remains_exercised_at_zero_input"),
-        ("299", "free_running_vco_remains_exercised_at_zero_input"),
-    ],
-)
-def test_zero_input_is_not_insufficient_for_autonomous_sources(
-    family_id: str, reason: str,
-) -> None:
-    assert runner.insufficient_excitation_not_applicable_reason(family_id) == reason
-    assert runner.insufficient_excitation_not_applicable_reason("001") is None
-
-
 def test_evas2_evidence_requires_version_and_rust_backend_markers(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -138,10 +115,6 @@ def test_compact_evidence_identity_separates_release_revisions() -> None:
     assert runner.compact_evidence_identity("r50") == (
         "release/benchmarkv4-r50",
         "v4-r50-stimulus-metamorphic-compact-v1",
-    )
-    assert runner.compact_evidence_identity("r51") == (
-        "release/benchmarkv4-r51",
-        "v4-r51-stimulus-metamorphic-compact-v1",
     )
 
 

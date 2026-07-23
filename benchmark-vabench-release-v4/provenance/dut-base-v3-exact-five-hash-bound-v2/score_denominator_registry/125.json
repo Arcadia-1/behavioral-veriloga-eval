@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_ignores_rail_offsets/certification.json",
-        "certification_sha256": "bb18f79a2fa31de2c635ce1350b21d97699a0a352636b6026285007147f5bbc4",
+        "certification_sha256": "9b3a9d0c644d59b6e1b710726a08f7b0e07a825a4de44241ab44df34cb65a0e9",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "39bb2da053b239b2e9ae1088308b8959df2e6d68fb8342b53259c28172eb08c2",
+        "mutation_bundle_sha256": "bd4152a0ea2457d702dcf9826cff3c648a2169c08656eb7d76d7fc7add4e6880",
         "mutation_id": "neg_002_ignores_rail_offsets",
         "source_catalog_certification_path": "negative_variants/neg_002_ignores_rail_offsets/certification.json",
         "trigger_condition": "Clamps directly to vdd and vss rather than using vmax/vmin offsets.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "b98e3c7de217464d08d27b57c21ebec821280ede861ce83edb5ce09eb5a37f1b",
+        "certification_sha256": "98826280988203a7bce9acda6f7d8c0e6d551e675adfa32a76c801a8d1080993",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "f997eb0c3d72877681ec102d22f9f1ea1586c638026fec8807965f17c6edbd12",
+        "mutation_bundle_sha256": "59ef7e428a7d6c5f59d61cce5e0cf2754c129f60ecdc45fc5131b3ee51a851f9",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales the upper-clamped output too low while preserving the module/interface shape.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "a4a70bf0947915878de3650d62cb39692ab8f8b53008d37e17f9c5d897ec4e14",
+        "certification_sha256": "aa406fa2d5d05f6f084bbf432919d11cf064345abdf312cc11eaded0086041e8",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "1fccfd5774ed79e63e2fee5fdc0e379ace71c64850e40965e5fd60cc92ea524b",
+        "mutation_bundle_sha256": "124492b54871e21dc06e4dd97ecb898c83f00df590d098c66f668ccb77eb3f7f",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_lower_limit/certification.json",
-        "certification_sha256": "5980840bb29b5d15563185eee28b599c1a653a046a575ce75b7a520262f2842c",
+        "certification_sha256": "d8163a0a3b0ded247c1ab73d19194ecac55892335ee69552de3f2771df1c604b",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "c3c098328b68786bc76c362c403f7cb5815179fa5b1902dd5834bfb8644808d1",
+        "mutation_bundle_sha256": "858d3f384ef891add6f0dfc6c7c813bcf77e26c92ac5f008fe75cae17fd10b9e",
         "mutation_id": "neg_004_no_lower_limit",
         "source_catalog_certification_path": "negative_variants/neg_004_no_lower_limit/certification.json",
         "trigger_condition": "Omits the lower limiting branch.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_swapped_offsets/certification.json",
-        "certification_sha256": "e471f91555cf6b6c8a07cfc722c370081e052b479ad61853875d24810d59d1b1",
+        "certification_sha256": "40b2b9cdf1a311ef52639acc19768044e552eaf555526c7c49e9c6709be8d29f",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "944b1f31ceb381d6a14fb713f4cf9788e1933d8c80cae18e50110f6fcf6ba482",
+        "mutation_bundle_sha256": "b273828005aae58986251bfc4b3fce5749a29bda7dd85cb006dfa5430b1b60db",
         "mutation_id": "neg_003_swapped_offsets",
         "source_catalog_certification_path": "negative_variants/neg_003_swapped_offsets/certification.json",
         "trigger_condition": "Uses vmin for the upper headroom and vmax for the lower headroom.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "cc07d18e7d6c33d4849ab51e340d57e6029c941b0a35a30ff42d59f09aeb378d",
       "score_deck_sha256": "7ff8d9d2e17dee7929c4901e598bc6ce9b717c3ac0d9bc3af3a3eb5cb801c59e",
-      "task_certification_sha256": "ee451917f9266a96e5f038ccee715f4c83d5d46f68028edf4ab86ad56360521c",
-      "task_record_sha256": "e44d3f57bca5d98ef8ffc3f5828011ce0ef0ee374ec538ca17486dffc7048775"
+      "task_certification_sha256": "409ade81e376dbdee14ae32ab78984c608d5fba51f77904df902f804ae270bee",
+      "task_record_sha256": "89c18784f7905dcc82b32ef4b8f00470c6d615e653cb1ebccab8a2c69d0252eb"
     },
     "release_dir": "125-limiter-rails"
   }

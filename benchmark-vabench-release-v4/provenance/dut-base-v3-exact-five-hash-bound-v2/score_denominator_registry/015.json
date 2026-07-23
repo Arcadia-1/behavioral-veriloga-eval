@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_boundary/certification.json",
-        "certification_sha256": "94d529f57acce3a3920ed198dc531a00f655cae5623312fa52b36b5cfe0d59b7",
+        "certification_sha256": "edfc366a5e0301846a89218390c31a24945b0adc83d13c6414e8200975108683",
         "fault_class": "full_scale_divisor_error",
-        "mutation_bundle_sha256": "c7a366076b8f45b6cd6ff96a23d996c09611f3cf7472749f2caf18146e6b0417",
+        "mutation_bundle_sha256": "3a9d024c8c29d2200ea65edef241901b79b66bf3105e32959c3e95bb719bf5d5",
         "mutation_id": "neg_001_boundary",
         "source_catalog_certification_path": "negative_variants/neg_001_boundary/certification.json",
         "trigger_condition": "code fifteen is sampled after settling",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_polarity_direction/certification.json",
-        "certification_sha256": "01729c3841a59ba3a863584c3acdd13b9801d748e76bab9938752015d675edf6",
+        "certification_sha256": "ac7b3ce607773a57fd03629d9ced5ee42fea7829ae06bbb0dfedd102625985a6",
         "fault_class": "reversed_bit_significance",
-        "mutation_bundle_sha256": "c4883c4c93040c1ccfead27f234136b2478d73034513a6a5d889061bb0a13d1b",
+        "mutation_bundle_sha256": "90f2c7cd3e78b80148d3c10f6d0fb485030657b301d97098e5214cd196bf0220",
         "mutation_id": "neg_003_polarity_direction",
         "source_catalog_certification_path": "negative_variants/neg_003_polarity_direction/certification.json",
         "trigger_condition": "the code sequence distinguishes the four binary bit weights",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_timing_window/certification.json",
-        "certification_sha256": "d868bf019be47d0f740906c83b893823125b758c01e4c3fa862231bc0b1ef57c",
+        "certification_sha256": "03d5e8703254e69c9cdb127f7d0f750e4de21cca86f46625170a2a2d12ac2437",
         "fault_class": "timing_window_error",
-        "mutation_bundle_sha256": "6b655f550e6f3093fda159301b3a6118178a1f083f49834df53989476dc8f85b",
+        "mutation_bundle_sha256": "7f8ecf17ea263c1e11600939c4b770f4d186d31bef0d101c6a153c0b7940ef00",
         "mutation_id": "neg_002_timing_window",
         "source_catalog_certification_path": "negative_variants/neg_002_timing_window/certification.json",
         "trigger_condition": "the output is sampled after a public code transition",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_state_reset/certification.json",
-        "certification_sha256": "17a9718fe8596e711b645c7e961afbb8dd247e92af6793913339b2252e07e81f",
+        "certification_sha256": "47593628110f82aaa4b34ef273027aa1ff7286a7d93a6ca5d08ea85876a88ba2",
         "fault_class": "zero_code_offset_error",
-        "mutation_bundle_sha256": "4962e4182ac9ac7982749ced4de34584a97ac5960fd54c4b9a1ddf712d8637b2",
+        "mutation_bundle_sha256": "d604c56386d4d48012f9d3da5415bff88cb477a93125689a82195803ad42ee2c",
         "mutation_id": "neg_004_state_reset",
         "source_catalog_certification_path": "negative_variants/neg_004_state_reset/certification.json",
         "trigger_condition": "code zero and code fifteen are sampled",
@@ -57,9 +57,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_writeout/certification.json",
-        "certification_sha256": "dd17a0e928935c188b1479fa767834576cce41267d1b84a495a2035309b60a86",
+        "certification_sha256": "6318009d273c6ae167111eca7ef6f93bcf7f25e2e44c3471eaed017d2058b3db",
         "fault_class": "high_code_clipping",
-        "mutation_bundle_sha256": "bb7e8206d0d71ce036b8209900ef1edea075e16b7b34914030938a425ff49572",
+        "mutation_bundle_sha256": "c3fe7f62892fd2647406969f32f78084aa813c5c90900c95958463d28271ba52",
         "mutation_id": "neg_005_metric_writeout",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_writeout/certification.json",
         "trigger_condition": "the public stimulus traverses codes above eight",
@@ -75,8 +75,8 @@
     "hashes": {
       "mutation_catalog_sha256": "54494820bcb8a443ad1154c0b18111769a84b97db94d9dab78fa649be80253e5",
       "score_deck_sha256": "5db1a9aed97e039baa8be77276e81d7b8c6877d4759d7e17f7ee7dc217887e42",
-      "task_certification_sha256": "26d74f945bc5c0b62477205c01cad919925b20066ddb5f2ed15f1686ad3a37fa",
-      "task_record_sha256": "a6115dc487ce8ddce16e7a4bc8e4ed683ca1fb8e1e314af534b446d7ba1a05cf"
+      "task_certification_sha256": "177d3fbba3df590e24e49b61680ec6e463cda924f497db3b5d0a2bb9c9f2d0d7",
+      "task_record_sha256": "0a5cad56f34dd08f54a81f66ecd2d5a7fa462905ec834c97d16d49d1b65f7546"
     },
     "release_dir": "015-binary-weighted-voltage-dac"
   }

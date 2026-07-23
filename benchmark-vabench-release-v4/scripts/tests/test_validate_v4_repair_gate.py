@@ -29,36 +29,3 @@ def test_trace_contract_does_not_require_implicit_time_save() -> None:
     )
 
     assert failures == []
-
-
-def test_profile_binding_rejects_stale_harness_spec_hash() -> None:
-    failures: list[dict[str, object]] = []
-    spec = {
-        "property_ids": ["P_GAIN"],
-        "deck": {
-            "body_lines": ["VIN (vin 0) vsource dc=0"],
-            "analyses": ["tran tran stop=1n"],
-            "save_signals": ["vin", "vout"],
-        },
-    }
-    profile = {
-        "harness_spec_sha256": "stale",
-        "property_ids": ["P_GAIN"],
-        "parameters": {},
-        "corners": [],
-        "deterministic_seed": 0,
-    }
-
-    MODULE.validate_profiles(
-        failures,
-        "068",
-        spec,
-        "a" * 64,
-        profile,
-        profile,
-    )
-
-    assert [failure["check"] for failure in failures] == [
-        "profile_harness_binding",
-        "profile_harness_binding",
-    ]

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_ignore_code_msb/certification.json",
-        "certification_sha256": "2186a3bbc52991cdd1e5a6056ca18411ca9c9feb5f2b01be810882b5c1999f05",
+        "certification_sha256": "78166dd60b304a81f3d676d747271a1df29c0c2789113770995627600ed46781",
         "fault_class": "code_decode_error",
-        "mutation_bundle_sha256": "80d5790050699280756d0a20008bf4186c83f37c7ff4f1c38a6f1102b3442c6e",
+        "mutation_bundle_sha256": "74eb5f06041ab212eafb147d8aceeb6efdd5ba7c6ac8fac46152fba71a09ae8b",
         "mutation_id": "neg_001_ignore_code_msb",
         "source_catalog_certification_path": "negative_variants/neg_001_ignore_code_msb/certification.json",
         "trigger_condition": "A loaded code with bit 5 high is decoded as a lower code.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_valid_stuck_low/certification.json",
-        "certification_sha256": "59beefbc3d3d9bf02bfb6954861288630c0679cb3b8c17195e85f4dd9b3d07b2",
+        "certification_sha256": "b0436034e19d48b79508e54718ab591f817bbce304c6c551a0d28f7113c08200",
         "fault_class": "status_stuck",
-        "mutation_bundle_sha256": "20ab01c417b1450d3e552309641d2aab358ae3ea53eea6d03dbd3703776a7e88",
+        "mutation_bundle_sha256": "c9f866b14e14dc1eb85b9dbd4a619dd261c4af3525b342ed8bcfe871068f5799",
         "mutation_id": "neg_004_valid_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_004_valid_stuck_low/certification.json",
         "trigger_condition": "A loaded code produces a delayed rising output edge.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_reset_metric_not_cleared/certification.json",
-        "certification_sha256": "dae600f846ea410029d6fdb32d810d41b9c57ccf2b0cda35f5d93f04d00afb8d",
+        "certification_sha256": "20f5c2aff2401192e7b3ff9a4cb815361f3ca921406e30e04f95d4f0d5b7eb49",
         "fault_class": "reset_clear_error",
-        "mutation_bundle_sha256": "b4a634e9d1aa30aa7030998eebe43b010c85ea223b030912521b3a4aaeb7648b",
+        "mutation_bundle_sha256": "152832ea83f1bbbac471479e8679c458a7e1cb9d5b639bb64220f8f630f069bf",
         "mutation_id": "neg_005_reset_metric_not_cleared",
         "source_catalog_certification_path": "negative_variants/neg_005_reset_metric_not_cleared/certification.json",
         "trigger_condition": "Reset is asserted while delay_metric must clear to vss.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_fixed_minimum_delay/certification.json",
-        "certification_sha256": "8eed73eb6d218aa7877b345f47752190fba15751736bedd852ea9aa6ac5d46d7",
+        "certification_sha256": "ec8ccbef47e7888c1346fa0ba5392800b2b9a1db9dbe1c29b96ccbf954704862",
         "fault_class": "delay_mapping_error",
-        "mutation_bundle_sha256": "bd432f64e2cb1472ef21be294438b5d7289f59421a7566af14be33ccf6ff1bcd",
+        "mutation_bundle_sha256": "a77c46586c24039075262d91f31939e2fc14b70dcc6756d568b84f9c51a5edd5",
         "mutation_id": "neg_002_fixed_minimum_delay",
         "source_catalog_certification_path": "negative_variants/neg_002_fixed_minimum_delay/certification.json",
         "trigger_condition": "Any nonzero loaded code requests a delay larger than delay_min.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_metric_stuck_low/certification.json",
-        "certification_sha256": "a9ce8654677e627ec1bc8b7dbfd6b57a17dcf25c7f0ccb925847789a7b7e6b7b",
+        "certification_sha256": "ad8afff7ff1119e9a1c96087716a74590461122b95030fa537e0e1dc90ff34f3",
         "fault_class": "metric_stuck",
-        "mutation_bundle_sha256": "bd8f346da6d1f57b157b5f291a8549f9540c64079e94a37efa9ad96b63408896",
+        "mutation_bundle_sha256": "430b7bc8695a8269eeb17d2700d55e8f205b71aa6daf8d10fb22f9278becf7fc",
         "mutation_id": "neg_003_metric_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_003_metric_stuck_low/certification.json",
         "trigger_condition": "A nonzero code is loaded.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "227b348d807ad1a8af170965132dc321a5f95d84419424e05a76dadc9575d162",
       "score_deck_sha256": "9fe797d15d76d3c65ab971f7cb3e7fc178aba8abf826906b607252c933037a0e",
-      "task_certification_sha256": "8f976aadbc9fa26ab89e2752a56c524da90f33f7902675248f6498c5a4527c3f",
-      "task_record_sha256": "b186bafc1f6f64608574b956152609884692dea99b19886d66322e93b7e1a92a"
+      "task_certification_sha256": "e8f5b4cae4229d97b6f7838df06dc0662a9c123b12c50354bf83e13db018c160",
+      "task_record_sha256": "43e8cb8032b061ad9cd28e1159a6d373171828ca54785d72159726282e3179a6"
     },
     "release_dir": "360-digitally-controlled-delay-cell"
   }

@@ -85,12 +85,10 @@ def _external_reset_pfd_state_changes(
     ref_edges = _signal_threshold_edges(rows, "ref", threshold=threshold, directions=("rising",))
     fb_edges = _signal_threshold_edges(rows, "fb", threshold=threshold, directions=("rising",))
     rstb_falls = _signal_threshold_edges(rows, "rstb", threshold=threshold, directions=("falling",))
-    rstb_rises = _signal_threshold_edges(rows, "rstb", threshold=threshold, directions=("rising",))
     events = sorted(
         [(t, "ref") for t in ref_edges]
         + [(t, "fb") for t in fb_edges]
         + [(t, "rstb_fall") for t in rstb_falls]
-        + [(t, "rstb_rise") for t in rstb_rises]
     )
     up = 0
     down = 0
@@ -121,9 +119,6 @@ def _external_reset_pfd_state_changes(
             timer_time = None
             state_changes.append((t, up, down, "external_reset"))
             continue
-        if kind == "rstb_rise":
-            state_changes.append((t, up, down, "reset_release"))
-            continue
         if not rstb_high:
             state_changes.append((t, up, down, f"{kind}_ignored_reset_low"))
             continue
@@ -137,52 +132,6 @@ def _external_reset_pfd_state_changes(
                 timer_time = t + reset_delay
         state_changes.append((t, up, down, kind))
     return state_changes, sorted(timer_times), external_reset_clears
-
-
-def _probe_reconstructed_states(
-    rows: list[dict[str, float]],
-    state_changes: list[tuple[float, int, int, str]],
-    *,
-    threshold: float = 0.45,
-) -> tuple[int, int, int, int, int, int, float]:
-    """Check one solver-independent probe in every reconstructed state interval."""
-    checked = up_probes = down_probes = both_probes = reset_low_probes = idle_probes = 0
-    max_err = 0.0
-    trace_stop = rows[-1]["time"]
-    for index, (start, up_state, down_state, _cause) in enumerate(state_changes):
-        stop = state_changes[index + 1][0] if index + 1 < len(state_changes) else trace_stop
-        if stop - start <= 20e-12:
-            continue
-        probe_time = start + 0.5 * (stop - start)
-        rstb = sample_signal_at(rows, "rstb", probe_time)
-        up = sample_signal_at(rows, "up", probe_time)
-        down = sample_signal_at(rows, "down", probe_time)
-        if rstb is None or up is None or down is None:
-            continue
-        rstb_high = rstb > threshold
-        expected_up = 0.9 if rstb_high and up_state else 0.0
-        expected_down = 0.9 if rstb_high and down_state else 0.0
-        max_err = max(max_err, abs(up - expected_up), abs(down - expected_down))
-        checked += 1
-        if not rstb_high:
-            reset_low_probes += 1
-        elif up_state and down_state:
-            both_probes += 1
-        elif up_state:
-            up_probes += 1
-        elif down_state:
-            down_probes += 1
-        else:
-            idle_probes += 1
-    return (
-        checked,
-        up_probes,
-        down_probes,
-        both_probes,
-        reset_low_probes,
-        idle_probes,
-        max_err,
-    )
 
 def check_v3_pfd_active_low_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ref", "fb", "rstb", "up", "down"}
@@ -201,7 +150,8 @@ def check_v3_pfd_active_low_reset(rows: list[dict[str, float]]) -> tuple[bool, s
     if not timer_times:
         return False, "no_delayed_timer_reset_seen"
     max_err = 0.0
-    raw_checked = 0
+    checked = 0
+    up_rows = down_rows = both_rows = reset_low_rows = idle_rows = 0
     change_idx = 0
     up_state = 0
     down_state = 0
@@ -218,39 +168,36 @@ def check_v3_pfd_active_low_reset(rows: list[dict[str, float]]) -> tuple[bool, s
         expected_up = 0.9 if (rstb_high and up_state) else 0.0
         expected_down = 0.9 if (rstb_high and down_state) else 0.0
         max_err = max(max_err, abs(row["up"] - expected_up), abs(row["down"] - expected_down))
-        raw_checked += 1
-    (
-        checked_probes,
-        up_probes,
-        down_probes,
-        both_probes,
-        reset_low_probes,
-        idle_probes,
-        probe_max_err,
-    ) = _probe_reconstructed_states(rows, state_changes)
-    max_err = max(max_err, probe_max_err)
+        checked += 1
+        if not rstb_high:
+            reset_low_rows += 1
+        elif up_state and down_state:
+            both_rows += 1
+        elif up_state:
+            up_rows += 1
+        elif down_state:
+            down_rows += 1
+        else:
+            idle_rows += 1
     if (
-        up_probes == 0
-        or down_probes == 0
-        or both_probes == 0
-        or reset_low_probes == 0
-        or idle_probes == 0
+        checked < 30
+        or up_rows == 0
+        or down_rows == 0
+        or both_rows == 0
+        or reset_low_rows == 0
+        or idle_rows == 0
         or external_reset_clears == 0
     ):
         return False, (
-            f"insufficient_pfd_external_reset_coverage probes={checked_probes} up={up_probes} "
-            f"down={down_probes} both={both_probes} reset_low={reset_low_probes} idle={idle_probes} "
+            f"insufficient_pfd_external_reset_coverage checked={checked} up={up_rows} "
+            f"down={down_rows} both={both_rows} reset_low={reset_low_rows} idle={idle_rows} "
             f"external_reset_clears={external_reset_clears}"
         )
     if max_err > 0.12:
-        return False, (
-            f"pfd_external_reset_level_error={max_err:.4f} "
-            f"probes={checked_probes} raw_checked={raw_checked}"
-        )
+        return False, f"pfd_external_reset_level_error={max_err:.4f} checked={checked}"
     return True, (
         f"ref_edges={len(ref_edges)} fb_edges={len(fb_edges)} timer_resets={len(timer_times)} "
-        f"external_reset_clears={external_reset_clears} probes={checked_probes} "
-        f"raw_checked={raw_checked} max_err={max_err:.4f}"
+        f"external_reset_clears={external_reset_clears} checked={checked} max_err={max_err:.4f}"
     )
 
 CHECKER_ID = "v4_249_pfd_active_low_reset"

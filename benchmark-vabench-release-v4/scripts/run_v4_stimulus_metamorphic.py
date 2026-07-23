@@ -31,7 +31,6 @@ sys.path.insert(0, str(OPS))
 from run_v4_reference_evas_smoke import (  # noqa: E402
     case_evas2_runtime,
     overlay_mutation,
-    probe_evas2_runtime,
     require_evas2_environment,
     stage_case,
     task_dir_for_id,
@@ -56,11 +55,7 @@ SOURCE_ROOT = ROOT / "benchmark-vabench-release-v4" / "provenance" / "dut-base-v
 # Scaling the stimulus changes the physical operating point when the DUT owns
 # fixed absolute delay/frequency constants. Translation still exercises the
 # checker against a shifted time origin without making a false invariance claim.
-TRANSLATION_ONLY_FAMILIES = {"077", "081", "358", "361", "362"}
-INSUFFICIENT_EXCITATION_NOT_APPLICABLE_REASONS = {
-    "077": "autonomous_dither_remains_exercised_at_zero_input",
-    "299": "free_running_vco_remains_exercised_at_zero_input",
-}
+TRANSLATION_ONLY_FAMILIES = {"361", "362"}
 
 
 _QUANTITY = re.compile(r"^(?P<number>[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)(?P<unit>[a-zA-Z]*)$")
@@ -81,7 +76,7 @@ _SCALE = {
 
 
 def compact_evidence_identity(release_revision: str) -> tuple[str, str]:
-    if release_revision not in {"r44", "r45", "r47", "r48", "r49", "r50", "r51"}:
+    if release_revision not in {"r44", "r45", "r47", "r48", "r49", "r50"}:
         raise ValueError(f"unsupported release revision: {release_revision}")
     release_label = (
         "release/benchmarkv4"
@@ -90,14 +85,6 @@ def compact_evidence_identity(release_revision: str) -> tuple[str, str]:
     )
     schema_version = f"v4-{release_revision}-stimulus-metamorphic-compact-v1"
     return release_label, schema_version
-
-
-def effective_affine_scale(family_id: str, requested_scale: float) -> float:
-    return 1.0 if family_id in TRANSLATION_ONLY_FAMILIES else requested_scale
-
-
-def insufficient_excitation_not_applicable_reason(family_id: str) -> str | None:
-    return INSUFFICIENT_EXCITATION_NOT_APPLICABLE_REASONS.get(family_id)
 
 
 def file_sha(path: Path) -> str:
@@ -354,9 +341,7 @@ def run_task(
                 timeout_s=timeout_s,
             )
         )
-    family_id = str(record.get("family_id") or "")
-    not_applicable_reason = insufficient_excitation_not_applicable_reason(family_id)
-    suppressed = base_text if not_applicable_reason else suppress_stimulus(base_text)
+    suppressed = suppress_stimulus(base_text)
     insufficient = None
     if suppressed != base_text:
         insufficient = run_case(
@@ -381,10 +366,7 @@ def run_task(
     insufficient_report = (
         {
             "status": "not_applicable",
-            "reason": (
-                not_applicable_reason
-                or "deck_has_no_suppressible_pwl_or_pulse_input_source"
-            ),
+            "reason": "deck_has_no_suppressible_pwl_or_pulse_input_source",
             "simulator_ok": None,
             "checker_ok": None,
             "case": None,
@@ -437,14 +419,13 @@ def main() -> int:
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument(
         "--release-revision",
-        choices=("r44", "r45", "r47", "r48", "r49", "r50", "r51"),
+        choices=("r44", "r45", "r47", "r48", "r49", "r50"),
         default=DEFAULT_RELEASE_REVISION,
         help="release identity written into evidence (default: r45)",
     )
     args = parser.parse_args()
     release_label, compact_schema = compact_evidence_identity(args.release_revision)
     require_evas2_environment()
-    runtime = probe_evas2_runtime()
     release = args.release.expanduser().resolve()
     provenance = release_provenance(release, args.release_revision)
     if args.work_root.exists():
@@ -462,7 +443,7 @@ def main() -> int:
 
     def execute(task_id: str) -> dict[str, Any]:
         family = f"{int(task_id.split('-', 1)[1]) - 500:03d}"
-        effective_scale = effective_affine_scale(family, args.scale)
+        effective_scale = 1.0 if family in TRANSLATION_ONLY_FAMILIES else args.scale
         return run_task(
             release=release,
             task_id=task_id,
@@ -493,7 +474,6 @@ def main() -> int:
         "evas_engine_used": REQUIRED_EVAS_ENGINE,
         "evas_version": REQUIRED_EVAS_VERSION,
         "evas_backend": REQUIRED_EVAS_BACKEND,
-        "runtime": runtime,
         "release": release_label,
         "release_revision": args.release_revision,
         **provenance,
@@ -501,9 +481,6 @@ def main() -> int:
             "default_scale": args.scale,
             "shift_s": args.shift,
             "translation_only_family_ids": sorted(TRANSLATION_ONLY_FAMILIES),
-            "insufficient_excitation_not_applicable_family_ids": sorted(
-                INSUFFICIENT_EXCITATION_NOT_APPLICABLE_REASONS
-            ),
         },
         "task_count": len(results),
         "pass_count": sum(item["status"] == "pass" for item in results),
@@ -547,7 +524,6 @@ def main() -> int:
             "evas_engine_used": REQUIRED_EVAS_ENGINE,
             "evas_version": REQUIRED_EVAS_VERSION,
             "evas_backend": REQUIRED_EVAS_BACKEND,
-            "runtime": runtime,
             "release": release_label,
             "release_revision": args.release_revision,
             **provenance,

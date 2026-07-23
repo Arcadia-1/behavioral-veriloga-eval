@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_force_zero/certification.json",
-        "certification_sha256": "f4bbb85470bade08307403d9ddc9fe4ee1fed49504a7e5d00fb79dd1480cf466",
+        "certification_sha256": "1b4824c8a7e27c3e9a3a3e7447334caa0ed973467118c64a576dfb53aea54d7b",
         "fault_class": "force_zero",
-        "mutation_bundle_sha256": "5d9339206e537c8d3cfbbb729a3698a7b725c10fe4bd7319206e15ed029e5de0",
+        "mutation_bundle_sha256": "170db6f6cd41857941b537d3a491c213038f69f904cd0975985feb7e2a9a87b9",
         "mutation_id": "neg_001_force_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_force_zero/certification.json",
         "trigger_condition": "Correlated Double Sampler: forces both outputs low instead of producing sampled correction and valid indication.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_track_input_directly/certification.json",
-        "certification_sha256": "7e5489fd450c164db09193d9150b3747c741704f370bdecefea76dc497ffcde5",
+        "certification_sha256": "77fa485d4958220822af943db2cf7d14ae120fa5618c1c4f0de660312afb8986",
         "fault_class": "track_input_directly",
-        "mutation_bundle_sha256": "1f34650b42c5f75a5414bcb5f3d5b043ce2acf1a3acdeca3e5afe29123311303",
+        "mutation_bundle_sha256": "8c2cd4f72fadfed0eb390faaed361e3894461f90d5ab3f88754106c6b142880a",
         "mutation_id": "neg_002_track_input_directly",
         "source_catalog_certification_path": "negative_variants/neg_002_track_input_directly/certification.json",
         "trigger_condition": "Correlated Double Sampler: continuously tracks vin and never forms the signal-minus-reset held correction.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_signal_only_no_reset_sample/certification.json",
-        "certification_sha256": "ebeeef48ad0f1184732281627ba7341703e9832d0400dc03f1c9e326d61f64fd",
+        "certification_sha256": "6a756393f8a63a2b9108a89b1ff22cd41405dcc185dfd3806c9908cd07c9bbf5",
         "fault_class": "signal_only_no_reset_sample",
-        "mutation_bundle_sha256": "ead8b7c07345c42d4188c8316f6b4c31c68f2eb09e793cfcd6e76d2d4996abdc",
+        "mutation_bundle_sha256": "46dd6cf91c842501b4196b5330f9f80b3505386679281aebf1c2d64e538f5ad7",
         "mutation_id": "neg_004_signal_only_no_reset_sample",
         "source_catalog_certification_path": "negative_variants/neg_004_signal_only_no_reset_sample/certification.json",
         "trigger_condition": "Correlated Double Sampler: ignores the reset-phase sample and compares the signal only to the common-mode value.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_valid_never_clears/certification.json",
-        "certification_sha256": "73acd625a874bd6852d7c75b95774d23d1d7deca214a2c3f4bcaff2004cc4902",
+        "certification_sha256": "04d6772b7b5c8231fdf3c4b5791a4f3cc30e693c55cd585a524557d766fca9b3",
         "fault_class": "valid_never_clears",
-        "mutation_bundle_sha256": "0f9285d057c63960cb9db6b68e6f3f7adada12af29bc08c658f7504816a6a745",
+        "mutation_bundle_sha256": "abe4f7532087b17c1b2fe0abb87f5ef1bb6de09d455e0a8b2d8dccb586893e56",
         "mutation_id": "neg_005_valid_never_clears",
         "source_catalog_certification_path": "negative_variants/neg_005_valid_never_clears/certification.json",
         "trigger_condition": "Correlated Double Sampler: leaves valid asserted during reset-phase reacquisition.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_difference_sign/certification.json",
-        "certification_sha256": "168a7315efc727f4d0dba9875c8458e9c77745e50e0a9612458c279344f15f7d",
+        "certification_sha256": "82a632b17c2e956156834a155538bfb8481b04b5241a4d06b7978d31afabae3b",
         "fault_class": "wrong_difference_sign",
-        "mutation_bundle_sha256": "34b86572b59bf676487f0249e9511745336d1ee84ee7bfd6c1e26f5cabc3578e",
+        "mutation_bundle_sha256": "7fced8d1834ed14e74d2ad6d8724f9d2775f57b0fa350ca30a1950d238dfc946",
         "mutation_id": "neg_003_wrong_difference_sign",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_difference_sign/certification.json",
         "trigger_condition": "Correlated Double Sampler: subtracts signal from reset, reversing the correlated-double-sampling correction.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "3b0e98d4c4f6d2705978a4dfff84371e2aa0fb402eb894bcc22cabadc1a37625",
       "score_deck_sha256": "375ddde459652938be1f39ce4e4bc6f8703dc8aaad895bbc8a613a48f0cd0daa",
-      "task_certification_sha256": "f3ff677ff5026b13dd13ea76c7c1803eaeb125acf07a66d9c3c8f1b752ab54d7",
-      "task_record_sha256": "272188e484df865736cdf89c50f7b0f7d87ce02c196d35ad839aabf8bf79ce58"
+      "task_certification_sha256": "c9fc9830fff432da1a67db2a84e3c14c17fc2b4e8a2ff8647ef183eeb9d19e8f",
+      "task_record_sha256": "1575594d64946d25c120f0483bd7e9cd96a6efb1d9e0ea0dbe923136b3842eba"
     },
     "release_dir": "054-correlated-double-sampler"
   }
