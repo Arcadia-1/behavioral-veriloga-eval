@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "186-sarfend-logic-4b",
+  "checker_task_id": "v4_186_sarfend_logic_4b",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "0398b1521035964a4d899ae6175874164c37985562140b35cddab5a1fc2e6469",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "6872bb91c86935883af9aa94bf515a21e9a176f7b34f7f9ba6c2bca9ad90c7a0",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "186",
+  "family_spec_sha256": "2b08f9ef0a80b9c2abaadd9569cfad8a472b964a52593c7e009b46b4cdc0c34a",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c41370d64c6d2347f916d4f681b673349dc8e95affe01b2a454bbdb78d1e7306",
+  "public_contract": "tasks/686-sarfend-logic-4b-testbench/public_contract.json",
+  "public_contract_sha256": "2e74e46abda446d3171b2a19287d29d7ef4a6158fcbe3ff2e1e30ffd71797cfd",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/686-sarfend-logic-4b-testbench",
+  "task_id": "v4-686"
+}

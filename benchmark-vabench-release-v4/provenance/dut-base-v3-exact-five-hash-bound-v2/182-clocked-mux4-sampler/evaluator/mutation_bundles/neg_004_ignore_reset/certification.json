@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_RESET_SELECTS_DIN0 satisfy the public contract; fault class state_reset_or_enable_error is rejected",
-    "observed": "EVAS: v4_182 checked=16 mismatch_count=4 coverage=clock_falls=5 reset_checks=3 samples=3 holds=1 codes=[1, 2, 3]; P_RESET_SELECTS_DIN0 checked=4 mismatch_count=2 expected=dout=0.12+/-0.04 observed=dout=0.61 sample_time=6.89e-09 metric_gap=0.49; P_FALLING_CLOCK_UPDATE_SAMPLE checked=4 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0; P_UPDATE_LOW_HOLDS_STATE checked=2 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0; P_SELECT_DECODE_AND_OUTPUT_TIMING checked=6 mismatch_count=2 expected=selected_input=0.12+/-0.04 observed=selected_input=0.61 sample_time=6.89e-09 metric_gap=0.49",
+    "observed": "EVAS: v4_182 checked=18 mismatch_count=4 coverage=clock_falls=6 reset_checks=3 samples=4 holds=1 codes=[0, 1, 2, 3]; P_RESET_SELECTS_DIN0 checked=4 mismatch_count=2 expected=dout=0.25+/-0.04 observed=dout=0.61 sample_time=8.89e-09 metric_gap=0.36; P_FALLING_CLOCK_UPDATE_SAMPLE checked=5 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0; P_UPDATE_LOW_HOLDS_STATE checked=2 mismatch_count=0 expected=contract_satisfied observed=contract_satisfied sample_time=0 metric_gap=0; P_SELECT_DECODE_AND_OUTPUT_TIMING checked=7 mismatch_count=2 expected=selected_input=0.25+/-0.04 observed=selected_input=0.61 sample_time=8.89e-09 metric_gap=0.36",
     "violated_property_ids": [
       "P_RESET_SELECTS_DIN0"
     ]
@@ -17,18 +17,18 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_182_clocked_mux4_sampler",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
-    "trace_row_count": 531
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
+    "trace_row_count": 634
   },
   "family_id": "182",
   "inputs": {
     "checker_profile_sha256": "258e52e999260e1e0d519f28c74a934e7493c1c9437d41011d73abf3859d4bd8",
-    "harness_spec_sha256": "1757186faf189ad4369f1d6bab3f785229f42da88d773d8eb53ec60418e98e62",
+    "harness_spec_sha256": "168d32f35f9ef9a7a1c199c950cfd050a84427ea20bf2cfeb3b9730f5eae6fc8",
     "mutation_bundle_sha256": "30521715ab8b43d6aaef69c5696995fcf1aeff13a77b7a4c64bb96eb4ed58182",
-    "profile_sha256": "47964b19d06fef566256de2b377db89260d7372e4eed82558d27749817cea542"
+    "profile_sha256": "287a9d14e9ba0273133e93945458db0e8430b584c0fee0447f492fc76b62826b"
   },
   "mutation_id": "neg_004_ignore_reset",
   "outcome": "killed_behaviorally",
@@ -36,6 +36,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

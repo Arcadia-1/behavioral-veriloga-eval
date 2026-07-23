@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_RESET_DISABLE_CLEAR satisfy the public contract; fault class reset_disable_clear_error is rejected",
-    "observed": "EVAS: P_RESET_DISABLE_CLEAR status=FAIL mismatch_count=1 allowed=0 checks=2 expected=all_public_outputs=0 observed=max_clear_gap=0.9 time=3.209e-07 gap=0.9 | P_FRACTIONAL_SELECTION status=PASS mismatch_count=0 allowed=0 checks=68 expected=code15_after_clear_selects_8_8_9 observed=moduli=[8, 9] probes=[(3.3205000000000006e-07, [0, 0, 1, 1, 1])] time=0 gap=0 | P_DCO_DERIVED_DIVIDER status=PASS mismatch_count=0 allowed=3 checks=65 expected=div_edges_after_8_or_9_dco_rises observed=intervals=65 time=0 gap=0 | P_RATIO_WINDOW status=FAIL mismatch_count=1 allowed=0 checks=2 expected=metric=8+frac/16_on_window_valid observed=valid_events=4 high_fraction=0.0862 time=0 gap=0.00615301 | P_FRACTION_MONOTONICITY status=PASS mismatch_count=0 allowed=0 checks=1 expected=higher_fraction_nondecreasing_metric observed=points=[(0, 8.0)] time=0 gap=0",
+    "observed": "EVAS: P_RESET_DISABLE_CLEAR status=FAIL mismatch_count=1 allowed=0 checks=2 expected=all_public_outputs=0 observed=max_clear_gap=0.9 time=3.209e-07 gap=0.9 | P_FRACTIONAL_SELECTION status=PASS mismatch_count=0 allowed=0 checks=65 expected=div_sel_matches_independent_modulo16_accumulator observed=reference_decisions=68 time=0 gap=0 | P_DCO_DERIVED_DIVIDER status=PASS mismatch_count=0 allowed=0 checks=65 expected=div_edges_follow_reference_selected_8_or_9_dco_rises observed=intervals=65 time=0 gap=0 | P_RATIO_WINDOW status=FAIL mismatch_count=1 allowed=0 checks=2 expected=metric=8+frac/16_on_window_valid observed=valid_events=4 high_fraction=0.0862 time=0 gap=0.00615301 | P_FRACTION_MONOTONICITY status=PASS mismatch_count=0 allowed=0 checks=1 expected=higher_fraction_nondecreasing_metric observed=points=[(0, 8.0)] time=0 gap=0",
     "violated_property_ids": [
       "P_RESET_DISABLE_CLEAR"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_363_fractional_n_synthesizer_mini_loop",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
     "trace_row_count": 7359
   },
   "family_id": "363",
@@ -36,6 +36,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

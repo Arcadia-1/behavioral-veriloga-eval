@@ -4,7 +4,7 @@ from __future__ import annotations
 from statistics import median
 
 from ..api import Checker, Row
-from .trace_utils import median_step, property_diagnostics
+from .trace_utils import property_diagnostics
 
 SIGNALS = ["rst", "s", "nc", "res", "conv"]
 PROPERTIES = {
@@ -41,6 +41,13 @@ SIGNAL_LEVEL_PROPERTY = {
     "res": "P_NONOVERLAP_AND_RESIDUE_WINDOWS",
     "conv": "P_CONVERSION_OUTPUT_TIMING",
 }
+TIMING_TOLERANCE_FRACTION = 0.015
+PERIOD_TOLERANCE_FRACTION = 0.03
+TRACE_COVERAGE_EPSILON_FRACTION = 1e-6
+# The sibling DUT/bugfix canonical decks stop at 12 ns, where ten complete
+# windows are observable.  Coverage counts only complete physical windows;
+# v4-695's longer canonical deck observes the remaining conversion edge too.
+MIN_CHECKED_WINDOWS = 10
 
 
 def _high_intervals(rows: list[Row], signal: str, threshold: float) -> list[tuple[float, float]]:
@@ -137,8 +144,8 @@ def check_v3_clock_sample_1600n_sequencer(rows: list[Row]) -> tuple[bool, str]:
         )
 
     period, origin = _infer_period_and_origin(intervals)
-    step = median_step(rows)
-    tolerance = max(period * 0.015, step * 8.0)
+    tolerance = period * TIMING_TOLERANCE_FRACTION
+    coverage_epsilon = max(1e-15, period * TRACE_COVERAGE_EPSILON_FRACTION)
     counts = dict(PROPERTIES)
     checked = 0
     max_timing_err = 0.0
@@ -150,18 +157,19 @@ def check_v3_clock_sample_1600n_sequencer(rows: list[Row]) -> tuple[bool, str]:
         if intervals[signal] and signal_high < 0.85:
             counts[SIGNAL_LEVEL_PROPERTY[signal]] += 1
 
-    if abs(period - 16e-9) > max(0.03 * 16e-9, step * 8.0):
+    if abs(period - 16e-9) > PERIOD_TOLERANCE_FRACTION * 16e-9:
         counts["P_PERIODIC_16NS_FRAME"] += 1
 
     frame = origin
-    while frame - period <= trace_end:
+    while frame <= trace_end + coverage_epsilon:
         for signal, windows in EXPECTED_WINDOWS.items():
             for start_ns, end_ns, property_id in windows:
                 expected_start = frame + period * (start_ns / 16.0)
                 expected_end = frame + period * (end_ns / 16.0)
-                visible_start = max(expected_start, trace_start)
-                visible_end = min(expected_end, trace_end)
-                if visible_end - visible_start <= max(tolerance, (expected_end - expected_start) * 0.25):
+                if (
+                    expected_start < trace_start - coverage_epsilon
+                    or expected_end > trace_end + coverage_epsilon
+                ):
                     continue
                 observed = _best_interval(
                     intervals[signal],
@@ -184,7 +192,7 @@ def check_v3_clock_sample_1600n_sequencer(rows: list[Row]) -> tuple[bool, str]:
                         counts[property_id] += 1
         frame += period
 
-    if checked < 6:
+    if checked < MIN_CHECKED_WINDOWS:
         return (
             False,
             "insufficient_excitation clock_sample_1600n_sequencer "

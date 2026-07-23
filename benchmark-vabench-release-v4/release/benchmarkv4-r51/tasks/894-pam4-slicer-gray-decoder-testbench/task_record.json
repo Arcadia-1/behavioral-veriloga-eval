@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "394-pam4-slicer-gray-decoder",
+  "checker_task_id": "v4_394_pam4_slicer_gray_decoder",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "4617fc2989a762f3e2aaa0cf24c6f32bcddf613e23fea7ab3e2823e3dde910d5",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "4b4b6cc54b95f304b010c18ccb4168948f22767744e0cd25061384bd6ee3ec76",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "394",
+  "family_spec_sha256": "92ae6d2754f9f5764ef7414705245ca70e7772c2259ad65d853bb2a79b39a7c5",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a731ea63007e659c441254519e756bc728fa79a9c52b963b98056cac299f5452",
+  "public_contract": "tasks/894-pam4-slicer-gray-decoder-testbench/public_contract.json",
+  "public_contract_sha256": "21c4878688a58e7a9162b17391d43fe1893fa93993d67a5abe6cd0b2f3fba7d2",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/894-pam4-slicer-gray-decoder-testbench",
+  "task_id": "v4-894"
+}

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "de6a1f9c99906cd8b3d768cc8f3a8fc4047d57d66f4304cf68eb5007d02f7714",
+        "certification_sha256": "af3694f8532707c8dfadf77b669af152549970abc03160c18a1d3331ae05091c",
         "fault_class": "zero_stub_output_implementation_copied_from_starter_must_not_satisfy_hidden_beha",
-        "mutation_bundle_sha256": "526b970dab9b4c4adfa10e1cc60a3652fd42d95c5416a9dc5d5dc93b3c5f4ab3",
+        "mutation_bundle_sha256": "8200fac337d15eb06e2b2d162782b93ffbf046275e016301f220f13e7986810e",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "stimulus exercises zero/stub output implementation copied from starter must not satisfy hidden behavior checker against the public observable contract",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "1297ab7a1217f628a7e5e68b076a70dea0310f933780b733dff9de822347b035",
+        "certification_sha256": "cdc4dece2c13d399288cac788131ecd380279a070bfa5191e8ea1b73f5123276",
         "fault_class": "acquisition_limited_sample_and_hold_uses_the_opposite_event_edge_preserving_inte",
-        "mutation_bundle_sha256": "ccaf14816a7571d4ebc76fbbd17b03b4b83d1cb1405b706cf700278c20c95dcb",
+        "mutation_bundle_sha256": "b02ec4d51c36f7a719cc2b94c0f8902c3cdfc2c0df0ca5da3e2b5d00c7f36020",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "stimulus exercises Acquisition Limited Sample And Hold: uses the opposite event edge, preserving interface behavior while failing timing windows. against the public observable contract",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "f5164d0c007c98471fd733f7cffed416b9223feb1cc728319203a343cb283e0d",
+        "certification_sha256": "ddadf0e27e24f555564125b9aab5844132d14adbf78fc196e384e147740fb136",
         "fault_class": "acquisition_limited_sample_and_hold_uses_the_wrong_reset_polarity_preserving_ste",
-        "mutation_bundle_sha256": "913a38322198a8ef1c3f481a54535f45030a88ec5e075a25ef91bcda3e3c719c",
+        "mutation_bundle_sha256": "e3f139911e4cc4d12deedbdcc74b6748f5409b33b4afffc484ea46e28eb97a27",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "stimulus exercises Acquisition Limited Sample And Hold: uses the wrong reset polarity, preserving steady-state behavior while failing recovery checks. against the public observable contract",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "2479fc9bbfc77f458bdc7840266c5639546998bfcb0885866d27aa096f406866",
+        "certification_sha256": "a3ac98d65cecb4d75282a32297ec9c411751608337506bceecaf01431bf351c8",
         "fault_class": "acquisition_limited_sample_and_hold_scales_the_metric_output_preserving_the_main",
-        "mutation_bundle_sha256": "a266fff5a979db17ad982868f32da62a30e16e61588f2353a5eb40c3e5db1259",
+        "mutation_bundle_sha256": "9ffec3ec0e5341e22e338f50eb26547b2bd6249f9aaa53176698b7513337dc08",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "stimulus exercises Acquisition Limited Sample And Hold: scales the metric output, preserving the main path while failing measurement checks. against the public observable contract",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "25f3c918209a9b1c0fc211ca0298950fd726f14367088e3514c437bbbaf2df0d",
+        "certification_sha256": "90c55baf2b4f16a9836e1ff1b67e61ef884b4f3bc163b92e581ad4062338b638",
         "fault_class": "acquisition_limited_sample_and_hold_shifts_the_decision_threshold_preserving_nom",
-        "mutation_bundle_sha256": "87fd41f2e4c9edd4922f1c07c2b10ef2137fcf8111368356fb7823cd07a826d7",
+        "mutation_bundle_sha256": "f76193a7bd0b7fd0085e7599e6357731960b55b5d892a7b6b9aafa14f495b1f6",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "stimulus exercises Acquisition Limited Sample And Hold: shifts the decision threshold, preserving nominal behavior while failing boundary checks. against the public observable contract",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "f3d6e8b9fff4e51ac799bb1e737c943b571a61ee9d03ed0498e197e83c2d49f7",
       "score_deck_sha256": "96ddf9a4a85be072b3f6aa48edeb13742a3f674bb7450464b4d701f093107eb0",
-      "task_certification_sha256": "b39255dc7d3b9443cd9e98f8f57347c67827b82d8810d6630bcb55f5717b1527",
-      "task_record_sha256": "bf8a7f47a63f27d8038cc2986a1eaa72c1119c47db6a26f58eac203391120c79"
+      "task_certification_sha256": "ae877c2f4b68a4460f6d6380f785f095ed7fd2d82838572c9a68368837541bda",
+      "task_record_sha256": "0a97ddac1a998953fbd2109cc8fa8f2159a5e72bee254c3af17c24fab459f17c"
     },
     "release_dir": "071-acquisition-limited-sample-and-hold"
   }

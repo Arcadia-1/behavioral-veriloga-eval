@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_fixed_offset/certification.json",
-        "certification_sha256": "a84362c8d748141dd4c3465cfd707cf62e66ad139043e44b11b90002e6d44f04",
+        "certification_sha256": "abcd94aeac10105435cf854f51aae7eb62b04a2640e3442510db53d8f1850f4d",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "919bece21b8aa379831e3c37ef49b478a556697464f1ee1635a5356932612492",
+        "mutation_bundle_sha256": "8fa62200f5d76977b9cabb9e1ac138d847c7396de4e257432f07428ea662f582",
         "mutation_id": "neg_004_fixed_offset",
         "source_catalog_certification_path": "negative_variants/neg_004_fixed_offset/certification.json",
         "trigger_condition": "Adds a fixed output offset to all decoded codes.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_omit_msb/certification.json",
-        "certification_sha256": "19304c876adb77bbab282a521b55936d208af98b043565c966a25d7225d7cc0d",
+        "certification_sha256": "607edc7db38cd5266864eb10e753911526c37427eebb89df02c4d5b3eb644ca1",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "29d823813d8fec028c39491a69ccb8d604527fdc6bfd5be6d41c31cd4ff2ca92",
+        "mutation_bundle_sha256": "e727dcf1819a5e6718210ced3ee4c11a9610c1341a3309b8b6039af77caafbf5",
         "mutation_id": "neg_002_omit_msb",
         "source_catalog_certification_path": "negative_variants/neg_002_omit_msb/certification.json",
         "trigger_condition": "Drops the din6 MSB contribution.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "b3675d5e56eff033209b0491fdadf4639f46b53173fa45de312637d91fc875ac",
+        "certification_sha256": "e39a6102fef35cedf51d3164efb3d825d2b856c7bd32ca4fca889902d6ea22ea",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "2d5d5e1b3efe6732335fc769fc138f864f20b60937fb2d8760f2bb05a1b4be96",
+        "mutation_bundle_sha256": "832a6847aebc3b3a081f2545ed23ad262aa5a7b87a3c868fca25b2fbad453da4",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Single ADC 7b Weighted: scales the metric output, preserving the main path while failing measurement checks.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "6e0fa3f94cde85ab0e38807760cbf1038fd299e29a30afa6aa9931529919ade1",
+        "certification_sha256": "f48341d3e330353b4f5bef8a1a399a132bfdc695f8b61057fc1611a5e0bd100a",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "42a5158375135d30e148222b442efc123afbddeb6b47f61c4b378da7a6e14beb",
+        "mutation_bundle_sha256": "76973fd020ab159408485fe19c2e669efed500b545af4002452babb48e383d0a",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_half_scale/certification.json",
-        "certification_sha256": "6fcff347edace4396955c0c15bcd4ec049b4ceafc4397a9c2c339da8d0de60b8",
+        "certification_sha256": "4a067ccceab3a0c03973e01c7bf937b991d7e4d152dfef190002fa0a83e400b5",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "e832a27ec5907b1f8265514c439dade6dce150ce2d74180b6802203e727b7163",
+        "mutation_bundle_sha256": "00a1bccdb9a3a2e9a6d3f2201ef0162d3e5841846a5075ca2f0fb06803cc2dc3",
         "mutation_id": "neg_003_half_scale",
         "source_catalog_certification_path": "negative_variants/neg_003_half_scale/certification.json",
         "trigger_condition": "Uses half-scale denominator for all weighted terms.",
@@ -70,9 +70,9 @@
     "canonical_dut_id": "197",
     "hashes": {
       "mutation_catalog_sha256": "d41338ae60058876292eba42c474075f28998919f3649227713b703cd1c71ac7",
-      "score_deck_sha256": "0a3edc2c3a920e97d8c533813121e229faa677a3b96b744a7d0f62b890c3eb62",
-      "task_certification_sha256": "13830c5844ae382e2d77a4cc3739353297f6bdf338a45b81a148c8acb897301b",
-      "task_record_sha256": "7b7f5b920d28d38e00c83a2edca5fe000c72150eec02771debdb10bcf97b1d03"
+      "score_deck_sha256": "c95034384d1af88e8ca8b0d5a9eb27baf10a09ee3a9e79f1440e2cbf9d08f9f4",
+      "task_certification_sha256": "38213e8e9da8b27cb21a60a6f2dd37a7d551377526c14f2d39ad2b0b7af152ce",
+      "task_record_sha256": "ba7064a14c3553bcee8e9bbaa31a20291c926ceacc935573d4d572d6082d9674"
     },
     "release_dir": "197-single-adc-7b-weighted"
   }

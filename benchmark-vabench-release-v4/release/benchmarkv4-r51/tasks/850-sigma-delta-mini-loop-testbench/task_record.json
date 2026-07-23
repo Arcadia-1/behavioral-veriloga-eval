@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "350-sigma-delta-mini-loop",
+  "checker_task_id": "v4_350_sigma_delta_mini_loop",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "cdcd0fe7263e755ddb5ce722ff7037486203fcb94fdd52610660763ca38d6532",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "09f9c429944c8b3f4cd7c62bf0eb6ebea90acf475f8a1619e618fc48d7266e18",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "350",
+  "family_spec_sha256": "1c7d2d9bc7687db08aa7a1b0252e82719d49a279d17875adf17e4d4f5381370a",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d634f4d882d4d9b8e72a187d3c9c64b49be3cdef004e527b46c52109cf51a693",
+  "public_contract": "tasks/850-sigma-delta-mini-loop-testbench/public_contract.json",
+  "public_contract_sha256": "78384101733651b02f7d6a0852f659306804be2df0e397c83f001e01e9d20895",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/850-sigma-delta-mini-loop-testbench",
+  "task_id": "v4-850"
+}

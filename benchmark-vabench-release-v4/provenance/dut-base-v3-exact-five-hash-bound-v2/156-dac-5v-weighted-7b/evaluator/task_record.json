@@ -3,28 +3,28 @@
   "checker_task_id": "v4_156_dac_5v_weighted_7b",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "27c4e97094a3c078d74d62da6fcc2eaca59ed452d7c3b87a342554502731861a",
+    "certification.json": "997cda7b756087e123a0eed687d9d943f19892cd27a1f21a86dd3e28c830e997",
     "checker_profile.json": "07a53af252228f258fe7e47f7000b9745aca1616f2f892009a8ca1a4c9108e57",
     "derivation_manifest.json": "9f1d9251e7094d43f1f6b6259ccd5e21251370bb349c76aa717fc84db5a79d7e",
     "family_spec.json": "8866d1638328e950febb7ae75c74b85ce3364283641dcf69815592b27161af96",
-    "harness_spec.json": "bddc999a5caa9b6c6536f87f6d76d5cedf7ec176949f8af7e929196f76e5e659",
+    "harness_spec.json": "1a3d41ffaea050202d688eebed8f6db330a7df42c4c3b0636e5cd90dcedba7a1",
     "mutation_catalog.json": "a12abb9a4f53bdc38e4f137b2ecee88ee421595964349f7e149225fbc650ce82",
-    "profiles/feedback.json": "6d924a420a3f8f883a7ed544a2847b6fe5c63a5c4a589ad28c1a370412bace5c",
-    "profiles/score.json": "75e39a205f21acd2190012131dc17e6271c5725c0137afa21f0b6dd1b615e35a",
-    "score_tb.scs": "1131499bd05979199226d05ff716d15e0827d579dbf42edf3fdfa7bc334ad4ac",
+    "profiles/feedback.json": "10a0d47dd27a8f01d8ca5c405ced03a542fdee1dbd7d957f01222f93b8bfdcbd",
+    "profiles/score.json": "40e8ad33895f376773694017f52daa0072a519073c6ffad954ec6caa7acedf5b",
+    "score_tb.scs": "32d849e47d2db8c3cc23a3d6bebdb33a46c9d1ce52c8fc6bffc2ed3afa27ac9d",
     "solution_tree": "b58b85d2363edb66e7e677bef772a3d2a3958af2d82f3ddfcd04ad610a6b313b",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
   "form": "dut",
   "public_hashes": {
-    "feedback_tb.scs": "0dae23b5866007ab183547a25a3737df95ae32c3153c1498b35eec6ee3aaf0ec",
+    "feedback_tb.scs": "8354195f6c6d29d4f08ae2bd3a525b8dd0f4d90d38bd96c55cd4a167cf7aedaa",
     "instruction.md": "ea70495bb9d71d71b38a7ec6f978483ba092ce3f82a585885c4385ed09b9d5c4",
     "public_contract.json": "cb4f233018d30de2d97027e7c7f5546da465faffb0e9570d5908cd23cdfcc909"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "27c4e97094a3c078d74d62da6fcc2eaca59ed452d7c3b87a342554502731861a"
+    "sha256": "997cda7b756087e123a0eed687d9d943f19892cd27a1f21a86dd3e28c830e997"
   },
   "release_dir": "156-dac-5v-weighted-7b",
   "schema_version": "v4-canonical-dut-release-task-v1",

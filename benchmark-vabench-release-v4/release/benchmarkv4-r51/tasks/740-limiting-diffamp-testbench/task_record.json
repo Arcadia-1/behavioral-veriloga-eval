@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "240-limiting-diffamp",
+  "checker_task_id": "v4_240_limiting_diffamp",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "e3acc9057fd4705d0d38aa7e9d3388d17efa5ba6958890c3bf7da65d7b73e396",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "23233c25f3a3dceb1f953fade10290f3c668efcb4e9237f7abd8825d2a4f1342",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "240",
+  "family_spec_sha256": "27062925272df03a7fbe8454f2eb85e3fde147ca666c1c5321933dff57311290",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "14fc2ab0c007b98e0919a30c223c7421c367b9b35de593fe36483e71f72ff8e9",
+  "public_contract": "tasks/740-limiting-diffamp-testbench/public_contract.json",
+  "public_contract_sha256": "f3b0e8021ed9ffe4e243f870c8a05c6de41135a0fd053b46d7d464c934f4aa69",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/740-limiting-diffamp-testbench",
+  "task_id": "v4-740"
+}

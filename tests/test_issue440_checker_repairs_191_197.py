@@ -76,7 +76,7 @@ def _pfd_rows(
 ) -> list[dict[str, float]]:
     source_events = ((0.92e-9, "in1"), (1.47e-9, "in2"), (2.57e-9, "in2"), (3.02e-9, "in1"))
     events = [(shift_s + scale * time_s, signal) for time_s, signal in source_events]
-    reset_window = scale * 120e-12 * reset_fraction
+    reset_window = 120e-12 * reset_fraction
     transition_window = scale * transition_s
 
     def outputs_at(time_s: float) -> tuple[float, float]:
@@ -130,7 +130,7 @@ def _pfd_rows(
     return rows
 
 
-def test_task_193_reset_window_is_invariant_to_timing_metamorph() -> None:
+def test_task_193_reset_window_uses_public_ton_contract() -> None:
     assert task_193.CHECKER(_pfd_rows())[0]
     assert task_193.CHECKER(_pfd_rows(scale=1.37, shift_s=2e-9))[0]
     assert task_193.CHECKER(

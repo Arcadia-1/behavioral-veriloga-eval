@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_CONTROLLED_EDGE_RATE, P_WRAPPED_PHASE_RANGE satisfy the public contract; fault class control_direction_inversion is rejected",
-    "observed": "EVAS: wraps=1 clock_toggles=0 phase_range=-2.865/0.732 slopes=11998056.98688759/-30739978.96899507 expected=4.800e+07/9.300e+07 insufficient_excitation=1; P_PERIODIC_PHASE_UPDATE mismatch_count=3; P_WRAPPED_PHASE_RANGE mismatch_count=2; P_WRAP_TOGGLES_CLOCK mismatch_count=2; P_CONTROLLED_EDGE_RATE mismatch_count=1",
+    "observed": "EVAS: wraps=1 clock_toggles=0 phase_range=-2.865/0.732 slopes=11998056.98688759/-30739978.968995105 expected=4.800e+07/9.300e+07 insufficient_excitation=1; P_PERIODIC_PHASE_UPDATE mismatch_count=3; P_WRAPPED_PHASE_RANGE mismatch_count=2; P_WRAP_TOGGLES_CLOCK mismatch_count=2; P_CONTROLLED_EDGE_RATE mismatch_count=1",
     "violated_property_ids": [
       "P_CONTROLLED_EDGE_RATE",
       "P_WRAPPED_PHASE_RANGE"
@@ -18,10 +18,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_019_vco_phase_integrator",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
     "trace_row_count": 1017
   },
   "family_id": "019",
@@ -37,6 +37,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

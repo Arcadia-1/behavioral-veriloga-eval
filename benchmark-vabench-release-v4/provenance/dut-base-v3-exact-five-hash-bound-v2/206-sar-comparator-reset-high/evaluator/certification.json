@@ -12,11 +12,11 @@
     "task_inputs": {
       "checker_profile_sha256": "b476fb251994a099234c76f24948d82eb5e35c391ef90c29cf25e911e8893a66",
       "family_spec_sha256": "f0538df1a4744ec408848abe765eefeb068ded58b10022d640f384943c86fdca",
-      "feedback_deck_sha256": "0f1e1f9e16244b79cae2f842e01dc37514b98892d4e40b4823f7ae8764cf253c",
+      "feedback_deck_sha256": "060088113f477cdd87c1607966f32b93886a5f9d8d153d4c165c9da80b64c024",
       "feedback_profile_sha256": "ee166713b4cd5bd2af46721ad6aa3eb6be048a5d4f424a0271a0b855397f5113",
       "gold_bundle_sha256": "41bc5313c49e7fec71eb14cfa611c1464198544e62ec1d4740133544690f2b0d",
       "harness_spec_sha256": "96175bc1f4af1cb303b1d1fd6c02b90f8b22f478eba548af78424d3c0789bfee",
-      "score_deck_sha256": "49598738a8eba52727e5256d77f22670dc360e6a2c3c16dbec48f0061e6532ed",
+      "score_deck_sha256": "5ea9c9d0aa643edd5f3f15e00da7dace6516a9b80f88d32f18e856dc9ae3bbcf",
       "score_profile_sha256": "dad2cb70280b033455da1419186911e8ea791ea22c3ff794303df33b0298c7dd"
     }
   },
@@ -25,15 +25,18 @@
       "evas_backend": "evas-rust",
       "evas_engine": "evas2",
       "evas_engine_used": "evas2",
+      "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+      "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+      "evas_source_tree": "clean",
       "evas_version": "0.8.3",
       "status": "pass"
     }
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_206_sar_comparator_reset_high",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
     "trace_row_count": 627
   },
   "family_id": "206",

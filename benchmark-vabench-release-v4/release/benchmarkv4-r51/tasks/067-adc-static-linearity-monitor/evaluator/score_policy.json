@@ -1,0 +1,13 @@
+{
+  "candidate_artifacts": [
+    "adc_static_linearity_monitor.va"
+  ],
+  "certification_evaluator": "rust_evas2",
+  "checker_profile_sha256": "d724c1f914917cd4fc3e985be6f13a941c64a8bb49d7f6ec203d829978d80723",
+  "full_contract_pass_required": true,
+  "gold_dut_certification_sha256": "9ada3dac4f9173dbbf47d4955e01ea92a4cfc6e41e4b03fa4d2bcf9141e44635",
+  "gold_solution_tree_sha256": "e6e17e986c9a94fa28e9ab096f83b60706133e4ad92cfe4cd20eb80d40d8887e",
+  "materialized_checker_profile": "evaluator/checker_profile.json",
+  "schema_version": "v4-dut-score-policy-v1",
+  "task_id": "v4-067"
+}

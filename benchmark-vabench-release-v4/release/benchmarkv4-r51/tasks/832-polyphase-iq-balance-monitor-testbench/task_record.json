@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "332-polyphase-iq-balance-monitor",
+  "checker_task_id": "v4_332_polyphase_iq_balance_monitor",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "957f9399c26c55cd08e17b45cdc2325c4bdba1c33bc9605e47dc7dbfbe396e06",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "c21539c54d50b9901cf18cb8e0a10199571d3d6e4fa4c24ad58255694a8c107f",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "332",
+  "family_spec_sha256": "5c7e620dfed357e42503f8e7b916bb199d403130ae02cf22e2186759aaf08c41",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c2c74479ea3f0313c4f94c946f7de33ce69e3c505a125f508deb1c4ed0aeda7b",
+  "public_contract": "tasks/832-polyphase-iq-balance-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "e4f33eafb8a919ca6b76413ce78f06b6c8e18a1a6efd21e05b61cc3979cf4121",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/832-polyphase-iq-balance-monitor-testbench",
+  "task_id": "v4-832"
+}

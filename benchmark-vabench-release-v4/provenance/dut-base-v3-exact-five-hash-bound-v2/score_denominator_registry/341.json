@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_double_ramp_step/certification.json",
-        "certification_sha256": "491f04821265940de934d81b4b1efea76377155901b0121049f88ba5928982c2",
+        "certification_sha256": "188e74da47c2d34c86c094cc61d92d81706c58265c842ceb33e4bcdc49dc2608",
         "fault_class": "soft_reference_advances_by_double_ramp_step",
-        "mutation_bundle_sha256": "4ec23419363939325d2440ee4ce0a29a6c08413997d8ad98c1ecf9018db2cd9d",
+        "mutation_bundle_sha256": "13de29220b7187425a96530f63b12bfe9274a0a9f8005f6f368ab3959c1cb53c",
         "mutation_id": "neg_002_double_ramp_step",
         "source_catalog_certification_path": "negative_variants/neg_002_double_ramp_step/certification.json",
         "trigger_condition": "an enabled rising clock edge occurs while target_ref is more than ramp_tol above soft_ref",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_target_drop_not_clamped/certification.json",
-        "certification_sha256": "476123592fa61cc5789e4f66e6d70b583349a56252a7e565dfdafe59f6dc992c",
+        "certification_sha256": "a07e8fcc64907fe68c57fc4e0404105be5b56b83dac335746ffa0582018ff47e",
         "fault_class": "soft_reference_not_clamped_after_target_drop",
-        "mutation_bundle_sha256": "a2b659eec23b8e9f2a9f9a4dabfc53efe4c454a11671900e4a7d848bc050b483",
+        "mutation_bundle_sha256": "0fe9dbb845d6f6cbd7044554bdb9a19030e3661515fcd1b897eadb0cd7fd3c0e",
         "mutation_id": "neg_003_target_drop_not_clamped",
         "source_catalog_certification_path": "negative_variants/neg_003_target_drop_not_clamped/certification.json",
         "trigger_condition": "target_ref drops below the accumulated soft_ref on an enabled rising clock edge",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_ramp_metric_reports_progress/certification.json",
-        "certification_sha256": "1f325750c1e1bacf55793313f11862b94740dbad834a297d81335d7d29948375",
+        "certification_sha256": "dfcfd773968b4f15386c92e87721952a4ace9e260d9696e530ff0c24f83702df",
         "fault_class": "ramp_metric_reports_accumulated_progress",
-        "mutation_bundle_sha256": "70be6b7dd3ab1441a825bf95b84d27af284b8d9f03d68a13608d886a4929ef0d",
+        "mutation_bundle_sha256": "9696c4dc1fbcb5f34031477e6ac6f46345b7ccfb69d2bddc87be154a217acc45",
         "mutation_id": "neg_004_ramp_metric_reports_progress",
         "source_catalog_certification_path": "negative_variants/neg_004_ramp_metric_reports_progress/certification.json",
         "trigger_condition": "soft_ref advances while target_ref remains above it",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_done_asserted_before_target/certification.json",
-        "certification_sha256": "6cef16950dfa10a08077e9756c2d28852855ff75c70d708d58637b6056fc8c8f",
+        "certification_sha256": "74b3d347e45de5b59259f3f195544a01c4683c50bf910041342db786283e3c8b",
         "fault_class": "soft_start_done_asserted_before_target",
-        "mutation_bundle_sha256": "89f77a5fdc3ff6234f9cac16b5fd62581933d38d6bce6e3fd86d330ca9a74775",
+        "mutation_bundle_sha256": "259f00e8916a4c65f0fb0046433fa9ca2abbc5f2307cff2bdef7aebc1c3c0e08",
         "mutation_id": "neg_005_done_asserted_before_target",
         "source_catalog_certification_path": "negative_variants/neg_005_done_asserted_before_target/certification.json",
         "trigger_condition": "the first enabled ramp update occurs before soft_ref reaches target_ref",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_disable_retains_soft_ref/certification.json",
-        "certification_sha256": "a7cc46b0365ebf092ac394a2baa833e3795d01d2e421a4db0240ad464c82ec9f",
+        "certification_sha256": "67d3d4b3f1260f76a2ad64eaa2c344df60251c2d19b963e492f2adb35a30fa15",
         "fault_class": "disable_clear_retains_soft_reference",
-        "mutation_bundle_sha256": "a71ce0c105b8c0a771aa8c7624dbb9e4a6f732e61a43a7a2eeea760e334626a5",
+        "mutation_bundle_sha256": "872dc9b5ecc22c0a31fe29749c96e698a342e573c15f9309eafa9213f64410b4",
         "mutation_id": "neg_001_disable_retains_soft_ref",
         "source_catalog_certification_path": "negative_variants/neg_001_disable_retains_soft_ref/certification.json",
         "trigger_condition": "enable falls after the soft-start state has advanced above vss",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "c8eef159424cfd086da4633c1757311fc285c9d25b3846be0db13268fb5ac4e0",
       "score_deck_sha256": "8ffbbcd3f7665ed51b17c4e05e3dbac5a09821403336379ef86e5ccc2beb77c0",
-      "task_certification_sha256": "4b4fab241e504bc35ed652f90b3c93675a9913dfd5f020e6479f210aec3e0a65",
-      "task_record_sha256": "f85ea7421881fe1b4db3344b1bb7f0ec5cb13fbeb6091b167bf5c24608185c7c"
+      "task_certification_sha256": "3166bd91a523f1df3dd40c4493f94d27aba03dabd196766f1535675247a6c282",
+      "task_record_sha256": "2503f5cb09e0d27e6c874e6bf13969b73202a91a34d59b0f82bff2261d2149c5"
     },
     "release_dir": "341-buck-soft-start-ramp-controller"
   }

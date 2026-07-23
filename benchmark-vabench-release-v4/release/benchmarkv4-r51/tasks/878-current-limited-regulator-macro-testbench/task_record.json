@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "378-current-limited-regulator-macro",
+  "checker_task_id": "v4_378_current_limited_regulator_macro",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "ad43eacd3266d269d2abc90c4ab25a4b998ae861a01477ed00029ef2a746f499",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "cf14789bfa2b44bf3a66d47d50a7f90cdee9d7ab8bc279b6c69dd1d8302ea0e4",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "378",
+  "family_spec_sha256": "c49b2a62e23d68d3ccd46c921f891d060d340f66fea27e2d599cfabd57ef4ddf",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9047ae3b619f8892666a3aa70db9638baae4e7c75c6a707a1dd5899f2a810455",
+  "public_contract": "tasks/878-current-limited-regulator-macro-testbench/public_contract.json",
+  "public_contract_sha256": "63e1dc7d51f2f47b5c87c3155ade7eac8f6a238f1d1114b1445b713f9548fdab",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/878-current-limited-regulator-macro-testbench",
+  "task_id": "v4-878"
+}

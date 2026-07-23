@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_threshold_too_high/certification.json",
-        "certification_sha256": "a681731c70a8ae74fb2c14904aed79d9453ba803e6ded0d850110e33d0781211",
+        "certification_sha256": "77aa10f36346d0116ab21d6f1ae713be71fa6e5bead7c81f53f3617fc0e546d8",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "28ec872f7bdf0ba8d039a1d89326b6488bad59114390f36a3f9edf15dcb7dc9c",
+        "mutation_bundle_sha256": "b4dd768c85c17c729e19fe2dc3391b5e9757a02fe2c97b701b9d027b05fbffd5",
         "mutation_id": "neg_004_threshold_too_high",
         "source_catalog_certification_path": "negative_variants/neg_004_threshold_too_high/certification.json",
         "trigger_condition": "Uses a threshold above the VDD high level, so asserted input bits are ignored.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_standard_thermometer/certification.json",
-        "certification_sha256": "fd8a8ff5467113bfa34769e100f2621f9f8fc6440d5860397ea49ece79fba992",
+        "certification_sha256": "490a26cd8cf5918f3d1123ac43be5477dee64ca08cc6fbbeb6c3a6ef1b4763d7",
         "fault_class": "standard_thermometer",
-        "mutation_bundle_sha256": "8fa8e2b5e21fb344dc54f657581e44d3946ce6f5bf6b1a249e92e297c36a2b59",
+        "mutation_bundle_sha256": "91086c3a6ee625ea8b247256b18ec0d7171a00562088878d904a6ab32beaf3ec",
         "mutation_id": "neg_002_standard_thermometer",
         "source_catalog_certification_path": "negative_variants/neg_002_standard_thermometer/certification.json",
         "trigger_condition": "Implements a conventional count thermometer instead of the source-specific MSB/MSB/LSB mapping.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_lsb_drives_all/certification.json",
-        "certification_sha256": "21791403bd6224eecfb1ad90f66ff7a026df628cf20653943f6acc4afe7373e8",
+        "certification_sha256": "5c89d726b9c0c1cf3cbad6cd6163a06d505529e571b074c0325d34bce1804cf3",
         "fault_class": "lsb_drives_all",
-        "mutation_bundle_sha256": "96c5146798ae3de85ff84d089e3c92c385745a80702dfa1abf0c50e7cef33e0d",
+        "mutation_bundle_sha256": "920dba8a1d84c83153b94bf4e809dce46cb84776c92909bfbb2ebdbf3ed34147",
         "mutation_id": "neg_003_lsb_drives_all",
         "source_catalog_certification_path": "negative_variants/neg_003_lsb_drives_all/certification.json",
         "trigger_condition": "Incorrectly drives all thermometer outputs from the LSB.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "6c8ad39d8da2c2e132f96b8da698c977da458c8590fb29ffbfb8d151deb9d931",
+        "certification_sha256": "ad13db450b9fd69e2e9f4ee6f7b18d3a680dddc6551fbf30f5e327de4f6373e5",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "d2356becbbe4a93601c9b4825e59bebcfb85a15737357a1379b23944128b5c82",
+        "mutation_bundle_sha256": "23582648e439d367c892f65484eea05a1f2fa9f7e7464865dcde74012c05eb1f",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Bin2ther 2b: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "8017bbadfc5437eb4e7556d4ac55175028593a4d19b91e29530b522b8df36125",
+        "certification_sha256": "10c455315080514e1caa53cfd802f3609e5d4a6772d8b0acc9267c8298053876",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "474f5437b5a5c13365d095debb0f4ef53cae89be099e10274afeebd6042f7493",
+        "mutation_bundle_sha256": "6a194367314cf00731a09665a1b1b47b1cffa8da490b21a0c4ebe0fc6db6321a",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "f252e559258e1b4a377286402e580b4af0db04449c562993dc2467583f21491e",
       "score_deck_sha256": "def805bcd8c916eb75796aacb1cdaf5877958ae9ed67345f661ca9f5edf4cdc7",
-      "task_certification_sha256": "47b1889a9fa5eea27d1fc5a6a049cfe7cf25a995ee5018b125fdd3a1e43cb9d5",
-      "task_record_sha256": "33acac9e406849f1180433c7963f6644d6fe36b960b93a451f3eac46cf268954"
+      "task_certification_sha256": "bfa64a243733471786085e3a62bec42a542d4b3c1d6da168dcc071020de8b219",
+      "task_record_sha256": "9fed41305c716977665179730c435e3c2bd731869703a56cee1666156c380b72"
     },
     "release_dir": "219-bin2ther-2b"
   }

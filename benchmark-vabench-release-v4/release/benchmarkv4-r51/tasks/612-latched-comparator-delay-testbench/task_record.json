@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "112-latched-comparator-delay",
+  "checker_task_id": "v4_112_latched_comparator_delay",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "fe318581ec9c3e69ddf55aaa34c12c59d50026e59f519429f5ab3035686c6780",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "d9bf02d67217512853f813e1f9fa1fcf87ff64b5fa2ddbc67742ef5a78d0c155",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "112",
+  "family_spec_sha256": "d9d6d7bbed28a097465aab8c7149fd2b81e439c5bced76c182e3dc418b2d46cf",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b60d962fa31e7b50e4e04652cf9bc8059411055cac151056a828848156ec436f",
+  "public_contract": "tasks/612-latched-comparator-delay-testbench/public_contract.json",
+  "public_contract_sha256": "bb859d97d3ccd0f386f2139e77ad6c2fdd886fc5d80874ae7f6c8a8ebc45c728",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/612-latched-comparator-delay-testbench",
+  "task_id": "v4-612"
+}

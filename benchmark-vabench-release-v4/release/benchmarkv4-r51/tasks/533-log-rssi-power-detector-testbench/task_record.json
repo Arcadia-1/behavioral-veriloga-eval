@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "033-log-rssi-power-detector",
+  "checker_task_id": "v4_033_log_rssi_power_detector",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "4f7161d8ad7ce2808d88ced6b0518be2121bdb711798d8b357d920d2b25d88e9",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "47e9faaa1ca5df8b9be0c001f1c030b2fe89133ee7c18e5b61dbf05e2a609c16",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "033",
+  "family_spec_sha256": "4cd51398b1ea98c37db1667f0da7fa63d4e4f6d0de513dbaecedc774227756ba",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "651ad088ba53bc3cacd048bfbb2ea903d0ad2989b8ff3eb5dd62ba9aa72dbbcc",
+  "public_contract": "tasks/533-log-rssi-power-detector-testbench/public_contract.json",
+  "public_contract_sha256": "1c864a2f96dc7be485fe0d45980604e234a30ac67a09926f965c91f8b7cd60a6",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/533-log-rssi-power-detector-testbench",
+  "task_id": "v4-533"
+}

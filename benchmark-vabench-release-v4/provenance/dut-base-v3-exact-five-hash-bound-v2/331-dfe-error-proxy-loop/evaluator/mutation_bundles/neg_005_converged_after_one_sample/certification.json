@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_ASSERT_CONVERGED_WHEN_THE_RESIDUAL_REMAINS satisfy the public contract; fault class convergence_qualification_too_short is rejected",
-    "observed": "EVAS: v4_331 checked=10 decisions=10 error_max=0.276 corr_errors=0 decision_errors=0 conv_errors=2 reset_clear=True disabled_clear=True clear_errors=0; P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count=0; P_ON_EACH_ENABLED_DECISION_CLOCK_LATCH mismatch_count=0; P_USE_THE_PREVIOUS_DECISION_HISTORY_TO mismatch_count=0; P_EXPOSE_THE_ABSOLUTE_RESIDUAL_ON_ERROR mismatch_count=0; P_ASSERT_CONVERGED_WHEN_THE_RESIDUAL_REMAINS mismatch_count=2; diagnostic_schema=v4-checker-diagnostic-v1 status=fail category=behavior_mismatch event=stimulus_relative event_context=stimulus_relative expected=public_contract observed=trace",
+    "observed": "EVAS: v4_331 checked=12 decisions=12 error_max=0.276 corr_errors=0 decision_errors=0 conv_errors=2 reset_clear=True disabled_clear=True clear_errors=0; P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count=0; P_ON_EACH_ENABLED_DECISION_CLOCK_LATCH mismatch_count=0; P_USE_THE_PREVIOUS_DECISION_HISTORY_TO mismatch_count=0; P_EXPOSE_THE_ABSOLUTE_RESIDUAL_ON_ERROR mismatch_count=0; P_ASSERT_CONVERGED_WHEN_THE_RESIDUAL_REMAINS mismatch_count=2; diagnostic_schema=v4-checker-diagnostic-v1 status=fail category=behavior_mismatch event=stimulus_relative event_context=stimulus_relative expected=public_contract observed=trace",
     "violated_property_ids": [
       "P_ASSERT_CONVERGED_WHEN_THE_RESIDUAL_REMAINS"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_331_dfe_error_proxy_loop",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
     "trace_row_count": 806
   },
   "family_id": "331",
@@ -36,6 +36,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

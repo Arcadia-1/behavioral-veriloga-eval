@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "207-dac-restore-4bit-clocked",
+  "checker_task_id": "v4_207_dac_restore_4bit_clocked",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "0807a663616a3deae4307dbfa0ad69e295c13d212e4ba4e1ed7867ec91297491",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "95f5e41009d6c435b793ca8329f66566a812dc31a8ad23c585f933671a50a5dd",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "207",
+  "family_spec_sha256": "ee254d1e81a5bfe9cadb2bd66d18461ea12b098e03c7763be4bb1267aa830cf1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0b4ab328e7891a654910e1d7fc69ec3dba2d3ef6f8a2d6bec23a7aeaaa178a2c",
+  "public_contract": "tasks/707-dac-restore-4bit-clocked-testbench/public_contract.json",
+  "public_contract_sha256": "337c8edd128d6169a73764231e3c3d6c73c7c726f0a10d5b2843054aa4d066fd",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/707-dac-restore-4bit-clocked-testbench",
+  "task_id": "v4-707"
+}

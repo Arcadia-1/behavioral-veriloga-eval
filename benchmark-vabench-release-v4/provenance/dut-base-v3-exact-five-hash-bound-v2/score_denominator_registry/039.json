@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001/certification.json",
-        "certification_sha256": "894cce0921345b7e5a6040f7ec68af3ea533a59b916b423f3cfc556f0cf5dd79",
+        "certification_sha256": "925ba8fc1dc1c2d1e969c8374ca461890c588e38f48ae16c965eb4400f0a5d28",
         "fault_class": "removes_the_differential_dependent_delay_variation",
-        "mutation_bundle_sha256": "8df02d4b93536ef882b1e2d99b3c51968b33a3115917eec750fd2d03e04c4abc",
+        "mutation_bundle_sha256": "fba41acc02eec7789f7e6b46262f0038851f39dbd9804e778f98e5de5e6d7671",
         "mutation_id": "neg_001",
         "source_catalog_certification_path": "negative_variants/neg_001/certification.json",
         "trigger_condition": "Removes the differential-dependent delay variation.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003/certification.json",
-        "certification_sha256": "5286cc78156e7fe90ce4f918722531924463a70452ecde5d10dad2a053f8717d",
+        "certification_sha256": "fd12a6153fb9facfd2651803d0ab72435874b98059c8a64e20a775937fa04d97",
         "fault_class": "inverts_the_differential_decision_polarity_while_keeping_the_interface_valid",
-        "mutation_bundle_sha256": "7bf034af80a7c418a839a8b779a351605080c6bbb617dda6e9a5a2a0ad5fc8ec",
+        "mutation_bundle_sha256": "babbc04302538163d89e088c28169c0de0dab5a4b3ab105e50581916514e55bb",
         "mutation_id": "neg_003",
         "source_catalog_certification_path": "negative_variants/neg_003/certification.json",
         "trigger_condition": "Inverts the differential decision polarity while keeping the interface valid.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004/certification.json",
-        "certification_sha256": "985e8ab0b53e6e12db8fee892d7afb9f57df3c91f4eee4fadaee2cc6e59c2cdd",
+        "certification_sha256": "5f8e4daf77de946dc4ca7fb23fa75a49d09b490f1087c4846d869c332789f5d0",
         "fault_class": "breaks_falling_clock_reset_behavior_between_delayed_decisions",
-        "mutation_bundle_sha256": "e24c1715c0aff55aebb043cb355f776dd6c4aa60c3457c7d9131409aa385b683",
+        "mutation_bundle_sha256": "fff9988b45dc8af1503e139d267a2b431896f3fb12738c250bb3b12a08a596f6",
         "mutation_id": "neg_004",
         "source_catalog_certification_path": "negative_variants/neg_004/certification.json",
         "trigger_condition": "Breaks falling-clock reset behavior between delayed decisions.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005/certification.json",
-        "certification_sha256": "5dfadd70d5dc1295a170c8082003d792eb2aec5e55f9f5125e3cd8685c94e83b",
+        "certification_sha256": "3ca16f2b0410ab684cc753965e09cc28d607863a53d173065334d9c3b669edec",
         "fault_class": "fails_the_public_output_transition_or_stuck_output_behavior_checks",
-        "mutation_bundle_sha256": "5a5ac565c4d7eee26c7ecdac5f87553091dd3efe3b8dc0fc41a0f62659d5119f",
+        "mutation_bundle_sha256": "37a63789cc849d1c0b1a105df319dd31ce1b32b30a027746fc9992e0b5cdebc0",
         "mutation_id": "neg_005",
         "source_catalog_certification_path": "negative_variants/neg_005/certification.json",
         "trigger_condition": "Fails the public output transition or stuck-output behavior checks.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002/certification.json",
-        "certification_sha256": "a043aa1b5fa488628c80ece60a956b03c27a4a2ee575d1dd81fc312cebde319a",
+        "certification_sha256": "1718dc9d9a33807d476e96276717bc5573a54a9d8fe0d1d0383042bdb41cbd55",
         "fault_class": "uses_an_incorrect_delay_window_for_one_comparator_decision_phase",
-        "mutation_bundle_sha256": "0a878e45e3c7192552959a281c7dd92bbd870b1aa6ea79b7b122fd7841bb9a13",
+        "mutation_bundle_sha256": "29d7d023b47a740d331af6fbf066fe7a1bd428048f6eda44727ddc864ceccb84",
         "mutation_id": "neg_002",
         "source_catalog_certification_path": "negative_variants/neg_002/certification.json",
         "trigger_condition": "Uses an incorrect delay window for one comparator decision phase.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "01a397e49b893926a7efbce6a7f0b5f4f91d08dc070224ecd6f4efe3f0125787",
       "score_deck_sha256": "41b323d5b64bde3d6fc4edcb7877281a233bc2ea8927ed9256fa0e28a8330eab",
-      "task_certification_sha256": "f622bc0ec97acbdb43d0d806bbc33925111f509a9feb3f63b67fb0e74a2fbe5a",
-      "task_record_sha256": "dd3d9730b3612aa53d7ff81ea907b5dedddda632710e968a6b60c0e6b33095f6"
+      "task_certification_sha256": "b97d7ed9d4c221e183bf6349e308b7a96e22869e6184fa7ea80704e0871276de",
+      "task_record_sha256": "68939412e8228d3293b00bc113475eae54ca93468e6e49fc7a25c9ca6d466e4b"
     },
     "release_dir": "039-propagation-delay-comparator"
   }

@@ -14,7 +14,7 @@
       "family_spec_sha256": "cc1bdce2ad6c21361744a1948d501e3c445ba7dc7da9344f7ceb90ec4e55c2ec",
       "feedback_deck_sha256": "effaa599e02dce897618f066bd58e6e9c1d82596f2c69235801bb666655a94ff",
       "feedback_profile_sha256": "bad2653d5a5b595c598f70e29f59cbed27df1ff02b13b16a591ba830e6627bf2",
-      "gold_bundle_sha256": "35fc60b1281f0fc35fe305432006c4839c7d3019f5712511f33845424dbfd316",
+      "gold_bundle_sha256": "d249b6d4b9ce5d0ccc3a822fd48df31a93b1e1da92ef0edc1d5bd2284b2b66ed",
       "harness_spec_sha256": "58b44cb2ed03004ba2875708495edf616193871af8bc2bd376a931642d4bbe61",
       "score_deck_sha256": "38fc0b38e96515e315e11aa0e31e43c8680c46762747e54d762ded6bc98bf42f",
       "score_profile_sha256": "8d4dc2102268bc44bf5265882effa3de95a8a95d4400d714ebfef0ac621e883d"
@@ -25,23 +25,26 @@
       "evas_backend": "evas-rust",
       "evas_engine": "evas2",
       "evas_engine_used": "evas2",
+      "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+      "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+      "evas_source_tree": "clean",
       "evas_version": "0.8.3",
       "status": "pass"
     }
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_376_pwm_ramp_modulator_front_end",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
-    "trace_row_count": 1176
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
+    "trace_row_count": 1178
   },
   "family_id": "376",
   "input_hashes": {
     "checker_profile": "88cf7528af4f2135a58b3b309b737a2e23c68dc22be613f5aea761656a8e6029",
     "family_spec": "cc1bdce2ad6c21361744a1948d501e3c445ba7dc7da9344f7ceb90ec4e55c2ec",
     "feedback_profile": "bad2653d5a5b595c598f70e29f59cbed27df1ff02b13b16a591ba830e6627bf2",
-    "gold_bundle": "35fc60b1281f0fc35fe305432006c4839c7d3019f5712511f33845424dbfd316",
+    "gold_bundle": "d249b6d4b9ce5d0ccc3a822fd48df31a93b1e1da92ef0edc1d5bd2284b2b66ed",
     "harness_spec": "58b44cb2ed03004ba2875708495edf616193871af8bc2bd376a931642d4bbe61",
     "score_profile": "8d4dc2102268bc44bf5265882effa3de95a8a95d4400d714ebfef0ac621e883d"
   },

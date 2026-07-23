@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_ON_RESET_OR_WHEN_DISABLED_CLEAR satisfy the public contract; fault class reset_does_not_clear is rejected",
-    "observed": "EVAS: v4_314_reset_clear time=5.288000e-08 vin=0.5 low_trip=0.4 high_trip=0.62 expected=0 observed=0.9 mismatch=0.9 v4_314 checked=1019 reset_samples=59 disabled_samples=76 inside=True outside=True low_hold=True high_hold=True state_errors=0 metric_errors=0 clear_errors=39 missing_toggle_count=1",
+    "observed": "EVAS: v4_314_reset_clear time=5.336000e-08 vin=0.5 low_trip=0.4 high_trip=0.62 expected=0 observed=0.9 mismatch=0.9 v4_314 checked=935 reset_samples=46 disabled_samples=64 inside=True outside=True low_hold=True high_hold=True state_errors=0 metric_errors=0 clear_errors=32 toggle_width_errors=0 missing_toggle_count=1",
     "violated_property_ids": [
       "P_ON_RESET_OR_WHEN_DISABLED_CLEAR"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_314_hysteretic_window_comparator",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
     "trace_row_count": 1175
   },
   "family_id": "314",
@@ -36,6 +36,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

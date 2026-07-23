@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_INPUT_THRESHOLDING, P_NORMALIZED_SINGLE_ENDED_OUTPUT satisfy the public contract; fault class threshold_or_boundary_fault is rejected",
-    "observed": "EVAS: P_INPUT_THRESHOLDING mismatch_count=3; P_WEIGHTED_CODE_SUM mismatch_count=3; P_NORMALIZED_SINGLE_ENDED_OUTPUT mismatch_count=3; P_MONOTONIC_CODE_RESPONSE mismatch_count=0; plateaus=3; distinct_codes=3; max_err=0.125",
+    "observed": "EVAS: P_INPUT_THRESHOLDING mismatch_count=4; P_WEIGHTED_CODE_SUM mismatch_count=4; P_NORMALIZED_SINGLE_ENDED_OUTPUT mismatch_count=4; P_MONOTONIC_CODE_RESPONSE mismatch_count=0; plateaus=4; distinct_codes=4; max_err=0.125",
     "violated_property_ids": [
       "P_INPUT_THRESHOLDING",
       "P_NORMALIZED_SINGLE_ENDED_OUTPUT"
@@ -18,18 +18,18 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_197_single_adc_7b_weighted",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
-    "trace_row_count": 281
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
+    "trace_row_count": 381
   },
   "family_id": "197",
   "inputs": {
     "checker_profile_sha256": "0418a1fcee0928b728b1ea8f3fecdcbefb0ba035bdba0846d61561e683f2e462",
-    "harness_spec_sha256": "ec16cb777db1cde3dc8abfb6e3dc7ffdb296a8d68dc1f96144900d90ca668edb",
+    "harness_spec_sha256": "6ddc9901e7d6e3266c0271d6c904d1d7497c02b753f1fab5cfd10a1e90f4dd6b",
     "mutation_bundle_sha256": "af72219f2cd149e3cac5c31daa5c9709ae201d16ecd7641254115a0525bf14fd",
-    "profile_sha256": "5190ff93955bf1694c619e1162a5137fec1055a7dd237dfb81d6a692d1eb1f5f"
+    "profile_sha256": "df11b50bba2c49adb11ce36d942234d957fc98617ce25a208c7c2610e231e409"
   },
   "mutation_id": "neg_004_fixed_offset",
   "outcome": "killed_behaviorally",
@@ -37,6 +37,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

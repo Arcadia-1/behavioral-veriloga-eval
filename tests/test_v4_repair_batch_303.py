@@ -268,3 +268,146 @@ def test_batch303_clocked_diagnostics_count_clear_mismatches() -> None:
     assert not passed
     assert _property_count(note, NORMALIZATION_PROPERTY) > 0
     assert _property_count(note, "P_INITIALIZE_ALL_OBSERVABLE_STATE_TO_0") > 0
+
+
+def _task303_pwl_value(points: list[tuple[float, float]], time_s: float) -> float:
+    if time_s <= points[0][0]:
+        return points[0][1]
+    for index in range(1, len(points)):
+        t0, v0 = points[index - 1]
+        t1, v1 = points[index]
+        if time_s <= t1:
+            if t1 == t0:
+                return v1
+            alpha = (time_s - t0) / (t1 - t0)
+            return v0 + alpha * (v1 - v0)
+    return points[-1][1]
+
+
+def _task303_affine_points(
+    points: list[tuple[float, float]], *, scale: float, shift_s: float
+) -> list[tuple[float, float]]:
+    return [(shift_s + time_s * scale, value) for time_s, value in points]
+
+
+def _task303_expected(vinp: float, vinn: float, enable: float) -> dict[str, float]:
+    if enable <= 0.45:
+        return {
+            "voutp": 0.45,
+            "voutn": 0.45,
+            "gm_metric": 0.0,
+            "limit_flag": 0.0,
+        }
+    diff_limit = 120e-3
+    diff = vinp - vinn
+    limited = diff / (1.0 + abs(diff) / diff_limit)
+    sep = 4.0 * limited
+    voutp = max(0.0, min(0.9, 0.45 + 0.5 * sep))
+    voutn = max(0.0, min(0.9, 0.45 - 0.5 * sep))
+    return {
+        "voutp": voutp,
+        "voutn": voutn,
+        "gm_metric": 0.9 * diff_limit / (diff_limit + abs(diff)),
+        "limit_flag": 0.9 if abs(diff) > diff_limit else 0.0,
+    }
+
+
+def _task303_affine_rows(*, corrupt_common_mode: bool = False) -> list[dict[str, float]]:
+    scale = 1.37
+    shift_s = 2.0e-9
+    stop_s = shift_s + 76e-9 * scale
+    vinp_points = _task303_affine_points(
+        [
+            (0.0, 0.30),
+            (8e-9, 0.30),
+            (16e-9, 0.70),
+            (28e-9, 0.70),
+            (38e-9, 0.20),
+            (48e-9, 0.20),
+            (62e-9, 0.62),
+            (76e-9, 0.62),
+        ],
+        scale=scale,
+        shift_s=shift_s,
+    )
+    vinn_points = _task303_affine_points(
+        [
+            (0.0, 0.52),
+            (8e-9, 0.52),
+            (16e-9, 0.40),
+            (28e-9, 0.40),
+            (38e-9, 0.58),
+            (48e-9, 0.58),
+            (62e-9, 0.50),
+            (76e-9, 0.50),
+        ],
+        scale=scale,
+        shift_s=shift_s,
+    )
+    enable_points = _task303_affine_points(
+        [
+            (0.0, 0.0),
+            (4e-9, 0.0),
+            (4.1e-9, 0.9),
+            (50e-9, 0.9),
+            (50.1e-9, 0.0),
+            (57e-9, 0.0),
+            (57.1e-9, 0.9),
+            (76e-9, 0.9),
+        ],
+        scale=scale,
+        shift_s=shift_s,
+    )
+    rows: list[dict[str, float]] = [
+        {
+            "time": 0.0,
+            "vinp": 0.30,
+            "vinn": 0.52,
+            "bias": 0.45,
+            "enable": 0.0,
+            **_task303_expected(0.30, 0.52, 0.0),
+        }
+    ]
+    tick_s = 500e-12
+    probe_offsets = (300e-12, 450e-12)
+    tick = 0
+    while tick * tick_s + probe_offsets[-1] <= stop_s:
+        event_time = tick * tick_s
+        vinp = _task303_pwl_value(vinp_points, event_time)
+        vinn = _task303_pwl_value(vinn_points, event_time)
+        enable = _task303_pwl_value(enable_points, event_time)
+        outputs = _task303_expected(vinp, vinn, enable)
+        if corrupt_common_mode and enable > 0.45:
+            outputs = {**outputs, "voutp": 0.45, "voutn": 0.45}
+        for time_s in (event_time, *(event_time + offset for offset in probe_offsets)):
+            rows.append(
+                {
+                    "time": time_s,
+                    "vinp": _task303_pwl_value(vinp_points, time_s),
+                    "vinn": _task303_pwl_value(vinn_points, time_s),
+                    "bias": 0.45,
+                    "enable": _task303_pwl_value(enable_points, time_s),
+                    **outputs,
+                }
+            )
+        tick += 1
+    return sorted(rows, key=lambda row: row["time"])
+
+
+def test_v4_303_affine_stimulus_uses_unscaled_dut_timer_grid() -> None:
+    checker = load_checker("v4_303_differential_pair_gm_limiter")
+    assert checker is not None
+
+    correct_passed, correct_note = checker(_task303_affine_rows())
+
+    assert correct_passed, correct_note
+
+
+def test_v4_303_affine_stimulus_still_rejects_common_mode_output_fault() -> None:
+    checker = load_checker("v4_303_differential_pair_gm_limiter")
+    assert checker is not None
+
+    passed, note = checker(_task303_affine_rows(corrupt_common_mode=True))
+
+    assert not passed
+    assert _property_count(note, "P_SCALE_SMALL_SIGNAL_OUTPUT_SEPARATION_BY") > 0

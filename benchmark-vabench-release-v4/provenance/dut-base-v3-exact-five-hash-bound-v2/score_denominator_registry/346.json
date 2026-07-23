@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_count_by_two/certification.json",
-        "certification_sha256": "882e122343e6051b11632b05dd2057014c2c9d2da034d8d951ead70751a55c11",
+        "certification_sha256": "d5580b605af52d19e50d84e981d0ce62b541724dbabf1d7b4efa05e2dbe16a09",
         "fault_class": "counter_step_error",
-        "mutation_bundle_sha256": "a333936b6a753aac6471850e839bf4542bfcf76850fcdcb61bc4e6ae58ecc171",
+        "mutation_bundle_sha256": "462cee09f643bbcc2295fdb7f41415ee93abd41e490c1089cda51a03a53c2de8",
         "mutation_id": "neg_001_count_by_two",
         "source_catalog_certification_path": "negative_variants/neg_001_count_by_two/certification.json",
         "trigger_condition": "an armed interval spans clock edges",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_valid_stuck_low/certification.json",
-        "certification_sha256": "582c634456721e36c89a530a6c522fb7f6235779a042522a6233d2865a59249c",
+        "certification_sha256": "bc194e45ea63558659034cb70211ecfc9e2a42c68325b6c8ffb8a27e2bf5e440",
         "fault_class": "valid_latch_missing_completion",
-        "mutation_bundle_sha256": "ec416a96d3d34f72bdd0dfbff2815fc2072c91d318bde598e6473428029c012a",
+        "mutation_bundle_sha256": "faee0697825fc7bd1fd5b77ece8663622f2496e52064eb3eb211f5d69e5f5285",
         "mutation_id": "neg_003_valid_stuck_low",
         "source_catalog_certification_path": "negative_variants/neg_003_valid_stuck_low/certification.json",
         "trigger_condition": "a completed interval or overflow should latch valid high",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_early_overflow/certification.json",
-        "certification_sha256": "e8a21bc2823a1887a3073719b7a33eabd4f9b88860b00a2c0b5a5f5b44f52c46",
+        "certification_sha256": "c9e365aa9c20b2a32e22355c03fbbf4d0f00805eb903468d03549803dbc178db",
         "fault_class": "overflow_threshold_error",
-        "mutation_bundle_sha256": "2993269453f093bbe7e980029c3bb6b3f807dbd4758c4815fd6bd31f5c43ec87",
+        "mutation_bundle_sha256": "c075fa9221eb7c74642f5e837c9fed765b2ddc60e884dc4b8ca032e7d2df5e90",
         "mutation_id": "neg_004_early_overflow",
         "source_catalog_certification_path": "negative_variants/neg_004_early_overflow/certification.json",
         "trigger_condition": "an interval exceeds 127 clocks",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_reset_clear_ignored/certification.json",
-        "certification_sha256": "c653448f061e9ad67549a02e7d17afa45762fd7d682073faf9520cb24ed74920",
+        "certification_sha256": "749d92158af39e6bb6ee811f8f5af6e7b47ac5c04f3ed0f83d4baccd7051cca0",
         "fault_class": "reset_clear_ignored",
-        "mutation_bundle_sha256": "bfc06235642d831192a102f31e51ee57e3b197ad2c92b43c15ebf7c1300a717a",
+        "mutation_bundle_sha256": "c68746a6a0162c2a7e72447902424832c27f36195fdaa0e6efe0d73fcdc52a5d",
         "mutation_id": "neg_006_reset_clear_ignored",
         "source_catalog_certification_path": "negative_variants/neg_006_reset_clear_ignored/certification.json",
         "trigger_condition": "reset is asserted after a completed interval",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_007_restart_clear_ignored/certification.json",
-        "certification_sha256": "c22f1277533c9955bf5ac6c6e4f0dd0516ff8e9d1f3162c933c51cb7adf53e35",
+        "certification_sha256": "1700dc82a6ee6b23cec6ce2ebff06b18f982b2770319df2a6650d3cc6722d645",
         "fault_class": "restart_clear_ignored",
-        "mutation_bundle_sha256": "c77b93c7b0a0bbc202127767a09c8594e51d2e1d97bda418c43e0e99066cdda0",
+        "mutation_bundle_sha256": "a89c99e8c8b3f1153eda85c55075017b5b647962badf20c9b767acc7d48a0774",
         "mutation_id": "neg_007_restart_clear_ignored",
         "source_catalog_certification_path": "negative_variants/neg_007_restart_clear_ignored/certification.json",
         "trigger_condition": "a new start event follows a completed interval",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "c70b29c78048b9cac038b3d8d2c1c9e20a5a3c7761c461de90fa6ff9a1a20832",
       "score_deck_sha256": "54abc285c2bd4df38919129af9fe7d55371185c7207c1bca93726d79e88f12e6",
-      "task_certification_sha256": "2550c65e819c4e8aafcd3c329343e206e9ef9fbe957344b97f861ad662654239",
-      "task_record_sha256": "c35a3d0978c3987642a3e1cb5c51148e5821afddcea90e41cd66d29b4b4dc0ed"
+      "task_certification_sha256": "7440c57247b328d07cc739508b711587c7df3b4a0972fcb7adbeb8a8af2bf621",
+      "task_record_sha256": "7df9c58f5e95974dec6b08d9329978bedddf03614fb172100c0d21c44a2f8955"
     },
     "release_dir": "346-tdc-measurement-system"
   }

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "252-supply-qualified-window-flag",
+  "checker_task_id": "v4_252_supply_qualified_window_flag",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "210fb2cffc6b52b53f05a43a0c60f176cf3d97f564ab661eda7286a8e9a61e84",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "461aee0592bfb9cfa6a9af448db4f773000c5f77907329abf91a31202ffd7078",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "252",
+  "family_spec_sha256": "c919f920298ec6deaae0c7fb3648cbee7a640f023ca1d4a8eb7c7ca8654011b9",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f410079283a4a7ca8a684239c24c12ea0cf753a79048a463954571c8f5536bd1",
+  "public_contract": "tasks/752-supply-qualified-window-flag-testbench/public_contract.json",
+  "public_contract_sha256": "a0fee073181319560ab2153cfc422c6f163b8617eba4a6f6ca24cf20dfbd3872",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/752-supply-qualified-window-flag-testbench",
+  "task_id": "v4-752"
+}
