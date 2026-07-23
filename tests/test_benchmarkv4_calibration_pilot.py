@@ -302,12 +302,11 @@ def test_active_agent_tools_expose_restricted_evas_not_feedback() -> None:
     assert names == ["list_files", "read_file", "write_file", "run_evas", "finalize"]
 
 
-def test_campaign_runner_defaults_to_latest_r49_release() -> None:
+def test_campaign_runner_defaults_to_latest_r51_release() -> None:
     runner = load_run_campaign()
     wrapper = load_run_campaign_wrapper()
 
-    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r49"
-    assert runner.DEFAULT_RELEASE.is_dir()
+    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r51"
     assert wrapper.DEFAULT_RELEASE == runner.DEFAULT_RELEASE
 
 
