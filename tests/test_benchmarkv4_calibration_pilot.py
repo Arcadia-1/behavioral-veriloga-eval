@@ -345,6 +345,36 @@ def test_run_evas_dut_uses_fixed_public_contract(
     assert invocation["argv"][0] == "simulate"
     assert Path(invocation["argv"][1]) == task / "visible_test.scs"
     assert Path(invocation["argv"][invocation["argv"].index("-o") + 1]) == output
+    assert "--spectre-strict" in invocation["argv"]
+
+
+def test_run_evas_dut_honors_portable_rdist_contract(tmp_path: Path) -> None:
+    runner = load_run_campaign()
+    runtime = tmp_path / "runtime"
+    task = runtime / "public" / "task"
+    submission = runtime / "public" / "submission"
+    task.mkdir(parents=True)
+    submission.mkdir(parents=True)
+    (task / "visible_test.scs").write_text("tran tran stop=1n\n", encoding="utf-8")
+    (task / "evas_runtime.json").write_text(json.dumps({
+        "schema_version": "r51-direct-evas-runtime-v3",
+        "compatibility_mode": "portable",
+        "command": (
+            "evas simulate public/task/visible_test.scs "
+            "-o /tmp/vabench-visible/evas-output"
+        ),
+        "working_directory": "runtime_package_root",
+    }) + "\n", encoding="utf-8")
+
+    result = runner.run_public_evas(runtime, {}, 30, fake_evas_command(tmp_path))
+
+    assert result["status"] == "pass"
+    invocation = json.loads(
+        (runtime / ".vabench-visible" / "evas-output" / "invocation.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert "--spectre-strict" not in invocation["argv"]
 
 
 @pytest.mark.parametrize("attack", ["symlink", "private_include"])
@@ -453,6 +483,52 @@ def test_run_evas_testbench_uses_candidate_and_public_case_only(
     )
     assert rejected["execution_status"] == "candidate_rejected"
     assert "unsafe_source_include" in rejected["stderr"]
+
+
+def test_run_evas_testbench_honors_portable_rdist_contract(tmp_path: Path) -> None:
+    runner = load_run_campaign()
+    runtime = tmp_path / "runtime"
+    task = runtime / "public" / "task"
+    submission = runtime / "public" / "submission"
+    cases = []
+    for case in ["reference", *(f"mutation_{index:02d}" for index in range(1, 6))]:
+        fixture = task / "visible_fixtures" / case / "dut"
+        fixture.mkdir(parents=True)
+        (fixture / "dut.va").write_text("module dut; endmodule\n", encoding="utf-8")
+        cases.append({"case": case, "dut_root": f"visible_fixtures/{case}/dut"})
+    submission.mkdir(parents=True)
+    (submission / "testbench.scs").write_text(
+        'ahdl_include "./dut/dut.va"\n', encoding="utf-8"
+    )
+    (task / "evas_runtime.json").write_text(json.dumps({
+        "schema_version": "r51-direct-evas-testbench-suite-v3",
+        "compatibility_mode": "portable",
+        "candidate": "public/submission/testbench.scs",
+        "candidate_command_template": (
+            "evas simulate /tmp/vabench-visible/runs/{case}/testbench.scs "
+            "-o /tmp/vabench-visible/evas-output/{case}"
+        ),
+        "fixture_policy": "read_only_and_identical_for_visible_and_final_replay",
+        "working_directory": "runtime_package_root",
+        "cases": cases,
+    }) + "\n", encoding="utf-8")
+
+    result = runner.run_public_evas(
+        runtime, {"case": "reference"}, 30, fake_evas_command(tmp_path)
+    )
+
+    assert result["status"] == "pass"
+    assert result["test"] == ".vabench-visible/runs/reference/testbench.scs"
+    invocation = json.loads(
+        (
+            runtime
+            / ".vabench-visible"
+            / "evas-output"
+            / "reference"
+            / "invocation.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert "--spectre-strict" not in invocation["argv"]
 
 
 def test_r47_runtime_rejects_legacy_v1_schema(tmp_path: Path) -> None:

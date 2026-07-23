@@ -14,7 +14,7 @@ ALLOWED_DUT_RUNTIME_SCHEMAS = {
     "r48": {"r48-direct-evas-runtime-v2"},
     "r49": {"r49-direct-evas-runtime-v2"},
     "r50": {"r50-direct-evas-runtime-v2"},
-    "r51": {"r51-direct-evas-runtime-v2"},
+    "r51": {"r51-direct-evas-runtime-v2", "r51-direct-evas-runtime-v3"},
 }
 ALLOWED_TESTBENCH_RUNTIME_SCHEMAS = {
     "r45": {
@@ -25,7 +25,10 @@ ALLOWED_TESTBENCH_RUNTIME_SCHEMAS = {
     "r48": {"r48-direct-evas-testbench-suite-v2"},
     "r49": {"r49-direct-evas-testbench-suite-v2"},
     "r50": {"r50-direct-evas-testbench-suite-v2"},
-    "r51": {"r51-direct-evas-testbench-suite-v2"},
+    "r51": {
+        "r51-direct-evas-testbench-suite-v2",
+        "r51-direct-evas-testbench-suite-v3",
+    },
 }
 AUTHORING_ONLY_PUBLIC_MARKERS = (
     "negative_variants/",
@@ -278,9 +281,17 @@ def main() -> int:
                 schema_version = runtime_data.get("schema_version")
                 if schema_version not in ALLOWED_DUT_RUNTIME_SCHEMAS.get(release_revision, set()):
                     problems.append("public EVAS runtime schema does not match the release")
-                if schema_version == f"{release_revision}-direct-evas-runtime-v2":
+                if schema_version in {
+                    f"{release_revision}-direct-evas-runtime-v2",
+                    f"{release_revision}-direct-evas-runtime-v3",
+                }:
                     if "/tmp/vabench-visible/evas-output" not in command or "public/submission/evas-output" in command:
                         problems.append("public EVAS output is not isolated from submission")
+                if schema_version == f"{release_revision}-direct-evas-runtime-v3":
+                    if runtime_data.get("compatibility_mode") != "portable":
+                        problems.append("portable public EVAS runtime mode is missing")
+                    if "--spectre-strict" in command:
+                        problems.append("portable public EVAS runtime still requests strict mode")
         if form == "testbench":
             for required in ("trusted_solution", "mutation_bundles"):
                 if not (evaluator / required).is_dir():
@@ -318,11 +329,19 @@ def main() -> int:
                 schema_version = suite_data.get("schema_version")
                 if schema_version not in ALLOWED_TESTBENCH_RUNTIME_SCHEMAS.get(release_revision, set()):
                     problems.append("public testbench suite schema does not match the release")
-                if schema_version == f"{release_revision}-direct-evas-testbench-suite-v2":
+                if schema_version in {
+                    f"{release_revision}-direct-evas-testbench-suite-v2",
+                    f"{release_revision}-direct-evas-testbench-suite-v3",
+                }:
                     if "/tmp/vabench-visible/runs/{case}" not in command:
                         problems.append("public testbench runs are not scratch-isolated")
                     if "public/submission/runs" in command or "public/submission/evas-output" in command:
                         problems.append("public testbench scratch pollutes submission")
+                if schema_version == f"{release_revision}-direct-evas-testbench-suite-v3":
+                    if suite_data.get("compatibility_mode") != "portable":
+                        problems.append("portable public EVAS testbench mode is missing")
+                    if "--spectre-strict" in command:
+                        problems.append("portable public EVAS testbench still requests strict mode")
             if fixtures.is_dir() and trusted_fixtures.is_dir() and tree_sha(fixtures) != tree_sha(trusted_fixtures):
                 problems.append("public and trusted testbench fixture trees differ")
             if (run / "public" / "task" / "visible_test.scs").exists():

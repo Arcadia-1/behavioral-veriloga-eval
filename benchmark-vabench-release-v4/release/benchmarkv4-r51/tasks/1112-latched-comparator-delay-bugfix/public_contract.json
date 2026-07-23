@@ -105,7 +105,8 @@
       "G4",
       "G5"
     ],
-    "command": "evas simulate public/task/visible_test.scs -o /tmp/vabench-visible/evas-output --spectre-strict",
+    "command": "evas simulate public/task/visible_test.scs -o /tmp/vabench-visible/evas-output",
+    "compatibility_mode": "portable",
     "visible_and_final_test": "identical"
   },
   "family_id": "112",

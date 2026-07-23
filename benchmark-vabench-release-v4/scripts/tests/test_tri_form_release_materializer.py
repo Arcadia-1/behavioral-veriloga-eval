@@ -20,6 +20,7 @@ from materialize_tri_form_release import (  # noqa: E402
     DEFAULT_OUTPUTS,
     MODES,
     REFERENCE_TOKENIZER,
+    build_bugfix_view,
     build_dut_view,
     build_testbench_view,
     canonical_required_behavior,
@@ -82,16 +83,20 @@ def test_r51_release_plumbing_preserves_real_skill_and_runtime_contracts() -> No
     assert REBUILD_DEFAULT_RELEASES["r51"].name == "benchmarkv4-r51"
     assert release_uses_real_skills("r51") is True
     assert allowed_runtime_schemas("r51", "dut") == {
-        "r51-direct-evas-runtime-v2"
+        "r51-direct-evas-runtime-v2",
+        "r51-direct-evas-runtime-v3",
     }
     assert allowed_runtime_schemas("r51", "testbench") == {
-        "r51-direct-evas-testbench-suite-v2"
+        "r51-direct-evas-testbench-suite-v2",
+        "r51-direct-evas-testbench-suite-v3",
     }
     assert ALLOWED_DUT_RUNTIME_SCHEMAS["r51"] == {
-        "r51-direct-evas-runtime-v2"
+        "r51-direct-evas-runtime-v2",
+        "r51-direct-evas-runtime-v3",
     }
     assert ALLOWED_TESTBENCH_RUNTIME_SCHEMAS["r51"] == {
-        "r51-direct-evas-testbench-suite-v2"
+        "r51-direct-evas-testbench-suite-v2",
+        "r51-direct-evas-testbench-suite-v3",
     }
 
 
@@ -317,6 +322,190 @@ def test_dut_builder_binds_selected_revision_to_identical_runtime_decks(
     assert task_record["evaluation_binding"]["profile_sha256"] == file_sha(
         task / "evaluator" / "canonical_test_profile.json"
     )
+
+
+@pytest.mark.parametrize(
+    ("form", "task_dir_name"),
+    [
+        ("dut", "001-sample"),
+        ("testbench", "501-sample-testbench"),
+        ("bugfix", "1001-sample-bugfix"),
+    ],
+)
+def test_r51_rdist_solution_uses_portable_v3_runtime_for_every_form(
+    tmp_path: Path,
+    form: str,
+    task_dir_name: str,
+) -> None:
+    source_task, row, seed_review = sample_source_task(
+        tmp_path, independent_reference=True
+    )
+    (source_task / "evaluator" / "solution" / "dut.va").write_text(
+        "module dut; analog V(vin) <+ $rdist_normal(7, 0, 1); endmodule\n",
+        encoding="utf-8",
+    )
+    seed_review.update({
+        "selection_status": "policy_reviewed",
+        "triviality_markers": [],
+    })
+    output = tmp_path / "release"
+    args = (
+        output,
+        source_task,
+        row,
+        sample_spec(),
+        "a" * 64,
+    )
+    if form == "dut":
+        build_dut_view(*args, release_revision="r51")
+    elif form == "testbench":
+        build_testbench_view(
+            *args, seed_review, release_revision="r51"
+        )
+    else:
+        build_bugfix_view(
+            *args, seed_review, release_revision="r51"
+        )
+
+    task = output / "tasks" / task_dir_name
+    runtime = json.loads(
+        (task / "public" / "evas_runtime.json").read_text(encoding="utf-8")
+    )
+    contract = json.loads(
+        (task / "public_contract.json").read_text(encoding="utf-8")
+    )
+    command = runtime.get("command") or runtime["candidate_command_template"]
+
+    assert runtime["schema_version"].endswith("-v3")
+    assert runtime["compatibility_mode"] == "portable"
+    assert "--spectre-strict" not in command
+    assert contract["evas"]["compatibility_mode"] == "portable"
+    if form != "testbench":
+        assert contract["evas"]["command"] == command
+
+
+@pytest.mark.parametrize(
+    ("form", "task_dir_name"),
+    [
+        ("dut", "001-sample"),
+        ("testbench", "501-sample-testbench"),
+        ("bugfix", "1001-sample-bugfix"),
+    ],
+)
+def test_r51_non_rdist_solution_retains_strict_v2_runtime(
+    tmp_path: Path,
+    form: str,
+    task_dir_name: str,
+) -> None:
+    source_task, row, seed_review = sample_source_task(
+        tmp_path, independent_reference=True
+    )
+    seed_review.update({
+        "selection_status": "policy_reviewed",
+        "triviality_markers": [],
+    })
+    output = tmp_path / "release"
+    args = (
+        output,
+        source_task,
+        row,
+        sample_spec(),
+        "a" * 64,
+    )
+    if form == "dut":
+        build_dut_view(*args, release_revision="r51")
+    elif form == "testbench":
+        build_testbench_view(
+            *args, seed_review, release_revision="r51"
+        )
+    else:
+        build_bugfix_view(
+            *args, seed_review, release_revision="r51"
+        )
+
+    task = output / "tasks" / task_dir_name
+    runtime = json.loads(
+        (task / "public" / "evas_runtime.json").read_text(encoding="utf-8")
+    )
+    contract = json.loads(
+        (task / "public_contract.json").read_text(encoding="utf-8")
+    )
+    command = runtime.get("command") or runtime["candidate_command_template"]
+
+    assert runtime["schema_version"].endswith("-v2")
+    assert "compatibility_mode" not in runtime
+    assert "--spectre-strict" in command
+    assert "compatibility_mode" not in contract["evas"]
+    if form != "testbench":
+        assert contract["evas"]["command"] == command
+
+
+def test_r51_runtime_policy_is_derived_from_solution_not_prompt_text(
+    tmp_path: Path,
+) -> None:
+    source_task, row, _ = sample_source_task(
+        tmp_path, independent_reference=True
+    )
+    instruction = source_task / "public" / "task" / "instruction.md"
+    instruction.write_text(
+        instruction.read_text(encoding="utf-8")
+        + "\nMention `$rdist_normal` only as explanatory prompt text.\n",
+        encoding="utf-8",
+    )
+    output = tmp_path / "release"
+    record = build_dut_view(
+        output,
+        source_task,
+        row,
+        sample_spec(),
+        "a" * 64,
+        release_revision="r51",
+    )
+    runtime = json.loads(
+        (
+            output
+            / record["task_dir"]
+            / "public"
+            / "evas_runtime.json"
+        ).read_text(encoding="utf-8")
+    )
+
+    assert runtime["schema_version"] == "r51-direct-evas-runtime-v2"
+    assert "--spectre-strict" in runtime["command"]
+    assert "compatibility_mode" not in runtime
+
+
+def test_pre_r51_rdist_solution_retains_sealed_strict_v2_runtime(
+    tmp_path: Path,
+) -> None:
+    source_task, row, _ = sample_source_task(
+        tmp_path, independent_reference=True
+    )
+    (source_task / "evaluator" / "solution" / "dut.va").write_text(
+        "module dut; analog V(vin) <+ $rdist_normal(7, 0, 1); endmodule\n",
+        encoding="utf-8",
+    )
+    output = tmp_path / "release"
+    record = build_dut_view(
+        output,
+        source_task,
+        row,
+        sample_spec(),
+        "a" * 64,
+        release_revision="r50",
+    )
+    runtime = json.loads(
+        (
+            output
+            / record["task_dir"]
+            / "public"
+            / "evas_runtime.json"
+        ).read_text(encoding="utf-8")
+    )
+
+    assert runtime["schema_version"] == "r50-direct-evas-runtime-v2"
+    assert "--spectre-strict" in runtime["command"]
+    assert "compatibility_mode" not in runtime
 
 
 def test_runtime_export_rejects_tampered_canonical_deck(tmp_path: Path) -> None:

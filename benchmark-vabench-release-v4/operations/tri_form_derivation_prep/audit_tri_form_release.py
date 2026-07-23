@@ -129,7 +129,11 @@ def rust_evas2_runtime(
 
 def allowed_runtime_schemas(release_revision: str, form: str) -> set[str]:
     kind = "direct-evas-testbench-suite" if form == "testbench" else "direct-evas-runtime"
-    versions = (1, 2) if release_revision == "r45" else (2,)
+    versions = (
+        (1, 2)
+        if release_revision == "r45"
+        else ((2, 3) if release_revision == "r51" else (2,))
+    )
     return {
         f"{release_revision}-{kind}-v{version}"
         for version in versions
@@ -721,10 +725,18 @@ def audit_task(
                 schema_version = runtime_data.get("schema_version")
                 if schema_version not in allowed_runtime_schemas(release_revision, form):
                     problems.append(f"{prefix} public EVAS runtime schema is unsupported")
-                if schema_version == f"{release_revision}-direct-evas-runtime-v2":
+                if schema_version in {
+                    f"{release_revision}-direct-evas-runtime-v2",
+                    f"{release_revision}-direct-evas-runtime-v3",
+                }:
                     command = str(runtime_data.get("command") or "")
                     if "/tmp/vabench-visible/evas-output" not in command or "public/submission/evas-output" in command:
                         problems.append(f"{prefix} public EVAS output is not isolated from submission")
+                if schema_version == f"{release_revision}-direct-evas-runtime-v3":
+                    if runtime_data.get("compatibility_mode") != "portable":
+                        problems.append(f"{prefix} portable EVAS runtime mode is missing")
+                    if "--spectre-strict" in str(runtime_data.get("command") or ""):
+                        problems.append(f"{prefix} portable EVAS runtime still requests strict mode")
         else:
             public_suite = task_dir / "public" / "evas_runtime.json"
             trusted_suite = evaluator / "trusted_replay_suite.json"
@@ -753,12 +765,20 @@ def audit_task(
                 schema_version = suite_data.get("schema_version")
                 if schema_version not in allowed_runtime_schemas(release_revision, form):
                     problems.append(f"{prefix} public testbench suite schema is unsupported")
-                if schema_version == f"{release_revision}-direct-evas-testbench-suite-v2":
+                if schema_version in {
+                    f"{release_revision}-direct-evas-testbench-suite-v2",
+                    f"{release_revision}-direct-evas-testbench-suite-v3",
+                }:
                     command = str(suite_data.get("candidate_command_template") or "")
                     if "/tmp/vabench-visible/runs/{case}" not in command:
                         problems.append(f"{prefix} public testbench runs are not scratch-isolated")
                     if "public/submission/runs" in command or "public/submission/evas-output" in command:
                         problems.append(f"{prefix} public testbench scratch pollutes submission")
+                if schema_version == f"{release_revision}-direct-evas-testbench-suite-v3":
+                    if suite_data.get("compatibility_mode") != "portable":
+                        problems.append(f"{prefix} portable EVAS testbench mode is missing")
+                    if "--spectre-strict" in str(suite_data.get("candidate_command_template") or ""):
+                        problems.append(f"{prefix} portable EVAS testbench still requests strict mode")
             if public_fixtures.is_dir() and binding.get("public_fixture_tree_sha256") != tree_sha(public_fixtures):
                 problems.append(f"{prefix} public fixture binding hash mismatch")
     checker_profile = read_json(evaluator / "checker_profile.json")
