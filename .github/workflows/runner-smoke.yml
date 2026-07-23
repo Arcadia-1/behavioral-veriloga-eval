@@ -94,6 +94,11 @@ jobs:
               benchmark-vabench-release-v4/release/benchmarkv4-r47 \
               benchmark-vabench-release-v4/evidence/r47
           fi
+          if git cat-file -e "$BASE_SHA:benchmark-vabench-release-v4/release/benchmarkv4-r51" 2>/dev/null; then
+            git diff --exit-code "$BASE_SHA" -- \
+              benchmark-vabench-release-v4/release/benchmarkv4-r51 \
+              benchmark-vabench-release-v4/evidence/r51
+          fi
 
       - name: Rebuild and certify newly introduced R47
         env:
