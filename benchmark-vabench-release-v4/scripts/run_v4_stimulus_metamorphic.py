@@ -50,7 +50,7 @@ from score_denominator_registry import score_denominator_registry_sha256  # noqa
 REQUIRED_EVAS_ENGINE = "evas2"
 REQUIRED_EVAS_VERSION = "0.8.3"
 REQUIRED_EVAS_BACKEND = "evas-rust"
-DEFAULT_RELEASE_REVISION = "r45"
+DEFAULT_RELEASE_REVISION = "r51"
 SOURCE_ROOT = ROOT / "benchmark-vabench-release-v4" / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 
 # Scaling the stimulus changes the physical operating point when the DUT owns
@@ -439,7 +439,7 @@ def main() -> int:
         "--release-revision",
         choices=("r44", "r45", "r47", "r48", "r49", "r50", "r51"),
         default=DEFAULT_RELEASE_REVISION,
-        help="release identity written into evidence (default: r45)",
+        help="release identity written into evidence (default: r51)",
     )
     args = parser.parse_args()
     release_label, compact_schema = compact_evidence_identity(args.release_revision)

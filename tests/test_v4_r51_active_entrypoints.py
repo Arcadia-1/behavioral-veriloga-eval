@@ -52,13 +52,13 @@ def default_release_literals(path: Path) -> set[str]:
 
 
 @pytest.mark.parametrize("entrypoint", ACTIVE_ENTRYPOINTS, ids=lambda path: path.name)
-def test_active_benchmark_entrypoint_defaults_to_r45(entrypoint: Path) -> None:
+def test_active_benchmark_entrypoint_defaults_to_r51(entrypoint: Path) -> None:
     literals = default_release_literals(entrypoint)
-    assert "benchmarkv4-r45" in literals
+    assert "benchmarkv4-r51" in literals
     assert "benchmarkv4" not in literals
 
 
-def test_operator_docs_name_r45_as_the_active_default() -> None:
+def test_operator_docs_name_r51_as_the_active_default() -> None:
     documents = (
         ROOT / "docs" / "REPO_LAYOUT_POLICY.md",
         PACKAGE / "runners" / "README.md",
@@ -67,10 +67,10 @@ def test_operator_docs_name_r45_as_the_active_default() -> None:
     )
     for document in documents:
         text = document.read_text(encoding="utf-8")
-        assert "benchmarkv4-r45" in text, document
+        assert "benchmarkv4-r51" in text, document
 
 
-def test_active_metamorphic_evidence_defaults_to_r45() -> None:
+def test_active_metamorphic_evidence_defaults_to_r51() -> None:
     path = PACKAGE / "scripts" / "run_v4_stimulus_metamorphic.py"
     tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
     defaults = {
@@ -82,4 +82,4 @@ def test_active_metamorphic_evidence_defaults_to_r45() -> None:
         for target in node.targets
         if isinstance(target, ast.Name)
     }
-    assert defaults["DEFAULT_RELEASE_REVISION"] == "r45"
+    assert defaults["DEFAULT_RELEASE_REVISION"] == "r51"

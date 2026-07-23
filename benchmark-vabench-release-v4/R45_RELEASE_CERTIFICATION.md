@@ -1,9 +1,9 @@
 # R45 Release Certification
 
-R45 is the active immutable vaBench V4 package at
-`release/benchmarkv4-r45/`. Its release audit and all three revision-specific
-evidence artifacts report `pass`; `AUDIT_REPORT.json` contains no structural or
-certification problems.
+R45 is a historical immutable vaBench V4 package at
+`release/benchmarkv4-r45/`; the active operator-facing release is now r51.
+R45's release audit and all three revision-specific evidence artifacts report
+`pass`; `AUDIT_REPORT.json` contains no structural or certification problems.
 
 ## Certified Scope
 

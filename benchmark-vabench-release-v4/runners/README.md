@@ -1,12 +1,12 @@
 # benchmarkv4 runners
 
 This directory contains public runtime tooling for
-`benchmark-vabench-release-v4/release/benchmarkv4-r49`.
+`benchmark-vabench-release-v4/release/benchmarkv4-r51`.
 
 Implemented:
 
 - `run_benchmarkv4_campaign.py` is the unified experiment entry point for
-  `release/benchmarkv4-r49`: it builds a random or preselected campaign, then
+  `release/benchmarkv4-r51`: it builds a random or preselected campaign, then
   runs `G0`/`G1` through direct one-shot artifact extraction and `G2`-`G5`
   through the pinned mini-SWE-agent scaffold in the shared public Docker
   runtime, where the agent has full Bash and direct access to public EVAS.

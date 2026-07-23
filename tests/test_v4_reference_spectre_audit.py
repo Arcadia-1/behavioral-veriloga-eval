@@ -10,6 +10,9 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
+HISTORICAL_TEST_RELEASE = (
+    ROOT / "benchmark-vabench-release-v4" / "release" / "benchmarkv4-r45"
+)
 SCRIPT = (
     ROOT
     / "benchmark-vabench-release-v4"
@@ -34,8 +37,8 @@ def audit():
 
 
 def test_default_release_and_testbench_index_match_current_package(audit) -> None:
-    assert audit.DEFAULT_RELEASE.name == "benchmarkv4-r45"
-    rows = audit.resolve_task_rows(audit.DEFAULT_RELEASE, [])
+    assert audit.DEFAULT_RELEASE.name == "benchmarkv4-r51"
+    rows = audit.resolve_task_rows(HISTORICAL_TEST_RELEASE, [])
 
     assert len(rows) == 400
     assert {key: rows[0][key] for key in ("family_id", "form", "task_dir", "task_id")} == {
@@ -48,12 +51,12 @@ def test_default_release_and_testbench_index_match_current_package(audit) -> Non
 
 def test_resolve_task_rows_rejects_unknown_or_non_testbench_task(audit) -> None:
     with pytest.raises(SystemExit, match="unknown testbench task id"):
-        audit.resolve_task_rows(audit.DEFAULT_RELEASE, ["v4-001"])
+        audit.resolve_task_rows(HISTORICAL_TEST_RELEASE, ["v4-001"])
 
 
 def test_checker_and_include_resolution_use_current_canonical_assets(audit) -> None:
-    row = audit.resolve_task_rows(audit.DEFAULT_RELEASE, ["v4-501"])[0]
-    task_dir = audit.DEFAULT_RELEASE / row["task_dir"]
+    row = audit.resolve_task_rows(HISTORICAL_TEST_RELEASE, ["v4-501"])[0]
+    task_dir = HISTORICAL_TEST_RELEASE / row["task_dir"]
     task_record = audit.read_json(task_dir / "task_record.json")
     tb_path = task_dir / "evaluator" / "reference_tb.scs"
 
@@ -159,8 +162,8 @@ def test_mutation_include_resolution_never_falls_back_to_the_correct_dut(
 def test_checker_resolution_accepts_an_audited_modular_v4_checker(audit) -> None:
     if not audit.has_behavior_check("v4_364_iq_upconversion_mixer_chain"):
         pytest.skip("requires the modular v4 checker registry")
-    row = audit.resolve_task_rows(audit.DEFAULT_RELEASE, ["v4-864"])[0]
-    task_dir = audit.DEFAULT_RELEASE / row["task_dir"]
+    row = audit.resolve_task_rows(HISTORICAL_TEST_RELEASE, ["v4-864"])[0]
+    task_dir = HISTORICAL_TEST_RELEASE / row["task_dir"]
     task_record = audit.read_json(task_dir / "task_record.json")
 
     assert audit.checker_task_id(task_dir, task_record) == "v4_364_iq_upconversion_mixer_chain"
@@ -185,7 +188,7 @@ def test_warning_extraction_classifies_known_infrastructure_noise(audit, tmp_pat
 
 
 def test_run_one_scores_reference_with_registered_checker(audit, tmp_path: Path, monkeypatch) -> None:
-    row = audit.resolve_task_rows(audit.DEFAULT_RELEASE, ["v4-501"])[0]
+    row = audit.resolve_task_rows(HISTORICAL_TEST_RELEASE, ["v4-501"])[0]
 
     def fake_spectre_case(**kwargs):
         output_dir = kwargs["output_dir"]
@@ -199,7 +202,7 @@ def test_run_one_scores_reference_with_registered_checker(audit, tmp_path: Path,
     monkeypatch.setattr(audit, "behavior_side_output_names", lambda _checker_id: ())
 
     result = audit.run_one(
-        release=audit.DEFAULT_RELEASE,
+        release=HISTORICAL_TEST_RELEASE,
         row=row,
         output_root=tmp_path,
         spectre_backend="sui-direct",
@@ -226,7 +229,7 @@ def test_run_one_reports_unregistered_checker_without_starting_spectre(
     tmp_path: Path,
     monkeypatch,
 ) -> None:
-    row = audit.resolve_task_rows(audit.DEFAULT_RELEASE, ["v4-562"])[0]
+    row = audit.resolve_task_rows(HISTORICAL_TEST_RELEASE, ["v4-562"])[0]
     monkeypatch.setattr(
         audit,
         "run_spectre_case",
@@ -235,7 +238,7 @@ def test_run_one_reports_unregistered_checker_without_starting_spectre(
     monkeypatch.setattr(audit, "has_behavior_check", lambda _checker_id: False)
 
     result = audit.run_one(
-        release=audit.DEFAULT_RELEASE,
+        release=HISTORICAL_TEST_RELEASE,
         row=row,
         output_root=tmp_path,
         spectre_backend="sui-direct",
@@ -257,8 +260,8 @@ def test_correct_plus_five_uses_score_policy_sources_and_kills_all_negatives(
     tmp_path: Path,
     monkeypatch,
 ) -> None:
-    row = audit.resolve_task_rows(audit.DEFAULT_RELEASE, ["v4-501"])[0]
-    task_dir = audit.DEFAULT_RELEASE / row["task_dir"]
+    row = audit.resolve_task_rows(HISTORICAL_TEST_RELEASE, ["v4-501"])[0]
+    task_dir = HISTORICAL_TEST_RELEASE / row["task_dir"]
     policy = audit.read_json(task_dir / "evaluator" / "score_policy.json")
     negative_ids = policy["negative_suite_mutation_ids"]
     calls = []
@@ -279,7 +282,7 @@ def test_correct_plus_five_uses_score_policy_sources_and_kills_all_negatives(
     monkeypatch.setattr(audit, "behavior_side_output_names", lambda _checker_id: ())
 
     result = audit.run_correct_plus_mutations(
-        release=audit.DEFAULT_RELEASE,
+        release=HISTORICAL_TEST_RELEASE,
         row=row,
         output_root=tmp_path,
         spectre_backend="sui-direct",
@@ -483,8 +486,8 @@ def test_correct_plus_five_never_counts_compile_or_missing_trace_as_kills(
     tmp_path: Path,
     monkeypatch,
 ) -> None:
-    row = audit.resolve_task_rows(audit.DEFAULT_RELEASE, ["v4-501"])[0]
-    task_dir = audit.DEFAULT_RELEASE / row["task_dir"]
+    row = audit.resolve_task_rows(HISTORICAL_TEST_RELEASE, ["v4-501"])[0]
+    task_dir = HISTORICAL_TEST_RELEASE / row["task_dir"]
     negative_ids = audit.read_json(
         task_dir / "evaluator" / "score_policy.json"
     )["negative_suite_mutation_ids"]
@@ -517,7 +520,7 @@ def test_correct_plus_five_never_counts_compile_or_missing_trace_as_kills(
     monkeypatch.setattr(audit, "behavior_side_output_names", lambda _checker_id: ())
 
     result = audit.run_correct_plus_mutations(
-        release=audit.DEFAULT_RELEASE,
+        release=HISTORICAL_TEST_RELEASE,
         row=row,
         output_root=tmp_path,
         spectre_backend="sui-direct",
@@ -546,7 +549,7 @@ def test_correct_plus_five_treats_missing_checker_columns_as_invalid_runs(
     tmp_path: Path,
     monkeypatch,
 ) -> None:
-    row = audit.resolve_task_rows(audit.DEFAULT_RELEASE, ["v4-501"])[0]
+    row = audit.resolve_task_rows(HISTORICAL_TEST_RELEASE, ["v4-501"])[0]
     spectre_calls = 0
 
     def fake_spectre_case(**kwargs):
@@ -569,7 +572,7 @@ def test_correct_plus_five_treats_missing_checker_columns_as_invalid_runs(
     monkeypatch.setattr(audit, "behavior_side_output_names", lambda _checker_id: ())
 
     result = audit.run_correct_plus_mutations(
-        release=audit.DEFAULT_RELEASE,
+        release=HISTORICAL_TEST_RELEASE,
         row=row,
         output_root=tmp_path,
         spectre_backend="sui-direct",
@@ -606,7 +609,7 @@ def test_correct_plus_five_rejects_other_checker_contract_failures(
     monkeypatch,
     invalid_note: str,
 ) -> None:
-    row = audit.resolve_task_rows(audit.DEFAULT_RELEASE, ["v4-501"])[0]
+    row = audit.resolve_task_rows(HISTORICAL_TEST_RELEASE, ["v4-501"])[0]
     spectre_calls = 0
 
     def fake_spectre_case(**kwargs):
@@ -629,7 +632,7 @@ def test_correct_plus_five_rejects_other_checker_contract_failures(
     monkeypatch.setattr(audit, "behavior_side_output_names", lambda _checker_id: ())
 
     result = audit.run_correct_plus_mutations(
-        release=audit.DEFAULT_RELEASE,
+        release=HISTORICAL_TEST_RELEASE,
         row=row,
         output_root=tmp_path,
         spectre_backend="sui-direct",
@@ -656,7 +659,7 @@ def test_correct_plus_five_rejects_non_five_score_policy_without_running_spectre
     tmp_path: Path,
     monkeypatch,
 ) -> None:
-    row = audit.resolve_task_rows(audit.DEFAULT_RELEASE, ["v4-501"])[0]
+    row = audit.resolve_task_rows(HISTORICAL_TEST_RELEASE, ["v4-501"])[0]
     original_read_json = audit.read_json
 
     def fake_read_json(path: Path):
@@ -673,7 +676,7 @@ def test_correct_plus_five_rejects_non_five_score_policy_without_running_spectre
     )
 
     result = audit.run_correct_plus_mutations(
-        release=audit.DEFAULT_RELEASE,
+        release=HISTORICAL_TEST_RELEASE,
         row=row,
         output_root=tmp_path,
         spectre_backend="sui-direct",
