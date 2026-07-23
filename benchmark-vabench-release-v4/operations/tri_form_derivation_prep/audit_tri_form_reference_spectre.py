@@ -10,6 +10,8 @@ checker.
 from __future__ import annotations
 
 import argparse
+import hashlib
+import inspect
 import json
 import re
 import shutil
@@ -36,14 +38,20 @@ from run_gold_dual_suite import (  # noqa: E402
     default_remote_cadence_cshrc,
     default_remote_host,
     default_remote_work_root,
+    discover_spectre_support_files,
     normalize_spectre_backend,
     normalize_spectre_mode,
+    rewrite_ahdl_includes_for_staging,
     run_spectre_case,
+    safe_path_component,
+    staged_input_rel,
 )
 from simulate_evas import (  # noqa: E402
     behavior_side_output_names,
+    behavior_checker_policy,
     evaluate_behavior_with_timeout,
     has_behavior_check,
+    resolve_row_behavior_checker,
     validate_behavior_side_outputs,
 )
 
@@ -67,6 +75,261 @@ def read_json(path: Path) -> dict[str, Any]:
 def write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def canonical_json_bytes(value: Any) -> bytes:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode(
+        "utf-8"
+    )
+
+
+def sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def file_fingerprint(path: Path, root: Path) -> dict[str, Any]:
+    data = path.read_bytes()
+    try:
+        rel_path = path.resolve().relative_to(root.resolve()).as_posix()
+    except ValueError:
+        rel_path = path.resolve().as_posix()
+    return {"path": rel_path, "bytes": len(data), "sha256": sha256_bytes(data)}
+
+
+def missing_file_fingerprint(path: Path, root: Path) -> dict[str, Any]:
+    try:
+        rel_path = path.resolve().relative_to(root.resolve()).as_posix()
+    except (OSError, ValueError):
+        rel_path = path.as_posix()
+    return {"path": rel_path, "exists": False}
+
+
+def tree_fingerprint(root: Path, rel_root: Path) -> dict[str, Any]:
+    try:
+        root_name = root.resolve().relative_to(rel_root.resolve()).as_posix()
+    except ValueError:
+        root_name = root.name
+    if not root.exists():
+        return {"root": root_name, "exists": False, "files": []}
+    if root.is_file():
+        return {"root": root_name, "exists": True, "files": [file_fingerprint(root, rel_root)]}
+    files = [
+        file_fingerprint(path, rel_root)
+        for path in sorted(root.rglob("*"))
+        if path.is_file()
+    ]
+    return {"root": root_name, "exists": True, "files": files}
+
+
+def unique_existing_paths(paths: list[Path]) -> list[Path]:
+    seen: set[Path] = set()
+    unique: list[Path] = []
+    for path in paths:
+        if not path.is_file():
+            continue
+        resolved = path.resolve()
+        if resolved in seen:
+            continue
+        seen.add(resolved)
+        unique.append(path)
+    return unique
+
+
+def fingerprint_if_file(path: Path, root: Path) -> dict[str, Any]:
+    return file_fingerprint(path, root) if path.is_file() else missing_file_fingerprint(path, root)
+
+
+def checker_implementation_bundle(checker_id: str) -> dict[str, Any]:
+    checker = resolve_row_behavior_checker(checker_id)
+    files: list[Path] = []
+    source_sha256 = ""
+    source_error = ""
+    if checker is None:
+        source_error = "checker_not_registered"
+    else:
+        unwrapped = inspect.unwrap(checker)
+        try:
+            source_sha256 = sha256_bytes(inspect.getsource(unwrapped).encode("utf-8"))
+        except (OSError, TypeError) as exc:
+            source_error = f"{type(exc).__name__}: {exc}"
+        for candidate in (checker, unwrapped):
+            try:
+                source_file = inspect.getsourcefile(candidate)
+            except TypeError:
+                source_file = None
+            if source_file:
+                files.append(Path(source_file))
+    for func in (run_spectre_case, evaluate_behavior_with_timeout, validate_behavior_side_outputs):
+        source_file = inspect.getsourcefile(func)
+        if source_file:
+            files.append(Path(source_file))
+    existing_files = sorted(
+        unique_existing_paths(files),
+        key=lambda item: item.resolve().as_posix(),
+    )
+    return {
+        "checker_id": checker_id,
+        "policy": behavior_checker_policy(checker_id),
+        "source_sha256": source_sha256,
+        "source_error": source_error,
+        "files": [file_fingerprint(path, REPO) for path in existing_files],
+    }
+
+
+def function_source_fingerprint(func: Any) -> dict[str, Any]:
+    try:
+        source = inspect.getsource(func)
+    except (OSError, TypeError) as exc:
+        return {
+            "function": getattr(func, "__name__", repr(func)),
+            "source_sha256": "",
+            "source_error": f"{type(exc).__name__}: {exc}",
+        }
+    return {
+        "function": getattr(func, "__name__", repr(func)),
+        "source_sha256": sha256_bytes(source.encode("utf-8")),
+        "source_error": "",
+    }
+
+
+def bridge_implementation_bundle() -> dict[str, Any]:
+    funcs = [
+        run_spectre_case,
+        discover_spectre_support_files,
+        rewrite_ahdl_includes_for_staging,
+        staged_input_rel,
+        safe_path_component,
+    ]
+    files = []
+    for func in funcs:
+        source_file = inspect.getsourcefile(func)
+        if source_file:
+            files.append(Path(source_file))
+    return {
+        "implementation_id": "run_gold_dual_suite.spectre_staging_v1",
+        "functions": [function_source_fingerprint(func) for func in funcs],
+        "files": [file_fingerprint(path, REPO) for path in unique_existing_paths(files)],
+    }
+
+
+def effective_staged_deck_bundle(
+    *,
+    task_id: str,
+    case_id: str,
+    tb_path: Path,
+    include_paths: list[Path],
+    release: Path,
+) -> dict[str, Any]:
+    support_paths = discover_spectre_support_files(tb_path, include_paths)
+    staged_deck = rewrite_ahdl_includes_for_staging(tb_path, include_paths)
+    staged_task_id = safe_path_component(f"{task_id}:{case_id}")
+    staged_tb_name = f"{staged_task_id}__{tb_path.name}"
+    input_paths = [*include_paths, *support_paths]
+    return {
+        "staged_tb_name": staged_tb_name,
+        "staged_deck_bytes": len(staged_deck.encode("utf-8")),
+        "staged_deck_sha256": sha256_bytes(staged_deck.encode("utf-8")),
+        "staged_inputs": [
+            {
+                "source": file_fingerprint(path, release),
+                "staged_rel": staged_input_rel(tb_path, path).as_posix(),
+            }
+            for path in unique_existing_paths(input_paths)
+        ],
+        "support_files": [file_fingerprint(path, release) for path in unique_existing_paths(support_paths)],
+    }
+
+
+def build_case_signature(
+    *,
+    release: Path,
+    row: dict[str, Any],
+    task_dir: Path,
+    task_record: dict[str, Any],
+    case_id: str,
+    case_kind: str,
+    mutation_id: str,
+    checker_id: str,
+    tb_path: Path,
+    include_paths: list[Path],
+    missing_includes: list[str],
+    score_policy: dict[str, Any],
+    dut_root: Path,
+    spectre_backend: str,
+    spectre_mode: str,
+    timeout_s: int,
+    spectre_runtime_id: str,
+    sui_host: str | None,
+    sui_work_root: str | None,
+    cadence_cshrc: str | None,
+) -> tuple[dict[str, Any], str]:
+    task_eval = task_dir / "evaluator"
+    signature = {
+        "schema_version": "v4-reference-spectre-case-signature-v1",
+        "identity": {
+            "task_id": str(row.get("task_id") or ""),
+            "family_id": str(task_record.get("family_id") or row.get("family_id") or ""),
+            "task_dir": str(row.get("task_dir") or ""),
+            "case_id": case_id,
+            "case_kind": case_kind,
+            "mutation_id": mutation_id,
+        },
+        "reference_deck": fingerprint_if_file(tb_path, release),
+        "dut_tree": tree_fingerprint(dut_root, release),
+        "mutation_bundle_tree": (
+            tree_fingerprint(dut_root, release)
+            if case_kind == "negative"
+            else {"root": "", "exists": False, "files": []}
+        ),
+        "include_files": [
+            file_fingerprint(path, release) for path in unique_existing_paths(include_paths)
+        ],
+        "missing_includes": list(missing_includes),
+        "effective_staged_deck": effective_staged_deck_bundle(
+            task_id=str(row.get("task_id") or ""),
+            case_id=case_id,
+            tb_path=tb_path,
+            include_paths=include_paths,
+            release=release,
+        ),
+        "checker_profile": fingerprint_if_file(task_eval / "checker_profile.json", release),
+        "checker_implementation_bundle": checker_implementation_bundle(checker_id),
+        "score_mutation_policy": {
+            "score_policy": fingerprint_if_file(task_eval / "score_policy.json", release),
+            "score_policy_payload": score_policy,
+            "mutation_catalog": fingerprint_if_file(task_eval / "mutation_catalog.json", release),
+            "mutation_bundle_manifest": fingerprint_if_file(
+                task_eval / "mutation_bundles" / "manifest.json", release
+            ),
+        },
+        "harness_profile": {
+            "task_record": fingerprint_if_file(task_dir / "task_record.json", release),
+            "public_contract": fingerprint_if_file(
+                release / str(row.get("public_contract") or ""), release
+            ),
+            "harness_spec": fingerprint_if_file(task_eval / "harness_spec.json", release),
+            "family_spec": fingerprint_if_file(task_eval / "family_spec.json", release),
+            "testbench_security_policy": fingerprint_if_file(
+                task_eval / "testbench_security_policy.json", release
+            ),
+        },
+        "spectre_run_config": {
+            "spectre_backend": spectre_backend,
+            "spectre_mode": spectre_mode,
+            "timeout_s": timeout_s,
+            "spectre_runtime_id": spectre_runtime_id,
+            "side_output_files": list(behavior_side_output_names(checker_id)),
+            "bridge_implementation_bundle": bridge_implementation_bundle(),
+        },
+    }
+    digest = sha256_bytes(canonical_json_bytes(signature))
+    return signature, digest
+
+
+def attach_case_signature(case: dict[str, Any], signature: dict[str, Any], digest: str) -> dict[str, Any]:
+    case["case_signature"] = signature
+    case["case_signature_sha256"] = digest
+    return case
 
 
 def now_utc() -> str:
@@ -360,6 +623,7 @@ def run_correct_plus_mutations(
     spectre_backend: str,
     spectre_mode: str,
     timeout_s: int,
+    spectre_runtime_id: str,
     sui_host: str | None,
     sui_work_root: str | None,
     cadence_cshrc: str | None,
@@ -429,6 +693,28 @@ def run_correct_plus_mutations(
     cases: list[dict[str, Any]] = []
 
     correct_paths, correct_missing = include_paths_for_reference_tb(task_dir, tb_path)
+    correct_signature, correct_signature_sha256 = build_case_signature(
+        release=release,
+        row=row,
+        task_dir=task_dir,
+        task_record=task_record,
+        case_id="correct",
+        case_kind="correct",
+        mutation_id="",
+        checker_id=checker_id,
+        tb_path=tb_path,
+        include_paths=correct_paths,
+        missing_includes=correct_missing,
+        score_policy=score_policy,
+        dut_root=task_dir / "public" / "supplied_dut",
+        spectre_backend=spectre_backend,
+        spectre_mode=spectre_mode,
+        timeout_s=timeout_s,
+        spectre_runtime_id=spectre_runtime_id,
+        sui_host=sui_host,
+        sui_work_root=sui_work_root,
+        cadence_cshrc=cadence_cshrc,
+    )
     if correct_missing:
         correct_case = _invalid_case(
             case_id="correct",
@@ -459,6 +745,7 @@ def run_correct_plus_mutations(
             cadence_cshrc=cadence_cshrc,
             keep_case_dirs=keep_case_dirs,
         )
+    attach_case_signature(correct_case, correct_signature, correct_signature_sha256)
     cases.append(correct_case)
     if correct_case["outcome"] != "reference_pass":
         warning_lines = list(correct_case["warning_lines"])
@@ -480,6 +767,8 @@ def run_correct_plus_mutations(
     mutation_root = task_eval / "mutation_bundles"
     for mutation_id in negative_ids:
         bundle_dir = mutation_root / mutation_id
+        include_paths: list[Path] = []
+        missing: list[str] = []
         if not bundle_dir.is_dir():
             case = _invalid_case(
                 case_id=mutation_id,
@@ -489,13 +778,38 @@ def run_correct_plus_mutations(
                 observed="setup_invalid",
                 notes=[f"mutation bundle missing: {bundle_dir}"],
             )
+        else:
+            include_paths, missing = include_paths_for_reference_tb(
+                task_dir,
+                tb_path,
+                dut_root=bundle_dir,
+            )
+        negative_signature, negative_signature_sha256 = build_case_signature(
+            release=release,
+            row=row,
+            task_dir=task_dir,
+            task_record=task_record,
+            case_id=mutation_id,
+            case_kind="negative",
+            mutation_id=mutation_id,
+            checker_id=checker_id,
+            tb_path=tb_path,
+            include_paths=include_paths,
+            missing_includes=missing,
+            score_policy=score_policy,
+            dut_root=bundle_dir,
+            spectre_backend=spectre_backend,
+            spectre_mode=spectre_mode,
+            timeout_s=timeout_s,
+            spectre_runtime_id=spectre_runtime_id,
+            sui_host=sui_host,
+            sui_work_root=sui_work_root,
+            cadence_cshrc=cadence_cshrc,
+        )
+        if not bundle_dir.is_dir():
+            attach_case_signature(case, negative_signature, negative_signature_sha256)
             cases.append(case)
             continue
-        include_paths, missing = include_paths_for_reference_tb(
-            task_dir,
-            tb_path,
-            dut_root=bundle_dir,
-        )
         if missing:
             case = _invalid_case(
                 case_id=mutation_id,
@@ -526,6 +840,7 @@ def run_correct_plus_mutations(
                 cadence_cshrc=cadence_cshrc,
                 keep_case_dirs=keep_case_dirs,
             )
+        attach_case_signature(case, negative_signature, negative_signature_sha256)
         cases.append(case)
 
     reference_gate = correct_case["outcome"] == "reference_pass"
@@ -572,6 +887,7 @@ def run_one(
     spectre_backend: str,
     spectre_mode: str,
     timeout_s: int,
+    spectre_runtime_id: str,
     sui_host: str | None,
     sui_work_root: str | None,
     cadence_cshrc: str | None,
@@ -685,6 +1001,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--timeout-s", type=int, default=600)
     parser.add_argument("--spectre-backend", default="sui-direct")
     parser.add_argument("--spectre-mode", default="ax")
+    parser.add_argument(
+        "--spectre-runtime-id",
+        default="spectre-21.1.0-64bit-2022-09-24-csvcm36c-4",
+        help="Stable Spectre runtime identity to bind into reusable case signatures.",
+    )
     parser.add_argument("--sui-host", default=default_remote_host("sui-direct"))
     parser.add_argument("--sui-work-root", default=default_remote_work_root("sui-direct"))
     parser.add_argument("--cadence-cshrc", default=default_remote_cadence_cshrc("sui-direct"))
@@ -714,6 +1035,7 @@ def main(argv: list[str] | None = None) -> int:
             spectre_backend=backend,
             spectre_mode=mode,
             timeout_s=args.timeout_s,
+            spectre_runtime_id=args.spectre_runtime_id,
             sui_host=args.sui_host,
             sui_work_root=args.sui_work_root,
             cadence_cshrc=args.cadence_cshrc,
@@ -751,6 +1073,7 @@ def main(argv: list[str] | None = None) -> int:
         "finished_at": now_utc(),
         "spectre_backend": backend,
         "spectre_mode": mode,
+        "spectre_runtime_id": args.spectre_runtime_id,
         "timeout_s": args.timeout_s,
         "sui_host": args.sui_host or "",
         "sui_work_root": args.sui_work_root or "",

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "357-bangbang-cdr-loop",
+  "checker_task_id": "v4_357_bangbang_cdr_loop",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "016a846f7ab08a2d0ae7deb3197ffc4b51a620e9def6e401bd639cc79ee8193a",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "9c0b6c251a8a24279ae075f682a538744eca2554f0c02795893f2905fdf51b9b",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "357",
+  "family_spec_sha256": "cb6dae2da7da3c072cb3f91c02c5594bd4e8e93a4ec126e153186ba374cf3eec",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4ce8d272e4f289822a9d6ab78693477594cd186220982fc521ba8497b663a7ef",
+  "public_contract": "tasks/857-bangbang-cdr-loop-testbench/public_contract.json",
+  "public_contract_sha256": "65a0bc12dc103ae139830eba362194ca8fdeebb82585b0a246f23cf5ab174e9f",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/857-bangbang-cdr-loop-testbench",
+  "task_id": "v4-857"
+}

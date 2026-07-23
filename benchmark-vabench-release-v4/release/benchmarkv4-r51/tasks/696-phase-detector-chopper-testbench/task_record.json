@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "196-phase-detector-chopper",
+  "checker_task_id": "v4_196_phase_detector_chopper",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "36b1f20ce2795aad2476a1c3f02de638e7247de4b8b48a36ee0c13f34abad5b4",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "9ea6197baa7d1aacc67b5bd70cff228764495262149ace5ae122b0cd82c51f10",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "196",
+  "family_spec_sha256": "f9e0afe8c1cf81a6b76472168c8b2c033c661c85c6f9073663dadeb865bd5b19",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "787d5d2121a68241780eeca5b8c3c5fc0c47d654270352e7c2cda372b4437f8c",
+  "public_contract": "tasks/696-phase-detector-chopper-testbench/public_contract.json",
+  "public_contract_sha256": "ad9062102f96bef046d0c74d9ad193ace43de0bb148e92379608b65aec1cd3ec",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/696-phase-detector-chopper-testbench",
+  "task_id": "v4-696"
+}

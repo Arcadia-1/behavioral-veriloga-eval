@@ -29,6 +29,7 @@ DEFAULT_RELEASES = {
     "r48": PACKAGE_ROOT / "release" / "benchmarkv4-r48",
     "r49": PACKAGE_ROOT / "release" / "benchmarkv4-r49",
     "r50": PACKAGE_ROOT / "release" / "benchmarkv4-r50",
+    "r51": PACKAGE_ROOT / "release" / "benchmarkv4-r51",
 }
 DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 FORMS = ("dut", "testbench", "bugfix")
@@ -103,18 +104,36 @@ def valid_git_oid(value: object) -> bool:
     return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", value) is not None
 
 
-def rust_evas2_runtime(payload: object, *, backend_key: str = "evas_backend") -> bool:
-    return isinstance(payload, dict) and (
+def rust_evas2_runtime(
+    payload: object,
+    *,
+    backend_key: str = "evas_backend",
+    require_source_revision: bool = False,
+) -> bool:
+    markers_valid = isinstance(payload, dict) and (
         payload.get("evas_engine") == "evas2"
         and payload.get("evas_engine_used") == "evas2"
         and payload.get("evas_version") == "0.8.3"
         and payload.get(backend_key) == "evas-rust"
     )
+    if not markers_valid or not require_source_revision:
+        return markers_valid
+    repository = payload.get("evas_source_repository")
+    return (
+        isinstance(repository, str)
+        and bool(repository.strip())
+        and valid_git_oid(payload.get("evas_source_revision"))
+        and payload.get("evas_source_tree") == "clean"
+    )
 
 
 def allowed_runtime_schemas(release_revision: str, form: str) -> set[str]:
     kind = "direct-evas-testbench-suite" if form == "testbench" else "direct-evas-runtime"
-    versions = (1, 2) if release_revision == "r45" else (2,)
+    versions = (
+        (1, 2)
+        if release_revision == "r45"
+        else ((2, 3) if release_revision == "r51" else (2,))
+    )
     return {
         f"{release_revision}-{kind}-v{version}"
         for version in versions
@@ -236,7 +255,7 @@ def prompt_component_path(release: Path, component_id: str) -> Path:
 
 
 def release_uses_real_skills(release_revision: str) -> bool:
-    return release_revision == "r50"
+    return int(release_revision.removeprefix("r")) >= 50
 
 
 def materialized_artifacts_for_revision(release_revision: str) -> tuple[str, ...]:
@@ -418,13 +437,29 @@ def audit_release_evidence(
                     f"declared={payload.get('schema_version')!r} expected={expected_schema!r}"
                 )
 
-        if rust and not rust_evas2_runtime(rust.get("runtime")):
+        require_source_revision = release_revision == "r51"
+        if rust and not rust_evas2_runtime(
+            rust.get("runtime"),
+            require_source_revision=require_source_revision,
+        ):
             problems.append(f"{release_revision} Rust certification lacks EVAS 0.8.3 Rust runtime markers")
-        if metamorphic and not rust_evas2_runtime(metamorphic):
+        if metamorphic and not (
+            rust_evas2_runtime(metamorphic)
+            and (
+                not require_source_revision
+                or rust_evas2_runtime(
+                    metamorphic.get("runtime"),
+                    require_source_revision=True,
+                )
+            )
+        ):
             problems.append(f"{release_revision} metamorphic evidence lacks EVAS 0.8.3 Rust runtime markers")
         if parity and not (
             rust_evas2_runtime(parity, backend_key="evas_backend_required")
-            and rust_evas2_runtime(parity.get("runtime"))
+            and rust_evas2_runtime(
+                parity.get("runtime"),
+                require_source_revision=require_source_revision,
+            )
         ):
             problems.append(f"{release_revision} profile evidence lacks EVAS 0.8.3 Rust runtime markers")
 
@@ -690,10 +725,18 @@ def audit_task(
                 schema_version = runtime_data.get("schema_version")
                 if schema_version not in allowed_runtime_schemas(release_revision, form):
                     problems.append(f"{prefix} public EVAS runtime schema is unsupported")
-                if schema_version == f"{release_revision}-direct-evas-runtime-v2":
+                if schema_version in {
+                    f"{release_revision}-direct-evas-runtime-v2",
+                    f"{release_revision}-direct-evas-runtime-v3",
+                }:
                     command = str(runtime_data.get("command") or "")
                     if "/tmp/vabench-visible/evas-output" not in command or "public/submission/evas-output" in command:
                         problems.append(f"{prefix} public EVAS output is not isolated from submission")
+                if schema_version == f"{release_revision}-direct-evas-runtime-v3":
+                    if runtime_data.get("compatibility_mode") != "portable":
+                        problems.append(f"{prefix} portable EVAS runtime mode is missing")
+                    if "--spectre-strict" in str(runtime_data.get("command") or ""):
+                        problems.append(f"{prefix} portable EVAS runtime still requests strict mode")
         else:
             public_suite = task_dir / "public" / "evas_runtime.json"
             trusted_suite = evaluator / "trusted_replay_suite.json"
@@ -722,12 +765,20 @@ def audit_task(
                 schema_version = suite_data.get("schema_version")
                 if schema_version not in allowed_runtime_schemas(release_revision, form):
                     problems.append(f"{prefix} public testbench suite schema is unsupported")
-                if schema_version == f"{release_revision}-direct-evas-testbench-suite-v2":
+                if schema_version in {
+                    f"{release_revision}-direct-evas-testbench-suite-v2",
+                    f"{release_revision}-direct-evas-testbench-suite-v3",
+                }:
                     command = str(suite_data.get("candidate_command_template") or "")
                     if "/tmp/vabench-visible/runs/{case}" not in command:
                         problems.append(f"{prefix} public testbench runs are not scratch-isolated")
                     if "public/submission/runs" in command or "public/submission/evas-output" in command:
                         problems.append(f"{prefix} public testbench scratch pollutes submission")
+                if schema_version == f"{release_revision}-direct-evas-testbench-suite-v3":
+                    if suite_data.get("compatibility_mode") != "portable":
+                        problems.append(f"{prefix} portable EVAS testbench mode is missing")
+                    if "--spectre-strict" in str(suite_data.get("candidate_command_template") or ""):
+                        problems.append(f"{prefix} portable EVAS testbench still requests strict mode")
             if public_fixtures.is_dir() and binding.get("public_fixture_tree_sha256") != tree_sha(public_fixtures):
                 problems.append(f"{prefix} public fixture binding hash mismatch")
     checker_profile = read_json(evaluator / "checker_profile.json")

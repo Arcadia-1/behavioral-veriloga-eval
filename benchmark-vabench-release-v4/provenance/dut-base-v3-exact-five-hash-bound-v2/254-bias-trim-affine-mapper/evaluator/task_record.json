@@ -3,28 +3,28 @@
   "checker_task_id": "v4_254_bias_trim_affine_mapper",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "3933df0e7653e7cff7986eb4e2926d66fdb99ac9450f174891314424501aeea5",
+    "certification.json": "2ee1901797cfb2708c49e59ad19648013f14d447a04b86b049a4927b87554615",
     "checker_profile.json": "e07aa889ec4568ac84752a2d93366c52c98c9e5053d6a6d4594f6582cb18681d",
     "derivation_manifest.json": "e4ca66cc508e695201b6d1a8bd96035bb1a25ab7f76c333bfbe497232b30a3f0",
     "family_spec.json": "64b0e78148a65eff92d4008e39222eb3e11085fdd59f0979359f327d2bb03a4f",
-    "harness_spec.json": "355502ea1bd3e4ce8f775979a8220d19e63348da5504a72b76b0734b68853d32",
+    "harness_spec.json": "b638cc37d5e13e4237735b1b90741e9e4628df905242faef3e0234475af9ecf7",
     "mutation_catalog.json": "0537d4282b8d388c193f9f4ad2df069854e02cc65bf48e9446aee5735ac6b880",
-    "profiles/feedback.json": "666098f14995b1c3a21b406db992d60e0c061a45e5f637c481f63bee628a812e",
-    "profiles/score.json": "63b295addc6f71a08b1895c48a3cb63ec6fe2305d63d47335fcc6b95d2c45fcc",
-    "score_tb.scs": "e4a92f684bd26851c58d5b824e83d0785e7811f9ef0aee1feabd45fa58f2cfc5",
+    "profiles/feedback.json": "7137d0874c5c961f3df9f3ca15d14144e4d4d2a0364f82bc574111418a60ec0b",
+    "profiles/score.json": "306311ba65741d4b542faf98ad14f3e991db99a24982e274e33d59c0709d8ea7",
+    "score_tb.scs": "b9e15677ff93bc854c0ee71cd8080136ebd4315638475389c827d2f42e07edfa",
     "solution_tree": "ff08fd5678faa01e70e7ba52bf003389676bf21f4cc68ad3220ac7005c8f11aa",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
   "form": "dut",
   "public_hashes": {
-    "feedback_tb.scs": "caa22dc956e37e159b9e7e292f705e90929351b7d5becd63b30afbdfa13ab302",
+    "feedback_tb.scs": "6d833632733513f030e5eb7942bb7e5ea7faaf36211fa185110301886c9b0615",
     "instruction.md": "1332e3acf1d5c07b9554f0a175f1b5123a14ec4e79c75ef267e4e7159e3039b3",
     "public_contract.json": "ff510b0240ad5bf731438f0d7a7117709ad27e0a8bd0cdee691dbd9a5ea87b82"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "3933df0e7653e7cff7986eb4e2926d66fdb99ac9450f174891314424501aeea5"
+    "sha256": "2ee1901797cfb2708c49e59ad19648013f14d447a04b86b049a4927b87554615"
   },
   "release_dir": "254-bias-trim-affine-mapper",
   "schema_version": "v4-canonical-dut-release-task-v1",

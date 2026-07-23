@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "082-agc-receiver-leveling-loop",
+  "checker_task_id": "v4_082_agc_receiver_leveling_loop",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "de00649b9c980a8b31982c6c98d02bc2e28ea84ca6c14bab1de9e29120b1ca7f",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "e17207b4745f7234e85398ee2029e288000d0c91353bac72bc20b7f3391c4924",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "082",
+  "family_spec_sha256": "12544d5b82d942b9bf059eb5c834b989f3d1e23c13631b83a3ba98e3f9213df1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "10e5be1b70ffd9132623b3224f7e49ad2119ba9d6630cee783eec9815aed2817",
+  "public_contract": "tasks/582-agc-receiver-leveling-loop-testbench/public_contract.json",
+  "public_contract_sha256": "fe77c17e1e980a9001fccc9bf832db89657790a78da908ecc02d1e998831a782",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/582-agc-receiver-leveling-loop-testbench",
+  "task_id": "v4-582"
+}

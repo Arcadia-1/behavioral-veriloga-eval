@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_trim_direction_reversed/certification.json",
-        "certification_sha256": "ea321d63520eb5120c0f5b2dddd89aa6d9268f93e13fe8c99404abec6dbe9b09",
+        "certification_sha256": "ccc11110c00f400322058e8508697e0f1bf31e4e2b11d4c64251eef591b34408",
         "fault_class": "trim_direction_reversed",
-        "mutation_bundle_sha256": "e9ea8fc8a00487c3bcdb97d08eb5b361a9d287125d1ecd319f0728c675031bf4",
+        "mutation_bundle_sha256": "a00ba25c75edafa1eefbe83e6ab4fb8ff5309d1401f9cf87d7cd40bb687bffef",
         "mutation_id": "neg_001_trim_direction_reversed",
         "source_catalog_certification_path": "negative_variants/neg_001_trim_direction_reversed/certification.json",
         "trigger_condition": "positive and negative sampled offsets require opposite trim updates",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_corrected_output_uncorrected/certification.json",
-        "certification_sha256": "98ffcb964b6a17b25ee3bcc4d3ef9c1a856db979405aa2aa8d5dd414f62eb587",
+        "certification_sha256": "af89527c6705c2b9f1d969cc01ad2b6ce764f85657d7d6a935b9237435936398",
         "fault_class": "correction_omitted",
-        "mutation_bundle_sha256": "27cd1cf0308cee2a9354add4457775500736e7f175ca9532323f78b4693a7e7d",
+        "mutation_bundle_sha256": "cf01f97f61e111c93c926319b7945d61f76cee0ace4d17c9e586640117b3d9b4",
         "mutation_id": "neg_003_corrected_output_uncorrected",
         "source_catalog_certification_path": "negative_variants/neg_003_corrected_output_uncorrected/certification.json",
         "trigger_condition": "nonzero trim code should alter corrected_out relative to raw differential input",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_does_not_clear_outputs/certification.json",
-        "certification_sha256": "e4f750d1ab8400d39fb2dc4fa2f89f26f4864a94727d8633bda9b067f5507130",
+        "certification_sha256": "c5332e600e6ad869ba60829fa3ba96f14f58639f3ac23109af964c81e2e67ad7",
         "fault_class": "reset_state_not_cleared",
-        "mutation_bundle_sha256": "3099d39eea8f451536688e62d1a7582e430b1336ef9a01e5a414a5b526bd2db8",
+        "mutation_bundle_sha256": "a122bbc2f87a1abb7737cff154b3d1bd8b38be3ca37acaae0e231d6818c8fc4d",
         "mutation_id": "neg_004_reset_does_not_clear_outputs",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_does_not_clear_outputs/certification.json",
         "trigger_condition": "reset asserted after nonzero trim or done state",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_error_metric_inverted/certification.json",
-        "certification_sha256": "8d4460e9125c5fda2727c31b95e0af22d556d260a0ca2c533b5e0a6821c51ed2",
+        "certification_sha256": "ff55b3d110b52be53f1902bbd5e125ce59cc7a3b6049e48d6c2951bea1a09071",
         "fault_class": "error_metric_inverted",
-        "mutation_bundle_sha256": "66a4f7f04e8ca992107716140274f713d0d6a824ede3f06a6636c5a016d81ad0",
+        "mutation_bundle_sha256": "c50906959fcd353ff15c3f5239277cda09d6ef007a9ac9946d52b96d92c1931b",
         "mutation_id": "neg_005_error_metric_inverted",
         "source_catalog_certification_path": "negative_variants/neg_005_error_metric_inverted/certification.json",
         "trigger_condition": "nonzero residual error after an enabled trim update",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_done_asserts_too_early/certification.json",
-        "certification_sha256": "7a115a4c5f5771a36d1c4029b4dcfcf1ee32c9970b7cf28795487d668fbe3e09",
+        "certification_sha256": "abd59a27324b7ba1e14a105529f9896e98def4a596514933b75b5ccd5d0c46ac",
         "fault_class": "premature_done",
-        "mutation_bundle_sha256": "b535f16b50265fdb730cc4111c5b6b84ec37da936153015a1d8a8cbeabc5e6ea",
+        "mutation_bundle_sha256": "288b870722de216fcbed0bc5933d743dfd3ba0c7f763a89164fb3f26dab2744e",
         "mutation_id": "neg_002_done_asserts_too_early",
         "source_catalog_certification_path": "negative_variants/neg_002_done_asserts_too_early/certification.json",
         "trigger_condition": "single in-tolerance update occurs before four stable calibration updates",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "eaa83aaab6d48ece71149f2b0171f90549cfa9a06a5c3abccb1fd1b57274380e",
       "score_deck_sha256": "4a43ed176e3d0fe112fcda7008da4e173ddc561bd76ab2be1b3048397e26f09d",
-      "task_certification_sha256": "05c8f47137cce6860a2b292d31b3cecd6b2318510f141847c28b6c51e6192185",
-      "task_record_sha256": "5d41187871c2a0c4dd02a70eca29977f5d44d3dd613ef8bf98d9f701bdbda4d9"
+      "task_certification_sha256": "caf4819034177510677bca1fbbc8eb869d2e69c6b989f11b153344486a4ff8dc",
+      "task_record_sha256": "72b47f0ca225e54dcb218c6a7a98c989da2251fd0bfa34fb4a8a1eb61bc3ae61"
     },
     "release_dir": "369-offset-cancellation-servo"
   }

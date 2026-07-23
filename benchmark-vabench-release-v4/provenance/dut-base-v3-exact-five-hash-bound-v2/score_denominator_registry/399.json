@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_no_uvlo_hysteresis/certification.json",
-        "certification_sha256": "317def121dbd03de70a2ec61b118263953e758f8db7d038203a045d600e7e8f7",
+        "certification_sha256": "f203915234584125bf50ca6472aa6375706fcdd6af099250b741390bcd2b40a9",
         "fault_class": "wrong_threshold",
-        "mutation_bundle_sha256": "5796da187ccf86a2c240e6c8ff636711c640e41cbbd931b0078501b6c2303f83",
+        "mutation_bundle_sha256": "7020e921aad2da044ea876d87a428e800b7f16b472f1a5b190d8dc4f51fe3a37",
         "mutation_id": "neg_001_no_uvlo_hysteresis",
         "source_catalog_certification_path": "negative_variants/neg_001_no_uvlo_hysteresis/certification.json",
         "trigger_condition": "supply lies between falling and rising thresholds",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_supply_dip_keeps_counter/certification.json",
-        "certification_sha256": "d00697a4f7b28f64b46ccd27459c6c05288413dfe51268e42ba5d407a60ad9a4",
+        "certification_sha256": "93063ef6c9d5680c1bbaed4230d8fcdc05c743e00ade44f07c0a9a178697377c",
         "fault_class": "missing_fault_reset",
-        "mutation_bundle_sha256": "e9444795911a9c1e5eab66803457168d94ea1c5166940f4641b88e4514cbaf58",
+        "mutation_bundle_sha256": "ce88e2f3df4bd9b241a15ed6e8f76b86a374f9c9769fffa8880d76ad7d24b9e7",
         "mutation_id": "neg_004_supply_dip_keeps_counter",
         "source_catalog_certification_path": "negative_variants/neg_004_supply_dip_keeps_counter/certification.json",
         "trigger_condition": "supply crosses below uvlo_fall after partial or full release",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_reset_disable_outputs_not_safe/certification.json",
-        "certification_sha256": "898d7c9436a69db8264aeccd6d1b8b95d717abffeb949b1e51c322b87a66b7c4",
+        "certification_sha256": "51cf0825ea5c85f9cd3e111d5a204cdb7b53bf680c09d5645c8dbaa8a0dd1515",
         "fault_class": "unsafe_reset_disable_outputs",
-        "mutation_bundle_sha256": "68618f11de1f914c6e13b5c0ca1353ddb318f79d987ec97f80080a5a2bf97ffa",
+        "mutation_bundle_sha256": "1b782e81a2472ae99781e191852cedade0f72af41dfbeccef1a54caac5be9ec9",
         "mutation_id": "neg_005_reset_disable_outputs_not_safe",
         "source_catalog_certification_path": "negative_variants/neg_005_reset_disable_outputs_not_safe/certification.json",
         "trigger_condition": "reset is asserted or enable is deasserted",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_release_one_cycle_early/certification.json",
-        "certification_sha256": "a9c8381b5be8915846c4b9c754749c401221cd34ad9f70afa85bab3ea4dfa1a5",
+        "certification_sha256": "fea18d175828a66d0e5c343a68485259493deb26506caabc9bbd3f24e7c48915",
         "fault_class": "off_by_one_delay",
-        "mutation_bundle_sha256": "d459a50feb06151534e88e66d6ed8ac954549987dd2dcdb1bcfd7b1517282b95",
+        "mutation_bundle_sha256": "bd12dddc7080a20a82e5baba455d48d85a7ac632ad663c0c2217bdc356a1a192",
         "mutation_id": "neg_002_release_one_cycle_early",
         "source_catalog_certification_path": "negative_variants/neg_002_release_one_cycle_early/certification.json",
         "trigger_condition": "release count is one less than release_cycles",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_brownout_polarity_inverted/certification.json",
-        "certification_sha256": "ed861991dfd49848a98a5497d09c67670548e089d4d6136f20ba5d3b7d5cef4c",
+        "certification_sha256": "f5d041ab45b2424b0d93b0e266bbfd327d1838d5bad69ffe60e0a2622bc0499b",
         "fault_class": "wrong_status_polarity",
-        "mutation_bundle_sha256": "d00998ea94c12b5d2720a0f90d7b4f2f433bc01cf0025256fea9fc0ad8f59d9b",
+        "mutation_bundle_sha256": "5eabae17c16af509829402e427b8cd727fe2574e40d9dbcddddb0634c5e492bb",
         "mutation_id": "neg_003_brownout_polarity_inverted",
         "source_catalog_certification_path": "negative_variants/neg_003_brownout_polarity_inverted/certification.json",
         "trigger_condition": "an enabled brownout interval is active",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "49edda7fabc40bcb00aa11387b5cf16b71a67ed42571df4b1e33cc08fbcc3a44",
       "score_deck_sha256": "bd1c6a57e9b1f09938f4e24754eb8cc027dd909e5edfbe6b6e382bbbea64b168",
-      "task_certification_sha256": "1298708176a488c54837f3e1afd4a2bb7c04174c1874d64bf01dfe84e0887c4b",
-      "task_record_sha256": "50058f0b0fcf309ed2b55705d13b9215ce65b232ef8918407919c64a8d8a2fe0"
+      "task_certification_sha256": "de3e94e6bb508ba40e6728e1ec55c2fc56b5980d7146d9b256a5cc05950bf9f5",
+      "task_record_sha256": "2be6b1ba767391ba09da0f622b0c4ec904ded9c6cf29542029261a47ed4d06ea"
     },
     "release_dir": "399-supply-supervisor-brownout-por"
   }

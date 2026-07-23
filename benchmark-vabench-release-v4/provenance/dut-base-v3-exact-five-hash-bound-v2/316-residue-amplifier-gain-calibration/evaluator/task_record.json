@@ -3,28 +3,28 @@
   "checker_task_id": "v4_316_residue_amplifier_gain_calibration",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "3cbab1fbd84c1023c1a88001c561141a72e1abbdb7c86981b514a909edcb6483",
+    "certification.json": "a273074a44522021225ecd9878b11e9fb1ffe2f89d963c98b51b50e46f719b5f",
     "checker_profile.json": "3ead6cb439284eebf0a6250310b26b4d118766da09644bc356fce5291d32e65e",
     "derivation_manifest.json": "19d30a3d225ce191e36dff9fe1178a4b5d06de53c189db30aaa0b72785c3d1f8",
     "family_spec.json": "e9d63ba269e34af42ec027761615e65bf49e85781f768886afdf8134c2bd742d",
-    "harness_spec.json": "32cd5ba72aad565c3bbe60ca4f5cd2285f4d47488384a9b6f997e01abe6f9803",
+    "harness_spec.json": "53b732ded6255408d6286a50bc0d3aa1712d061727e35dfbfff0687684b95b16",
     "mutation_catalog.json": "4e00f8d18c11c42b37f575f16f5d6f4076bca4b3c66377edf95dfb642a28408c",
-    "profiles/feedback.json": "294e83c9a2d2acaef9f3c670ecd588f0dae90e2c7f251a871e70ae3135a38270",
-    "profiles/score.json": "ac2386fbc96ecc10826ca0a53067910b1b1b7e3210559af79d5949af728bd31f",
-    "score_tb.scs": "b0a72415764cb0c813702a016aabd21f942a2f2eb7da4c1012322d7dce377a8a",
+    "profiles/feedback.json": "720f1b1c9fff3970a3668269a5b53b8924123c5a8eabf2df54f3a04031cb60d7",
+    "profiles/score.json": "10fc2bf326564b9e774bf9806d8fc72f3bf90c6f0de76c7f0284c297eec1f6bf",
+    "score_tb.scs": "fe997112f792874841afc320f9dc124de8c26b2133e5c5f375c002162d5f75ac",
     "solution_tree": "37dc9773f94c90146c8d5a1380ed43de4e119957b355ddc3dd5cf974ece710d3",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
   "form": "dut",
   "public_hashes": {
-    "feedback_tb.scs": "044a0ba7da1262dc72d0fa56488e1cc4af6f22d9052d668e46a3bf5e68695e5f",
+    "feedback_tb.scs": "a7614a307b577f595ed4b4c2aecc2067e5ac36e02f82610083f9bb942f50d263",
     "instruction.md": "3db09074707ead10e01e839833c3f5836ce64f19e25814f65988f021950721a2",
     "public_contract.json": "802543d5533370b895770b1148301f3d859d285f63eea0c31bceb6ec99242ab0"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "3cbab1fbd84c1023c1a88001c561141a72e1abbdb7c86981b514a909edcb6483"
+    "sha256": "a273074a44522021225ecd9878b11e9fb1ffe2f89d963c98b51b50e46f719b5f"
   },
   "release_dir": "316-residue-amplifier-gain-calibration",
   "schema_version": "v4-canonical-dut-release-task-v1",

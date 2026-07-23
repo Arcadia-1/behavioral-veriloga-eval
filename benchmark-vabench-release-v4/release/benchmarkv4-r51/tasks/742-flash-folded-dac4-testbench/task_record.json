@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "242-flash-folded-dac4",
+  "checker_task_id": "v4_242_flash_folded_dac4",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "0886593ee3b02094c0ccf113717c7a26ea03667521ad9b4c714e957d4af74068",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "22941820c9aa043951479f0ce51dc8ea480d937c532def92e74c23ca689845d8",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "242",
+  "family_spec_sha256": "8c0e4e942f4c1fdbc497136010039b18e692e8d809ee6fc4b73ac47ffcc9f1c3",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c74d28bad5563a149c155cec89c33ae8836018fe2e5dbd709f31e26b1e6e3b61",
+  "public_contract": "tasks/742-flash-folded-dac4-testbench/public_contract.json",
+  "public_contract_sha256": "dff750c8396747adbf42989ebb653691a5c543d335f0f6db7e39780d1bea19f6",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/742-flash-folded-dac4-testbench",
+  "task_id": "v4-742"
+}

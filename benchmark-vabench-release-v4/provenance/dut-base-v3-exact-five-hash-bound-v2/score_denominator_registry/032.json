@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_reduced_small_signal_gain/certification.json",
-        "certification_sha256": "57ac3a79cfc4fceb95ca68ca5a711bc2b07b01a201c51a30e4ae9ec5de610e08",
+        "certification_sha256": "5d0cc21303f9a295ede8dcbe8722142a42fbc830918c77d2d40c514245d7df1b",
         "fault_class": "small_signal_gain_magnitude_error",
-        "mutation_bundle_sha256": "a9e5f0fe273a1481967600ce8c50bc69bbdcac27534cf1ca0aa672b2dec69b10",
+        "mutation_bundle_sha256": "bd316ac24f3d5b876491ddc53a82efe6d014fbaff19a492066695c23a2ef0a8a",
         "mutation_id": "neg_001_reduced_small_signal_gain",
         "source_catalog_certification_path": "negative_variants/neg_001_reduced_small_signal_gain/certification.json",
         "trigger_condition": "a rising clock samples vin within the linear transfer region while reset is inactive",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_positive_compression_bypass/certification.json",
-        "certification_sha256": "21f4e5119aec3a5894bab56e22cd6496132536c986fbbed1ea258bb12e72f760",
+        "certification_sha256": "61c51bca2df06e85a51d39f6d342ff7d6c518e61da7f743fa2176d12f80705ca",
         "fault_class": "positive_compression_bypass",
-        "mutation_bundle_sha256": "230b49b1cd23a41d4800c9e906158449f1efa9c0641180471b1b3fc60f9eef1e",
+        "mutation_bundle_sha256": "bc982095877051d8128379de02bea9c5e6e20eaa32847cfe36587b26c6549f42",
         "mutation_id": "neg_002_positive_compression_bypass",
         "source_catalog_certification_path": "negative_variants/neg_002_positive_compression_bypass/certification.json",
         "trigger_condition": "a rising clock samples vin such that the linear prediction is above 0.76 V but below the final 0.86 V clamp",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_negative_compression_bypass/certification.json",
-        "certification_sha256": "145cd93db03496e3cb04df650d1da3e688dabb0043572c4c32de5420a341b991",
+        "certification_sha256": "5d2442fdf69d543e3db750ebf09857a4dd33ecc1c1f6c3ebe9b78fe3ba5dbd66",
         "fault_class": "negative_compression_bypass",
-        "mutation_bundle_sha256": "142a4df4d52f56919c81d8f34c8add16dd6990734c3a0dc9a20a0751759d4ce2",
+        "mutation_bundle_sha256": "50929cd62fd55ca73d83d8050ec7a647ba72185435911d0cb329ee3daad1cd3e",
         "mutation_id": "neg_003_negative_compression_bypass",
         "source_catalog_certification_path": "negative_variants/neg_003_negative_compression_bypass/certification.json",
         "trigger_condition": "a rising clock samples vin such that the linear prediction is below 0.14 V but above the final 0.04 V clamp",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_output_clamp_bypass/certification.json",
-        "certification_sha256": "8db46f2f83f5a4ca2613c011af9a6b6c2d7f49b70604aa21b8e4ee3570a9b864",
+        "certification_sha256": "82b9b56684990777b48b35afd8cd5456b2e1f81153d499b5657b7dd523f242b0",
         "fault_class": "output_clamp_omission",
-        "mutation_bundle_sha256": "21a9196563792a02174791f1359a22550f7671c5480a4e5440e609500a4f6a69",
+        "mutation_bundle_sha256": "08af3d29b37c3e97f0eedb3f7f4b70c7bca0150ac2c2cc939dd1a51ebafcf689",
         "mutation_id": "neg_005_output_clamp_bypass",
         "source_catalog_certification_path": "negative_variants/neg_005_output_clamp_bypass/certification.json",
         "trigger_condition": "a sampled input produces a compressed output above 0.86 V or below 0.04 V before final clamping",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_007_reset_ignored/certification.json",
-        "certification_sha256": "9ef38ff2b4eb618ccd81de20794e28bac04ca41e20ac5aa70d6afecfd93e6158",
+        "certification_sha256": "4616154e302629bc9ddbfb862c6614c557ecca14b80f566629f3871c5d0bfc1e",
         "fault_class": "active_high_reset_ignored",
-        "mutation_bundle_sha256": "c3313a1b82cc97ee583b0c8c8786d85251bf52c3f9014de7fbe59695c3f0b5bc",
+        "mutation_bundle_sha256": "6121d3667e5e8b50340589ea92bb3edca9448b4251653242b6acba97514f8231",
         "mutation_id": "neg_007_reset_ignored",
         "source_catalog_certification_path": "negative_variants/neg_007_reset_ignored/certification.json",
         "trigger_condition": "reset is asserted after a non-common-mode output has been sampled",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "94763f368a051d1604c1755dd889adf7d78a1255533560bade3ad3389124d78f",
       "score_deck_sha256": "bde55764db9c9bf039b0bb4f356c9a11f782dc97136e1ec237f67bff4d4e82f5",
-      "task_certification_sha256": "d809f83d1bce513abec467e58a26de4950cfc91b4f69f519b0dbca7035729933",
-      "task_record_sha256": "c50897abbefa628a49c14b66e1a1f0b6df380366a9abbbbac0208771eeb0e396"
+      "task_certification_sha256": "d6f6568fb379cb41e4f45c9a241aa666e7059e54f6d59fa8d4e83e804c395146",
+      "task_record_sha256": "f17f7fa597a92bb23080550ff22f6b3610f59f45f908b6f958cd9598d7423edf"
     },
     "release_dir": "032-lna-gain-compression-macro"
   }

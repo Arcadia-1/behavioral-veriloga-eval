@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_SCALE_SMALL_SIGNAL_OUTPUT_SEPARATION_BY, P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE satisfy the public contract; fault class compression_flag_missing is rejected",
-    "observed": "EVAS: v4_303 checked=1038 pos=True neg=True compressed=True disable_seen=True inactive_checked=138 inactive_errors=0 polarity_errors=15 gain_errors=16 metric_errors=23 flag_errors=639; P_WHEN_DISABLED_DRIVE_BOTH_OUTPUTS_TO mismatch_count=0; P_WHEN_ENABLED_CONVERT_THE_SAMPLED_DIFFERENTIAL mismatch_count=0; P_SCALE_SMALL_SIGNAL_OUTPUT_SEPARATION_BY mismatch_count=0; P_DRIVE_GM_METRIC_AS_A_VOLTAGE mismatch_count=0; P_ASSERT_LIMIT_FLAG_ONLY_WHEN_COMPRESSION mismatch_count=1; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
+    "observed": "EVAS: v4_303 checked_events=129 hold_probes=304 pos=True neg=True compressed=True disable_seen=True inactive_checked=23 inactive_errors=0 polarity_errors=0 gain_errors=0 metric_errors=0 flag_errors=78; P_WHEN_DISABLED_DRIVE_BOTH_OUTPUTS_TO mismatch_count=0; P_WHEN_ENABLED_CONVERT_THE_SAMPLED_DIFFERENTIAL mismatch_count=0; P_SCALE_SMALL_SIGNAL_OUTPUT_SEPARATION_BY mismatch_count=0; P_DRIVE_GM_METRIC_AS_A_VOLTAGE mismatch_count=0; P_ASSERT_LIMIT_FLAG_ONLY_WHEN_COMPRESSION mismatch_count=78; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
     "violated_property_ids": [
       "P_SCALE_SMALL_SIGNAL_OUTPUT_SEPARATION_BY",
       "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE"
@@ -18,10 +18,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_303_differential_pair_gm_limiter",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
     "trace_row_count": 1269
   },
   "family_id": "303",
@@ -37,6 +37,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

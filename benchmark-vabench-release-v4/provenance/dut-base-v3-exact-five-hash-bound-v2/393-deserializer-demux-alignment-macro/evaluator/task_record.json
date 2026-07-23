@@ -3,7 +3,7 @@
   "checker_task_id": "v4_393_deserializer_demux_alignment_macro",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "430e14fff84140486bec659ec592e98633d9976e9f9b9a604db4370d07d49345",
+    "certification.json": "74c3a2ad93519a067f87292122ccefbd9cb7fef10ca0e0ac5b790bc501eff062",
     "checker_profile.json": "55c07987f63d493f152a7b9e30a4db021520e965951f16f76f62dd4da6f8356f",
     "derivation_manifest.json": "b5a2f5d3bb9053106c0ddf5e21e1c849ac6940cb85917efd4cdd3104da1f38ff",
     "family_spec.json": "2b3f498f27a1f73c2f67c79ce2d9d77d089cc799abfe852286df34b3d74958b6",
@@ -11,20 +11,20 @@
     "mutation_catalog.json": "7e02263113423216d71ed598ed953a57c86d9bfc3a4fd2dd4a42b521e3439d4b",
     "profiles/feedback.json": "af7adf68d76d0ef003cb8809981a3a37671b664f352454d9d02996ad49200a43",
     "profiles/score.json": "bff4fc9f96ab93f35ddf49ebebc2f5d7c4c982958cd2ed505057fb3be009c7c5",
-    "score_tb.scs": "fbec738af1163a38de8c36e56bc995c5d58c5c77cf3e1e34bdc43799fc227fa2",
+    "score_tb.scs": "2ca1f332d701be1aec415242d27a5c87240a15f69a8ca36e13b70194d3fc3ae7",
     "solution_tree": "b14b21efa4238dee6f5b1e656c36cb9a7ab9cb5d47d0c191b843962b33baab99",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
   "form": "dut",
   "public_hashes": {
-    "feedback_tb.scs": "f419890a7ffa59d9fe1acb02179bf5ded85252ecaba09eff302068fae27d3c6d",
+    "feedback_tb.scs": "08d794f44d0fd23ee581cc2ca2b5e93c8e09c1633afbcc6e6405a5a3697f1917",
     "instruction.md": "08ab7f5dff1a2405e27b92c5a7d30c658657f557ee41991a86cd5225d1fbccc0",
     "public_contract.json": "22a5503e77485a01d8dafa771707c523935e799a0acca8f1e564c247fb71a642"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "430e14fff84140486bec659ec592e98633d9976e9f9b9a604db4370d07d49345"
+    "sha256": "74c3a2ad93519a067f87292122ccefbd9cb7fef10ca0e0ac5b790bc501eff062"
   },
   "release_dir": "393-deserializer-demux-alignment-macro",
   "schema_version": "v4-canonical-dut-release-task-v1",

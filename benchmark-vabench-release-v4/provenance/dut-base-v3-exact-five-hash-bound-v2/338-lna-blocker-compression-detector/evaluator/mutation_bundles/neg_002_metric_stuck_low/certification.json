@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_ASSERT_COMPRESSED_ONLY_WHEN_THE_EFFECTIVE, P_EXPOSE_GAIN_REDUCTION_ON_COMPRESSION_METRIC satisfy the public contract; fault class metric_stuck_low is rejected",
-    "observed": "EVAS: v4_1036 checked=64 reset_clear=True disabled_clear=True compressed_seen=True uncompressed_seen=True vout_errors=0 metric_errors=45 flag_errors=45 clear_errors=0; P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count=0; P_AMPLIFY_VIN_VCM_WITH_SMALL_SIGNAL mismatch_count=0; P_REDUCE_EFFECTIVE_GAIN_AS_BLOCKER_RISES mismatch_count=0; P_EXPOSE_GAIN_REDUCTION_ON_COMPRESSION_METRIC mismatch_count=45; P_ASSERT_COMPRESSED_ONLY_WHEN_THE_EFFECTIVE mismatch_count=45; diagnostic_schema=v4-checker-diagnostic-v1 status=fail category=behavior_mismatch event=stimulus_relative event_context=stimulus_relative expected=public_contract observed=trace",
+    "observed": "EVAS: v4_1036 checked=373 reset_clear=True disabled_clear=True compressed_seen=True uncompressed_seen=True vout_errors=0 metric_errors=259 flag_errors=259 clear_errors=0; P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count=0; P_AMPLIFY_VIN_VCM_WITH_SMALL_SIGNAL mismatch_count=0; P_REDUCE_EFFECTIVE_GAIN_AS_BLOCKER_RISES mismatch_count=0; P_EXPOSE_GAIN_REDUCTION_ON_COMPRESSION_METRIC mismatch_count=259; P_ASSERT_COMPRESSED_ONLY_WHEN_THE_EFFECTIVE mismatch_count=259; diagnostic_schema=v4-checker-diagnostic-v1 status=fail category=behavior_mismatch event=stimulus_relative event_context=stimulus_relative expected=public_contract observed=trace",
     "violated_property_ids": [
       "P_ASSERT_COMPRESSED_ONLY_WHEN_THE_EFFECTIVE",
       "P_EXPOSE_GAIN_REDUCTION_ON_COMPRESSION_METRIC"
@@ -18,10 +18,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_338_lna_blocker_compression_detector",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
     "trace_row_count": 461
   },
   "family_id": "338",
@@ -37,6 +37,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

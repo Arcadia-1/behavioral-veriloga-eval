@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_linear_gain_error/certification.json",
-        "certification_sha256": "effe7bc4f0cfa26a3ca7414949049ff6b696265bab44e282844ad217ddab0828",
+        "certification_sha256": "3b1e0f033f08fa4774f093600626024b848d4013b6a79914140bd6b8e7ed2dae",
         "fault_class": "linear_region_gain_error",
-        "mutation_bundle_sha256": "adff57cb0e51bbd28f58c6c16b8ca5a55fc784fc8a76ecd19bccf6e8abacbc36",
+        "mutation_bundle_sha256": "013fee9ae2486f17ab3a9c7c95df8d55237bc6367f5b50505562f4bac76fc9b3",
         "mutation_id": "neg_001_linear_gain_error",
         "source_catalog_certification_path": "negative_variants/neg_001_linear_gain_error/certification.json",
         "trigger_condition": "a sampled input lies inside the central linear region",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_positive_limit_slope/certification.json",
-        "certification_sha256": "a89d9527446b213b4d08e3b0054122f5436c614ac21314c20162e62d52635db4",
+        "certification_sha256": "1e8b6eaa84edadb333c9e853b38c4bce95cc5e09e0595f40581e4c54a5f3e1d0",
         "fault_class": "positive_limiting_slope_error",
-        "mutation_bundle_sha256": "2bf88d509d1b0bc8e24930e64fd2746b54baa23ebfb73c77ade6f25a2e79b505",
+        "mutation_bundle_sha256": "d47f7ca659d7df29128a04af50bb3cd8c0789f01b282dc19d3c198892ae439d9",
         "mutation_id": "neg_002_positive_limit_slope",
         "source_catalog_certification_path": "negative_variants/neg_002_positive_limit_slope/certification.json",
         "trigger_condition": "a sampled input lies above the positive limiting boundary",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_negative_limit_slope/certification.json",
-        "certification_sha256": "b5327367e2ce6ba3df6bf1d150c1464a41c19d5a87e17b4c89d5d2c7b093af36",
+        "certification_sha256": "94e655d3428a444585f89ac0e2ba01a9ada8bcc0f97b3883749803e2cdc8b395",
         "fault_class": "negative_limiting_slope_error",
-        "mutation_bundle_sha256": "e948ecd27fbf6bfc49aa281b9d24aa17c5b8b0d9280f565b5b81aa49778f1fd0",
+        "mutation_bundle_sha256": "266bc26c52047e2c32462d8c9f902296d1aa8f872fe79b50eb4aa95af6428fa6",
         "mutation_id": "neg_003_negative_limit_slope",
         "source_catalog_certification_path": "negative_variants/neg_003_negative_limit_slope/certification.json",
         "trigger_condition": "a sampled input lies below the negative limiting boundary",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_asynchronous_tracking/certification.json",
-        "certification_sha256": "48af8086fd94d1b9987dcb6af210089ac88c7bfe8fbfd4cf8d0852c9d4571d07",
+        "certification_sha256": "9f18cfd9f0268b09bf202cc34cc5d3121412fa63816083b3873be9337630841e",
         "fault_class": "asynchronous_input_tracking",
-        "mutation_bundle_sha256": "fcb15769b4648fae95018126d5a31d70034ba02547b2a335c292dfaff677b7c3",
+        "mutation_bundle_sha256": "f46fcf0ba48d3753a3a0acb98ab31e8ad2a9fef2711ae4b44935ef17ed750235",
         "mutation_id": "neg_006_asynchronous_tracking",
         "source_catalog_certification_path": "negative_variants/neg_006_asynchronous_tracking/certification.json",
         "trigger_condition": "vin changes between two rising clock edges while reset is inactive",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_007_output_clamp_missing/certification.json",
-        "certification_sha256": "a38b0820652c91021e61c3bd139eba4222b9d388dd802427f6d294075618b95c",
+        "certification_sha256": "0e9ecefa4d785dc9d93d45059fb2c8008902d6e03642ec97daa51f90f613e00f",
         "fault_class": "final_output_clamp_omission",
-        "mutation_bundle_sha256": "06e4efbdd49e6f9dae5f56f1b939e7c02a6803c4a7fd06cf91a91d25519da359",
+        "mutation_bundle_sha256": "0c8ca93f49c76e26063a389273a186a579573bb72fe91704f6bbc3dfbc25632f",
         "mutation_id": "neg_007_output_clamp_missing",
         "source_catalog_certification_path": "negative_variants/neg_007_output_clamp_missing/certification.json",
         "trigger_condition": "an extreme sampled input drives the unclamped limiting expression outside the allowed output rails",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "ed9add78cbeda74646d116d6db578ea80d1b704b8178b542953c8a25eafe7276",
       "score_deck_sha256": "811639996931dfd79daf95ead762c49d3e4bd6189a3bf79b57981c637e210ab5",
-      "task_certification_sha256": "68d990fc483d0aec52aa7916784581bae3dcb594975e47e59af7122616e97b6d",
-      "task_record_sha256": "95db2c3818197a1f15fd3fe16dd0dac76aa7522bc34ea372ac384ba4d62de472"
+      "task_certification_sha256": "922f4cd988dd0838b55a282607d107396e683e945ce6eed906f40756ae5e064f",
+      "task_record_sha256": "6e97335d09696fea0f33c1054396419742051e521efdb5e12d72a6822a6b8087"
     },
     "release_dir": "031-limiting-amplifier-frontend"
   }

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "123-hard-voltage-clamp",
+  "checker_task_id": "v4_123_hard_voltage_clamp",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "270fc6a65c1a1ce9a082368ebf185eafdf580fd333e8d46ccf8f48ff2ffaedff",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "07473115c8a5e5da786ed79286845b03996c1208733369c27e92ad0268564782",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "123",
+  "family_spec_sha256": "e48194b24a7d904f6169e63aa3eb558d31c770c23b5641556cc4d144f5abe311",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f8e844356c13005dc10b7ca7503be1bb9426dc52fa5c97908c0b296dfd5a4fa7",
+  "public_contract": "tasks/623-hard-voltage-clamp-testbench/public_contract.json",
+  "public_contract_sha256": "d703fab1ce0b241f45faaaefd2dd181f3559445136d596fc6166097e5960b0c5",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/623-hard-voltage-clamp-testbench",
+  "task_id": "v4-623"
+}
