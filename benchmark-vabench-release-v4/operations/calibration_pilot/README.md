@@ -1,7 +1,7 @@
 # V4 Calibration Pilot
 
 The default release target is
-`benchmark-vabench-release-v4/release/benchmarkv4-r51`. Tools that support
+`benchmark-vabench-release-v4/release/benchmarkv4-r49`. Tools that support
 historical inspection require the frozen r44 path explicitly; the active
 direct-EVAS runner never falls back to it.
 Use `--sample-families N --seed S` for reproducible random complete-family

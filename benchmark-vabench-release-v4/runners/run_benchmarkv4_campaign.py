@@ -2,7 +2,7 @@
 """Build and run a benchmarkv4 model campaign with direct and agentic modes.
 
 This is the operator-facing entry point for API experiments.  It builds a
-campaign from ``release/benchmarkv4-r51`` and delegates execution to the v4
+campaign from ``release/benchmarkv4-r49`` and delegates execution to the v4
 calibration runner:
 
 * G0/G1 use direct one-shot artifact extraction.
@@ -27,7 +27,7 @@ from typing import Any
 PACKAGE = Path(__file__).resolve().parents[1]
 REPO = PACKAGE.parent
 CALIBRATION = PACKAGE / "operations" / "calibration_pilot"
-DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r51"
+DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r49"
 DEFAULT_AGENT_TIMEOUT_S = 5400
 DEFAULT_SETUP_TIMEOUT_S = 1800
 DEFAULT_REQUEST_TIMEOUT_S = 1800
