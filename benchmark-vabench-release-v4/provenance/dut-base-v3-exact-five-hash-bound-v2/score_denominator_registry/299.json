@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_drive_metric_zero/certification.json",
-        "certification_sha256": "df385c6bc409d1a004c501c5f40efb3b1a1531a9a58c8ff057b43750d0582583",
+        "certification_sha256": "7e98219f97f849a19fd739b381d3de31a57cee213951b3f8cfd3f0295be51113",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "3817dda238adb840c100e10ad441bc64478bc164b6529837367816efed6ea8b8",
+        "mutation_bundle_sha256": "5715a83dffd882712207f132e2d8053f1dbd13b773afeb1e7caaddca70cf7531",
         "mutation_id": "neg_002_drive_metric_zero",
         "source_catalog_certification_path": "negative_variants/neg_002_drive_metric_zero/certification.json",
         "trigger_condition": "Sine VCO With Idtmod And Bound Step: keeps a plausible sine on out but drives the wrapped-phase metric to zero so the metric trace fails the phase check.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_output_phase_shifted/certification.json",
-        "certification_sha256": "1b7e39c5753ec72e33b0bd18b770917f7462ff15d7f0199cc9725d645a17e3d9",
+        "certification_sha256": "4e6dfdeb3aa00e95e3df94a17fa72035ba0ef27ba25b5f91dc6e393808e2e916",
         "fault_class": "output_phase_shifted",
-        "mutation_bundle_sha256": "ba5c6e79579e19a8f6b0d0587448915ca0a4823f048d9a6f3ace4d43837728a0",
+        "mutation_bundle_sha256": "789e30669ab2931e41d926c25d93b67ce7ee2e28b473c1a6fe5100dbed4427f0",
         "mutation_id": "neg_003_output_phase_shifted",
         "source_catalog_certification_path": "negative_variants/neg_003_output_phase_shifted/certification.json",
         "trigger_condition": "Sine VCO With Idtmod And Bound Step: adds a quarter-cycle phase shift to the output so the reintegrated-phase check fails at every sampled point.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_gain_sign_flipped/certification.json",
-        "certification_sha256": "dba8f630148d863dfa60ad4e3437a11154d1444eee85f4053cccca33f708bd62",
+        "certification_sha256": "21e80d01ceed7f2803ae2bad7a9e8e9018dee2f02f6bc12a80107b7af3af29bd",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "fe7dd8cbff4b492e2a5ddf6f1e35ff3c7214b3ac9eae5daf0ce3cdc1eab8f091",
+        "mutation_bundle_sha256": "91864ff7d563e24f8a0f50e66debca35eb8db38e42c8019ada6d81a0a79c1da0",
         "mutation_id": "neg_004_gain_sign_flipped",
         "source_catalog_certification_path": "negative_variants/neg_004_gain_sign_flipped/certification.json",
         "trigger_condition": "Sine VCO With Idtmod And Bound Step: flips the vco_gain sign so the output frequency moves the wrong way with vin and the reintegrated phase diverges.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_output_scale_low/certification.json",
-        "certification_sha256": "36656e4f49beaa5dd6fad23feeb77b7d0103c2ff310df72d73fbb82d84519e1d",
+        "certification_sha256": "4267570bc27ab9ea91c3371390e472d67bb4eb4922eafd22acfc5d0f97e0be7c",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "4c72c2d9f232a04388255602614b77239de3f211b058b8c0efe080904baa6314",
+        "mutation_bundle_sha256": "bd9b87faa0a0c127870de2861645e2b2ccb736e7ec84689cb7adfe05a6e81c5f",
         "mutation_id": "neg_005_output_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_output_scale_low/certification.json",
         "trigger_condition": "Sine VCO With Idtmod And Bound Step: halves the output amplitude leaving the sine shape plausible while calibrated amplitude checks fail.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_drive_out_zero/certification.json",
-        "certification_sha256": "5e57a962726c98231130430f25136f4dd15dfc3143a3a02bf2a3653d5e1f9918",
+        "certification_sha256": "b368b9248d3fdab72aac5a6b0433a6ea6a767acbf2099fbb07de06c9f117dd3d",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "3df17e8f75d1c6ab9865ffaecd90e2cf0b0c3b72ee89940edab48af670e8acc4",
+        "mutation_bundle_sha256": "7f40e6c110a3cb5731d89a8df9eef0668cbc3b3940f720a40a628a839f5a2844",
         "mutation_id": "neg_001_drive_out_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_drive_out_zero/certification.json",
         "trigger_condition": "Sine VCO With Idtmod And Bound Step: keeps the sin() term but multiplies it by zero so the out trace is flat and fails the reintegrated-phase check.",
@@ -69,9 +69,9 @@
     "canonical_dut_id": "299",
     "hashes": {
       "mutation_catalog_sha256": "577c6a3023a509fd59c49241fde625faf20fc64cd25395f72b0197297532a3e3",
-      "score_deck_sha256": "2c5cbab8b2153fc83c1a719b50c22035b118f5cf7f96ac36449037ad772a7240",
-      "task_certification_sha256": "16b61e6dcb5744d2ee2e8ac51c550ab212c643e48eb541ccf12932e6285f7b06",
-      "task_record_sha256": "23ef176473f3a7b32809a7662d179e64465126f792b7b159fe73257ea9da6153"
+      "score_deck_sha256": "38ac68f5686aea7340897e765244a2a622cd038ed5282708c7d7731d33f9990d",
+      "task_certification_sha256": "cd04eb1880fe0cc0a7be4cba942170736e1d57befacb6978bd823a104246e399",
+      "task_record_sha256": "35a27b328acb1026541150ee605e3b3bb18e3487aef78327675da5af7ba1dc85"
     },
     "release_dir": "299-sine-vco-idtmod-bound-step"
   }

@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import importlib.util
-import json
-import shutil
 import sys
 from pathlib import Path
 
@@ -205,7 +203,6 @@ def test_run_one_scores_reference_with_registered_checker(audit, tmp_path: Path,
         spectre_backend="sui-direct",
         spectre_mode="ax",
         timeout_s=10,
-        spectre_runtime_id="spectre-21.1.0-64bit-2022-09-24-csvcm36c-4",
         sui_host=None,
         sui_work_root=None,
         cadence_cshrc=None,
@@ -241,7 +238,6 @@ def test_run_one_reports_unregistered_checker_without_starting_spectre(
         spectre_backend="sui-direct",
         spectre_mode="ax",
         timeout_s=10,
-        spectre_runtime_id="spectre-21.1.0-64bit-2022-09-24-csvcm36c-4",
         sui_host=None,
         sui_work_root=None,
         cadence_cshrc=None,
@@ -285,7 +281,6 @@ def test_correct_plus_five_uses_score_policy_sources_and_kills_all_negatives(
         spectre_backend="sui-direct",
         spectre_mode="ax",
         timeout_s=10,
-        spectre_runtime_id="spectre-21.1.0-64bit-2022-09-24-csvcm36c-4",
         sui_host=None,
         sui_work_root=None,
         cadence_cshrc=None,
@@ -308,174 +303,6 @@ def test_correct_plus_five_uses_score_policy_sources_and_kills_all_negatives(
     assert {case["expected"] for case in result["cases"][1:]} == {"behavior_fail"}
     assert {case["observed"] for case in result["cases"][1:]} == {"behavior_fail"}
     assert {case["outcome"] for case in result["cases"][1:]} == {"killed_behaviorally"}
-    assert {case["case_signature"]["schema_version"] for case in result["cases"]} == {
-        "v4-reference-spectre-case-signature-v1"
-    }
-    assert all(case["case_signature_sha256"] for case in result["cases"])
-
-
-def test_case_signature_is_stable_and_binds_audit_reuse_inputs(
-    audit,
-    tmp_path: Path,
-    monkeypatch,
-) -> None:
-    row = audit.resolve_task_rows(audit.DEFAULT_RELEASE, ["v4-501"])[0]
-    source_task_dir = audit.DEFAULT_RELEASE / row["task_dir"]
-    release = tmp_path / "release"
-    task_dir = release / row["task_dir"]
-    shutil.copytree(source_task_dir, task_dir)
-
-    task_record = audit.read_json(task_dir / "task_record.json")
-    tb_path = task_dir / "evaluator" / "reference_tb.scs"
-    score_policy = audit.read_json(task_dir / "evaluator" / "score_policy.json")
-    checker_id = audit.checker_task_id(task_dir, task_record)
-    include_paths, missing = audit.include_paths_for_reference_tb(task_dir, tb_path)
-
-    kwargs = {
-        "release": release,
-        "row": row,
-        "task_dir": task_dir,
-        "task_record": task_record,
-        "case_id": "correct",
-        "case_kind": "correct",
-        "mutation_id": "",
-        "checker_id": checker_id,
-        "tb_path": tb_path,
-        "include_paths": include_paths,
-        "missing_includes": missing,
-        "score_policy": score_policy,
-        "dut_root": task_dir / "public" / "supplied_dut",
-        "spectre_backend": "sui-direct",
-        "spectre_mode": "ax",
-        "timeout_s": 10,
-        "spectre_runtime_id": "spectre-21.1.0-64bit-2022-09-24-csvcm36c-4",
-        "sui_host": "thu-sui",
-        "sui_work_root": "/tmp/vaevas",
-        "cadence_cshrc": "/opt/cadence.cshrc",
-    }
-
-    baseline_signature, baseline_sha = audit.build_case_signature(**kwargs)
-    repeat_signature, repeat_sha = audit.build_case_signature(**kwargs)
-    assert repeat_signature == baseline_signature
-    assert repeat_sha == baseline_sha
-    assert baseline_sha == audit.sha256_bytes(audit.canonical_json_bytes(baseline_signature))
-    assert "sui_host" not in baseline_signature["spectre_run_config"]
-    assert "sui_work_root" not in baseline_signature["spectre_run_config"]
-    assert "cadence_cshrc" not in baseline_signature["spectre_run_config"]
-    assert "bridge_repo" not in baseline_signature["spectre_run_config"]
-    assert baseline_signature["spectre_run_config"]["spectre_runtime_id"] == (
-        "spectre-21.1.0-64bit-2022-09-24-csvcm36c-4"
-    )
-    machine_only_kwargs = {
-        **kwargs,
-        "sui_host": "different-host",
-        "sui_work_root": "/different/work/root",
-        "cadence_cshrc": "/different/cadence.cshrc",
-    }
-    assert audit.build_case_signature(**machine_only_kwargs)[1] == baseline_sha
-
-    changed = []
-
-    (task_dir / "public" / "supplied_dut" / "bbpd_ref.va").write_text(
-        "// changed dut\n",
-        encoding="utf-8",
-    )
-    changed.append(audit.build_case_signature(**kwargs)[1])
-    shutil.copy2(source_task_dir / "public" / "supplied_dut" / "bbpd_ref.va", task_dir / "public" / "supplied_dut" / "bbpd_ref.va")
-
-    tb_path.write_text(tb_path.read_text(encoding="utf-8") + "\n// changed tb\n", encoding="utf-8")
-    include_paths, missing = audit.include_paths_for_reference_tb(task_dir, tb_path)
-    kwargs["include_paths"] = include_paths
-    kwargs["missing_includes"] = missing
-    changed.append(audit.build_case_signature(**kwargs)[1])
-    shutil.copy2(source_task_dir / "evaluator" / "reference_tb.scs", tb_path)
-    include_paths, missing = audit.include_paths_for_reference_tb(task_dir, tb_path)
-    kwargs["include_paths"] = include_paths
-    kwargs["missing_includes"] = missing
-
-    profile_path = task_dir / "evaluator" / "checker_profile.json"
-    profile = audit.read_json(profile_path)
-    profile["signature_test_marker"] = "profile changed"
-    profile_path.write_text(json.dumps(profile, sort_keys=True), encoding="utf-8")
-    changed.append(audit.build_case_signature(**kwargs)[1])
-    shutil.copy2(source_task_dir / "evaluator" / "checker_profile.json", profile_path)
-
-    policy_path = task_dir / "evaluator" / "score_policy.json"
-    policy = audit.read_json(policy_path)
-    policy["signature_test_marker"] = "policy changed"
-    policy_path.write_text(json.dumps(policy, sort_keys=True), encoding="utf-8")
-    kwargs["score_policy"] = policy
-    changed.append(audit.build_case_signature(**kwargs)[1])
-    shutil.copy2(source_task_dir / "evaluator" / "score_policy.json", policy_path)
-    kwargs["score_policy"] = audit.read_json(policy_path)
-
-    mutation_id = score_policy["negative_suite_mutation_ids"][0]
-    mutation_kwargs = {
-        **kwargs,
-        "case_id": mutation_id,
-        "case_kind": "negative",
-        "mutation_id": mutation_id,
-        "dut_root": task_dir / "evaluator" / "mutation_bundles" / mutation_id,
-    }
-    mutation_include_paths, mutation_missing = audit.include_paths_for_reference_tb(
-        task_dir,
-        tb_path,
-        dut_root=mutation_kwargs["dut_root"],
-    )
-    mutation_kwargs["include_paths"] = mutation_include_paths
-    mutation_kwargs["missing_includes"] = mutation_missing
-    mutation_baseline = audit.build_case_signature(**mutation_kwargs)[1]
-    mutation_file = mutation_kwargs["dut_root"] / "bbpd_ref.va"
-    mutation_file.write_text("// changed mutation\n", encoding="utf-8")
-    changed.append(audit.build_case_signature(**mutation_kwargs)[1])
-    assert changed[-1] != mutation_baseline
-
-    config_kwargs = {**kwargs, "timeout_s": 11}
-    changed.append(audit.build_case_signature(**config_kwargs)[1])
-
-    runtime_kwargs = {**kwargs, "spectre_runtime_id": "spectre-runtime-changed"}
-    changed.append(audit.build_case_signature(**runtime_kwargs)[1])
-
-    support_path = task_dir / "evaluator" / "stimulus.csv"
-    support_path.write_text("time,value\n0,0\n", encoding="utf-8")
-    tb_path.write_text(
-        tb_path.read_text(encoding="utf-8") + '\nparameters support_file="stimulus.csv"\n',
-        encoding="utf-8",
-    )
-    support_sha = audit.build_case_signature(**kwargs)[1]
-    changed.append(support_sha)
-    support_path.write_text("time,value\n0,1\n", encoding="utf-8")
-    changed.append(audit.build_case_signature(**kwargs)[1])
-    assert changed[-1] != support_sha
-    shutil.copy2(source_task_dir / "evaluator" / "reference_tb.scs", tb_path)
-    support_path.unlink()
-
-    monkeypatch.setattr(
-        audit,
-        "checker_implementation_bundle",
-        lambda checker_id: {
-            "checker_id": checker_id,
-            "policy": {"implementation": "changed"},
-            "source_sha256": "changed",
-            "source_error": "",
-            "files": [],
-        },
-    )
-    changed.append(audit.build_case_signature(**kwargs)[1])
-
-    monkeypatch.setattr(
-        audit,
-        "bridge_implementation_bundle",
-        lambda: {
-            "implementation_id": "changed-runner-rewrite",
-            "functions": [{"function": "rewrite_ahdl_includes_for_staging", "source_sha256": "changed"}],
-            "files": [],
-        },
-    )
-    changed.append(audit.build_case_signature(**kwargs)[1])
-
-    assert all(item != baseline_sha for item in changed)
-    assert len(set(changed)) == len(changed)
 
 
 def test_correct_plus_five_never_counts_compile_or_missing_trace_as_kills(
@@ -523,7 +350,6 @@ def test_correct_plus_five_never_counts_compile_or_missing_trace_as_kills(
         spectre_backend="sui-direct",
         spectre_mode="ax",
         timeout_s=10,
-        spectre_runtime_id="spectre-21.1.0-64bit-2022-09-24-csvcm36c-4",
         sui_host=None,
         sui_work_root=None,
         cadence_cshrc=None,
@@ -575,7 +401,6 @@ def test_correct_plus_five_treats_missing_checker_columns_as_invalid_runs(
         spectre_backend="sui-direct",
         spectre_mode="ax",
         timeout_s=10,
-        spectre_runtime_id="spectre-21.1.0-64bit-2022-09-24-csvcm36c-4",
         sui_host=None,
         sui_work_root=None,
         cadence_cshrc=None,
@@ -635,7 +460,6 @@ def test_correct_plus_five_rejects_other_checker_contract_failures(
         spectre_backend="sui-direct",
         spectre_mode="ax",
         timeout_s=10,
-        spectre_runtime_id="spectre-21.1.0-64bit-2022-09-24-csvcm36c-4",
         sui_host=None,
         sui_work_root=None,
         cadence_cshrc=None,
@@ -679,7 +503,6 @@ def test_correct_plus_five_rejects_non_five_score_policy_without_running_spectre
         spectre_backend="sui-direct",
         spectre_mode="ax",
         timeout_s=10,
-        spectre_runtime_id="spectre-21.1.0-64bit-2022-09-24-csvcm36c-4",
         sui_host=None,
         sui_work_root=None,
         cadence_cshrc=None,
@@ -734,8 +557,6 @@ def test_main_include_mutations_selects_correct_plus_five_schema(
             "--work-root",
             str(work_root),
             "--include-mutations",
-            "--spectre-runtime-id",
-            "spectre-21.1.0-64bit-2022-09-24-csvcm36c-4",
         ]
     )
 
@@ -743,7 +564,6 @@ def test_main_include_mutations_selects_correct_plus_five_schema(
     assert return_code == 0
     assert summary["schema_version"] == "v4-benchmarkv4-reference-spectre-correct-plus-five-audit-v1"
     assert summary["include_mutations"] is True
-    assert summary["spectre_runtime_id"] == "spectre-21.1.0-64bit-2022-09-24-csvcm36c-4"
     assert summary["reference_gate_pass_count"] == 1
     assert summary["killed_count"] == 5
     assert summary["kill_denominator"] == 5

@@ -25,19 +25,17 @@ parameter real    sigma = 0.01;
 parameter integer SEED  = 0;
 
 real vp, vn;
-integer rng_state;
 
 analog begin
     @(initial_step) begin
         vp = vdd / 2.0;
         vn = vdd / 2.0;
-        rng_state = SEED;
     end
 
     @(cross(V(CLK) - vth, +1)) begin
         if (V(RST_N) > vth) begin
             vp = vdd/2.0 + ampl * sin(2.0 * `M_PI * freq * $abstime)
-                         + sigma * $rdist_normal(rng_state, 0, 1);
+                         + sigma * $rdist_normal(SEED, 0, 1);
             vn = vdd / 2.0;
         end
     end

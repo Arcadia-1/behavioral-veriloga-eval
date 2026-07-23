@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_inverted_direction/certification.json",
-        "certification_sha256": "b001d4c49f54e6b095e5a6ba14bcc27268d60560ed574c93b4a70d8f16cab8ca",
+        "certification_sha256": "1a5856eb7ec108ebe697d70e1e0c4d71eb4ebce2876b6c222191504a8a7d7024",
         "fault_class": "step_direction_inversion",
-        "mutation_bundle_sha256": "ae7cdd12a31475265a5caecb73a47c6266efe9197aa9349d0a8f8b5a70f84ad5",
+        "mutation_bundle_sha256": "5501bb5173a108920d5554443ce02d6c7691549c2ad797a9bc6e088fb1e5d80f",
         "mutation_id": "neg_002_inverted_direction",
         "source_catalog_certification_path": "negative_variants/neg_002_inverted_direction/certification.json",
         "trigger_condition": "a measurement error outside deadband is clocked",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_missing_deadband_hold/certification.json",
-        "certification_sha256": "27de7570b8f49e7bea2ed31abcf2b4d2976069c1473bb9060da0c3bf32b437be",
+        "certification_sha256": "ec74ac03a340bf4efca2e12250e0de00e8d8d77ba367c09b219990bf291788d9",
         "fault_class": "deadband_hold_omission",
-        "mutation_bundle_sha256": "b18e9a4f9c0b000ba28c972442145fb4ce17addc71975b1b63a2cdd6052aaa5c",
+        "mutation_bundle_sha256": "8aab5732fd0cf648529b72b024a9147edb80e249ac618c945d36fcbe261119c6",
         "mutation_id": "neg_005_missing_deadband_hold",
         "source_catalog_certification_path": "negative_variants/neg_005_missing_deadband_hold/certification.json",
         "trigger_condition": "the measurement error lies inside the deadband",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_reset_level/certification.json",
-        "certification_sha256": "3ffd7dd918e6c6bca760764d0b847c5eadea52419b4a1a59d242adecf6d110ad",
+        "certification_sha256": "c83ba7cc28c61859483f0c970f552ff825edb6a42416abc80bf52ad1c91dbdb3",
         "fault_class": "reset_level_error",
-        "mutation_bundle_sha256": "32b7e6a211d8d1e9f21f5f8bf0376d8ddd1c52b54e913b3a5068a96e62798f24",
+        "mutation_bundle_sha256": "4e175155023111d7e1e45be8904c9ea56d3a5ae33106fa36d0b7035cc9845bb5",
         "mutation_id": "neg_004_wrong_reset_level",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_reset_level/certification.json",
         "trigger_condition": "reset is asserted",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_missing_control_clamp/certification.json",
-        "certification_sha256": "6ed81d9e751ca47633e9053d606e07bf0dc22ea4025e15d4aeaeb36c77bab42b",
+        "certification_sha256": "500fd5cda0bd392505e24be30e7774a3556d901a4274524348ec92c8663b09c0",
         "fault_class": "missing_control_clamp",
-        "mutation_bundle_sha256": "9bcfcb25854a61905e8a7e3b576dcb437032e6dc2e622b9fb5cf495d89b7e854",
+        "mutation_bundle_sha256": "423a0ddd9606930dc1fd1106fa699640596fd7c56f58de3e24bd0851eff19f53",
         "mutation_id": "neg_006_missing_control_clamp",
         "source_catalog_certification_path": "negative_variants/neg_006_missing_control_clamp/certification.json",
         "trigger_condition": "repeated same-direction updates reach a control rail",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_stuck_midscale/certification.json",
-        "certification_sha256": "2d04e949541e5e323dffeaa43c9d68cab7d62eadfe93b00c823db3e2246294e8",
+        "certification_sha256": "9eb99899df1afcd074f0de7f80e1efbd666e2230c0a345f78c186037f00209e6",
         "fault_class": "stuck_control",
-        "mutation_bundle_sha256": "fa479d5dc8a56a2d155c55b1e558ae4845c2d5772c35751f02878ca608162248",
+        "mutation_bundle_sha256": "1efebc5903f80d43eda20cb83cf8868f88dc1e0b20ddbdfac5fefa36e9e925a7",
         "mutation_id": "neg_001_stuck_midscale",
         "source_catalog_certification_path": "negative_variants/neg_001_stuck_midscale/certification.json",
         "trigger_condition": "a measurement error outside deadband is clocked",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "f9ab54cde0cd533124dbc2fe459e8421644ae6d49920a200c63c7f7706a58795",
       "score_deck_sha256": "78f970d070def0da8e425f32aee5c8d7cc9960bf4a9f71e05e044a1793044d66",
-      "task_certification_sha256": "5a9a4534245208583f63ec42f78ca8cb324ac4ea63745af6614f4902cc80c89d",
-      "task_record_sha256": "6bf4082483b3357a87de8ed44d81a0bf54e4ecc9d346c5772e185e85e3165f0e"
+      "task_certification_sha256": "2427e3825285da1a57607c7d6f4355c26dee91bad7d4f9b2e9faab0c57491bee",
+      "task_record_sha256": "214a3b91d06bfa00e28abb6e59c2e42a4eb29935490b3c2d55fe20b2a9dbbb52"
     },
     "release_dir": "008-gain-trim-controller"
   }

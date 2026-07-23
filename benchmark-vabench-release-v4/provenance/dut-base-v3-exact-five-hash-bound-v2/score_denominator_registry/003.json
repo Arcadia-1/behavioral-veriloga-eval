@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_middle_code_wrong/certification.json",
-        "certification_sha256": "78eeb5224b58c9ff8bd2cdecbcf6832df15611b2ed9422a4922f861c8a34c3a8",
+        "certification_sha256": "c7a44ca08428d9058ba22f51f17daf4645b459a1683fe1bb88cebb8fc2b19442",
         "fault_class": "middle_code_lsb_stuck_low",
-        "mutation_bundle_sha256": "187dbd403a13332edcf8d6a560d468c96974a28748ce7c68216d28e29962dfa4",
+        "mutation_bundle_sha256": "cf7e5ab6e70b4649449596b9e337117ae7037ab3250070c5aeb2e5b9a5d53a75",
         "mutation_id": "neg_004_middle_code_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_middle_code_wrong/certification.json",
         "trigger_condition": "sampled VIN is in the middle region",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_threshold_too_wide/certification.json",
-        "certification_sha256": "9042a44ce537b376aa667ca357abb0f21098c1946412df36d8143ebdf0967912",
+        "certification_sha256": "202de2d691d2fac779b9a22d3e0647bc4aacc354d8e5db7e3919f9f313f71d00",
         "fault_class": "decision_threshold_error",
-        "mutation_bundle_sha256": "f32254256e642f8a21d55ad7f5fffba9f0e7e33976adef7c4b0faf7442aca9fa",
+        "mutation_bundle_sha256": "f2a4a1df8cddf2a61b467f3da4c2ba6a7d7948585e96e2b6704325cbd8fd95da",
         "mutation_id": "neg_001_threshold_too_wide",
         "source_catalog_certification_path": "negative_variants/neg_001_threshold_too_wide/certification.json",
         "trigger_condition": "sampled VIN lies between the quarter- and third-reference thresholds",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_live_vin_on_phi2/certification.json",
-        "certification_sha256": "a30328641c49f8ab6a6507079cc80c149283572e79adcb029fd808b766e32122",
+        "certification_sha256": "0c44d301d0ae095fdcf0330655898ee42c9a701c45827d3c7ea0bacf705f4be9",
         "fault_class": "sample_hold_bypass",
-        "mutation_bundle_sha256": "51f22e0af89b3f57c77f8dab27828b7f1e7eb415883db55c9fb947d8a631453b",
+        "mutation_bundle_sha256": "a9ba56a32d36dc815927fd2e33c30d2284360cda91769e9aa5b39ae21e44389e",
         "mutation_id": "neg_006_live_vin_on_phi2",
         "source_catalog_certification_path": "negative_variants/neg_006_live_vin_on_phi2/certification.json",
         "trigger_condition": "VIN changes after PHI1 and before PHI2",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_007_missing_residue_clamp/certification.json",
-        "certification_sha256": "25bca30174a41791e5f168d7fcc3e93e30f7211b6d3690c98324fded7d9d6454",
+        "certification_sha256": "d58cd1c6c8fc82d1f7f07181504357ef4232054ea326f47a16a9d83aba9a5573",
         "fault_class": "missing_supply_clamp",
-        "mutation_bundle_sha256": "90cb46bfcd7562de0c9259cd882ea618d3e767f3405a8e361b8e971cc213a340",
+        "mutation_bundle_sha256": "f5c1cb5382405aab76b10b2dfc8a1feb04f1efaaf288b91f1fef78b2a9530b64",
         "mutation_id": "neg_007_missing_residue_clamp",
         "source_catalog_certification_path": "negative_variants/neg_007_missing_residue_clamp/certification.json",
         "trigger_condition": "unclamped residue exceeds VDD or falls below VSS",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_residue_feedback_sign_swapped/certification.json",
-        "certification_sha256": "73b479074833f72051d45088fab935d86a943dc646b26e64eba90ba3501dd0a9",
+        "certification_sha256": "2632bfe708175533a632aaf1808e7080a346a160a9eafe367024ad2fdab8c4c3",
         "fault_class": "residue_feedback_sign",
-        "mutation_bundle_sha256": "9cab43ae3a3de911288552f071fa530cfb8c781436e37c3eb9a56e741149655f",
+        "mutation_bundle_sha256": "63fc4a47d149dd20f746f9f3b539a45e6edb608096788042adcf8c756a263f07",
         "mutation_id": "neg_003_residue_feedback_sign_swapped",
         "source_catalog_certification_path": "negative_variants/neg_003_residue_feedback_sign_swapped/certification.json",
         "trigger_condition": "sampled VIN is in an outer decision region",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "64202a5aa1060857f08c05d85a89b1d8e2901b4b260d5c8c09054ac02e8ab1b2",
       "score_deck_sha256": "867ab654a840a85d28d4ea360e3c1df2e96161439fbd0c442d587660031d376c",
-      "task_certification_sha256": "d52264c7da4090aa8ecfbb0960d71ec74e7c4df5b62ee95ee51c062331e4586a",
-      "task_record_sha256": "4f03c23b30d1a40139deb3fadd885816a47614ace03143efc8a479a552f0c78b"
+      "task_certification_sha256": "1b6cac1d2bf34284b3f33533f91476d95e094141103967dc9a185b8f1dd43230",
+      "task_record_sha256": "bb4d17a8afc3f6c0a5aa0a165c90af3166350e5fbb20002f4d6209b528d8346b"
     },
     "release_dir": "003-pipeline-adc-stage"
   }

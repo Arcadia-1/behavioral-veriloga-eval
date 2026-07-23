@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_PWR_SEQUENCE_ORDER satisfy the public contract; fault class enable_gating_error is rejected",
-    "observed": "EVAS: v4_347 checked=20 mismatch_count=21 startup_seen=False brownout_seen=True async_clear=True async_checks=412 mismatch_detail=P_PWR_SEQUENCE_ORDER mismatch_count=1 sample_time=3.505e-08 expected=rst_n_core=1 observed=rst_n_core=0 metric_gap=1; P_PWR_SEQUENCE_ORDER mismatch_count=1 sample_time=4.51e-08 expected=rst_n_core=1 observed=rst_n_core=0 metric_gap=1; P_PWR_SEQUENCE_ORDER mismatch_count=1 sample_time=4.51e-08 expected=en_ana=1 observed=en_ana=0 metric_gap=1; P_PWR_SEQUENCE_ORDER mismatch_count=1 sample_time=5.51e-08 expected=rst_n_core=1 observed=rst_n_core=0 metric_gap=1; P_PWR_SEQUENCE_ORDER mismatch_count=1 sample_time=5.51e-08 expected=en_ana=1 observed=en_ana=0 metric_gap=1; P_PWR_SEQUENCE_ORDER mismatch_count=1 sample_time=5.51e-08 expected=en_dig=1 observed=en_dig=0 metric_gap=1",
+    "observed": "EVAS: v4_347 checked=20 mismatch_count=21 startup_seen=False brownout_seen=True async_clear=True mismatch_detail=P_PWR_SEQUENCE_ORDER mismatch_count=1 sample_time=3.505e-08 expected=rst_n_core=1 observed=rst_n_core=0 metric_gap=1; P_PWR_SEQUENCE_ORDER mismatch_count=1 sample_time=4.51e-08 expected=rst_n_core=1 observed=rst_n_core=0 metric_gap=1; P_PWR_SEQUENCE_ORDER mismatch_count=1 sample_time=4.51e-08 expected=en_ana=1 observed=en_ana=0 metric_gap=1; P_PWR_SEQUENCE_ORDER mismatch_count=1 sample_time=5.51e-08 expected=rst_n_core=1 observed=rst_n_core=0 metric_gap=1; P_PWR_SEQUENCE_ORDER mismatch_count=1 sample_time=5.51e-08 expected=en_ana=1 observed=en_ana=0 metric_gap=1; P_PWR_SEQUENCE_ORDER mismatch_count=1 sample_time=5.51e-08 expected=en_dig=1 observed=en_dig=0 metric_gap=1",
     "violated_property_ids": [
       "P_PWR_SEQUENCE_ORDER"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r51-full400",
+    "campaign": "r50-full400",
     "checker_id": "v4_347_power_reset_sequencer_system",
-    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "8f4f53643b1794897a7d4d34f99a1f53e0b332db7eeb75f6ff211e5995180fa0",
+    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
     "trace_row_count": 2071
   },
   "family_id": "347",
@@ -36,9 +36,6 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
-    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
-    "evas_source_revision": "d86ef6a33de63e69ed61651465658643f59501ff",
-    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

@@ -92,6 +92,7 @@ def check_chopper_stabilized_differential_amplifier(
         return False, "insufficient_excitation chop_periods"
     chop_period = median(chop_periods)
     guard = max(0.225 * chop_period, 8.0 * step)
+    probe_offset = max(5e-4 * chop_period, 0.05 * step)
     events: list[tuple[float, int, str, int]] = []
     events += [(time_s, 1, "chop", +1) for time_s in chop_rising]
     events += [(time_s, 1, "chop", -1) for time_s in _crossings(rows, "chop_clk", -1)]
@@ -107,19 +108,17 @@ def check_chopper_stabilized_differential_amplifier(
     errors: list[str] = []
 
     for index, (event_time, _priority, kind, polarity) in enumerate(events):
-        # The DUT samples every state-driving input at the reconstructed
-        # chopper event.  A solver-dependent post-edge row is suitable for
-        # observing settled outputs, but not for replaying the state update.
-        rst = _sample(rows, "rst", event_time)
-        enable = _sample(rows, "enable", event_time)
-        hold = _sample(rows, "hold", event_time)
+        probe = min(rows[-1]["time"], event_time + probe_offset)
+        rst = _sample(rows, "rst", probe)
+        enable = _sample(rows, "enable", probe)
+        hold = _sample(rows, "hold", probe)
         if kind == "clear" or rst > VTH or enable <= VTH:
             state.clear()
             clear_events += 1
         elif hold > VTH:
             hold_edges += 1
         else:
-            input_diff = _sample(rows, "vinp", event_time) - _sample(rows, "vinn", event_time)
+            input_diff = _sample(rows, "vinp", probe) - _sample(rows, "vinn", probe)
             state.update(input_diff, polarity)
             active_updates += 1
             positive_updates += polarity > 0

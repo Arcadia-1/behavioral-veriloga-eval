@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_scale/certification.json",
-        "certification_sha256": "c5b19a4650a37251faabd9dc19a63f6f8f1b433132226e2c1055b92330351e0e",
+        "certification_sha256": "fe43ca6596b6f343560b90d180eb10db14343320e5c6123aabc6d9b440cf147f",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "eaadabedb9ace40f1c8f072146908984113b117789c0d4447d1003ff92fb9d53",
+        "mutation_bundle_sha256": "84e2b495db881fd9da3b83a211ebc5b6f236722f5f4893fe2e6fb5a01d7f3a07",
         "mutation_id": "neg_003_wrong_scale",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_scale/certification.json",
         "trigger_condition": "stimulus exercises neg_003_wrong_scale",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_ignore_enable/certification.json",
-        "certification_sha256": "970df2208dd057883e988115392a0624ca9cbf75ba15de8f6fec4655cb256f10",
+        "certification_sha256": "7bd3ed1db9327b609dce692ca34b6c6ad90c6f283bb88a21c38fcd76183ba99c",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "92661ae378dd6ccc863453eec46d47b3e99e42180186169159480ad561b9b220",
+        "mutation_bundle_sha256": "b7006e47bfb3a432f2aebd0b52a51e954bc8a4fb4afe5f21b5a531d0df8a3dbc",
         "mutation_id": "neg_002_ignore_enable",
         "source_catalog_certification_path": "negative_variants/neg_002_ignore_enable/certification.json",
         "trigger_condition": "stimulus exercises neg_002_ignore_enable",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero_outputs/certification.json",
-        "certification_sha256": "8948dfa2734a9f0a7a3734f5e92a6768c79910088cb05f3cfc498ff0659c701a",
+        "certification_sha256": "63257ab2c977f1e47c24d6d206acebe39d2e77d6164a09d1843295e0474edce4",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "0d48dc2c41f426d5f3151e3eff9a4070db69dde8dfa13545d5d3085bdf80d700",
+        "mutation_bundle_sha256": "2e3ffa2198b6d7d54186ce82b00108fbecb13f1ec94bf0451a9d78e0d8778745",
         "mutation_id": "neg_001_zero_outputs",
         "source_catalog_certification_path": "negative_variants/neg_001_zero_outputs/certification.json",
         "trigger_condition": "stimulus exercises neg_001_zero_outputs",
@@ -45,9 +45,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_ignore_control_or_reset/certification.json",
-        "certification_sha256": "d3590f221b0890bb1f9b6a5e0104c434f1dec8f3695ad3bc147ed36ad09a821e",
+        "certification_sha256": "c283b6c91439cef3e0633f71c25042145ef0ed4f77f043c172a2f23ed251caa0",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "921b99d128b8b1823a391def06e1f13d0f1e02430b7fd77f169a913d083aef24",
+        "mutation_bundle_sha256": "6c97003e36ba4640cf378d26b4417d6bc99d4423bf541cbf0cd57491ab1b435b",
         "mutation_id": "neg_004_ignore_control_or_reset",
         "source_catalog_certification_path": "negative_variants/neg_004_ignore_control_or_reset/certification.json",
         "trigger_condition": "stimulus exercises neg_004_ignore_control_or_reset",
@@ -58,9 +58,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_wrong_flag_metric/certification.json",
-        "certification_sha256": "67f3f7412707a1443e3d1becb9b890354c9cb9689868548cc5bc33bc0677b274",
+        "certification_sha256": "4a65ccdfd32b6bd018dbf548d989c7a1ad3a6ec9b8b2d91c1aee4c0d31a108d4",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "abdb664064a2dc7bf1bef222683351119f602598982cbafe5ace07bb471f1498",
+        "mutation_bundle_sha256": "8670c6f7087af042e9400bafb1243646407648fb9872c19a7b57eb5598e0aa3f",
         "mutation_id": "neg_005_wrong_flag_metric",
         "source_catalog_certification_path": "negative_variants/neg_005_wrong_flag_metric/certification.json",
         "trigger_condition": "stimulus exercises neg_005_wrong_flag_metric",
@@ -75,8 +75,8 @@
     "hashes": {
       "mutation_catalog_sha256": "5db47ca0caf93478ef1bca865337f6e603b73dbe9a77c87adc1e72054bb08675",
       "score_deck_sha256": "c780c2abea311feac41ceca82697d5401f243d86f248d6e6f72672f34f70a380",
-      "task_certification_sha256": "25778551e5331052afcc347690467e5b8cc822d5ddb63ce6069f9fb418e942c5",
-      "task_record_sha256": "0f8601aa6f328b09e40ff0304a545eb7e38511d2528b9309fcc10f6ddd965c27"
+      "task_certification_sha256": "f9c4c2591a192cc507ef9e5324cb38d0952d395536ef38ff7d57114cefa947bf",
+      "task_record_sha256": "1b79760ee8b0827c2afa0629e04b178ec7ab54f08d9607554bbbea55aab9d93c"
     },
     "release_dir": "285-configurable-startup-policy"
   }

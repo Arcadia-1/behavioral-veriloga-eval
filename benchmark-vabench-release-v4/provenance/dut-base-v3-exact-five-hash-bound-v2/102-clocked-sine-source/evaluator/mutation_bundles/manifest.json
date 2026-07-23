@@ -1,6 +1,6 @@
 {
   "family_id": "102",
-  "gold_bundle_sha256": "69b087012d32f72c5152523693d5ad29143aecde1ae49c72255ff7fc9b7b004a",
+  "gold_bundle_sha256": "df9f041b7ff968034ad5e4ffdc2676dd266174724649e543925a2c609e2ae66c",
   "mutations": [
     {
       "artifact_hashes": {
@@ -104,15 +104,16 @@
     },
     {
       "artifact_hashes": {
-        "vin_src.va": "70242f564fcba3bd304d523d8471b15e8acb9e95c90cfbf17ce3b7b5361ec437"
+        "vin_src.va": "abeb83b44698d5b7410d6649534a1268ef76a180be26abaa375003d26f1e329b"
       },
       "certification": {
         "activated_property_ids": [
+          "P_INTEREDGE_HOLD",
           "P_SEEDED_REPEATABILITY"
         ],
         "behavior_status": "killed_behaviorally",
         "compile_status": "pass",
-        "evidence_path": "negative_variants/neg_006_seed_parameter_ignored/certification.json",
+        "evidence_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "profile": "score",
         "simulation_status": "pass",
         "status": "pass"
@@ -120,10 +121,11 @@
       "changed_artifacts": [
         "vin_src.va"
       ],
-      "fault_class": "fault_006_seed_parameter_ignored",
-      "id": "neg_006_seed_parameter_ignored",
-      "trigger_condition": "Initializes the perturbation stream from a fixed constant, so changing the public SEED parameter has no effect.",
+      "fault_class": "fault_005_metric_scale_low",
+      "id": "neg_005_metric_scale_low",
+      "trigger_condition": "Clocked Sine Source: preserves clocked sampling and deterministic noise but attenuates the sine stimulus too far.",
       "violated_property_ids": [
+        "P_INTEREDGE_HOLD",
         "P_SEEDED_REPEATABILITY"
       ]
     }

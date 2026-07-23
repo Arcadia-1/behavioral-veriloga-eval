@@ -45,12 +45,11 @@ DEFAULT_OUTPUTS = {
     "r48": PACKAGE_ROOT / "release" / "benchmarkv4-r48",
     "r49": PACKAGE_ROOT / "release" / "benchmarkv4-r49",
     "r50": PACKAGE_ROOT / "release" / "benchmarkv4-r50",
-    "r51": PACKAGE_ROOT / "release" / "benchmarkv4-r51",
 }
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
 SKILLS_ROOT = PACKAGE_ROOT.parent / "skills"
 SKILL_IDS = ("veriloga", "vabench-feedback")
-REAL_SKILL_REVISIONS = frozenset({"r50", "r51"})
+REAL_SKILL_REVISIONS = frozenset({"r50"})
 REAL_SKILL_MODES = {
     "G0": {"process": "direct_one_shot", "skills": [], "evas_cli": False},
     "G1": {"process": "direct_one_shot", "skills": ["veriloga"], "evas_cli": False},
@@ -67,8 +66,8 @@ LEGACY_MODES = {
     "G4": {"process": "agentic", "form_skill": False, "evas_guide": True, "evas_cli": True},
     "G5": {"process": "agentic", "form_skill": True, "evas_guide": True, "evas_cli": True},
 }
-# The active comparison contract is the real-skill registry introduced in r50.
-# The legacy registry remains available only to reproduce sealed pre-r50 releases.
+# The active comparison contract is the real-skill r50 registry.  The legacy
+# registry remains available only to reproduce sealed pre-r50 releases.
 MODES = REAL_SKILL_MODES
 FORM_SKILLS = {
     "dut": "dut_modeling.md",
@@ -584,33 +583,6 @@ def copy_public_support(source_task: Path, destination: Path) -> list[str]:
     return copied
 
 
-def uses_portable_rdist_runtime(
-    source_task: Path,
-    spec: dict[str, Any],
-    release_revision: str,
-) -> bool:
-    """Select the r51 EVAS extension mode from the canonical DUT sources."""
-
-    if release_revision != "r51":
-        return False
-    for file_record in (spec.get("artifact_contract") or {}).get("files") or []:
-        source = source_task / "evaluator" / "solution" / str(file_record["path"])
-        if source.is_file() and re.search(
-            r"\$rdist_[A-Za-z_][A-Za-z0-9_]*\b",
-            source.read_text(encoding="utf-8"),
-        ):
-            return True
-    return False
-
-
-def direct_evas_command(*, portable_rdist: bool) -> str:
-    command = (
-        "evas simulate public/task/visible_test.scs "
-        "-o /tmp/vabench-visible/evas-output"
-    )
-    return command if portable_rdist else f"{command} --spectre-strict"
-
-
 def overlay_mutation(source_task: Path, mutation_id: str, destination: Path, artifact_paths: list[str]) -> list[str]:
     mutation_dir = source_task / "evaluator" / "mutation_bundles" / mutation_id
     candidates = sorted(mutation_dir.rglob("*.va"))
@@ -728,7 +700,6 @@ def install_visible_dut_runtime(
     source_task: Path,
     *,
     release_revision: str = "r45",
-    portable_rdist: bool = False,
 ) -> dict[str, Any]:
     public = task_dir / "public"
     evaluator = task_dir / "evaluator"
@@ -740,21 +711,15 @@ def install_visible_dut_runtime(
     profile = bind_deployed_test_deck(profile, visible_text)
     profile_path = evaluator / "canonical_test_profile.json"
     write_json(profile_path, profile)
-    runtime = {
-        "schema_version": (
-            f"{release_revision}-direct-evas-runtime-"
-            f"{'v3' if portable_rdist else 'v2'}"
-        ),
-        "command": direct_evas_command(portable_rdist=portable_rdist),
+    write_json(public / "evas_runtime.json", {
+        "schema_version": f"{release_revision}-direct-evas-runtime-v2",
+        "command": "evas simulate public/task/visible_test.scs -o /tmp/vabench-visible/evas-output --spectre-strict",
         "working_directory": "runtime_package_root",
         "candidate_root": "public/submission",
         "test": "visible_test.scs",
         "trusted_replay": "byte_identical_visible_test",
         "visible_test_sha256": file_sha(visible),
-    }
-    if portable_rdist:
-        runtime["compatibility_mode"] = "portable"
-    write_json(public / "evas_runtime.json", runtime)
+    })
     return {
         "kind": "canonical_test_deck",
         "profile": "evaluator/canonical_test_profile.json",
@@ -774,7 +739,6 @@ def install_visible_testbench_runtime(
     mutation_ids: list[str],
     *,
     release_revision: str = "r45",
-    portable_rdist: bool = False,
 ) -> dict[str, Any]:
     public = task_dir / "public"
     evaluator = task_dir / "evaluator"
@@ -793,10 +757,7 @@ def install_visible_testbench_runtime(
         cases.append({"case": case, "dut_root": f"visible_fixtures/{case}/dut"})
 
     suite = {
-        "schema_version": (
-            f"{release_revision}-direct-evas-testbench-suite-"
-            f"{'v3' if portable_rdist else 'v2'}"
-        ),
+        "schema_version": f"{release_revision}-direct-evas-testbench-suite-v2",
         "candidate": "public/submission/testbench.scs",
         "candidate_dut_binding": "./dut",
         "cases": cases,
@@ -811,13 +772,10 @@ def install_visible_testbench_runtime(
             "ln -sfn \"$(pwd)/public/task/{dut_root}\" "
             "/tmp/vabench-visible/runs/{case}/dut && "
             "evas simulate /tmp/vabench-visible/runs/{case}/testbench.scs "
-            f"-o /tmp/vabench-visible/evas-output/{{case}}"
-            f"{'' if portable_rdist else ' --spectre-strict'}"
+            "-o /tmp/vabench-visible/evas-output/{case} --spectre-strict"
         ),
         "fixture_tree_sha256": tree_sha(fixtures),
     }
-    if portable_rdist:
-        suite["compatibility_mode"] = "portable"
     write_json(public / "evas_runtime.json", suite)
     shutil.copy2(public / "evas_runtime.json", evaluator / "trusted_replay_suite.json")
     copy_tree(fixtures, evaluator / "trusted_replay_fixtures")
@@ -848,9 +806,6 @@ def build_dut_view(
     release_revision: str = "r45",
 ) -> dict[str, Any]:
     family = str(row["canonical_dut_id"])
-    portable_rdist = uses_portable_rdist_runtime(
-        source_task, spec, release_revision
-    )
     task_dir = output / "tasks" / source_task.name
     task_dir.mkdir(parents=True)
     public = task_dir / "public"
@@ -870,12 +825,10 @@ def build_dut_view(
         "target_artifacts": [str(item["path"]) for item in spec["artifact_contract"]["files"]],
         "evas": {
             "available_in_modes": ["G2", "G3", "G4", "G5"],
-            "command": direct_evas_command(portable_rdist=portable_rdist),
+            "command": "evas simulate public/task/visible_test.scs -o /tmp/vabench-visible/evas-output --spectre-strict",
             "visible_and_final_test": "identical",
         },
     })
-    if portable_rdist:
-        contract["evas"]["compatibility_mode"] = "portable"
     public_contract = write_public_contract(output, task_dir, contract)
     public_contract_sha = file_sha(output / public_contract)
     evaluator = task_dir / "evaluator"
@@ -892,10 +845,7 @@ def build_dut_view(
         "gold_dut_certification_sha256": row["hashes"]["task_certification_sha256"],
     })
     evaluation_binding = install_visible_dut_runtime(
-        task_dir,
-        source_task,
-        release_revision=release_revision,
-        portable_rdist=portable_rdist,
+        task_dir, source_task, release_revision=release_revision
     )
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
@@ -930,9 +880,6 @@ def build_testbench_view(
     release_revision: str = "r45",
 ) -> dict[str, Any]:
     family = str(row["canonical_dut_id"])
-    portable_rdist = uses_portable_rdist_runtime(
-        source_task, spec, release_revision
-    )
     task_num = 500 + int(family)
     slug = source_task.name.split("-", 1)[1]
     task_dir = output / "tasks" / f"{task_num:03d}-{slug}-testbench"
@@ -972,8 +919,6 @@ def build_testbench_view(
             "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected",
         ],
     })
-    if portable_rdist:
-        contract["evas"]["compatibility_mode"] = "portable"
     if support_artifacts:
         contract["supplied_support_artifacts"] = [
             f"supplied_dut/{path}" for path in support_artifacts
@@ -1023,7 +968,6 @@ def build_testbench_view(
         spec,
         suite,
         release_revision=release_revision,
-        portable_rdist=portable_rdist,
     )
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
@@ -1059,9 +1003,6 @@ def build_bugfix_view(
     release_revision: str = "r45",
 ) -> dict[str, Any]:
     family = str(row["canonical_dut_id"])
-    portable_rdist = uses_portable_rdist_runtime(
-        source_task, spec, release_revision
-    )
     task_num = 1000 + int(family)
     slug = source_task.name.split("-", 1)[1]
     task_dir = output / "tasks" / f"{task_num:04d}-{slug}-bugfix"
@@ -1089,12 +1030,10 @@ def build_bugfix_view(
         "problem_statement": "the supplied system violates the public contract",
         "evas": {
             "available_in_modes": ["G2", "G3", "G4", "G5"],
-            "command": direct_evas_command(portable_rdist=portable_rdist),
+            "command": "evas simulate public/task/visible_test.scs -o /tmp/vabench-visible/evas-output --spectre-strict",
             "visible_and_final_test": "identical",
         },
     })
-    if portable_rdist:
-        contract["evas"]["compatibility_mode"] = "portable"
     public_contract = write_public_contract(output, task_dir, contract)
     public_contract_sha = file_sha(output / public_contract)
     evaluator = task_dir / "evaluator"
@@ -1118,10 +1057,7 @@ def build_bugfix_view(
         "gold_dut_certification_sha256": row["hashes"]["task_certification_sha256"],
     })
     evaluation_binding = install_visible_dut_runtime(
-        task_dir,
-        source_task,
-        release_revision=release_revision,
-        portable_rdist=portable_rdist,
+        task_dir, source_task, release_revision=release_revision
     )
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(

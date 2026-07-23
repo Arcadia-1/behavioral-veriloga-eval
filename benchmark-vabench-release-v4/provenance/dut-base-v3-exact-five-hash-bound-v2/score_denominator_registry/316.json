@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_controller_update_direction_wrong/certification.json",
-        "certification_sha256": "6931ac74a4ee02e2372b38f03865b2fadf5d911676ead92f3696f40162890a49",
+        "certification_sha256": "f1e821a54746af2927f895c596fa8501632d3ea17729be7d7c70a68fbde67b8f",
         "fault_class": "controller_update_direction_wrong",
-        "mutation_bundle_sha256": "be58241ae9368fcf9cb689a98512058c0872b1e0faef1092444137279f3b047c",
+        "mutation_bundle_sha256": "71b50d276486a62121be50a58b057ce834ac8f400db2680ed0e4acc199987339",
         "mutation_id": "neg_001_controller_update_direction_wrong",
         "source_catalog_certification_path": "negative_variants/neg_001_controller_update_direction_wrong/certification.json",
         "trigger_condition": "controller_update_direction_wrong",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_reset_disable_clear_missing/certification.json",
-        "certification_sha256": "27583100f3a2e2976a87877f84a413759411e944b9283a93f0bd5371fc1e3e05",
+        "certification_sha256": "541f5cb3baa7521866019ea50c450ffc97be4a5e6e97fa73eff239ad7a39ff9f",
         "fault_class": "reset_disable_clear_missing",
-        "mutation_bundle_sha256": "f30e9600ef803219ddd19e4a3f24fdd6e9fdaaec8c053f6707ae57061ea7bcc6",
+        "mutation_bundle_sha256": "675fa5f3d01ce9ab7971c65c0c4ea625c72ef0b40875fc7b58803042e5c4f3bb",
         "mutation_id": "neg_003_reset_disable_clear_missing",
         "source_catalog_certification_path": "negative_variants/neg_003_reset_disable_clear_missing/certification.json",
         "trigger_condition": "reset_disable_clear_missing",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_lock_qualification_too_early/certification.json",
-        "certification_sha256": "b91cf9ca61e5140d73fa05d4313c976e2159537eb2874cbf7778c17e3a63ea9a",
+        "certification_sha256": "e97f89adfa14c409edaa7841f4fb81bb36e7d1070633c4a51be8c4d02143689e",
         "fault_class": "lock_qualification_too_early",
-        "mutation_bundle_sha256": "8c188607b263171d1a4b291bf69da7870625a239777cec5cb47707755600af43",
+        "mutation_bundle_sha256": "a310f8024de9017399ee1de5ae1f0f93403b57707a323641b1958bbfaea0cf2b",
         "mutation_id": "neg_004_lock_qualification_too_early",
         "source_catalog_certification_path": "negative_variants/neg_004_lock_qualification_too_early/certification.json",
         "trigger_condition": "lock_qualification_too_early",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_error_metric_wrong/certification.json",
-        "certification_sha256": "ca2836a3f59a4b36c994fd89aa2588debcc0428e280288d2386bf3cd64abc9fe",
+        "certification_sha256": "7a5a449d43a908b5c8e520629bf3fb9cfaf25df4f0d541e09553bac008a7475a",
         "fault_class": "error_metric_wrong",
-        "mutation_bundle_sha256": "5681bf6675c72d8d5385bc773218e13e61e1444f57e423d6ec1b45374e470edb",
+        "mutation_bundle_sha256": "803fa15702a93efb785a399dd642fbafbb57f7bff85f7ae4e3c0b9d0bc689070",
         "mutation_id": "neg_005_error_metric_wrong",
         "source_catalog_certification_path": "negative_variants/neg_005_error_metric_wrong/certification.json",
         "trigger_condition": "error_metric_wrong",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_residue_core_gain_step_wrong/certification.json",
-        "certification_sha256": "898907559c5bc2f802de86317c05cc4b44e516109aad1f42d5e4596ff0984a96",
+        "certification_sha256": "247e01d23dcf44460426617cdbfc3e53a954db50407b9b00d9a3fef7cc4d0289",
         "fault_class": "residue_core_gain_step_wrong",
-        "mutation_bundle_sha256": "20a00bd7ae8dac38ea61262b37d6279e7d77c7931576c8caf2ffd1a713f6c069",
+        "mutation_bundle_sha256": "9311d60b80f6ec8011cd3d2403b7b2efbd3ee7a122fd00f1870e2707475f0247",
         "mutation_id": "neg_002_residue_core_gain_step_wrong",
         "source_catalog_certification_path": "negative_variants/neg_002_residue_core_gain_step_wrong/certification.json",
         "trigger_condition": "residue_core_gain_step_wrong",
@@ -70,9 +70,9 @@
     "canonical_dut_id": "316",
     "hashes": {
       "mutation_catalog_sha256": "4e00f8d18c11c42b37f575f16f5d6f4076bca4b3c66377edf95dfb642a28408c",
-      "score_deck_sha256": "fe997112f792874841afc320f9dc124de8c26b2133e5c5f375c002162d5f75ac",
-      "task_certification_sha256": "a273074a44522021225ecd9878b11e9fb1ffe2f89d963c98b51b50e46f719b5f",
-      "task_record_sha256": "f4e9d1ca3848b7cc24163c35213303fe4435a66e782ad9cfef95e8843007c378"
+      "score_deck_sha256": "b0a72415764cb0c813702a016aabd21f942a2f2eb7da4c1012322d7dce377a8a",
+      "task_certification_sha256": "3cbab1fbd84c1023c1a88001c561141a72e1abbdb7c86981b514a909edcb6483",
+      "task_record_sha256": "c5d9926aa2ea01bae1607e90f032c4f0e59957fad69c02b19d588db87b9dbc4a"
     },
     "release_dir": "316-residue-amplifier-gain-calibration"
   }

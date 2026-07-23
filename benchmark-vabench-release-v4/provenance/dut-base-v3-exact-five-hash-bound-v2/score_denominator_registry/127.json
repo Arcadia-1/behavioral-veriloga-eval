@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_missing_offset/certification.json",
-        "certification_sha256": "26353ebcce0e62fabc222f97bbb7bfaaaa924d373fe6ec1767561948f487371f",
+        "certification_sha256": "3889207ea565a7275793fec991e32e19ffbea8135a0297a54201fd57de0a2a96",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "c72c57641446f3397fcf678fba8e4c4a825c214f11d9f835105600c1aad38486",
+        "mutation_bundle_sha256": "0de538cc5c09d87216c2a01bab0a8021b5353dd5b18bf11f33ae466741bf79ed",
         "mutation_id": "neg_002_missing_offset",
         "source_catalog_certification_path": "negative_variants/neg_002_missing_offset/certification.json",
         "trigger_condition": "Uses gain without subtracting the input offset.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "d173abdc42b231dc4df181ca24edfd718150b8f454966b37e8f07e8a4de9c24a",
+        "certification_sha256": "90f9aa98cc1ec7680aa7af862a19f67a0fd75fafaf02dbed6f0b915723b93ab0",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "2e82cb669738eaf52e6b147698b100efc08e6a6e5e22859867d47ebc06bbae9a",
+        "mutation_bundle_sha256": "aef14d8bb6b04d8c15698d023bc66c12576c4c2503378002b3261434d15d3d83",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_gain/certification.json",
-        "certification_sha256": "3f8bb8050df0c5e4bda83911f21669f6830e3241ea5736dbb9b82647bddbd9d6",
+        "certification_sha256": "39abe091339025b0a2f9a040d7200f79a237274a4dca74a1e5008fbfa1813767",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "9620dd8d2e911e04c9cfe1d5dbb43ede601e90f3710262d2b64bb5f5b7028f6d",
+        "mutation_bundle_sha256": "603963cceb585bb8ed8fac41334f70624cd1e817bc6408336c1d50d98fa88e1d",
         "mutation_id": "neg_003_wrong_gain",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_gain/certification.json",
         "trigger_condition": "Uses the wrong gain factor.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_adds_offset/certification.json",
-        "certification_sha256": "60528ee1f11101f31ae1b3e7faedad05e228e7e4f4e2ca2c70a3639c2e43f53c",
+        "certification_sha256": "29818a165d54762718fc30c6e678a0c11e2010642b44211dc065a0f8b2c47645",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "22864765193c9c70f94fa356aae42206d28d403ec1169da2ae4b4d45038ef4d8",
+        "mutation_bundle_sha256": "75653362612a80bf1def5ae8a5d75199d709427da147a0f032171c00491844ae",
         "mutation_id": "neg_004_adds_offset",
         "source_catalog_certification_path": "negative_variants/neg_004_adds_offset/certification.json",
         "trigger_condition": "Adds the offset instead of subtracting it.",
@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "b56badfe713270b91fdca0b4a6ff02a67ee3c015f8ccc96b188e5423d4b4a6f0",
+        "certification_sha256": "308bb76caa81888772521397e381fec76fcb58f3e25f6f5f3e3349f2ba183570",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "c40bf967d3879fdb1f5112de01e74cee0ab65d9255793c10c2d1587e08c8392c",
+        "mutation_bundle_sha256": "fa3f98d8cbdc1c45d5ccdc76bd74d8a779b858881541517d531e8990b8095ba9",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales the amplified output too low while preserving the module/interface shape.",
@@ -71,8 +71,8 @@
     "hashes": {
       "mutation_catalog_sha256": "027ff3f0161fe14c335f2e6bf058530ba28140f7d9c645516ddae1a68924c91f",
       "score_deck_sha256": "7e6586eeb3b917d0c94f0a71f24b7cc594241072fab755637fe2f12f7d55e741",
-      "task_certification_sha256": "e66505435b1cc8ab05a25027e6d3e914bed730c500c25d5a21ccb7b31f26d063",
-      "task_record_sha256": "45e7722711ead71033999a32be47c899d4fef30817ce77cdc7619ffa42d6a7d7"
+      "task_certification_sha256": "ec11cb73faea2ab2196483ad3c6c2f88b5c665533cafd37f21f89f2e6c6c8f98",
+      "task_record_sha256": "cfee567eb261f4cac67564f810b105710bd14fb8ffef6a950709d0c186daee24"
     },
     "release_dir": "127-offset-gain-amplifier"
   }

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_no_synchronous_demod/certification.json",
-        "certification_sha256": "0764e6ba09b7203f8c34afa534917fae5704ee82cf47b31ad1447ce208232a3d",
+        "certification_sha256": "e258eb70b5a60d970e15c1f637141932337f315d35e21b315e5c173d56857a1a",
         "fault_class": "missing_synchronous_demodulation",
-        "mutation_bundle_sha256": "6581d975b300de164db79640b2469052ef4433484f45c3262e733ddc416d3d22",
+        "mutation_bundle_sha256": "1a22d3c2a7f0009c793f6980671e2773e9aae6af0b73508b5db31ed985fa4b02",
         "mutation_id": "neg_001_no_synchronous_demod",
         "source_catalog_certification_path": "mutation_bundles/neg_001_no_synchronous_demod/certification.json",
         "trigger_condition": "both chopper polarities expose missing synchronous demodulation",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_offset_omitted/certification.json",
-        "certification_sha256": "1d423361ba25ec76ce0e9cde3e1b48795ca22e10ab34cb9e11795ebb2356d22d",
+        "certification_sha256": "031a996c585420095fb9488b7cfe243469564ae3c6c37f122bdfa2836d6b452a",
         "fault_class": "internal_offset_omitted",
-        "mutation_bundle_sha256": "f05d021b08aff2593fbc5ac328876a31297f4f040d4bc667e692538a075eadf5",
+        "mutation_bundle_sha256": "12a1bb53cbd90660d058ca217edc701bf493116a4dc6482c747bb942afaaa30d",
         "mutation_id": "neg_002_offset_omitted",
         "source_catalog_certification_path": "mutation_bundles/neg_002_offset_omitted/certification.json",
         "trigger_condition": "alternating polarity exposes the required internal offset term",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_lowpass_bypassed/certification.json",
-        "certification_sha256": "5f839c7d30385797a27653dbf4095c205a145875d39c23c6033413102f15411a",
+        "certification_sha256": "94a6d81b9f6408164f28d3838c3b8188fef9c7d3accc940fd1e46cd3b6e1ade3",
         "fault_class": "lowpass_state_bypassed",
-        "mutation_bundle_sha256": "82a5ea763c6a7ee491e2eb43f8471b10a90028be38a3c552f99a31819223417a",
+        "mutation_bundle_sha256": "217e66f2d44b52bd26e456bf31512f28248623325798a4b70011a49292c4d166",
         "mutation_id": "neg_003_lowpass_bypassed",
         "source_catalog_certification_path": "mutation_bundles/neg_003_lowpass_bypassed/certification.json",
         "trigger_condition": "edge-to-edge settling exposes bypassed retained low-pass state",
@@ -45,9 +45,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_gain_wrong/certification.json",
-        "certification_sha256": "74e73a21d0fa7ee546cc420bc45a875413f2f9fa5cfbdb1cb373c3827340d8c1",
+        "certification_sha256": "a224631b587e3899a4c577dd05b5731582f0a896ac57ad2a4dd09e020dcbe45d",
         "fault_class": "baseband_gain_error",
-        "mutation_bundle_sha256": "4aa526722a4c0bdf2af800e6e669bb9fd46b2b969a77273b2941c9b0590637da",
+        "mutation_bundle_sha256": "6e9e3a3c9646e157d91b313386e7c88c9eac3d26a191840518bf53794d68acb0",
         "mutation_id": "neg_004_gain_wrong",
         "source_catalog_certification_path": "mutation_bundles/neg_004_gain_wrong/certification.json",
         "trigger_condition": "multiple signed input levels expose the incorrect baseband gain",
@@ -57,9 +57,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_hold_ignored/certification.json",
-        "certification_sha256": "f2d5003ac19c3937dca6f92beab455d83b94e17bbff5834af5093908b6aae916",
+        "certification_sha256": "284cc45f0939c0df1b2d209c5b371b8ee5c3f97b272ded7800eda7dd7d9e596b",
         "fault_class": "hold_semantics_error",
-        "mutation_bundle_sha256": "c4c3765a93c1b6917323f4e423298d5c4f518e1fbcec4bb1c1453adbf667825a",
+        "mutation_bundle_sha256": "b71e026fb7f01ba052ce709112951866b6f4b9e3d2edb201632725a00d664e56",
         "mutation_id": "neg_005_hold_ignored",
         "source_catalog_certification_path": "mutation_bundles/neg_005_hold_ignored/certification.json",
         "trigger_condition": "chopper edges during hold expose illegal state updates",
@@ -73,8 +73,8 @@
     "hashes": {
       "mutation_catalog_sha256": "ec11fb8268a4d3523e17b172624cf91300adabfd81ad4c59c05d693ee975f90f",
       "score_deck_sha256": "109833a240584c3cb6b97b0746c5f6a1ba0d904090e82c1cab49f3d3ef036a91",
-      "task_certification_sha256": "3694293ebd03c0b6ddb70e6d04b97c9139aa8786947134da82da82a50301144d",
-      "task_record_sha256": "b1315009b54e2c5d71139507b6be72705fd9329d914cfa8b33b9e03b0271db0e"
+      "task_certification_sha256": "d5ebad87787ab5a8842e96758e8af3834d0978ca3d447ef95c41914936f0b1b5",
+      "task_record_sha256": "322e8fc62af1c956ce827ea9cd44228fea9c42d19abc1d4987eddb1b244008f2"
     },
     "release_dir": "091-chopper-stabilized-differential-amplifier"
   }

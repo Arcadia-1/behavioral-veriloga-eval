@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_flat_ramp/certification.json",
-        "certification_sha256": "612225d5281dfe7254f853d4a47ab28821ec12eb584fb710f69be9c76806fc99",
+        "certification_sha256": "47933f50cd20bfc040090e2bfaffa1a1b22ab4566b2693136388995d3d14cef8",
         "fault_class": "behavioral_contract_near_miss",
-        "mutation_bundle_sha256": "e968f1d8e6fe69515ba26616d7d46c46658cd9ab5a253877c2a0bc86cbe4d7c2",
+        "mutation_bundle_sha256": "84fcda5984f4791d794cbaf5ebeefb7e382036de470869466a5ffffbe2b56139",
         "mutation_id": "neg_002_flat_ramp",
         "source_catalog_certification_path": "negative_variants/neg_002_flat_ramp/certification.json",
         "trigger_condition": "targeted stimulus exercises the violated observable contract for Programmable Stimulus Sequencer",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "a164221fdf4c37dd1fe12d79727a6f53eaacf3da2a67195c70d7831933b1b14b",
+        "certification_sha256": "3c4f374fa6b3438b50c5e8201852759ba0ed9517a7c2a8e484aeec2e1cc1eaae",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "f65ae50c79f965cdafcb8fd13614c14071fb35604c9b835731e710a25ec4c30a",
+        "mutation_bundle_sha256": "a7dc72bf6a77deaaeb54d1297dce1224dcb1d3fa05e3266caa848c7af7c45f57",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "score stimulus observes the public metric/output scaling for Programmable Stimulus Sequencer",
@@ -33,9 +33,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "2c1e77ce6eaa4a25bc38680646ff42f545db684a6816f116da454dc86212d8ac",
+        "certification_sha256": "a20c08c073fe6e8c958bc713e41fb4c2b08b26f49da0cb1f85e8eeaa9192f64a",
         "fault_class": "metric_scaling_error",
-        "mutation_bundle_sha256": "90eba927b5b425e83c8322c47e97b8f503836470aeedc9de0a18964286ffe83d",
+        "mutation_bundle_sha256": "7780218c1c4f1be5a3187a952d8b46b5c4f007aecccd1b5c520b42562cb623a9",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "score stimulus observes the public metric/output scaling for Programmable Stimulus Sequencer",
@@ -47,9 +47,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_fixed_sine_not_chirp/certification.json",
-        "certification_sha256": "bb910d36a96fc641f9e10b94790c1dee2909fe1ee04215de7cfb7e407fc16eb7",
+        "certification_sha256": "2c530e60a48f92817ac0bf39487a34f6f8b028059372fd29c12d698cdb519659",
         "fault_class": "periodic_source_spectral_error",
-        "mutation_bundle_sha256": "c69124ea33749d42eb2541e83d1af68c143dfa9d920f649d3448b45aae977a00",
+        "mutation_bundle_sha256": "8fd5cec0710cd2caede876f22d8c666b34d74351fa3583de9af63a99ceb4da78",
         "mutation_id": "neg_003_fixed_sine_not_chirp",
         "source_catalog_certification_path": "negative_variants/neg_003_fixed_sine_not_chirp/certification.json",
         "trigger_condition": "targeted stimulus exercises the violated observable contract for Programmable Stimulus Sequencer",
@@ -60,9 +60,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_ignore_gate/certification.json",
-        "certification_sha256": "a2efaec24e66e467f2085cea08d8d58f3e17f0f3020f7325a0bb996f54470816",
+        "certification_sha256": "ebb23329f3ddec2b38a24d05d0ed242ebbaf7b5a4dc01d620b17793bc156ce12",
         "fault_class": "behavioral_contract_near_miss",
-        "mutation_bundle_sha256": "b5c17c9c24549efa0d7c61b6a6a0e92a963e01e54d098434fa324d08f19b14c5",
+        "mutation_bundle_sha256": "3157ba38e3db52c6da81b4b475d26dd919f28ccd545002f484c37ae4bd296188",
         "mutation_id": "neg_004_ignore_gate",
         "source_catalog_certification_path": "negative_variants/neg_004_ignore_gate/certification.json",
         "trigger_condition": "targeted stimulus exercises the violated observable contract for Programmable Stimulus Sequencer",
@@ -80,8 +80,8 @@
     "hashes": {
       "mutation_catalog_sha256": "055e88f4d17cd5db5ea987b5d124850b5a0db0fa36ca6bedd49b7bfb2fb18fcd",
       "score_deck_sha256": "639411a0a31bf8b04b2a135ac590b4fba8629db77fbb53fa736da7f8797a38fc",
-      "task_certification_sha256": "47112c53d61774b61ba9a788f78690622548e545aff0ae55243ad4f5cd7e09df",
-      "task_record_sha256": "cabaec6ace99e15271012a7d8a5196d63e905d47d603790c3b428a3a5ae41353"
+      "task_certification_sha256": "3b151e05db3355c6d17fe0c8d257dbd7fbeaba1a823b60775f09835aae72e6c1",
+      "task_record_sha256": "d9bf46c7cef4b96d538fb0a1121dffb64199d068f18e398dfc9e2a7d401bc065"
     },
     "release_dir": "097-programmable-stimulus-sequencer"
   }

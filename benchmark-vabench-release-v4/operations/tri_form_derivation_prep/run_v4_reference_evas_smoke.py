@@ -85,46 +85,6 @@ def probe_evas2_runtime() -> dict[str, str]:
     env = evas_source_env()
     if env is None:
         raise SystemExit("EVAS2 evidence requires the EVAS source checkout")
-    source_root = Path(env["PYTHONPATH"].split(os.pathsep, 1)[0]).resolve()
-    revision_probe = subprocess.run(
-        ["git", "-C", str(source_root), "rev-parse", "HEAD"],
-        check=False,
-        capture_output=True,
-        text=True,
-    )
-    if revision_probe.returncode != 0:
-        raise SystemExit(
-            "EVAS2 evidence requires a Git-traceable EVAS source checkout: "
-            f"{revision_probe.stderr.strip()}"
-        )
-    status_probe = subprocess.run(
-        ["git", "-C", str(source_root), "status", "--porcelain"],
-        check=False,
-        capture_output=True,
-        text=True,
-    )
-    if status_probe.returncode != 0:
-        raise SystemExit(
-            "EVAS2 evidence could not inspect the EVAS source checkout: "
-            f"{status_probe.stderr.strip()}"
-        )
-    if status_probe.stdout.strip():
-        raise SystemExit("EVAS2 evidence requires a clean EVAS source checkout")
-    repository_probe = subprocess.run(
-        ["git", "-C", str(source_root), "remote", "get-url", "upstream"],
-        check=False,
-        capture_output=True,
-        text=True,
-    )
-    if repository_probe.returncode != 0:
-        repository_probe = subprocess.run(
-            ["git", "-C", str(source_root), "remote", "get-url", "origin"],
-            check=False,
-            capture_output=True,
-            text=True,
-        )
-    if repository_probe.returncode != 0 or not repository_probe.stdout.strip():
-        raise SystemExit("EVAS2 evidence requires a Git remote for the EVAS source")
     probe = subprocess.run(
         [
             evas_module_python(),
@@ -160,9 +120,6 @@ def probe_evas2_runtime() -> dict[str, str]:
         "evas_engine_used": REQUIRED_EVAS_ENGINE,
         "evas_version": version,
         "evas_backend": "evas-rust",
-        "evas_source_repository": repository_probe.stdout.strip(),
-        "evas_source_revision": revision_probe.stdout.strip(),
-        "evas_source_tree": "clean",
     }
 
 

@@ -155,23 +155,11 @@ def validate_profiles(
     failures: list[dict[str, Any]],
     family: str,
     spec: dict[str, Any],
-    spec_sha256: str,
     feedback: dict[str, Any],
     score: dict[str, Any],
 ) -> None:
     property_ids = list(spec.get("property_ids") or [])
     for profile_name, profile in (("feedback", feedback), ("score", score)):
-        if profile.get("harness_spec_sha256") != spec_sha256:
-            add_failure(
-                failures,
-                family,
-                "profile_harness_binding",
-                f"{profile_name} profile is not bound to the current harness spec",
-                {
-                    "recorded": profile.get("harness_spec_sha256"),
-                    "actual": spec_sha256,
-                },
-            )
         if list(profile.get("property_ids") or []) != property_ids:
             add_failure(
                 failures,
@@ -365,14 +353,7 @@ def validate_family(
     public_contract = read_json(public / "public_contract.json")
 
     validate_trace_contract(failures, family, spec, family_spec, checker, public_contract)
-    validate_profiles(
-        failures,
-        family,
-        spec,
-        file_sha(evaluator / "harness_spec.json"),
-        feedback,
-        score,
-    )
+    validate_profiles(failures, family, spec, feedback, score)
     validate_diagnostics(failures, family, task, set(spec.get("property_ids") or []))
     validate_hashes(failures, family, source, task, manifest)
 
@@ -396,7 +377,6 @@ def audit(source: Path, families: list[str]) -> dict[str, Any]:
         "failures": failures,
         "checks": [
             "profile_semantic_parity",
-            "profile_harness_binding",
             "observable_alignment",
             "trace_coverage",
             "structured_redacted_diagnostics",

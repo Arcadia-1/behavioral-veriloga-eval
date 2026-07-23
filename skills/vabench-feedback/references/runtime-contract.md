@@ -4,18 +4,11 @@ The task-local `public/task/evas_runtime.json` is the only authority for public 
 
 ## DUT and Bug-Fix Tasks
 
-The contract names `public/submission` as the candidate root and binds a fixed
-visible deck. Run its exact `command`; most tasks use:
+The current contract names `public/submission` as the candidate root and binds a fixed visible deck:
 
 ```text
 evas simulate public/task/visible_test.scs -o /tmp/vabench-visible/evas-output --spectre-strict
 ```
-
-Tasks whose declared behavior requires `$rdist_*` instead publish the same
-command without `--spectre-strict` and declare `compatibility_mode: portable`.
-Do not add the flag back. For these tasks, EVAS evidence establishes the
-checker-facing functional and statistical properties inside the public loop;
-it does not claim pointwise identity with Spectre's pseudorandom sequence.
 
 Do not pass a case. Do not edit `visible_test.scs`. In a native tool runtime, call `run_evas` with no arguments; the runner resolves the pinned executable and fixed deck.
 
@@ -30,10 +23,7 @@ The candidate is `public/submission/testbench.scs`. The contract provides exactl
 - `mutation_04`
 - `mutation_05`
 
-Use the exact `candidate_command_template` and the matching `dut_root` supplied
-for each case. As with DUT tasks, do not add `--spectre-strict` when the
-task-local template omits it. The candidate must include its DUT below `./dut`;
-absolute paths and parent-directory escapes are outside the public contract.
+Use the exact `candidate_command_template` and the matching `dut_root` supplied for each case. The candidate must include its DUT below `./dut`; absolute paths and parent-directory escapes are outside the public contract.
 
 Run one case at a time when diagnosing, then all six after the final edit. With a native `run_evas` tool, pass the selected public case name. With bash, substitute only fields already present in the JSON contract.
 

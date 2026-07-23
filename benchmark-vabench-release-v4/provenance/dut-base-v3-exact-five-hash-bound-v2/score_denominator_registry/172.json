@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_swap_edges/certification.json",
-        "certification_sha256": "913cbec138aaf16156b7c9c3f57241f64fc77a8ee98b5338fef7870767dda167",
+        "certification_sha256": "7a0adb6dbedcc14aaf25e8f0b6c8614a17de98efe875886ee39b05a24e262bcc",
         "fault_class": "edge_lane_selection_swapped",
-        "mutation_bundle_sha256": "5c8f7331ffc59e779a32583520c03aeb4fc2e188fcb440f18a9d59aa568cb147",
+        "mutation_bundle_sha256": "7327f33fde705feabce9b239af1af75ca8d9f62ad533bd1ee07572b2549a7145",
         "mutation_id": "neg_002_swap_edges",
         "source_catalog_certification_path": "negative_variants/neg_002_swap_edges/certification.json",
         "trigger_condition": "Routes din2 on rising edges and din1 on falling edges.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "885f9e4f12dba6abc551c876e501db8d3e5bd632fe3e10c68fb4d057dccb2d99",
+        "certification_sha256": "6b396119dab8b0ac3f0d61f77657dd8be5af57fdecb801c4d37245acf9156ff9",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "ea4c58a08da8b60578e25644660f2e0fcfed05327b537e61e8537931cc8fa23f",
+        "mutation_bundle_sha256": "2d008ed1c6bbbd5d295a92445203452467c66ed13d1259a05e684a9eb56aba32",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_always_first_lane/certification.json",
-        "certification_sha256": "950742edb952cb02066fba11a295d5725cadbb9ac0533dbe83e531ef22a2a294",
+        "certification_sha256": "da8bd919b48867232b578e3d2440dbffe43a9a65f21651bcd45271131c6014dd",
         "fault_class": "lane_selection_stuck",
-        "mutation_bundle_sha256": "87f0636610e35f0e624b3d36b53b3903edbe21996fb3868d89e1e2ed08c5fa07",
+        "mutation_bundle_sha256": "43425b8497997cb3aa4c40854d9974f05fa107885e2f178e1921c349861e3a57",
         "mutation_id": "neg_003_always_first_lane",
         "source_catalog_certification_path": "negative_variants/neg_003_always_first_lane/certification.json",
         "trigger_condition": "Never selects din2 on the falling alignment edge.",
@@ -44,9 +44,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_output_level/certification.json",
-        "certification_sha256": "770c1b245b8e7bd9962406fd499360a11b16f1f7bb72dcb134a89170ab9cee91",
+        "certification_sha256": "1bbc44f70e6bd4d51160ca52b76a11b6087226f5b9dbb2ac8434283a7d744ae4",
         "fault_class": "output_rail_amplitude_error",
-        "mutation_bundle_sha256": "a2ce208961f1cf19b608734dfc9b9fc4483c4b824534f7d62b0314cc1084100a",
+        "mutation_bundle_sha256": "ebacdc996652d74e085b6ebc8e44ec6dfa4dd85fe1d59de31bdeff6d271b1d71",
         "mutation_id": "neg_004_half_output_level",
         "source_catalog_certification_path": "negative_variants/neg_004_half_output_level/certification.json",
         "trigger_condition": "Preserves edge selection but drives the selected lane at half amplitude.",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "1bf54d264815aaa01b7916507f2c3a0eb2a7b9cc391fe57fcb528eb86a24942d",
+        "certification_sha256": "d9bf219acb870107b818567b3be4fa610f60a33cdbbd5dc881f5a2aa7940bc47",
         "fault_class": "observable_scale_error",
-        "mutation_bundle_sha256": "96792d4c3c1e92b20fe1d6a20ff003770a59716c5d1c2e41bf6d8801485cc8fc",
+        "mutation_bundle_sha256": "8fba80982dc2a068448c7de5f114177bdd21c18ac3f5f1c354690a2b8bf95f42",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Pipe 2lane Edge Align: scales the metric output, preserving the main path while failing measurement checks.",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "f569fabeb92f5565c14385e654d330cbabeeb412e24e2750796b2a2ba5b423f3",
       "score_deck_sha256": "526e3f33b6e4cac9f3c51bf81e423240a5b1fcac71a4638866f8de9222a3b05f",
-      "task_certification_sha256": "3f28fde14d93d17f29c9b4206fa9da196c2511297ea101d943e05947f7560ac0",
-      "task_record_sha256": "7b90d733061c3c71d0031901b5e5afcf4cf7acef6cd73e29c16d688580c9ea83"
+      "task_certification_sha256": "6f4294d57410c02d63064c37fbd513dd10d1cac78ca102c0e08c728764ac02a0",
+      "task_record_sha256": "3b0399fa6d615d8373abba98fe0403343609ee309f5b8fe65f11d6a90c1fe2e7"
     },
     "release_dir": "172-pipe-2lane-edge-align"
   }

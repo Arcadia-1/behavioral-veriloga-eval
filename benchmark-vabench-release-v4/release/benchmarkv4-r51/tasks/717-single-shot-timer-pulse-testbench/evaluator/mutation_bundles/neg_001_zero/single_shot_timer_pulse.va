@@ -1,9 +1,0 @@
-`include "disciplines.vams"
-module single_shot_timer_pulse(vin, vout);
-input vin;
-output vout;
-electrical vin, vout;
-analog begin
-    V(vout) <+ 0.0;
-end
-endmodule

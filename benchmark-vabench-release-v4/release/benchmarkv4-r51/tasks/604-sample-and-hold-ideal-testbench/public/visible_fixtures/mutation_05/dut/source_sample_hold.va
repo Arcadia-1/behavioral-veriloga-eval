@@ -1,6 +1,0 @@
-`include "constants.vams"
-`include "disciplines.vams"
-
-module source_sample_hold(vin, vout, vclk);
-input vin,vclk; output vout; electrical vin,vout,vclk; analog begin V(vout)<+V(vin); end
-endmodule

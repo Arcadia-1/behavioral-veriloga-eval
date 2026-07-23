@@ -1,9 +1,0 @@
-`include "disciplines.vams"
-module level_shifter_offset(sigin, sigout);
-input sigin;
-output sigout;
-electrical sigin, sigout;
-analog begin
-    V(sigout) <+ V(sigin);
-end
-endmodule

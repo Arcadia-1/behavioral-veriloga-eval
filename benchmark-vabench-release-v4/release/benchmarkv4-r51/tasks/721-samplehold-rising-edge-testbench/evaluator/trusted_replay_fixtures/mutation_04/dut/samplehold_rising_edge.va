@@ -1,9 +1,0 @@
-`include "disciplines.vams"
-module samplehold_rising_edge(control, vin, vout);
-input control, vin;
-output vout;
-electrical control, vin, vout;
-analog begin
-    V(vout) <+ 0.0;
-end
-endmodule

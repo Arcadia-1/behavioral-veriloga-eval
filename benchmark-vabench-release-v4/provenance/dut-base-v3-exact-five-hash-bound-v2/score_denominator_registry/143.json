@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_initial_value/certification.json",
-        "certification_sha256": "eed54163aa8752dc239132a9ba433b1b0ef08452f3bbd636a06cd16c55ef0458",
+        "certification_sha256": "ea0962f4e2f85fe966ea09f795cd3823e0b7ce357073b680df2d4eace4181b05",
         "fault_class": "state_reset_or_enable_error",
-        "mutation_bundle_sha256": "98880bf6fd777319b6f19e90c36a713ce730d064fea108740940632bacf9a383",
+        "mutation_bundle_sha256": "5821a8161534e6f210f175701b68138ee1803fea936302ffd0fab538b935e12a",
         "mutation_id": "neg_004_wrong_initial_value",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_initial_value/certification.json",
         "trigger_condition": "Uses wrong initial output before samples are available.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_one_period_delay/certification.json",
-        "certification_sha256": "b4730e42facd9f29151d963e5d2093a35b18d45c03822777048c11b6ab7c419e",
+        "certification_sha256": "60fc271cb38ee2ebba113d301163a6c644f4b62dc0ce5f69b71b89e607d1f3d2",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "b0d082f5de3bd9f03a7f03f522e19fa30a14e8adef433c9403f59092c09f0876",
+        "mutation_bundle_sha256": "8286d66a433937e56b56a7e3f40815c2346441a8a70691ce9e3e9099482a3248",
         "mutation_id": "neg_002_one_period_delay",
         "source_catalog_certification_path": "negative_variants/neg_002_one_period_delay/certification.json",
         "trigger_condition": "Outputs the current sample with only one-period delay.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "14d04f4056608c9859ff86d88c52bc2e14d979a8b6ad13419b1eb55f215f8d08",
+        "certification_sha256": "2598eae5baf199aaadedd9907a6e3e623edc96e830dd979d5bd55ab4e08eee57",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "bb19c19574b3287f7456ed93c3c45fe6969c9dec2efe70a57d915a35ebd8efcc",
+        "mutation_bundle_sha256": "262b89a5c9a03983ace46453b34766ff76111bd435ec55a28e8c4b15c47a08cf",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_half_output_gain/certification.json",
-        "certification_sha256": "7a466b83e7bed35146e84a0c0e2528f163dae907deedd8d5602ac7c56d9a9b80",
+        "certification_sha256": "a404b57bf694b1198900152c39ff19d6c6d92a15bdf879a80826cd8a40cdc603",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "3c1f482610130c83824f60eaa8d87e76b228f58b1ceec4d7d6e42e533fc791d7",
+        "mutation_bundle_sha256": "ee2032bdaa84489b0b5406839130b207f7f3349167f2b47ad9376b048f945a7f",
         "mutation_id": "neg_003_half_output_gain",
         "source_catalog_certification_path": "negative_variants/neg_003_half_output_gain/certification.json",
         "trigger_condition": "Applies half gain to the delayed output.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "1b452c0190ced8e1f06ce64e13f30e1349198a07b313537aec30904704ccdee6",
+        "certification_sha256": "8da535f9a4251de849c643db579bda6d9c84d1fd489341121f1cbf274e2624a7",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "dc639c9f97ac1dff4c257ae9d267de7e519747ab2ffe1bcf38fa0f64bc363052",
+        "mutation_bundle_sha256": "4513d40260f0a3688b1484021290987db332919f7d34b591ec8ebabbdaaaec2f",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Two Period Sample Delay: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "b5517fdc68127bb8adc204b5fd5ec6b57fa036b4dbabbcd13d92cba0de092cd5",
       "score_deck_sha256": "f7f2f3cd7c0b60dd1cc43fd08f3fb2e0bc9a1d57232c90dd2598be93191377bb",
-      "task_certification_sha256": "241de1cc1c831dab12a2a1c8c0de0dbc95165a320e13b4c6b880a987c8ba6b83",
-      "task_record_sha256": "b07a046958508211fcdca0f6a09be06573917468e4941a3caeea043bad5dab90"
+      "task_certification_sha256": "94152fdace13a48c64dfe625ea39ce8c06778196528aba80a200d610790bacf5",
+      "task_record_sha256": "079173d22923d919a8f296f4c8e2f65f17910b44e15ebaf2c6ea0cae1f039b18"
     },
     "release_dir": "143-two-period-sample-delay"
   }

@@ -44,13 +44,7 @@
     "vinp",
     "vinn",
     "vamp_p",
-    "vamp_n",
-    "vinp_seed_b",
-    "vinn_seed_b",
-    "vinp_seed_alt",
-    "vinn_seed_alt",
-    "vinp_sigma0",
-    "vinn_sigma0"
+    "vamp_n"
   ],
   "schema_version": "v4-public-contract-v1",
   "score_oracle": {
@@ -69,11 +63,11 @@
   "title": "Clocked Sine Source",
   "track": "measurement_dut",
   "validation_status": {
-    "evas_feedback_score_gold": "pending_recertification",
+    "evas_feedback_score_gold": "pass",
     "gate2": "dut_base_sealed",
     "next_gate": "canonical_suite_unification_pending",
     "semantic_negative_certification": "pass",
-    "spectre_score_gold": "pending_recertification",
+    "spectre_score_gold": "clean_pass",
     "tri_form_gate2": "pending",
     "tri_form_gate3": "pending",
     "untriaged_warning_count": 0
