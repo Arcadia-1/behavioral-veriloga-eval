@@ -3,28 +3,28 @@
   "checker_task_id": "v4_077_dither_noise_like_deterministic_source",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "f9852a204370a79229082fd986f6d668f2c9b84031510dd1319ae4cbb16098db",
-    "checker_profile.json": "e1d5aae1f685d6eb083c6cd7eabe7d2694b003995b37c8708c94c7f3ba6a1a4c",
+    "certification.json": "dbe006c1bb960b639087b98fd7ad2a698701619a04f095af5d7d2904851050f0",
+    "checker_profile.json": "9b60e91ee0cefab7b855c7ec54d3635f228f9dac0d450417b50bc1e802e72b67",
     "derivation_manifest.json": "389aab997c193296db3e9962ad5f7ab67dfb58b03a87fd7ba6c49bf3c65f56ae",
-    "family_spec.json": "5e50fbaad6fb906f8523500f90e4ddeca0860ca09405e73ed9cdb0359974534c",
-    "harness_spec.json": "8378cbc64fcd2bfc97d910ed6a9e126ab9df02640d496a84fa742ee3503683b8",
+    "family_spec.json": "b0fd2a7fdeca299e2820fd66d35e107b6cd1e9fa1272b7b3e8b8b82d8346b660",
+    "harness_spec.json": "acb4bb7fdf5233587b1f35615c7aa8e5f6e0dc1a5dee12eb1722be096cb6f2ec",
     "mutation_catalog.json": "dd2f0aca151b249dffbf81a6d7ddad1b48c92f683331aa632c32ba3b8a10be1d",
-    "profiles/feedback.json": "39d3de98ab453c92401ae079f7e57ccf5a76bde25c19422a9fb3cb31df3ecc6a",
-    "profiles/score.json": "e25092e724fbecb4a7f8b6137e4708875d51dd68aa4649ecdf303760814d95d6",
-    "score_tb.scs": "e8a4928fc7fbae5183e9cf5f74c18f6bb1cc16ac5da64d9a1771b08c0ac0e459",
+    "profiles/feedback.json": "25882ed7ecfb192af060d201fce59c9da6bef38b3aef4d3f1cee3a3965b67b72",
+    "profiles/score.json": "019910633bf1dc4f7b7a1c306dae84e071492846b9ceb1902388cf0a38399a60",
+    "score_tb.scs": "af5ff3cdd14d9f3b5799f2befbb98ed86b4b27707986dae858fdd137b84c337d",
     "solution_tree": "56be28a1816835c266331196c09868a28ce4fc8cef043f7e6fbc461844cac4c7",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
   "form": "dut",
   "public_hashes": {
-    "feedback_tb.scs": "c6b7e6ba1dc9f6b59f7affc58c0308418783e3d9fb5567e01e1cd63942c95cb0",
+    "feedback_tb.scs": "8b3ed7f362ace0db50cc5bd37b5c48b60919d325dfbb8174437e6d26181ce632",
     "instruction.md": "0c4795d1226bde55a46d39c7f115f0d1c409491a4c2ecbfe94aa91faef8dddb2",
-    "public_contract.json": "f0183a7cf96f7ebd5f15c2244f34a58d2c7b1abedc96ea0c2e35452e845124b7"
+    "public_contract.json": "d87e8569a81e1f14aee3f8845df57ccdecb2ace84b41ad93072e11a037cdc772"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "f9852a204370a79229082fd986f6d668f2c9b84031510dd1319ae4cbb16098db"
+    "sha256": "dbe006c1bb960b639087b98fd7ad2a698701619a04f095af5d7d2904851050f0"
   },
   "release_dir": "077-dither-noise-like-deterministic-source",
   "schema_version": "v4-canonical-dut-release-task-v1",

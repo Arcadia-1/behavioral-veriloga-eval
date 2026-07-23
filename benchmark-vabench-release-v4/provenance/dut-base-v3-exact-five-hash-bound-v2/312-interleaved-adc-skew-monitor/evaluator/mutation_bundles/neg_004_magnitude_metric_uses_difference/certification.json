@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_DRIVE_SKEW_METRIC_WITH_THE_ABSOLUTE satisfy the public contract; fault class magnitude_metric_uses_difference is rejected",
-    "observed": "EVAS: v4_312 checked=130 reset_clear=True late_reset_clear=True late_reset_violation=False disabled_clear=True high_skew=True low_skew=True alarm_seen=True first_high_alarm_low=True skew_errors=14 mag_errors=58 alarm_errors=12; first_mismatch=P_DRIVE_SKEW_METRIC_WITH_THE_ABSOLUTE signal=skew_metric time=1.418000e-08 expected=0.2553 observed=0.015225 tolerance=0.08; P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count=0; P_CAPTURE_VIN_A_ON_RISING_CLK mismatch_count=72; P_ESTIMATE_A_SKEW_PROXY_FROM_THE mismatch_count=14; P_DRIVE_SKEW_METRIC_WITH_THE_ABSOLUTE mismatch_count=72; P_ASSERT_ALARM_WHEN_SKEW_METRIC_EXCEEDS mismatch_count=12; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
+    "observed": "EVAS: v4_312 checked=113 reset_clear=True late_reset_clear=True late_reset_violation=False disabled_clear=True high_skew=True low_skew=True alarm_seen=True first_high_alarm_low=True skew_errors=0 mag_errors=55 alarm_errors=0; first_mismatch=P_DRIVE_SKEW_METRIC_WITH_THE_ABSOLUTE signal=magnitude_metric time=1.475000e-08 expected=0.127387 observed=0.254775 tolerance=0.08; P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count=0; P_CAPTURE_VIN_A_ON_RISING_CLK mismatch_count=55; P_ESTIMATE_A_SKEW_PROXY_FROM_THE mismatch_count=0; P_DRIVE_SKEW_METRIC_WITH_THE_ABSOLUTE mismatch_count=55; P_ASSERT_ALARM_WHEN_SKEW_METRIC_EXCEEDS mismatch_count=0; P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0",
     "violated_property_ids": [
       "P_DRIVE_SKEW_METRIC_WITH_THE_ABSOLUTE"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_312_interleaved_adc_skew_monitor",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "1cdaaeb1a3e3a513e6cea90ab0c002640e7cab8950314dca3831dde279c900c6",
     "trace_row_count": 1438
   },
   "family_id": "312",
@@ -36,6 +36,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "91c268bc221cbb6b24fbe414196b5bdfe958fbad",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "385-switched-cap-phase-sequencer",
+  "checker_task_id": "v4_385_switched_cap_phase_sequencer",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "e60e2d48fb7be3be5f4af51059497fec55a15f2d0000d858d71c13db80b0d58d",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "5e4b303842323c8cae0c1ce24255c8ef56ff087a18720737845accf84fef5874",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "385",
+  "family_spec_sha256": "c37af2ac59bf5316017650955b81268d3575105accd893a417273a485b3db5db",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "51022c3e24356f6b6f9a952f8e8feadda91e6ff18a76fbec8b649fd36d0a9513",
+  "public_contract": "tasks/885-switched-cap-phase-sequencer-testbench/public_contract.json",
+  "public_contract_sha256": "3dd78706f994039c19c5560273fb503bf0bba6de1c6036fd56b6cb99eb3bcf42",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/885-switched-cap-phase-sequencer-testbench",
+  "task_id": "v4-885"
+}

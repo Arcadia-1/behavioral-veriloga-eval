@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_swapped_low_high_outputs/certification.json",
-        "certification_sha256": "567a473d95c1b1fad42dc60b5e6ed1420e96e1ceca9366bdd1d3fb74c87a7d08",
+        "certification_sha256": "74e09ae714bc886ec95eaf207fe1ccd9b3a58f4df30dd8fc75c5f80fabc79cae",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "9cf7934adcabdd019a216cdc670596160f58eb1ba283b1a2fc27c92169dfeafb",
+        "mutation_bundle_sha256": "c8787c15d6980d06147e9a29c26d1f61bad1e532b939ec8ab688b6ab642f338a",
         "mutation_id": "neg_002_swapped_low_high_outputs",
         "source_catalog_certification_path": "negative_variants/neg_002_swapped_low_high_outputs/certification.json",
         "trigger_condition": "Swaps the below-window and above-window selected inputs.",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_uses_single_ended_control/certification.json",
-        "certification_sha256": "39ea0d5ecfe148f08505dc45965dd94896fc3fd72e844a6032a0fcc20ac70301",
+        "certification_sha256": "09f19e5d5a54ff5a2fc713181d16e007afa8abb619a258041f2833942b508f0d",
         "fault_class": "uses_single_ended_control",
-        "mutation_bundle_sha256": "07518fd1fd93585cdf6cdb7982131f06ba796be0e2b7228f5977aa7ffcdaf0ea",
+        "mutation_bundle_sha256": "5514d8fae6d99c26e0a7ef637154e5461ded158a8cbc32f99bbcc3d23e2e98bf",
         "mutation_id": "neg_003_uses_single_ended_control",
         "source_catalog_certification_path": "negative_variants/neg_003_uses_single_ended_control/certification.json",
         "trigger_condition": "Uses cntrlp single-ended instead of cntrlp-cntrlm.",
@@ -31,9 +31,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_missing_middle_selection/certification.json",
-        "certification_sha256": "c29f829382d98686fb260e0f659fabd1df6af945030ffe0060ccd4a28804d6de",
+        "certification_sha256": "82b2a405b7633dc3f2462eebddaa515e2168d933d2daf9eb7370e06bbdd64add",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "de8dcfca8a7a21718d170d13037dbed74dcc370da05ffcccf7a5ff95600283f1",
+        "mutation_bundle_sha256": "8a1c8c658c1cafb1de21aba321dd5e08872ea748fe22c52b0c1b46f2225af26e",
         "mutation_id": "neg_004_missing_middle_selection",
         "source_catalog_certification_path": "negative_variants/neg_004_missing_middle_selection/certification.json",
         "trigger_condition": "Selects only the low or high input and never the middle input.",
@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "3a19bdac39534bdd7a1073134dd44129e8992e924cda493db4ffe9f7d75b2606",
+        "certification_sha256": "8138ba71a48edbe9880f3a44fd7c07f91f972277509dfa71e50c2ab4f1881396",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "fe0b5ec24517354d90ad366c1a39c72c523b8134a556605930fce44ffd458878",
+        "mutation_bundle_sha256": "1f6cfab3a66c6742439cd250c160d5c80a2749ff24d5e9f72467860f0cfd83b7",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Three Way Threshold Mux: scales the metric output, preserving the main path while failing measurement checks.",
@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "2fb3fc0d6594d6a1f801db6b17242a8ba892dd5eae70bfbb171c67116e47e60c",
+        "certification_sha256": "fb2b1f2646002956a6756c00710dcf62a99e0a3dd668c1f5f013fee6b98189d8",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "277c4d3d00b674de3c7a7afabb74f1917701374abdd1647e1cd348f1014bc09f",
+        "mutation_bundle_sha256": "f06b193d85a59cd64c8a6818d6e6f285202329a4e482495beabea441d93f7659",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -72,8 +72,8 @@
     "hashes": {
       "mutation_catalog_sha256": "fe51f56abb7109545a14fde848586e0a2443ea536ae58ca6cda9c66047966766",
       "score_deck_sha256": "259656f7be0318a4241a323aeaa3cbb375a6e107b01155230958ad270f554333",
-      "task_certification_sha256": "2f21075ad2dd8c3fc60ad28137a27cf92dca2f1b4b211cae91dc9ede58bfe2db",
-      "task_record_sha256": "32325567056a2032554fa92ba3e61f036c0dd868a4edee5ea16d239165f5188c"
+      "task_certification_sha256": "b4760cf6ddc1a3e06c152f9778952886d97ec81fb3fdd84d8f3d4587482cc2e2",
+      "task_record_sha256": "efebf3729c4387a010e34b607660bca5775f66d2cc6e7614ad2c6d818aad4ee2"
     },
     "release_dir": "133-three-way-threshold-mux"
   }

@@ -3,28 +3,28 @@
   "checker_task_id": "v4_154_flash_adc_threshold_taps",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "d818af9ff96023783bf53473c68e8a78d0af0728120a2025a7c7b337961874da",
+    "certification.json": "44332757f1b46c406663412f241d3bf1d981a75fe9f739c04c7f58af2d2f5685",
     "checker_profile.json": "55f7dab399b70bdbb513085f04b905121a05489065752fa1454e6838d7d18b46",
     "derivation_manifest.json": "01e89f10338c1cfc1280a581548bad5b352f5075a2a88fb978be896505669a89",
     "family_spec.json": "c6ca1c452ddd07e7eb0ddbbbfa4511c0b1983abcc21893ea0ca20b119d95d04c",
-    "harness_spec.json": "a02f481f02c02da8dacb7b5d761045944c99f326355a33e709a942a040b7c54a",
+    "harness_spec.json": "53372ae9707f7d354be2644e67ba7d8f89d9e851b19df39521911855761646c4",
     "mutation_catalog.json": "4d6a87df4096990e4b106eaafa451b76aca054c0fa8f359293b88e4a0e614cd9",
-    "profiles/feedback.json": "36eaf6907b2fa0ddffd2fdf9214b314bfa5437b2f19133003878d827008769f2",
-    "profiles/score.json": "ba721b67d8fc375b98a61f84862991a08bdc337567eec4032faa45aa7251cb18",
-    "score_tb.scs": "e1c24cfa6c3b54a6a61ba5b4b4337dedfcd943e91620734047ecbb68891860af",
+    "profiles/feedback.json": "eda03ce3d917eff9f01912101adcdc37e59efe4db2d3e188c2e7e902bd3d27e0",
+    "profiles/score.json": "ffbbcb2063860c68043b788d0ad40de753bac0dbd542fc31c56b945eef786ae1",
+    "score_tb.scs": "27ec32befe86dd8ec14c001440eadbff253f0e14f3b3b6b617d9c8cfbfd0396c",
     "solution_tree": "07e348dce75ce400eec8c70fd5cc9ed4a70dbf628afeaf8bd9334267413cda2e",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
   "form": "dut",
   "public_hashes": {
-    "feedback_tb.scs": "3e7bf768ebaedfbd0fda1075525b5511fa6e97be399bba86a4f294c61d39c72d",
+    "feedback_tb.scs": "489bebb48931649b5a6322ec44468fb3bfcf14a92a49c415965671721a4db42f",
     "instruction.md": "a52c7a18038b00de8fbe8142950341e411a277151b17591a864f25c34d2a5b3a",
     "public_contract.json": "a4249081262fc6f2bc68f7fb4c836c9a5f50deade9e2b3c939b758e0f829d90f"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "d818af9ff96023783bf53473c68e8a78d0af0728120a2025a7c7b337961874da"
+    "sha256": "44332757f1b46c406663412f241d3bf1d981a75fe9f739c04c7f58af2d2f5685"
   },
   "release_dir": "154-flash-adc-threshold-taps",
   "schema_version": "v4-canonical-dut-release-task-v1",

@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "40187a0614937de90d667ad0550181a5ecba3d422b9ef04f302995d32742fe5d",
+        "certification_sha256": "362b8188667d1a641ebc1721bcf2f8f3b625600537915f69ecd07464e08fc9ef",
         "fault_class": "holds_clock_output_low",
-        "mutation_bundle_sha256": "387c19729e8f8418f5e8bd2b258f7db603d43774f65d848326b68f6236cc2d14",
+        "mutation_bundle_sha256": "544cb9e5377888798053fcab09ce9b752e753c0f4c84713f935aa753b8290045",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "the source must generate clk_out edges instead of holding the output low",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_no_jitter/certification.json",
-        "certification_sha256": "8e16858d180d75beeb53205c3220ab168b3316a39804d70b8ef5f149f9230222",
+        "certification_sha256": "b492482b18781b8d6a34360a65f15712590c5766cbb4b4555d21c3c42da229e4",
         "fault_class": "ignores_jitter_enable",
-        "mutation_bundle_sha256": "6fa96e1a5f5ac6d8cc52629eccbce6dc48816c7efae0a199243528ee33505071",
+        "mutation_bundle_sha256": "66cb40b2edd01578cf746906b0dd149783c7930c040d838b4228f1ce8f1c969e",
         "mutation_id": "neg_002_no_jitter",
         "source_catalog_certification_path": "negative_variants/neg_002_no_jitter/certification.json",
         "trigger_condition": "jitter_en high must enable seed-dependent edge modulation instead of a constant period",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_unbounded/certification.json",
-        "certification_sha256": "cfd98f1bbae0a8ef80ad76e185c2ea7b351c0957ffef84622f509a7e60e22ff2",
+        "certification_sha256": "7e5efb3959d90b4c5471d5497ea94e8fdef13fa7aeb347d9ba0eb9cf4c722205",
         "fault_class": "unbounded_jitter_modulation",
-        "mutation_bundle_sha256": "6224e87fd48977439552357265b2f474564bc3a69350060adeef275c21156733",
+        "mutation_bundle_sha256": "80dfeaacbadc4f25a9dfb591a121c4748a8285e1515009d2deecc543f298bd44",
         "mutation_id": "neg_004_unbounded",
         "source_catalog_certification_path": "negative_variants/neg_004_unbounded/certification.json",
         "trigger_condition": "jitter-enabled half-periods must stay within the public modulation range",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_ignore_seed/certification.json",
-        "certification_sha256": "8603c77c21f5300a160a9f76d9dbe3120a61c985321012aaaf97a7a48aa687bd",
+        "certification_sha256": "803400c904f3d7bffefd84f2f29f2bebbde67ea9cc874ace445e803957c71749",
         "fault_class": "ignores_seed_inputs",
-        "mutation_bundle_sha256": "f0f70aaf023649cee860a1f9012db6ce2594ecb2468c9fb8f69fa82fb2843467",
+        "mutation_bundle_sha256": "cf36f9428db28f3dc8bbc5625760f61f722dd199288eb69669839c45fdea37a3",
         "mutation_id": "neg_005_ignore_seed",
         "source_catalog_certification_path": "negative_variants/neg_005_ignore_seed/certification.json",
         "trigger_condition": "seed7:seed0 must be decoded through vth and affect the next computed half-period",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_006_nonrepeating_sequence/certification.json",
-        "certification_sha256": "81e813a0eb4058621385d918dddffeccb93828f1ae19f3306d9434376c643ab9",
+        "certification_sha256": "24d605d8baabcf741f69a2672cb1a821a4585d3daa66f1e89a26e10e7b5df0cc",
         "fault_class": "phase_sequence_does_not_repeat",
-        "mutation_bundle_sha256": "4304dd94c080234f7c4c8d9b487f39f76203b38942a6d198b61eabd4d8805655",
+        "mutation_bundle_sha256": "6101deafa44e0b2325833422cb3b35448cc9c40f283526a433cdcf3c633f160d",
         "mutation_id": "neg_006_nonrepeating_sequence",
         "source_catalog_certification_path": "negative_variants/neg_006_nonrepeating_sequence/certification.json",
         "trigger_condition": "with constant seed and enable history, the five-edge modulation sequence must repeat without a phase shift",
@@ -69,9 +69,9 @@
     "canonical_dut_id": "070",
     "hashes": {
       "mutation_catalog_sha256": "4b74e3e27463e53b049fcc5505aaf59a8677b32165dbbe5ae92e6bc846e7cb63",
-      "score_deck_sha256": "dd8f58302020cc751e4f54baa834bce254973f29c197f50867479a0025767bbf",
-      "task_certification_sha256": "6b56d40e13b5b813999f159aecab3518e9cb3910c35a7b47903ee3abb21b9c03",
-      "task_record_sha256": "5471909a6d2aa0e8f8051b0b8cc7351324229ace8acd598313bdef8519f2da1f"
+      "score_deck_sha256": "27618b2ef34c654e488722c4a50b24cd68d3c462d6fca58a617a151f52223916",
+      "task_certification_sha256": "115ba66ab8fa18624822ef2c683ea78efe89244b8c9bbfd5d3ac8ace2bbdfb01",
+      "task_record_sha256": "b6c8d66719d3e95ed8261e6e087d198d7aa6530a70f11d87de66b03ba972c32c"
     },
     "release_dir": "070-jittered-clock-source-deterministic"
   }

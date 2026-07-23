@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "ac774e4ac6f5b7bd8fbc5e25d3b6c811e97d389e0784474a1448a0dd8899cfc3",
+        "certification_sha256": "f78bb0d30536216e7cd1e9d167b95768c5f7144ce26775bf1c9de6146a5e60b4",
         "fault_class": "threshold_boundary_error",
-        "mutation_bundle_sha256": "f675bf8d295dba745e5a9cc6eb68b3165556b0662c71bfccd66999c66d6cddc0",
+        "mutation_bundle_sha256": "1b7e82ebb2d36ac8f31a22f091b68b82f672bdc318b209dc5861a5dec18ccb1c",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "boundary stimulus crosses the public threshold conditions for Edge Crossing Interval Timer",
@@ -20,9 +20,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "91b36c1100739889e5354d223d833364af54eb5d75e57befbd5c3ed7668844b5",
+        "certification_sha256": "5deade3de9bfa02828a9bc497e00ffdf7b4990d48c468cf9dd04b3c0529f9dd5",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "074b9c45da59c6a9d2f3c1cc5ee6d7720a1bb90645ebc12c94f7760078ee5619",
+        "mutation_bundle_sha256": "61fc7f6b9045110b44a9e8ac55b29607c3f070177b7179079c580c324625b275",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for Edge Crossing Interval Timer",
@@ -35,9 +35,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "c515c80187f0708cbef94575a75587403591ded9821cc3f76f87f5419bcf415b",
+        "certification_sha256": "b9058205c3ff5a0078e40d56682c1f83e50c269283d413f1a2411fa199d1846f",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "48cedf8a7eb601c5c5e8aa984824855fd2c615fed6705a936dda3e2e2bf6b44c",
+        "mutation_bundle_sha256": "2c996a7b1202b838a8000bc6820e875585214165ba75a2bb5abb5de914690b78",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "nonzero behavioral stimulus requires observable Edge Crossing Interval Timer outputs",
@@ -48,9 +48,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "dfcc5820e733d33b2bb0d15ab5cadc389e8df2d059211ae4c007fef25e5f7563",
+        "certification_sha256": "0051c6f515576083b68d99c548cca477a069a7853d453d5f98990427386cdd37",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "c3373375af694e54e28a417ef448927b8c1fa770a8ba8415419bd1e73a1044f8",
+        "mutation_bundle_sha256": "83f564d62e2a50f45a3e7a4b8789c92f2f6f611cf9d0a3b49fcc34319eeb6e8a",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "event-timing stimulus distinguishes the required active edge for Edge Crossing Interval Timer",
@@ -63,9 +63,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "a3451b70812f81dd6d389b8b34e5542671be0e848b3559328177b7fffa26adc4",
+        "certification_sha256": "b786c10547f8658f2f723d0ff62d28bc08d82e488f14e1e85a482e1ac2195748",
         "fault_class": "event_edge_polarity_error",
-        "mutation_bundle_sha256": "f8c7beaed0bb25b204ea6ab072b55a0f0ef404d09254af0afd47499ac9ff68db",
+        "mutation_bundle_sha256": "28b2350f78c861852f90e4d43f8b0ab3ea99815518ce6aa44080a5c93bc520f9",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "reset/recovery stimulus exercises Edge Crossing Interval Timer state override behavior",
@@ -78,9 +78,9 @@
     "canonical_dut_id": "089",
     "hashes": {
       "mutation_catalog_sha256": "a39d80a657ea3dc1a8286754851ff568ea5a3cb689cc06785cfeb9e4f558e730",
-      "score_deck_sha256": "623275104dc76522b84c15643c4028bb7fed3cf1abf9c85cbd1467a070489355",
-      "task_certification_sha256": "b41bd80095dc7e0ec5a1ffbfbcb459c26de9fc03701b545349ee1058025b15bb",
-      "task_record_sha256": "3af32f0ef5be2547e3467d3e2b7449550c7e4f4c1e920d40e517b04d83a2f23e"
+      "score_deck_sha256": "1fcbbf308daffce406344d0948bfb20a08678d60e5e4ce9edba56dd75f9dda15",
+      "task_certification_sha256": "bffadbf510fa6d6c905b71016d39acd0da1bce789470023d5f8d9b7d584a2bd3",
+      "task_record_sha256": "a435fbe3e4be1e83688cf7b61b401f85d334cc1e46e8aab1c837573aefdf211e"
     },
     "release_dir": "089-edge-crossing-interval-timer"
   }

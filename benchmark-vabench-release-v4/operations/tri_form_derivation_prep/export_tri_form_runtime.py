@@ -484,9 +484,8 @@ def install_public(task_dir: Path, public_root: Path, form: str, mode: str, rele
         copy_tree(source_public / "visible_fixtures", target / "visible_fixtures")
         commands = ["evas --help"]
         if form in {"dut", "bugfix"}:
-            commands.append(
-                "evas simulate public/task/visible_test.scs -o /tmp/vabench-visible/evas-output --spectre-strict"
-            )
+            runtime_contract = read_json(source_public / "evas_runtime.json")
+            commands.append(str(runtime_contract["command"]))
         else:
             commands.append("use candidate_command_template from public/task/evas_runtime.json")
         write_json(public_root / "evas_manifest.json", {

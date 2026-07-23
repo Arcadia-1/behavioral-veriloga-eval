@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_binary_not_gray_map/certification.json",
-        "certification_sha256": "0abe40daf28571ea755d3197269110f044b45322f10a049ecf9d92a856a7389d",
+        "certification_sha256": "e80f0a06f592e0b9bdb9f6f18ed9b089f156ee7d0c5de011a2eb7c6eb6b85596",
         "fault_class": "mapping_error",
-        "mutation_bundle_sha256": "f7a2011d0b868c9258b665da5de7307ccc1d1caacda04fb927c77d74e9e72b32",
+        "mutation_bundle_sha256": "850dc0dba55ab2183153ac249706158211bcf773eca12121bdb88638b87bf996",
         "mutation_id": "neg_001_binary_not_gray_map",
         "source_catalog_certification_path": "negative_variants/neg_001_binary_not_gray_map/certification.json",
         "trigger_condition": "input code 10 or 11 is applied",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_emphasis_polarity_reversed/certification.json",
-        "certification_sha256": "ba8eb622cda570c70c7e08fed72a4f36165de4e95ee27b5f0453a14e5999958b",
+        "certification_sha256": "15b5c3771a2f8b4cb78e98a200365575c46c38a50308894497f0546bfe0f77e6",
         "fault_class": "wrong_polarity",
-        "mutation_bundle_sha256": "c7f511597e776af5d311feee06609b43aa2bf8ae0d550e3e16dce25c4e83330e",
+        "mutation_bundle_sha256": "ea4d44198bbd5250991b2e0b1e08bc02cd346f2c194748966a24c0651289d4d9",
         "mutation_id": "neg_003_emphasis_polarity_reversed",
         "source_catalog_certification_path": "negative_variants/neg_003_emphasis_polarity_reversed/certification.json",
         "trigger_condition": "enabled symbol transition occurs",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_output_not_clamped/certification.json",
-        "certification_sha256": "2cb493cece85b2cee598a63fc6e557abf7e08b5e8210cdf62850e8dbbf427966",
+        "certification_sha256": "6757888ea7333fb146fff4d0f0a8f18ae262ca3a2c31997999e0ab17f145432c",
         "fault_class": "clipping_error",
-        "mutation_bundle_sha256": "f94483a06ce232858602790985d40525237ab5d6d909d38640da1bc92a5c0445",
+        "mutation_bundle_sha256": "1d9f964c8b095a4395c27e6cf72db743367ce5398a088da62481aed9a11f8cdd",
         "mutation_id": "neg_004_output_not_clamped",
         "source_catalog_certification_path": "negative_variants/neg_004_output_not_clamped/certification.json",
         "trigger_condition": "emphasis pushes an endpoint level beyond a rail",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_reset_drives_high/certification.json",
-        "certification_sha256": "fe27ba844a7e9f4695e36a9f7a12364618f49c3bc2ac472385b757e78fcbf82b",
+        "certification_sha256": "25758cc76016dbc515131fc825c45446a6f0f3932160153e63b71941090418a3",
         "fault_class": "missing_reset",
-        "mutation_bundle_sha256": "940ac2279c800bd3342841352e8411464ea21210ce4c802aa2bc3d1c4bbf5388",
+        "mutation_bundle_sha256": "83b8a6deef9ae1c247fe98bee583594eacadb2df9f696624f42b0baf0d5aff6c",
         "mutation_id": "neg_005_reset_drives_high",
         "source_catalog_certification_path": "negative_variants/neg_005_reset_drives_high/certification.json",
         "trigger_condition": "reset is asserted",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_level_gain_low/certification.json",
-        "certification_sha256": "25241b6378dd3d99deba85752511248c56f78e162eecb3af6bc2677fce2856d8",
+        "certification_sha256": "c0b14e25e7119327a33209771c0a2f7f4acbc6bb6e3649f04e922ec96c8bce35",
         "fault_class": "gain_error",
-        "mutation_bundle_sha256": "1edc818e4af5227ceb3eb41aeeff30f6ac7c58f90f83601d75614bbf87b98469",
+        "mutation_bundle_sha256": "67b4fa4049b028f3f7195346c136a8ca4d05de5d919c1b00ca3a38d6ffcc6f21",
         "mutation_id": "neg_002_level_gain_low",
         "source_catalog_certification_path": "negative_variants/neg_002_level_gain_low/certification.json",
         "trigger_condition": "mapped level is nonzero",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "7df4692b24d0aaa0695a95598223d41c13cd5109e5ce933456d8522bb93fc7ab",
       "score_deck_sha256": "d1b7c1ac570a52297eb1e39ec52ccb59d9fe566ad69bdfbfbdc12107b6de9d66",
-      "task_certification_sha256": "7d2b349b9d4eb1c4fd4e9f4a9684b5acf74e60d424d8688693861d7efda3c5ea",
-      "task_record_sha256": "96af44a33c435de8e7438c635592abac6f5bd9f67a80e6efdb09d266d845f54f"
+      "task_certification_sha256": "795619f05c89ab76f35864f9a81da27e3c9e2286b81b491f9afba0fd82560cdc",
+      "task_record_sha256": "e66edce26e8a25ae2ffa9d5d9f858cddc26b9d50b079cf38f8e83d81dfd402b2"
     },
     "release_dir": "355-pam4-tx-driver"
   }

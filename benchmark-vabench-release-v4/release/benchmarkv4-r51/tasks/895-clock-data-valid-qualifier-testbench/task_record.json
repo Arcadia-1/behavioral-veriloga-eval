@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "395-clock-data-valid-qualifier",
+  "checker_task_id": "v4_395_clock_data_valid_qualifier",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "70946f05d4ec2851bee710da336b022acd5cafbb4600fd315b157befe8931e32",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "9b50bff363a691ea2dede65d005022be38583714dc8e30fa78609b5d8f1e0396",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "395",
+  "family_spec_sha256": "94cedf96fce3adc7cf82d38b9c1c1aaad7552d66b1b7246705569ff1cf5c1a72",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "417c42911083058e260e23d7efe08bb41df1c2a318a6e7ac2e480cfc5935ce7c",
+  "public_contract": "tasks/895-clock-data-valid-qualifier-testbench/public_contract.json",
+  "public_contract_sha256": "edeb2e1c344e09ff5a886f4bad9da0130fa27c3cf6c9507f55dfa0650945b2d0",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/895-clock-data-valid-qualifier-testbench",
+  "task_id": "v4-895"
+}

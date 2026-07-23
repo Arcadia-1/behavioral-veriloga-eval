@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "7701d0632c04fb64cd315f79c08a907d97f5b29415c3ced75900ee3090494698",
+        "certification_sha256": "8d521d064f0452e3e2bbb259fad9bff08d3d2f346799fda98a2d540e9c4265f0",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "4b50a8c6ec71dbed3beb79a81807707d2de563fa3945b6171400d2eaf39fbec0",
+        "mutation_bundle_sha256": "1a9e45a4a918b18d9088d8c151ff72c95dd9ceef060956d60fbb202386bb9662",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "52a09c723e639f0571036ab08500d933a401704593c30817a712697b7fbece84",
+        "certification_sha256": "5ea89fe3ad4ee9b70aac6a2ec115494a09842561f2d78810705942c6bc4726fe",
         "fault_class": "fault_003_event_edge_wrong",
-        "mutation_bundle_sha256": "1048897c33b0fbee15757850bf2e591d07671a1243804a27c939d547cef24bb7",
+        "mutation_bundle_sha256": "6cf178e34704f091478ff071e41c09910344b76a09c484705633c4ae1220f0bf",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "Settling Time Measurement: uses the opposite event edge, preserving interface behavior while failing timing windows.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "66c106bdebb94cb59848c8c24e097e6c2259c9669db56bb203251514de93f5bc",
+        "certification_sha256": "1644886b683d4830eac8a74ac6116f85ed5ba7ae7648fa394779d956cdea7392",
         "fault_class": "fault_004_reset_polarity_wrong",
-        "mutation_bundle_sha256": "d080efa1a3ac9b25e2264ba62fae6cce9f28c2750621f2a602c7e53d8a9e8544",
+        "mutation_bundle_sha256": "829045a07d479b3793a018b097052a1b94dd356dd509684672db97607f52d91b",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "Settling Time Measurement: uses the wrong reset polarity, preserving steady-state behavior while failing recovery checks.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "673676d8100eebd6f66e7612b7e822e757e11f119d4afce7d2a79b525a188b8b",
+        "certification_sha256": "eaa627d278c322c6a4f227b90691b06cc6276ec2e5e9d8f7a24b6c8012f23943",
         "fault_class": "fault_005_metric_scale_low",
-        "mutation_bundle_sha256": "645f0235d8dc198eeab03927aa84dc3df4d0fe3134388d9a1de6989232536446",
+        "mutation_bundle_sha256": "bf501aa104c185808ecf6c8ceb18e61f0eaf6145c56c916d2fcbc90e520fe0ee",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Settling Time Measurement: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "523f352951ec32667e1c2e5609bab1e9f58798d4b0fdceefa60a86eab5659080",
+        "certification_sha256": "e69a3adede922f3d9eb75918bd1c757ca5fcf7a6aa597fe19119a884fe52d0c4",
         "fault_class": "fault_002_threshold_shifted",
-        "mutation_bundle_sha256": "57c7b23bc4d17cb59d43d4ce6c1979ac65d8380fdd577717db8411ae023510d8",
+        "mutation_bundle_sha256": "98ac1d8d44298c4b602ca4639090785a3cb68466693ec7820d66cbbdc4ea579b",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "Settling Time Measurement: shifts the decision threshold, preserving nominal behavior while failing boundary checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "91a42a27b22ee5ce81385aa44a3a4e4943a8a8aa2ff186067108ef46a0bef9aa",
       "score_deck_sha256": "61210e700ee5dc09a49e50a77f5d16112eb75fe65af8cbaad7df473f7c1c11c3",
-      "task_certification_sha256": "31563291c6ee157c6d04300b9cd9b1ff81e4b752c500a2b053c4a7fe28404a55",
-      "task_record_sha256": "33d3cac3adb09e9ee5864d40aa4b7a2256b922f2c19ba86c31a5b4a22c87dfd2"
+      "task_certification_sha256": "b03ca94c873a9c0a623e8fdb9b3f36cccc9e1afd719d81ae52f199d4baab720f",
+      "task_record_sha256": "e7fce0af8bbdb6ab804bf2c8120c26fbce0990b581765f2dbcc2f7f55e7bc3e3"
     },
     "release_dir": "101-settling-time-measurement"
   }

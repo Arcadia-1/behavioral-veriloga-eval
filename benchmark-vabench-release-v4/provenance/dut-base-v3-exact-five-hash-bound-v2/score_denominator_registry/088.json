@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_lock_stuck_high/certification.json",
-        "certification_sha256": "a684b14ed463e0b09a57b3e51534649c795aeea5c831fc3e26a7723a1e267a42",
+        "certification_sha256": "9237b86c85266a87737b018eeaae2ec870ad0b3e852856c5fa3da6f01e57814a",
         "fault_class": "lock_qualification_error",
-        "mutation_bundle_sha256": "f6b5826362b697bea74c0b582f12cdffa757e37159de2381608ec36654ffe481",
+        "mutation_bundle_sha256": "f59891f467c2824804ed3b9d091638a15380bbbc3aea3e851f8abc27b95f0bd2",
         "mutation_id": "neg_002_lock_stuck_high",
         "source_catalog_certification_path": "negative_variants/neg_002_lock_stuck_high/certification.json",
         "trigger_condition": "tracking disturbance stimulus exercises lock qualification and reacquisition",
@@ -21,9 +21,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_feedback_divider/certification.json",
-        "certification_sha256": "9960a74f1421cc5b68a8e9b87389c68267141feb8c60b77f4c72ba66f8593152",
+        "certification_sha256": "2b60023520566406bcc491ce36fdfc7605982f7d3afc6be714a86223d350e0ea",
         "fault_class": "divider_ratio_error",
-        "mutation_bundle_sha256": "045b637d4043eb9167b4676ac632abe627346bc3312147591724965956787d7a",
+        "mutation_bundle_sha256": "8c3a5ff78ce6e47a297a79210d6e9bc48d3c03fd702fcd2356e993bcfff234ea",
         "mutation_id": "neg_003_wrong_feedback_divider",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_feedback_divider/certification.json",
         "trigger_condition": "multi-cycle timing stimulus observes the declared divider/ratio behavior",
@@ -34,9 +34,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_no_loop_correction/certification.json",
-        "certification_sha256": "661f15c0e087ee733455fc1657eb3ac030f2e3c451688cab41f9f74763b38fd4",
+        "certification_sha256": "4663ab8b098a999c52d38b1913855ce0ee3d32339c8bc22f7831e99ebdba63af",
         "fault_class": "feedback_correction_omission",
-        "mutation_bundle_sha256": "88ab936df91efb7697de1e88cc1e2f68257c8def27813ef42c95d890ea21b719",
+        "mutation_bundle_sha256": "8f703a7c22755159414025d7ac8941c12ab0bb283e757c921b17257fb6fcb552",
         "mutation_id": "neg_004_no_loop_correction",
         "source_catalog_certification_path": "negative_variants/neg_004_no_loop_correction/certification.json",
         "trigger_condition": "targeted stimulus exercises the violated observable contract for CPPLL Tracking Reacquire Timer",
@@ -47,9 +47,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "7e622315acb53e28479d51cec5e81936396679802aa906de7b022cc92fd3bdea",
+        "certification_sha256": "0c21e782022c62006f59c4df06d7181c832798e11087524db043d18f34f5e4ef",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "69b383493f61ef09284c43e78bc1760c6d2f0d82038c151677d7478d56d9086a",
+        "mutation_bundle_sha256": "878cecdfb54f3d8f1301ac09ac9dfe0e9ac44457c79700717a782a2f398c34a6",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "nonzero behavioral stimulus requires observable CPPLL Tracking Reacquire Timer outputs",
@@ -61,9 +61,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_vctrl_monitor_out_of_range/certification.json",
-        "certification_sha256": "737eb768713ada64277bff028e803d17f281569b6faa2a8c0f26262254317e9c",
+        "certification_sha256": "8bfad89b2c6f51b965daea96d79e6bc002b9a16f9db4678ad8ad02fa5c5faf58",
         "fault_class": "lock_qualification_error",
-        "mutation_bundle_sha256": "37d82bcf31384b5905c04e490e7697880627f0f117b218978a290653fe11f385",
+        "mutation_bundle_sha256": "4c46269278d12b5070c0c072d60579ab425fe237b8b6a6241058f1adc883864d",
         "mutation_id": "neg_005_vctrl_monitor_out_of_range",
         "source_catalog_certification_path": "negative_variants/neg_005_vctrl_monitor_out_of_range/certification.json",
         "trigger_condition": "tracking disturbance stimulus exercises lock qualification and reacquisition",
@@ -79,8 +79,8 @@
     "hashes": {
       "mutation_catalog_sha256": "8f90b40118cb593999c718dac3b54742b431fd6fbcd0dad2c6acb70f9b13a12d",
       "score_deck_sha256": "8b748960c2adcfdcaf96338dd8ef3784069c17ad8f0cebd15a6fd6d285a1499a",
-      "task_certification_sha256": "fae03d2fdce99fc242e2436c677dba762d4d42cf28dfdd07d1d6e8b527d25738",
-      "task_record_sha256": "e12fb09dee5dfaab784603122c3bd651240d588c49868444d6a9c853602b8fb5"
+      "task_certification_sha256": "1e2554f9cf4250514d74722708057b64bc50b2644a0b2211df31dbcde0b4742d",
+      "task_record_sha256": "17eaa249cf672e51218f85822fc3154e4e7aa272db1af211883bbec0bcda34d9"
     },
     "release_dir": "088-cppll-tracking-reacquire-timer"
   }

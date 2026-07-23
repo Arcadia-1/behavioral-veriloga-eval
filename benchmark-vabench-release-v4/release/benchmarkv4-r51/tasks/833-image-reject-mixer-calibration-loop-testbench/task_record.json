@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "333-image-reject-mixer-calibration-loop",
+  "checker_task_id": "v4_333_image_reject_mixer_calibration_loop",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "f05ba4f5b1b051a598b24d48f374644c4ea5ad43095125689c6e5b9896a39e4d",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "5a7b6fadedc1e4a46332bbb3afa27f2a490348f704db3cd3a7f153e42b517f2b",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "333",
+  "family_spec_sha256": "b915b0b8035fd942c421fcf748f9b6ceac938dd8fca255fe9f107c647317b154",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "dd73e1f0d82fb4f649e80465bfc52c3e333def9b9cdc6acb5853b5a209870106",
+  "public_contract": "tasks/833-image-reject-mixer-calibration-loop-testbench/public_contract.json",
+  "public_contract_sha256": "0c0ebbec57c977a9e64507d78be470531ccb49a603c4cd6c3a708a9db1a352cb",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/833-image-reject-mixer-calibration-loop-testbench",
+  "task_id": "v4-833"
+}

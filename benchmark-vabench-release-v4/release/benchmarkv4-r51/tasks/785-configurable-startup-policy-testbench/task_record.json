@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "285-configurable-startup-policy",
+  "checker_task_id": "v4_285_configurable_startup_policy",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "770c2cc55fbb3eea075283f6e1d31e05193d0713c6c44ab8b1ed45228f99c404",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "5f01764fc9a5d95cafe4718a127ec51aab8f4dbab09ff1be2f6956a80996426b",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "285",
+  "family_spec_sha256": "de42d85886b6faab8981c587939c6018923e4df290260df327c1067ae34eb254",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "71a44bc1be1460bb01a1c7a4313fac71f61fc2e64d606e042ea4d5547dd8077e",
+  "public_contract": "tasks/785-configurable-startup-policy-testbench/public_contract.json",
+  "public_contract_sha256": "7b30e450b415fe3cf6d90026348084eec5119ad0f8374c6b766d75a3631e9512",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/785-configurable-startup-policy-testbench",
+  "task_id": "v4-785"
+}

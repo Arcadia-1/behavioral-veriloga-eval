@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "154-flash-adc-threshold-taps",
+  "checker_task_id": "v4_154_flash_adc_threshold_taps",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "f26bec6054f22f4d470d0c74466d095c594379ff59ad608aed197f4e20f45497",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "9f837146965ff11e3ba71bed8cd6820f969d17bb874116438ec3d38c212d3fc3",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "154",
+  "family_spec_sha256": "c6ca1c452ddd07e7eb0ddbbbfa4511c0b1983abcc21893ea0ca20b119d95d04c",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7963071265323fbbe14cc2b1475c173ab0e0f24903e9b8e2a82780e8ff65cabc",
+  "public_contract": "tasks/654-flash-adc-threshold-taps-testbench/public_contract.json",
+  "public_contract_sha256": "ebf393aedfa4fe7597f78aa1b8f48a1a720ae3db922a86a7f51c40a41c5a5250",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/654-flash-adc-threshold-taps-testbench",
+  "task_id": "v4-654"
+}

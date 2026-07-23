@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "277-calibration-bit-select-flag",
+  "checker_task_id": "v4_277_calibration_bit_select_flag",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "88447d5776787bbe2b021f96e87a0d1898d05777ef2d41cb78d603627e72cfe9",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "cc5cc5a8b04ff4bbf84f4417c0bec4fcb1b2eda63b305f70530372d5d5b88739",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "277",
+  "family_spec_sha256": "6b22d02693b861482bdeb99619f8658b8ff9b3cf849880fffc08712501e30517",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "cf91bc26e3decd6b8dfb535343a7020d7a719954e931f39e511a805ad70e8b63",
+  "public_contract": "tasks/777-calibration-bit-select-flag-testbench/public_contract.json",
+  "public_contract_sha256": "17df10adc23a9d71c01de217685cf3423880996ef04a52f526b8f344882c5710",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/777-calibration-bit-select-flag-testbench",
+  "task_id": "v4-777"
+}

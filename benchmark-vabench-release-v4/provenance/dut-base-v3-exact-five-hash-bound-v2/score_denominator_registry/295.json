@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_ignore_supply_scaling/certification.json",
-        "certification_sha256": "afcc19a8b7f1221cb9bc844a727d4ad6c35673677fb0103594724f99b71e2899",
+        "certification_sha256": "77a3ddcc6297402e6a08f5abfce4f01047dee50d2d7a3151569b302febc93247",
         "fault_class": "supply_scaling_omitted",
-        "mutation_bundle_sha256": "caa9e17626e313da618f51444435930ea13e27a2906e1ff1b022fd23f392d0c6",
+        "mutation_bundle_sha256": "0262fb2e12f1ce1e715c554e1aa77d83b18721c2a273c6c5a659e1a5affe6dc5",
         "mutation_id": "neg_002_ignore_supply_scaling",
         "source_catalog_certification_path": "negative_variants/neg_002_ignore_supply_scaling/certification.json",
         "trigger_condition": "stimulus exercises neg_002_ignore_supply_scaling",
@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_ignore_powerdown/certification.json",
-        "certification_sha256": "901e41f87959a643c1611c57e4d8e614ba0b0991d64d29e574f06382eddb5964",
+        "certification_sha256": "9c0ff11dd41d7f69ff6fefdab9fd382920cfa662e3c0000f9a6857f31579440f",
         "fault_class": "powerdown_qualification_ignored",
-        "mutation_bundle_sha256": "1609567bb417225804a2b4c102be37c490bd21b5961ec55c524226db6c9d80b8",
+        "mutation_bundle_sha256": "e937bef09a46f34c488f361ca3a16e6c7bcb8fe0ce9053e43e63831b1c7a3d1a",
         "mutation_id": "neg_003_ignore_powerdown",
         "source_catalog_certification_path": "negative_variants/neg_003_ignore_powerdown/certification.json",
         "trigger_condition": "stimulus exercises neg_003_ignore_powerdown",
@@ -32,9 +32,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_ignore_mode/certification.json",
-        "certification_sha256": "6de74c321c8125ed4461f6e3c71f42c209e52715a1093f77c269e6a3412072c9",
+        "certification_sha256": "4f1472a4254a90a22c818199b00ffcdd17a14a982817463a137e63fda8cc8999",
         "fault_class": "mode_dependency_ignored",
-        "mutation_bundle_sha256": "03962d31d998db0a7ee77269b620a13c7f04a90ad33774e2578b9bda1cce5860",
+        "mutation_bundle_sha256": "a624089fec8cad14008141a9ed2663d512e7c429138be9d8ac293ee2343fd544",
         "mutation_id": "neg_004_ignore_mode",
         "source_catalog_certification_path": "negative_variants/neg_004_ignore_mode/certification.json",
         "trigger_condition": "stimulus exercises neg_004_ignore_mode",
@@ -45,9 +45,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_ignore_load/certification.json",
-        "certification_sha256": "e809ec58f309178d494440a87c9b825f2ce4f473e72353a4009168997801e597",
+        "certification_sha256": "38c13954e79de04e124082fab3d089d24957be55318dbe046b9bf0043a00b93b",
         "fault_class": "load_dependency_ignored",
-        "mutation_bundle_sha256": "2dcf33099531f431eb26dfc55d368c88d606a82b3751f9582d3c4e5c179c59c6",
+        "mutation_bundle_sha256": "270d7b0921afae66cee0e59ffff04dd254836e90ae91672c9e22d24c0051a503",
         "mutation_id": "neg_005_ignore_load",
         "source_catalog_certification_path": "negative_variants/neg_005_ignore_load/certification.json",
         "trigger_condition": "stimulus exercises neg_005_ignore_load",
@@ -58,9 +58,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_constant_metric/certification.json",
-        "certification_sha256": "d2ab077eac1ba9b02da31dfe2a47c8ec9f898be9ae9a0a887ec2920eebfeeae9",
+        "certification_sha256": "67bf49d393e81b8d19b56f996b3d5d2cea85a1d801314052da54b3362e67f334",
         "fault_class": "supply_metric_stuck_constant",
-        "mutation_bundle_sha256": "0fbe6bca9ad08e6aa1e696550b1323bac7ffde213f7aba2b4e1aa0e00349f68c",
+        "mutation_bundle_sha256": "032edf4eec3fffadfe599c71dac84a8ef05b3c3fdc1518e533145ccb687eec27",
         "mutation_id": "neg_001_constant_metric",
         "source_catalog_certification_path": "negative_variants/neg_001_constant_metric/certification.json",
         "trigger_condition": "stimulus exercises neg_001_constant_metric",
@@ -75,8 +75,8 @@
     "hashes": {
       "mutation_catalog_sha256": "9f702ce068287f3b57a7da367d0a62a91ca68ec0849738058d97597c046c07ed",
       "score_deck_sha256": "aeb05703d0cc77a898f1aeb744749e800f50a3cef22b37235226b6f2f569c861",
-      "task_certification_sha256": "49571715ec245a4afe10ba3039baed2e52eb1c12655106ecd47a15a75e951600",
-      "task_record_sha256": "7c554436146001e1b3c7af0f725fa6d9bfca0a362c47ac4993cfd324bebf1d49"
+      "task_certification_sha256": "dc855f3d15c44cce7b25927a1e60569eafa3d7ef8bd1423745ef0d486a516202",
+      "task_record_sha256": "92c4ec2151c4fc7b5a48d3668c6f5771ba0b90429e54bb1991b79b6701fe2d5e"
     },
     "release_dir": "295-power-mode-supply-current-metric"
   }

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "005-debounce-latch",
+  "checker_task_id": "v4_005_debounce_latch",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "e370b7af1e9ba58be0785a48e089151006f7d26bef8c0279add85dff154f5abf",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "7282bdc7b04be30056ecfc99cc0450c0d845cef6554b5e0d852481debacb44e7",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "005",
+  "family_spec_sha256": "6a4eff93bfc7d4619ed1a5514716da42179825fa46a6f9599f075430f9baed45",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0c9401bc7fa377550fc62a7920ff077a3bebbccaf5e6b8a96578f26bf4056737",
+  "public_contract": "tasks/505-debounce-latch-testbench/public_contract.json",
+  "public_contract_sha256": "7c4d8e0cba8d68b8a76ea7ff4024fa6231118dc075922153bb5d864ed5ffe61a",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/505-debounce-latch-testbench",
+  "task_id": "v4-505"
+}

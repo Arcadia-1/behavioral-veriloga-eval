@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "155-divide-by-two-toggle",
+  "checker_task_id": "v4_155_divide_by_two_toggle",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "61670c552458a58b4a96a4812dfbf26f4361deaf5a5923f9ce5fc4205924aecb",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "948029ffbdb2a2007381073207301c09485d6e71235c7516ee43c2067c192c0c",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "155",
+  "family_spec_sha256": "ed799899d9b98cec20202f88839083dd7d023019741ee75d6881c173be70c68d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "970757e3520a4da143b3f2faea217089cf4cd747bb8c1655c81f14a1346c450b",
+  "public_contract": "tasks/655-divide-by-two-toggle-testbench/public_contract.json",
+  "public_contract_sha256": "41a953a0938e44a493dc3fdb1740572f99a4d17aca6ca8404e3ea854942a4c8b",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/655-divide-by-two-toggle-testbench",
+  "task_id": "v4-655"
+}

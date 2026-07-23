@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "091-chopper-stabilized-differential-amplifier",
+  "checker_task_id": "v4_091_chopper_stabilized_differential_amplifier",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "4adb3e48a9da4bda92b91560901adf91e5e38a085ac052a8a8adbc831085027d",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "9fedb373716ebae9115be9fe741bf383f0e20865e5891e494b9a35fc06ad3909",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "091",
+  "family_spec_sha256": "3ceaf909e36f588a3afb82c73ea054e7bbbd8626f531d45bb9ae6c48337bc452",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "eea135a3eb21e1cd66a754e9f08b7f4f5d4cc16a61d75f219271fa3c20c631b4",
+  "public_contract": "tasks/591-chopper-stabilized-differential-amplifier-testbench/public_contract.json",
+  "public_contract_sha256": "82cb23b4b8c99cfe4ba24703521388d574f093d5a86efb34ef6f072f96c6fa53",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/591-chopper-stabilized-differential-amplifier-testbench",
+  "task_id": "v4-591"
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "035-pa-compression-macro",
+  "checker_task_id": "v4_035_pa_compression",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "272a3ed0c4d7303174a067e2a9963c97c16201dafb11d663b5f7334c2dd6d901",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "6cd677000654bf9052b774957a36013cef6f282174984293d152ca91716886cd",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "035",
+  "family_spec_sha256": "2632f9b862bf26e8d3e1ac708b444acea8af07144c5c9740d472c7dd46569ec9",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d24baa1cc81d29eaa9ab833dc64c51881afac61f0bc20e49c651ce267e153f8a",
+  "public_contract": "tasks/535-pa-compression-macro-testbench/public_contract.json",
+  "public_contract_sha256": "b113a26d4491fd1e2b37952934b7fa62ffe25dec7a11f0722f87dce3c15351d1",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/535-pa-compression-macro-testbench",
+  "task_id": "v4-535"
+}

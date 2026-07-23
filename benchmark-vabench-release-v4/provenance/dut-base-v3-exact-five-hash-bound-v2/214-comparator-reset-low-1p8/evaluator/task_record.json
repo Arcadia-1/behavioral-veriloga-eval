@@ -3,7 +3,7 @@
   "checker_task_id": "v4_214_comparator_reset_low_1p8",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "bcb88545f42a4e21b8bd9cf87e9ce42f867e9b75bed15f8426567cf23f31231c",
+    "certification.json": "f2598eee3785baead9535e360fc34ddbd38d5562724af3f6e9f19cc9e7a7780b",
     "checker_profile.json": "a2f307c5dca83b3f1a89161207893ba3bd60330280335ae5ea734c4470fdf16e",
     "derivation_manifest.json": "53be5d5c9a3a65b0b433abe3de95c7c3fdd1a0dd8e00d168bdbb006edfcd229d",
     "family_spec.json": "c27beadfe0d9c77f98ae9d7f114707c473efc661e6964cdd521f46c4aa341afe",
@@ -11,20 +11,20 @@
     "mutation_catalog.json": "4a543b384acd5e3499f1f4eed9cbf25da62389ae594d2df16feb1350635de4aa",
     "profiles/feedback.json": "0bc7030e7a2937319246e7dec99c33644b2bc79774ac52e9d1b1eae356c79018",
     "profiles/score.json": "b5d143a10fe4614364279db0163938b9531c51baefce142523d2accb2a7c3930",
-    "score_tb.scs": "429796c15c2defb0cc97d7fe6a724bf22807c34d3d3ab1cc033dc5d94fa00040",
+    "score_tb.scs": "3e11334cc3579a85742e9402c907b0071265944390af8d57b52f36f7220522d2",
     "solution_tree": "769aa0ba422ffb2b141e8fb054b4ff28bba14347301929f6f27544ec6165cbff",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
   },
   "form": "dut",
   "public_hashes": {
-    "feedback_tb.scs": "cd0a6103b2c5d3f22b101136273245f594cd6b9bd40bf3010ea977f0e2b3ea77",
+    "feedback_tb.scs": "d49f7d709012b630942aa5c29759ba31480a9e212e4202e4be721b9f5a50ec40",
     "instruction.md": "64bbcba88843fcb7628c543e1ce3603b654ea49650764c56fbda6993fc053212",
     "public_contract.json": "ae9e2be30076a0505c765a80462e901842505c9c73c5e15d91af9681b128b5f7"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "bcb88545f42a4e21b8bd9cf87e9ce42f867e9b75bed15f8426567cf23f31231c"
+    "sha256": "f2598eee3785baead9535e360fc34ddbd38d5562724af3f6e9f19cc9e7a7780b"
   },
   "release_dir": "214-comparator-reset-low-1p8",
   "schema_version": "v4-canonical-dut-release-task-v1",

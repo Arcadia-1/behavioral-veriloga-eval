@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_CLOCKED_SEVEN_BIT_WEIGHTED_SUM satisfy the public contract; fault class zero_stub_output is rejected",
-    "observed": "EVAS: vout@5ns=0.0000 expected=1.0000 tol=0.0400",
+    "observed": "EVAS: property_id=P_CLOCKED_SEVEN_BIT_WEIGHTED_SUM category=value_mismatch expected=vout=1.00000 observed=vout=0.00000 event=clks_rise[0]@1.025000e-09s; checked_property_ids=P_CLOCKED_SEVEN_BIT_WEIGHTED_SUM,P_MSB_AND_TERMINATION_CONTRIBUTIONS,P_REFERENCE_ENDPOINTS_AND_SCALE",
     "violated_property_ids": [
       "P_CLOCKED_SEVEN_BIT_WEIGHTED_SUM"
     ]
@@ -17,18 +17,18 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_156_dac_5v_weighted_7b",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
-    "trace_row_count": 1309
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "1cdaaeb1a3e3a513e6cea90ab0c002640e7cab8950314dca3831dde279c900c6",
+    "trace_row_count": 1812
   },
   "family_id": "156",
   "inputs": {
     "checker_profile_sha256": "07a53af252228f258fe7e47f7000b9745aca1616f2f892009a8ca1a4c9108e57",
-    "harness_spec_sha256": "bddc999a5caa9b6c6536f87f6d76d5cedf7ec176949f8af7e929196f76e5e659",
+    "harness_spec_sha256": "1a3d41ffaea050202d688eebed8f6db330a7df42c4c3b0636e5cd90dcedba7a1",
     "mutation_bundle_sha256": "9f7f177553d6d12dee5a98d4c0fd3188315a2a410fb2aae15c4cae64f844fdba",
-    "profile_sha256": "6d924a420a3f8f883a7ed544a2847b6fe5c63a5c4a589ad28c1a370412bace5c"
+    "profile_sha256": "10a0d47dd27a8f01d8ca5c405ced03a542fdee1dbd7d957f01222f93b8bfdcbd"
   },
   "mutation_id": "neg_001_zero",
   "outcome": "killed_behaviorally",
@@ -36,6 +36,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "91c268bc221cbb6b24fbe414196b5bdfe958fbad",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

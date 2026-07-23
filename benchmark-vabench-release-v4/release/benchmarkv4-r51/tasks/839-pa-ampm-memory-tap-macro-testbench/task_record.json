@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "339-pa-ampm-memory-tap-macro",
+  "checker_task_id": "v4_339_pa_ampm_memory_tap_macro",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "8ae3e86762443398fc9e108f3e763d74794ec426a5641462237bed3ace4b7704",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "331514bf423548bb3b737600f228d2580b11206e7706e2b396cfee64701aae8c",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "339",
+  "family_spec_sha256": "4f6c0e346bf8f69294a4bb09ea64c50c9bbe861413011a817b9c8a3c14aaa06a",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7222be84f10f570c76e8efe6bd6200bfcccc3aedb20455fadcf17aa303bc60a1",
+  "public_contract": "tasks/839-pa-ampm-memory-tap-macro-testbench/public_contract.json",
+  "public_contract_sha256": "9884c4bb5feafb35a06c385aad116d2865ed05424eef0156cc72771ae96478e5",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/839-pa-ampm-memory-tap-macro-testbench",
+  "task_id": "v4-839"
+}

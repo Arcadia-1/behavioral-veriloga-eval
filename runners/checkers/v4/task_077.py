@@ -1,6 +1,7 @@
 """Task-specific checker for canonical v4 DUT 077."""
 from __future__ import annotations
 
+from bisect import bisect_right
 import math
 
 from ..api import Checker
@@ -23,8 +24,8 @@ TRACE_CASES = (
 TRANSITION_GUARD_FRACTION = 0.12
 LEVEL_TOLERANCE_FRACTION = 0.06
 MIN_COMPLETE_INTERVALS = 24
-MIN_STABLE_ROWS = 4
 MAX_COMPLETE_INTERVALS = 128
+STABLE_PROBE_PHASES = (TRANSITION_GUARD_FRACTION, 0.5, 0.88)
 
 
 def _invalid_trace(category: str, observed: str) -> tuple[bool, str]:
@@ -70,6 +71,47 @@ def _validate_rows(
     return True, ""
 
 
+def _interpolate(
+    rows: list[dict[str, float]],
+    times: list[float],
+    signal: str,
+    target: float,
+) -> float:
+    right = bisect_right(times, target)
+    if right == 0:
+        return rows[0][signal]
+    left = right - 1
+    if times[left] == target or right == len(rows):
+        return rows[left][signal]
+
+    t0 = times[left]
+    t1 = times[right]
+    if t1 == t0:
+        return rows[right][signal]
+    alpha = (target - t0) / (t1 - t0)
+    return rows[left][signal] + alpha * (rows[right][signal] - rows[left][signal])
+
+
+def _interpolate_within_interval(
+    rows: list[dict[str, float]],
+    times: list[float],
+    signal: str,
+    target: float,
+    stop: float,
+) -> float:
+    right = bisect_right(times, target)
+    if right == 0 or right == len(rows):
+        return _interpolate(rows, times, signal, target)
+    left = right - 1
+    if times[left] == target:
+        return rows[left][signal]
+    if times[right] >= stop:
+        # The row at ``stop`` belongs to the next timer interval.  A sparse
+        # trace must not smear that update backwards into the held interval.
+        return rows[left][signal]
+    return _interpolate(rows, times, signal, target)
+
+
 def _check_parameter_case(
     rows: list[dict[str, float]],
     *,
@@ -104,6 +146,7 @@ def _check_parameter_case(
     max_level_error = 0.0
     max_hold_span = 0.0
     sample_cursor = 0
+    times = [row["time"] for row in rows]
     for interval in range(complete_intervals):
         start = interval * dt
         stable_start = start + TRANSITION_GUARD_FRACTION * dt
@@ -131,34 +174,27 @@ def _check_parameter_case(
             for row_index, row in enumerate(rows)
             if stable_start <= row["time"] < stop
         ]
+        stable.extend(
+            (
+                -1,
+                probe_time,
+                _interpolate_within_interval(
+                    rows,
+                    times,
+                    output,
+                    probe_time,
+                    stop,
+                )
+                - sampled_vin,
+            )
+            for probe_time in (
+                start + phase * dt for phase in STABLE_PROBE_PHASES
+            )
+        )
         if any(not _finite(value) for _, _, value in stable):
             return _invalid_trace(
                 "nonfinite_derived_noise",
                 f"case={label},interval={interval}",
-            )
-        if len(stable) < MIN_STABLE_ROWS:
-            return False, diagnostic(
-                "P_PERIODIC_UPDATE",
-                f"{label}_undersampled_interval",
-                expected=f"stable_rows>={MIN_STABLE_ROWS}",
-                observed=f"interval={interval},stable_rows={len(stable)}",
-                event=label,
-            )
-
-        leading_gap = stable[0][1] - stable_start
-        trailing_gap = stop - stable[-1][1]
-        if not _finite(leading_gap) or not _finite(trailing_gap):
-            return _invalid_trace(
-                "nonfinite_derived_interval_coverage",
-                f"case={label},interval={interval}",
-            )
-        if leading_gap > 0.12 * dt or trailing_gap > 0.12 * dt:
-            return False, diagnostic(
-                "P_PERIODIC_UPDATE",
-                f"{label}_interval_coverage_gap",
-                expected="stable_window_sampled_end_to_end",
-                observed=f"interval={interval}",
-                event=label,
             )
 
         expected = sigma * SEQUENCE[interval % len(SEQUENCE)]
@@ -176,7 +212,7 @@ def _check_parameter_case(
             )
         max_hold_span = max(max_hold_span, hold_span)
 
-        for row_index, _, value in stable:
+        for row_index, stable_time, value in stable:
             level_error = abs(value - expected)
             if not _finite(level_error):
                 return _invalid_trace(
@@ -185,21 +221,26 @@ def _check_parameter_case(
                 )
             max_level_error = max(max_level_error, level_error)
             if level_error > tolerance:
+                location = (
+                    f"row={row_index}"
+                    if row_index >= 0
+                    else f"time={stable_time:.4e}"
+                )
                 return False, diagnostic(
                     "P_SAMPLE_HOLD",
                     f"{label}_level_or_hold_mismatch",
                     expected="public_level_throughout_stable_interval",
-                    observed=f"interval={interval},row={row_index}",
+                    observed=f"interval={interval},{location}",
                     event=label,
                 )
 
-        try:
-            interval_level = math.fsum(stable_values) / len(stable_values)
-        except OverflowError:
-            return _invalid_trace(
-                "nonfinite_derived_interval_level",
-                f"case={label},interval={interval}",
-            )
+        interval_level = _interpolate_within_interval(
+            rows,
+            times,
+            output,
+            start + 0.5 * dt,
+            stop,
+        ) - sampled_vin
         if not _finite(interval_level):
             return _invalid_trace(
                 "nonfinite_derived_interval_level",

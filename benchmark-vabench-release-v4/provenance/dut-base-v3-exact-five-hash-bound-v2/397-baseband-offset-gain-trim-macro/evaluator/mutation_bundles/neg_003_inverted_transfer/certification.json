@@ -8,7 +8,7 @@
   },
   "diagnostics": {
     "expected": "properties P_USE_GAIN_GAIN_BASE_GAIN_STEP satisfy the public contract; fault class polarity_or_direction_error is rejected",
-    "observed": "EVAS: v4_baseband_trim checked=17 gain_codes=[0, 1, 2, 4, 5, 6, 7] offset_codes=[1, 2, 3, 4, 6, 7] clipped=True disabled=True errors=44",
+    "observed": "EVAS: v4_baseband_trim checked=17 gain_codes=[0, 1, 2, 4, 5, 6, 7] offset_codes=[1, 2, 3, 4, 6, 7] clipped=True disabled=True errors=44 hold_checked=16 hold_errors=41",
     "violated_property_ids": [
       "P_USE_GAIN_GAIN_BASE_GAIN_STEP"
     ]
@@ -17,10 +17,10 @@
     "evas2": "compile_pass_behavior_fail"
   },
   "evidence": {
-    "campaign": "r50-full400",
+    "campaign": "r51-full400",
     "checker_id": "v4_397_baseband_offset_gain_trim_macro",
-    "report_path": "evidence/r50/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "7a469d9df476d622593836fff172130eb8a9c1857824dacf60ebc123666188e8",
+    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
+    "report_sha256": "1cdaaeb1a3e3a513e6cea90ab0c002640e7cab8950314dca3831dde279c900c6",
     "trace_row_count": 1138
   },
   "family_id": "397",
@@ -36,6 +36,9 @@
     "evas_backend": "evas-rust",
     "evas_engine": "evas2",
     "evas_engine_used": "evas2",
+    "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
+    "evas_source_revision": "91c268bc221cbb6b24fbe414196b5bdfe958fbad",
+    "evas_source_tree": "clean",
     "evas_version": "0.8.3"
   },
   "schema_version": "v4-negative-certification-rust-evas2-v2",

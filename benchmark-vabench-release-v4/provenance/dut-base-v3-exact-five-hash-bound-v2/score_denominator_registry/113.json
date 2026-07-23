@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "e99dbd2d0c1d994df6b41960c6cf4ffed23e2cd3cdc8dca8abb0720ed5db20be",
+        "certification_sha256": "c3ce6c716958a4f9c66af216f04dcd5e6ad81f2165af1480d46a733cea038758",
         "fault_class": "fault_001_zero",
-        "mutation_bundle_sha256": "5d7839875898e7c095a7d7edfc34670d99f1b756cf9021005a3144df4298f552",
+        "mutation_bundle_sha256": "a99c7fac0013bc348f2b5218e0531e50957e1364cd38e0ec6fff1d20370ec143",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the weighted-sum semantic contract.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_wrong_normalization/certification.json",
-        "certification_sha256": "15803e42510709f2369a5d1b1da837541fef794c4ffc83972507a67053f382fc",
+        "certification_sha256": "17eaa5c85b7d94daf208d8281c372603fcc531f5024b42a2cf87483121e7f0e0",
         "fault_class": "fault_003_wrong_normalization",
-        "mutation_bundle_sha256": "e383dc04287dbdb69d1bcbbc2e8290249b4da421c4ce4891c800b687a85b94cc",
+        "mutation_bundle_sha256": "c7050ff7c99313b2f99de1c129eafade88545e7a2a41c1e4649b4e874e26ea53",
         "mutation_id": "neg_003_wrong_normalization",
         "source_catalog_certification_path": "negative_variants/neg_003_wrong_normalization/certification.json",
         "trigger_condition": "Uses the wrong normalization denominator.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_missing_offset/certification.json",
-        "certification_sha256": "fefcbddb243fb9b5f8df0ffe48e6a5ef1dc1c32d5c2476098337a0707836d875",
+        "certification_sha256": "3ca6ce5afc298746a644aaa979561f1a8529f8da2652ca1c1b592a49ed7f8f88",
         "fault_class": "fault_004_missing_offset",
-        "mutation_bundle_sha256": "87c51fafbacf4b9be0424a07471ed72c39c15cd08f6ade9acbcd33d3d0914aa2",
+        "mutation_bundle_sha256": "aded20ff00b27c43a6872d7263a9dea08f49cf5be325370dc791cb7d20fa2af7",
         "mutation_id": "neg_004_missing_offset",
         "source_catalog_certification_path": "negative_variants/neg_004_missing_offset/certification.json",
         "trigger_condition": "Omits the required -1.0 output offset.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "70281434c6243944c1399d3782133802dac2e843b722eb9d460ff1d3c28410df",
+        "certification_sha256": "36660608395195266bc1708f6ca52dc81fdcbbf890bd480c90ab7fcde8ac7a24",
         "fault_class": "fault_005_metric_scale_low",
-        "mutation_bundle_sha256": "609c423ad2ed8d165404406acf7924edd57082bf64f03bd90c4c08dbf5b590cf",
+        "mutation_bundle_sha256": "dd1ac36b72b1d29fc3bc460996e539e9092b93be7d974c1e9e0a6cc746e282c5",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "SAR Weighted Sum: scales the metric output, preserving the main path while failing measurement checks.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_binary_weights/certification.json",
-        "certification_sha256": "274ae574e8b3fe103a3058c6f83f7701817c7d71ffa8d45a726fb45e6a4b11fa",
+        "certification_sha256": "7787876b41c735c7b57fe9d26eea33f8c63364b5c98b703ed17632544963e1d2",
         "fault_class": "fault_002_binary_weights",
-        "mutation_bundle_sha256": "2a19653a61c0f398ef151650744973550378a21eb0e35104bc0b7a963c4563fd",
+        "mutation_bundle_sha256": "10893f9cf1d74980322f80ce1a693a1a4043bbb0cb142ca6d90fe1953f10e355",
         "mutation_id": "neg_002_binary_weights",
         "source_catalog_certification_path": "negative_variants/neg_002_binary_weights/certification.json",
         "trigger_condition": "Uses ordinary binary weights instead of the specified SAR weights.",
@@ -69,9 +69,9 @@
     "canonical_dut_id": "113",
     "hashes": {
       "mutation_catalog_sha256": "6823673a805dccdbefaf33abc545eaccfb18e265aa56a319c18064b9b4e28a0d",
-      "score_deck_sha256": "a1ed12a1958fdb9ff93bc3b2cbc73f49bb197424fd8bbb3e34845f658ca1cee9",
-      "task_certification_sha256": "9ce15e316b875190b89eba282cbbe89a9be50ae07a8a352469aaeb24fcd3f3c4",
-      "task_record_sha256": "7ff6c2a2b31f9169e4e3bcd3416fadfea191ace16113caf60127ef10fa821512"
+      "score_deck_sha256": "475010c5383bddd683b34d70eb991dffb654920325113aee309b5cc266cbe3bc",
+      "task_certification_sha256": "1d95f94b5a24e28a362db4a3234e1815ee0edcd3ab93a5be6cb1020aed21d530",
+      "task_record_sha256": "b929b2833c8abb3f37a32e100ec12fddb1865d814f85b220a4051b38acc17126"
     },
     "release_dir": "113-sar-weighted-sum"
   }

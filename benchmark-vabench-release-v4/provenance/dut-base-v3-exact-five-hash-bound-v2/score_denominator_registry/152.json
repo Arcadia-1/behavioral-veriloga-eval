@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_swap_channels/certification.json",
-        "certification_sha256": "a21c8231e7083e16c74f0b3d89ab53d22cf5c69a13ef53f39a5fc8ff70eec2e7",
+        "certification_sha256": "e73770da97f59ad8f28d6024b29eda57ae3faaaf7c17a853f8f91c66e2dac90d",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "1adcc00638fa1ce1ea06cfca3b6ace3058e44466e2f9017a31290b42b33c72b0",
+        "mutation_bundle_sha256": "820c37894a0ebbe5d5ebcadac904e7e8edc309a0a27a1407cd8551b24e0c5eff",
         "mutation_id": "neg_002_swap_channels",
         "source_catalog_certification_path": "negative_variants/neg_002_swap_channels/certification.json",
         "trigger_condition": "Swaps clks1/clks2 sample assignments.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_ignore_second_channel/certification.json",
-        "certification_sha256": "01bbb3596961cbc573796b093ec7e5a88db1956860bb53a73111282f6cc7ffc7",
+        "certification_sha256": "f9e83a53fee74df8d9dda4478b203236e73f31b108cd2814736a552a5deab7cf",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "6f601d982fd9feb6b73de6b77abc4ad48e2f1c7e0f6bfc2b77d59f44c000cc64",
+        "mutation_bundle_sha256": "b66ef00bcf9c74c08b3adc6f8e36ed0fa7d0ef3bc8db32eb83386335ead671b7",
         "mutation_id": "neg_003_ignore_second_channel",
         "source_catalog_certification_path": "negative_variants/neg_003_ignore_second_channel/certification.json",
         "trigger_condition": "Ignores clks2 and always forwards samp1.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_half_output_gain/certification.json",
-        "certification_sha256": "59482aa7f8952c543b0bf0041d2ae4e2028605ab01c1de0518903f8bad6bdfd1",
+        "certification_sha256": "82b5e4383d1f9511837d030afa37fe87d6a6afd954178b4ca4fb52acb8fd727a",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "fcecabc9aa35019f40e6fa132726e7831ab37bc1c2d0757f07654d588cfa313a",
+        "mutation_bundle_sha256": "8d355ef00b2d9a52c9a0bebfef8ddcbc5484a1663bb6ea6bf79cf9311d58b9a9",
         "mutation_id": "neg_004_half_output_gain",
         "source_catalog_certification_path": "negative_variants/neg_004_half_output_gain/certification.json",
         "trigger_condition": "Outputs half of the selected sample.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "3dbf72c858641d6580797ee68a85fd50cf2ac372be590aa96b39fb5df832f74c",
+        "certification_sha256": "5193b34c78e7fcda4aba83cf7cd8220183fc061c869f21e2233179ed37ae4d41",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "f98c82974f106f123c472aa75e17dcae7aa521fad38a578c4dabadcc7b6502d9",
+        "mutation_bundle_sha256": "91ad668a20331aeab5b321b5ba094c4504329f293d3f9ea1bfabbf60f3cbeac7",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "4196797a266ebc407ac1c486a0895a9d16a89b3b4b7415b5b9ca9bd6843f86d3",
+        "certification_sha256": "a5efd09456a251243fc10414252075200c98db83904d82980b42345c2951baee",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "12025760d1fc3c0f1b22284716253d2d5cd3919c9225f165ba3b4871320a104e",
+        "mutation_bundle_sha256": "f41d610516a445778a1ae6578f77e04b1c4f0501ebf06f88d71fbc732af7343c",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Two Channel Sample Demux: scales the metric output, preserving the main path while failing measurement checks.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "7859de103d32425efc76422f3775f9541bc609682a485223fb971723097ece0d",
       "score_deck_sha256": "4329136b7e5fb9fc91011a98f54b46458cf717034db3adc2ecec6dc69c0ccdc0",
-      "task_certification_sha256": "7cb2dcfc9844747f2055108eded05087a1066d8df5d25d3af1b0313ea428525c",
-      "task_record_sha256": "e5b379cc77ab50d0625e257dd26563ba31c215a41e35466d193492463d8ae2a3"
+      "task_certification_sha256": "675e6e00aa701a6303435eb7726d5f982918e60776ceb210c6732a20f3069562",
+      "task_record_sha256": "92573a06ad3a231c28560baa3b684b030b7f144b2e6d7bd496b60f033b6ebcb4"
     },
     "release_dir": "152-two-channel-sample-demux"
   }

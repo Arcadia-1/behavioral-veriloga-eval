@@ -1,0 +1,36 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "275-deterministic-energy-accumulator",
+  "checker_task_id": "v4_275_deterministic_energy_accumulator",
+  "evaluation_binding": {
+    "kind": "public_testbench_suite",
+    "public_fixture_tree": "public/visible_fixtures",
+    "public_fixture_tree_sha256": "fa836690ca150f4299a84943297f4b870cef46af142dba39d978ffa750a48f6c",
+    "public_suite": "public/evas_runtime.json",
+    "public_suite_sha256": "4617b22ed073e218ac8ff4652663ff8a74f314a5f407ff8526f223075b549503",
+    "reuse_policy": "public_and_trusted_replay_suite_same_bytes",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json"
+  },
+  "family_id": "275",
+  "family_spec_sha256": "94ec1f188fb6e2bfbfb72d6b7f9d44f1db9954f0a36e4393cdb411c955984923",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e1bb278b83f2b2cc8836b9f58a212a5ac4e0e0c1507e4e49a198ffb7580b1f2e",
+  "public_contract": "tasks/775-deterministic-energy-accumulator-testbench/public_contract.json",
+  "public_contract_sha256": "c46d5e0dc47036d1106341bb10d81262edb025d4565a827e2cdb3fd220f72b3f",
+  "release_revision": "r51",
+  "schema_version": "r51-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/775-deterministic-energy-accumulator-testbench",
+  "task_id": "v4-775"
+}
