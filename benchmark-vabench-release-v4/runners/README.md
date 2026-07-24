@@ -12,6 +12,12 @@ Implemented:
   runtime, where the agent has full Bash and direct access to public EVAS.
   Both paths enter the same strict declared-artifact gate before they become
   score-eligible.
+- Direct one-shot modes receive an output-only `submit_artifacts` function
+  whose schema names every required file. The runner accepts only a complete
+  declared bundle, narrowly normalizes redundant provider wrappers when their
+  contents are identical, and retains deterministic final-text recovery for
+  providers that do not emit the function call. None of these paths executes
+  the candidate or returns checker feedback.
 
 Boundary:
 
