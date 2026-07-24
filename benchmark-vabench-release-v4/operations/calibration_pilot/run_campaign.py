@@ -90,6 +90,7 @@ FILENAME_TOKEN_RE = re.compile(
     re.IGNORECASE,
 )
 AGENTIC = {"G2", "G3", "G4", "G5"}
+MAX_ONESHOT_TRANSPORT_FAILURES = 2
 RESUMABLE_TERMINAL_STATUSES = {
     "submitted",
     "submitted_at_budget",
@@ -1224,6 +1225,37 @@ def compact_feedback_result(result: dict[str, Any]) -> dict[str, Any]:
     return compact
 
 
+def complete_one_missing_json_closer(raw: str) -> dict[str, Any] | None:
+    expected: list[str] = []
+    in_string = False
+    escaped = False
+    for character in raw:
+        if in_string:
+            if escaped:
+                escaped = False
+            elif character == "\\":
+                escaped = True
+            elif character == '"':
+                in_string = False
+            continue
+        if character == '"':
+            in_string = True
+        elif character == "{":
+            expected.append("}")
+        elif character == "[":
+            expected.append("]")
+        elif character in "}]":
+            if not expected or expected.pop() != character:
+                return None
+    if in_string or escaped or len(expected) != 1:
+        return None
+    try:
+        decoded = json.loads(raw + expected[-1])
+    except json.JSONDecodeError:
+        return None
+    return decoded if isinstance(decoded, dict) else None
+
+
 def decode_tool_arguments(
     name: str, raw_arguments: str | None,
 ) -> tuple[dict[str, Any], bool, str | None]:
@@ -1238,6 +1270,18 @@ def decode_tool_arguments(
             raise
 
     stripped = raw.lstrip()
+    if stripped.endswith(">}"):
+        without_marker_fragment = stripped[:-2] + "}"
+        try:
+            decoded = json.loads(without_marker_fragment)
+        except json.JSONDecodeError:
+            pass
+        else:
+            if isinstance(decoded, dict):
+                return decoded, False, "removed_trailing_marker_fragment"
+    completed = complete_one_missing_json_closer(stripped)
+    if completed is not None:
+        return completed, False, "completed_missing_closer"
     decoded, end = json.JSONDecoder().raw_decode(stripped)
     if not isinstance(decoded, dict):
         raise ValueError("submit_artifacts arguments must be a JSON object")
@@ -2347,6 +2391,12 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         and event.get("argument_protocol_compliant") is False
         for event in events
     )
+    submission_transport_failures = sum(
+        event.get("name") == "submit_artifacts"
+        and event.get("transport_error") is True
+        for event in events
+    )
+    submission_transport_failures_this_run = 0
     invalid_submit_bundle = False
 
     def current_agent_elapsed_s() -> float:
@@ -2380,7 +2430,9 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         return model_event_hit_limit(last_model)
 
     def process_tool_calls(calls: list[dict[str, Any]]) -> None:
-        nonlocal finalized, invalid_submit_bundle, submission_tool_normalized
+        nonlocal finalized, invalid_submit_bundle
+        nonlocal submission_tool_normalized, submission_transport_failures
+        nonlocal submission_transport_failures_this_run
         if (
             cell.get("process") == "direct_one_shot"
             and any(call.get("function", {}).get("name") == "submit_artifacts" for call in calls)
@@ -2407,6 +2459,9 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             arguments: dict[str, Any] = {}
             argument_protocol_compliant = True
             argument_normalization: str | None = None
+            transport_error = False
+            decoding_arguments = True
+            tool_error_type: str | None = None
             try:
                 (
                     arguments,
@@ -2421,6 +2476,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
                         submission_tool_normalized
                         or not argument_protocol_compliant
                     )
+                decoding_arguments = False
                 text, done = execute_tool(
                     function["name"],
                     arguments,
@@ -2429,10 +2485,19 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
                     args.evas_command,
                 )
             except Exception as exc:  # Model tool mistakes are episode evidence, not runner failures.
+                tool_error_type = type(exc).__name__
+                if (
+                    function.get("name") == "submit_artifacts"
+                    and decoding_arguments
+                ):
+                    argument_protocol_compliant = False
+                    transport_error = True
+                    submission_transport_failures += 1
+                    submission_transport_failures_this_run += 1
                 text = json.dumps({
                     "status": "tool_error",
                     "tool": function.get("name"),
-                    "error_type": type(exc).__name__,
+                    "error_type": tool_error_type,
                     "error": str(exc)[:2000],
                 })
                 done = False
@@ -2443,6 +2508,14 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
                 "reference_tokens": delivered,
                 "argument_protocol_compliant": argument_protocol_compliant,
             }
+            if function["name"] == "submit_artifacts":
+                raw_arguments = str(function.get("arguments") or "")
+                tool_event["argument_sha256"] = hashlib.sha256(
+                    raw_arguments.encode("utf-8")
+                ).hexdigest()
+                tool_event["transport_error"] = transport_error
+                if tool_error_type is not None:
+                    tool_event["error_type"] = tool_error_type
             if argument_normalization is not None:
                 tool_event["argument_normalization"] = argument_normalization
             if function["name"] == "read_skill":
@@ -2481,10 +2554,30 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             ),
             "original_protocol_compliant": not submission_tool_normalized,
             "submission_protocol_compliant": bool(gate["passed"]),
+            "transport_retry_count": submission_transport_failures,
             "response_parser_version": None,
             "parse_diagnostics": (
                 [] if gate["passed"] else ["invalid_submit_artifacts_call"]
             ),
+        })
+
+    def record_submission_transport_failure() -> None:
+        result.update({
+            "status": "provider_transport_failure",
+            "termination_reason": "malformed_submit_artifacts_transport",
+            "submission_protocol_compliant": False,
+            "parse_diagnostics": ["malformed_submit_artifacts_transport"],
+            "transport_failure_count": submission_transport_failures,
+            "transport_failure_count_this_run": (
+                submission_transport_failures_this_run
+            ),
+            "incidents": [{
+                "category": "malformed_submit_artifacts_transport",
+                "component": "provider",
+                "phase": "submission_transport",
+                "responsibility": "infrastructure",
+                "retryable": True,
+            }],
         })
 
     def model_limit_reason() -> str | None:
@@ -2636,12 +2729,21 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
                         "parse_diagnostics": ["mixed_submit_artifacts_tool_bundle"],
                     })
                     break
+                if (
+                    submission_transport_failures_this_run
+                    >= MAX_ONESHOT_TRANSPORT_FAILURES
+                ):
+                    record_submission_transport_failure()
+                    break
                 if finalized:
                     record_direct_tool_submission()
                     break
                 continue
             direct_submission = extract_normalized_direct_submission(content, runtime)
             complete = bool(direct_submission["submission_protocol_compliant"])
+            if not complete and submission_transport_failures:
+                record_submission_transport_failure()
+                break
             hit_limit = model_event_hit_limit(model_event)
             result.update({
                 "status": "submitted" if complete else "invalid_submission",
@@ -2677,7 +2779,17 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         "agent_elapsed_s": current_agent_elapsed_s(),
         "events": events,
     })
-    attach_experiment_result(result, runtime, messages, args, "completed")
+    attach_experiment_result(
+        result,
+        runtime,
+        messages,
+        args,
+        (
+            "provider_failure"
+            if result.get("status") == "provider_transport_failure"
+            else "completed"
+        ),
+    )
     write_json(runtime / "evidence" / "campaign_result.json", result)
     return result
 

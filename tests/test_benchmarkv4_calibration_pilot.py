@@ -752,6 +752,34 @@ def test_submit_artifacts_normalizer_accepts_only_identical_redundant_content() 
         )
 
 
+def test_submit_artifacts_normalizer_completes_one_missing_object_closer() -> None:
+    runner = load_run_campaign()
+    artifacts = {"testbench.scs": "simulator lang=spectre\n"}
+    malformed = json.dumps({"artifacts": artifacts})[:-1]
+
+    decoded, compliant, normalization = runner.decode_tool_arguments(
+        "submit_artifacts", malformed
+    )
+
+    assert decoded == {"artifacts": artifacts}
+    assert compliant is False
+    assert normalization == "completed_missing_closer"
+
+
+def test_submit_artifacts_normalizer_removes_trailing_marker_fragment() -> None:
+    runner = load_run_campaign()
+    artifacts = {"testbench.scs": "save vout\n"}
+    malformed = json.dumps({"artifacts": artifacts})[:-1] + ">}"
+
+    decoded, compliant, normalization = runner.decode_tool_arguments(
+        "submit_artifacts", malformed
+    )
+
+    assert decoded == {"artifacts": artifacts}
+    assert compliant is False
+    assert normalization == "removed_trailing_marker_fragment"
+
+
 def test_submit_artifacts_tool_uses_provider_neutral_auto_tool_choice() -> None:
     runner = load_run_campaign()
     client = runner.OpenAICompatible(
@@ -855,6 +883,160 @@ def test_direct_run_cell_submits_with_one_transport_tool_call(
     assert result["submission_protocol_compliant"] is True
     assert result["extraction_protocol"] == "submit_artifacts_tool-v1"
     assert result["submission_transport"] == "runner_managed"
+
+
+def test_direct_transport_failures_are_bounded_and_not_scored_as_model_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    runner = load_run_campaign()
+    cell = {
+        "cell_id": "v4-001-G0-r0",
+        "task_id": "v4-001",
+        "mode": "G0",
+        "process": "direct_one_shot",
+        "per_turn_max_tokens": 4096,
+    }
+    args = run_args(tmp_path / "run", tmp_path / "release")
+
+    def prepare_runtime(
+        _cell: dict, _release: Path, runtime: Path, *, timeout_s: int
+    ) -> None:
+        (runtime / "public" / "submission").mkdir(parents=True)
+        (runtime / "evaluator").mkdir(parents=True)
+        (runtime / "direct_prompt.txt").write_text("Create model.va.\n")
+        (runtime / "evaluator" / "score_policy.json").write_text(
+            json.dumps({"candidate_artifacts": ["model.va"]})
+        )
+        (runtime / "MODEL_ACCESS_POLICY.json").write_text(
+            json.dumps({"mode": "G0", "available_skills": {}, "provider_tools": []})
+        )
+
+    monkeypatch.setattr(runner, "export_runtime", prepare_runtime)
+
+    class MalformedTransportClient:
+        calls = 0
+
+        def complete(self, _messages, _max_tokens, _tools, **_kwargs):
+            self.calls += 1
+            if self.calls > 2:
+                raise AssertionError("submission transport retries were not bounded")
+            return {
+                "choices": [{
+                    "finish_reason": "tool_calls",
+                    "message": {
+                        "role": "assistant",
+                        "content": "",
+                        "tool_calls": [{
+                            "id": f"submit-call-{self.calls}",
+                            "type": "function",
+                            "function": {
+                                "name": "submit_artifacts",
+                                "arguments": '{"artifacts":',
+                            },
+                        }],
+                    },
+                }],
+                "usage": {"completion_tokens": 8},
+            }
+
+    client = MalformedTransportClient()
+    result = runner.run_cell(cell, args, client)
+
+    assert client.calls == 2
+    assert result["status"] == "provider_transport_failure"
+    assert result["termination_reason"] == "malformed_submit_artifacts_transport"
+    assert result["submission_protocol_compliant"] is False
+    assert result["experiment_result"]["outcome"] == "infrastructure_failure"
+    assert result["experiment_result"]["score_eligible"] is False
+    assert result["incidents"] == [{
+        "category": "malformed_submit_artifacts_transport",
+        "component": "provider",
+        "phase": "submission_transport",
+        "responsibility": "infrastructure",
+        "retryable": True,
+    }]
+    tool_events = [
+        event for event in result["events"] if event.get("name") == "submit_artifacts"
+    ]
+    assert len(tool_events) == 2
+    assert all(event["argument_protocol_compliant"] is False for event in tool_events)
+    assert all(event["transport_error"] is True for event in tool_events)
+
+
+def test_direct_transport_retry_can_submit_without_checker_feedback(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    runner = load_run_campaign()
+    cell = {
+        "cell_id": "v4-001-G0-r0",
+        "task_id": "v4-001",
+        "mode": "G0",
+        "process": "direct_one_shot",
+        "per_turn_max_tokens": 4096,
+    }
+    args = run_args(tmp_path / "run", tmp_path / "release")
+
+    def prepare_runtime(
+        _cell: dict, _release: Path, runtime: Path, *, timeout_s: int
+    ) -> None:
+        (runtime / "public" / "submission").mkdir(parents=True)
+        (runtime / "evaluator").mkdir(parents=True)
+        (runtime / "direct_prompt.txt").write_text("Create model.va.\n")
+        (runtime / "evaluator" / "score_policy.json").write_text(
+            json.dumps({"candidate_artifacts": ["model.va"]})
+        )
+        (runtime / "MODEL_ACCESS_POLICY.json").write_text(
+            json.dumps({"mode": "G0", "available_skills": {}, "provider_tools": []})
+        )
+
+    monkeypatch.setattr(runner, "export_runtime", prepare_runtime)
+
+    class RetryClient:
+        calls = 0
+
+        def complete(self, messages, _max_tokens, _tools, **_kwargs):
+            self.calls += 1
+            arguments = (
+                '{"artifacts":'
+                if self.calls == 1
+                else json.dumps({
+                    "artifacts": {"model.va": "module model; endmodule\n"}
+                })
+            )
+            if self.calls == 2:
+                tool_feedback = json.loads(messages[-1]["content"])
+                assert tool_feedback["status"] == "tool_error"
+                assert tool_feedback["tool"] == "submit_artifacts"
+                assert "checker" not in messages[-1]["content"].lower()
+            return {
+                "choices": [{
+                    "finish_reason": "tool_calls",
+                    "message": {
+                        "role": "assistant",
+                        "content": "",
+                        "tool_calls": [{
+                            "id": f"submit-call-{self.calls}",
+                            "type": "function",
+                            "function": {
+                                "name": "submit_artifacts",
+                                "arguments": arguments,
+                            },
+                        }],
+                    },
+                }],
+                "usage": {"completion_tokens": 8},
+            }
+
+    client = RetryClient()
+    result = runner.run_cell(cell, args, client)
+
+    assert client.calls == 2
+    assert result["status"] == "submitted"
+    assert result["transport_retry_count"] == 1
+    assert result["submission_transport"] == "runner_managed"
+    assert (
+        args.output / cell["cell_id"] / "public" / "submission" / "model.va"
+    ).read_text() == "module model; endmodule\n"
 
 
 def test_direct_resume_finalizes_a_pending_submit_artifacts_call(

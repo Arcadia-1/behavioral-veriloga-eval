@@ -15,9 +15,12 @@ Implemented:
 - Direct one-shot modes receive an output-only `submit_artifacts` function
   whose schema names every required file. The runner accepts only a complete
   declared bundle, narrowly normalizes redundant provider wrappers when their
-  contents are identical, and retains deterministic final-text recovery for
-  providers that do not emit the function call. None of these paths executes
-  the candidate or returns checker feedback.
+  contents are identical, completes only unambiguous terminal JSON damage, and
+  retains deterministic final-text recovery for providers that do not emit the
+  function call. Malformed tool transport receives at most two attempts per
+  run; an unrecovered transport is recorded as retryable
+  `provider_transport_failure`, not as a candidate `invalid_submission`. None
+  of these paths executes the candidate or returns checker feedback.
 
 Boundary:
 
