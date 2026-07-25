@@ -2606,9 +2606,15 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
                     "submission_protocol_compliant": False,
                     "parse_diagnostics": ["mixed_submit_artifacts_tool_bundle"],
                 })
+            elif submission_transport_failures >= MAX_ONESHOT_TRANSPORT_FAILURES:
+                record_submission_transport_failure()
             elif finalized:
                 record_direct_tool_submission()
-            if invalid_submit_bundle or finalized:
+            if (
+                invalid_submit_bundle
+                or finalized
+                or result.get("status") == "provider_transport_failure"
+            ):
                 result.update({
                     "finished_at": now(),
                     "output_tokens": output_tokens,
@@ -2619,7 +2625,17 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
                     "events": events,
                     "recovered_from_checkpoint": True,
                 })
-                attach_experiment_result(result, runtime, messages, args, "completed")
+                attach_experiment_result(
+                    result,
+                    runtime,
+                    messages,
+                    args,
+                    (
+                        "provider_failure"
+                        if result.get("status") == "provider_transport_failure"
+                        else "completed"
+                    ),
+                )
                 write_json(runtime / "evidence" / "campaign_result.json", result)
                 return result
         elif messages[-1].get("role") == "assistant":
@@ -2730,7 +2746,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
                     })
                     break
                 if (
-                    submission_transport_failures_this_run
+                    submission_transport_failures
                     >= MAX_ONESHOT_TRANSPORT_FAILURES
                 ):
                     record_submission_transport_failure()

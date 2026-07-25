@@ -1101,6 +1101,69 @@ def test_direct_resume_finalizes_a_pending_submit_artifacts_call(
     assert result["termination_reason"] == "completed"
 
 
+def test_direct_resume_keeps_transport_retry_limit_episode_scoped(
+    tmp_path: Path,
+) -> None:
+    runner = load_run_campaign()
+    cell = {
+        "cell_id": "v4-001-G0-r0",
+        "task_id": "v4-001",
+        "mode": "G0",
+        "process": "direct_one_shot",
+        "per_turn_max_tokens": 4096,
+    }
+    args = run_args(tmp_path / "run", tmp_path / "release")
+    args.resume = True
+    runtime = args.output / cell["cell_id"]
+    (runtime / "public" / "submission").mkdir(parents=True)
+    (runtime / "evaluator").mkdir(parents=True)
+    (runtime / "evidence").mkdir(parents=True)
+    (runtime / "direct_prompt.txt").write_text("Create model.va.\n")
+    (runtime / "evaluator" / "score_policy.json").write_text(
+        json.dumps({"candidate_artifacts": ["model.va"]})
+    )
+    (runtime / "MODEL_ACCESS_POLICY.json").write_text(
+        json.dumps({"mode": "G0", "available_skills": {}, "provider_tools": []})
+    )
+    (runtime / "evidence" / "conversation_checkpoint.json").write_text(
+        json.dumps({
+            "cell_id": cell["cell_id"],
+            "started_at": "2026-07-24T00:00:00+00:00",
+            "messages": [
+                {"role": "system", "content": runner.ONESHOT_TRANSPORT_INSTRUCTION},
+                {"role": "user", "content": "Create model.va."},
+                {
+                    "role": "assistant",
+                    "content": "",
+                    "tool_calls": [{
+                        "id": "submit-call",
+                        "type": "function",
+                        "function": {
+                            "name": "submit_artifacts",
+                            "arguments": '{"artifacts":{"model.va":"broken"',
+                        },
+                    }],
+                },
+            ],
+            "output_tokens": 16,
+            "events": [{
+                "type": "tool",
+                "name": "submit_artifacts",
+                "transport_error": True,
+            }],
+            "finalized": False,
+            "agent_elapsed_s": 1.0,
+        })
+    )
+
+    result = runner.run_cell(cell, args, object())
+
+    assert result["status"] == "provider_transport_failure"
+    assert result["transport_failure_count"] == 2
+    assert result["transport_failure_count_this_run"] == 1
+    assert result["recovered_from_checkpoint"] is True
+
+
 def test_direct_run_rejects_mixed_submit_artifacts_tool_bundle(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
 ) -> None:
