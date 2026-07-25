@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "323-programmable-clock-skew-aligner",
+  "checker_task_id": "v4_323_programmable_clock_skew_aligner",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "70e8beae0f07a235a2c95dfb3ea673470ac455a68cc379150612824ffd0bfe99",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "791304148407766d8bf0e405bc4af31d41cdbc7451711ff4835b03a7043a5982",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "70e8beae0f07a235a2c95dfb3ea673470ac455a68cc379150612824ffd0bfe99",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "caf2dcb99b5fd12e9a9381e650a37b5ecd1ce2fc38031206b7cd4b36a02b678b",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "f265c0d61aee7ad3109745dec2383b1b7281ad679892c2da485822dedee4b65f"
+  },
+  "family_id": "323",
+  "family_spec_sha256": "5957256adb3a1a004d4ad4070e97402fe4d1d6be77d578743ae2d70a1a42ecd9",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ce8b562e5a5b38f1660f9666c8e5d69e1d2f25b9a7b099b50267e3a13b697eea",
+  "public_contract": "tasks/823-programmable-clock-skew-aligner-testbench/public_contract.json",
+  "public_contract_sha256": "4f8c663991ad1a72795198b10053610c211bbaa7d29fe8a4b59f0805afab5173",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/823-programmable-clock-skew-aligner-testbench",
+  "task_id": "v4-823"
+}

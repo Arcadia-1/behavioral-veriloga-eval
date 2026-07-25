@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 
 
@@ -15,6 +16,7 @@ ALLOWED_DUT_RUNTIME_SCHEMAS = {
     "r49": {"r49-direct-evas-runtime-v2"},
     "r50": {"r50-direct-evas-runtime-v2"},
     "r51": {"r51-direct-evas-runtime-v2", "r51-direct-evas-runtime-v3"},
+    "r52": {"r52-direct-evas-runtime-v2", "r52-direct-evas-runtime-v3"},
 }
 ALLOWED_TESTBENCH_RUNTIME_SCHEMAS = {
     "r45": {
@@ -29,6 +31,7 @@ ALLOWED_TESTBENCH_RUNTIME_SCHEMAS = {
         "r51-direct-evas-testbench-suite-v2",
         "r51-direct-evas-testbench-suite-v3",
     },
+    "r52": {"r52-direct-evas-testbench-reference-v1"},
 }
 AUTHORING_ONLY_PUBLIC_MARKERS = (
     "negative_variants/",
@@ -309,7 +312,63 @@ def main() -> int:
         if mode not in {"G0", "G1"} and visible.is_file() and trusted.is_file():
             if visible.read_bytes() != trusted.read_bytes():
                 problems.append("visible test and trusted replay deck differ")
-        if form == "testbench" and mode not in {"G0", "G1"}:
+        if form == "testbench" and release_revision == "r52":
+            public_task = run / "public" / "task"
+            public_runtime = public_task / "evas_runtime.json"
+            trusted_suite = evaluator / "trusted_replay_suite.json"
+            trusted_fixtures = evaluator / "trusted_replay_fixtures"
+            if not public_runtime.is_file():
+                problems.append("reference-only public Testbench runtime is missing")
+            else:
+                runtime_data = read_json(public_runtime)
+                if (
+                    runtime_data.get("schema_version")
+                    != "r52-direct-evas-testbench-reference-v1"
+                ):
+                    problems.append("reference-only public Testbench schema mismatch")
+                if runtime_data.get("feedback_scope") != "reference_dut_only":
+                    problems.append("public Testbench feedback is not reference-only")
+                if re.search(
+                    r"(?<![A-Za-z])mutation_0[1-5]\b|\bneg_[A-Za-z0-9_]+\b",
+                    json.dumps(runtime_data, sort_keys=True),
+                ):
+                    problems.append("public Testbench runtime leaks private mutation identity")
+            if (public_task / "visible_fixtures").exists():
+                problems.append("public Testbench runtime exposes private fixtures")
+            public_reference = public_task / "supplied_dut"
+            trusted_reference = trusted_fixtures / "reference" / "dut"
+            if (
+                not public_reference.is_dir()
+                or not trusted_reference.is_dir()
+                or tree_sha(public_reference) != tree_sha(trusted_reference)
+            ):
+                problems.append("public and trusted reference DUT trees differ")
+            if not trusted_suite.is_file() or not trusted_fixtures.is_dir():
+                problems.append("private Testbench trusted replay suite is incomplete")
+            public_leaks = [
+                path.relative_to(public_task).as_posix()
+                for path in public_task.rglob("*")
+                if re.search(
+                    r"(?<![A-Za-z])mutation_0[1-5]\b|\bneg_[A-Za-z0-9_]+\b",
+                    path.name,
+                    flags=re.IGNORECASE,
+                )
+                or (
+                    path.is_file()
+                    and re.search(
+                        r"(?<![A-Za-z])mutation_0[1-5]\b|\bneg_[A-Za-z0-9_]+\b",
+                        path.read_text(encoding="utf-8", errors="ignore"),
+                        flags=re.IGNORECASE,
+                    )
+                )
+            ]
+            if public_leaks:
+                problems.append("public Testbench task bundle leaks private mutation surface")
+        if (
+            form == "testbench"
+            and mode not in {"G0", "G1"}
+            and release_revision != "r52"
+        ):
             fixtures = run / "public" / "task" / "visible_fixtures"
             fixture_names = sorted(
                 path.name for path in fixtures.iterdir() if path.is_dir()

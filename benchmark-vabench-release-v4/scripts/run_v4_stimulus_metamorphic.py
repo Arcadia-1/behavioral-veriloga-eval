@@ -51,6 +51,7 @@ REQUIRED_EVAS_ENGINE = "evas2"
 REQUIRED_EVAS_VERSION = "0.8.3"
 REQUIRED_EVAS_BACKEND = "evas-rust"
 DEFAULT_RELEASE_REVISION = "r51"
+SUPPORTED_RELEASE_REVISIONS = ("r44", "r45", "r47", "r48", "r49", "r50", "r51", "r52")
 SOURCE_ROOT = ROOT / "benchmark-vabench-release-v4" / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 
 # Scaling the stimulus changes the physical operating point when the DUT owns
@@ -81,7 +82,7 @@ _SCALE = {
 
 
 def compact_evidence_identity(release_revision: str) -> tuple[str, str]:
-    if release_revision not in {"r44", "r45", "r47", "r48", "r49", "r50", "r51"}:
+    if release_revision not in SUPPORTED_RELEASE_REVISIONS:
         raise ValueError(f"unsupported release revision: {release_revision}")
     release_label = (
         "release/benchmarkv4"
@@ -90,6 +91,9 @@ def compact_evidence_identity(release_revision: str) -> tuple[str, str]:
     )
     schema_version = f"v4-{release_revision}-stimulus-metamorphic-compact-v1"
     return release_label, schema_version
+
+def required_evas_version(release_revision: str) -> str:
+    return "0.8.5" if release_revision == "r52" else REQUIRED_EVAS_VERSION
 
 
 def effective_affine_scale(family_id: str, requested_scale: float) -> float:
@@ -147,7 +151,9 @@ def format_time(seconds: float) -> str:
     return f"{seconds / 1e-15:.12g}f"
 
 
-def require_rust_evas2(combined: str) -> dict[str, str]:
+def require_rust_evas2(
+    combined: str, *, required_version: str = REQUIRED_EVAS_VERSION
+) -> dict[str, str]:
     """Reject metamorphic evidence unless the pinned Rust EVAS actually ran."""
     configured = effective_evas_engine()
     explicit_engine = os.environ.get("EVAS_ENGINE", "").strip().lower()
@@ -162,16 +168,16 @@ def require_rust_evas2(combined: str) -> dict[str, str]:
             "VAEVAS_DEFAULT_EVAS_ENGINE=evas2; "
             f"configured={configured!r} explicit={explicit_engine!r} default={default_engine!r}"
         )
-    if f"Version {REQUIRED_EVAS_VERSION}" not in combined:
+    if f"Version {required_version}" not in combined:
         raise RuntimeError(
-            f"EVAS2 evidence missing EVAS {REQUIRED_EVAS_VERSION} version marker"
+            f"EVAS2 evidence missing EVAS {required_version} version marker"
         )
     if f"evas_engine = {REQUIRED_EVAS_BACKEND}" not in combined:
         raise RuntimeError("EVAS2 evidence missing Rust backend marker")
     return {
         "evas_engine": REQUIRED_EVAS_ENGINE,
         "evas_engine_used": REQUIRED_EVAS_ENGINE,
-        "evas_version": REQUIRED_EVAS_VERSION,
+        "evas_version": required_version,
         "evas_backend": REQUIRED_EVAS_BACKEND,
     }
 
@@ -254,6 +260,7 @@ def run_case(
     mutation_id: str | None,
     output_root: Path,
     timeout_s: int,
+    required_evas_version: str = REQUIRED_EVAS_VERSION,
 ) -> dict[str, Any]:
     case_dir = output_root / case_id
     if case_dir.exists():
@@ -272,7 +279,9 @@ def run_case(
         required_trace_signals=required_signals,
     )
     combined = (proc.stdout or "") + "\n" + (proc.stderr or "")
-    case_runtime = case_evas2_runtime(case_output)
+    case_runtime = case_evas2_runtime(
+        case_output, required_evas_version=required_evas_version
+    )
     csv_path = case_output / "tran.csv"
     simulator_ok = (
         proc.returncode == 0
@@ -320,6 +329,7 @@ def run_task(
     scale: float,
     shift: float,
     timeout_s: int,
+    required_evas_version: str = REQUIRED_EVAS_VERSION,
 ) -> dict[str, Any]:
     task_dir = task_dir_for_id(release, task_id)
     record = json.loads((task_dir / "task_record.json").read_text(encoding="utf-8"))
@@ -340,6 +350,7 @@ def run_task(
             mutation_id=None,
             output_root=task_root / "affine",
             timeout_s=timeout_s,
+            required_evas_version=required_evas_version,
         )
     ]
     for mutation_id in score_policy.get("negative_suite_mutation_ids") or []:
@@ -352,6 +363,7 @@ def run_task(
                 mutation_id=str(mutation_id),
                 output_root=task_root / "affine",
                 timeout_s=timeout_s,
+                required_evas_version=required_evas_version,
             )
         )
     family_id = str(record.get("family_id") or "")
@@ -367,6 +379,7 @@ def run_task(
             mutation_id=None,
             output_root=task_root,
             timeout_s=timeout_s,
+            required_evas_version=required_evas_version,
         )
     kills = sum(case["status"] == "mutation_killed" for case in cases[1:])
     infra = sum(case["status"] == "infrastructure_error" for case in cases)
@@ -437,14 +450,15 @@ def main() -> int:
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument(
         "--release-revision",
-        choices=("r44", "r45", "r47", "r48", "r49", "r50", "r51"),
+        choices=SUPPORTED_RELEASE_REVISIONS,
         default=DEFAULT_RELEASE_REVISION,
         help="release identity written into evidence (default: r51)",
     )
     args = parser.parse_args()
     release_label, compact_schema = compact_evidence_identity(args.release_revision)
     require_evas2_environment()
-    runtime = probe_evas2_runtime()
+    evas_version = required_evas_version(args.release_revision)
+    runtime = probe_evas2_runtime(required_evas_version=evas_version)
     release = args.release.expanduser().resolve()
     provenance = release_provenance(release, args.release_revision)
     if args.work_root.exists():
@@ -470,6 +484,7 @@ def main() -> int:
             scale=effective_scale,
             shift=args.shift,
             timeout_s=args.timeout_s,
+            required_evas_version=evas_version,
         )
 
     with ThreadPoolExecutor(max_workers=max(1, args.workers)) as pool:
@@ -491,7 +506,7 @@ def main() -> int:
         "schema_version": "v4-stimulus-metamorphic-evidence-v1",
         "evas_engine": REQUIRED_EVAS_ENGINE,
         "evas_engine_used": REQUIRED_EVAS_ENGINE,
-        "evas_version": REQUIRED_EVAS_VERSION,
+        "evas_version": evas_version,
         "evas_backend": REQUIRED_EVAS_BACKEND,
         "runtime": runtime,
         "release": release_label,
@@ -545,7 +560,7 @@ def main() -> int:
             "certification_policy": "rust_evas2_only",
             "evas_engine": REQUIRED_EVAS_ENGINE,
             "evas_engine_used": REQUIRED_EVAS_ENGINE,
-            "evas_version": REQUIRED_EVAS_VERSION,
+            "evas_version": evas_version,
             "evas_backend": REQUIRED_EVAS_BACKEND,
             "runtime": runtime,
             "release": release_label,

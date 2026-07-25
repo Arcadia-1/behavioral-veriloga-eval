@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "070-jittered-clock-source-deterministic",
+  "checker_task_id": "v4_070_jittered_clock_source_deterministic",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "8db14833fe6b22c6b04a3970ad702733a3d144f90cd9450c10f6e80a75e31540",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "5102188e35b4cec79f31f672ff66f4320a65c470bebd0a184f0494a6c512b60f",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "8db14833fe6b22c6b04a3970ad702733a3d144f90cd9450c10f6e80a75e31540",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "06410f8949aa82f599df20673c47b205fa70b2ebeeb1420008b1417b6e9d01b4",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "2bbf983f8c0f6e49147903b7cabcb0db0cdeb80d9aaa167eba001291dc5f31fc"
+  },
+  "family_id": "070",
+  "family_spec_sha256": "6f79fc720d0568a1cb011a2ecbb18104a4fd7b53256a53ecc03e39d1ce5c8def",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3dc2b76082e413d65ebb3bafc7ed558ba000bd8edefac278e68a14395f60db12",
+  "public_contract": "tasks/570-jittered-clock-source-deterministic-testbench/public_contract.json",
+  "public_contract_sha256": "3ca4aaa39aba5f2d28b82bdd7648dd13c0b7d570e111e5d921f587192f431103",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/570-jittered-clock-source-deterministic-testbench",
+  "task_id": "v4-570"
+}

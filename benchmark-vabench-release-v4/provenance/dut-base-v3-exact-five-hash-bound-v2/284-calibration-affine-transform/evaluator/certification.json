@@ -11,7 +11,7 @@
   "component_fingerprints": {
     "task_inputs": {
       "checker_profile_sha256": "8300090ab2d1b1f4f0a472a0d23d963ae1b9ec3238416fed9a9112fcb590f203",
-      "family_spec_sha256": "cb75b861a25a08be81cc497fd66c1a0861c5dd5d1e2117b6b23215ca53b05579",
+      "family_spec_sha256": "00031208e74062ed723c3f1bebed77b479ac14cfbad676c1f67bb888730afd87",
       "feedback_deck_sha256": "b71df6dc1b387a85c6ff64f44d53810b29181dea5d84c3ec89901500f4bbca41",
       "feedback_profile_sha256": "371a9fb0a097c390329a878cb3bef7d677982717df1fe40c34160c2abca08f9d",
       "gold_bundle_sha256": "1ce40f22c97f756196e9db244991b674da860c08aae630f2fba9e0198ada2ba5",
@@ -26,23 +26,23 @@
       "evas_engine": "evas2",
       "evas_engine_used": "evas2",
       "evas_source_repository": "https://github.com/Arcadia-1/EVAS.git",
-      "evas_source_revision": "91c268bc221cbb6b24fbe414196b5bdfe958fbad",
+      "evas_source_revision": "8117bfca6fefa7e015f9bb8e4edcf2e5e1e0a6e2",
       "evas_source_tree": "clean",
-      "evas_version": "0.8.3",
+      "evas_version": "0.8.5",
       "status": "pass"
     }
   },
   "evidence": {
-    "campaign": "r51-full400",
+    "campaign": "r52-selective-186-270-274-284-285-286-287-291-304-305-311-313-317-323-326",
     "checker_id": "v4_284_calibration_affine_transform",
-    "report_path": "evidence/r51/RUST_EVAS2_CERTIFICATION.json",
-    "report_sha256": "1cdaaeb1a3e3a513e6cea90ab0c002640e7cab8950314dca3831dde279c900c6",
+    "report_path": "evidence/canonical-source/R52_TARGET_CONTRACT_RECERTIFICATION.json",
+    "report_sha256": "6ed5663673de6c3ee1b7ce62bc28cff103f3b6b91870c870c13c3cb8111de0b0",
     "trace_row_count": 1377
   },
   "family_id": "284",
   "input_hashes": {
     "checker_profile": "8300090ab2d1b1f4f0a472a0d23d963ae1b9ec3238416fed9a9112fcb590f203",
-    "family_spec": "cb75b861a25a08be81cc497fd66c1a0861c5dd5d1e2117b6b23215ca53b05579",
+    "family_spec": "00031208e74062ed723c3f1bebed77b479ac14cfbad676c1f67bb888730afd87",
     "feedback_profile": "371a9fb0a097c390329a878cb3bef7d677982717df1fe40c34160c2abca08f9d",
     "gold_bundle": "1ce40f22c97f756196e9db244991b674da860c08aae630f2fba9e0198ada2ba5",
     "harness_spec": "0a4caedb422c2a9e64d2b99d014b6cdbc03f3b8a9481e4de8f29483bd9131139",

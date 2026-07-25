@@ -91,6 +91,66 @@ def validate_evaluation_binding(record: dict[str, Any], task_dir: Path) -> None:
             raise SystemExit("public and trusted canonical test decks differ")
         return
 
+    if (
+        form == "testbench"
+        and binding.get("kind") == "reference_only_public_testbench"
+    ):
+        if binding.get("reuse_policy") != "public_reference_matches_trusted_reference":
+            raise SystemExit("reference-only testbench reuse policy mismatch")
+        public_runtime = task_dir / str(binding.get("public_runtime") or "")
+        public_reference = task_dir / str(
+            binding.get("public_reference_dut_tree") or ""
+        )
+        trusted_suite = task_dir / str(binding.get("trusted_replay_suite") or "")
+        trusted_fixtures = task_dir / str(
+            binding.get("trusted_replay_fixture_tree") or ""
+        )
+        trusted_reference = trusted_fixtures / "reference" / "dut"
+        if not public_runtime.is_file() or not trusted_suite.is_file():
+            raise SystemExit("reference-only testbench binding references missing manifests")
+        if (
+            not public_reference.is_dir()
+            or not trusted_fixtures.is_dir()
+            or not trusted_reference.is_dir()
+        ):
+            raise SystemExit("reference-only testbench binding references missing fixtures")
+        runtime_payload = read_json(public_runtime)
+        trusted_payload = read_json(trusted_suite)
+        if runtime_payload.get("schema_version") != "r52-direct-evas-testbench-reference-v1":
+            raise SystemExit("reference-only public runtime schema mismatch")
+        if runtime_payload.get("feedback_scope") != "reference_dut_only":
+            raise SystemExit("reference-only public feedback scope mismatch")
+        if (
+            runtime_payload.get("candidate") != "submission/testbench.scs"
+            or runtime_payload.get("reference_dut_root") != "task/supplied_dut"
+            or runtime_payload.get("working_directory") != "public_root"
+        ):
+            raise SystemExit("reference-only public runtime is not transport-neutral")
+        if "mutation_" in json.dumps(runtime_payload, sort_keys=True):
+            raise SystemExit("reference-only public runtime leaks a private mutation")
+        if trusted_payload.get("schema_version") != "r52-trusted-evas-testbench-suite-v1":
+            raise SystemExit("trusted replay suite schema mismatch")
+        if binding.get("public_runtime_sha256") != file_sha(public_runtime):
+            raise SystemExit("reference-only public runtime hash mismatch")
+        if binding.get("trusted_replay_suite_sha256") != file_sha(trusted_suite):
+            raise SystemExit("trusted replay suite hash mismatch")
+        if (
+            binding.get("trusted_replay_fixture_tree_sha256")
+            != tree_sha(trusted_fixtures)
+        ):
+            raise SystemExit("trusted replay fixture tree hash mismatch")
+        public_reference_sha = tree_sha(public_reference)
+        trusted_reference_sha = tree_sha(trusted_reference)
+        if (
+            binding.get("public_reference_dut_tree_sha256")
+            != public_reference_sha
+            or binding.get("trusted_reference_dut_tree_sha256")
+            != trusted_reference_sha
+            or public_reference_sha != trusted_reference_sha
+        ):
+            raise SystemExit("public and trusted reference DUT trees differ")
+        return
+
     if form != "testbench" or binding.get("kind") != "public_testbench_suite":
         raise SystemExit("task lacks public testbench suite binding")
     if binding.get("reuse_policy") != "public_and_trusted_replay_suite_same_bytes":
@@ -187,6 +247,14 @@ def serialize_public_artifacts(task_dir: Path, form: str) -> str:
             lines.extend([
                 f'<<<VABENCH_INPUT_ARTIFACT path="{relative}">>>',
                 path.read_text(encoding="utf-8"),
+                "<<<END_VABENCH_INPUT_ARTIFACT>>>",
+            ])
+    if form == "testbench" and (public / "evas_runtime.json").is_file():
+        runtime = read_json(public / "evas_runtime.json")
+        if runtime.get("schema_version") == "r52-direct-evas-testbench-reference-v1":
+            lines.extend([
+                '<<<VABENCH_INPUT_ARTIFACT path="evas_runtime.json">>>',
+                (public / "evas_runtime.json").read_text(encoding="utf-8"),
                 "<<<END_VABENCH_INPUT_ARTIFACT>>>",
             ])
     for relative, path in public_support_files(task_dir):
@@ -305,7 +373,12 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
         public_input_paths.extend(sorted((task_dir / "public" / "buggy_bundle").rglob("*.va")))
     support_paths = [path for _, path in public_support_files(task_dir)]
     public_input_paths.extend(support_paths)
-    if mode in AGENTIC:
+    reference_only_public_testbench = (
+        form == "testbench"
+        and (record.get("evaluation_binding") or {}).get("kind")
+        == "reference_only_public_testbench"
+    )
+    if mode in AGENTIC or reference_only_public_testbench:
         public_input_paths.extend(
             path for path in sorted((task_dir / "public").rglob("*"))
             if path.is_file() and path not in public_input_paths
@@ -477,6 +550,15 @@ def install_public(task_dir: Path, public_root: Path, form: str, mode: str, rele
         shutil.copy2(source, destination)
     if release is not None and mode_record is not None:
         install_skills(release, public_root, mode_record)
+    runtime_contract_path = source_public / "evas_runtime.json"
+    reference_only_public_testbench = (
+        form == "testbench"
+        and runtime_contract_path.is_file()
+        and read_json(runtime_contract_path).get("schema_version")
+        == "r52-direct-evas-testbench-reference-v1"
+    )
+    if reference_only_public_testbench:
+        shutil.copy2(runtime_contract_path, target / "evas_runtime.json")
     if mode in AGENTIC:
         for name in ("visible_test.scs", "evas_runtime.json"):
             if (source_public / name).is_file():

@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "241-hysteretic-comparator-receiver",
+  "checker_task_id": "v4_241_hysteretic_comparator_receiver",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "d0fb1268610f17cb35873a91b17cdab7cdd482b700b3b97d54aa3f605aec6b4c",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "def0603a5dd23b3f0ca11d6d1564f96f3446993e7a892ab0f50ade3e9ad4df37",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "d0fb1268610f17cb35873a91b17cdab7cdd482b700b3b97d54aa3f605aec6b4c",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "99653a3a99756a1e694a4e09f89c56c2e20149556e33145ac831ff2177e2721d",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "0e6d89a60d16d860ec05f30384177540ba5a6841c6775d9d4d15e36fc1430d1e"
+  },
+  "family_id": "241",
+  "family_spec_sha256": "f8383c53f5b4983c84583d2046410758e538c1d57f1e5e4f2baf611fe7c0b0ef",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5e0332e7afbddea1e1c82d255f45b5bada7414fd5e6f9ea75c7abed45545df31",
+  "public_contract": "tasks/741-hysteretic-comparator-receiver-testbench/public_contract.json",
+  "public_contract_sha256": "77480e662cd77c8e00456e2efb883fd2e9d6f8289d7a6b73759bbc66e0e6dfc8",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/741-hysteretic-comparator-receiver-testbench",
+  "task_id": "v4-741"
+}

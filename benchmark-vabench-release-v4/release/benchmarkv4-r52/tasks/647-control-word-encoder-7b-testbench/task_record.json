@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "147-control-word-encoder-7b",
+  "checker_task_id": "v4_147_control_word_encoder_7b",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "71b40380f8ec84c0c3219ea9ce958cef2ce1f1ac355cca03eaead327d082df1d",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "337fef2993a2bbeade5b05c5de2d036d35f56f0bb50b062e4852382909741556",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "71b40380f8ec84c0c3219ea9ce958cef2ce1f1ac355cca03eaead327d082df1d",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "e4d8145013a3e58cd86744e37ad0caafb6a7a91df74f8bb475a5de8143412346",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "4b935ffa8cc762cea2cead6533214062e3696c601980254371ab9d2efab7838c"
+  },
+  "family_id": "147",
+  "family_spec_sha256": "5614cb5fcc7d38a0b758f1d29cb6f127c7269940e0cd2713c7bf0db8337991d1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "04cf96edb250561353c2a83f5378cf69ac320697ce6f2af17bcbd7ea9590f9a0",
+  "public_contract": "tasks/647-control-word-encoder-7b-testbench/public_contract.json",
+  "public_contract_sha256": "78552fd8d4a94be1c8a7079b60fd76a341d62793079f74d5188974c777f1f3b9",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/647-control-word-encoder-7b-testbench",
+  "task_id": "v4-647"
+}

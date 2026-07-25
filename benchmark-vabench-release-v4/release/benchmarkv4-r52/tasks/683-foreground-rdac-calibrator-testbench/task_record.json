@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "183-foreground-rdac-calibrator",
+  "checker_task_id": "v4_183_foreground_rdac_calibrator",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "a2c3254adc454ed2bde3a2fa04bd423d764ad4b6f68bc835cf6e12fa4b2aa1a1",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "b293cb0a25796fdea51cf3b0aa113e811ec8b1c71d7f55adb473f170683f7d4c",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "a2c3254adc454ed2bde3a2fa04bd423d764ad4b6f68bc835cf6e12fa4b2aa1a1",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "696cd98e9f611b844f05af7c9f521e176004d142692f3d47c5be5f192795f242",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "7adc25819f0064008a7cd1a6a1c2e9e8b25bee78b32b1d1ec8e01692cdaaf8e3"
+  },
+  "family_id": "183",
+  "family_spec_sha256": "ee168792c0a08fb56b729917e7ada5d9d3272c01185f41efc9e2278fdba35082",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ebef2a66f7efefdd376fba93b72da2b1b32a5da8795ce297861321e90ac956e8",
+  "public_contract": "tasks/683-foreground-rdac-calibrator-testbench/public_contract.json",
+  "public_contract_sha256": "e731428c5a6621c760f1560ea00710caaf1f797c3402219251c79d0ef625dfdf",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/683-foreground-rdac-calibrator-testbench",
+  "task_id": "v4-683"
+}

@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "328-pam4-linearity-monitor",
+  "checker_task_id": "v4_328_pam4_linearity_monitor",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "0a852cc1d0fab9876aafd2b4841fb769277e1b2cf6589920c6884a9ea82887de",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "7550084ce648027ab7a302ca9d938ba8552c0025b29b7625b83c31fa0c5aa699",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "0a852cc1d0fab9876aafd2b4841fb769277e1b2cf6589920c6884a9ea82887de",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "b7b4a8da9315ec7b1201a1e664ac16a10262ba1d1da017223500e9660b4b3989",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "c8adfb0a4fa469730c84921d94aabb2d747fb586621747a0af14bcbed8514894"
+  },
+  "family_id": "328",
+  "family_spec_sha256": "1b476a5e5d2ff87f2e8d7e0c136c145d7d0873c6825972777fd03355a7d78943",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "35bf007cd22830665a3ca752578db38f5e38b2656678b26c65639077b6735839",
+  "public_contract": "tasks/828-pam4-linearity-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "4b62d949a266d05533c9f97f1b953eab1f9f3ecf980fc2b2b13fedea836773b5",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/828-pam4-linearity-monitor-testbench",
+  "task_id": "v4-828"
+}

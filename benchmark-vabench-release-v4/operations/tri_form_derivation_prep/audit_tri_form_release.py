@@ -30,6 +30,7 @@ DEFAULT_RELEASES = {
     "r49": PACKAGE_ROOT / "release" / "benchmarkv4-r49",
     "r50": PACKAGE_ROOT / "release" / "benchmarkv4-r50",
     "r51": PACKAGE_ROOT / "release" / "benchmarkv4-r51",
+    "r52": PACKAGE_ROOT / "release" / "benchmarkv4-r52",
 }
 DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 FORMS = ("dut", "testbench", "bugfix")
@@ -109,11 +110,12 @@ def rust_evas2_runtime(
     *,
     backend_key: str = "evas_backend",
     require_source_revision: bool = False,
+    expected_version: str = "0.8.3",
 ) -> bool:
     markers_valid = isinstance(payload, dict) and (
         payload.get("evas_engine") == "evas2"
         and payload.get("evas_engine_used") == "evas2"
-        and payload.get("evas_version") == "0.8.3"
+        and payload.get("evas_version") == expected_version
         and payload.get(backend_key) == "evas-rust"
     )
     if not markers_valid or not require_source_revision:
@@ -128,11 +130,13 @@ def rust_evas2_runtime(
 
 
 def allowed_runtime_schemas(release_revision: str, form: str) -> set[str]:
+    if release_revision == "r52" and form == "testbench":
+        return {"r52-direct-evas-testbench-reference-v1"}
     kind = "direct-evas-testbench-suite" if form == "testbench" else "direct-evas-runtime"
     versions = (
         (1, 2)
         if release_revision == "r45"
-        else ((2, 3) if release_revision == "r51" else (2,))
+        else ((2, 3) if release_revision in {"r51", "r52"} else (2,))
     )
     return {
         f"{release_revision}-{kind}-v{version}"
@@ -437,31 +441,51 @@ def audit_release_evidence(
                     f"declared={payload.get('schema_version')!r} expected={expected_schema!r}"
                 )
 
-        require_source_revision = release_revision == "r51"
+        require_source_revision = release_revision in {"r51", "r52"}
+        expected_evas_version = "0.8.5" if release_revision == "r52" else "0.8.3"
         if rust and not rust_evas2_runtime(
             rust.get("runtime"),
             require_source_revision=require_source_revision,
+            expected_version=expected_evas_version,
         ):
-            problems.append(f"{release_revision} Rust certification lacks EVAS 0.8.3 Rust runtime markers")
+            problems.append(
+                f"{release_revision} Rust certification lacks EVAS "
+                f"{expected_evas_version} Rust runtime markers"
+            )
         if metamorphic and not (
-            rust_evas2_runtime(metamorphic)
+            rust_evas2_runtime(
+                metamorphic,
+                expected_version=expected_evas_version,
+            )
             and (
                 not require_source_revision
                 or rust_evas2_runtime(
                     metamorphic.get("runtime"),
                     require_source_revision=True,
+                    expected_version=expected_evas_version,
                 )
             )
         ):
-            problems.append(f"{release_revision} metamorphic evidence lacks EVAS 0.8.3 Rust runtime markers")
+            problems.append(
+                f"{release_revision} metamorphic evidence lacks EVAS "
+                f"{expected_evas_version} Rust runtime markers"
+            )
         if parity and not (
-            rust_evas2_runtime(parity, backend_key="evas_backend_required")
+            rust_evas2_runtime(
+                parity,
+                backend_key="evas_backend_required",
+                expected_version=expected_evas_version,
+            )
             and rust_evas2_runtime(
                 parity.get("runtime"),
                 require_source_revision=require_source_revision,
+                expected_version=expected_evas_version,
             )
         ):
-            problems.append(f"{release_revision} profile evidence lacks EVAS 0.8.3 Rust runtime markers")
+            problems.append(
+                f"{release_revision} profile evidence lacks EVAS "
+                f"{expected_evas_version} Rust runtime markers"
+            )
 
         if rust and rust.get("source_certification_definition_sha256") != source_definition_sha256:
             problems.append(f"{release_revision} Rust certification source definition binding mismatch")
@@ -737,7 +761,7 @@ def audit_task(
                         problems.append(f"{prefix} portable EVAS runtime mode is missing")
                     if "--spectre-strict" in str(runtime_data.get("command") or ""):
                         problems.append(f"{prefix} portable EVAS runtime still requests strict mode")
-        else:
+        elif release_revision != "r52":
             public_suite = task_dir / "public" / "evas_runtime.json"
             trusted_suite = evaluator / "trusted_replay_suite.json"
             public_fixtures = task_dir / "public" / "visible_fixtures"
@@ -781,6 +805,67 @@ def audit_task(
                         problems.append(f"{prefix} portable EVAS testbench still requests strict mode")
             if public_fixtures.is_dir() and binding.get("public_fixture_tree_sha256") != tree_sha(public_fixtures):
                 problems.append(f"{prefix} public fixture binding hash mismatch")
+        else:
+            public_runtime = task_dir / "public" / "evas_runtime.json"
+            public_reference = task_dir / "public" / "supplied_dut"
+            trusted_suite = evaluator / "trusted_replay_suite.json"
+            trusted_fixtures = evaluator / "trusted_replay_fixtures"
+            trusted_reference = trusted_fixtures / "reference" / "dut"
+            if binding.get("kind") != "reference_only_public_testbench":
+                problems.append(
+                    f"{prefix} task record lacks reference-only public testbench binding"
+                )
+            if (task_dir / "public" / "visible_fixtures").exists():
+                problems.append(f"{prefix} public testbench view exposes private fixtures")
+            if not public_runtime.is_file():
+                problems.append(f"{prefix} reference-only public runtime is missing")
+            else:
+                runtime_data = read_json(public_runtime)
+                if (
+                    runtime_data.get("schema_version")
+                    != "r52-direct-evas-testbench-reference-v1"
+                ):
+                    problems.append(f"{prefix} reference-only public runtime schema mismatch")
+                if runtime_data.get("feedback_scope") != "reference_dut_only":
+                    problems.append(f"{prefix} public feedback is not reference-only")
+                if re.search(
+                    r"(?<![A-Za-z])mutation_0[1-5]\b|\bneg_[A-Za-z0-9_]+\b",
+                    json.dumps(runtime_data, sort_keys=True),
+                ):
+                    problems.append(f"{prefix} public runtime leaks private mutation identity")
+                if binding.get("public_runtime_sha256") != file_sha(public_runtime):
+                    problems.append(f"{prefix} reference-only public runtime hash mismatch")
+            if not trusted_suite.is_file() or not trusted_fixtures.is_dir():
+                problems.append(f"{prefix} private trusted replay suite is incomplete")
+            else:
+                trusted_data = read_json(trusted_suite)
+                expected_cases = [
+                    "reference",
+                    "mutation_01",
+                    "mutation_02",
+                    "mutation_03",
+                    "mutation_04",
+                    "mutation_05",
+                ]
+                if [item.get("case") for item in trusted_data.get("cases") or []] != expected_cases:
+                    problems.append(f"{prefix} private trusted replay is not reference plus five")
+                if binding.get("trusted_replay_suite_sha256") != file_sha(trusted_suite):
+                    problems.append(f"{prefix} private trusted replay suite hash mismatch")
+                if binding.get("trusted_replay_fixture_tree_sha256") != tree_sha(trusted_fixtures):
+                    problems.append(f"{prefix} private trusted replay fixture hash mismatch")
+            if public_reference.is_dir() and trusted_reference.is_dir():
+                public_reference_sha = tree_sha(public_reference)
+                trusted_reference_sha = tree_sha(trusted_reference)
+                if (
+                    public_reference_sha != trusted_reference_sha
+                    or binding.get("public_reference_dut_tree_sha256")
+                    != public_reference_sha
+                    or binding.get("trusted_reference_dut_tree_sha256")
+                    != trusted_reference_sha
+                ):
+                    problems.append(f"{prefix} public/trusted reference DUT binding mismatch")
+            else:
+                problems.append(f"{prefix} public or trusted reference DUT is missing")
     checker_profile = read_json(evaluator / "checker_profile.json")
     if record.get("checker_task_id") != checker_profile.get("checker_task_id"):
         problems.append(f"{prefix} task record checker_task_id does not match checker_profile.json")
@@ -816,7 +901,7 @@ def audit_task(
         supplied = task_dir / "public" / "supplied_dut"
         if tree_file_hashes(supplied) != expected_solution_file_hashes(source_task):
             problems.append(f"{prefix} supplied DUT differs from canonical gold")
-        if release_revision != "r44":
+        if release_revision not in {"r44", "r52"}:
             fixture_names = sorted(
                 path.name for path in (task_dir / "public" / "visible_fixtures").iterdir()
                 if path.is_dir()
@@ -825,6 +910,31 @@ def audit_task(
                 "mutation_01", "mutation_02", "mutation_03", "mutation_04", "mutation_05", "reference",
             ]:
                 problems.append(f"{prefix} visible suite is not one reference plus five mutations")
+        if release_revision == "r52":
+            public_root = task_dir / "public"
+            leaked_paths = [
+                path.relative_to(public_root).as_posix()
+                for path in public_root.rglob("*")
+                if re.search(
+                    r"(?<![A-Za-z])mutation_0[1-5]\b|\bneg_[A-Za-z0-9_]+\b",
+                    path.name,
+                    flags=re.IGNORECASE,
+                )
+            ]
+            leaked_content = [
+                path.relative_to(public_root).as_posix()
+                for path in public_root.rglob("*")
+                if path.is_file()
+                and re.search(
+                    r"(?<![A-Za-z])mutation_0[1-5]\b|\bneg_[A-Za-z0-9_]+\b",
+                    path.read_text(encoding="utf-8", errors="ignore"),
+                    flags=re.IGNORECASE,
+                )
+            ]
+            if leaked_paths or leaked_content:
+                problems.append(
+                    f"{prefix} public testbench bundle leaks private mutation surface"
+                )
         reference_tb_source_kind = audit_testbench_reference(
             evaluator, source_task, score, prefix, problems
         )

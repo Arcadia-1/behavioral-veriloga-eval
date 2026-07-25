@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "346-tdc-measurement-system",
+  "checker_task_id": "v4_346_tdc_measurement_system",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "b0d0f931607cc6c619e2fa9b654a50c7360884bf60bf528253993545e6f72086",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "e7c13ba6d9a1c722f82109f7cdec98d83cbda57034fb165c5fda3576ca5aa268",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "b0d0f931607cc6c619e2fa9b654a50c7360884bf60bf528253993545e6f72086",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "26da190b2793fa3830bf7bdc6dde767dde2173781d557534ff74dd754d5db315",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "c647eae2dcb791523afb8f8c0634ca0eb75a77251dc671decec86d8e035fedf4"
+  },
+  "family_id": "346",
+  "family_spec_sha256": "3ab9da12ea64b107edcdbdf1f675c0d4b4cf07729bf37c8964e4ac0c7c5cc42b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e5b955da780b387c7f2e175bc69752378c0a105e6f8b39d7b88ab732907a4af1",
+  "public_contract": "tasks/846-tdc-measurement-system-testbench/public_contract.json",
+  "public_contract_sha256": "442c33bb669be87675809e457090cf7d0532c3e146583fa1a954d4e99c374005",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/846-tdc-measurement-system-testbench",
+  "task_id": "v4-846"
+}

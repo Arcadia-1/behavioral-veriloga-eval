@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "001-bang-bang-phase-detector",
+  "checker_task_id": "v4_001_bang_bang_phase_detector",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "81632a9970a105cd0c207c76dfb83cbe897beb7602d781f02894d4f097ae920b",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "73e104eb99413996414c7a074ecb404f665deda0bcad6bcf040a3f67569fa9a6",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "81632a9970a105cd0c207c76dfb83cbe897beb7602d781f02894d4f097ae920b",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "a2b821b96bbd47e209f6a4ca3f15eb71c26ae0ddd85ad6ca3070a028ac1326b3",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "48bdf39b9e502cbf3bd1c1f22c6bb32e71ba168787217f9c6fb36e0b18d02242"
+  },
+  "family_id": "001",
+  "family_spec_sha256": "13229e77d6dc98c42efa103a9fe57f38d8cd4c3ff130114783667c0a36585a19",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "40902bd38ebd7e963907700cde43930e6eadb50e597bc575262eecf172ac3c84",
+  "public_contract": "tasks/501-bang-bang-phase-detector-testbench/public_contract.json",
+  "public_contract_sha256": "0255398fb963d4d4994ab5f5dc9ee333ace87ef42e390a4e2ccfceed79b4e14f",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/501-bang-bang-phase-detector-testbench",
+  "task_id": "v4-501"
+}

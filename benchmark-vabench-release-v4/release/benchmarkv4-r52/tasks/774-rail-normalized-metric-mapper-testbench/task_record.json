@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "274-rail-normalized-metric-mapper",
+  "checker_task_id": "v4_274_rail_normalized_metric_mapper",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "09d7fd6a10a946232edcc87022a25112a96fd1a8169efbf32d505d1cb2b7c9fa",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "41c53bf29dc737e0525b38204a762ec851827fa86431097b61c05724da323e8a",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "09d7fd6a10a946232edcc87022a25112a96fd1a8169efbf32d505d1cb2b7c9fa",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "769a99f7b6d0ddaaa5a0ef71bc0428fc93ccb786264cee2195b9d74ae4ab66e6",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "c9bf40c290fe5f6bce538ce9184b25f4af56a2f21ed17a3ebec493bcf90d61e6"
+  },
+  "family_id": "274",
+  "family_spec_sha256": "e1bb153295221455f568c502f9dc7e55d2f7aac420585b5d136b28005b2ced84",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e0626c14bfec332c6e19257a850413d305bb43731df97a203ab80851ba4e3fab",
+  "public_contract": "tasks/774-rail-normalized-metric-mapper-testbench/public_contract.json",
+  "public_contract_sha256": "64962f98b52e006116a2526ec6d4215cc3ef4c9bbe0d2334080ae3f00ee9b4d9",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/774-rail-normalized-metric-mapper-testbench",
+  "task_id": "v4-774"
+}

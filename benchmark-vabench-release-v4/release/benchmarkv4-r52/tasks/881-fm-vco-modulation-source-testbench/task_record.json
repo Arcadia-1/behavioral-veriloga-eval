@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "381-fm-vco-modulation-source",
+  "checker_task_id": "v4_381_fm_vco_modulation_source",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "4226b81d97e35eafafa45e63b1533e38c7d32358d14c7f550bc15ccc1149cb6d",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "1f7ea84dd4020e11a2ab71b8fb987a8a478f1301e2ff674ea569a5f521538388",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "4226b81d97e35eafafa45e63b1533e38c7d32358d14c7f550bc15ccc1149cb6d",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "c7fc826020cd9d59b44d7b7e07fab62f5b933550673ef22f93828a38f2a4bd59",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "149ff57aeb8348cd8bfdf4d4d293e8ac4aa9969caff61ce013a4b749c1b82c3f"
+  },
+  "family_id": "381",
+  "family_spec_sha256": "1e6be83d26aa0132656ee27fcbd176477c2d5a0133a8b5d06f7122b9635e511e",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "002b7aa14d4974a03853e902940c6ed8443465b5f6d22f9c0c2114aafbc3257b",
+  "public_contract": "tasks/881-fm-vco-modulation-source-testbench/public_contract.json",
+  "public_contract_sha256": "a5cb04e5ead1599a78017358346bc0f5af1a7cc2ab07278acf66ade447dd256c",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/881-fm-vco-modulation-source-testbench",
+  "task_id": "v4-881"
+}

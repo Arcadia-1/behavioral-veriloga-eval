@@ -49,6 +49,7 @@ from export_tri_form_runtime import (  # noqa: E402
     ordered_prompt_components,
     render_prompt,
     task_record as load_task_record,
+    tree_sha,
 )
 from run_campaign import (  # noqa: E402
     active_tool_schemas,
@@ -56,6 +57,7 @@ from run_campaign import (  # noqa: E402
     read_skill_file,
     skill_tree_sha,
 )
+import run_campaign as run_campaign_module  # noqa: E402
 from audit_runtime_export import (  # noqa: E402
     ALLOWED_DUT_RUNTIME_SCHEMAS,
     ALLOWED_TESTBENCH_RUNTIME_SCHEMAS,
@@ -102,6 +104,26 @@ def test_r51_release_plumbing_preserves_real_skill_and_runtime_contracts() -> No
     assert ALLOWED_TESTBENCH_RUNTIME_SCHEMAS["r51"] == {
         "r51-direct-evas-testbench-suite-v2",
         "r51-direct-evas-testbench-suite-v3",
+    }
+
+
+def test_r52_release_plumbing_uses_reference_only_testbench_runtime() -> None:
+    assert DEFAULT_OUTPUTS["r52"].name == "benchmarkv4-r52"
+    assert REBUILD_DEFAULT_RELEASES["r52"].name == "benchmarkv4-r52"
+    assert release_uses_real_skills("r52") is True
+    assert allowed_runtime_schemas("r52", "dut") == {
+        "r52-direct-evas-runtime-v2",
+        "r52-direct-evas-runtime-v3",
+    }
+    assert allowed_runtime_schemas("r52", "testbench") == {
+        "r52-direct-evas-testbench-reference-v1",
+    }
+    assert ALLOWED_DUT_RUNTIME_SCHEMAS["r52"] == {
+        "r52-direct-evas-runtime-v2",
+        "r52-direct-evas-runtime-v3",
+    }
+    assert ALLOWED_TESTBENCH_RUNTIME_SCHEMAS["r52"] == {
+        "r52-direct-evas-testbench-reference-v1",
     }
 
 
@@ -568,6 +590,75 @@ def test_testbench_builder_records_reference_hash_and_source_kind(tmp_path: Path
     contract = json.loads((task / "public_contract.json").read_text(encoding="utf-8"))
     assert "feedback" not in contract
     assert contract["evas"]["visible_and_final_suite"] == "identical_reference_plus_five_mutations"
+
+
+def test_r52_testbench_builder_keeps_faults_private(tmp_path: Path) -> None:
+    source_task, row, seed_review = sample_source_task(
+        tmp_path, independent_reference=True
+    )
+    output = tmp_path / "release"
+    build_testbench_view(
+        output,
+        source_task,
+        row,
+        sample_spec(),
+        "a" * 64,
+        seed_review,
+        release_revision="r52",
+    )
+
+    task = output / "tasks" / "501-sample-testbench"
+    public = task / "public"
+    evaluator = task / "evaluator"
+    runtime = json.loads(
+        (public / "evas_runtime.json").read_text(encoding="utf-8")
+    )
+    trusted_suite = json.loads(
+        (evaluator / "trusted_replay_suite.json").read_text(encoding="utf-8")
+    )
+    binding = json.loads(
+        (task / "task_record.json").read_text(encoding="utf-8")
+    )["evaluation_binding"]
+    contract = json.loads(
+        (task / "public_contract.json").read_text(encoding="utf-8")
+    )
+
+    assert runtime["schema_version"] == "r52-direct-evas-testbench-reference-v1"
+    assert runtime["feedback_scope"] == "reference_dut_only"
+    assert runtime["reference_dut_root"] == "task/supplied_dut"
+    assert "cases" not in runtime
+    assert "fixture_tree_sha256" not in runtime
+    assert not (public / "visible_fixtures").exists()
+    assert "mutation_" not in json.dumps(runtime, sort_keys=True)
+
+    assert trusted_suite["schema_version"] == "r52-trusted-evas-testbench-suite-v1"
+    assert [item["case"] for item in trusted_suite["cases"]] == [
+        "reference",
+        "mutation_01",
+        "mutation_02",
+        "mutation_03",
+        "mutation_04",
+        "mutation_05",
+    ]
+    assert sorted(
+        path.name
+        for path in (evaluator / "trusted_replay_fixtures").iterdir()
+    ) == [
+        "mutation_01",
+        "mutation_02",
+        "mutation_03",
+        "mutation_04",
+        "mutation_05",
+        "reference",
+    ]
+    assert binding["kind"] == "reference_only_public_testbench"
+    assert (
+        binding["public_reference_dut_tree_sha256"]
+        == binding["trusted_reference_dut_tree_sha256"]
+    )
+    assert contract["evas"]["visible_feedback"] == "reference_dut_only"
+    assert contract["evas"]["final_evaluation"] == "reference_plus_five_hidden_faults"
+    assert "visible_and_final_suite" not in contract["evas"]
 
 
 def test_materializer_preserves_exact_public_contract_text_for_all_forms(
@@ -1231,6 +1322,128 @@ def test_g5_testbench_runtime_exports_direct_evas_visible_suite(
     ]
     assert "public/submission/runs" not in suite["candidate_command_template"]
     assert "/tmp/vabench-visible/runs/{case}" in suite["candidate_command_template"]
+
+
+def test_r52_testbench_one_shot_and_agentic_export_identical_task_assets(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    source_task, row, seed_review = sample_source_task(
+        tmp_path, independent_reference=True
+    )
+    release = tmp_path / "release"
+    task_record = build_testbench_view(
+        release,
+        source_task,
+        row,
+        sample_spec(),
+        "a" * 64,
+        seed_review,
+        release_revision="r52",
+    )
+    install_prompt_assets(release, "r52")
+    (release / "TASK_INDEX.json").write_text(
+        json.dumps({"tasks": [task_record]}) + "\n", encoding="utf-8"
+    )
+
+    runtime_roots = {}
+    prompt_plans = {}
+    task = release / task_record["task_dir"]
+    for mode in ("G0", "G2"):
+        runtime = tmp_path / f"runtime-{mode}"
+        monkeypatch.setattr(sys, "argv", [
+            "export_tri_form_runtime.py",
+            "--release", str(release),
+            "--task", "v4-501",
+            "--mode", mode,
+            "--output", str(runtime),
+            "--working-token-budget", "4096",
+        ])
+        assert export_runtime() == 0
+        monkeypatch.setattr(sys, "argv", [
+            "audit_runtime_export.py",
+            "--run", str(runtime),
+        ])
+        assert audit_runtime_export() == 0
+        runtime_roots[mode] = runtime
+        prompt_plans[mode] = build_mode_record(
+            release,
+            task,
+            json.loads((task / "task_record.json").read_text(encoding="utf-8")),
+            mode,
+        )
+
+    assert tree_sha(
+        runtime_roots["G0"] / "public" / "task"
+    ) == tree_sha(runtime_roots["G2"] / "public" / "task")
+    assert (
+        prompt_plans["G0"]["public_input_hashes"]
+        == prompt_plans["G2"]["public_input_hashes"]
+    )
+    for runtime in runtime_roots.values():
+        public_task = runtime / "public" / "task"
+        assert (public_task / "evas_runtime.json").is_file()
+        assert not (public_task / "visible_fixtures").exists()
+        assert "mutation_" not in json.dumps(
+            prompt_plans[
+                "G0" if runtime.name.endswith("G0") else "G2"
+            ],
+            sort_keys=True,
+        )
+
+
+def test_r52_public_evas_runs_reference_only(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    runtime = tmp_path / "runtime"
+    task = runtime / "public" / "task"
+    submission = runtime / "public" / "submission"
+    (task / "supplied_dut").mkdir(parents=True)
+    submission.mkdir(parents=True)
+    (task / "supplied_dut" / "dut.va").write_text(
+        "module dut; endmodule\n", encoding="utf-8"
+    )
+    (submission / "testbench.scs").write_text(
+        'ahdl_include "./dut/dut.va"\n', encoding="utf-8"
+    )
+    (task / "evas_runtime.json").write_text(json.dumps({
+        "schema_version": "r52-direct-evas-testbench-reference-v1",
+        "candidate": "submission/testbench.scs",
+        "candidate_dut_binding": "./dut",
+        "reference_dut_root": "task/supplied_dut",
+        "feedback_scope": "reference_dut_only",
+        "working_directory": "public_root",
+    }) + "\n", encoding="utf-8")
+    monkeypatch.setattr(
+        run_campaign_module,
+        "argv_result",
+        lambda argv, cwd, timeout_s: {
+            "returncode": 0,
+            "stdout": "",
+            "stderr": "",
+            "elapsed_s": 0.01,
+        },
+    )
+
+    result = run_campaign_module.run_public_evas(
+        runtime,
+        {},
+        30,
+        "evas",
+    )
+    assert result["status"] == "pass"
+    assert result["case"] == "reference"
+    assert (
+        runtime / ".vabench-visible" / "reference" / "dut" / "dut.va"
+    ).is_file()
+    with pytest.raises(ValueError, match="reference-only"):
+        run_campaign_module.run_public_evas(
+            runtime,
+            {"case": "mutation_01"},
+            30,
+            "evas",
+        )
 
 
 def test_g1_dut_runtime_audit_does_not_require_agentic_visible_mount(

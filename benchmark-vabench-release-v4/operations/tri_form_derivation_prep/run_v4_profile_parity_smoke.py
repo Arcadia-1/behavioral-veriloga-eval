@@ -24,6 +24,7 @@ FORMS = ("dut", "testbench", "bugfix")
 REQUIRED_EVAS_ENGINE = "evas2"
 REQUIRED_EVAS_VERSION = "0.8.3"
 RUST_EVAS_LOG_ENGINE = "evas-rust"
+SUPPORTED_RELEASE_REVISIONS = ("r44", "r45", "r47", "r48", "r49", "r50", "r51", "r52")
 
 sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT / "operations" / "tri_form_derivation_prep"))
@@ -98,6 +99,9 @@ def release_label(revision: str) -> str:
         return "release/benchmarkv4"
     return f"release/benchmarkv4-{revision}"
 
+def required_evas_version(revision: str) -> str:
+    return "0.8.5" if revision == "r52" else REQUIRED_EVAS_VERSION
+
 
 def source_family(family_id: str) -> Path:
     matches = sorted(SOURCE_ROOT.glob(f"{family_id}-*/evaluator/harness_spec.json"))
@@ -139,7 +143,9 @@ def release_rows(
     return rows
 
 
-def audit_row(release: Path, row: dict[str, Any]) -> dict[str, Any]:
+def audit_row(
+    release: Path, row: dict[str, Any], *, evas_version: str = REQUIRED_EVAS_VERSION
+) -> dict[str, Any]:
     family_id = str(row["family_id"])
     task_id = str(row["task_id"])
     task_dir = release / str(row["task_dir"])
@@ -178,7 +184,7 @@ def audit_row(release: Path, row: dict[str, Any]) -> dict[str, Any]:
         "release_semantic_sha256": digest(observed),
         "evas_engine": REQUIRED_EVAS_ENGINE,
         "evas_engine_used": REQUIRED_EVAS_ENGINE,
-        "evas_version": REQUIRED_EVAS_VERSION,
+        "evas_version": evas_version,
         "evas_backend_required": RUST_EVAS_LOG_ENGINE,
     }
 
@@ -188,7 +194,7 @@ def main() -> int:
     parser.add_argument("--release", type=Path, default=DEFAULT_RELEASE)
     parser.add_argument(
         "--release-revision",
-        choices=("r44", "r45", "r47", "r48", "r49", "r50", "r51"),
+        choices=SUPPORTED_RELEASE_REVISIONS,
         default=DEFAULT_RELEASE_REVISION,
     )
     parser.add_argument("--output", type=Path, required=True)
@@ -196,11 +202,12 @@ def main() -> int:
     parser.add_argument("--family-range", type=parse_range, default=(1, 400))
     args = parser.parse_args()
     require_evas2_environment()
-    runtime = probe_evas2_runtime()
+    evas_version = required_evas_version(args.release_revision)
+    runtime = probe_evas2_runtime(required_evas_version=evas_version)
     release = args.release.expanduser().resolve()
     provenance = release_provenance(release, args.release_revision)
     rows = [
-        audit_row(release, row)
+        audit_row(release, row, evas_version=evas_version)
         for row in release_rows(release, args.task_id, args.family_range)
     ]
     report = {
@@ -212,7 +219,7 @@ def main() -> int:
         "simulation_performed": False,
         "evas_engine": REQUIRED_EVAS_ENGINE,
         "evas_engine_used": REQUIRED_EVAS_ENGINE,
-        "evas_version": REQUIRED_EVAS_VERSION,
+        "evas_version": evas_version,
         "evas_backend_required": RUST_EVAS_LOG_ENGINE,
         "runtime": runtime,
         "task_count": len(rows),

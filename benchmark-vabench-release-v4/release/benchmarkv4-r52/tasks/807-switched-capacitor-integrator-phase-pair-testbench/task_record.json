@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "307-switched-capacitor-integrator-phase-pair",
+  "checker_task_id": "v4_307_switched_capacitor_integrator_phase_pair",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "94ce87d59c2481910cd773c5891cff3250e2003b07393cb90b534c4891b6561c",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "9d6b9ca5adffde6d1bc2286782a43e6f3ff8b2db3fc77a073e8bb5469c53a01b",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "94ce87d59c2481910cd773c5891cff3250e2003b07393cb90b534c4891b6561c",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "009d1f31099925fdfb9f2e7c1d436ac1aafe89c9bd14dec8ef75db89e10e819d",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "0ccff83b32bf2bf877f43fbf30c32d162efe840374e6070814073baedbddcaf3"
+  },
+  "family_id": "307",
+  "family_spec_sha256": "4ab51f60d890c1d178f6047977d8f3b5cf9ea362c48c4b20c1b15b3c9d4d4ac0",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5157571b5bd9e5bc90f54eecb1c78c522951c398bf0145c24850f08890e6df6b",
+  "public_contract": "tasks/807-switched-capacitor-integrator-phase-pair-testbench/public_contract.json",
+  "public_contract_sha256": "469f8976d4735df1cc68b9959030632166f860c957e0342caea3bda68c0b7d31",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/807-switched-capacitor-integrator-phase-pair-testbench",
+  "task_id": "v4-807"
+}

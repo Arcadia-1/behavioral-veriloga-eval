@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "150-cyclic-decoder-12bit",
+  "checker_task_id": "v4_150_cyclic_decoder_12bit",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "f5ac4609645506be67c5802ea9e018c81901ce99a2451dd3bec6dab9f2f53218",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "7e47192842d6198b8686c3462cadf11198ec7aa92c69ebd7de02d224229a2aaf",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "f5ac4609645506be67c5802ea9e018c81901ce99a2451dd3bec6dab9f2f53218",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "dc977cdfacbf4cbc0b367e9a1f25c40dff93a808eda07d0d281b2d6b94d98ebd",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "4c9f81fb1c3f505cebae3d27b9790b556240252938d5a409b00ad4c905a4223f"
+  },
+  "family_id": "150",
+  "family_spec_sha256": "a7c905ca57960ec896ad04b83203780e74d0b45f29359aac9b58894b673a04a4",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "07c59becbe28aec32d9d2f9217ce32e7b3f2369b50888062b0629c5d2af10f9f",
+  "public_contract": "tasks/650-cyclic-decoder-12bit-testbench/public_contract.json",
+  "public_contract_sha256": "1e7155e1d491a42dca8835cbf198628dbe700839241577f4964c5141965b898c",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/650-cyclic-decoder-12bit-testbench",
+  "task_id": "v4-650"
+}

@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "008-gain-trim-controller",
+  "checker_task_id": "v4_008_gain_trim_controller",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "36b0db2a8c825fe8e1f338b888d84df41142e0aebbf885fa13c2b22717a45314",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "9594a160ba20eed2fd9e7d393c2caa9e8bbd4dc10f65ce3f633c70199eb86016",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "36b0db2a8c825fe8e1f338b888d84df41142e0aebbf885fa13c2b22717a45314",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "9e1480c7b71b796962f70bc9321d95ba9c6aef11448a4b9070d3bbf5619b7784",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "2149a1c91ec046fa611c8f4fef2137177fcfc8cbe3266db3c3b46831758ed19a"
+  },
+  "family_id": "008",
+  "family_spec_sha256": "aea6623ab44ad6de1c689c766cf5f825777c81dead35a187355ad2025890f299",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0ee8f6c122a9e344db8cbd4bc969c77aff1f8c8c333ae716a7ad59fff38b762c",
+  "public_contract": "tasks/508-gain-trim-controller-testbench/public_contract.json",
+  "public_contract_sha256": "9ff438ac74a97d3fccee0b5e05ece4988a11a7c2aa2273273f29cc0591103839",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/508-gain-trim-controller-testbench",
+  "task_id": "v4-508"
+}

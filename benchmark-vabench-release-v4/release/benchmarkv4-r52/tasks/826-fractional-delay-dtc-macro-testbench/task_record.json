@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "326-fractional-delay-dtc-macro",
+  "checker_task_id": "v4_326_fractional_delay_dtc_macro",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "d89a8f4de42f31a59b7502ff3a73b5bf4c57a0d63b1b9b8a6ac62026d294c8f6",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "4242899afc86aaa288a2f202b79d655592bc86728aa63995cde5ef297a2892a7",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "d89a8f4de42f31a59b7502ff3a73b5bf4c57a0d63b1b9b8a6ac62026d294c8f6",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "c7907c4efc43e222db50a6de9346aedee80aec4e139f4583c35eddb578fc2903",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "885d60c36fa0386b47672fff7b02c7b32ad5c33252a0ce9b4bf0fee98ef95805"
+  },
+  "family_id": "326",
+  "family_spec_sha256": "67b987e3cdd24a92f52b8404fdfcaa3a4ef326f078598a7fa7514b1af22c69ab",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "96c169bacef2dade77ccd22cc3e7bbd4a3ba0ae6b393bcd9a8c9113c8ffb1852",
+  "public_contract": "tasks/826-fractional-delay-dtc-macro-testbench/public_contract.json",
+  "public_contract_sha256": "0f8c551cd024706f67581871aebc111170839940a4b009b93e8f1d0f86a3c60b",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/826-fractional-delay-dtc-macro-testbench",
+  "task_id": "v4-826"
+}

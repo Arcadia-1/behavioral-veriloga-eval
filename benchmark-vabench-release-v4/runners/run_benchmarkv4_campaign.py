@@ -33,7 +33,7 @@ DEFAULT_SETUP_TIMEOUT_S = 1800
 DEFAULT_REQUEST_TIMEOUT_S = 1800
 DEFAULT_TOOL_TIMEOUT_S = 1800
 DEFAULT_JUDGE_TIMEOUT_S = 1800
-DEFAULT_DOCKER_IMAGE = "vabench-agent-runtime:0.8.3"
+DEFAULT_DOCKER_IMAGE = "vabench-agent-runtime:0.8.5"
 MODES = tuple(f"G{i}" for i in range(6))
 
 if str(CALIBRATION) not in sys.path:

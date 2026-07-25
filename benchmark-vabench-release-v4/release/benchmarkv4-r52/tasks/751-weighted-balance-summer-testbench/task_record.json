@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "251-weighted-balance-summer",
+  "checker_task_id": "v4_251_weighted_balance_summer",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "23b8ae617c68e003ee877d4a460e3f1320f45f41ed9906d0d221df7654a6ec0f",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "6663ce7fc2f52c9cfbdf1f3504bfbc0571f18c72f23c630b93aa516d9e9601c3",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "23b8ae617c68e003ee877d4a460e3f1320f45f41ed9906d0d221df7654a6ec0f",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "c4fb46515cc9a23067931bb528a2aba63763b8643459af1afb58e996dcedc262",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "5ac6289ced094f7c742887b809550631cba9ae65bc7be2014d8b52b27b4c6165"
+  },
+  "family_id": "251",
+  "family_spec_sha256": "24ce2b007dc62d36adf6ea04b881b6e8380a64555fd7f7b3626daa152fec3109",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8a30fa4cf2994eec7e8b6d4894bb69a3706af07c9ff759c65f7113481fb0e01d",
+  "public_contract": "tasks/751-weighted-balance-summer-testbench/public_contract.json",
+  "public_contract_sha256": "8a1f732d47c2c841f3b410ec584b2f95c18d7c8959e3ce34eff1adb9fcbd4fed",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/751-weighted-balance-summer-testbench",
+  "task_id": "v4-751"
+}

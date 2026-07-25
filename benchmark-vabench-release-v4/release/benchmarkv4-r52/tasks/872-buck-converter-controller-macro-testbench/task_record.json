@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "372-buck-converter-controller-macro",
+  "checker_task_id": "v4_372_buck_converter_controller_macro",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "465220a9773af3cf2d40e4d6192bf713625fdba402f3b8f88f9021162a5b4f4f",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "3f1d68d84606e44f300bfe8dce455b0c0b6266d216a15409cc5b37d403f6107e",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "465220a9773af3cf2d40e4d6192bf713625fdba402f3b8f88f9021162a5b4f4f",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "1db2d7b4a6ffe5948b8464696f9df0f633ed941bf1390d8cfec13e386d9df08e",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "77ae664d1b5a815f5ccebd3c970b3153e79a0b3b49c3c0b9955a67b133519a4a"
+  },
+  "family_id": "372",
+  "family_spec_sha256": "a1f12e8c81d89222f8d25131fc6cb64dd7c960e44655dc3ce5325341da9006c4",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "30b38f14f550dd9eedb503d1e383846dd880d50d3905e6c81158cc35307e4d0b",
+  "public_contract": "tasks/872-buck-converter-controller-macro-testbench/public_contract.json",
+  "public_contract_sha256": "941663675cc540e53017fb520fbb3567f13bd76228da483ef5908e87d0e522ae",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/872-buck-converter-controller-macro-testbench",
+  "task_id": "v4-872"
+}

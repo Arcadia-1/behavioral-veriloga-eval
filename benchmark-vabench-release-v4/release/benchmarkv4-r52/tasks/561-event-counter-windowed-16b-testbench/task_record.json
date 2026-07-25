@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "061-event-counter-windowed-16b",
+  "checker_task_id": "v4_061_event_counter_windowed_16b",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "7bee0cd522c015b7395be6e39351c39424275bbfa19d26fc45bf1e30813aa9fb",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "c6189ce08c0b88f127528751af73b125517a312d22ebfe3e7c2923ff0ffecdd9",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "7bee0cd522c015b7395be6e39351c39424275bbfa19d26fc45bf1e30813aa9fb",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "110e2b4273e6037b3fb1c5b40aac036d88ecc25e201dcf7e2b190834bceea3d4",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "97179eba37aa887edc1690066d18f9e80fa78b281588fa8e2d57d8b49f749e05"
+  },
+  "family_id": "061",
+  "family_spec_sha256": "17f2547d7798873eaf27bb5f8a00954823173f85d655160fa85d7166de522417",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9b5980023ce94eb374ae9f6e8da6d8d2d77a4cd21903bea77ac9aee39ed7c675",
+  "public_contract": "tasks/561-event-counter-windowed-16b-testbench/public_contract.json",
+  "public_contract_sha256": "f2e669c804f0b535688eb6ebb96397618abc72aac2918edc23f6675164e2b94f",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/561-event-counter-windowed-16b-testbench",
+  "task_id": "v4-561"
+}

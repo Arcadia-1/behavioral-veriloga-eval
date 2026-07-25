@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "042-sample-and-hold-with-droop-leakage",
+  "checker_task_id": "v4_042_sample_and_hold_with_droop_leakage",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "548da3e63ff1310fd6c114581141d3cc78c1546e0e328e1b5c04899bb2a97711",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "e754aa8c6f9f787a5c1cdf49644b8de14fdc023253cd7707e98af9006f598bad",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "548da3e63ff1310fd6c114581141d3cc78c1546e0e328e1b5c04899bb2a97711",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "5c6529b8e47fabeec56692b99fe6e2ebcfdc4a58acbed5f2ffc84f6c970a1d41",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "0b1bead810283c3871290a3592567756b737838a1678c401d1d6d4a44e9c842e"
+  },
+  "family_id": "042",
+  "family_spec_sha256": "606873e046d316a776913046cb9715d62d0f2610090fb41c8442a70e6ce8f896",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "317a5964dfb5e07712ccc120ce080fa0fbcd4f74ebfe2f698e0538adba7e78c6",
+  "public_contract": "tasks/542-sample-and-hold-with-droop-leakage-testbench/public_contract.json",
+  "public_contract_sha256": "4a61ecec115a9312e5cff4f1ea7544822509cb74af4b9dd61f1ce84dc4eaf3f8",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/542-sample-and-hold-with-droop-leakage-testbench",
+  "task_id": "v4-542"
+}

@@ -169,7 +169,9 @@ def probe_evas2_runtime(
     }
 
 
-def case_evas2_runtime(output_dir: Path) -> dict[str, Any]:
+def case_evas2_runtime(
+    output_dir: Path, *, required_evas_version: str = REQUIRED_EVAS_VERSION
+) -> dict[str, Any]:
     """Read the runtime identity emitted by this simulation, without trusting config."""
     log_path = output_dir / "evas.log"
     if not log_path.is_file():
@@ -188,10 +190,10 @@ def case_evas2_runtime(output_dir: Path) -> dict[str, Any]:
     backend_match = EVAS_BACKEND_RE.search(text)
     version = version_match.group(1) if version_match else "unknown"
     backend = backend_match.group(1) if backend_match else "unknown"
-    valid = version == REQUIRED_EVAS_VERSION and backend == RUST_EVAS_LOG_ENGINE
+    valid = version == required_evas_version and backend == RUST_EVAS_LOG_ENGINE
     notes: list[str] = []
-    if version != REQUIRED_EVAS_VERSION:
-        notes.append(f"expected EVAS {REQUIRED_EVAS_VERSION}, got {version}")
+    if version != required_evas_version:
+        notes.append(f"expected EVAS {required_evas_version}, got {version}")
     if backend != RUST_EVAS_LOG_ENGINE:
         notes.append(f"expected {RUST_EVAS_LOG_ENGINE} backend, got {backend}")
     return {
@@ -206,7 +208,12 @@ def case_evas2_runtime(output_dir: Path) -> dict[str, Any]:
     }
 
 
-def engine_evidence_from_log(log_path: Path, combined_output: str) -> dict[str, Any]:
+def engine_evidence_from_log(
+    log_path: Path,
+    combined_output: str,
+    *,
+    required_evas_version: str = REQUIRED_EVAS_VERSION,
+) -> dict[str, Any]:
     """Compatibility API for the metamorphic/profile evidence runners."""
     configured_engine = effective_evas_engine()
     text = combined_output
@@ -218,13 +225,13 @@ def engine_evidence_from_log(log_path: Path, combined_output: str) -> dict[str, 
     backend = backend_match.group(1) if backend_match else "unknown"
     valid = (
         configured_engine == REQUIRED_EVAS_ENGINE
-        and version == REQUIRED_EVAS_VERSION
+        and version == required_evas_version
         and backend == RUST_EVAS_LOG_ENGINE
     )
     notes: list[str] = []
     if configured_engine != REQUIRED_EVAS_ENGINE:
         notes.append(f"configured_evas_engine={configured_engine}")
-    if version != REQUIRED_EVAS_VERSION:
+    if version != required_evas_version:
         notes.append(f"evas_version={version}")
     if backend != RUST_EVAS_LOG_ENGINE:
         notes.append(f"evas_backend={backend}")
