@@ -5,6 +5,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import time
@@ -16,6 +17,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 RELEASE = ROOT / "benchmark-vabench-release-v4" / "release" / "benchmarkv4"
 R49_RELEASE = ROOT / "benchmark-vabench-release-v4" / "release" / "benchmarkv4-r49"
+R52_RELEASE = ROOT / "benchmark-vabench-release-v4" / "release" / "benchmarkv4-r52"
 BUILD_CAMPAIGN = (
     ROOT
     / "benchmark-vabench-release-v4"
@@ -302,11 +304,11 @@ def test_active_agent_tools_expose_restricted_evas_not_feedback() -> None:
     assert names == ["list_files", "read_file", "write_file", "run_evas", "finalize"]
 
 
-def test_campaign_runner_defaults_to_latest_r51_release() -> None:
+def test_campaign_runner_defaults_to_latest_r52_release() -> None:
     runner = load_run_campaign()
     wrapper = load_run_campaign_wrapper()
 
-    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r51"
+    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r52"
     assert wrapper.DEFAULT_RELEASE == runner.DEFAULT_RELEASE
 
 
@@ -345,6 +347,33 @@ def test_run_evas_dut_uses_fixed_public_contract(
     assert Path(invocation["argv"][1]) == task / "visible_test.scs"
     assert Path(invocation["argv"][invocation["argv"].index("-o") + 1]) == output
     assert "--spectre-strict" in invocation["argv"]
+
+
+@pytest.mark.parametrize(
+    ("task_name", "expects_spectre_strict"),
+    [
+        ("001-bang-bang-phase-detector", True),
+        ("1001-bang-bang-phase-detector-bugfix", True),
+        ("102-clocked-sine-source", False),
+        ("1102-clocked-sine-source-bugfix", False),
+    ],
+)
+def test_run_evas_accepts_published_r52_dut_and_bugfix_contracts(
+    tmp_path: Path, task_name: str, expects_spectre_strict: bool,
+) -> None:
+    runner = load_run_campaign()
+    runtime = tmp_path / task_name
+    task = runtime / "public" / "task"
+    submission = runtime / "public" / "submission"
+    shutil.copytree(R52_RELEASE / "tasks" / task_name / "public", task)
+    submission.mkdir(parents=True)
+
+    result = runner.run_public_evas(runtime, {}, 30, fake_evas_command(tmp_path))
+
+    assert result["status"] == "pass"
+    output = runtime / ".vabench-visible" / "evas-output"
+    invocation = json.loads((output / "invocation.json").read_text(encoding="utf-8"))
+    assert ("--spectre-strict" in invocation["argv"]) is expects_spectre_strict
 
 
 def test_run_evas_dut_honors_portable_rdist_contract(tmp_path: Path) -> None:
@@ -579,6 +608,135 @@ def test_build_campaign_samples_complete_benchmarkv4_families_without_prompt_rec
     assert by_mode["G2"]["process"] == "agentic"
     assert by_mode["G2"]["evas_cli_available"] is True
     assert by_mode["G5"]["response_protocol"] == "v4-strict-workspace-finalizer-v1"
+
+
+def test_executable_feedback_control_builds_three_matched_arms() -> None:
+    builder = load_build_campaign()
+    wrapper = load_run_campaign_wrapper()
+    campaign = builder.build_campaign(
+        R52_RELEASE,
+        family_ids=["001"],
+        model_provider="openai-compatible",
+        model="deepseek-v4-flash",
+        per_turn_max_tokens=65536,
+        repetitions=1,
+    )
+
+    control = wrapper.build_executable_feedback_control(campaign)
+    by_arm = {
+        arm: [
+            cell
+            for cell in control["cells"]
+            if cell["experimental_arm"] == arm
+        ]
+        for arm in ("OneShot", "Agent-No-EVAS", "Agentic")
+    }
+
+    assert control["arms"] == ["OneShot", "Agent-No-EVAS", "Agentic"]
+    assert control["cell_count"] == 9
+    assert {cell["mode"] for cell in by_arm["OneShot"]} == {"G0"}
+    assert {cell["mode"] for cell in by_arm["Agent-No-EVAS"]} == {"G2"}
+    assert {cell["mode"] for cell in by_arm["Agentic"]} == {"G2"}
+    assert {
+        cell["executable_feedback"] for cell in by_arm["Agent-No-EVAS"]
+    } == {False}
+    assert {cell["executable_feedback"] for cell in by_arm["Agentic"]} == {True}
+    assert len({cell["task_id"] for cell in control["cells"]}) == 3
+
+
+def test_executable_feedback_control_scales_to_all_r52_families() -> None:
+    builder = load_build_campaign()
+    wrapper = load_run_campaign_wrapper()
+    campaign = builder.build_campaign(
+        R52_RELEASE,
+        sample_families=400,
+        seed=20260726,
+        model_provider="openai-compatible",
+        model="deepseek-v4-flash",
+        per_turn_max_tokens=65536,
+        repetitions=1,
+    )
+
+    control = wrapper.build_executable_feedback_control(campaign)
+
+    assert control["family_count"] == 400
+    assert control["task_count"] == 1200
+    assert control["cell_count"] == 3600
+    assert {
+        arm: sum(
+            cell["experimental_arm"] == arm for cell in control["cells"]
+        )
+        for arm in control["arms"]
+    } == {
+        "OneShot": 1200,
+        "Agent-No-EVAS": 1200,
+        "Agentic": 1200,
+    }
+
+
+def test_campaign_wrapper_exposes_agent_no_evas_control_profile(
+    tmp_path: Path,
+) -> None:
+    output = tmp_path / "three-arm-control"
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(RUN_CAMPAIGN_WRAPPER),
+            "--release",
+            str(R52_RELEASE),
+            "--task-id",
+            "v4-001",
+            "--comparison-profile",
+            "executable-feedback-control",
+            "--output-root",
+            str(output),
+            "--model",
+            "test-model",
+            "--dry-run",
+        ],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr + completed.stdout
+    campaign = json.loads((output / "campaign.json").read_text(encoding="utf-8"))
+    assert campaign["cell_count"] == 3
+    assert campaign["filters"]["experimental_arms"] == []
+    assert campaign["execution_config"]["mini_swe_no_evas_image"] == (
+        "vabench-agent-runtime:0.8.5-no-evas"
+    )
+    assert {cell["experimental_arm"] for cell in campaign["cells"]} == {
+        "OneShot",
+        "Agent-No-EVAS",
+        "Agentic",
+    }
+    no_evas_cell = next(
+        cell
+        for cell in campaign["cells"]
+        if cell["experimental_arm"] == "Agent-No-EVAS"
+    )
+    runtime = output / "run" / no_evas_cell["cell_id"]
+    assert not (runtime / "public" / "task" / "evas_runtime.json").exists()
+    effective_prompt = (runtime / "agent_prompt.txt").read_text(encoding="utf-8")
+    assert "EVAS execution is not available" in effective_prompt
+    policy = json.loads(
+        (runtime / "MODEL_ACCESS_POLICY.json").read_text(encoding="utf-8")
+    )
+    assert "evas" not in policy["executables"]
+    assert policy["experimental_arm"] == "Agent-No-EVAS"
+    arm_record = json.loads(
+        (runtime / "evidence" / "experimental_arm.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert arm_record["base_prompt_record_sha256"] == no_evas_cell[
+        "prompt_record_sha256"
+    ]
+    assert arm_record["effective_prompt_sha256"] == hashlib.sha256(
+        effective_prompt.encode()
+    ).hexdigest()
 
 
 def test_direct_parser_recovers_single_file_filename_marker_without_strict_compliance(
@@ -1731,6 +1889,67 @@ def test_agentic_run_cell_uses_mini_swe_bash_scaffold_by_default_path(
     assert result["experiment_result"]["final_submission"]["status"] == "available"
 
 
+def test_agent_no_evas_cell_selects_paired_image_and_disables_evas(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    runner = load_run_campaign()
+    wrapper = load_run_campaign_wrapper()
+    base = load_build_campaign().build_campaign(
+        R52_RELEASE,
+        family_ids=["001"],
+        model_provider="test",
+        model="test-model",
+        per_turn_max_tokens=4096,
+        repetitions=1,
+    )
+    cell = next(
+        cell
+        for cell in wrapper.build_executable_feedback_control(base)["cells"]
+        if cell["task_id"] == "v4-001"
+        and cell["experimental_arm"] == "Agent-No-EVAS"
+    )
+    args = run_args(tmp_path / "run", R52_RELEASE)
+    args.agent_scaffold = "mini-swe"
+    args.mini_swe_sandbox = "none"
+    args.mini_swe_image = "with-evas"
+    args.mini_swe_no_evas_image = "without-evas"
+    captured: dict = {}
+
+    def stop_after_capture(**kwargs):
+        captured.update(kwargs)
+        raise RuntimeError("captured")
+
+    monkeypatch.setattr(runner, "run_mini_swe_episode", stop_after_capture)
+
+    with pytest.raises(RuntimeError, match="captured"):
+        runner.run_cell(cell, args, FakeClient({"role": "assistant", "content": ""}))
+
+    assert captured["executable_feedback"] is False
+    assert captured["docker_image"] == "without-evas"
+
+
+def test_public_agent_image_identity_is_checked_per_experimental_arm() -> None:
+    runner = load_run_campaign()
+    summary = runner.summarize_public_agent_images(
+        [
+            {
+                "cell": {"experimental_arm": "Agent-No-EVAS"},
+                "agent_scaffold": {"docker_image_id": "sha256:no-evas"},
+            },
+            {
+                "cell": {"experimental_arm": "Agentic"},
+                "agent_scaffold": {"docker_image_id": "sha256:agentic"},
+            },
+        ]
+    )
+
+    assert summary["identity_consistent"] is True
+    assert summary["observed_image_ids_by_arm"] == {
+        "Agent-No-EVAS": ["sha256:no-evas"],
+        "Agentic": ["sha256:agentic"],
+    }
+
+
 def test_mini_swe_r45_direct_evas_then_submit_keeps_scratch_outside_submission(
     tmp_path: Path, r45_release: Path
 ) -> None:
@@ -1777,6 +1996,7 @@ def test_mini_swe_time_exceeded_preserves_walltime_reason_with_complete_artifact
     args.mini_swe_sandbox = "none"
 
     def fake_episode(**kwargs):
+        assert kwargs["candidate_artifacts"] == ["bbpd_ref.va"]
         runtime = kwargs["runtime"]
         (runtime / "public" / "submission" / "bbpd_ref.va").write_text(
             "module bbpd_ref; endmodule\n", encoding="utf-8"
@@ -1895,6 +2115,7 @@ def test_scorer_accepts_complete_workspace_without_explicit_submit(
     submission.mkdir(parents=True)
     (submission / "model.va").write_text("module model; endmodule\n")
     write_runtime_policy(runtime, ["model.va"])
+    candidate_hash = "c" * 64
     result_path = runtime / "evidence" / "campaign_result.json"
     result_path.parent.mkdir(parents=True)
     result_path.write_text(
@@ -1914,13 +2135,19 @@ def test_scorer_accepts_complete_workspace_without_explicit_submit(
                 "output_tokens": 10,
                 "events": [],
                 "evas_usage": {
-                    "schema_version": "v4-direct-evas-usage-v1",
+                    "schema_version": "v4-direct-evas-usage-v2",
                     "calls_executed": 2,
                     "calls_succeeded": 1,
                     "calls_failed": 1,
                     "calls_timed_out": 0,
                     "calls_interrupted": 0,
                     "last_status": "succeeded",
+                    "unique_candidate_tree_hashes": [candidate_hash],
+                    "candidate_tree_hash_call_counts": {
+                        candidate_hash: 2,
+                    },
+                    "modified_rerun_count": 0,
+                    "unchanged_repeat_count": 1,
                 },
                 "incidents": [
                     {
@@ -1943,6 +2170,62 @@ def test_scorer_accepts_complete_workspace_without_explicit_submit(
     report = scorer.summarize([row], "legacy_feedback_evas")
     assert report["incident_categories"] == {"evas_command_failure": 1}
     assert report["telemetry_by_mode"]["G2"]["direct_evas_calls_total"] == 2
+    assert report["telemetry_by_mode"]["G2"][
+        "direct_evas_unique_candidate_tree_hashes"
+    ] == [candidate_hash]
+    assert report["telemetry_by_mode"]["G2"][
+        "direct_evas_candidate_tree_hash_call_counts"
+    ] == {candidate_hash: 2}
+    assert report["telemetry_by_mode"]["G2"][
+        "direct_evas_modified_reruns_total"
+    ] == 0
+    assert report["telemetry_by_mode"]["G2"][
+        "direct_evas_unchanged_repeats_total"
+    ] == 1
+
+
+def test_scorer_keeps_agent_no_evas_separate_from_agentic() -> None:
+    scorer = load_score_campaign()
+
+    def row(arm: str, evas_calls: int) -> dict:
+        return {
+            "form": "dut",
+            "mode": "G2",
+            "experimental_arm": arm,
+            "submission_status": "submitted",
+            "judge_status": "pass",
+            "incidents": [],
+            "output_tokens": 10,
+            "episode_elapsed_s": 1.0,
+            "telemetry": {
+                "model_calls": 1,
+                "tool_calls_total": 2,
+                "evas_calls": evas_calls,
+                "legacy_feedback_calls": 0,
+                "provider_reasoning_tokens_total": 0,
+                "budget_hit_model_calls": 0,
+            },
+            "evas_usage": {
+                "calls_executed": evas_calls,
+                "calls_succeeded": evas_calls,
+                "calls_failed": 0,
+                "calls_timed_out": 0,
+                "modified_rerun_count": 0,
+                "unchanged_repeat_count": 0,
+            },
+        }
+
+    report = scorer.summarize(
+        [row("Agent-No-EVAS", 0), row("Agentic", 2)],
+        "final_spectre",
+    )
+
+    assert report["breakdown"]["arm:Agent-No-EVAS"] == {"pass": 1}
+    assert report["breakdown"]["arm:Agentic"] == {"pass": 1}
+    assert report["telemetry_by_arm"]["Agent-No-EVAS"][
+        "direct_evas_calls_total"
+    ] == 0
+    assert report["telemetry_by_arm"]["Agentic"]["direct_evas_calls_total"] == 2
 
 
 def test_mini_swe_provider_failure_keeps_partial_trajectory(
@@ -2226,11 +2509,11 @@ def test_campaign_wrapper_requires_explicit_evas_for_executable_run(
             sys.executable,
             str(RUN_CAMPAIGN_WRAPPER),
             "--release",
-            str(tmp_path / "release-must-not-be-read"),
+            str(R52_RELEASE),
             "--task-id",
             "v4-006",
             "--mode",
-            "G0",
+            "G2",
             "--output-root",
             str(tmp_path / "campaign"),
             "--model",
@@ -2763,3 +3046,52 @@ def test_testbench_oracle_requires_r45_evas_version(monkeypatch) -> None:
     assert "evas_version=0.8.3" in note
     assert stale is False
     assert "observed='0.8.2'" in stale_note
+
+
+def test_summarize_evas_invocations_derives_candidate_version_repeats() -> None:
+    runner = load_run_campaign()
+    first_hash = "a" * 64
+    second_hash = "b" * 64
+    invocations = [
+        {
+            "candidate_tree_sha256": first_hash,
+            "status": "succeeded",
+            "invocation_id": "invocation-0",
+            "returncode": 0,
+        },
+        {
+            "candidate_tree_sha256": first_hash,
+            "status": "succeeded",
+            "invocation_id": "invocation-1",
+            "returncode": 0,
+        },
+        {
+            "candidate_tree_sha256": second_hash,
+            "status": "failed",
+            "invocation_id": "invocation-2",
+            "returncode": 1,
+        },
+    ]
+
+    usage = runner.summarize_evas_invocations(invocations)
+
+    assert usage["schema_version"] == "v4-direct-evas-usage-v2"
+    assert (
+        usage["candidate_tree_schema_version"]
+        == runner.CANDIDATE_TREE_SCHEMA_VERSION
+    )
+    assert usage["calls_executed"] == 3
+    assert usage["calls_succeeded"] == 2
+    assert usage["calls_failed"] == 1
+    assert usage["calls_with_candidate_tree_hash"] == 3
+    assert usage["modified_rerun_count"] == 1
+    assert usage["unchanged_repeat_count"] == 1
+    assert usage["candidate_tree_hash_call_counts"] == {
+        first_hash: 2,
+        second_hash: 1,
+    }
+    assert usage["unique_candidate_tree_hashes"] == [
+        first_hash,
+        second_hash,
+    ]
+    assert not any("feedback" in field for field in usage)

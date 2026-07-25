@@ -66,6 +66,11 @@ def test_all_modes_preserve_raw_final_and_artifact_snapshot(
     # The system image ships an older jsonschema package; this schema uses a
     # Draft 7-compatible subset even though its public declaration is 2020-12.
     jsonschema.Draft7Validator(json.loads(SCHEMA.read_text())).validate(record)
+    assert record["schema_version"] == "vabench-experiment-result-v2"
+    assert (
+        record["failure_taxonomy"]["schema_version"]
+        == "vabench-failure-taxonomy-v1"
+    )
     assert record["model_execution"]["raw_final_output"]["message"] == message
     artifact = record["final_submission"]["artifacts"][0]
     snapshot = runtime / artifact["snapshot_path"]
@@ -86,6 +91,215 @@ def test_structured_replay_preserves_failure_stage(status: str) -> None:
         {"available": True, "version_output": "evas test"},
     )
     assert replay["status"] == status
+
+
+def test_behavior_failure_preserves_structured_failure_taxonomy() -> None:
+    replay = PROTOCOL.trusted_replay(
+        {"execution_status": "completed", "returncode": 7},
+        {
+            "status": "behavior_failure",
+            "diagnostics": ["slew_limit violated"],
+            "failure_taxonomy": {
+                "primary_class": "property",
+                "secondary_classes": ["functional"],
+                "stage": "property_check",
+                "responsibility": "candidate",
+                "retryable": False,
+                "case_ids": ["corner-fast"],
+                "property_ids": ["slew_limit"],
+                "mutation_ids": [],
+            },
+        },
+        {"file_count": 1, "tree_sha256": "b" * 64, "files": []},
+        {"available": True, "version_output": "evas test"},
+    )
+
+    assert replay["status"] == "behavior_failure"
+    assert replay["failure_taxonomy"] == {
+        "schema_version": "vabench-failure-taxonomy-v1",
+        "primary_class": "property",
+        "secondary_classes": ["functional"],
+        "stage": "property_check",
+        "responsibility": "candidate",
+        "retryable": False,
+        "case_ids": ["corner-fast"],
+        "property_ids": ["slew_limit"],
+        "mutation_ids": [],
+    }
+
+
+@pytest.mark.parametrize(
+    ("failure_class", "stage"),
+    [
+        ("functional", "functional_check"),
+        ("mutation_survival", "mutation_check"),
+        ("property", "property_check"),
+    ],
+)
+def test_behavior_failure_accepts_analysis_classes(
+    failure_class: str, stage: str
+) -> None:
+    replay = PROTOCOL.trusted_replay(
+        {"execution_status": "completed", "returncode": 7},
+        {
+            "status": "behavior_failure",
+            "failure_taxonomy": {
+                "primary_class": failure_class,
+                "stage": stage,
+                "responsibility": "candidate",
+                "retryable": False,
+            },
+        },
+        {"file_count": 1, "tree_sha256": "b" * 64, "files": []},
+        {"available": True, "version_output": "evas test"},
+    )
+
+    assert replay["status"] == "behavior_failure"
+    assert replay["failure_taxonomy"]["primary_class"] == failure_class
+    assert replay["failure_taxonomy"]["stage"] == stage
+
+
+def test_experiment_result_uses_final_replay_failure_taxonomy(
+    tmp_path: Path,
+) -> None:
+    runtime = runtime_with_submission(tmp_path)
+    replay = PROTOCOL.trusted_replay(
+        {"execution_status": "completed", "returncode": 7},
+        {
+            "status": "behavior_failure",
+            "failure_taxonomy": {
+                "primary_class": "mutation_survival",
+                "stage": "mutation_check",
+                "responsibility": "candidate",
+                "retryable": False,
+                "mutation_ids": ["stuck-high"],
+            },
+        },
+        PROTOCOL.hash_test_tree(runtime / "evaluator"),
+        {"available": True, "version_output": "evas test"},
+    )
+    record = PROTOCOL.build_experiment_result(
+        cell={"cell_id": "v4-001-G2-r01", "task_id": "v4-001", "mode": "G2"},
+        model_status="completed",
+        messages=[],
+        artifact_gate=RUNNER.submission_artifact_gate(runtime),
+        runtime=runtime,
+        replay=replay,
+    )
+
+    assert record["failure_taxonomy"] == replay["failure_taxonomy"]
+    assert record["failure_taxonomy"]["mutation_ids"] == ["stuck-high"]
+    jsonschema.Draft7Validator(json.loads(SCHEMA.read_text())).validate(record)
+
+
+@pytest.mark.parametrize(
+    ("command", "adapter_result", "expected_class", "expected_stage"),
+    [
+        (
+            {"execution_status": "completed", "returncode": 2},
+            {"status": "compile_failure"},
+            "compile",
+            "compilation",
+        ),
+        (
+            {"execution_status": "completed", "returncode": 3},
+            {"status": "runtime_failure"},
+            "runtime",
+            "simulation",
+        ),
+        (
+            {"execution_status": "completed", "returncode": 4},
+            {"status": "behavior_failure"},
+            "behavior_unspecified",
+            "behavior_check",
+        ),
+        (
+            {"execution_status": "timeout", "returncode": None},
+            None,
+            "timeout",
+            "simulation",
+        ),
+        (
+            {"execution_status": "completed", "returncode": 0},
+            {"status": "passed"},
+            None,
+            "completed",
+        ),
+    ],
+)
+def test_replay_derives_default_failure_taxonomy(
+    command: dict,
+    adapter_result: dict | None,
+    expected_class: str | None,
+    expected_stage: str,
+) -> None:
+    replay = PROTOCOL.trusted_replay(
+        command,
+        adapter_result,
+        {"file_count": 1, "tree_sha256": "b" * 64, "files": []},
+        {"available": True, "version_output": "evas test"},
+    )
+
+    assert replay["failure_taxonomy"]["primary_class"] == expected_class
+    assert replay["failure_taxonomy"]["stage"] == expected_stage
+
+
+def test_incompatible_adapter_failure_taxonomy_is_infrastructure_failure() -> None:
+    replay = PROTOCOL.trusted_replay(
+        {"execution_status": "completed", "returncode": 7},
+        {
+            "status": "behavior_failure",
+            "failure_taxonomy": {
+                "primary_class": "compile",
+                "stage": "compilation",
+                "responsibility": "candidate",
+                "retryable": False,
+            },
+        },
+        {"file_count": 1, "tree_sha256": "b" * 64, "files": []},
+        {"available": True, "version_output": "evas test"},
+    )
+
+    assert replay["status"] == "infrastructure_failure"
+    assert replay["failure_taxonomy"]["primary_class"] == "infrastructure"
+    assert replay["failure_taxonomy"]["retryable"] is True
+    assert "invalid_failure_taxonomy" in replay["diagnostics"]
+    assert (
+        replay["adapter_result"]["failure_taxonomy"]["primary_class"]
+        == "compile"
+    )
+
+
+@pytest.mark.parametrize(
+    "override",
+    [
+        {"stage": "compilation"},
+        {"responsibility": "system"},
+        {"retryable": True},
+    ],
+)
+def test_inconsistent_behavior_failure_metadata_is_rejected(
+    override: dict,
+) -> None:
+    taxonomy = {
+        "primary_class": "property",
+        "stage": "property_check",
+        "responsibility": "candidate",
+        "retryable": False,
+    }
+    taxonomy.update(override)
+    replay = PROTOCOL.trusted_replay(
+        {"execution_status": "completed", "returncode": 7},
+        {
+            "status": "behavior_failure",
+            "failure_taxonomy": taxonomy,
+        },
+        {"file_count": 1, "tree_sha256": "b" * 64, "files": []},
+        {"available": True, "version_output": "evas test"},
+    )
+
+    assert replay["status"] == "infrastructure_failure"
+    assert "invalid_failure_taxonomy" in replay["diagnostics"]
 
 
 def test_unstructured_nonzero_replay_is_not_behavior_failure() -> None:
@@ -139,6 +353,50 @@ def test_agent_resource_exhaustion_has_no_score(tmp_path: Path) -> None:
     assert record["score_eligible"] is False
     assert record["score"] is None
     jsonschema.Draft7Validator(json.loads(SCHEMA.read_text())).validate(record)
+
+
+@pytest.mark.parametrize(
+    ("model_status", "expected_class", "expected_stage", "expected_responsibility"),
+    [
+        ("completed", "invalid", "artifact_gate", "candidate"),
+        ("agent_timeout", "timeout", "model_execution", "model"),
+        (
+            "agent_resource_exhausted",
+            "resource_exhaustion",
+            "model_execution",
+            "model",
+        ),
+        ("provider_failure", "infrastructure", "model_execution", "system"),
+        ("runner_failure", "infrastructure", "model_execution", "system"),
+    ],
+)
+def test_terminal_result_classifies_non_replay_failures(
+    tmp_path: Path,
+    model_status: str,
+    expected_class: str,
+    expected_stage: str,
+    expected_responsibility: str,
+) -> None:
+    runtime = runtime_with_submission(tmp_path)
+    (runtime / "public" / "submission" / "candidate.va").unlink()
+    record = PROTOCOL.build_experiment_result(
+        cell={"cell_id": "v4-001-G2-r01", "task_id": "v4-001", "mode": "G2"},
+        model_status=model_status,
+        messages=[],
+        artifact_gate=RUNNER.submission_artifact_gate(runtime),
+        runtime=runtime,
+        replay=PROTOCOL.trusted_replay(
+            None,
+            None,
+            PROTOCOL.hash_test_tree(runtime / "evaluator"),
+            {"available": False},
+        ),
+    )
+
+    taxonomy = record["failure_taxonomy"]
+    assert taxonomy["primary_class"] == expected_class
+    assert taxonomy["stage"] == expected_stage
+    assert taxonomy["responsibility"] == expected_responsibility
 
 
 def test_provider_failure_is_not_reported_as_no_submission(tmp_path: Path) -> None:
@@ -221,4 +479,85 @@ def test_score_report_does_not_turn_agent_timeout_into_test_zero(tmp_path: Path)
     row = SCORER.evaluate_cell(result_path, None, 5)
     assert row["judge_status"] == "agent_timeout"
     assert row["outcome"] == "agent_timeout"
+    assert row["failure_class"] == "timeout"
+    assert row["failure_stage"] == "model_execution"
     assert experiment["score"] is None
+
+
+def test_score_summary_aggregates_structured_failure_taxonomy() -> None:
+    def row(
+        arm: str,
+        judge_status: str,
+        failure_class: str | None,
+        stage: str,
+    ) -> dict:
+        return {
+            "form": "testbench",
+            "mode": "G2",
+            "experimental_arm": arm,
+            "submission_status": "submitted",
+            "judge_status": judge_status,
+            "failure_class": failure_class,
+            "failure_stage": stage,
+            "failure_responsibility": (
+                "none" if failure_class is None else "candidate"
+            ),
+            "failure_retryable": False,
+            "failure_taxonomy": {
+                "secondary_classes": (
+                    ["functional"] if failure_class == "property" else []
+                ),
+                "case_ids": (
+                    ["corner-fast"] if failure_class == "property" else []
+                ),
+                "property_ids": (
+                    ["slew_limit"] if failure_class == "property" else []
+                ),
+                "mutation_ids": (
+                    ["stuck-high"]
+                    if failure_class == "mutation_survival"
+                    else []
+                ),
+            },
+            "incidents": [],
+            "output_tokens": 1,
+            "episode_elapsed_s": 1.0,
+            "telemetry": {},
+            "evas_usage": {},
+        }
+
+    report = SCORER.summarize(
+        [
+            row("Agentic", "behavior_failure", "property", "property_check"),
+            row(
+                "Agentic",
+                "behavior_failure",
+                "mutation_survival",
+                "mutation_check",
+            ),
+            row("Agent-No-EVAS", "compile_failure", "compile", "compilation"),
+            row("OneShot", "passed", None, "completed"),
+        ],
+        "final_spectre",
+    )
+
+    assert report["schema_version"] == "v4-calibration-score-report-v2"
+    assert report["failure_classes"] == {
+        "compile": 1,
+        "mutation_survival": 1,
+        "property": 1,
+    }
+    assert report["failure_stages"] == {
+        "compilation": 1,
+        "mutation_check": 1,
+        "property_check": 1,
+    }
+    assert report["failure_breakdown"]["arm:Agentic"] == {
+        "mutation_survival": 1,
+        "property": 1,
+    }
+    assert report["failure_breakdown"]["arm:Agent-No-EVAS"] == {"compile": 1}
+    assert report["secondary_failure_classes"] == {"functional": 1}
+    assert report["failed_case_ids"] == {"corner-fast": 1}
+    assert report["failed_property_ids"] == {"slew_limit": 1}
+    assert report["failed_mutation_ids"] == {"stuck-high": 1}

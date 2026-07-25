@@ -2,7 +2,7 @@
 """Build and run a benchmarkv4 model campaign with direct and agentic modes.
 
 This is the operator-facing entry point for API experiments.  It builds a
-campaign from ``release/benchmarkv4-r51`` and delegates execution to the v4
+campaign from ``release/benchmarkv4-r52`` and delegates execution to the v4
 calibration runner:
 
 * G0/G1 use direct one-shot artifact extraction.
@@ -27,14 +27,20 @@ from typing import Any
 PACKAGE = Path(__file__).resolve().parents[1]
 REPO = PACKAGE.parent
 CALIBRATION = PACKAGE / "operations" / "calibration_pilot"
-DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r51"
+DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r52"
 DEFAULT_AGENT_TIMEOUT_S = 5400
 DEFAULT_SETUP_TIMEOUT_S = 1800
 DEFAULT_REQUEST_TIMEOUT_S = 1800
 DEFAULT_TOOL_TIMEOUT_S = 1800
 DEFAULT_JUDGE_TIMEOUT_S = 1800
 DEFAULT_DOCKER_IMAGE = "vabench-agent-runtime:0.8.5"
+DEFAULT_NO_EVAS_DOCKER_IMAGE = "vabench-agent-runtime:0.8.5-no-evas"
 MODES = tuple(f"G{i}" for i in range(6))
+EXECUTABLE_FEEDBACK_ARMS = (
+    ("OneShot", "oneshot", "G0", False),
+    ("Agent-No-EVAS", "noevas", "G2", False),
+    ("Agentic", "agentic", "G2", True),
+)
 
 if str(CALIBRATION) not in sys.path:
     sys.path.insert(0, str(CALIBRATION))
@@ -88,16 +94,64 @@ def text_sha256(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
 
+def build_executable_feedback_control(campaign: dict[str, Any]) -> dict[str, Any]:
+    """Project a standard G0-G5 campaign onto three matched main-table arms."""
+    source_cells = {
+        (cell["task_id"], cell["mode"], cell["repetition"]): cell
+        for cell in campaign["cells"]
+    }
+    task_repetitions = sorted(
+        {
+            (cell["task_id"], cell["repetition"])
+            for cell in campaign["cells"]
+        }
+    )
+    cells: list[dict[str, Any]] = []
+    for task_id, repetition in task_repetitions:
+        for arm, slug, mode, executable_feedback in EXECUTABLE_FEEDBACK_ARMS:
+            source = source_cells[(task_id, mode, repetition)]
+            cell = dict(source)
+            cell.update(
+                {
+                    "cell_id": f"{source['cell_id']}-{slug}",
+                    "experimental_arm": arm,
+                    "executable_feedback": executable_feedback,
+                    "evas_cli_available": executable_feedback,
+                    "base_mode": mode,
+                }
+            )
+            cells.append(cell)
+
+    projected = dict(campaign)
+    projected.update(
+        {
+            "schema_version": "v4-executable-feedback-control-campaign-v1",
+            "comparison_profile": "executable-feedback-control-v1",
+            "arms": [arm for arm, _slug, _mode, _feedback in EXECUTABLE_FEEDBACK_ARMS],
+            "arm_count": len(EXECUTABLE_FEEDBACK_ARMS),
+            "mode_count": len({cell["mode"] for cell in cells}),
+            "cell_count": len(cells),
+            "cells": cells,
+        }
+    )
+    return projected
+
+
 def filter_campaign(campaign: dict[str, Any], args: argparse.Namespace) -> dict[str, Any]:
     modes = set(args.mode or MODES)
     forms = set(args.form or ("dut", "testbench", "bugfix"))
     task_ids = set(args.task_id or [])
+    experimental_arms = set(args.experimental_arm or [])
     cells = [
         cell
         for cell in campaign["cells"]
         if cell["mode"] in modes
         and cell["form"] in forms
         and (not task_ids or cell["task_id"] in task_ids)
+        and (
+            not experimental_arms
+            or cell.get("experimental_arm") in experimental_arms
+        )
     ]
     if args.limit is not None:
         cells = cells[: args.limit]
@@ -107,6 +161,10 @@ def filter_campaign(campaign: dict[str, Any], args: argparse.Namespace) -> dict[
     campaign["cells"] = cells
     campaign["cell_count"] = len(cells)
     campaign["mode_count"] = len({cell["mode"] for cell in cells})
+    if campaign.get("comparison_profile"):
+        campaign["arm_count"] = len(
+            {cell["experimental_arm"] for cell in cells}
+        )
     campaign["task_count"] = len({cell["task_id"] for cell in cells})
     campaign["family_count"] = len({cell["family_id"] for cell in cells})
     campaign["status"] = "planned_filtered"
@@ -114,6 +172,7 @@ def filter_campaign(campaign: dict[str, Any], args: argparse.Namespace) -> dict[
         "modes": sorted(modes),
         "forms": sorted(forms),
         "task_ids": sorted(task_ids),
+        "experimental_arms": sorted(experimental_arms),
         "limit": args.limit,
     }
     return campaign
@@ -135,10 +194,21 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--release", type=Path, default=DEFAULT_RELEASE)
     parser.add_argument("--selection", type=Path)
     parser.add_argument("--sample-families", type=int)
+    parser.add_argument(
+        "--comparison-profile",
+        choices=("executable-feedback-control",),
+        help="Build matched OneShot, Agent-No-EVAS, and Agentic arms.",
+    )
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--mode", action="append", choices=MODES)
     parser.add_argument("--form", action="append", choices=("dut", "testbench", "bugfix"))
     parser.add_argument("--task-id", action="append")
+    parser.add_argument(
+        "--experimental-arm",
+        action="append",
+        choices=("OneShot", "Agent-No-EVAS", "Agentic"),
+        help="Keep only selected arms after applying a comparison profile.",
+    )
     parser.add_argument("--limit", type=int)
     parser.add_argument("--output-root", type=Path, required=True)
     parser.add_argument("--model-provider", default="openai-compatible")
@@ -171,6 +241,10 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--docker-command", default="docker")
     parser.add_argument("--mini-swe-image", default=DEFAULT_DOCKER_IMAGE)
+    parser.add_argument(
+        "--mini-swe-no-evas-image",
+        default=DEFAULT_NO_EVAS_DOCKER_IMAGE,
+    )
     parser.add_argument("--agent-timeout-s", type=int, default=DEFAULT_AGENT_TIMEOUT_S)
     parser.add_argument("--setup-timeout-s", type=int, default=DEFAULT_SETUP_TIMEOUT_S)
     parser.add_argument("--request-timeout-s", type=int, default=DEFAULT_REQUEST_TIMEOUT_S)
@@ -190,8 +264,12 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = build_parser().parse_args()
-    if not args.dry_run and not args.evas_command:
-        raise SystemExit("--evas-command is required for executable campaigns")
+    if args.comparison_profile and args.mode:
+        raise SystemExit("--mode cannot be combined with --comparison-profile")
+    if args.comparison_profile and args.agent_scaffold != "mini-swe":
+        raise SystemExit(
+            f"{args.comparison_profile} requires --agent-scaffold mini-swe"
+        )
     evas_identity = None
     if args.evas_command:
         args.evas_command, evas_identity = resolve_evas_command(args.evas_command)
@@ -246,7 +324,15 @@ def main() -> int:
         per_turn_max_tokens=args.per_turn_max_tokens,
         repetitions=args.repetitions,
     )
+    if args.comparison_profile == "executable-feedback-control":
+        campaign = build_executable_feedback_control(campaign)
     campaign = filter_campaign(campaign, args)
+    requires_evas = any(
+        bool(cell.get("executable_feedback", cell.get("evas_cli_available")))
+        for cell in campaign["cells"]
+    )
+    if not args.dry_run and requires_evas and not args.evas_command:
+        raise SystemExit("--evas-command is required for executable campaigns")
     campaign["execution_config"] = {
         "schema_version": "v4-campaign-execution-config-v1",
         "termination_policy": "wall_time",
@@ -260,6 +346,13 @@ def main() -> int:
         "agent_scaffold": args.agent_scaffold,
         "mini_swe_sandbox": args.mini_swe_sandbox,
         "mini_swe_image": args.mini_swe_image,
+        "mini_swe_no_evas_image": args.mini_swe_no_evas_image,
+        "comparison_profile": campaign.get("comparison_profile"),
+        "controlled_difference": (
+            "public_evas_execution_diagnostics_and_waveforms"
+            if args.comparison_profile == "executable-feedback-control"
+            else None
+        ),
         "base_url_sha256": text_sha256(args.base_url.rstrip("/")),
         "temperature": args.temperature,
         "stream": args.stream,
@@ -292,6 +385,8 @@ def main() -> int:
         args.docker_command,
         "--mini-swe-image",
         args.mini_swe_image,
+        "--mini-swe-no-evas-image",
+        args.mini_swe_no_evas_image,
         "--agent-timeout-s",
         str(args.agent_timeout_s),
         "--setup-timeout-s",

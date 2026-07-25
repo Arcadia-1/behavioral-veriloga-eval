@@ -1,7 +1,8 @@
 # V4 Calibration Pilot
 
 The default release target is
-`benchmark-vabench-release-v4/release/benchmarkv4-r51`. Tools that support
+`benchmark-vabench-release-v4/release/benchmarkv4-r52`, paired with the pinned
+EVAS 0.8.5 public runtime. Tools that support
 historical inspection require the frozen r44 path explicitly; the active
 direct-EVAS runner never falls back to it.
 Use `--sample-families N --seed S` for reproducible random complete-family
@@ -98,10 +99,12 @@ benchmark-vabench-release-v4/public-agent-runtime/build.sh
 benchmark-vabench-release-v4/public-agent-runtime/verify.sh
 ```
 
-`auto` selects Docker. Formal results require the single image built from the
-repository's top-level `environment/`; `sandbox-exec`, Bubblewrap, and `none`
+`auto` selects Docker. Formal results require the matched images built from the
+repository's top-level `environment/`: `vabench-agent-runtime:0.8.5` and
+`vabench-agent-runtime:0.8.5-no-evas`. `sandbox-exec`, Bubblewrap, and `none`
 remain legacy/test sensitivity paths and are not paper-valid. Record the Git
-commit, image reference, and observed image ID with every campaign.
+commit, image references, and observed image IDs by experimental arm with every
+campaign.
 
 G2--G5 use `mini-swe-agent==2.4.5` with its `DefaultAgent` controller and one
 `bash` tool. The benchmark runner still owns campaign construction, runtime
@@ -132,6 +135,13 @@ no skill directory. All agentic modes receive the same minimal EVAS contract: a
 pinned, real `evas` executable is discoverable in `PATH`, `evas --help` works,
 and the task-local `evas_runtime.json` gives the public command.
 
+The main-table executable-feedback profile adds `Agent-No-EVAS`, which keeps
+the G2 mini-SWE controller, Bash workspace, wall-time policy, task prompt base,
+and submission gate but uses the paired no-EVAS image. Its effective prompt
+states that EVAS is unavailable, `evas_runtime.json` is removed, and neither
+the `evas` command nor Python module is installed. This is an availability
+control, not evidence that an Agentic episode causally used feedback.
+
 G1 is still a direct artifact-envelope mode, but may use provider-side
 `list_skills` and `read_skill` tools before the final answer. These tools read
 only `public/skills`, reject path escape and symlinks, cache repeated reads, and
@@ -145,7 +155,8 @@ above.
 The model invokes the image's fixed EVAS directly through ordinary bash,
 including pipes, redirection, and compound commands, and inspects logs and
 `tran.csv` under `/tmp/vabench-visible/evas-output` itself. The adapter does not
-run a feedback broker, checker, gold comparison, or property diagnosis.
+expose a waveform-specific helper or experiment arm, and does not run a
+feedback broker, checker, gold comparison, or property diagnosis.
 `vabench-submit` is likewise a real,
 discoverable shell command that requests runner validation of the final
 artifact set.
@@ -154,9 +165,14 @@ The shell wrapper records each actual `evas` process invocation independently
 of the surrounding bash spelling, so pipes, redirections, and compound commands
 do not disappear from telemetry. Campaign results expose the raw invocation
 records, skill availability/hash metadata, bash commands that reference
-`public/skills`, and a `v4-direct-evas-usage-v1` summary with succeeded, failed,
-timed out, and interrupted counts. These records describe tool use only; an EVAS
-nonzero exit is not promoted to a hidden-checker or behavioral verdict.
+`public/skills`, and a `v4-direct-evas-usage-v2` summary. Each invocation records
+the deterministic `candidate_tree_sha256` computed immediately before EVAS
+starts over only the task-declared candidate artifact paths; missing artifacts
+have a stable state marker. The summary retains succeeded, failed, timed out,
+and interrupted counts and adds unique candidate hashes, per-hash call counts,
+modified-rerun count, and unchanged-repeat count. These records describe
+candidate versions at tool invocation, not causal feedback use; an EVAS nonzero
+exit is not promoted to a hidden-checker or behavioral verdict.
 
 An explicit `vabench-submit` ends the episode early and records
 `submission_mode=explicit`. It is not a score-eligibility gate: when wall time
@@ -268,7 +284,18 @@ must write JSON to `VABENCH_TRUSTED_REPLAY_RESULT` with one of these statuses:
 ```json
 {
   "status": "behavior_failure",
-  "diagnostics": ["first mismatch at 2.5e-9 s"]
+  "diagnostics": ["slew_limit violated in corner-fast"],
+  "failure_taxonomy": {
+    "schema_version": "vabench-failure-taxonomy-v1",
+    "primary_class": "property",
+    "secondary_classes": ["functional"],
+    "stage": "property_check",
+    "responsibility": "candidate",
+    "retryable": false,
+    "case_ids": ["corner-fast"],
+    "property_ids": ["slew_limit"],
+    "mutation_ids": []
+  }
 }
 ```
 
@@ -277,6 +304,27 @@ Allowed terminal replay statuses are `passed`, `compile_failure`,
 adapter returning zero without JSON is accepted as `passed` with a compatibility
 diagnostic. A nonzero return without JSON is an infrastructure failure because
 the runner cannot safely infer its failure stage.
+
+Experiment-result schema v2 adds a required `failure_taxonomy` object to both
+the replay and terminal episode record without changing `status`, `outcome`, or
+binary-score semantics. Canonical primary classes are `invalid`, `compile`,
+`runtime`, `functional`, `mutation_survival`, `property`, `timeout`,
+`resource_exhaustion`, `behavior_unspecified`, and `infrastructure`; passing
+and not-yet-scored records use `null`. The runner derives unambiguous classes
+from artifact gates, execution state, and coarse replay status. A
+`behavior_failure` adapter should provide `functional`, `mutation_survival`, or
+`property` plus any applicable `case_ids`, `property_ids`, and `mutation_ids`.
+For compatibility, an adapter that omits `failure_taxonomy` remains scoreable
+as `behavior_unspecified`. An invalid or status-incompatible supplied taxonomy
+marks the replay as `infrastructure_failure` instead of silently corrupting
+analysis labels; the raw adapter JSON is retained.
+
+`score_campaign.py` copies the normalized object into each analysis row and
+flattens `failure_class`, `failure_stage`, `failure_responsibility`, and
+`failure_retryable`. Score-report schema v2 aggregates `failure_classes`,
+`secondary_failure_classes`, `failure_stages`, `failure_responsibilities`,
+`failure_retryability`, failed case/property/mutation ID counts, and
+per-form/per-mode/per-arm `failure_breakdown`.
 
 Model execution is separate from replay execution. `agent_timeout` without a
 complete artifact and `no_submission` have `score_eligible: false` and

@@ -27,14 +27,16 @@ if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 import result_protocol as RESULT_PROTOCOL  # noqa: E402
 from mini_swe_vabench import (  # noqa: E402
+    CANDIDATE_TREE_SCHEMA_VERSION,
     DEFAULT_DOCKER_IMAGE,
+    DEFAULT_NO_EVAS_DOCKER_IMAGE,
     MINI_SWE_SCAFFOLD_ID,
     default_sandbox_backend,
     run_mini_swe_episode,
 )
 
 EXPORTER = PACKAGE / "operations" / "tri_form_derivation_prep" / "export_tri_form_runtime.py"
-DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r51"
+DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r52"
 DEFAULT_BASE_URL = "https://www.cun.ai/v1"
 DEFAULT_API_KEY_ENV = "VAEVAS_API_KEY"
 DEFAULT_AGENT_TIMEOUT_S = 5400
@@ -52,6 +54,8 @@ DIRECT_DUT_RUNTIME_SCHEMAS = {
     "r50-direct-evas-runtime-v2",
     "r51-direct-evas-runtime-v2",
     "r51-direct-evas-runtime-v3",
+    "r52-direct-evas-runtime-v2",
+    "r52-direct-evas-runtime-v3",
 }
 DIRECT_TESTBENCH_RUNTIME_SCHEMAS = {
     "r45-direct-evas-testbench-suite-v1",
@@ -124,6 +128,20 @@ PUBLIC_ESCAPE_RE = re.compile(
     r"\b(?:shell|system|exec|spawn|unix|socket|tcp|udp|https?|ftp|curl|wget|ocean|skill|ipcBeginProcess)\b",
     re.IGNORECASE,
 )
+AGENTIC_COMPONENT_START = '<<<VABENCH_COMPONENT id="agentic_wrapper.md">>>'
+AGENTIC_COMPONENT_END = "<<<END_VABENCH_COMPONENT>>>"
+NO_EVAS_AGENTIC_WRAPPER = """\
+# vaBench Agent-No-EVAS Submission Contract
+
+Inspect the mounted public task inputs and write only the final candidate
+artifacts under `public/submission/`. Preserve exact file names, module names,
+ports, parameters, and required artifact paths.
+
+EVAS execution is not available in this experimental arm. No public simulator
+diagnostics or waveforms are provided. Reason from the public specification and
+task files, then run `vabench-submit` after the declared artifacts are complete.
+The final private Spectre judge is outside the model-visible workspace.
+"""
 ONESHOT_TRANSPORT_INSTRUCTION = """\
 Complete the task in the user message without changing its requested behavior.
 For final delivery, call `submit_artifacts` exactly once with the complete text
@@ -160,6 +178,32 @@ def read_json(path: Path) -> dict[str, Any]:
 def write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def summarize_public_agent_images(results: list[dict[str, Any]]) -> dict[str, Any]:
+    image_ids_by_arm: dict[str, set[str]] = {}
+    for row in results:
+        scaffold = row.get("agent_scaffold")
+        if not isinstance(scaffold, dict):
+            continue
+        image_id = scaffold.get("docker_image_id")
+        if not image_id:
+            continue
+        arm = str((row.get("cell") or {}).get("experimental_arm") or "standard")
+        image_ids_by_arm.setdefault(arm, set()).add(str(image_id))
+    serialized = {
+        arm: sorted(image_ids)
+        for arm, image_ids in sorted(image_ids_by_arm.items())
+    }
+    return {
+        "observed_image_ids": sorted(
+            {image_id for image_ids in serialized.values() for image_id in image_ids}
+        ),
+        "observed_image_ids_by_arm": serialized,
+        "identity_consistent": all(
+            len(image_ids) <= 1 for image_ids in serialized.values()
+        ),
+    }
 
 
 def resolve_pinned_evas_identity(command: str) -> dict[str, Any]:
@@ -280,14 +324,43 @@ def model_event_hit_limit(event: dict[str, Any]) -> bool:
 
 def summarize_evas_invocations(invocations: list[dict[str, Any]]) -> dict[str, Any]:
     statuses = [str(row.get("status") or "unknown") for row in invocations]
+    candidate_tree_hash_call_counts: dict[str, int] = {}
+    modified_rerun_count = 0
+    unchanged_repeat_count = 0
+    previous_hash: str | None = None
+    for row in invocations:
+        raw_hash = row.get("candidate_tree_sha256")
+        candidate_hash = raw_hash if isinstance(raw_hash, str) and raw_hash else None
+        if candidate_hash is None:
+            previous_hash = None
+            continue
+        candidate_tree_hash_call_counts[candidate_hash] = (
+            candidate_tree_hash_call_counts.get(candidate_hash, 0) + 1
+        )
+        if previous_hash is not None:
+            if candidate_hash == previous_hash:
+                unchanged_repeat_count += 1
+            else:
+                modified_rerun_count += 1
+        previous_hash = candidate_hash
     return {
-        "schema_version": "v4-direct-evas-usage-v1",
+        "schema_version": "v4-direct-evas-usage-v2",
         "calls_executed": len(invocations),
         "calls_succeeded": statuses.count("succeeded"),
         "calls_failed": statuses.count("failed"),
         "calls_timed_out": statuses.count("timed_out"),
         "calls_interrupted": statuses.count("interrupted"),
         "last_status": statuses[-1] if statuses else None,
+        "candidate_tree_schema_version": CANDIDATE_TREE_SCHEMA_VERSION,
+        "calls_with_candidate_tree_hash": sum(
+            candidate_tree_hash_call_counts.values()
+        ),
+        "unique_candidate_tree_hashes": list(
+            candidate_tree_hash_call_counts
+        ),
+        "candidate_tree_hash_call_counts": candidate_tree_hash_call_counts,
+        "modified_rerun_count": modified_rerun_count,
+        "unchanged_repeat_count": unchanged_repeat_count,
     }
 
 
@@ -442,9 +515,17 @@ def validate_campaign_cells(cells: list[dict[str, Any]], release: Path) -> None:
     task_rows = read_json(release / "TASK_INDEX.json")["tasks"]
     tasks = {str(row["task_id"]): row for row in task_rows}
     seen: set[str] = set()
+    arm_contract = {
+        "OneShot": ("G0", False),
+        "Agent-No-EVAS": ("G2", False),
+        "Agentic": ("G2", True),
+    }
     for cell in cells:
         cell_id = str(cell.get("cell_id") or "")
-        if not re.fullmatch(r"v4-[0-9]{3,4}-G[0-5]-r[0-9]{2,}", cell_id):
+        if not re.fullmatch(
+            r"v4-[0-9]{3,4}-G[0-5]-r[0-9]{2,}(?:-(?:oneshot|noevas|agentic))?",
+            cell_id,
+        ):
             raise ValueError(f"invalid campaign cell_id: {cell_id!r}")
         if cell_id in seen:
             raise ValueError(f"duplicate campaign cell_id: {cell_id}")
@@ -456,6 +537,17 @@ def validate_campaign_cells(cells: list[dict[str, Any]], release: Path) -> None:
         expected_process = str(mode_specs[mode]["process"])
         if cell.get("process") != expected_process:
             raise ValueError(f"campaign process mismatch for {cell_id}")
+        arm = cell.get("experimental_arm")
+        if arm is not None:
+            if arm not in arm_contract:
+                raise ValueError(f"unknown experimental arm for {cell_id}: {arm!r}")
+            expected_mode, expected_feedback = arm_contract[arm]
+            if mode != expected_mode or cell.get("base_mode") != expected_mode:
+                raise ValueError(f"experimental arm mode mismatch for {cell_id}")
+            if cell.get("executable_feedback") is not expected_feedback:
+                raise ValueError(
+                    f"experimental arm executable-feedback mismatch for {cell_id}"
+                )
 
         task_id = str(cell.get("task_id") or "")
         task = tasks.get(task_id)
@@ -2115,6 +2207,62 @@ def export_runtime(cell: dict[str, Any], release: Path, output: Path, *, timeout
         raise RuntimeExportError(
             f"runtime exporter exited with status {completed.returncode}: {detail}"
         )
+    apply_experimental_arm_overlay(cell, output)
+
+
+def apply_experimental_arm_overlay(cell: dict[str, Any], runtime: Path) -> None:
+    arm = cell.get("experimental_arm")
+    if arm is None:
+        return
+    policy_path = runtime / "MODEL_ACCESS_POLICY.json"
+    policy = read_json(policy_path)
+    policy["experimental_arm"] = arm
+    policy["executable_feedback"] = bool(cell.get("executable_feedback"))
+    policy["transport_tools"] = ["submit_artifacts"] if arm == "OneShot" else []
+    if not cell.get("executable_feedback"):
+        policy["executables"] = [
+            executable
+            for executable in policy.get("executables") or []
+            if executable != "evas"
+        ]
+    write_json(policy_path, policy)
+
+    prompt_path = runtime / (
+        "agent_prompt.txt" if cell["process"] == "agentic" else "direct_prompt.txt"
+    )
+    if arm == "Agent-No-EVAS":
+        (runtime / "public" / "task" / "evas_runtime.json").unlink(missing_ok=True)
+        prompt = prompt_path.read_text(encoding="utf-8")
+        start = prompt.find(AGENTIC_COMPONENT_START)
+        end = prompt.find(AGENTIC_COMPONENT_END, start)
+        if start < 0 or end < 0:
+            raise RuntimeExportError(
+                "Agent-No-EVAS runtime is missing its agentic wrapper"
+            )
+        replacement = (
+            f"{AGENTIC_COMPONENT_START}\n\n{NO_EVAS_AGENTIC_WRAPPER.rstrip()}\n\n"
+            f"{AGENTIC_COMPONENT_END}"
+        )
+        prompt_path.write_text(
+            prompt[:start] + replacement + prompt[end + len(AGENTIC_COMPONENT_END):],
+            encoding="utf-8",
+        )
+
+    effective_prompt = prompt_path.read_text(encoding="utf-8")
+    write_json(
+        runtime / "evidence" / "experimental_arm.json",
+        {
+            "schema_version": "v4-experimental-arm-v1",
+            "experimental_arm": arm,
+            "base_mode": cell["mode"],
+            "process": cell["process"],
+            "executable_feedback": bool(cell.get("executable_feedback")),
+            "base_prompt_record_sha256": cell["prompt_record_sha256"],
+            "effective_prompt_sha256": hashlib.sha256(
+                effective_prompt.encode("utf-8")
+            ).hexdigest(),
+        },
+    )
 
 
 def run_mini_swe_agentic_cell(
@@ -2139,6 +2287,16 @@ def run_mini_swe_agentic_cell(
 
     started = time.monotonic()
     try:
+        executable_feedback = bool(cell.get("executable_feedback", True))
+        docker_image = (
+            getattr(args, "mini_swe_image", DEFAULT_DOCKER_IMAGE)
+            if executable_feedback
+            else getattr(
+                args,
+                "mini_swe_no_evas_image",
+                DEFAULT_NO_EVAS_DOCKER_IMAGE,
+            )
+        )
         episode = run_mini_swe_episode(
             runtime=runtime,
             prompt=prompt,
@@ -2149,8 +2307,10 @@ def run_mini_swe_agentic_cell(
             tool_timeout_s=float(args.tool_timeout_s),
             sandbox_backend=args.mini_swe_sandbox,
             evas_command=args.evas_command,
+            executable_feedback=executable_feedback,
             docker_command=getattr(args, "docker_command", "docker"),
-            docker_image=getattr(args, "mini_swe_image", DEFAULT_DOCKER_IMAGE),
+            docker_image=docker_image,
+            candidate_artifacts=expected_candidate_artifacts(runtime),
             submission_gate=submission_artifact_gate,
             usage_parser=provider_output_usage,
             response_metadata=provider_response_metadata,
@@ -2305,6 +2465,7 @@ def run_mini_swe_agentic_cell(
                     "docker_image_id",
                     "network",
                     "evaluator_mounted",
+                    "executable_feedback",
                     "resource_limits",
                 )
             },
@@ -2312,6 +2473,7 @@ def run_mini_swe_agentic_cell(
                 "backend": episode["sandbox_backend"],
                 "image": episode.get("docker_image"),
                 "image_id": episode.get("docker_image_id"),
+                "executable_feedback": executable_feedback,
             },
             "mini_swe_exit_status": exit_status,
             "model_calls": episode["model_calls"],
@@ -2388,10 +2550,20 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         "available_skills": list_available_skills(runtime).get("skills") or {},
     }
     if mini_swe_agentic:
+        executable_feedback = bool(cell.get("executable_feedback", True))
         result["public_agent_environment"] = {
             "backend": getattr(args, "mini_swe_sandbox", None),
-            "image": getattr(args, "mini_swe_image", DEFAULT_DOCKER_IMAGE),
+            "image": (
+                getattr(args, "mini_swe_image", DEFAULT_DOCKER_IMAGE)
+                if executable_feedback
+                else getattr(
+                    args,
+                    "mini_swe_no_evas_image",
+                    DEFAULT_NO_EVAS_DOCKER_IMAGE,
+                )
+            ),
             "image_id": None,
+            "executable_feedback": executable_feedback,
         }
     if args.dry_run:
         result["finished_at"] = now()
@@ -2924,6 +3096,10 @@ def main() -> int:
     )
     parser.add_argument("--docker-command", default="docker")
     parser.add_argument("--mini-swe-image", default=DEFAULT_DOCKER_IMAGE)
+    parser.add_argument(
+        "--mini-swe-no-evas-image",
+        default=DEFAULT_NO_EVAS_DOCKER_IMAGE,
+    )
     parser.add_argument("--agent-timeout-s", type=int, default=DEFAULT_AGENT_TIMEOUT_S)
     parser.add_argument("--setup-timeout-s", type=int, default=DEFAULT_SETUP_TIMEOUT_S)
     parser.add_argument("--request-timeout-s", type=int, default=DEFAULT_REQUEST_TIMEOUT_S)
@@ -2939,8 +3115,6 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
-    if not args.dry_run and not args.evas_command:
-        raise SystemExit("--evas-command is required for executable campaigns")
     args.campaign = args.campaign.resolve()
     args.release = args.release.resolve()
     args.output = args.output.resolve()
@@ -2952,6 +3126,19 @@ def main() -> int:
         raise SystemExit(
             "campaign shared Docker image does not match --mini-swe-image: "
             f"expected={expected_mini_swe_image} observed={args.mini_swe_image}"
+        )
+    expected_no_evas_image = (campaign.get("execution_config") or {}).get(
+        "mini_swe_no_evas_image"
+    )
+    if (
+        expected_no_evas_image
+        and args.mini_swe_no_evas_image != expected_no_evas_image
+    ):
+        raise SystemExit(
+            "campaign Agent-No-EVAS Docker image does not match "
+            "--mini-swe-no-evas-image: "
+            f"expected={expected_no_evas_image} "
+            f"observed={args.mini_swe_no_evas_image}"
         )
     expected_evas_identity = (campaign.get("execution_config") or {}).get(
         "evas_identity"
@@ -2977,6 +3164,12 @@ def main() -> int:
         cells = cells[:args.limit]
     if not cells:
         raise SystemExit("no matching campaign cells")
+    requires_evas = any(
+        bool(cell.get("executable_feedback", cell.get("evas_cli_available")))
+        for cell in cells
+    )
+    if not args.dry_run and requires_evas and not args.evas_command:
+        raise SystemExit("--evas-command is required for executable campaigns")
     uses_mini_swe = args.agent_scaffold == "mini-swe" and any(
         cell["mode"] in AGENTIC for cell in cells
     )
@@ -3020,14 +3213,7 @@ def main() -> int:
         with ThreadPoolExecutor(max_workers=args.workers) as pool:
             results = list(pool.map(lambda cell: run_cell_preserving_failure(cell, args, client), cells))
     all_results = stored_results(args.output)
-    image_ids = sorted(
-        {
-            str((row.get("agent_scaffold") or {}).get("docker_image_id"))
-            for row in all_results
-            if isinstance(row.get("agent_scaffold"), dict)
-            and (row.get("agent_scaffold") or {}).get("docker_image_id")
-        }
-    )
+    image_summary = summarize_public_agent_images(all_results)
     summary = {
         "schema_version": "v4-calibration-run-summary-v1",
         "campaign": str(args.campaign),
@@ -3036,8 +3222,10 @@ def main() -> int:
         "public_agent_environment": {
             "backend": args.mini_swe_sandbox if uses_mini_swe else None,
             "image": args.mini_swe_image if uses_mini_swe else None,
-            "observed_image_ids": image_ids,
-            "identity_consistent": len(image_ids) <= 1,
+            "no_evas_image": (
+                args.mini_swe_no_evas_image if uses_mini_swe else None
+            ),
+            **image_summary,
         },
         "result_count": len(all_results),
         "statuses": {},

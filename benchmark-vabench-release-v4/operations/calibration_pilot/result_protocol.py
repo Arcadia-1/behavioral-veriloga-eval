@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Materialize the immutable r45 experiment-result protocol."""
+"""Materialize the immutable V4 experiment-result protocol."""
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -11,7 +11,85 @@ import subprocess
 from typing import Any
 
 
-SCHEMA_VERSION = "vabench-experiment-result-v1"
+SCHEMA_VERSION = "vabench-experiment-result-v2"
+FAILURE_TAXONOMY_SCHEMA_VERSION = "vabench-failure-taxonomy-v1"
+FAILURE_CLASSES = {
+    "invalid",
+    "compile",
+    "runtime",
+    "functional",
+    "mutation_survival",
+    "property",
+    "timeout",
+    "resource_exhaustion",
+    "behavior_unspecified",
+    "infrastructure",
+}
+FAILURE_STAGES = {
+    "not_run",
+    "completed",
+    "model_execution",
+    "artifact_gate",
+    "compilation",
+    "simulation",
+    "functional_check",
+    "mutation_check",
+    "property_check",
+    "behavior_check",
+    "infrastructure",
+    "not_scored",
+}
+FAILURE_RESPONSIBILITIES = {
+    "none",
+    "candidate",
+    "model",
+    "system",
+    "undetermined",
+}
+FAILURE_TAXONOMY_FIELDS = {
+    "schema_version",
+    "primary_class",
+    "secondary_classes",
+    "stage",
+    "responsibility",
+    "retryable",
+    "case_ids",
+    "property_ids",
+    "mutation_ids",
+}
+REPLAY_FAILURE_CLASSES = {
+    "not_run": {None},
+    "passed": {None},
+    "compile_failure": {"compile"},
+    "runtime_failure": {"runtime", "timeout"},
+    "behavior_failure": {
+        "functional",
+        "mutation_survival",
+        "property",
+        "behavior_unspecified",
+    },
+    "infrastructure_failure": {"infrastructure"},
+}
+REPLAY_FAILURE_STAGES = {
+    ("not_run", None): {"not_run"},
+    ("passed", None): {"completed"},
+    ("compile_failure", "compile"): {"compilation"},
+    ("runtime_failure", "runtime"): {"simulation"},
+    ("runtime_failure", "timeout"): {"simulation"},
+    ("behavior_failure", "functional"): {"functional_check", "behavior_check"},
+    ("behavior_failure", "mutation_survival"): {"mutation_check"},
+    ("behavior_failure", "property"): {"property_check"},
+    ("behavior_failure", "behavior_unspecified"): {"behavior_check"},
+    ("infrastructure_failure", "infrastructure"): {"infrastructure"},
+}
+REPLAY_FAILURE_RESPONSIBILITIES = {
+    "not_run": {"none"},
+    "passed": {"none"},
+    "compile_failure": {"candidate"},
+    "runtime_failure": {"candidate"},
+    "behavior_failure": {"candidate"},
+    "infrastructure_failure": {"system", "undetermined"},
+}
 REPLAY_STATUSES = {
     "passed",
     "compile_failure",
@@ -19,6 +97,116 @@ REPLAY_STATUSES = {
     "behavior_failure",
     "infrastructure_failure",
 }
+
+
+def validate_adapter_failure_taxonomy(status: str, value: Any) -> None:
+    if not isinstance(value, dict):
+        raise ValueError("failure_taxonomy must be an object")
+    unknown = set(value) - FAILURE_TAXONOMY_FIELDS
+    if unknown:
+        raise ValueError(f"unknown failure_taxonomy fields: {sorted(unknown)}")
+    schema_version = value.get("schema_version")
+    if schema_version not in {None, FAILURE_TAXONOMY_SCHEMA_VERSION}:
+        raise ValueError("unsupported failure_taxonomy schema_version")
+    primary_class = value.get("primary_class")
+    if primary_class not in REPLAY_FAILURE_CLASSES[status]:
+        raise ValueError("failure class is incompatible with replay status")
+    stage = value.get("stage")
+    if stage is not None and stage not in FAILURE_STAGES:
+        raise ValueError("unknown failure stage")
+    if (
+        stage is not None
+        and stage not in REPLAY_FAILURE_STAGES[(status, primary_class)]
+    ):
+        raise ValueError("failure stage is incompatible with replay status")
+    responsibility = value.get("responsibility")
+    if responsibility is not None and responsibility not in FAILURE_RESPONSIBILITIES:
+        raise ValueError("unknown failure responsibility")
+    if (
+        responsibility is not None
+        and responsibility not in REPLAY_FAILURE_RESPONSIBILITIES[status]
+    ):
+        raise ValueError("failure responsibility is incompatible with replay status")
+    if "retryable" in value and not isinstance(value["retryable"], bool):
+        raise ValueError("retryable must be boolean")
+    if status != "infrastructure_failure" and value.get("retryable") is True:
+        raise ValueError("candidate and completed outcomes cannot be retryable")
+    for field in (
+        "secondary_classes",
+        "case_ids",
+        "property_ids",
+        "mutation_ids",
+    ):
+        items = value.get(field, [])
+        if not isinstance(items, list) or not all(
+            isinstance(item, str) and item for item in items
+        ):
+            raise ValueError(f"{field} must contain non-empty strings")
+        if len(items) != len(set(items)):
+            raise ValueError(f"{field} must not contain duplicates")
+    secondary = value.get("secondary_classes", [])
+    if any(item not in FAILURE_CLASSES for item in secondary):
+        raise ValueError("unknown secondary failure class")
+    if primary_class in secondary:
+        raise ValueError("primary failure class cannot also be secondary")
+
+
+def normalize_failure_taxonomy(
+    value: dict[str, Any],
+    *,
+    primary_class: str | None,
+    stage: str,
+    responsibility: str,
+    retryable: bool,
+) -> dict[str, Any]:
+    return {
+        "schema_version": FAILURE_TAXONOMY_SCHEMA_VERSION,
+        "primary_class": value.get("primary_class", primary_class),
+        "secondary_classes": list(value.get("secondary_classes") or []),
+        "stage": value.get("stage", stage),
+        "responsibility": value.get("responsibility", responsibility),
+        "retryable": bool(value.get("retryable", retryable)),
+        "case_ids": list(value.get("case_ids") or []),
+        "property_ids": list(value.get("property_ids") or []),
+        "mutation_ids": list(value.get("mutation_ids") or []),
+    }
+
+
+def replay_failure_taxonomy(
+    status: str,
+    command: dict[str, Any] | None,
+    adapter_result: dict[str, Any] | None,
+) -> dict[str, Any]:
+    defaults: dict[str, tuple[str | None, str, str, bool]] = {
+        "not_run": (None, "not_run", "none", False),
+        "passed": (None, "completed", "none", False),
+        "compile_failure": ("compile", "compilation", "candidate", False),
+        "runtime_failure": ("runtime", "simulation", "candidate", False),
+        "behavior_failure": (
+            "behavior_unspecified",
+            "behavior_check",
+            "candidate",
+            False,
+        ),
+        "infrastructure_failure": (
+            "infrastructure",
+            "infrastructure",
+            "system",
+            True,
+        ),
+    }
+    primary_class, stage, responsibility, retryable = defaults[status]
+    if command and command.get("execution_status") == "timeout":
+        primary_class = "timeout"
+        stage = "simulation"
+    raw = dict((adapter_result or {}).get("failure_taxonomy") or {})
+    return normalize_failure_taxonomy(
+        raw,
+        primary_class=primary_class,
+        stage=stage,
+        responsibility=responsibility,
+        retryable=retryable,
+    )
 
 
 def now() -> str:
@@ -159,6 +347,7 @@ def trusted_replay(
     identity: dict[str, Any],
     submission_tree_sha256: str | None = None,
 ) -> dict[str, Any]:
+    taxonomy_adapter_result: dict[str, Any] | None = None
     if command is None:
         status = "not_run"
         diagnostics: list[str] = []
@@ -175,6 +364,18 @@ def trusted_replay(
             diagnostics = ["invalid_trusted_replay_status"]
         else:
             diagnostics = list(adapter_result.get("diagnostics") or [])
+            if "failure_taxonomy" in adapter_result:
+                try:
+                    validate_adapter_failure_taxonomy(
+                        status, adapter_result["failure_taxonomy"]
+                    )
+                except ValueError:
+                    status = "infrastructure_failure"
+                    diagnostics.append("invalid_failure_taxonomy")
+                else:
+                    taxonomy_adapter_result = adapter_result
+            else:
+                taxonomy_adapter_result = adapter_result
     elif command.get("returncode") == 0:
         status = "passed"
         diagnostics = ["legacy_adapter_without_structured_result"]
@@ -190,6 +391,9 @@ def trusted_replay(
         "command": command,
         "adapter_result": adapter_result,
         "diagnostics": diagnostics,
+        "failure_taxonomy": replay_failure_taxonomy(
+            status, command, taxonomy_adapter_result
+        ),
     }
 
 
@@ -212,6 +416,58 @@ def terminal_outcome(
     return "not_scored"
 
 
+def terminal_failure_taxonomy(
+    model_status: str,
+    submission: dict[str, Any],
+    replay: dict[str, Any],
+) -> dict[str, Any]:
+    if model_status == "agent_resource_exhausted":
+        return normalize_failure_taxonomy(
+            {},
+            primary_class="resource_exhaustion",
+            stage="model_execution",
+            responsibility="model",
+            retryable=False,
+        )
+    if model_status in {"provider_failure", "runner_failure"}:
+        return normalize_failure_taxonomy(
+            {},
+            primary_class="infrastructure",
+            stage="model_execution",
+            responsibility="system",
+            retryable=True,
+        )
+    if model_status == "agent_timeout" and submission.get("status") != "available":
+        return normalize_failure_taxonomy(
+            {},
+            primary_class="timeout",
+            stage="model_execution",
+            responsibility="model",
+            retryable=False,
+        )
+    if submission.get("status") != "available":
+        return normalize_failure_taxonomy(
+            {},
+            primary_class="invalid",
+            stage="artifact_gate",
+            responsibility="candidate",
+            retryable=False,
+        )
+    replay_status = str(replay.get("status") or "not_run")
+    existing = replay.get("failure_taxonomy")
+    if isinstance(existing, dict):
+        return dict(existing)
+    if replay_status in REPLAY_STATUSES or replay_status == "not_run":
+        return replay_failure_taxonomy(replay_status, replay.get("command"), None)
+    return normalize_failure_taxonomy(
+        {},
+        primary_class=None,
+        stage="not_scored",
+        responsibility="none",
+        retryable=False,
+    )
+
+
 def build_experiment_result(
     *,
     cell: dict[str, Any],
@@ -224,7 +480,13 @@ def build_experiment_result(
 ) -> dict[str, Any]:
     submission = final_submission or snapshot_submission(runtime, artifact_gate)
     outcome = terminal_outcome(model_status, submission, replay)
-    scored = outcome in {"passed", "compile_failure", "runtime_failure", "behavior_failure"}
+    failure_taxonomy = terminal_failure_taxonomy(model_status, submission, replay)
+    scored = outcome in {
+        "passed",
+        "compile_failure",
+        "runtime_failure",
+        "behavior_failure",
+    }
     score = 1.0 if outcome == "passed" else 0.0 if scored else None
     return {
         "schema_version": SCHEMA_VERSION,
@@ -239,6 +501,7 @@ def build_experiment_result(
         "final_submission": submission,
         "final_trusted_replay": replay,
         "outcome": outcome,
+        "failure_taxonomy": failure_taxonomy,
         "score_eligible": scored,
         "score": score,
     }

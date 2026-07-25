@@ -39,10 +39,12 @@ from runners.simulate_evas import (  # noqa: E402
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4-r51"
+DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4-r52"
 REQUIRED_EVAS_ENGINE = "evas2"
-REQUIRED_EVAS_VERSION = "0.8.3"
+REQUIRED_EVAS_VERSION = "0.8.5"
+LEGACY_EVAS_VERSION = "0.8.3"
 RUST_EVAS_LOG_ENGINE = "evas-rust"
+LEGACY_RELEASE_REVISIONS = {"r44", "r45", "r47", "r48", "r49", "r50", "r51"}
 EVAS_VERSION_RE = re.compile(r"^Version\s+(\S+)", re.MULTILINE)
 EVAS_BACKEND_RE = re.compile(r"^\s*evas_engine\s*=\s*(\S+)\s*$", re.MULTILINE)
 
@@ -60,6 +62,18 @@ def require_evas2_environment() -> None:
 
 def read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def required_evas_version_for_release(release: Path) -> str:
+    manifest_path = release / "MANIFEST.json"
+    if not manifest_path.is_file():
+        raise SystemExit(f"release manifest is missing: {manifest_path}")
+    revision = str(read_json(manifest_path).get("release_revision") or "")
+    if revision == "r52":
+        return REQUIRED_EVAS_VERSION
+    if revision in LEGACY_RELEASE_REVISIONS:
+        return LEGACY_EVAS_VERSION
+    raise SystemExit(f"unsupported release revision: {revision!r}")
 
 
 def file_sha(path: Path) -> str:
@@ -311,6 +325,7 @@ def run_one_case(
     mutation_id: str | None,
     output_root: Path,
     timeout_s: int,
+    required_evas_version: str = REQUIRED_EVAS_VERSION,
 ) -> dict[str, Any]:
     case_dir = output_root / case_id
     if case_dir.exists():
@@ -330,7 +345,10 @@ def run_one_case(
     wall_time_s = time.perf_counter() - started
     combined = (proc.stdout or "") + "\n" + (proc.stderr or "")
     csv_path = case_output / "tran.csv"
-    case_runtime = case_evas2_runtime(case_output)
+    case_runtime = case_evas2_runtime(
+        case_output,
+        required_evas_version=required_evas_version,
+    )
     simulator_ok = (
         proc.returncode == 0
         and csv_path.is_file()
@@ -398,6 +416,7 @@ def run_task(
             mutation_id=None,
             output_root=task_output,
             timeout_s=timeout_s,
+            required_evas_version=runtime["evas_version"],
         )
     ]
     if include_mutations:
@@ -410,6 +429,7 @@ def run_task(
                     mutation_id=str(mutation_id),
                     output_root=task_output,
                     timeout_s=timeout_s,
+                    required_evas_version=runtime["evas_version"],
                 )
             )
     reference_pass = cases[0]["status"] == "reference_pass"
@@ -466,7 +486,8 @@ def main() -> int:
         shutil.rmtree(work_root)
     work_root.mkdir(parents=True)
     require_evas2_environment()
-    runtime = probe_evas2_runtime()
+    required_evas_version = required_evas_version_for_release(release)
+    runtime = probe_evas2_runtime(required_evas_version=required_evas_version)
     results = [
         run_task(
             release=release,

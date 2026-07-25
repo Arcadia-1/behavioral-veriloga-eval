@@ -25,6 +25,7 @@ from run_v4_reference_evas_smoke import (  # noqa: E402
     REQUIRED_EVAS_VERSION,
     RUST_EVAS_LOG_ENGINE,
     require_evas2_environment,
+    required_evas_version_for_release,
     run_one_case,
     task_dir_for_id,
 )
@@ -111,6 +112,8 @@ def run_task(
     scale: float,
     shift_s: float,
     timeout_s: int,
+    *,
+    required_evas_version: str = REQUIRED_EVAS_VERSION,
 ) -> dict[str, Any]:
     source_task = task_dir_for_id(release, task_id)
     record = read_json(source_task / "task_record.json")
@@ -139,6 +142,7 @@ def run_task(
             mutation_id=mutation_id,
             output_root=work_root / "runs" / task_id,
             timeout_s=timeout_s,
+            required_evas_version=required_evas_version,
         )
         expected = "reference_pass" if mutation_id is None else "mutation_killed"
         case_rows.append(
@@ -162,7 +166,7 @@ def run_task(
         "task_dir": source_task.name,
         "evas_engine": REQUIRED_EVAS_ENGINE,
         "evas_engine_used": REQUIRED_EVAS_ENGINE,
-        "evas_version": REQUIRED_EVAS_VERSION,
+        "evas_version": required_evas_version,
         "evas_backend_required": RUST_EVAS_LOG_ENGINE,
         "case_count": len(case_rows),
         "pass_count": sum(row["status"] == "pass" for row in case_rows),
@@ -194,6 +198,7 @@ def main() -> int:
         shutil.rmtree(work_root)
     work_root.mkdir(parents=True)
     release = args.release.expanduser().resolve()
+    required_evas_version = required_evas_version_for_release(release)
     rows = [
         run_task(
             release,
@@ -202,6 +207,7 @@ def main() -> int:
             args.scale,
             args.shift_ns * 1e-9,
             args.timeout_s,
+            required_evas_version=required_evas_version,
         )
         for task_id in args.task_id
     ]
@@ -210,7 +216,7 @@ def main() -> int:
         "release": str(release),
         "evas_engine": REQUIRED_EVAS_ENGINE,
         "evas_engine_used": REQUIRED_EVAS_ENGINE,
-        "evas_version": REQUIRED_EVAS_VERSION,
+        "evas_version": required_evas_version,
         "evas_backend_required": RUST_EVAS_LOG_ENGINE,
         "transform": {"scale": args.scale, "shift_ns": args.shift_ns},
         "task_count": len(rows),
