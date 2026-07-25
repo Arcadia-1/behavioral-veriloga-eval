@@ -9,7 +9,7 @@ COPY requirements.lock /tmp/requirements.lock
 RUN python3 -m pip install --no-cache-dir --require-hashes -r /tmp/requirements.lock \
     && rm /tmp/requirements.lock \
     && evas --version --format json > /tmp/evas-identity.json \
-    && python3 -c 'import json; p=json.load(open("/tmp/evas-identity.json")); assert p["package_version"] == "0.8.3" and p["rust_core_present"] and p["rust_core_loadable"]' \
+    && python3 -c 'import json; p=json.load(open("/tmp/evas-identity.json")); assert p["package_version"] == "0.8.4" and p["rust_core_present"] and p["rust_core_loadable"]' \
     && rm /tmp/evas-identity.json
 
 COPY runtime/entrypoint.sh /usr/local/bin/vabench-entrypoint

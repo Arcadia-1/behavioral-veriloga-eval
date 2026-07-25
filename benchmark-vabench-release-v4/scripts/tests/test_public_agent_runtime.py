@@ -5,6 +5,20 @@ import unittest
 RUNTIME_DIR = Path(__file__).resolve().parents[2] / "public-agent-runtime"
 REPO_ROOT = Path(__file__).resolve().parents[3]
 ENVIRONMENT_DIR = REPO_ROOT / "environment"
+WORKFLOW = REPO_ROOT / ".github" / "workflows" / "public-agent-runtime.yml"
+CAMPAIGN_RUNNER = (
+    REPO_ROOT
+    / "benchmark-vabench-release-v4"
+    / "runners"
+    / "run_benchmarkv4_campaign.py"
+)
+MINI_SWE_ADAPTER = (
+    REPO_ROOT
+    / "benchmark-vabench-release-v4"
+    / "operations"
+    / "calibration_pilot"
+    / "mini_swe_vabench.py"
+)
 
 
 class PublicAgentRuntimeTest(unittest.TestCase):
@@ -19,7 +33,7 @@ class PublicAgentRuntimeTest(unittest.TestCase):
         dockerfile = (ENVIRONMENT_DIR / "Dockerfile").read_text(encoding="utf-8")
         self.assertIn("FROM python:3.10.14-slim-bookworm@sha256:", dockerfile)
         self.assertIn("pip install --no-cache-dir --require-hashes", dockerfile)
-        self.assertIn('"package_version"] == "0.8.3"', dockerfile)
+        self.assertIn('"package_version"] == "0.8.4"', dockerfile)
         self.assertIn("USER 10001:10001", dockerfile)
         self.assertNotIn("COPY .", dockerfile)
 
@@ -41,7 +55,7 @@ class PublicAgentRuntimeTest(unittest.TestCase):
 
     def test_evas_and_all_dependencies_are_hash_locked(self) -> None:
         lock = (ENVIRONMENT_DIR / "requirements.lock").read_text(encoding="utf-8")
-        self.assertIn("evas-sim==0.8.3", lock)
+        self.assertIn("evas-sim==0.8.4", lock)
         packages = [
             line
             for line in lock.splitlines()
@@ -50,6 +64,26 @@ class PublicAgentRuntimeTest(unittest.TestCase):
         self.assertTrue(packages)
         for package in packages:
             self.assertTrue(package.endswith(" \\"))
+
+    def test_runtime_entrypoints_share_the_evas_084_image_lock(self) -> None:
+        expected = "vabench-agent-runtime:0.8.4"
+        surfaces = [
+            RUNTIME_DIR / "build.sh",
+            RUNTIME_DIR / "run.sh",
+            RUNTIME_DIR / "verify.sh",
+            WORKFLOW,
+            CAMPAIGN_RUNNER,
+            MINI_SWE_ADAPTER,
+        ]
+        for surface in surfaces:
+            text = surface.read_text(encoding="utf-8")
+            self.assertIn(expected, text, surface)
+            self.assertNotIn("vabench-agent-runtime:0.8.3", text, surface)
+
+    def test_verifier_uses_a_docker_shared_temporary_directory(self) -> None:
+        verifier = (RUNTIME_DIR / "verify.sh").read_text(encoding="utf-8")
+        self.assertIn('mktemp -d "$PWD/.verify.XXXXXX"', verifier)
+        self.assertNotIn("TMP_ROOT=$(mktemp -d)", verifier)
 
 
 if __name__ == "__main__":

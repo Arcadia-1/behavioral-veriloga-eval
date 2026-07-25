@@ -42,7 +42,7 @@ jobs:
       - name: Verify mini-SWE Docker backend against the shared image
         env:
           VABENCH_TEST_DOCKER_RUNTIME: "1"
-          VABENCH_TEST_DOCKER_IMAGE: "vabench-agent-runtime:0.8.3"
+          VABENCH_TEST_DOCKER_IMAGE: "vabench-agent-runtime:0.8.4"
         run: |
           python3 -m pip install pytest
           python3 -m pytest -q tests/test_mini_swe_vabench.py -k shared_docker_image_executes_real_adapter_contract
