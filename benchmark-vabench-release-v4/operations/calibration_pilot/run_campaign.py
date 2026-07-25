@@ -852,6 +852,7 @@ def command_result(
     runtime: Path,
     timeout_s: float,
     submission_dir: Path | None = None,
+    extra_env: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     effective_submission = submission_dir or runtime / "public" / "submission"
     env = os.environ.copy()
@@ -865,6 +866,7 @@ def command_result(
             runtime / "evidence" / "trusted_replay_result.json"
         ),
     })
+    env.update(extra_env or {})
     started = time.monotonic()
     try:
         completed = subprocess.run(
@@ -1219,7 +1221,15 @@ def run_trusted_replay(
     identity = RESULT_PROTOCOL.evas_identity(shlex.split(evas_command))
     submission_dir = runtime / "evidence" / "final_submission"
     command_record = (
-        command_result(command, runtime, timeout_s, submission_dir) if command else None
+        command_result(
+            command,
+            runtime,
+            timeout_s,
+            submission_dir,
+            {"VABENCH_EVAS_COMMAND": evas_command},
+        )
+        if command
+        else None
     )
     adapter_result = load_trusted_replay_adapter_result(runtime) if command else None
     return RESULT_PROTOCOL.trusted_replay(

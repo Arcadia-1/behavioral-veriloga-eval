@@ -3035,13 +3035,13 @@ def test_testbench_oracle_failure_excerpt_keeps_error_before_counters() -> None:
     assert "solver_counter_250" not in excerpt
 
 
-def test_testbench_oracle_requires_r45_evas_version(monkeypatch) -> None:
+def test_testbench_oracle_requires_pinned_evas_version(monkeypatch) -> None:
     oracle = load_derived_testbench_oracle()
     monkeypatch.setenv("EVAS_ENGINE", "evas2")
     monkeypatch.setenv("VAEVAS_DEFAULT_EVAS_ENGINE", "evas2")
     runtime_report = "\n".join(
         [
-            "Version 0.8.3 -- Jul 2026",
+            f"Version {oracle.REQUIRED_EVAS_VERSION} -- Jul 2026",
             "evas_engine = evas-rust",
             "evas_rust_required = true",
             "evas_rust_full_model_required = true",
@@ -3051,13 +3051,32 @@ def test_testbench_oracle_requires_r45_evas_version(monkeypatch) -> None:
 
     valid, note = oracle._validate_required_evas_engine(runtime_report, "evas2")
     stale, stale_note = oracle._validate_required_evas_engine(
-        runtime_report.replace("Version 0.8.3", "Version 0.8.2"), "evas2"
+        runtime_report.replace(
+            f"Version {oracle.REQUIRED_EVAS_VERSION}", "Version 0.8.4"
+        ),
+        "evas2",
     )
 
     assert valid is True
-    assert "evas_version=0.8.3" in note
+    assert f"evas_version={oracle.REQUIRED_EVAS_VERSION}" in note
     assert stale is False
-    assert "observed='0.8.2'" in stale_note
+    assert "observed='0.8.4'" in stale_note
+
+
+def test_testbench_oracle_accepts_r52_evas_without_legacy_backend_counters(
+    monkeypatch,
+) -> None:
+    oracle = load_derived_testbench_oracle()
+    monkeypatch.setenv("EVAS_ENGINE", "evas2")
+    monkeypatch.setenv("VAEVAS_DEFAULT_EVAS_ENGINE", "evas2")
+
+    valid, note = oracle._validate_required_evas_engine(
+        f"Version {oracle.REQUIRED_EVAS_VERSION} -- Jul 2026\nsimulation complete",
+        "evas2",
+    )
+
+    assert valid is True
+    assert "evas_reported_engine=not_emitted" in note
 
 
 def test_summarize_evas_invocations_derives_candidate_version_repeats() -> None:

@@ -199,10 +199,11 @@ includes that can escape the declared artifact set.
 
 G0/G1 parse exact artifact blocks into the submission directory. In the
 mini-SWE path, the model controls direct EVAS invocations over the public
-runtime package. DUT/bugfix tasks expose their visible deck; testbench tasks
-expose the reference and five public mutation fixtures declared by task-local
-`evas_runtime.json`. The legacy native scaffold retains its restricted
-`run_evas` tool only as a sensitivity path and is not the default G2--G5 agent.
+runtime package. DUT/bugfix tasks expose their visible deck. For r52 testbench
+tasks, the public runtime exposes only the reference DUT; the five scored
+faults remain evaluator-only and are used only during trusted replay.
+The legacy native scaffold retains its restricted `run_evas` tool only as a
+sensitivity path and is not the default G2--G5 agent.
 
 Direct responses must use the exact artifact envelope contract. The live runner
 rejects filename-only markers, input-artifact markers, Markdown fences,

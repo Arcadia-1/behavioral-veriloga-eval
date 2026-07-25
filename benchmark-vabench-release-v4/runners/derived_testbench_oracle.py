@@ -14,7 +14,7 @@ from pathlib import PurePosixPath
 from typing import Any
 
 
-REQUIRED_EVAS_VERSION = "0.8.3"
+REQUIRED_EVAS_VERSION = "0.8.5"
 
 
 class CaseOutcome(str, Enum):
@@ -272,9 +272,16 @@ def _validate_required_evas_engine(
     failures = _evas_engine_value(combined, "rust_full_model_required_failures")
     if observed_version != REQUIRED_EVAS_VERSION:
         return False, f"engine_validation_failed=version observed={observed_version!r}"
-    if reported_engine != "evas-rust":
+    # EVAS 0.8.5 no longer emits the legacy backend/rust-required counters on
+    # every successful simulation.  The exact 0.8.5 version banner together
+    # with both engine selectors pinned to evas2 is the supported identity
+    # contract; retain strict validation when the legacy fields are present.
+    if reported_engine not in {None, "evas-rust"}:
         return False, f"engine_validation_failed=backend observed={reported_engine!r}"
-    if rust_required != "true" or rust_full_model_required != "true":
+    if rust_required not in {None, "true"} or rust_full_model_required not in {
+        None,
+        "true",
+    }:
         return (
             False,
             "engine_validation_failed=rust_required "
@@ -286,7 +293,7 @@ def _validate_required_evas_engine(
     return (
         True,
         f"evas_engine=evas2 evas_engine_used=evas2 evas_version={REQUIRED_EVAS_VERSION} "
-        "evas_backend=rust evas_reported_engine=evas-rust",
+        f"evas_backend=rust evas_reported_engine={reported_engine or 'not_emitted'}",
     )
 
 

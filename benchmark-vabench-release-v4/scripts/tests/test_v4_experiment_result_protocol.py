@@ -25,6 +25,9 @@ def load_module(name: str, path: Path):
 PROTOCOL = load_module("v4_result_protocol_test", PILOT / "result_protocol.py")
 RUNNER = load_module("v4_campaign_runner_test", PILOT / "run_campaign.py")
 SCORER = load_module("v4_campaign_scorer_test", PILOT / "score_campaign.py")
+ADAPTER = load_module(
+    "v4_trusted_replay_adapter_test", PILOT / "trusted_replay_adapter.py"
+)
 
 
 def runtime_with_submission(tmp_path: Path) -> Path:
@@ -447,6 +450,138 @@ def test_trusted_replay_reads_adapter_result_and_evas_identity(tmp_path: Path) -
     assert replay["submission_tree_sha256"] == final_submission["tree_sha256"]
     assert replay["test_manifest"]["file_count"] == 2
     assert replay["evas_identity"]["available"] is True
+
+
+def test_trusted_replay_passes_pinned_evas_command_to_adapter(tmp_path: Path) -> None:
+    runtime = runtime_with_submission(tmp_path)
+    final_submission = PROTOCOL.snapshot_submission(
+        runtime, RUNNER.submission_artifact_gate(runtime)
+    )
+    adapter = tmp_path / "adapter.py"
+    adapter.write_text(
+        "import json, os\n"
+        "json.dump({'status': 'passed', 'diagnostics': "
+        "[os.environ.get('VABENCH_EVAS_COMMAND', '')]}, "
+        "open(os.environ['VABENCH_TRUSTED_REPLAY_RESULT'], 'w'))\n",
+        encoding="utf-8",
+    )
+
+    replay = RUNNER.run_trusted_replay(
+        runtime,
+        f"{sys.executable} {adapter}",
+        5,
+        sys.executable,
+        final_submission,
+    )
+
+    assert replay["status"] == "passed"
+    assert replay["diagnostics"] == [sys.executable]
+
+
+@pytest.mark.parametrize(
+    ("returncode", "output", "status", "primary_class"),
+    [
+        (0, "SCORE_PASS\n", "passed", None),
+        (1, "SCORE_PREFLIGHT_FAIL\nsyntax\n", "compile_failure", "compile"),
+        (
+            1,
+            "SCORE_EVAS_FAIL\nERROR: Failed to compile Verilog-A file bad.va\n",
+            "compile_failure",
+            "compile",
+        ),
+        (1, "SCORE_EVAS_FAIL\n", "runtime_failure", "runtime"),
+        (
+            1,
+            "SCORE_BEHAVIOR_FAIL\nP_GAIN mismatch_count=2; "
+            "P_RESET mismatch_count=0\n",
+            "behavior_failure",
+            "property",
+        ),
+        (
+            1,
+            "unexpected evaluator failure\n",
+            "infrastructure_failure",
+            "infrastructure",
+        ),
+        (
+            1,
+            "ERROR: EVAS Rust core is required and could not be loaded\n",
+            "infrastructure_failure",
+            "infrastructure",
+        ),
+    ],
+)
+def test_trusted_replay_adapter_classifies_dut_score_markers(
+    returncode: int,
+    output: str,
+    status: str,
+    primary_class: str | None,
+) -> None:
+    result = ADAPTER.classify_dut_result(returncode, output)
+
+    assert result["status"] == status
+    if primary_class is None:
+        assert "failure_taxonomy" not in result
+    else:
+        PROTOCOL.validate_adapter_failure_taxonomy(
+            status, result["failure_taxonomy"]
+        )
+        assert result["failure_taxonomy"]["primary_class"] == primary_class
+        if "P_GAIN" in output:
+            assert result["failure_taxonomy"]["property_ids"] == ["P_GAIN"]
+
+
+class ReplayCase:
+    def __init__(self, outcome: str, notes: list[str] | None = None) -> None:
+        self.outcome = outcome
+        self.notes = tuple(notes or [])
+
+
+def test_trusted_replay_adapter_classifies_testbench_survived_mutations() -> None:
+    result = ADAPTER.classify_testbench_result(
+        ReplayCase("reference_pass", ["reference ok"]),
+        [
+            ReplayCase("killed_behaviorally", ["m1 killed"]),
+            ReplayCase("survived", ["m2 survived"]),
+        ],
+        ["neg_001", "neg_002"],
+    )
+
+    assert result["status"] == "behavior_failure"
+    PROTOCOL.validate_adapter_failure_taxonomy(
+        result["status"], result["failure_taxonomy"]
+    )
+    assert result["failure_taxonomy"]["primary_class"] == "mutation_survival"
+    assert result["failure_taxonomy"]["mutation_ids"] == ["neg_002"]
+
+
+def test_trusted_replay_adapter_classifies_testbench_reference_compile_failure() -> None:
+    result = ADAPTER.classify_testbench_result(
+        ReplayCase("invalid_run", ["reference: Parse error near line 4"]),
+        [],
+        [],
+    )
+
+    assert result["status"] == "compile_failure"
+    PROTOCOL.validate_adapter_failure_taxonomy(
+        result["status"], result["failure_taxonomy"]
+    )
+    assert result["failure_taxonomy"]["primary_class"] == "compile"
+    assert result["failure_taxonomy"]["case_ids"] == ["reference"]
+
+
+def test_trusted_replay_adapter_requires_exact_five_testbench_mutations(
+    tmp_path: Path,
+) -> None:
+    evaluator = tmp_path / "evaluator"
+    evaluator.mkdir()
+    (evaluator / "score_policy.json").write_text(
+        json.dumps({"negative_suite_mutation_ids": ["a", "b", "c", "d"]}),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="exactly 5 unique"):
+        ADAPTER.testbench_negative_suite(evaluator)
 
 
 def test_score_report_does_not_turn_agent_timeout_into_test_zero(tmp_path: Path) -> None:

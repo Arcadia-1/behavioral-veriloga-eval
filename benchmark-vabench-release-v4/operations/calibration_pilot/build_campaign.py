@@ -19,6 +19,11 @@ MODE_RESPONSE_PROTOCOL = {
     "direct_one_shot": "v4-exact-artifact-blocks-v1",
     "agentic": "v4-strict-workspace-finalizer-v1",
 }
+THREE_ARM_CONDITIONS = (
+    ("OneShot", "G0", "oneshot", False),
+    ("Agentic", "G2", "agentic", True),
+    ("Agent-No-EVAS", "G2", "noevas", False),
+)
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -133,6 +138,8 @@ def build_campaign(
     per_turn_max_tokens: int | None = None,
     max_working_tokens: int | None = None,
     repetitions: int = 1,
+    modes: list[str] | None = None,
+    three_arm_g0_g2: bool = False,
 ) -> dict[str, Any]:
     if per_turn_max_tokens is None:
         per_turn_max_tokens = max_working_tokens
@@ -153,13 +160,30 @@ def build_campaign(
         raise ValueError(f"expected {len(family_set) * 3} pilot tasks, found {len(tasks)}")
     prompts = prompt_records(release)
     cells = []
+    selected_modes = tuple(modes or MODES)
+    unknown_modes = sorted(set(selected_modes) - set(MODES))
+    if unknown_modes:
+        raise ValueError(f"unknown modes: {', '.join(unknown_modes)}")
     for repetition in range(repetitions):
         for task in tasks:
-            for mode in MODES:
+            conditions = (
+                THREE_ARM_CONDITIONS
+                if three_arm_g0_g2
+                else tuple((mode, mode, None, None) for mode in selected_modes)
+            )
+            for condition in conditions:
+                if three_arm_g0_g2:
+                    arm, mode, suffix, executable_feedback = condition
+                else:
+                    mode, _, suffix, executable_feedback = condition
+                    arm = None
                 task_id = str(task["task_id"])
                 prompt = prompts.get((task_id, mode)) or mode_prompt_record(release, task_id, mode)
-                cells.append({
-                    "cell_id": f"{task_id}-{mode}-r{repetition:02d}",
+                cell = {
+                    "cell_id": (
+                        f"{task_id}-{mode}-r{repetition:02d}"
+                        + (f"-{suffix}" if suffix else "")
+                    ),
                     "family_id": str(task["family_id"]),
                     "task_id": task_id,
                     "form": str(task["form"]),
@@ -175,8 +199,17 @@ def build_campaign(
                     ).hexdigest(),
                     "evas_cli_available": bool(prompt["evas_cli_available"]),
                     "response_protocol": str(prompt["response_protocol"]),
-                })
-    return {
+                }
+                if arm is not None:
+                    cell.update({
+                        "base_mode": mode,
+                        "experimental_arm": arm,
+                        "executable_feedback": bool(executable_feedback),
+                        "evas_cli_available": bool(executable_feedback),
+                    })
+                cells.append(cell)
+    mode_count = len({str(cell["mode"]) for cell in cells})
+    campaign = {
         "schema_version": "v4-calibration-campaign-v3",
         "status": "planned",
         "release": str(release),
@@ -193,9 +226,26 @@ def build_campaign(
         "repetitions": repetitions,
         "family_count": len(family_set),
         "task_count": len(tasks),
-        "mode_count": len(MODES),
+        "mode_count": mode_count,
         "cell_count": len(cells),
         "cells": cells,
+    }
+    if three_arm_g0_g2:
+        campaign.update({
+            "arm_count": len(THREE_ARM_CONDITIONS),
+            "arms": [
+                {
+                    "experimental_arm": arm,
+                    "base_mode": mode,
+                    "suffix": suffix,
+                    "executable_feedback": executable_feedback,
+                }
+                for arm, mode, suffix, executable_feedback in THREE_ARM_CONDITIONS
+            ],
+            "comparison_profile": "G0-vs-G2-vs-G2-no-EVAS",
+        })
+    return {
+        **campaign,
     }
 
 
@@ -217,6 +267,17 @@ def main() -> int:
         required=True,
     )
     parser.add_argument("--repetitions", type=int, default=1)
+    parser.add_argument(
+        "--modes",
+        nargs="+",
+        choices=MODES,
+        help="Optional subset of prompt modes for ordinary mode campaigns.",
+    )
+    parser.add_argument(
+        "--three-arm-g0-g2",
+        action="store_true",
+        help="Build G0 OneShot, G2 Agentic, and G2 Agent-No-EVAS cells.",
+    )
     args = parser.parse_args()
     if args.per_turn_max_tokens <= 0 or args.repetitions <= 0:
         parser.error("per-turn token cap and repetitions must be positive")
@@ -229,6 +290,8 @@ def main() -> int:
         model=args.model,
         per_turn_max_tokens=args.per_turn_max_tokens,
         repetitions=args.repetitions,
+        modes=args.modes,
+        three_arm_g0_g2=args.three_arm_g0_g2,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(campaign, indent=2, sort_keys=True) + "\n", encoding="utf-8")
