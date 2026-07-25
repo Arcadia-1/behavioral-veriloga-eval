@@ -20,6 +20,7 @@ DEFAULT_RELEASES = {
     "r49": PACKAGE_ROOT / "release" / "benchmarkv4-r49",
     "r50": PACKAGE_ROOT / "release" / "benchmarkv4-r50",
     "r51": PACKAGE_ROOT / "release" / "benchmarkv4-r51",
+    "r52": PACKAGE_ROOT / "release" / "benchmarkv4-r52",
 }
 
 

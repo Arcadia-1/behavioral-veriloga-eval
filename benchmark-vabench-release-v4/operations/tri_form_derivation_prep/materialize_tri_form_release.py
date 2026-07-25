@@ -46,6 +46,7 @@ DEFAULT_OUTPUTS = {
     "r49": PACKAGE_ROOT / "release" / "benchmarkv4-r49",
     "r50": PACKAGE_ROOT / "release" / "benchmarkv4-r50",
     "r51": PACKAGE_ROOT / "release" / "benchmarkv4-r51",
+    "r52": PACKAGE_ROOT / "release" / "benchmarkv4-r52",
 }
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
 NEXT_RUNTIME_TRANSPORT_WRAPPER_REVISIONS = frozenset({"r52"})
@@ -54,7 +55,7 @@ NEXT_RUNTIME_TRANSPORT_WRAPPER = (
 )
 SKILLS_ROOT = PACKAGE_ROOT.parent / "skills"
 SKILL_IDS = ("veriloga", "vabench-feedback")
-REAL_SKILL_REVISIONS = frozenset({"r50", "r51"})
+REAL_SKILL_REVISIONS = frozenset({"r50", "r51", "r52"})
 REAL_SKILL_MODES = {
     "G0": {"process": "direct_one_shot", "skills": [], "evas_cli": False},
     "G1": {"process": "direct_one_shot", "skills": ["veriloga"], "evas_cli": False},
@@ -657,9 +658,9 @@ def uses_portable_rdist_runtime(
     spec: dict[str, Any],
     release_revision: str,
 ) -> bool:
-    """Select the r51 EVAS extension mode from the canonical DUT sources."""
+    """Select the portable EVAS extension mode from the canonical DUT sources."""
 
-    if release_revision != "r51":
+    if release_revision not in {"r51", "r52"}:
         return False
     for file_record in (spec.get("artifact_contract") or {}).get("files") or []:
         source = source_task / "evaluator" / "solution" / str(file_record["path"])
@@ -846,6 +847,89 @@ def install_visible_testbench_runtime(
 ) -> dict[str, Any]:
     public = task_dir / "public"
     evaluator = task_dir / "evaluator"
+    if release_revision == "r52":
+        runtime = {
+            "schema_version": "r52-direct-evas-testbench-reference-v1",
+            "candidate": "submission/testbench.scs",
+            "candidate_dut_binding": "./dut",
+            "reference_dut_root": "task/supplied_dut",
+            "feedback_scope": "reference_dut_only",
+            "working_directory": "public_root",
+            "candidate_command": (
+                "rm -rf /tmp/vabench-visible/reference "
+                "/tmp/vabench-visible/evas-output/reference && "
+                "mkdir -p /tmp/vabench-visible/reference && "
+                "cp submission/testbench.scs "
+                "/tmp/vabench-visible/reference/testbench.scs && "
+                "ln -sfn \"$(pwd)/task/supplied_dut\" "
+                "/tmp/vabench-visible/reference/dut && "
+                "evas simulate /tmp/vabench-visible/reference/testbench.scs "
+                "-o /tmp/vabench-visible/evas-output/reference"
+                f"{'' if portable_rdist else ' --spectre-strict'}"
+            ),
+            "reference_dut_tree_sha256": tree_sha(public / "supplied_dut"),
+        }
+        if portable_rdist:
+            runtime["compatibility_mode"] = "portable"
+        write_json(public / "evas_runtime.json", runtime)
+
+        trusted_fixtures = evaluator / "trusted_replay_fixtures"
+        trusted_reference = trusted_fixtures / "reference" / "dut"
+        copy_solution(source_task, trusted_reference, spec)
+        copy_public_support(source_task, trusted_reference)
+        trusted_cases = [{
+            "case": "reference",
+            "dut_root": "trusted_replay_fixtures/reference/dut",
+        }]
+        for index, mutation_id in enumerate(mutation_ids, start=1):
+            case = f"mutation_{index:02d}"
+            dut_root = trusted_fixtures / case / "dut"
+            artifact_paths = copy_solution(source_task, dut_root, spec)
+            copy_public_support(source_task, dut_root)
+            overlay_mutation(source_task, mutation_id, dut_root, artifact_paths)
+            trusted_cases.append({
+                "case": case,
+                "dut_root": f"trusted_replay_fixtures/{case}/dut",
+            })
+        trusted_suite = {
+            "schema_version": "r52-trusted-evas-testbench-suite-v1",
+            "candidate": "public/submission/testbench.scs",
+            "candidate_dut_binding": "./dut",
+            "cases": trusted_cases,
+            "fixture_policy": "private_evaluator_only",
+            "working_directory": "runtime_package_root",
+            "candidate_command_template": (
+                "rm -rf /tmp/vabench-private/runs/{case} "
+                "/tmp/vabench-private/evas-output/{case} && "
+                "mkdir -p /tmp/vabench-private/runs/{case} && "
+                "cp public/submission/testbench.scs "
+                "/tmp/vabench-private/runs/{case}/testbench.scs && "
+                "ln -sfn \"$(pwd)/evaluator/{dut_root}\" "
+                "/tmp/vabench-private/runs/{case}/dut && "
+                "evas simulate /tmp/vabench-private/runs/{case}/testbench.scs "
+                f"-o /tmp/vabench-private/evas-output/{{case}}"
+                f"{'' if portable_rdist else ' --spectre-strict'}"
+            ),
+            "fixture_tree_sha256": tree_sha(trusted_fixtures),
+        }
+        if portable_rdist:
+            trusted_suite["compatibility_mode"] = "portable"
+        trusted_suite_path = evaluator / "trusted_replay_suite.json"
+        write_json(trusted_suite_path, trusted_suite)
+        return {
+            "kind": "reference_only_public_testbench",
+            "public_runtime": "public/evas_runtime.json",
+            "public_runtime_sha256": file_sha(public / "evas_runtime.json"),
+            "public_reference_dut_tree": "public/supplied_dut",
+            "public_reference_dut_tree_sha256": tree_sha(public / "supplied_dut"),
+            "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+            "trusted_replay_suite_sha256": file_sha(trusted_suite_path),
+            "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+            "trusted_replay_fixture_tree_sha256": tree_sha(trusted_fixtures),
+            "trusted_reference_dut_tree_sha256": tree_sha(trusted_reference),
+            "reuse_policy": "public_reference_matches_trusted_reference",
+        }
+
     fixtures = public / "visible_fixtures"
     reference_dut = fixtures / "reference" / "dut"
     copy_solution(source_task, reference_dut, spec)
@@ -1033,7 +1117,16 @@ def build_testbench_view(
         "evas": {
             "available_in_modes": ["G2", "G3", "G4", "G5"],
             "runtime_contract": "public/task/evas_runtime.json",
-            "visible_and_final_suite": "identical_reference_plus_five_mutations",
+            **(
+                {
+                    "visible_feedback": "reference_dut_only",
+                    "final_evaluation": "reference_plus_five_hidden_faults",
+                }
+                if release_revision == "r52"
+                else {
+                    "visible_and_final_suite": "identical_reference_plus_five_mutations",
+                }
+            ),
         },
         "security_summary": [
             "only declared ./dut source bindings are allowed",

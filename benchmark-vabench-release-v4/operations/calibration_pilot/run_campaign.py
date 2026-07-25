@@ -62,6 +62,7 @@ DIRECT_TESTBENCH_RUNTIME_SCHEMAS = {
     "r50-direct-evas-testbench-suite-v2",
     "r51-direct-evas-testbench-suite-v2",
     "r51-direct-evas-testbench-suite-v3",
+    "r52-direct-evas-testbench-reference-v1",
 }
 ARTIFACT_RE = re.compile(
     r'(?m)^<<<VABENCH_ARTIFACT path="([^"\r\n]+)">>>\r?\n'
@@ -943,13 +944,18 @@ def run_public_evas(
     if not contract_path.is_file():
         return {"status": "unavailable", "reason": "public EVAS runtime contract is missing"}
     contract = read_json(contract_path)
-    if contract.get("working_directory") != "runtime_package_root":
+    schema_version = str(contract.get("schema_version") or "")
+    expected_working_directory = (
+        "public_root"
+        if schema_version == "r52-direct-evas-testbench-reference-v1"
+        else "runtime_package_root"
+    )
+    if contract.get("working_directory") != expected_working_directory:
         raise ValueError("unsupported EVAS working directory")
     executable = shlex.split(evas_command)
     if not executable:
         raise ValueError("empty EVAS executable command")
 
-    schema_version = str(contract.get("schema_version") or "")
     runtime_version = schema_version.rsplit("-v", 1)[-1]
     portable_runtime = runtime_version == "3"
     if portable_runtime:
@@ -989,6 +995,45 @@ def run_public_evas(
 
     if schema_version not in DIRECT_TESTBENCH_RUNTIME_SCHEMAS:
         raise ValueError(f"unsupported public EVAS runtime schema: {schema_version!r}")
+    if schema_version == "r52-direct-evas-testbench-reference-v1":
+        if requested_case not in (None, "", "reference"):
+            raise ValueError("public Testbench EVAS feedback is reference-only")
+        if contract.get("feedback_scope") != "reference_dut_only":
+            raise ValueError("unrecognized public Testbench EVAS feedback scope")
+        if contract.get("candidate") != "submission/testbench.scs":
+            raise ValueError("unrecognized testbench candidate path")
+        if contract.get("reference_dut_root") != "task/supplied_dut":
+            raise ValueError("unrecognized public reference DUT path")
+        candidate = confined_path(submission, "testbench.scs")
+        if not candidate.is_file():
+            raise FileNotFoundError("submission/testbench.scs is missing")
+        validate_public_testbench(candidate)
+        reference_dut = confined_path(task, "supplied_dut")
+        if not reference_dut.is_dir():
+            raise FileNotFoundError("public reference DUT is missing")
+        scratch_root = runtime / ".vabench-visible"
+        run_dir = confined_path(scratch_root, "reference")
+        if run_dir.exists():
+            shutil.rmtree(run_dir)
+        run_dir.mkdir(parents=True)
+        shutil.copy2(candidate, run_dir / "testbench.scs")
+        shutil.copytree(reference_dut, run_dir / "dut")
+        output = confined_path(scratch_root, "evas-output/reference")
+        argv = [
+            *executable,
+            "simulate",
+            str(run_dir / "testbench.scs"),
+            "-o",
+            str(output),
+            *strict_args,
+        ]
+        result = argv_result(argv, runtime, timeout_s)
+        result.update({
+            "status": "pass" if result.get("returncode") == 0 else "fail",
+            "case": "reference",
+            "test": ".vabench-visible/reference/testbench.scs",
+        })
+        return result
     if contract.get("fixture_policy") != "read_only_and_identical_for_visible_and_final_replay":
         raise ValueError("unsupported public fixture policy")
     if contract.get("candidate") != "public/submission/testbench.scs":
