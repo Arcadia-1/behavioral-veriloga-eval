@@ -29,7 +29,7 @@ sudo ./build.sh
 sudo ./verify.sh
 ```
 
-`verify.sh` 会实际运行一条 EVAS 仿真，并确认 Agent 能读取 `tran.csv`，而不只是得到 0/1。它还会检查题目只读、提交目录可写、EVAS 0.8.4 Rust core 可加载，以及镜像中没有预设的 evaluator 目录。
+`verify.sh` 会实际运行一条 EVAS 仿真，并确认 Agent 能读取 `tran.csv`，而不只是得到 0/1。它还会检查题目只读、提交目录可写、EVAS 0.8.5 Rust core 可加载，以及镜像中没有预设的 evaluator 目录。
 
 ## 3. 准备单题公开包
 

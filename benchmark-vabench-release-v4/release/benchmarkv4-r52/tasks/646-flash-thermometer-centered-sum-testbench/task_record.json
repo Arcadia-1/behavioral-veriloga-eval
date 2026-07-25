@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "146-flash-thermometer-centered-sum",
+  "checker_task_id": "v4_146_flash_thermometer_centered_sum",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "3314b54d59f6b35b369af3c478d8dc532a3cf3ec38a15b202e30b94d9991dd10",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "256406f97362252ac077beb8778bd92f509ea4b8b43878c87f3efdb68034bb5e",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "3314b54d59f6b35b369af3c478d8dc532a3cf3ec38a15b202e30b94d9991dd10",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "926dc7629b27c0d4bcde98a7c4d829ada97be80a682f8bd1432db6bafe05e69a",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "99880fdd300c6d4b66ac41c474bb4e0dec5210c0e7ae9b345008ab81cf7908db"
+  },
+  "family_id": "146",
+  "family_spec_sha256": "760c4352437eab416022b040ff623fcdfdd40a41cf08b90acc88361255389683",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6e00b78b359bcd8250ed4b1ae9012affa38ba849e9fe25289ba8cb2e70fb01df",
+  "public_contract": "tasks/646-flash-thermometer-centered-sum-testbench/public_contract.json",
+  "public_contract_sha256": "693fd14f61d475c4afb677ca64e132ed50883f73337b368d04cf8c5d3d694806",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/646-flash-thermometer-centered-sum-testbench",
+  "task_id": "v4-646"
+}

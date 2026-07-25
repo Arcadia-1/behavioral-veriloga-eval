@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "335-quadrature-oscillator-phase-error-monitor",
+  "checker_task_id": "v4_335_quadrature_oscillator_phase_error_monitor",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "9f882055be6bc7627d854f23bb5f9cfc9cf1ec6a545519bb83451970f810f493",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "c6cb132897dd93b71f78a3603e03013908475a5b5938869800e11835cfdb369d",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "9f882055be6bc7627d854f23bb5f9cfc9cf1ec6a545519bb83451970f810f493",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "5dc77b5846e2e6809ef6846b7436bbc6548484f4c5b8c1c5dbf94eb7071376f6",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "0f9877b15bfeb5f10fee75bdce5b5a8fe76c675600c967fce23a32da7b0b8b16"
+  },
+  "family_id": "335",
+  "family_spec_sha256": "88cb9113b178500df3b08cda05a30e2c696f9d9ab7528684c4f2a42a1f7c59c1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f205efa1fed18c3931dca3caf21c6c4016deb6c9c0f8d65d6492e73538d70189",
+  "public_contract": "tasks/835-quadrature-oscillator-phase-error-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "10a0d3fe25838099479c4160b2ca8f6e7b080928ef35fbceeb52353133c4a49d",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/835-quadrature-oscillator-phase-error-monitor-testbench",
+  "task_id": "v4-835"
+}

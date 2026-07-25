@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "136-soft-voltage-clamp",
+  "checker_task_id": "v4_136_soft_voltage_clamp",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "a3afddd3241fb81a575376dd12d48512c0328813ab09a6cbe547a04ca389aa0b",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "a6a3dfe7ec5b1020661049c11c62fe330b5e734557f09b0f6c3539ce2a3fa96a",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "a3afddd3241fb81a575376dd12d48512c0328813ab09a6cbe547a04ca389aa0b",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "8dbbe040da364ac8287ee7f96bf209c2e7105cd74b6e6ceb31cf4e5eeceba52c",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "301b0e70ebec3a784a333d3166060b2b09f4a95cba08aa2fb0b9a903e34ad6a6"
+  },
+  "family_id": "136",
+  "family_spec_sha256": "18b6b25e8003f6cf90102b35c724b2b7da8a088e267099364001d84da64ccf2b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "eed6b112047835154fb44dc454bd40db46901313d2c90c5640dd99a26ff15215",
+  "public_contract": "tasks/636-soft-voltage-clamp-testbench/public_contract.json",
+  "public_contract_sha256": "0c9a301c4e27205995c8e779bfb658ea7e1a92f23e54d589711e3bc997378438",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/636-soft-voltage-clamp-testbench",
+  "task_id": "v4-636"
+}

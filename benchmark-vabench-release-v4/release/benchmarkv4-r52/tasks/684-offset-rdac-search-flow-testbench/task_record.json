@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "184-offset-rdac-search-flow",
+  "checker_task_id": "v4_184_offset_rdac_search_flow",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "ee26f1503fd8050ebd08950f80f87883fc59600e39cc57fa187c679fda16c793",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "71b9d8642efa19f42f16a02f46af0098da62855162bb2747be16900714a79948",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "ee26f1503fd8050ebd08950f80f87883fc59600e39cc57fa187c679fda16c793",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "668317e408f191dc53dd4b7f896bdaab0db9ff77a29810a8ee73563b85bccd89",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "3c695b284d6191dae362a4f878dcb587fe70ccd73101be2db46d9e778b6d3d9b"
+  },
+  "family_id": "184",
+  "family_spec_sha256": "03ee1f041a7dc9e6df6a957e5ed30e34f054883cdab2ab3be90eadd1fa3a7544",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e863855e3aa4f4eb7ef4162cf9d7cab1c3f865acd6f9b0c790f2aa85417d726e",
+  "public_contract": "tasks/684-offset-rdac-search-flow-testbench/public_contract.json",
+  "public_contract_sha256": "7251a64a1ac40d9a49072b542ec3f1410d64354ae6ddc0b9aa7ad25d6b14ab3c",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/684-offset-rdac-search-flow-testbench",
+  "task_id": "v4-684"
+}

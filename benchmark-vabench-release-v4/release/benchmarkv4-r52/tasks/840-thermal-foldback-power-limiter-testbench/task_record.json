@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "340-thermal-foldback-power-limiter",
+  "checker_task_id": "v4_340_thermal_foldback_power_limiter",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "94e6ea7dd31dcab5e1100c9017c7978e2d248653b500ca055b0c76b2514ce079",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "b49ec26226ebf190b5f36fcd649e44ded64069cda6381ddb1ccd57115cbfa799",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "94e6ea7dd31dcab5e1100c9017c7978e2d248653b500ca055b0c76b2514ce079",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "f7b6f31e1a7453cea3daf06fb312c1586389c942e82ab0c2f1ca089219368f82",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "e63455701bed90cc0039f5bcca96e8c7e51d945d3f84d17d7ffb803bcf441222"
+  },
+  "family_id": "340",
+  "family_spec_sha256": "ed5517e8a138192fc3939b6c16d0fe8383d24c55122f55b893f690adb5e09292",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a7ba00d4b234cfe51c4002c7fce40461321bda789d4bf13333378584c3e40123",
+  "public_contract": "tasks/840-thermal-foldback-power-limiter-testbench/public_contract.json",
+  "public_contract_sha256": "8d3740851d920b9ec83ff5dca2d2033880d13be073688cb78899fba29a08f0cb",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/840-thermal-foldback-power-limiter-testbench",
+  "task_id": "v4-840"
+}

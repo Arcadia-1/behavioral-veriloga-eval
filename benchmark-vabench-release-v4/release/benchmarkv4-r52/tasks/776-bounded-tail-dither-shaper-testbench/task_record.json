@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "276-bounded-tail-dither-shaper",
+  "checker_task_id": "v4_276_bounded_tail_dither_shaper",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "e614199b869308617b35eba30d3514e1ca9e5034b7bf27bee4e10f891d47b076",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "6f55f99c8698277205ff41d3bca7c2da5d1600e76ab22c5312e7542ead8660ee",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "e614199b869308617b35eba30d3514e1ca9e5034b7bf27bee4e10f891d47b076",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "db60134aab36fb2c2e8ea06afd5539e983c920a435b54b0176b1e1b44513a596",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "089094349a6e419a17ff48ea2a03c9ad12b84080e6b76ae35018dff27aa54256"
+  },
+  "family_id": "276",
+  "family_spec_sha256": "447d8b290b4399b108f347213da88745e9a37ddafa2a81a9769f34f0145701dd",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "df26b79fabb1570ebc9a4f7a6aaf6bbd3a40e35a57f3fb41f178876c6a8f938d",
+  "public_contract": "tasks/776-bounded-tail-dither-shaper-testbench/public_contract.json",
+  "public_contract_sha256": "bd39333b730058fef794e0125f1527a67c6d9e977515491169540d75394aba5f",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/776-bounded-tail-dither-shaper-testbench",
+  "task_id": "v4-776"
+}

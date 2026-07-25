@@ -72,7 +72,7 @@ def family_cases(family: str) -> dict[str, dict]:
     return cases
 
 
-@pytest.mark.parametrize("release_revision", ["r45", "r47"])
+@pytest.mark.parametrize("release_revision", ["r45", "r47", "r52"])
 def test_evidence_only_refresh_does_not_rewrite_source(
     tmp_path: Path,
     monkeypatch,

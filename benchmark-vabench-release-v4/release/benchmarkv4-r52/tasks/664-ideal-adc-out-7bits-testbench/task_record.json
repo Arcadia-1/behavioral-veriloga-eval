@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "164-ideal-adc-out-7bits",
+  "checker_task_id": "v4_164_ideal_adc_out_7bits",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "6f252c99f6a1cbf412b53016439c7b55403fa1632dfbbea4cb9de1d20a9520fe",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "463865140dee1d768128f2ab7650588d0b95b38b9d4b7e07b8efe94a99515398",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "6f252c99f6a1cbf412b53016439c7b55403fa1632dfbbea4cb9de1d20a9520fe",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "3e62fe4fc884818ab6416f3ec2dea2e92e2912b1f131716abd77879a629c643b",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "6a443a1c9fe99c80a9523134917cf165d42eec13211f487e37df0a433a1cee0c"
+  },
+  "family_id": "164",
+  "family_spec_sha256": "979d1e489337f70ba6fd093330b42bee491bc3415904695416f6b1689531ad0c",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e7b3e0b9b70a69d61e59e2419a59d1cab0861f4876fafbc299d6bfceeff907d6",
+  "public_contract": "tasks/664-ideal-adc-out-7bits-testbench/public_contract.json",
+  "public_contract_sha256": "4c814efb6c33fb0d014af7d5137d67c95aa5894d66ba766f8cf75108539e3fdf",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/664-ideal-adc-out-7bits-testbench",
+  "task_id": "v4-664"
+}

@@ -143,6 +143,12 @@ def test_compact_evidence_identity_separates_release_revisions() -> None:
         "release/benchmarkv4-r51",
         "v4-r51-stimulus-metamorphic-compact-v1",
     )
+    assert runner.compact_evidence_identity("r52") == (
+        "release/benchmarkv4-r52",
+        "v4-r52-stimulus-metamorphic-compact-v1",
+    )
+    assert runner.required_evas_version("r51") == "0.8.3"
+    assert runner.required_evas_version("r52") == "0.8.5"
 
 
 def test_release_provenance_binds_manifest_and_source_registry(

@@ -1,0 +1,80 @@
+{
+  "access_auditor": "operations/tri_form_derivation_prep/audit_runtime_export.py",
+  "claim_boundary": "proves record ingestion and bundle isolation; does not claim model execution or final score",
+  "runner": "operations/tri_form_derivation_prep/export_tri_form_runtime.py",
+  "sample_count": 3,
+  "samples": [
+    {
+      "audit_report_sha256": "1c1b417e62cf8fab0ef42d1525a073a75d8af39053b353e7eb01aa58c0d05b0f",
+      "audit_status": "pass",
+      "audit_summary": {
+        "problems": [],
+        "schema_version": "v4-runtime-export-audit-v1",
+        "status": "pass"
+      },
+      "auditor_sha256": "a73bdac881f443700823a5ebfb0a9d551d81ef55fdc5db0360850252ccba770a",
+      "evaluator_bundle_sha256": "a965cf96f87bb77690915fe3a4d7f4f900f7798c899d99c7e75393fcba56ea73",
+      "evaluator_mounted": false,
+      "family_id": "001",
+      "form": "bugfix",
+      "mode": "G5",
+      "model_mounts": [
+        "public/task:ro",
+        "public/submission:rw",
+        "public/work:rw",
+        "public/skills:ro"
+      ],
+      "network": false,
+      "public_bundle_sha256": "4f8cfbd995ca8a99b37552a89803f4f9d7aa3dfc048db098f11e9b322048a372",
+      "runtime_tree_sha256": "8f107aeeca21805a96cb71c5582ceb423b07e88f989113c87ed467f78123dca5",
+      "task_id": "v4-1001"
+    },
+    {
+      "audit_report_sha256": "1c1b417e62cf8fab0ef42d1525a073a75d8af39053b353e7eb01aa58c0d05b0f",
+      "audit_status": "pass",
+      "audit_summary": {
+        "problems": [],
+        "schema_version": "v4-runtime-export-audit-v1",
+        "status": "pass"
+      },
+      "auditor_sha256": "a73bdac881f443700823a5ebfb0a9d551d81ef55fdc5db0360850252ccba770a",
+      "evaluator_bundle_sha256": "8f0d83b58c480ebd049ef9550dc4e305806ce71aec8652f6d77be1a934c6dad7",
+      "evaluator_mounted": false,
+      "family_id": "001",
+      "form": "dut",
+      "mode": "G1",
+      "model_mounts": [],
+      "network": false,
+      "public_bundle_sha256": "821988db829957f67f49b7b4dd8f846bb7ea6e16b1bdb7d9c178a9818f825af9",
+      "runtime_tree_sha256": "6e79bd365890ed65f4c83a3713141cdb19fb423a983b3e9bfd2d91491a2cc397",
+      "task_id": "v4-001"
+    },
+    {
+      "audit_report_sha256": "1c1b417e62cf8fab0ef42d1525a073a75d8af39053b353e7eb01aa58c0d05b0f",
+      "audit_status": "pass",
+      "audit_summary": {
+        "problems": [],
+        "schema_version": "v4-runtime-export-audit-v1",
+        "status": "pass"
+      },
+      "auditor_sha256": "a73bdac881f443700823a5ebfb0a9d551d81ef55fdc5db0360850252ccba770a",
+      "evaluator_bundle_sha256": "ce100cf1bbd0b0f02270f05781a9da99a2d77904f17b86f01ccd72aa74ba966b",
+      "evaluator_mounted": false,
+      "family_id": "001",
+      "form": "testbench",
+      "mode": "G2",
+      "model_mounts": [
+        "public/task:ro",
+        "public/submission:rw",
+        "public/work:rw"
+      ],
+      "network": false,
+      "public_bundle_sha256": "40902bd38ebd7e963907700cde43930e6eadb50e597bc575262eecf172ac3c84",
+      "runtime_tree_sha256": "565bc33c26fe980c31cb7c3a4d912aff1f3e06973fec5d6b32b9b7fb9cc4b128",
+      "task_id": "v4-501"
+    }
+  ],
+  "schema_version": "v4-runtime-ingestion-evidence-v1",
+  "scope": "representative direct and agentic exports covering prompt-surface isolation",
+  "status": "pass"
+}

@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "242-flash-folded-dac4",
+  "checker_task_id": "v4_242_flash_folded_dac4",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "c4c4845d5f501a88a2ac34292d029e6dec42e01e82d98816c38f99605806c35b",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "047a4350c1fb1ec624015d3385ac3be44f6d9b8822c15c3e931f78d60fc8ff7f",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "c4c4845d5f501a88a2ac34292d029e6dec42e01e82d98816c38f99605806c35b",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "0886593ee3b02094c0ccf113717c7a26ea03667521ad9b4c714e957d4af74068",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "70e7537d5a6095e89e557aa46155bed207449f795344602702e7eb7fb05c1973"
+  },
+  "family_id": "242",
+  "family_spec_sha256": "8c0e4e942f4c1fdbc497136010039b18e692e8d809ee6fc4b73ac47ffcc9f1c3",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "abf8f1a42f459b5721caf97e67e02ac121a4615a0d1dcc74e7e7347232b1658f",
+  "public_contract": "tasks/742-flash-folded-dac4-testbench/public_contract.json",
+  "public_contract_sha256": "cf37dd2d4f8c58f2c018071c104ba3a0ea6ef97fb31088fd0dfd0d4a5d73944f",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/742-flash-folded-dac4-testbench",
+  "task_id": "v4-742"
+}

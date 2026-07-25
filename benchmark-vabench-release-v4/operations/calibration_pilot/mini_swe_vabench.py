@@ -26,7 +26,7 @@ from typing import Any, Callable
 
 MINI_SWE_AGENT_VERSION = "2.4.5"
 MINI_SWE_SCAFFOLD_ID = "mini-swe-agent-2.4.5-vabench-docker-evas-v3"
-DEFAULT_DOCKER_IMAGE = "vabench-agent-runtime:0.8.4"
+DEFAULT_DOCKER_IMAGE = "vabench-agent-runtime:0.8.5"
 COMMAND_OUTPUT_CAPTURE_BYTES = 1 * 1024 * 1024
 COMMAND_OUTPUT_HEAD_BYTES = 64 * 1024
 MODEL_OUTPUT_BYTES = 12_000

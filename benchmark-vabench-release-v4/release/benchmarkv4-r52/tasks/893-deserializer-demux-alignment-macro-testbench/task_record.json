@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "393-deserializer-demux-alignment-macro",
+  "checker_task_id": "v4_393_deserializer_demux_alignment_macro",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "a211078d1e4a517b7438809396024d3444337a41c537b27576cf08cafd4b4697",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "1aae9a0d1fe7afca253f9be5fcacd72c3a423321474e340d6524e2a3a1dc5ea1",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "a211078d1e4a517b7438809396024d3444337a41c537b27576cf08cafd4b4697",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "717e2ce8f90845338621343acd086a0a205248241692e2b7e2833121134908a9",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "142c6aa9933b546cd24f09672a4ad8bb41c4d9565600376743a7e9735d9da398"
+  },
+  "family_id": "393",
+  "family_spec_sha256": "2b3f498f27a1f73c2f67c79ce2d9d77d089cc799abfe852286df34b3d74958b6",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "46fc917a000bcada70915da88552b79393f3ab34aff3522e2cea0b49ab763196",
+  "public_contract": "tasks/893-deserializer-demux-alignment-macro-testbench/public_contract.json",
+  "public_contract_sha256": "7e3b9286a89e1555a6edbf0ab386ebdbb3a04beacdeb019bce67b7d899ddef5b",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/893-deserializer-demux-alignment-macro-testbench",
+  "task_id": "v4-893"
+}

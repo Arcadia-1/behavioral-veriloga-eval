@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "264-enable-qualified-bias-hold",
+  "checker_task_id": "v4_264_enable_qualified_bias_hold",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "93c0eca665dddc27fad7f81ba374dbb3d2be85335296419da6528389ae3163ed",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "2ba98b572f07a657bee89f1d174bdc75b51d0589c59f422ce3f0ef217d6e95ed",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "93c0eca665dddc27fad7f81ba374dbb3d2be85335296419da6528389ae3163ed",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "f81c861be63561252ed086166c33a7219e0aa879079be253265b97986758542f",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "4dd9a2a85d4704eff5fb84ecece15389243e9ea3d7008f10cd0abb59e7436c97"
+  },
+  "family_id": "264",
+  "family_spec_sha256": "a70a757765c41274a8ad7e099b3846774a6e771a1003f132b0dd67b75589683f",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d498f7691460fd0ed38de6e0d5d2c8ab15de97045f507fea694d8d559f5fc604",
+  "public_contract": "tasks/764-enable-qualified-bias-hold-testbench/public_contract.json",
+  "public_contract_sha256": "44d8f45ffd08970fcd262d1e1dd48fec8dd4797a34d965885dadc2f5eaa91bde",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/764-enable-qualified-bias-hold-testbench",
+  "task_id": "v4-764"
+}

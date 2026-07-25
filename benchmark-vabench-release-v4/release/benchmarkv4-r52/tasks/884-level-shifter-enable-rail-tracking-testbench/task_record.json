@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "384-level-shifter-enable-rail-tracking",
+  "checker_task_id": "v4_384_level_shifter_enable_rail_tracking",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "bf1faefdf2412600395062f29b75127a5f0b5d8a90bd80722f3b692eeccbe1bd",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "4d7e1ed50a723dc27e69db3d8cdb257b9a251b865c6dfe2e2b2b78dc3d846865",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "bf1faefdf2412600395062f29b75127a5f0b5d8a90bd80722f3b692eeccbe1bd",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "0da33f9a667f83fdde9fb820dea624baef99e28d7dc784fdeab2f2191c6598ff",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "993cbfbfbb1edf02a844c220bb9a017716c7a648a1833a10cefce40fa49f47af"
+  },
+  "family_id": "384",
+  "family_spec_sha256": "289d2c26ccd11b99b43e7fe44ad5b16c6444c1fab6548b64717c22d8633f623e",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b403af9b27cd5122a6b830b5721554b8a703d53d37ce7e69fb73ac71dab74a48",
+  "public_contract": "tasks/884-level-shifter-enable-rail-tracking-testbench/public_contract.json",
+  "public_contract_sha256": "f414663d90b9b17aa343a4cad05f5f7d0ab69eca99ae99acd5e9433fcb30ec59",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/884-level-shifter-enable-rail-tracking-testbench",
+  "task_id": "v4-884"
+}

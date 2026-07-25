@@ -1,0 +1,47 @@
+{
+  "certification_problems": [],
+  "certification_reuse": {
+    "evaluators": [
+      "rust_evas2"
+    ],
+    "policy": "source_transitive_input_hash_bound",
+    "simulation_rerun_required_for_materialization": false,
+    "source_dut_gold_certification_count": 400,
+    "source_dut_gold_certification_total": 400,
+    "source_negative_certification_count": 2000,
+    "source_negative_certification_total": 2000,
+    "stale_certification_family_ids": [],
+    "stale_gold_family_ids": [],
+    "stale_negative_case_ids": []
+  },
+  "certification_status": "rust_evas2_certified",
+  "family_count": 400,
+  "input_hashes": {
+    "TASK_INDEX.json": "761c44c8be67cf08695d35980109f892b9a99e1336fb46d29e1f0f264d1230e4",
+    "manifest_sha256": "4f84c776302ccf080831926d75968a33f671078f668ff5aa9ecf43b0d97afbad",
+    "prompt_modes/manifest.json": "094de5421ab39db916e05da6be4dc6f75ff3c3c0bf7ab214c4e804f8c4984fdc",
+    "prompt_modes/modes.json": "3d5a0a8452ae998d85566d3bc85ae227dd9df33e003b0a03750ac67470423218",
+    "r52_evidence_sha256": {
+      "evidence/r52/PROFILE_PARITY.json": "6fce44426f0f360d789d99067c009d3138cf44aff3d9ce1bd191f6d1200c29a9",
+      "evidence/r52/RUST_EVAS2_CERTIFICATION.json": "e60fb8116f6b7dc6981184b287ef3946cb9ac5d4183d446541282091b1869632",
+      "evidence/r52/STIMULUS_METAMORPHIC.json": "4a6a9ea6d08b976df5d607a21e96d0435d1392f973c0950d43f05cb1be431381"
+    },
+    "skills/SNAPSHOT_MANIFEST.json": "bd835a5437be984a200a2ec83d52e920912cdcdd318b0037f276b89a08fb63f8",
+    "source_score_denominator_registry_sha256": "52c43d7ec272cd80e861cfaa98e080ba2b37580bc603836fdd8b5da77ec908a2"
+  },
+  "problems": [],
+  "prompt_record_count": 7200,
+  "release_revision": "r52",
+  "schema_version": "v4-benchmarkv4-release-audit-v1",
+  "status": "pass",
+  "task_count": 1200,
+  "task_counts": {
+    "bugfix": 400,
+    "dut": 400,
+    "testbench": 400
+  },
+  "testbench_reference_source_counts": {
+    "independent_reference_tb": 49,
+    "legacy_score_tb_fallback": 351
+  }
+}

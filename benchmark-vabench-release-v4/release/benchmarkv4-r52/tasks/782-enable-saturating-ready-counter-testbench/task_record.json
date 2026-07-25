@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "282-enable-saturating-ready-counter",
+  "checker_task_id": "v4_282_enable_saturating_ready_counter",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "44362814c09d16114bdf3dc88a013d7fa1fd9584143d52de11f211e98974808d",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "d81f3fb9326eb0ebfdda02bc74459ee0499cac8be9e4a68408217a919efc9056",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "44362814c09d16114bdf3dc88a013d7fa1fd9584143d52de11f211e98974808d",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "63e75ac1b12f945bab11b1cec54f7eeb7a167d61ed1f40ae4145b6d1985ecb29",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "bc39820e48ae7f0c52473fdbf26b7306a700c9ac21936ad6961ca2afcef30cff"
+  },
+  "family_id": "282",
+  "family_spec_sha256": "000217e5ddf28a03d8b139e42450585a9534e02c6893897460abff3ebfd7ecfc",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "16bde609224a7b9d520180a3ea2024a9a1beb8b402da8e813b087f6581007986",
+  "public_contract": "tasks/782-enable-saturating-ready-counter-testbench/public_contract.json",
+  "public_contract_sha256": "1f70d8ed626725e28ea82c06d8bf4ba04e4a7532d2a5a37dc123c8fc71622f23",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/782-enable-saturating-ready-counter-testbench",
+  "task_id": "v4-782"
+}

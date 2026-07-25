@@ -39,7 +39,7 @@ printed by `build.sh`; campaign records should use that immutable identity.
 
 The verifier checks:
 
-- EVAS 0.8.4 is installed with a loadable Rust core;
+- EVAS 0.8.5 is installed with a loadable Rust core;
 - the public task mount is readable but not writable;
 - submission and work mounts are writable;
 - strict EVAS simulation produces a readable `tran.csv`;

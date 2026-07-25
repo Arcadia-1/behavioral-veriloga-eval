@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "101-settling-time-measurement",
+  "checker_task_id": "v4_101_settling_time_measurement",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "fc85dbf2b5bb2c8c658e38076226a1ea90ce75dfa3f8ad11a8b1c8c8bb5ffcf4",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "c5650db495a4cf391b81200c88a888c92780383b455edbee49137f5d516e192a",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "fc85dbf2b5bb2c8c658e38076226a1ea90ce75dfa3f8ad11a8b1c8c8bb5ffcf4",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "a247a706099e015cfe0558ec03feec61b2e10091e9d0940618d9a8f9bafc94c5",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "89216676c0dc7364e0df93eadf203d98efe55038a595309647cff7ff63707603"
+  },
+  "family_id": "101",
+  "family_spec_sha256": "eefb23fc7add6d41f3c48ce132af632df56500c06056afc2c916ccda217afab6",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8c95dd6bfe01224d9c428ed8aac43dac32b8cfa660def7ba61f99b155f36e270",
+  "public_contract": "tasks/601-settling-time-measurement-testbench/public_contract.json",
+  "public_contract_sha256": "4de4da49acd6d159e51e039ee9d1d8d287f88a76041375a4c0440532dcfce614",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/601-settling-time-measurement-testbench",
+  "task_id": "v4-601"
+}

@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "341-buck-soft-start-ramp-controller",
+  "checker_task_id": "v4_341_buck_soft_start_ramp_controller",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "daad0262ecb8de3e20a42aaddfff590af73555a4ce32fa44064c831c1f7174bf",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "5580240cdb4bd1b1558c8476defa67c708852a08fcfb5cd3bb4dcbfab5f35463",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "daad0262ecb8de3e20a42aaddfff590af73555a4ce32fa44064c831c1f7174bf",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "79eab594c4ab2ff9b43bc8a4146899d9a41bb52342918a86033819b2ed63c5c1",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "990cb65e4615203b70e06131a9f21d7a7dfde2df07d6d3bf4db7556c4b832bdb"
+  },
+  "family_id": "341",
+  "family_spec_sha256": "812b7ac824fe8845bd81da0cf18dfbdb0f25a90a495885d21ae20ca354ba125b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3a10036b61916e22ddf4d840e19b430a05dc511106f094a0dc3b62b90773e011",
+  "public_contract": "tasks/841-buck-soft-start-ramp-controller-testbench/public_contract.json",
+  "public_contract_sha256": "b62ba42dd26ee8823abc3c69033ca4c289a07c9e203bc14c7cf5edabed1956dd",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/841-buck-soft-start-ramp-controller-testbench",
+  "task_id": "v4-841"
+}

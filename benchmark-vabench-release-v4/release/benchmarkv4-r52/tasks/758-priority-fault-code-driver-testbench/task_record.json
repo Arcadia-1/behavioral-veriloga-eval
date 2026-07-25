@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "258-priority-fault-code-driver",
+  "checker_task_id": "v4_258_priority_fault_code_driver",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "f71e637ccaa7e3888bd8412c7f676ba1b86ad2da4dc8633d7a62f05f4537c329",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "685964c25c3b685d56097eb934b95bcc5e49113b3883696b246c74c2747f9440",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "f71e637ccaa7e3888bd8412c7f676ba1b86ad2da4dc8633d7a62f05f4537c329",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "23645790ceba65fcdb4fd2ee1fdf706ab975f788e3506d5a615474f1d579e2c0",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "f14d2266814a71ba71e4a9567de868e2dbf87ca1eb8139b84aeddefd6e6d3684"
+  },
+  "family_id": "258",
+  "family_spec_sha256": "e94eae316bc5ce20c1dbf2817843992f205c618a23ed9be21c068333feebc4ff",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2538985ddca8d411550c92b0a0af7e1258f9d911e760de8076c2c8bea3e745fd",
+  "public_contract": "tasks/758-priority-fault-code-driver-testbench/public_contract.json",
+  "public_contract_sha256": "ec3745d69cb0a27275e1767917dfdf39ca06d47342e35f01fbbec38f7ebb7ea5",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/758-priority-fault-code-driver-testbench",
+  "task_id": "v4-758"
+}

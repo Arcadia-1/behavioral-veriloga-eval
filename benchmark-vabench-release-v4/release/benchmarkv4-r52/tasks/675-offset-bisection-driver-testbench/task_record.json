@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "175-offset-bisection-driver",
+  "checker_task_id": "v4_175_offset_bisection_driver",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "4631f8491b53f5ca530c4e1d6e28448b16837e542acf79f6b94e53aac50f5243",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "f45741f19b8e6454133f40c5c1d23c1d83ae0915f9cffe2e2bd90efc43594d68",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "4631f8491b53f5ca530c4e1d6e28448b16837e542acf79f6b94e53aac50f5243",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "95a7dad66ca3d2b0a214c8fc4e4f79036b20796b79a961b8b9c7ffcd3b49c7e7",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "68d8fafa38b801f4445940cc66706d7d9b41ba32bd434f48e0e1b9648c500aaa"
+  },
+  "family_id": "175",
+  "family_spec_sha256": "f19770976980278d70d8c2e7ddfca2cb196dcdbf2fb3206b76fdfd64c9121697",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "66c881c6d2085e7100dbfdfe4f15f8e86187fc8a1848275d92d5fcabb72201c3",
+  "public_contract": "tasks/675-offset-bisection-driver-testbench/public_contract.json",
+  "public_contract_sha256": "f7b8c6a4f2349d7e97a83d7b40d0728dafc6926d1b4e4ba73851058d54f65180",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/675-offset-bisection-driver-testbench",
+  "task_id": "v4-675"
+}

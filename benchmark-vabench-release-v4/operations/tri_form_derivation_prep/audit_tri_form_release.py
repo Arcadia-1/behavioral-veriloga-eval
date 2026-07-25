@@ -423,7 +423,7 @@ def audit_release_evidence(
         manifest_sha256 = None
         if release is None or not (release / "MANIFEST.json").is_file():
             problems.append(f"{release_revision} evidence audit lacks a release manifest binding target")
-        elif release_revision != "r52":
+        else:
             manifest_sha256 = file_sha(release / "MANIFEST.json")
         if not valid_sha256(source_registry_sha256):
             problems.append(f"{release_revision} evidence audit lacks a source registry binding target")
@@ -442,7 +442,7 @@ def audit_release_evidence(
                 )
 
         require_source_revision = release_revision in {"r51", "r52"}
-        expected_evas_version = "0.8.4" if release_revision == "r52" else "0.8.3"
+        expected_evas_version = "0.8.5" if release_revision == "r52" else "0.8.3"
         if rust and not rust_evas2_runtime(
             rust.get("runtime"),
             require_source_revision=require_source_revision,

@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "082-agc-receiver-leveling-loop",
+  "checker_task_id": "v4_082_agc_receiver_leveling_loop",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "37e1d772475698c2867a860645cc68efd82e942760ccd80637dd5609ec1bb850",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "9415153732831d024530f762859e85daf0d5d26eaf926672a2822a46092f907d",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "37e1d772475698c2867a860645cc68efd82e942760ccd80637dd5609ec1bb850",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "de00649b9c980a8b31982c6c98d02bc2e28ea84ca6c14bab1de9e29120b1ca7f",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "fc3446bf678b010308d0784e8c58c15ab2f1e3003718f902c3803ae7f2785916"
+  },
+  "family_id": "082",
+  "family_spec_sha256": "12544d5b82d942b9bf059eb5c834b989f3d1e23c13631b83a3ba98e3f9213df1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4c616001a54a75aa5c547c581a9e05041bf185861ac7a5b8a0431937eda06331",
+  "public_contract": "tasks/582-agc-receiver-leveling-loop-testbench/public_contract.json",
+  "public_contract_sha256": "9756ab2e704c9b117cbd820438c7de7ad7a898cd2c8af24ca7eddbb412ca8528",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/582-agc-receiver-leveling-loop-testbench",
+  "task_id": "v4-582"
+}

@@ -32,6 +32,9 @@ def test_profile_evidence_labels_are_revision_scoped() -> None:
     assert runner.release_label("r44") == "release/benchmarkv4"
     assert runner.release_label("r45") == "release/benchmarkv4-r45"
     assert runner.release_label("r47") == "release/benchmarkv4-r47"
+    assert runner.release_label("r52") == "release/benchmarkv4-r52"
+    assert runner.required_evas_version("r51") == "0.8.3"
+    assert runner.required_evas_version("r52") == "0.8.5"
 
 
 def test_profile_provenance_rejects_revision_mismatch(
@@ -107,7 +110,7 @@ def test_profile_cli_writes_selected_release_revision(tmp_path: Path, monkeypatc
     monkeypatch.setattr(
         runner,
         "probe_evas2_runtime",
-        lambda: {
+        lambda **kwargs: {
             "evas_engine": "evas2",
             "evas_engine_used": "evas2",
             "evas_version": "0.8.3",

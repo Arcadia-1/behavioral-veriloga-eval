@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "155-divide-by-two-toggle",
+  "checker_task_id": "v4_155_divide_by_two_toggle",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "65ad78ae9f4cfaa9072c100247da1b97da5282409db782a9194f547f379ff906",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "9bcc459018758d3bcf08d1620eea2a999f605c86126cadda9c7a61de7d5b15dd",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "65ad78ae9f4cfaa9072c100247da1b97da5282409db782a9194f547f379ff906",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "61670c552458a58b4a96a4812dfbf26f4361deaf5a5923f9ce5fc4205924aecb",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "3d23b0f4a1e602b39fa1b04eca0221337e22bb6f71c77f2dbbe741be75713e31"
+  },
+  "family_id": "155",
+  "family_spec_sha256": "ed799899d9b98cec20202f88839083dd7d023019741ee75d6881c173be70c68d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2293f9d349932294b20e203fdc379b9f47fc7c17616779418ae37943218dbdd4",
+  "public_contract": "tasks/655-divide-by-two-toggle-testbench/public_contract.json",
+  "public_contract_sha256": "6ddae7545bb1552d85554dd7d7058de8cceb92fe67ae69686a8a25d5bd2bec33",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/655-divide-by-two-toggle-testbench",
+  "task_id": "v4-655"
+}

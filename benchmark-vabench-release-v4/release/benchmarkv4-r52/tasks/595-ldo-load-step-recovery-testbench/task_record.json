@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "095-ldo-load-step-recovery",
+  "checker_task_id": "v4_095_ldo_load_step_recovery",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "582913525e4f0d36a6ff53ab8545ebfd2bd72a016b2ebfc3436146e49ec82028",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "1aeeb78a465b32c59345cc553bb9986d30985cbfca565679a47601de86a4025b",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "582913525e4f0d36a6ff53ab8545ebfd2bd72a016b2ebfc3436146e49ec82028",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "95ab4bb44fdff6a1070e52c78eaaff6b6d3d7d8b4ec21c64b0a1219cfb68301a",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "194d2881079ffa2e7ad8a3e44fcbd8528255b10ce4157a2e7caf06601ac4b41b"
+  },
+  "family_id": "095",
+  "family_spec_sha256": "7362212daea43e322cc9f9a6eaf4837b3852431ad750a540603a6d5ae32f494d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7668c4eb92cdd0201c318b267b4576abb397e5825422c67fdaaf900de4895e83",
+  "public_contract": "tasks/595-ldo-load-step-recovery-testbench/public_contract.json",
+  "public_contract_sha256": "cc8902659bb1ec4265fdf501b711ebb9b9c149b1a6ee6be843ba7388e1bb741c",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/595-ldo-load-step-recovery-testbench",
+  "task_id": "v4-595"
+}

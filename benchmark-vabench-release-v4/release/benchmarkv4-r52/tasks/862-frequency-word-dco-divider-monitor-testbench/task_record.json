@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "362-frequency-word-dco-divider-monitor",
+  "checker_task_id": "v4_362_frequency_word_dco_divider_monitor",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "f62cca60b7e9bda4c830ed4f6b17c764f66b3ff36f1349a3ec48612765240458",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "892183b65f750b3c931fcc559749334fa0b2ea8d8bcd785f56afd58dd74c579d",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "f62cca60b7e9bda4c830ed4f6b17c764f66b3ff36f1349a3ec48612765240458",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "eed96f4d9394a78f3eaeb035dfddb0d7c07fd0904348e4087785bb547fd705f8",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "c578a6c89b0b04517acf8f63d4bc2f0729819ca35ce757ac89d86fa0970e2f42"
+  },
+  "family_id": "362",
+  "family_spec_sha256": "0d68d74300154a21ca427e4402405566fb083f9575fa5bdb0025592e7c31dbfd",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "efbcfc14847e43b2a55774e862abb789e68c9adf36c1e9f0e56334413b11562e",
+  "public_contract": "tasks/862-frequency-word-dco-divider-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "297df22633a1ebae3d2b60de7607aee39b82431e1f96408f5e713c2b42001ebc",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/862-frequency-word-dco-divider-monitor-testbench",
+  "task_id": "v4-862"
+}

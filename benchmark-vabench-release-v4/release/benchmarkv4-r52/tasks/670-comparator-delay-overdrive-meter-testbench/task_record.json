@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "170-comparator-delay-overdrive-meter",
+  "checker_task_id": "v4_170_comparator_delay_overdrive_meter",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "197d8e0b33a7a5be6142339180662ccb5f5d02a42a0b5b9077d94dc6debef5e6",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "0a7bc55c8c91b62025c02c2100073a64f37d69c019c1997e18e002b1087057db",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "197d8e0b33a7a5be6142339180662ccb5f5d02a42a0b5b9077d94dc6debef5e6",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "6f162cf6ffb4b8c813a223f57216e658fe5b3585b5beeeedeb10f7099e1f0d67",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "ca7b95db70ac54c08bc50669fdf24f7d1f0803f13b4839b713c8ee92f8549a98"
+  },
+  "family_id": "170",
+  "family_spec_sha256": "abb5917a53f25324af7238fb060a9e3907baa8ceccb459e76c61ddc4667f9f76",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ef0c6063ccecc505cc934a8b3151b688bb7dcbc60bde145e4a3eac9c6f0c09d2",
+  "public_contract": "tasks/670-comparator-delay-overdrive-meter-testbench/public_contract.json",
+  "public_contract_sha256": "5cd673f7043e424653c853b7f6437b530d7dde1d7c9ae9003a1bf3879b0e56a3",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/670-comparator-delay-overdrive-meter-testbench",
+  "task_id": "v4-670"
+}

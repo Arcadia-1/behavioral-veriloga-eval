@@ -3,10 +3,10 @@
   "checker_task_id": "v4_291_event_reacquire_lock_detector",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "b54d6b673efa5f601e65c9ce08f388ef6d1d4e513aa29f1e0a77314eac9e279e",
+    "certification.json": "56824b5481f96473483a729781dd62a6830d01bb10ec20b2e650040d47a9bd76",
     "checker_profile.json": "305b398745bcbdb8e03488c691e7b79dd3e6ce53295cc54de135fcd94d58bcc3",
     "derivation_manifest.json": "5ae0a2b68955fd3d7f150dd815d5e42069fd47431bdf20ec8708f7d4107620f8",
-    "family_spec.json": "6b4ff64724902d338780b6b19a613582b98a4b275fcc428af10169112bd15420",
+    "family_spec.json": "17b5f51f2ccaa3404aeeaa7d91e2643e82bb0f762e72a84f77f1cb54abed93f5",
     "harness_spec.json": "1de4c939690f173fe2424abe769c2dbe9f2c1f983be0918d332f148eeb47e769",
     "mutation_catalog.json": "0b66b37c7667712013d23f75098115611085d494171c0cf3d756e21200d31959",
     "profiles/feedback.json": "109b0ccfaf343ba6d62cee0aa5392ece972fb7bc9675ed2885176b2550f15466",
@@ -18,13 +18,13 @@
   "form": "dut",
   "public_hashes": {
     "feedback_tb.scs": "62b7ca7e2fff565c6660ba7fdb0aed6a32d7bf7918f6a99474c577aabc5bf602",
-    "instruction.md": "26d73e4e7bc7e00a033770d248879a19f572b665b10402e92b9d2f93f0f4c3bb",
+    "instruction.md": "1a96d0e91ccf4472d13b8a6c328317bffac92a7e7b3d63a0e693afca1ccd4596",
     "public_contract.json": "0c5bb1ab667a4395f925156b1cb25601362ae9df94b36af5f043d53eb2cd61a9"
   },
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "b54d6b673efa5f601e65c9ce08f388ef6d1d4e513aa29f1e0a77314eac9e279e"
+    "sha256": "56824b5481f96473483a729781dd62a6830d01bb10ec20b2e650040d47a9bd76"
   },
   "release_dir": "291-event-reacquire-lock-detector",
   "schema_version": "v4-canonical-dut-release-task-v1",

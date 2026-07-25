@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "386-pa-gain-compression-ampm-macro",
+  "checker_task_id": "v4_386_pa_gain_compression_ampm_macro",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "d1d794820de114abb3b457969e6b8ecf08754a8894356672830dfeb2956948ee",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "602313fb5fb21fdbe509ffcb61ee3c8352e92d0edc347175f2bbe7023cadd9e8",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "d1d794820de114abb3b457969e6b8ecf08754a8894356672830dfeb2956948ee",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "5b529347010ce9e55653a98402f87339b29d972329e46acb33648635702decd8",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "c2c4a747430bae6d923961ad65177cfbeff15d9a967dd24ef0b9187b9ff6a9f9"
+  },
+  "family_id": "386",
+  "family_spec_sha256": "b0a0d174e3a7fb97b53f0407fd4d99e5ee4e9e2ff02b0c9aa5622840e2e8b073",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4b6caa74f49de5b27c1104a710d0310145da1f5b2e1f9ef607beb6f72d1bd15a",
+  "public_contract": "tasks/886-pa-gain-compression-ampm-macro-testbench/public_contract.json",
+  "public_contract_sha256": "e9329eb37fe6830dc037b50447170df19163190a254c123962c5df46e3723df9",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/886-pa-gain-compression-ampm-macro-testbench",
+  "task_id": "v4-886"
+}

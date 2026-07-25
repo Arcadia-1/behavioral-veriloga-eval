@@ -1,0 +1,39 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "027-dwa-dem-encoder",
+  "checker_task_id": "v4_027_dwa_dem_encoder",
+  "evaluation_binding": {
+    "kind": "reference_only_public_testbench",
+    "public_reference_dut_tree": "public/supplied_dut",
+    "public_reference_dut_tree_sha256": "8722f3abb4cdb63e6a6aafc7689de47ff9447a9ef3af780765095d157c02309a",
+    "public_runtime": "public/evas_runtime.json",
+    "public_runtime_sha256": "293301ee07e3ab70bffef82540ef8d3e57689a6abe210a465f26ecefded2ed7e",
+    "reuse_policy": "public_reference_matches_trusted_reference",
+    "trusted_reference_dut_tree_sha256": "8722f3abb4cdb63e6a6aafc7689de47ff9447a9ef3af780765095d157c02309a",
+    "trusted_replay_fixture_tree": "evaluator/trusted_replay_fixtures",
+    "trusted_replay_fixture_tree_sha256": "5a4d2696e44d15eed19a9119f5abe187b36dec18da0a5c2e3a4352ee67551e14",
+    "trusted_replay_suite": "evaluator/trusted_replay_suite.json",
+    "trusted_replay_suite_sha256": "4155aabc293efe4d26e85efde19d0983f6ad83c44b4e52a8eb0ea48a3c8ff4a3"
+  },
+  "family_id": "027",
+  "family_spec_sha256": "0deb18b2ae541cb3267fef8a9510bbcf73456a5287796acca034eddad3e54d7d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6bb4a0e83000b096e2c609b3b2d079078e3bdfda3f21b357081b7681ad6559c5",
+  "public_contract": "tasks/527-dwa-dem-encoder-testbench/public_contract.json",
+  "public_contract_sha256": "6f7450d675a32b49fdc05717f8bb89b24933d618bc7f23f1ba92ab6d95fae6f6",
+  "release_revision": "r52",
+  "schema_version": "r52-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/527-dwa-dem-encoder-testbench",
+  "task_id": "v4-527"
+}
