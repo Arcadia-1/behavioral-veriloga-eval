@@ -543,6 +543,9 @@ class VaBenchBashEnvironment:
         executable_feedback: bool = True,
         docker_command: str = "docker",
         docker_image: str = "",
+        preflight_timeout_s: float = 60.0,
+        preflight_attempts: int = 2,
+        startup_limiter: threading.Semaphore | None = None,
         deadline_monotonic: float | None = None,
         submission_gate: Callable[[Path], dict[str, Any]],
         candidate_artifacts: list[str] | tuple[str, ...] = (),
@@ -571,6 +574,14 @@ class VaBenchBashEnvironment:
         self.executable_feedback = bool(executable_feedback)
         self.docker_command = docker_command
         self.docker_image = docker_image
+        if preflight_timeout_s <= 0:
+            raise ValueError("preflight timeout must be positive")
+        if preflight_attempts < 1:
+            raise ValueError("preflight attempts must be at least 1")
+        self.preflight_timeout_s = float(preflight_timeout_s)
+        self.preflight_attempts = int(preflight_attempts)
+        self.preflight_attempts_used = 0
+        self.startup_limiter = startup_limiter
         self.candidate_artifacts = _candidate_artifact_paths(candidate_artifacts)
         self.docker_image_id: str | None = None
         self._docker_container: str | None = None
@@ -749,6 +760,9 @@ class VaBenchBashEnvironment:
                         "network": False,
                         "evaluator_mounted": False,
                         "executable_feedback": self.executable_feedback,
+                        "preflight_timeout_s": self.preflight_timeout_s,
+                        "preflight_attempts": self.preflight_attempts,
+                        "preflight_attempts_used": self.preflight_attempts_used,
                         "resource_limits": {
                             "command_output_capture_bytes": COMMAND_OUTPUT_CAPTURE_BYTES,
                             "command_file_size_blocks": COMMAND_FILE_SIZE_BLOCKS,
@@ -765,6 +779,13 @@ class VaBenchBashEnvironment:
         """Fail before the first model call if the requested isolation is unusable."""
         if self.config.sandbox_backend == "none":
             return
+        if self.config.sandbox_backend == "docker" and self.startup_limiter is not None:
+            with self.startup_limiter:
+                self._preflight()
+            return
+        self._preflight()
+
+    def _preflight(self) -> None:
         if self.config.sandbox_backend == "docker":
             self._ensure_docker_container()
         # ``test -r`` checks Unix permission bits and can still report a path as
@@ -782,16 +803,26 @@ class VaBenchBashEnvironment:
             f"&& {executable_probe} "
             "&& ! /bin/ls ../evaluator >/dev/null 2>&1"
         )
-        probe = subprocess.run(
-            argv,
-            cwd=self.workspace,
-            env=self._shell_env(),
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            timeout=min(10.0, self._remaining_command_timeout_s()),
-            check=False,
-        )
+        for attempt in range(1, self.preflight_attempts + 1):
+            self.preflight_attempts_used = attempt
+            try:
+                probe = subprocess.run(
+                    argv,
+                    cwd=self.workspace,
+                    env=self._shell_env(),
+                    text=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    timeout=min(
+                        self.preflight_timeout_s,
+                        self._remaining_command_timeout_s(),
+                    ),
+                    check=False,
+                )
+                break
+            except subprocess.TimeoutExpired:
+                if attempt == self.preflight_attempts:
+                    raise
         if probe.returncode != 0:
             diagnostic = probe.stdout.strip()[:2000] or f"returncode={probe.returncode}"
             if "RTM_NEWADDR" in diagnostic or "unprivileged user namespaces" in diagnostic:
@@ -1393,6 +1424,9 @@ def run_mini_swe_episode(
     executable_feedback: bool = True,
     docker_command: str = "docker",
     docker_image: str = DEFAULT_DOCKER_IMAGE,
+    preflight_timeout_s: float = 60.0,
+    preflight_attempts: int = 2,
+    startup_limiter: threading.Semaphore | None = None,
     candidate_artifacts: list[str] | tuple[str, ...] = (),
     submission_gate: Callable[[Path], dict[str, Any]],
     usage_parser: Callable[..., dict[str, Any]],
@@ -1410,6 +1444,9 @@ def run_mini_swe_episode(
         executable_feedback=executable_feedback,
         docker_command=docker_command,
         docker_image=docker_image,
+        preflight_timeout_s=preflight_timeout_s,
+        preflight_attempts=preflight_attempts,
+        startup_limiter=startup_limiter,
         deadline_monotonic=deadline,
         submission_gate=submission_gate,
         candidate_artifacts=candidate_artifacts,
@@ -1475,6 +1512,9 @@ def run_mini_swe_episode(
             "docker_image_id": environment.docker_image_id,
             "network": False,
             "evaluator_mounted": False,
+            "preflight_timeout_s": environment.preflight_timeout_s,
+            "preflight_attempts": environment.preflight_attempts,
+            "preflight_attempts_used": environment.preflight_attempts_used,
             "resource_limits": {
                 "command_output_capture_bytes": COMMAND_OUTPUT_CAPTURE_BYTES,
                 "command_file_size_blocks": COMMAND_FILE_SIZE_BLOCKS,

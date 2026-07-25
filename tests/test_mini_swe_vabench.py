@@ -8,6 +8,8 @@ import shutil
 import shlex
 import subprocess
 import sys
+import threading
+import time
 
 import pytest
 
@@ -394,6 +396,111 @@ def test_docker_backend_runs_shell_in_shared_environment_and_cleans_up(
     assert "exec -i" in calls
     assert "/usr/bin/timeout --signal=TERM --kill-after=1s" in calls
     assert "rm -f" in calls
+
+
+def test_docker_preflight_retries_one_timeout_with_configured_deadline(
+    tmp_path: Path,
+) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "task" / "instruction.md").write_text("public task")
+    (runtime / "public" / "submission").mkdir(parents=True)
+    marker = tmp_path / "first-exec"
+    fake_docker = tmp_path / "docker"
+    fake_docker.write_text(
+        "#!/bin/sh\n"
+        "case \"$1 $2\" in\n"
+        "  'image inspect') echo 'sha256:shared-environment' ;;\n"
+        "  'create --name') echo 'vabench-test-container' ;;\n"
+        "  'exec -i')\n"
+        f"    if [ ! -e {shlex.quote(str(marker))} ]; then\n"
+        f"      : > {shlex.quote(str(marker))}\n"
+        "      sleep 1\n"
+        "    fi\n"
+        "    ;;\n"
+        "esac\n",
+        encoding="utf-8",
+    )
+    fake_docker.chmod(0o755)
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=5,
+        sandbox_backend="docker",
+        evas_command="",
+        docker_command=str(fake_docker),
+        docker_image="vabench-agent-runtime:test-commit",
+        preflight_timeout_s=0.1,
+        preflight_attempts=2,
+        submission_gate=artifact_gate,
+    )
+
+    try:
+        environment.preflight()
+        serialized = environment.serialize()["info"]["config"]["environment"]
+    finally:
+        environment.close()
+
+    assert serialized["preflight_timeout_s"] == 0.1
+    assert serialized["preflight_attempts"] == 2
+    assert serialized["preflight_attempts_used"] == 2
+
+
+def test_docker_startup_limiter_serializes_only_preflight(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    module = load_module()
+    limiter = threading.BoundedSemaphore(1)
+    active = 0
+    maximum_active = 0
+    lock = threading.Lock()
+
+    def fake_ensure(_self) -> None:
+        nonlocal active, maximum_active
+        if _self._docker_container is not None:
+            return
+        with lock:
+            active += 1
+            maximum_active = max(maximum_active, active)
+        _self._docker_container = "vabench-test-container"
+        time.sleep(0.03)
+
+    def fake_probe(*_args, **_kwargs):
+        nonlocal active
+        time.sleep(0.03)
+        with lock:
+            active -= 1
+        return subprocess.CompletedProcess([], 0, "")
+
+    monkeypatch.setattr(module.VaBenchBashEnvironment, "_ensure_docker_container", fake_ensure)
+    monkeypatch.setattr(module.subprocess, "run", fake_probe)
+    environments = []
+    for index in range(2):
+        runtime = tmp_path / f"runtime-{index}"
+        (runtime / "public" / "task").mkdir(parents=True)
+        (runtime / "public" / "task" / "instruction.md").write_text("public task")
+        (runtime / "public" / "submission").mkdir(parents=True)
+        environments.append(
+            module.VaBenchBashEnvironment(
+                runtime,
+                timeout_s=5,
+                sandbox_backend="docker",
+                evas_command="",
+                docker_image="vabench-agent-runtime:test-commit",
+                startup_limiter=limiter,
+                submission_gate=artifact_gate,
+            )
+        )
+
+    threads = [threading.Thread(target=environment.preflight) for environment in environments]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+
+    assert maximum_active == 1
+    assert limiter.acquire(blocking=False)
+    limiter.release()
 
 
 def test_public_runtime_mounts_a_spaced_skill_path_as_one_readonly_argument(

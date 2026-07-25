@@ -33,6 +33,9 @@ DEFAULT_SETUP_TIMEOUT_S = 1800
 DEFAULT_REQUEST_TIMEOUT_S = 1800
 DEFAULT_TOOL_TIMEOUT_S = 1800
 DEFAULT_JUDGE_TIMEOUT_S = 1800
+DEFAULT_MINI_SWE_PREFLIGHT_TIMEOUT_S = 60
+DEFAULT_MINI_SWE_PREFLIGHT_ATTEMPTS = 2
+DEFAULT_MINI_SWE_STARTUP_WORKERS = 8
 DEFAULT_DOCKER_IMAGE = "vabench-agent-runtime:0.8.5"
 DEFAULT_NO_EVAS_DOCKER_IMAGE = "vabench-agent-runtime:0.8.5-no-evas"
 MODES = tuple(f"G{i}" for i in range(6))
@@ -250,6 +253,21 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--request-timeout-s", type=int, default=DEFAULT_REQUEST_TIMEOUT_S)
     parser.add_argument("--tool-timeout-s", type=int, default=DEFAULT_TOOL_TIMEOUT_S)
     parser.add_argument("--judge-timeout-s", type=int, default=DEFAULT_JUDGE_TIMEOUT_S)
+    parser.add_argument(
+        "--mini-swe-preflight-timeout-s",
+        type=float,
+        default=DEFAULT_MINI_SWE_PREFLIGHT_TIMEOUT_S,
+    )
+    parser.add_argument(
+        "--mini-swe-preflight-attempts",
+        type=int,
+        default=DEFAULT_MINI_SWE_PREFLIGHT_ATTEMPTS,
+    )
+    parser.add_argument(
+        "--mini-swe-startup-workers",
+        type=int,
+        default=DEFAULT_MINI_SWE_STARTUP_WORKERS,
+    )
     parser.add_argument("--final-judge-command")
     parser.add_argument(
         "--evas-command",
@@ -285,8 +303,13 @@ def main() -> int:
         args.request_timeout_s,
         args.tool_timeout_s,
         args.judge_timeout_s,
+        args.mini_swe_preflight_timeout_s,
+        args.mini_swe_preflight_attempts,
+        args.mini_swe_startup_workers,
     ) <= 0:
-        raise SystemExit("all timeout values must be positive")
+        raise SystemExit(
+            "timeouts, preflight attempts, and startup workers must be positive"
+        )
     if (
         args.agent_scaffold == "mini-swe"
         and args.mini_swe_sandbox == "none"
@@ -347,6 +370,9 @@ def main() -> int:
         "mini_swe_sandbox": args.mini_swe_sandbox,
         "mini_swe_image": args.mini_swe_image,
         "mini_swe_no_evas_image": args.mini_swe_no_evas_image,
+        "mini_swe_preflight_timeout_s": args.mini_swe_preflight_timeout_s,
+        "mini_swe_preflight_attempts": args.mini_swe_preflight_attempts,
+        "mini_swe_startup_workers": args.mini_swe_startup_workers,
         "comparison_profile": campaign.get("comparison_profile"),
         "controlled_difference": (
             "public_evas_execution_diagnostics_and_waveforms"
@@ -397,6 +423,12 @@ def main() -> int:
         str(args.tool_timeout_s),
         "--judge-timeout-s",
         str(args.judge_timeout_s),
+        "--mini-swe-preflight-timeout-s",
+        str(args.mini_swe_preflight_timeout_s),
+        "--mini-swe-preflight-attempts",
+        str(args.mini_swe_preflight_attempts),
+        "--mini-swe-startup-workers",
+        str(args.mini_swe_startup_workers),
         "--workers",
         str(args.workers),
     ]
@@ -420,6 +452,9 @@ def main() -> int:
         "model": args.model,
         "base_url": args.base_url,
         "workers": args.workers,
+        "mini_swe_preflight_timeout_s": args.mini_swe_preflight_timeout_s,
+        "mini_swe_preflight_attempts": args.mini_swe_preflight_attempts,
+        "mini_swe_startup_workers": args.mini_swe_startup_workers,
         "dry_run": args.dry_run,
         "command": command_for_metadata(command),
     }

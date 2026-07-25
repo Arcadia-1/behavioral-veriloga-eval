@@ -707,6 +707,18 @@ def test_campaign_wrapper_exposes_agent_no_evas_control_profile(
     assert campaign["execution_config"]["mini_swe_no_evas_image"] == (
         "vabench-agent-runtime:0.8.5-no-evas"
     )
+    assert campaign["execution_config"]["mini_swe_preflight_timeout_s"] == 60
+    assert campaign["execution_config"]["mini_swe_preflight_attempts"] == 2
+    assert campaign["execution_config"]["mini_swe_startup_workers"] == 8
+    wrapper = json.loads(
+        (output / "wrapper_summary.json").read_text(encoding="utf-8")
+    )
+    assert wrapper["mini_swe_preflight_timeout_s"] == 60
+    assert wrapper["mini_swe_preflight_attempts"] == 2
+    assert wrapper["mini_swe_startup_workers"] == 8
+    assert "--mini-swe-preflight-timeout-s" in wrapper["command"]
+    assert "--mini-swe-preflight-attempts" in wrapper["command"]
+    assert "--mini-swe-startup-workers" in wrapper["command"]
     assert {cell["experimental_arm"] for cell in campaign["cells"]} == {
         "OneShot",
         "Agent-No-EVAS",

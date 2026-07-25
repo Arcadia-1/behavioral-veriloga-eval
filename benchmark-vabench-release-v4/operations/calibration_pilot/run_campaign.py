@@ -15,6 +15,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import traceback
 from typing import Any
@@ -44,6 +45,9 @@ DEFAULT_SETUP_TIMEOUT_S = 1800
 DEFAULT_REQUEST_TIMEOUT_S = 1800
 DEFAULT_TOOL_TIMEOUT_S = 1800
 DEFAULT_JUDGE_TIMEOUT_S = 1800
+DEFAULT_MINI_SWE_PREFLIGHT_TIMEOUT_S = 60
+DEFAULT_MINI_SWE_PREFLIGHT_ATTEMPTS = 2
+DEFAULT_MINI_SWE_STARTUP_WORKERS = 8
 DIRECT_PARSER_VERSION = "v4-exact-artifact-envelope-parser-v1"
 DIRECT_DUT_RUNTIME_SCHEMAS = {
     "r45-direct-evas-runtime-v1",
@@ -2310,6 +2314,21 @@ def run_mini_swe_agentic_cell(
             executable_feedback=executable_feedback,
             docker_command=getattr(args, "docker_command", "docker"),
             docker_image=docker_image,
+            preflight_timeout_s=float(
+                getattr(
+                    args,
+                    "mini_swe_preflight_timeout_s",
+                    DEFAULT_MINI_SWE_PREFLIGHT_TIMEOUT_S,
+                )
+            ),
+            preflight_attempts=int(
+                getattr(
+                    args,
+                    "mini_swe_preflight_attempts",
+                    DEFAULT_MINI_SWE_PREFLIGHT_ATTEMPTS,
+                )
+            ),
+            startup_limiter=getattr(args, "_mini_swe_startup_limiter", None),
             candidate_artifacts=expected_candidate_artifacts(runtime),
             submission_gate=submission_artifact_gate,
             usage_parser=provider_output_usage,
@@ -2466,6 +2485,9 @@ def run_mini_swe_agentic_cell(
                     "network",
                     "evaluator_mounted",
                     "executable_feedback",
+                    "preflight_timeout_s",
+                    "preflight_attempts",
+                    "preflight_attempts_used",
                     "resource_limits",
                 )
             },
@@ -3105,6 +3127,24 @@ def main() -> int:
     parser.add_argument("--request-timeout-s", type=int, default=DEFAULT_REQUEST_TIMEOUT_S)
     parser.add_argument("--tool-timeout-s", type=int, default=DEFAULT_TOOL_TIMEOUT_S)
     parser.add_argument("--judge-timeout-s", type=int, default=DEFAULT_JUDGE_TIMEOUT_S)
+    parser.add_argument(
+        "--mini-swe-preflight-timeout-s",
+        type=float,
+        default=DEFAULT_MINI_SWE_PREFLIGHT_TIMEOUT_S,
+        help="Wall-clock deadline for each Docker sandbox preflight attempt.",
+    )
+    parser.add_argument(
+        "--mini-swe-preflight-attempts",
+        type=int,
+        default=DEFAULT_MINI_SWE_PREFLIGHT_ATTEMPTS,
+        help="Attempts for Docker preflight timeouts; boundary failures are never retried.",
+    )
+    parser.add_argument(
+        "--mini-swe-startup-workers",
+        type=int,
+        default=DEFAULT_MINI_SWE_STARTUP_WORKERS,
+        help="Maximum concurrent Docker create/start/preflight operations.",
+    )
     parser.add_argument("--final-judge-command")
     parser.add_argument(
         "--evas-command",
@@ -3197,8 +3237,16 @@ def main() -> int:
         args.request_timeout_s,
         args.tool_timeout_s,
         args.judge_timeout_s,
+        args.mini_swe_preflight_timeout_s,
+        args.mini_swe_preflight_attempts,
+        args.mini_swe_startup_workers,
     ) < 1:
-        raise SystemExit("agent, setup, request, tool, and judge timeouts must be positive")
+        raise SystemExit(
+            "timeouts, preflight attempts, and startup workers must be positive"
+        )
+    args._mini_swe_startup_limiter = threading.BoundedSemaphore(
+        args.mini_swe_startup_workers
+    )
     key = "" if args.dry_run else load_key(args.api_key_file, args.api_key_env)
     if not args.dry_run:
         os.environ.pop(args.api_key_env, None)
@@ -3224,6 +3272,15 @@ def main() -> int:
             "image": args.mini_swe_image if uses_mini_swe else None,
             "no_evas_image": (
                 args.mini_swe_no_evas_image if uses_mini_swe else None
+            ),
+            "preflight_timeout_s": (
+                args.mini_swe_preflight_timeout_s if uses_mini_swe else None
+            ),
+            "preflight_attempts": (
+                args.mini_swe_preflight_attempts if uses_mini_swe else None
+            ),
+            "startup_workers": (
+                args.mini_swe_startup_workers if uses_mini_swe else None
             ),
             **image_summary,
         },
