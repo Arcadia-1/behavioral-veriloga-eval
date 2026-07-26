@@ -619,6 +619,69 @@ def test_score_report_does_not_turn_agent_timeout_into_test_zero(tmp_path: Path)
     assert experiment["score"] is None
 
 
+def test_score_report_resume_reuses_persisted_trusted_replay(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    runtime = runtime_with_submission(tmp_path)
+    result_path = runtime / "evidence" / "campaign_result.json"
+    result_path.parent.mkdir(parents=True)
+    cell = {
+        "cell_id": "v4-001-G2-r01",
+        "family_id": "001",
+        "task_id": "v4-001",
+        "form": "dut",
+        "mode": "G2",
+    }
+    replay = PROTOCOL.trusted_replay(
+        {
+            "execution_status": "completed",
+            "returncode": 0,
+            "stdout": "",
+            "stderr": "",
+        },
+        {"status": "passed"},
+        PROTOCOL.hash_test_tree(runtime / "evaluator"),
+        {"available": True},
+    )
+    experiment = PROTOCOL.build_experiment_result(
+        cell=cell,
+        model_status="completed",
+        messages=[],
+        artifact_gate=RUNNER.submission_artifact_gate(runtime),
+        runtime=runtime,
+        replay=replay,
+    )
+    result_path.write_text(
+        json.dumps(
+            {
+                "cell": cell,
+                "status": "submitted",
+                "experiment_result": experiment,
+                "final_judge": replay["command"],
+                "events": [],
+            }
+        )
+    )
+    monkeypatch.setattr(
+        SCORER.RUNNER,
+        "run_trusted_replay",
+        lambda *args, **kwargs: pytest.fail("resume reran trusted replay"),
+    )
+
+    row = SCORER.evaluate_cell(
+        result_path,
+        "adapter",
+        5,
+        "/absolute/evas",
+        True,
+    )
+
+    assert row["judge_status"] == "passed"
+    assert row["outcome"] == "passed"
+    assert row["trusted_replay"] == replay
+
+
 def test_score_summary_aggregates_structured_failure_taxonomy() -> None:
     def row(
         arm: str,

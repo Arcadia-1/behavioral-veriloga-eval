@@ -189,6 +189,7 @@ def evaluate_cell(
     command: str | None,
     timeout_s: int,
     evas_command: str | None = None,
+    reuse_existing: bool = False,
 ) -> dict[str, Any]:
     result = read_json(result_path)
     cell = result["cell"]
@@ -226,7 +227,17 @@ def evaluate_cell(
         fallback_model_status=str(result["status"]),
         artifact_gate=artifact_gate,
     )
+    existing_replay = experiment.get("final_trusted_replay")
     if (
+        reuse_existing
+        and result.get("final_judge") is not None
+        and isinstance(existing_replay, dict)
+        and existing_replay.get("status") not in {None, "not_run"}
+    ):
+        row["judge_status"] = existing_replay["status"]
+        row["outcome"] = experiment.get("outcome", existing_replay["status"])
+        row["trusted_replay"] = existing_replay
+    elif (
         result["status"] not in ARTIFACT_READY or not artifact_gate["passed"]
     ):
         outcome = str(experiment.get("outcome") or "no_submission")
@@ -506,6 +517,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--evas-command")
     parser.add_argument("--output", type=Path)
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Reuse trusted-replay outcomes already persisted in campaign results.",
+    )
     return parser.parse_args()
 
 
@@ -525,14 +541,24 @@ def main() -> int:
         raise SystemExit(f"no campaign results under {args.campaign_output}")
     if args.workers == 1:
         rows = [
-            evaluate_cell(path, args.judge_command, args.timeout_s, args.evas_command)
+            evaluate_cell(
+                path,
+                args.judge_command,
+                args.timeout_s,
+                args.evas_command,
+                args.resume,
+            )
             for path in result_paths
         ]
     else:
         with ThreadPoolExecutor(max_workers=args.workers) as pool:
             rows = list(pool.map(
                 lambda path: evaluate_cell(
-                    path, args.judge_command, args.timeout_s, args.evas_command
+                    path,
+                    args.judge_command,
+                    args.timeout_s,
+                    args.evas_command,
+                    args.resume,
                 ),
                 result_paths,
             ))
