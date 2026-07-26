@@ -1,0 +1,798 @@
+from __future__ import annotations
+
+import hashlib
+import importlib.util
+import json
+import shutil
+import sys
+from pathlib import Path
+
+import pytest
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPT = (
+    ROOT
+    / "benchmark-vabench-release-v4"
+    / "operations"
+    / "calibration_pilot"
+    / "score_spectre_campaign.py"
+)
+
+
+def load_audit():
+    spec = importlib.util.spec_from_file_location("score_spectre_campaign_test", SCRIPT)
+    assert spec is not None
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def write_json(path: Path, value: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def canonical_sha256(value: object) -> str:
+    encoded = json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def test_build_audit_plan_verifies_frozen_score_and_submission_without_mutating_campaign(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+    experiment = tmp_path / "experiment"
+    campaign_run = experiment / "output" / "master" / "run"
+    runtime = campaign_run / "v4-501-G0-r00-oneshot"
+    submission = runtime / "evidence" / "final_submission"
+    submission.mkdir(parents=True)
+    artifact = submission / "testbench.scs"
+    artifact.write_text("simulator lang=spectre\n", encoding="utf-8")
+    artifact_sha = hashlib.sha256(artifact.read_bytes()).hexdigest()
+    submission_tree = canonical_sha256(
+        [{"path": "testbench.scs", "sha256": artifact_sha}]
+    )
+    campaign_result = runtime / "evidence" / "campaign_result.json"
+    write_json(
+        campaign_result,
+        {
+            "cell": {
+                "cell_id": runtime.name,
+                "family_id": "001",
+                "form": "testbench",
+                "mode": "G0",
+                "experimental_arm": "OneShot",
+            },
+            "experiment_result": {
+                "final_submission": {
+                    "status": "available",
+                    "tree_sha256": submission_tree,
+                    "artifacts": [
+                        {
+                            "path": "testbench.scs",
+                            "sha256": artifact_sha,
+                            "bytes": artifact.stat().st_size,
+                        }
+                    ],
+                }
+            },
+        },
+    )
+    original_campaign_bytes = campaign_result.read_bytes()
+
+    score = {
+        "schema_version": "v4-calibration-score-report-v2",
+        "cell_count": 2,
+        "rows": [
+            {
+                "cell_id": runtime.name,
+                "family_id": "001",
+                "form": "testbench",
+                "mode": "G0",
+                "experimental_arm": "OneShot",
+                "outcome": "runtime_failure",
+                "trusted_replay": {"submission_tree_sha256": submission_tree},
+            },
+            {
+                "cell_id": "v4-501-G2-r00-agentic",
+                "family_id": "001",
+                "form": "testbench",
+                "mode": "G2",
+                "experimental_arm": "Agentic",
+                "outcome": "passed",
+            },
+        ],
+    }
+    score_path = experiment / "SCORE_FINAL_TRUSTED_REPLAY.json"
+    write_json(score_path, score)
+    freeze_path = experiment / "SPECTRE_AUDIT_FREEZE.json"
+    write_json(
+        freeze_path,
+        {
+            "schema_version": "vabench-spectre-audit-freeze-v1",
+            "experiment_root": str(experiment),
+            "master_output": "output/master",
+            "score_report": {
+                "path": score_path.name,
+                "sha256": hashlib.sha256(score_path.read_bytes()).hexdigest(),
+                "rows": 2,
+            },
+            "audit_policy": {"do_not_overwrite_frozen_score": True},
+        },
+    )
+
+    plan = audit.build_audit_plan(
+        score_path=score_path,
+        campaign_run=campaign_run,
+        freeze_manifest=freeze_path,
+        source_outcomes={"runtime_failure"},
+        cell_ids=set(),
+    )
+
+    assert [item["cell_id"] for item in plan] == [runtime.name]
+    assert plan[0]["submission_tree_sha256"] == submission_tree
+    assert plan[0]["runtime"] == runtime
+    assert campaign_result.read_bytes() == original_campaign_bytes
+
+
+def test_testbench_audit_runs_reference_and_all_five_frozen_mutations(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+    release_task = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "release"
+        / "benchmarkv4-r52"
+        / "tasks"
+        / "501-bang-bang-phase-detector-testbench"
+    )
+    runtime = tmp_path / "v4-501-G0-r00-oneshot"
+    shutil.copytree(release_task / "evaluator", runtime / "evaluator")
+    shutil.copy2(release_task / "task_record.json", runtime / "evaluator" / "task_record.json")
+    submission = runtime / "evidence" / "final_submission"
+    submission.mkdir(parents=True)
+    candidate_text = (
+        (release_task / "evaluator" / "reference_tb.scs").read_text(encoding="utf-8")
+        + "\n// frozen candidate marker\n"
+    )
+    (submission / "testbench.scs").write_text(candidate_text, encoding="utf-8")
+
+    policy = json.loads(
+        (runtime / "evaluator" / "score_policy.json").read_text(encoding="utf-8")
+    )
+    mutation_ids = policy["negative_suite_mutation_ids"]
+    frozen_mutation = (
+        runtime
+        / "evaluator"
+        / "mutation_bundles"
+        / mutation_ids[0]
+        / "bbpd_ref.va"
+    )
+    frozen_mutation.write_text(
+        frozen_mutation.read_text(encoding="utf-8") + "\n// frozen mutation marker\n",
+        encoding="utf-8",
+    )
+
+    calls: list[dict[str, object]] = []
+
+    def fake_simulate_case(**kwargs):
+        calls.append(kwargs)
+        tb_path = kwargs["tb_path"]
+        assert "frozen candidate marker" in tb_path.read_text(encoding="utf-8")
+        include_text = "\n".join(
+            path.read_text(encoding="utf-8") for path in kwargs["include_paths"]
+        )
+        if kwargs["case_id"] == mutation_ids[0]:
+            assert "frozen mutation marker" in include_text
+        output_dir = kwargs["output_dir"]
+        output_dir.mkdir(parents=True)
+        required = sorted(kwargs["required_signals"])
+        header = ["time", *required]
+        values = ["0", *(["0"] * len(required))]
+        (output_dir / "tran_spectre.csv").write_text(
+            ",".join(header) + "\n" + ",".join(values) + "\n",
+            encoding="utf-8",
+        )
+        return {
+            "ok": True,
+            "status": "success",
+            "errors": [],
+            "warnings": [],
+            "signals": header,
+            "rows": 1,
+            "spectre_backend": "sui-direct",
+            "spectre_mode": "ax",
+        }
+
+    def fake_evaluate(_checker_id, csv_path, **_kwargs):
+        if csv_path.parent.name == "reference":
+            return 1.0, ["reference accepted"]
+        return 0.0, ["mutation detected"]
+
+    result = audit.audit_cell(
+        runtime=runtime,
+        score_row={
+            "cell_id": runtime.name,
+            "family_id": "001",
+            "form": "testbench",
+            "mode": "G0",
+            "experimental_arm": "OneShot",
+            "outcome": "runtime_failure",
+        },
+        submission_tree_sha256="frozen-tree",
+        cell_output=tmp_path / "audit-cell",
+        config=audit.SpectreConfig(timeout_s=10),
+        simulate_case=fake_simulate_case,
+        behavior_evaluator=fake_evaluate,
+    )
+
+    assert len(calls) == 6
+    assert [call["case_id"] for call in calls] == ["reference", *mutation_ids]
+    assert result["outcome"] == "passed"
+    assert result["reference_gate"] is True
+    assert result["killed_count"] == 5
+    assert result["survived_count"] == 0
+    assert result["invalid_count"] == 0
+
+    resumed = audit.audit_cell(
+        runtime=runtime,
+        score_row={
+            "cell_id": runtime.name,
+            "family_id": "001",
+            "form": "testbench",
+            "mode": "G0",
+            "experimental_arm": "OneShot",
+            "outcome": "runtime_failure",
+        },
+        submission_tree_sha256="frozen-tree",
+        cell_output=tmp_path / "audit-cell",
+        config=audit.SpectreConfig(timeout_s=10),
+        simulate_case=fake_simulate_case,
+        behavior_evaluator=fake_evaluate,
+    )
+    assert len(calls) == 6
+    assert resumed["outcome"] == "passed"
+    assert all(case["resumed_case"] for case in resumed["cases"])
+
+
+def test_dut_audit_runs_frozen_candidate_once_and_uses_canonical_checker(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+    release_task = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "release"
+        / "benchmarkv4-r52"
+        / "tasks"
+        / "001-bang-bang-phase-detector"
+    )
+    runtime = tmp_path / "v4-001-G0-r00-oneshot"
+    shutil.copytree(release_task / "evaluator", runtime / "evaluator")
+    shutil.copy2(release_task / "task_record.json", runtime / "evaluator" / "task_record.json")
+    public_support = release_task / "public" / "task" / "public_support"
+    if public_support.is_dir():
+        shutil.copytree(public_support, runtime / "public" / "task" / "public_support")
+
+    contract = json.loads(
+        (release_task / "public_contract.json").read_text(encoding="utf-8")
+    )
+    submission = runtime / "evidence" / "final_submission"
+    submission.mkdir(parents=True)
+    for relative in contract["target_artifacts"]:
+        source = release_task / "evaluator" / "solution" / relative
+        if not source.is_file():
+            source = release_task / "evaluator" / "trusted_solution" / relative
+        target = submission / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(
+            source.read_text(encoding="utf-8") + "\n// frozen DUT candidate marker\n",
+            encoding="utf-8",
+        )
+
+    calls: list[dict[str, object]] = []
+
+    def fake_simulate_case(**kwargs):
+        calls.append(kwargs)
+        include_text = "\n".join(
+            path.read_text(encoding="utf-8") for path in kwargs["include_paths"]
+        )
+        assert "frozen DUT candidate marker" in include_text
+        output_dir = kwargs["output_dir"]
+        output_dir.mkdir(parents=True)
+        required = sorted(kwargs["required_signals"])
+        (output_dir / "tran_spectre.csv").write_text(
+            ",".join(["time", *required])
+            + "\n"
+            + ",".join(["0", *(["0"] * len(required))])
+            + "\n",
+            encoding="utf-8",
+        )
+        return {
+            "ok": True,
+            "status": "success",
+            "errors": [],
+            "warnings": [],
+            "signals": ["time", *required],
+            "rows": 1,
+            "spectre_backend": "sui-direct",
+            "spectre_mode": "ax",
+        }
+
+    result = audit.audit_cell(
+        runtime=runtime,
+        score_row={
+            "cell_id": runtime.name,
+            "family_id": "001",
+            "form": "dut",
+            "mode": "G0",
+            "experimental_arm": "OneShot",
+            "outcome": "runtime_failure",
+        },
+        submission_tree_sha256="frozen-tree",
+        cell_output=tmp_path / "audit-dut",
+        config=audit.SpectreConfig(timeout_s=10),
+        simulate_case=fake_simulate_case,
+        behavior_evaluator=lambda *_args, **_kwargs: (1.0, ["DUT accepted"]),
+    )
+
+    assert len(calls) == 1
+    assert calls[0]["case_id"] == "score"
+    assert result["outcome"] == "passed"
+    assert result["checker_task_id"] in {
+        "v3_001_bang_bang_phase_detector",
+        "v4_001_bang_bang_phase_detector",
+    }
+
+
+def test_dut_audit_uses_declared_trace_contract_not_checker_diagnostic_labels(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+    release_task = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "release"
+        / "benchmarkv4-r52"
+        / "tasks"
+        / "189-trim-ctrl-4bit"
+    )
+    runtime = tmp_path / "v4-189-G0-r00-oneshot"
+    shutil.copytree(release_task / "evaluator", runtime / "evaluator")
+    shutil.copy2(
+        release_task / "task_record.json",
+        runtime / "evaluator" / "task_record.json",
+    )
+    submission = runtime / "evidence" / "final_submission"
+    submission.mkdir(parents=True)
+    shutil.copy2(
+        release_task / "evaluator" / "solution" / "trim_ctrl_4bit.va",
+        submission / "trim_ctrl_4bit.va",
+    )
+
+    observed_required_signals: list[set[str]] = []
+
+    def fake_simulate_case(**kwargs):
+        observed_required_signals.append(set(kwargs["required_signals"]))
+        output_dir = kwargs["output_dir"]
+        output_dir.mkdir(parents=True)
+        (output_dir / "tran_spectre.csv").write_text(
+            "time,ain,dout0,dout1,dout2,dout3\n"
+            "0,0,0,0,0,0\n",
+            encoding="utf-8",
+        )
+        return {
+            "ok": True,
+            "status": "success",
+            "errors": [],
+            "warnings": [],
+            "signals": ["time", "ain", "dout0", "dout1", "dout2", "dout3"],
+            "rows": 1,
+            "spectre_backend": "sui-direct",
+            "spectre_mode": "ax",
+        }
+
+    result = audit.audit_cell(
+        runtime=runtime,
+        score_row={
+            "cell_id": runtime.name,
+            "family_id": "189",
+            "form": "dut",
+            "mode": "G0",
+            "experimental_arm": "OneShot",
+            "outcome": "runtime_failure",
+        },
+        submission_tree_sha256="frozen-tree",
+        cell_output=tmp_path / "audit-dut-189",
+        config=audit.SpectreConfig(timeout_s=600),
+        simulate_case=fake_simulate_case,
+        behavior_evaluator=lambda *_args, **_kwargs: (1.0, ["accepted"]),
+    )
+
+    assert observed_required_signals == [
+        {"ain", "dout0", "dout1", "dout2", "dout3"}
+    ]
+    assert result["outcome"] == "passed"
+
+
+def test_dut_audit_classifies_checker_timeout_as_retryable_infrastructure(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+    release_task = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "release"
+        / "benchmarkv4-r52"
+        / "tasks"
+        / "189-trim-ctrl-4bit"
+    )
+    runtime = tmp_path / "v4-189-G2-r00-agentic"
+    shutil.copytree(release_task / "evaluator", runtime / "evaluator")
+    shutil.copy2(
+        release_task / "task_record.json",
+        runtime / "evaluator" / "task_record.json",
+    )
+    submission = runtime / "evidence" / "final_submission"
+    submission.mkdir(parents=True)
+    shutil.copy2(
+        release_task / "evaluator" / "solution" / "trim_ctrl_4bit.va",
+        submission / "trim_ctrl_4bit.va",
+    )
+
+    def fake_simulate_case(**kwargs):
+        output_dir = kwargs["output_dir"]
+        output_dir.mkdir(parents=True)
+        (output_dir / "tran_spectre.csv").write_text(
+            "time,ain,dout0,dout1,dout2,dout3\n"
+            "0,0,0,0,0,0\n",
+            encoding="utf-8",
+        )
+        return {
+            "ok": True,
+            "status": "success",
+            "errors": [],
+            "warnings": [],
+            "signals": ["time", "ain", "dout0", "dout1", "dout2", "dout3"],
+            "rows": 1,
+            "spectre_backend": "sui-direct",
+            "spectre_mode": "ax",
+        }
+
+    result = audit.audit_cell(
+        runtime=runtime,
+        score_row={
+            "cell_id": runtime.name,
+            "family_id": "189",
+            "form": "dut",
+            "mode": "G2",
+            "experimental_arm": "Agentic",
+            "outcome": "runtime_failure",
+        },
+        submission_tree_sha256="frozen-tree",
+        cell_output=tmp_path / "audit-timeout",
+        config=audit.SpectreConfig(timeout_s=600),
+        simulate_case=fake_simulate_case,
+        behavior_evaluator=lambda *_args, **_kwargs: (
+            0.0,
+            ["behavior_eval_timeout>300s"],
+        ),
+    )
+
+    assert result["outcome"] == "infrastructure_failure"
+    assert result["failure_taxonomy"]["primary_class"] == "infrastructure"
+    assert result["failure_taxonomy"]["stage"] == "checker_timeout"
+    assert result["failure_taxonomy"]["retryable"] is True
+    assert result["cases"][0]["failure_kind"] == "checker_timeout"
+    assert result["cases"][0]["responsibility"] == "system"
+
+
+def test_dut_audit_classifies_missing_declared_trace_signal_as_infrastructure(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+    release_task = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "release"
+        / "benchmarkv4-r52"
+        / "tasks"
+        / "189-trim-ctrl-4bit"
+    )
+    runtime = tmp_path / "v4-189-G2-r00-noevas"
+    shutil.copytree(release_task / "evaluator", runtime / "evaluator")
+    shutil.copy2(
+        release_task / "task_record.json",
+        runtime / "evaluator" / "task_record.json",
+    )
+    submission = runtime / "evidence" / "final_submission"
+    submission.mkdir(parents=True)
+    shutil.copy2(
+        release_task / "evaluator" / "solution" / "trim_ctrl_4bit.va",
+        submission / "trim_ctrl_4bit.va",
+    )
+
+    def fake_simulate_case(**kwargs):
+        output_dir = kwargs["output_dir"]
+        output_dir.mkdir(parents=True)
+        (output_dir / "tran_spectre.csv").write_text(
+            "time,ain,dout0,dout1,dout2\n"
+            "0,0,0,0,0\n",
+            encoding="utf-8",
+        )
+        return {
+            "ok": True,
+            "status": "success",
+            "errors": [],
+            "warnings": [],
+            "signals": ["time", "ain", "dout0", "dout1", "dout2"],
+            "rows": 1,
+            "spectre_backend": "sui-direct",
+            "spectre_mode": "ax",
+        }
+
+    result = audit.audit_cell(
+        runtime=runtime,
+        score_row={
+            "cell_id": runtime.name,
+            "family_id": "189",
+            "form": "dut",
+            "mode": "G2",
+            "experimental_arm": "Agent-No-EVAS",
+            "outcome": "runtime_failure",
+        },
+        submission_tree_sha256="frozen-tree",
+        cell_output=tmp_path / "audit-missing-signal",
+        config=audit.SpectreConfig(timeout_s=600),
+        simulate_case=fake_simulate_case,
+    )
+
+    assert result["outcome"] == "infrastructure_failure"
+    assert result["failure_taxonomy"]["primary_class"] == "infrastructure"
+    assert result["failure_taxonomy"]["stage"] == "trace_contract"
+    assert result["failure_taxonomy"]["retryable"] is True
+    assert result["cases"][0]["failure_kind"] == "required_signal"
+    assert result["cases"][0]["responsibility"] == "system"
+
+
+def test_testbench_audit_preserves_checker_timeout_stage_in_aggregate(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+    release_task = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "release"
+        / "benchmarkv4-r52"
+        / "tasks"
+        / "501-bang-bang-phase-detector-testbench"
+    )
+    runtime = tmp_path / "v4-501-G2-r00-agentic"
+    shutil.copytree(release_task / "evaluator", runtime / "evaluator")
+    shutil.copy2(
+        release_task / "task_record.json",
+        runtime / "evaluator" / "task_record.json",
+    )
+    submission = runtime / "evidence" / "final_submission"
+    submission.mkdir(parents=True)
+    shutil.copy2(
+        release_task / "evaluator" / "reference_tb.scs",
+        submission / "testbench.scs",
+    )
+
+    def fake_simulate_case(**kwargs):
+        output_dir = kwargs["output_dir"]
+        output_dir.mkdir(parents=True)
+        required = sorted(kwargs["required_signals"])
+        (output_dir / "tran_spectre.csv").write_text(
+            ",".join(["time", *required])
+            + "\n"
+            + ",".join(["0", *(["0"] * len(required))])
+            + "\n",
+            encoding="utf-8",
+        )
+        return {
+            "ok": True,
+            "status": "success",
+            "errors": [],
+            "warnings": [],
+            "signals": ["time", *required],
+            "rows": 1,
+            "spectre_backend": "sui-direct",
+            "spectre_mode": "ax",
+        }
+
+    result = audit.audit_cell(
+        runtime=runtime,
+        score_row={
+            "cell_id": runtime.name,
+            "family_id": "001",
+            "form": "testbench",
+            "mode": "G2",
+            "experimental_arm": "Agentic",
+            "outcome": "runtime_failure",
+        },
+        submission_tree_sha256="frozen-tree",
+        cell_output=tmp_path / "audit-testbench-timeout",
+        config=audit.SpectreConfig(timeout_s=600),
+        simulate_case=fake_simulate_case,
+        behavior_evaluator=lambda *_args, **_kwargs: (
+            0.0,
+            ["behavior_eval_timeout>300s"],
+        ),
+    )
+
+    assert result["outcome"] == "infrastructure_failure"
+    assert result["failure_taxonomy"]["stage"] == "checker_timeout"
+    assert {
+        case["failure_kind"] for case in result["cases"]
+    } == {"checker_timeout"}
+
+
+def test_run_audit_resumes_a_matching_sidecar_result_without_rerunning_cell(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+    release_task = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "release"
+        / "benchmarkv4-r52"
+        / "tasks"
+        / "501-bang-bang-phase-detector-testbench"
+    )
+    runtime = tmp_path / "campaign" / "v4-501-G0-r00-oneshot"
+    shutil.copytree(release_task / "evaluator", runtime / "evaluator")
+    shutil.copy2(release_task / "task_record.json", runtime / "evaluator" / "task_record.json")
+    plan = [
+        {
+            "cell_id": runtime.name,
+            "runtime": runtime,
+            "submission_tree_sha256": "frozen-tree",
+            "score_row": {
+                "cell_id": runtime.name,
+                "family_id": "001",
+                "form": "testbench",
+                "mode": "G0",
+                "experimental_arm": "OneShot",
+                "outcome": "runtime_failure",
+            },
+        }
+    ]
+    calls = 0
+
+    def fake_audit_cell(**kwargs):
+        nonlocal calls
+        calls += 1
+        return {
+            "schema_version": audit.SCHEMA_VERSION,
+            "cell_id": kwargs["score_row"]["cell_id"],
+            "family_id": "001",
+            "form": "testbench",
+            "mode": "G0",
+            "experimental_arm": "OneShot",
+            "source_outcome": "runtime_failure",
+            "outcome": "passed",
+            "diagnostics": [],
+            "failure_taxonomy": None,
+            "reference_gate": True,
+            "killed_count": 5,
+            "survived_count": 0,
+            "invalid_count": 0,
+            "cases": [],
+        }
+
+    work_root = tmp_path / "spectre-sidecar"
+    output = tmp_path / "SCORE_SPECTRE_AUDIT.json"
+    first = audit.run_audit(
+        plan=plan,
+        work_root=work_root,
+        output=output,
+        config=audit.SpectreConfig(timeout_s=10),
+        workers=1,
+        cell_auditor=fake_audit_cell,
+    )
+    second = audit.run_audit(
+        plan=plan,
+        work_root=work_root,
+        output=output,
+        config=audit.SpectreConfig(timeout_s=10),
+        workers=1,
+        cell_auditor=fake_audit_cell,
+    )
+
+    assert calls == 1
+    assert first["resumed_cell_count"] == 0
+    assert second["resumed_cell_count"] == 1
+    assert second["cell_count"] == 1
+    assert second["rows"][0]["outcome"] == "passed"
+    assert second["rows"][0]["input_signature_sha256"]
+    assert json.loads(output.read_text(encoding="utf-8")) == second
+
+
+def test_run_audit_allows_up_to_48_workers_for_remote_spectre_throughput(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+
+    result = audit.run_audit(
+        plan=[],
+        work_root=tmp_path / "work",
+        output=tmp_path / "score.json",
+        config=audit.SpectreConfig(timeout_s=10),
+        workers=48,
+    )
+
+    assert result["cell_count"] == 0
+    with pytest.raises(ValueError, match="between 1 and 48"):
+        audit.run_audit(
+            plan=[],
+            work_root=tmp_path / "too-many",
+            output=tmp_path / "too-many.json",
+            config=audit.SpectreConfig(timeout_s=10),
+            workers=49,
+        )
+
+
+def test_testbench_spectre_compile_error_is_not_reported_as_runtime(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+    release_task = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "release"
+        / "benchmarkv4-r52"
+        / "tasks"
+        / "501-bang-bang-phase-detector-testbench"
+    )
+    runtime = tmp_path / "v4-501-G0-r00-oneshot"
+    shutil.copytree(release_task / "evaluator", runtime / "evaluator")
+    shutil.copy2(release_task / "task_record.json", runtime / "evaluator" / "task_record.json")
+    submission = runtime / "evidence" / "final_submission"
+    submission.mkdir(parents=True)
+    shutil.copy2(
+        release_task / "evaluator" / "reference_tb.scs",
+        submission / "testbench.scs",
+    )
+
+    def compile_failure(**_kwargs):
+        return {
+            "ok": False,
+            "status": "error",
+            "errors": [
+                "spectre_failed rc=2",
+                "Error found by spectre during circuit read-in.",
+            ],
+            "warnings": [],
+            "stdout_tail": "Licensing Information:\nspectre terminated prematurely",
+        }
+
+    result = audit.audit_cell(
+        runtime=runtime,
+        score_row={
+            "cell_id": runtime.name,
+            "family_id": "001",
+            "form": "testbench",
+            "mode": "G0",
+            "experimental_arm": "OneShot",
+            "outcome": "runtime_failure",
+        },
+        submission_tree_sha256="frozen-tree",
+        cell_output=tmp_path / "audit-cell",
+        config=audit.SpectreConfig(timeout_s=10),
+        simulate_case=compile_failure,
+    )
+
+    assert result["outcome"] == "compile_failure"
+    assert result["failure_taxonomy"]["primary_class"] == "compile"
+    assert {case["failure_kind"] for case in result["cases"]} == {"compile"}
