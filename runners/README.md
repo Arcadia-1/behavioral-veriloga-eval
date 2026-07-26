@@ -137,6 +137,11 @@ Direct SUI Spectre backend:
 - Direct-SUI Spectre uses a bounded license queue timeout derived from the
   runner timeout. Override it with `--spectre-license-wait-s`, and make sure
   `--timeout-s` is larger than the requested license wait.
+- High-concurrency callers may provide a comma-separated pool of existing SSH
+  master sockets through `VAEVAS_SSH_CONTROL_PATHS`. Entries must be absolute
+  paths to existing Unix sockets. The runner validates the pool and assigns
+  connections round-robin; it never creates or removes the masters. This
+  explicit pool takes precedence over `VAEVAS_SSH_USE_CONFIG_MULTIPLEX`.
 - Use it when the bridge listener is the blocker but SSH plus Cadence setup are
   available:
 

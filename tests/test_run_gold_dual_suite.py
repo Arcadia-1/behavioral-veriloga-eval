@@ -5,8 +5,12 @@ import json
 import shutil
 import sys
 import tarfile
+from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from types import SimpleNamespace
+
+import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -110,6 +114,89 @@ def test_direct_sui_ssh_base_cmd_disables_stale_controlmaster(monkeypatch) -> No
     assert "ControlPath=none" in cmd
     assert cmd[cmd.index("-J") + 1] == "thu-sui"
     assert cmd[-1] == "thu-wei"
+
+
+def test_direct_sui_ssh_base_cmd_round_robins_explicit_controlmaster_pool(
+    monkeypatch,
+) -> None:
+    control_paths = (
+        "/tmp/vaevas-master-0.sock",
+        "/tmp/vaevas-master-1.sock",
+    )
+    monkeypatch.setattr(
+        Path,
+        "is_socket",
+        lambda path: str(path) in control_paths,
+    )
+    monkeypatch.setenv("VAEVAS_SUI_PROXY_JUMP", "jump-host")
+    monkeypatch.setenv(
+        "VAEVAS_SSH_CONTROL_PATHS",
+        ",".join(control_paths),
+    )
+    monkeypatch.setenv("VAEVAS_SSH_USE_CONFIG_MULTIPLEX", "1")
+
+    commands = [
+        dual.ssh_base_cmd("remote-host", timeout_s=45)
+        for _ in range(len(control_paths))
+    ]
+
+    selected = {cmd[cmd.index("-S") + 1] for cmd in commands}
+    assert selected == set(control_paths)
+    assert all("ControlMaster=no" in cmd for cmd in commands)
+    assert all("ControlPath=none" not in cmd for cmd in commands)
+
+
+def test_direct_sui_ssh_base_cmd_balances_controlmaster_pool_across_threads(
+    monkeypatch,
+) -> None:
+    control_paths = tuple(
+        f"/tmp/vaevas-master-{index}.sock"
+        for index in range(4)
+    )
+    monkeypatch.setattr(Path, "is_socket", lambda _path: True)
+    monkeypatch.setenv("VAEVAS_SSH_CONTROL_PATHS", ",".join(control_paths))
+
+    with ThreadPoolExecutor(max_workers=16) as executor:
+        commands = list(
+            executor.map(
+                lambda _: dual.ssh_base_cmd("remote-host", timeout_s=45),
+                range(64),
+            )
+        )
+
+    selected = Counter(cmd[cmd.index("-S") + 1] for cmd in commands)
+    assert selected == Counter({path: 16 for path in control_paths})
+
+
+@pytest.mark.parametrize(
+    ("configured_path", "message"),
+    [
+        ("relative-master.sock", "absolute paths"),
+        ("/tmp/master.sock\nunexpected", "control characters"),
+    ],
+)
+def test_direct_sui_ssh_base_cmd_rejects_invalid_controlmaster_path(
+    monkeypatch,
+    configured_path: str,
+    message: str,
+) -> None:
+    monkeypatch.setenv("VAEVAS_SSH_CONTROL_PATHS", configured_path)
+
+    with pytest.raises(ValueError, match=message):
+        dual.ssh_base_cmd("remote-host", timeout_s=45)
+
+
+def test_direct_sui_ssh_base_cmd_rejects_stale_controlmaster_path(
+    monkeypatch,
+    tmp_path: Path,
+) -> None:
+    monkeypatch.setenv(
+        "VAEVAS_SSH_CONTROL_PATHS",
+        str(tmp_path / "missing-master.sock"),
+    )
+
+    with pytest.raises(ValueError, match="existing Unix socket"):
+        dual.ssh_base_cmd("remote-host", timeout_s=45)
 
 
 def test_run_dual_case_marks_non_scored_behavior_as_not_required(
