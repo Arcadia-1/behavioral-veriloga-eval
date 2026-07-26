@@ -2,6 +2,11 @@
 from __future__ import annotations
 
 from ..api import Checker
+
+
+LOGIC_THRESHOLD_EPS = 1e-9
+
+
 def _stable_bits_tuple(row: dict[str, float], bit_names: list[str]) -> tuple[int, ...] | None:
     bits = [_stable_voltage_bit(row, signal) for signal in bit_names]
     if any(bit is None for bit in bits):
@@ -29,7 +34,8 @@ def check_v3_l2_7b_dac_ready(rows: list[dict[str, float]]) -> tuple[bool, str]:
         rdy = row.get("rdy")
         if t is None or rdy is None:
             continue
-        if prev_rdy is not None and prev_rdy <= vth and rdy > vth:
+        edge_level = vth - LOGIC_THRESHOLD_EPS
+        if prev_rdy is not None and prev_rdy < edge_level <= rdy:
             edge_count += 1
             if not armed:
                 armed = True

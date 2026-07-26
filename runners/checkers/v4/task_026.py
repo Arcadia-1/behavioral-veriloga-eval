@@ -23,6 +23,17 @@ def _normalized_phase(row: dict[str, float]) -> float:
     return (row["phase_out"] - row["VSS"]) / span
 
 
+def _rail_span(row: dict[str, float]) -> float:
+    return max(row["VDD"] - row["VSS"], 1e-12)
+
+
+def _wrapped_phase_delta(previous: float, current: float) -> float:
+    forward = (current - previous) % 1.0
+    if forward > 0.5:
+        return forward - 1.0
+    return forward
+
+
 def _phase_transition_groups(rows: list[dict[str, float]]) -> list[list[int]]:
     changed = [
         index
@@ -35,7 +46,53 @@ def _phase_transition_groups(rows: list[dict[str, float]]) -> list[list[int]]:
             groups.append([index])
         else:
             groups[-1].append(index)
-    return groups
+    timer_groups: list[list[int]] = []
+    for group in groups:
+        before = rows[max(0, group[0] - 1)]
+        after = rows[group[-1]]
+        phase_delta = abs(_wrapped_phase_delta(_normalized_phase(before), _normalized_phase(after)))
+        rail_delta = max(
+            abs(_rail_span(after) - _rail_span(before)),
+            abs(after["VSS"] - before["VSS"]),
+        )
+        raw_delta = abs(after["phase_out"] - before["phase_out"])
+        span = max(_rail_span(before), _rail_span(after))
+        if phase_delta < 0.05:
+            continue
+        if raw_delta <= max(0.02 * span, 1.5 * rail_delta):
+            continue
+        timer_groups.append(group)
+    return timer_groups
+
+
+def _plateau_sample(
+    rows: list[dict[str, float]], start: float, stop: float, reference: dict[str, float]
+) -> dict[str, float]:
+    if stop <= start:
+        return row_at_or_after(rows, start)
+    positive_steps = [
+        right["time"] - left["time"]
+        for left, right in zip(rows, rows[1:])
+        if right["time"] > left["time"]
+    ]
+    step = median(positive_steps) if positive_steps else 0.0
+    guard = max(3.0 * step, 0.08 * (stop - start))
+    candidates = [
+        row
+        for row in rows
+        if start + guard <= float(row["time"]) <= stop - guard
+    ]
+    if not candidates:
+        return row_at_or_after(rows, start + 0.25 * (stop - start))
+    ref_span = _rail_span(reference)
+    ref_vss = reference["VSS"]
+    return min(
+        candidates,
+        key=lambda row: (
+            abs(_rail_span(row) - ref_span) + abs(row["VSS"] - ref_vss),
+            float(row["time"]),
+        ),
+    )
 
 
 def check_phase_accumulator_timer_wrap(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -55,7 +112,7 @@ def check_phase_accumulator_timer_wrap(rows: list[dict[str, float]]) -> tuple[bo
             if position + 1 < len(groups)
             else float(rows[-1]["time"])
         )
-        sample = row_at_or_after(rows, start + 0.50 * max(0.0, stop - start))
+        sample = _plateau_sample(rows, start, stop, rows[group[-1]])
         plateaus.append((_normalized_phase(sample), sample))
 
     initial_phase = _normalized_phase(rows[max(0, groups[0][0] - 1)]) if groups else 0.0

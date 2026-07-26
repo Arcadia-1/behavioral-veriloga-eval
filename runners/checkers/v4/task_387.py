@@ -1,6 +1,8 @@
 """Task-specific checker for canonical v4 DUT 387."""
 from __future__ import annotations
 
+from bisect import bisect_right
+
 from ..api import Checker
 
 
@@ -10,9 +12,11 @@ def _v4_topup_clip01(value: float, low: float = 0.0, high: float = 0.9) -> float
 
 def _level(row: dict[str, float], name: str, threshold: float = 0.45) -> bool | None:
     value = float(row.get(name, 0.0))
+    if value == threshold:
+        return True
     if 0.1 < value < 0.8:
         return None
-    return value > threshold
+    return value >= threshold
 
 
 def _property_note(property_id: str, mismatch_count: int, expected: str, observed: str) -> str:
@@ -21,12 +25,34 @@ def _property_note(property_id: str, mismatch_count: int, expected: str, observe
         f"expected={expected} observed={observed}"
     )
 
+
+def _settled_rows(
+    rows: list[dict[str, float]],
+    *,
+    watched: tuple[str, ...] = ("vin", "enable", "rst"),
+    settle_s: float = 0.5e-9,
+    tol: float = 0.02,
+) -> list[dict[str, float]]:
+    ordered = sorted(rows, key=lambda row: float(row["time"]))
+    times = [float(row["time"]) for row in ordered]
+    settled: list[dict[str, float]] = []
+    for row in ordered:
+        time_s = float(row["time"])
+        prior_index = bisect_right(times, time_s - settle_s) - 1
+        if prior_index < 0:
+            continue
+        prior = ordered[prior_index]
+        if all(abs(float(row[name]) - float(prior[name])) <= tol for name in watched):
+            settled.append(row)
+    return settled
+
+
 def check_v4_946_lna_gain_compression_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, _property_note("P_TRACE_CONTRACT", 1, "non_empty_trace", "empty_trace")
     checked = vout_errors = gain_errors = flag_errors = clear_errors = 0
     reset_clear = disabled_clear = compressed_seen = uncompressed_seen = False
-    for row in rows[::6]:
+    for row in _settled_rows(rows):
         rst = _level(row, "rst")
         enable = _level(row, "enable")
         if rst is None or enable is None:

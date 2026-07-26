@@ -1,10 +1,16 @@
 """Task-specific checker for canonical v4 DUT 389."""
 from __future__ import annotations
 
+from bisect import bisect_right
+
 from ..api import Checker
-def _sample_after(rows: list[dict[str, float]], t: float, delay: float = 5e-9) -> dict[str, float]:
-    target = t + delay
-    return min(rows, key=lambda row: abs(row["time"] - target))
+
+
+def _v4_row_at_or_before(
+    rows: list[dict[str, float]], times: list[float], target: float
+) -> dict[str, float] | None:
+    index = bisect_right(times, target) - 1
+    return rows[index] if index >= 0 else None
 
 def _v4_missing_columns(rows: list[dict[str, float]], required: set[str]) -> str | None:
     if not rows:
@@ -35,11 +41,12 @@ def _v4_settled_sparse_samples(
     tol: float = 0.02,
 ) -> list[dict[str, float]]:
     samples: list[dict[str, float]] = []
+    times = [float(row["time"]) for row in rows]
     for row in _v4_sparse_samples(rows, count=count):
-        prior = _sample_after(rows, row["time"], -settle_s)
-        if prior["time"] >= row["time"]:
+        prior = _v4_row_at_or_before(rows, times, float(row["time"]) - settle_s)
+        if prior is None or float(prior["time"]) >= float(row["time"]):
             continue
-        if all(abs(row[name] - prior[name]) <= tol for name in watched):
+        if all(abs(float(row[name]) - float(prior[name])) <= tol for name in watched):
             samples.append(row)
     return samples
 
