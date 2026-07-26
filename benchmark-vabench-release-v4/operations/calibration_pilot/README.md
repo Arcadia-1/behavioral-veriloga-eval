@@ -101,9 +101,9 @@ benchmark-vabench-release-v4/public-agent-runtime/verify.sh
 
 `auto` selects Docker. Formal results require the matched images built from the
 repository's top-level `environment/`: `vabench-agent-runtime:0.8.5` and
-`vabench-agent-runtime:0.8.5-no-evas`. `sandbox-exec`, Bubblewrap, and `none`
-remain legacy/test sensitivity paths and are not paper-valid. Record the Git
-commit, image references, and observed image IDs by experimental arm with every
+`vabench-agent-runtime:0.8.5-no-evas`. Other sandbox backends remain
+legacy/test sensitivity paths and are not paper-valid. Record the Git commit,
+image references, and observed image IDs by experimental arm with every
 campaign.
 
 G2--G5 use `mini-swe-agent==2.4.5` with its `DefaultAgent` controller and one
