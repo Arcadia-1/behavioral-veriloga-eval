@@ -638,6 +638,194 @@ def test_testbench_audit_preserves_checker_timeout_stage_in_aggregate(
     } == {"checker_timeout"}
 
 
+def test_testbench_audit_rejects_spectre_no_ground_run_before_checker(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+    release_task = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "release"
+        / "benchmarkv4-r52"
+        / "tasks"
+        / "501-bang-bang-phase-detector-testbench"
+    )
+    runtime = tmp_path / "v4-501-G2-r00-agentic"
+    shutil.copytree(release_task / "evaluator", runtime / "evaluator")
+    shutil.copy2(
+        release_task / "task_record.json",
+        runtime / "evaluator" / "task_record.json",
+    )
+    submission = runtime / "evidence" / "final_submission"
+    submission.mkdir(parents=True)
+    candidate_text = (
+        release_task / "evaluator" / "reference_tb.scs"
+    ).read_text(encoding="utf-8")
+    (submission / "testbench.scs").write_text(
+        candidate_text.replace(" 0)", " vss)"),
+        encoding="utf-8",
+    )
+
+    checker_calls = 0
+
+    def fake_simulate_case(**kwargs):
+        output_dir = kwargs["output_dir"]
+        output_dir.mkdir(parents=True)
+        required = sorted(kwargs["required_signals"])
+        (output_dir / "tran_spectre.csv").write_text(
+            ",".join(["time", *required])
+            + "\n"
+            + ",".join(["0", *(["0"] * len(required))])
+            + "\n",
+            encoding="utf-8",
+        )
+        warning = (
+            "WARNING (SPECTRE-470): No ground node was found in the netlist. "
+            "To continue with this simulation, Spectre will add a gmin."
+        )
+        (output_dir / "spectre.out").write_text(warning + "\n", encoding="utf-8")
+        return {
+            "ok": True,
+            "status": "success",
+            "errors": [],
+            "warnings": [],
+            "signals": ["time", *required],
+            "rows": 1,
+            "spectre_backend": "sui-direct",
+            "spectre_mode": "ax",
+            "stdout_tail": warning,
+        }
+
+    def fake_evaluate(*_args, **_kwargs):
+        nonlocal checker_calls
+        checker_calls += 1
+        return 1.0, ["must not be evaluated"]
+
+    result = audit.audit_cell(
+        runtime=runtime,
+        score_row={
+            "cell_id": runtime.name,
+            "family_id": "001",
+            "form": "testbench",
+            "mode": "G2",
+            "experimental_arm": "Agentic",
+            "outcome": "behavior_failure",
+        },
+        submission_tree_sha256="frozen-tree",
+        cell_output=tmp_path / "audit-testbench-no-ground",
+        config=audit.SpectreConfig(timeout_s=600),
+        simulate_case=fake_simulate_case,
+        behavior_evaluator=fake_evaluate,
+    )
+
+    assert checker_calls == 0
+    assert result["outcome"] == "runtime_failure"
+    assert result["failure_taxonomy"]["primary_class"] == "runtime"
+    assert result["failure_taxonomy"]["responsibility"] == "candidate"
+    assert result["cases"][0]["outcome"] == "invalid_run"
+    assert result["cases"][0]["failure_kind"] == "floating_source_reference"
+
+
+def test_testbench_case_reclassifies_cached_spectre_no_ground_run(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+    output_dir = tmp_path / "reference"
+    warning = (
+        "WARNING (SPECTRE-470): No ground node was found in the netlist. "
+        "Spectre will add a gmin."
+    )
+    write_json(
+        output_dir / "case_audit_result.json",
+        {
+            "case_cache_schema_version": "vabench-spectre-case-cache-v1",
+            "case_id": "reference",
+            "role": "reference",
+            "outcome": "reference_fail",
+            "responsibility": "candidate",
+            "failure_kind": None,
+            "behavior_score": 0.0,
+            "behavior_notes": ["reference: checked=0"],
+            "spectre": {
+                "ok": True,
+                "status": "success",
+                "stdout_tail": warning,
+            },
+        },
+    )
+    tb_source = tmp_path / "candidate.scs"
+    tb_source.write_text(
+        "simulator lang=spectre\n"
+        "global 0\n"
+        "Vclk (clk vss) vsource dc=0.9\n"
+        "Ven (enable vss) vsource dc=0.4\n",
+        encoding="utf-8",
+    )
+
+    case, oracle = audit._testbench_case(
+        runtime=tmp_path / "unused-runtime",
+        cell_id="v4-832-G2-r00-agentic",
+        tb_source=tb_source,
+        source_eval=tmp_path / "unused-evaluator",
+        public_contract={},
+        target_artifacts=[],
+        negative_bundle=None,
+        checker_task_id="v4_332_polyphase_iq_balance_monitor",
+        required_signals=set(),
+        case_id="reference",
+        output_dir=output_dir,
+        config=audit.SpectreConfig(timeout_s=600),
+        simulate_case=lambda **_kwargs: pytest.fail("cached case was rerun"),
+        behavior_evaluator=lambda *_args, **_kwargs: pytest.fail(
+            "cached no-ground trace reached checker"
+        ),
+    )
+
+    assert case["resumed_case"] is True
+    assert case["outcome"] == "invalid_run"
+    assert case["responsibility"] == "candidate"
+    assert case["failure_kind"] == "floating_source_reference"
+    assert oracle.outcome == audit.CaseOutcome.INVALID_RUN
+
+
+def test_spectre_no_ground_warning_does_not_reclassify_grounded_source_graph(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+    tb_source = tmp_path / "grounded.scs"
+    tb_source.write_text(
+        "simulator lang=spectre\n"
+        "global 0\n"
+        "V0 (gnd 0) vsource dc=0\n"
+        "Vclk (clk gnd) vsource dc=0.9\n",
+        encoding="utf-8",
+    )
+    warning = {
+        "stdout_tail": (
+            "WARNING (SPECTRE-470): No ground node was found in the netlist"
+        )
+    }
+
+    assert not audit._spectre_added_ground_gmin(warning, tb_source)
+
+    global_ground = tmp_path / "global-ground.scs"
+    global_ground.write_text(
+        "simulator lang=spectre\n"
+        "global (gnd)\n"
+        "Vclk (clk gnd) vsource dc=0.9\n",
+        encoding="utf-8",
+    )
+    assert not audit._spectre_added_ground_gmin(warning, global_ground)
+
+    output_only = tmp_path / "output-only.scs"
+    output_only.write_text(
+        "simulator lang=spectre\n"
+        "XDUT (out) output_driver\n",
+        encoding="utf-8",
+    )
+    assert not audit._spectre_added_ground_gmin(warning, output_only)
+
+
 def test_run_audit_resumes_a_matching_sidecar_result_without_rerunning_cell(
     tmp_path: Path,
 ) -> None:

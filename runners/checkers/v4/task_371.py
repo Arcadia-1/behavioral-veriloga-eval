@@ -1,8 +1,11 @@
 """Task-specific checker for canonical v4 DUT 371."""
 from __future__ import annotations
 
-from ..api import Checker
+from collections.abc import Iterable
 from dataclasses import dataclass
+
+from ..api import Checker
+from .stimulus_relative import interpolate_crossing
 
 VDD = 0.9
 VSS = 0.0
@@ -60,17 +63,16 @@ def _clock_samples(
     if len(rows) < 2:
         return []
     rising_times: list[float] = []
-    previous = _value(rows[0], clock)
-    for row in rows[1:]:
+    for previous, row in zip(rows, rows[1:]):
+        before = _value(previous, clock)
         now = _value(row, clock)
-        if previous <= threshold < now:
-            rising_times.append(_value(row, "time"))
-        previous = now
+        if before <= threshold < now:
+            rising_times.append(interpolate_crossing(previous, row, clock, threshold))
     samples: list[dict[str, float]] = []
     cursor = 0
     for edge_time in rising_times:
         target = edge_time + settle_s
-        while cursor + 1 < len(rows) and _value(rows[cursor], "time") < target:
+        while cursor + 1 < len(rows) and _value(rows[cursor + 1], "time") <= target:
             cursor += 1
         samples.append(rows[cursor])
     return samples

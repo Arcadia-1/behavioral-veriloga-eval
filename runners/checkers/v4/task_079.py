@@ -1,6 +1,8 @@
 """Task-specific checker for canonical v4 DUT 079."""
 from __future__ import annotations
 
+from statistics import median
+
 from ..api import Checker
 from .stimulus_relative import diagnostic, pass_note, require_signals
 
@@ -22,6 +24,7 @@ def rising_edges(values: list[float], times: list[float], threshold: float = 0.4
             edges.append(times[i])
     return edges
 
+
 def weighted_logic_high_fraction(rows: list[dict[str, float]], signal: str, threshold: float) -> float:
     if len(rows) < 2:
         return 0.0
@@ -38,6 +41,68 @@ def weighted_logic_high_fraction(rows: list[dict[str, float]], signal: str, thre
         if v_mid > threshold:
             high_dt += dt
     return high_dt / total_dt
+
+
+def _normalized_phase(row: dict[str, float]) -> float | None:
+    vdd = float(row["VDD"])
+    vss = float(row["VSS"])
+    span = vdd - vss
+    if span <= 0.2:
+        return None
+    return (float(row["phase_out"]) - vss) / span
+
+
+def _infer_phase_timing(
+    rows: list[dict[str, float]],
+    wrap_indices: list[int],
+) -> tuple[float, float, float] | None:
+    normalized = [_normalized_phase(row) for row in rows]
+    positive_slopes: list[float] = []
+    for index in range(1, len(rows)):
+        before = normalized[index - 1]
+        after = normalized[index]
+        dt = float(rows[index]["time"]) - float(rows[index - 1]["time"])
+        if before is None or after is None or dt <= 0.0:
+            continue
+        phase_delta = after - before
+        if 0.0 < phase_delta < 0.25:
+            positive_slopes.append(phase_delta / dt)
+    if len(positive_slopes) < 4:
+        return None
+
+    phase_slope = median(positive_slopes)
+    if phase_slope <= 0.0:
+        return None
+    period = 1.0 / phase_slope
+
+    wrap_origins: list[float] = []
+    for index in wrap_indices:
+        phase = normalized[index]
+        if phase is None or not (-0.1 <= phase <= 0.35):
+            continue
+        sample_t = float(rows[index]["time"])
+        wrap_origins.append(sample_t - phase * period)
+    if len(wrap_origins) < 2:
+        return None
+
+    period_errors = [
+        abs((after - before) - period) / period
+        for before, after in zip(wrap_origins, wrap_origins[1:])
+    ]
+    max_period_error = max(period_errors, default=0.0)
+    if max_period_error > 0.15:
+        return None
+
+    aligned_origins = [
+        origin - ordinal * period
+        for ordinal, origin in enumerate(wrap_origins)
+    ]
+    t0 = median(aligned_origins)
+    max_origin_error = max(abs(origin - t0) / period for origin in aligned_origins)
+    if max_origin_error > 0.15:
+        return None
+    return period, t0, max(max_period_error, max_origin_error)
+
 
 def check_bound_step_period_guard(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "guard_out", "phase_out"}
@@ -66,27 +131,21 @@ def check_bound_step_period_guard(rows: list[dict[str, float]]) -> tuple[bool, s
     rail_failure = ""
     if {"VDD", "VSS"}.issubset(rows[0]):
         guard_edges = rising_edges(g, t, threshold=gth)
-        wrap_times = [
-            t[idx]
+        wrap_indices = [
+            idx
             for idx in range(1, len(p))
             if p[idx] < p[idx - 1] - 0.2
         ]
-        if len(wrap_times) >= 2:
-            wrap_periods = sorted(b - a for a, b in zip(wrap_times, wrap_times[1:]))
-            period = wrap_periods[len(wrap_periods) // 2]
-            t0 = wrap_times[0]
-        elif len(guard_edges) >= 2:
-            guard_periods = sorted(b - a for a, b in zip(guard_edges, guard_edges[1:]))
-            period = guard_periods[len(guard_periods) // 2]
-            t0 = guard_edges[0]
-        else:
+        phase_timing = _infer_phase_timing(rows, wrap_indices)
+        if phase_timing is None:
             return False, diagnostic(
                 "P_PERIODICITY",
                 "missing_event",
-                expected="phase_wraps>=2_or_guard_rises>=2",
-                observed=f"phase_wraps:{len(wrap_times)},guard_rises:{len(guard_edges)}",
+                expected="stable_positive_phase_slope_and_corrected_wrap_origins>=2",
+                observed=f"phase_wraps:{len(wrap_indices)},guard_rises:{len(guard_edges)}",
                 event="full_trace",
             )
+        period, t0, _period_error = phase_timing
         edge_guard = 0.02 * period
         guard_transition_times = [
             t[idx]

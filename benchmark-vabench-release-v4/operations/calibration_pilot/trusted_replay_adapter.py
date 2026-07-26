@@ -108,6 +108,7 @@ def classify_dut_result(returncode: int, output: str) -> dict[str, Any]:
         "SCORE_PREFLIGHT_FAIL" in output
         or "SCORE_NO_COMPILE_MARKER" in output
         or "Failed to compile Verilog-A" in output
+        or "ERROR [rust_lowering]:" in output
         or ("SCORE_EVAS_FAIL" in output and "Parse error" in output)
     ):
         return {

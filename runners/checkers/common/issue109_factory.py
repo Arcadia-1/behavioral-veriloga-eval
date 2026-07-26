@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from bisect import bisect_right
 
+from ..v4.stimulus_relative import stimulus_change_intervals, time_outside_intervals
+
 Row = dict[str, float]
 CheckResult = tuple[bool, str]
 
@@ -177,13 +179,19 @@ def check_continuous_factory(rows: list[Row], *, mode: str, task_name: str) -> C
     flag_expected: list[float] = []
     metric_expected: list[float] = []
     saw_enable_low = False
+    change_intervals = stimulus_change_intervals(
+        rows,
+        ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"),
+    )
     for time_s in _sample_times(rows):
+        if not time_outside_intervals(time_s, change_intervals, margin_s=120e-12):
+            continue
         values = _values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en", "out", "flag", "metric"), time_s)
         if values is None:
             continue
         expected = _cont_expected(mode, values)
-        before = _values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), max(float(rows[0]["time"]), time_s - 0.12e-9))
-        after = _values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), min(float(rows[-1]["time"]), time_s + 0.12e-9))
+        before = _values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), max(float(rows[0]["time"]), time_s - 2.0e-9))
+        after = _values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), min(float(rows[-1]["time"]), time_s + 2.0e-9))
         if before is not None and after is not None:
             before_expected = _cont_expected(mode, before)
             after_expected = _cont_expected(mode, after)

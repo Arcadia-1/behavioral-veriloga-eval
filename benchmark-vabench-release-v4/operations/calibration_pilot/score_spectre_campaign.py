@@ -307,6 +307,134 @@ def _spectre_failure_kind(result: dict[str, Any]) -> str:
     return "runtime"
 
 
+def _candidate_has_ungrounded_voltage_source_component(tb_path: Path) -> bool:
+    """Return whether a candidate vsource graph has no path to ground."""
+
+    try:
+        lines = tb_path.read_text(encoding="utf-8", errors="replace").splitlines()
+    except OSError:
+        return False
+
+    ground_nodes = {"0"}
+    edges: list[tuple[str, str]] = []
+    for raw_line in lines:
+        line = raw_line.split("//", 1)[0].strip()
+        if not line:
+            continue
+        global_match = re.match(
+            r"(?i)^global\s+(?:\(\s*)?([^()\s]+)",
+            line,
+        )
+        if global_match is not None:
+            ground_nodes.add(global_match.group(1))
+        if re.search(r"(?i)\bvsource\b", line) is None:
+            continue
+        terminals = re.search(r"\(([^()]*)\)", line)
+        if terminals is not None:
+            nodes = terminals.group(1).split()
+            if len(nodes) >= 2:
+                edges.append((nodes[0], nodes[1]))
+            continue
+        tokens = line.split()
+        primitive_indexes = [
+            index
+            for index, token in enumerate(tokens)
+            if token.lower() == "vsource"
+        ]
+        if primitive_indexes and primitive_indexes[-1] >= 3:
+            index = primitive_indexes[-1]
+            edges.append((tokens[index - 2], tokens[index - 1]))
+
+    if not edges:
+        return False
+
+    parent: dict[str, str] = {}
+
+    def find(node: str) -> str:
+        parent.setdefault(node, node)
+        while parent[node] != node:
+            parent[node] = parent[parent[node]]
+            node = parent[node]
+        return node
+
+    def union(left: str, right: str) -> None:
+        left_root = find(left)
+        right_root = find(right)
+        if left_root != right_root:
+            parent[right_root] = left_root
+
+    for left, right in edges:
+        union(left, right)
+    grounded_roots = {
+        find(node)
+        for node in ground_nodes
+        if node in parent
+    }
+    return any(find(left) not in grounded_roots for left, _right in edges)
+
+
+def _spectre_added_ground_gmin(
+    result: dict[str, Any],
+    tb_path: Path,
+    output_dir: Path | None = None,
+) -> bool:
+    """Detect Spectre's fallback on an actually ungrounded source graph."""
+
+    sources = [
+        *(str(item) for item in result.get("errors") or []),
+        *(str(item) for item in result.get("warnings") or []),
+        str(result.get("stdout_tail") or ""),
+    ]
+    if output_dir is not None:
+        spectre_log = output_dir / "spectre.out"
+        if spectre_log.is_file():
+            sources.append(
+                spectre_log.read_text(
+                    encoding="utf-8",
+                    errors="replace",
+                )
+            )
+    text = "\n".join(sources).lower()
+    warning_present = (
+        "spectre-470" in text
+        and "no ground node was found in the netlist" in text
+    )
+    return (
+        warning_present
+        and _candidate_has_ungrounded_voltage_source_component(tb_path)
+    )
+
+
+def _no_ground_case(
+    case_id: str,
+    role: str,
+    spectre: dict[str, Any],
+) -> tuple[dict[str, Any], CaseResult]:
+    notes = [
+        (
+            f"{case_id}: invalid candidate testbench source topology; "
+            "Spectre added gmin because the netlist has no ground node"
+        ),
+        "WARNING (SPECTRE-470): No ground node was found in the netlist",
+    ]
+    case = {
+        "case_id": case_id,
+        "role": role,
+        "outcome": "invalid_run",
+        "responsibility": "candidate",
+        "failure_kind": "floating_source_reference",
+        "behavior_score": None,
+        "behavior_notes": notes,
+        "spectre": spectre,
+    }
+    return case, CaseResult(
+        case_id,
+        role,
+        CaseOutcome.INVALID_RUN,
+        tuple(notes),
+    )
+
+
 def _spectre_failure_notes(
     case_id: str,
     result: dict[str, Any],
@@ -435,13 +563,29 @@ def _testbench_case(
     if case_result_path.is_file():
         try:
             cached = read_json(case_result_path)
-            cached_outcome = CaseOutcome(str(cached["outcome"]))
             if (
                 cached.get("case_cache_schema_version")
                 == "vabench-spectre-case-cache-v1"
                 and cached.get("case_id") == case_id
                 and cached.get("role") == role
             ):
+                if _spectre_added_ground_gmin(
+                    cached.get("spectre") or {},
+                    tb_source,
+                    output_dir,
+                ):
+                    normalized, oracle = _no_ground_case(
+                        case_id,
+                        role,
+                        cached.get("spectre") or {},
+                    )
+                    cached.update(normalized)
+                    cached["case_cache_schema_version"] = (
+                        "vabench-spectre-case-cache-v1"
+                    )
+                    cached["resumed_case"] = True
+                    return cached, oracle
+                cached_outcome = CaseOutcome(str(cached["outcome"]))
                 cached["resumed_case"] = True
                 notes = tuple(
                     str(note) for note in cached.get("behavior_notes") or []
@@ -528,6 +672,9 @@ def _testbench_case(
             )
 
         compact = _compact_spectre_result(spectre, output_dir)
+        if _spectre_added_ground_gmin(compact, tb_dst, output_dir):
+            case, oracle = _no_ground_case(case_id, role, compact)
+            return finish(case, oracle)
         if not spectre.get("ok"):
             kind = _spectre_failure_kind(spectre)
             notes = _spectre_failure_notes(

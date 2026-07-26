@@ -128,6 +128,55 @@ def rows_in_interval(rows: list[Row], start: float, stop: float) -> list[Row]:
     return [row for row in rows if start <= row["time"] <= stop]
 
 
+def stimulus_change_intervals(
+    rows: list[Row],
+    signals: Iterable[str],
+    *,
+    tolerance: float = 1e-9,
+    min_slope: float = 5.0e8,
+) -> list[Interval]:
+    """Return time intervals where public stimulus values are actively changing."""
+
+    signal_tuple = tuple(signals)
+    intervals: list[Interval] = []
+    for left, right in zip(rows, rows[1:]):
+        start = float(left["time"])
+        stop = float(right["time"])
+        if stop <= start:
+            continue
+        if any(
+            signal in left
+            and signal in right
+            and (
+                delta := abs(float(right[signal]) - float(left[signal]))
+            ) > tolerance
+            and delta / (stop - start) >= min_slope
+            for signal in signal_tuple
+        ):
+            intervals.append((start, stop))
+    return merge_intervals(intervals)
+
+
+def merge_intervals(intervals: Iterable[Interval], *, gap_tolerance: float = 0.0) -> list[Interval]:
+    ordered = sorted((float(start), float(stop)) for start, stop in intervals if stop >= start)
+    if not ordered:
+        return []
+    merged: list[Interval] = []
+    current_start, current_stop = ordered[0]
+    for start, stop in ordered[1:]:
+        if start <= current_stop + gap_tolerance:
+            current_stop = max(current_stop, stop)
+            continue
+        merged.append((current_start, current_stop))
+        current_start, current_stop = start, stop
+    merged.append((current_start, current_stop))
+    return merged
+
+
+def time_outside_intervals(time_s: float, intervals: Iterable[Interval], *, margin_s: float = 0.0) -> bool:
+    return all(time_s < start - margin_s or time_s > stop + margin_s for start, stop in intervals)
+
+
 def mean_in_interval(rows: list[Row], signal: str, interval: Interval) -> float | None:
     return mean_signal(rows_in_interval(rows, interval[0], interval[1]), signal)
 

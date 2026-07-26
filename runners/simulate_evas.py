@@ -532,6 +532,84 @@ def _encode_required_trace_signals(signals: set[str] | frozenset[str] | list[str
     return ",".join(sorted(ordered))
 
 
+def _format_spectre_seconds(seconds: float) -> str:
+    if seconds <= 0.0:
+        raise ValueError(f"invalid maxstep seconds={seconds!r}")
+    units = (
+        ("f", 1e-15),
+        ("p", 1e-12),
+        ("n", 1e-9),
+        ("u", 1e-6),
+        ("m", 1e-3),
+    )
+    for suffix, scale in units:
+        value = seconds / scale
+        if 1.0 <= value < 1000.0 and abs(value - round(value)) < 1e-9:
+            return f"{int(round(value))}{suffix}"
+    return f"{seconds:.12g}"
+
+
+def _spectre_time_to_seconds(token: str) -> float | None:
+    match = re.fullmatch(r"\s*([0-9.+-eE]+)\s*([fpnum]?s?|)\s*", token)
+    if not match:
+        return None
+    value = float(match.group(1))
+    unit = match.group(2).lower()
+    scale = {
+        "f": 1e-15,
+        "fs": 1e-15,
+        "p": 1e-12,
+        "ps": 1e-12,
+        "n": 1e-9,
+        "ns": 1e-9,
+        "u": 1e-6,
+        "us": 1e-6,
+        "m": 1e-3,
+        "ms": 1e-3,
+        "s": 1.0,
+        "": 1.0,
+    }.get(unit)
+    if scale is None:
+        return None
+    return value * scale
+
+
+def apply_required_trace_maxstep(tb_file: Path, maxstep_s: float | None) -> bool:
+    """Apply a checker-declared trace-density contract to a staged Spectre deck."""
+
+    if maxstep_s is None or maxstep_s <= 0.0 or not tb_file.exists():
+        return False
+    text = tb_file.read_text(encoding="utf-8")
+    replacement = f"maxstep={_format_spectre_seconds(maxstep_s)}"
+    changed = False
+    lines: list[str] = []
+    for line in text.splitlines(keepends=True):
+        line_body = line[:-1] if line.endswith("\n") else line
+        newline = "\n" if line.endswith("\n") else ""
+        stripped = line_body.strip()
+        if not stripped.lower().startswith("tran ") or stripped.startswith(("//", "*")):
+            lines.append(line)
+            continue
+        maxstep_match = re.search(r"\bmaxstep\s*=\s*([^\s]+)", line_body, flags=re.IGNORECASE)
+        if maxstep_match:
+            existing_s = _spectre_time_to_seconds(maxstep_match.group(1))
+            if existing_s is not None and existing_s <= maxstep_s:
+                lines.append(line)
+                continue
+            line_body = (
+                line_body[: maxstep_match.start()]
+                + replacement
+                + line_body[maxstep_match.end() :]
+            )
+        else:
+            line_body = f"{line_body.rstrip()} {replacement}"
+        lines.append(line_body + newline)
+        changed = True
+    if changed:
+        tb_file.write_text("".join(lines), encoding="utf-8")
+    return changed
+
+
 class _PersistentEvasWorker:
     def __init__(self) -> None:
         self.cmd = [evas_module_python(), str(Path(__file__).resolve()), "--evas-worker"]
@@ -587,6 +665,7 @@ class _PersistentEvasWorker:
         output_dir: Path,
         timeout_s: int,
         required_trace_signals: set[str] | frozenset[str] | list[str] | tuple[str, ...] | None = None,
+        required_trace_maxstep_s: float | None = None,
     ) -> subprocess.CompletedProcess[str]:
         if self.proc.stdin is None or not self.is_alive():
             return subprocess.CompletedProcess(
@@ -600,6 +679,7 @@ class _PersistentEvasWorker:
             "tb_file": tb_file.name,
             "output_dir": str(output_dir),
             "required_trace_signals": _encode_required_trace_signals(required_trace_signals),
+            "required_trace_maxstep_s": required_trace_maxstep_s or 0.0,
         }
         with self._lock:
             try:
@@ -683,6 +763,7 @@ def run_evas(
     output_dir: Path,
     timeout_s: int,
     required_trace_signals: set[str] | frozenset[str] | list[str] | tuple[str, ...] | None = None,
+    required_trace_maxstep_s: float | None = None,
 ) -> subprocess.CompletedProcess[str]:
     if _persistent_worker_enabled():
         return _persistent_evas_worker().run(
@@ -691,10 +772,12 @@ def run_evas(
             output_dir,
             timeout_s,
             required_trace_signals=required_trace_signals,
+            required_trace_maxstep_s=required_trace_maxstep_s,
         )
     base_cmd, env = evas_command_and_env()
     cmd = [*base_cmd, "simulate", tb_file.name, "-o", str(output_dir)]
     required_trace_value = _encode_required_trace_signals(required_trace_signals)
+    apply_required_trace_maxstep(tb_file, required_trace_maxstep_s)
     env = _with_default_evas_engine(env)
     env["EVAS_SIDE_EFFECT_OUTPUT_DIR"] = str(output_dir)
     if required_trace_value:
@@ -3739,6 +3822,26 @@ def required_trace_signals_for_checker(task_id: str) -> frozenset[str]:
     return signals
 
 
+def required_trace_maxstep_for_checker(task_id: str) -> float | None:
+    """Return checker-declared Spectre transient maxstep needed for coverage density."""
+    if not _trace_contracts_enabled():
+        return None
+    checker = resolve_row_behavior_checker(task_id)
+    if checker is None:
+        return None
+    source_checker = inspect.unwrap(checker)
+    value = source_checker.__globals__.get("REQUIRED_TRACE_MAXSTEP_S")
+    if value is None:
+        return None
+    try:
+        maxstep_s = float(value)
+    except (TypeError, ValueError):
+        return None
+    if not math.isfinite(maxstep_s) or maxstep_s <= 0.0:
+        return None
+    return maxstep_s
+
+
 def _env_enabled(name: str) -> bool:
     return os.environ.get(name, "").strip().lower() in {"1", "true", "yes", "on"}
 
@@ -3779,6 +3882,7 @@ def behavior_checker_policy(task_id: str, notes: list[str] | None = None) -> dic
     streaming_used = any(note.startswith("streaming_checker:") for note in notes)
     trace_contract_kind = required_trace_contract_kind_for_checker(task_id)
     trace_contract_signals = required_trace_signals_for_checker(task_id)
+    required_trace_maxstep_s = required_trace_maxstep_for_checker(task_id)
     extra_trace_signals = _extra_trace_signals_for_checker(task_id) if trace_contract_signals else frozenset()
     forced = _env_enabled("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS")
     disabled = _env_enabled("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS")
@@ -3804,6 +3908,7 @@ def behavior_checker_policy(task_id: str, notes: list[str] | None = None) -> dic
         "streaming_disabled": disabled,
         "trace_contract_kind": trace_contract_kind,
         "trace_contract_signal_count": len(trace_contract_signals - {"time"}),
+        "required_trace_maxstep_s": required_trace_maxstep_s or 0.0,
         "extra_trace_signal_count": len(extra_trace_signals - {"time"}),
     }
 
@@ -27398,6 +27503,7 @@ def run_case(
 
         trace_contract_kind = required_trace_contract_kind_for_checker(checker_task_id)
         required_trace_signals = required_trace_signals_for_checker(checker_task_id)
+        required_trace_maxstep_s = required_trace_maxstep_for_checker(checker_task_id)
         extra_trace_signals = (
             _extra_trace_signals_for_checker(checker_task_id)
             if required_trace_signals
@@ -27406,16 +27512,15 @@ def run_case(
         extra_trace_signal_count = len(extra_trace_signals - {"time"})
         if required_trace_signals:
             timing_split["required_trace_signal_count"] = float(len(required_trace_signals - {"time"}))
+        if required_trace_maxstep_s is not None:
+            timing_split["required_trace_maxstep_s"] = required_trace_maxstep_s
         if extra_trace_signals:
             timing_split["extra_trace_signal_count"] = float(extra_trace_signal_count)
         t0 = time.perf_counter()
-        proc = run_evas(
-            run_dir,
-            tb_dst,
-            out_dir,
-            timeout_s,
-            required_trace_signals=required_trace_signals,
-        )
+        run_evas_kwargs: dict[str, object] = {"required_trace_signals": required_trace_signals}
+        if required_trace_maxstep_s is not None:
+            run_evas_kwargs["required_trace_maxstep_s"] = required_trace_maxstep_s
+        proc = run_evas(run_dir, tb_dst, out_dir, timeout_s, **run_evas_kwargs)
         timing_split["evas_subprocess_wall_s"] = time.perf_counter() - t0
         combined = (proc.stdout or "") + "\n" + (proc.stderr or "")
         evas_timing = parse_evas_timing(combined)
@@ -27429,6 +27534,8 @@ def run_case(
             notes.append(f"checker_config={v2_checks_config.get('path')}")
         if required_trace_signals:
             notes.append(f"trace_contract={trace_contract_kind}")
+        if required_trace_maxstep_s is not None:
+            notes.append(f"trace_maxstep={_format_spectre_seconds(required_trace_maxstep_s)}")
         if extra_trace_signals:
             notes.append(f"extra_trace_signals={extra_trace_signal_count}")
         if dut_compile == 0.0:
@@ -27568,6 +27675,11 @@ def _evas_worker_main() -> int:
         output_dir.mkdir(parents=True, exist_ok=True)
         log_path = output_dir / "evas.log"
         required_trace_value = str(request.get("required_trace_signals", "")).strip()
+        try:
+            requested_maxstep = float(request.get("required_trace_maxstep_s") or 0.0)
+        except (TypeError, ValueError):
+            requested_maxstep = 0.0
+        required_trace_maxstep_s = requested_maxstep if requested_maxstep > 0.0 else None
         stdout_buffer = io.StringIO()
         stderr_buffer = io.StringIO()
         old_cwd = Path.cwd()
@@ -27578,6 +27690,7 @@ def _evas_worker_main() -> int:
         try:
             os.chdir(run_dir)
             os.environ["EVAS_SIDE_EFFECT_OUTPUT_DIR"] = str(output_dir)
+            apply_required_trace_maxstep(tb_file, required_trace_maxstep_s)
             if required_trace_value:
                 os.environ["EVAS_REQUIRED_TRACE_SIGNALS"] = required_trace_value
             else:

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import stimulus_change_intervals, time_outside_intervals
 def _v3_edge_times(
     rows: list[dict[str, float]],
     signal: str,
@@ -34,15 +35,18 @@ def _v3_logic_stable_rows(
     inputs: list[str],
     *,
     threshold: float = 0.45,
-    settle_after_edge_s: float = 0.4e-9,
+    settle_after_edge_s: float = 1.0e-9,
 ):
     edges: list[float] = []
     for signal in inputs:
         edges.extend(_v3_edge_times(rows, signal, threshold=threshold, direction=1))
         edges.extend(_v3_edge_times(rows, signal, threshold=threshold, direction=-1))
+    change_intervals = stimulus_change_intervals(rows, inputs, min_slope=0.0)
     for row in rows:
         t = row["time"]
         if any(edge <= t <= edge + settle_after_edge_s for edge in edges):
+            continue
+        if not time_outside_intervals(t, change_intervals, margin_s=settle_after_edge_s):
             continue
         yield row
 

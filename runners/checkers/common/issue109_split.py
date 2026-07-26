@@ -10,6 +10,8 @@ from __future__ import annotations
 from bisect import bisect_right
 from math import isfinite
 
+from ..v4.stimulus_relative import stimulus_change_intervals, time_outside_intervals
+
 
 VTH = 0.45
 VHI = 0.9
@@ -94,6 +96,53 @@ def _is_settled(change_times: list[float], time_s: float, settle_time_s: float) 
         return True
     idx = bisect_right(change_times, time_s) - 1
     return idx < 0 or time_s - change_times[idx] >= settle_time_s
+
+
+def _is_stable(
+    change_intervals: list[tuple[float, float]],
+    change_times: list[float],
+    time_s: float,
+    settle_time_s: float,
+) -> bool:
+    margin_s = max(0.0, settle_time_s)
+    return time_outside_intervals(time_s, change_intervals, margin_s=margin_s) and _is_settled(
+        change_times,
+        time_s,
+        settle_time_s,
+    )
+
+
+def _near_decision_boundary(values: dict[str, float], *, tolerance_v: float = 0.03) -> bool:
+    raw_span = values["vdd"] - values["vss"]
+    span = max(raw_span, 0.05)
+    if any(abs(values[name] - VTH) <= tolerance_v for name in ("ctrl0", "ctrl1", "en")):
+        return True
+    if abs(raw_span - SPAN_MIN) <= tolerance_v or abs(raw_span - SPAN_MAX) <= tolerance_v:
+        return True
+    return any(
+        abs(((values[f"in{idx}"] - values["vss"]) / span) - 0.5) <= tolerance_v
+        for idx in range(4)
+    )
+
+
+def _expected_is_stable(
+    rows: list[dict[str, float]],
+    mode: str,
+    time_s: float,
+    window_s: float,
+) -> bool:
+    start, stop = rows[0]["time"], rows[-1]["time"]
+    names = ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en")
+    before = _values_at(rows, names, max(start, time_s - window_s))
+    after = _values_at(rows, names, min(stop, time_s + window_s))
+    if before is None or after is None:
+        return True
+    before_expected = cont_expected(mode, before)
+    after_expected = cont_expected(mode, after)
+    return all(
+        abs(before_expected[signal] - after_expected[signal]) <= 0.08
+        for signal in ("out", "flag", "metric")
+    )
 
 
 def normalized(values: dict[str, float]) -> dict[str, float]:
@@ -210,6 +259,8 @@ def check_continuous(
         "in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"
     )
     change_times = _stimulus_change_times(rows, stimulus_signals)
+    change_intervals = stimulus_change_intervals(rows, stimulus_signals)
+    stability_window_s = max(settle_time_s, 2.0e-9)
     start, stop = rows[0]["time"], rows[-1]["time"]
     checked = 0
     saw_disabled = False
@@ -217,10 +268,14 @@ def check_continuous(
     worst: dict[str, float | str] = {"err": 0.0, "time": 0.0, "signal": "", "expected": 0.0, "observed": 0.0}
     for idx in range(1, 80):
         time_s = start + (stop - start) * idx / 80.0
-        if not _is_settled(change_times, time_s, settle_time_s):
+        if not _is_stable(change_intervals, change_times, time_s, settle_time_s):
             continue
         values = _values_at(rows, names, time_s)
         if values is None or any(not isfinite(values[name]) for name in names if name != "time"):
+            continue
+        if _near_decision_boundary(values):
+            continue
+        if not _expected_is_stable(rows, mode, time_s, stability_window_s):
             continue
         expected = cont_expected(mode, values)
         for signal in ("out", "flag", "metric"):

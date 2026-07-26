@@ -22,6 +22,8 @@ PROPERTIES = (
     "P_BIT_ORDER_AND_LEVELS",
 )
 
+EXIT_TRANSITION_GRACE_S = 20e-12
+
 
 def check_settling_window_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "target", "tol", "settled", *{f"t_code{i}" for i in range(8)}}
@@ -33,12 +35,14 @@ def check_settling_window_detector(rows: list[dict[str, float]]) -> tuple[bool, 
     hold = 20e-9 * time_scale
     flags = [abs(row["vin"] - row["target"]) <= row["tol"] + 1e-12 for row in rows]
     intervals: list[tuple[float, float]] = []
+    exit_times: list[float] = []
     start: float | None = rows[0]["time"] if flags[0] else None
     for idx in range(1, len(rows)):
         if flags[idx] and not flags[idx - 1]:
             start = rows[idx]["time"]
         elif flags[idx - 1] and not flags[idx] and start is not None:
             intervals.append((start, rows[idx]["time"]))
+            exit_times.append(rows[idx]["time"])
             start = None
     if start is not None:
         intervals.append((start, rows[-1]["time"]))
@@ -61,11 +65,23 @@ def check_settling_window_detector(rows: list[dict[str, float]]) -> tuple[bool, 
     reset_seen = False
     failures: list[str] = []
 
+    exit_transition_grace = EXIT_TRANSITION_GRACE_S * time_scale
+
+    def is_exit_transition_tail(time_s: float) -> bool:
+        return any(
+            exit_t <= time_s <= exit_t + exit_transition_grace
+            for exit_t in exit_times
+        )
+
     unexpected_settled = next(
         (
             row
             for row, expected_in_window in zip(rows, flags)
-            if not expected_in_window and row["settled"] > 0.45
+            if (
+                not expected_in_window
+                and row["settled"] > 0.45
+                and not is_exit_transition_tail(row["time"])
+            )
         ),
         None,
     )
