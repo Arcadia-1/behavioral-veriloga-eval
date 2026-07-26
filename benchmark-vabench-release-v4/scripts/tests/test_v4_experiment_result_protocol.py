@@ -30,6 +30,27 @@ ADAPTER = load_module(
 )
 
 
+@pytest.mark.parametrize("task_dir", ["/tmp/outside-release", "../outside-release"])
+def test_trusted_replay_rejects_task_paths_outside_release(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    task_dir: str,
+) -> None:
+    release = tmp_path / "release"
+    release.mkdir()
+    monkeypatch.setenv("VABENCH_RELEASE_DIR", str(release))
+
+    with pytest.raises(ValueError, match="unsafe task_dir"):
+        ADAPTER.resolve_release_task(
+            tmp_path / "runtime",
+            {
+                "task_id": "v4-001",
+                "task_dir": task_dir,
+                "public_contract_sha256": "",
+            },
+        )
+
+
 def runtime_with_submission(tmp_path: Path) -> Path:
     runtime = tmp_path / "runtime"
     (runtime / "evaluator").mkdir(parents=True)

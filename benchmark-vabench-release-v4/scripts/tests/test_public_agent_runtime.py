@@ -46,6 +46,7 @@ class PublicAgentRuntimeTest(unittest.TestCase):
         self.assertIn("python3 -m pip uninstall -y evas-sim", dockerfile)
         self.assertIn("vabench-agent-runtime:0.8.5-no-evas", build)
         self.assertIn("--build-arg VABENCH_EXECUTABLE_FEEDBACK=0", build)
+        self.assertEqual(build.count("--pull"), 2)
         self.assertIn("vabench-agent-runtime:0.8.5-no-evas", verify)
         self.assertIn("! command -v evas >/dev/null", verify)
         self.assertIn('find_spec("evas") is None', verify)

@@ -39,9 +39,14 @@ def resolve_release_task(runtime: Path, record: dict[str, Any]) -> Path:
     candidates.append(PACKAGE / "release" / "benchmarkv4")
 
     relative = Path(str(record["task_dir"]))
+    if not relative.parts or relative.is_absolute() or ".." in relative.parts:
+        raise ValueError(f"unsafe task_dir: {record['task_dir']!r}")
     expected_contract_sha = str(record.get("public_contract_sha256") or "")
     for release in candidates:
-        task = release.resolve() / relative
+        release = release.resolve()
+        task = (release / relative).resolve()
+        if not task.is_relative_to(release):
+            continue
         contract = task / "public_contract.json"
         if not contract.is_file():
             continue

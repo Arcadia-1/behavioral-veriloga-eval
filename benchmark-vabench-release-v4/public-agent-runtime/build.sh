@@ -18,6 +18,7 @@ DOCKER="${DOCKER:-docker}"
 
 "$DOCKER" buildx build \
     --platform "$PLATFORM" \
+    --pull \
     --build-arg VABENCH_EXECUTABLE_FEEDBACK=0 \
     --load \
     --tag "$NO_EVAS_IMAGE_TAG" \
