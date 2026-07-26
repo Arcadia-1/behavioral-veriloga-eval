@@ -72,7 +72,7 @@ MAX_SPECTRE_WORKERS = 48
 
 @dataclass(frozen=True)
 class SpectreConfig:
-    backend: str = "sui-direct"
+    backend: str = "bridge"
     mode: str = "ax"
     timeout_s: int = 600
     runtime_id: str = DEFAULT_SPECTRE_RUNTIME_ID
@@ -1231,6 +1231,24 @@ def _cell_input_signature(
     record = read_json(runtime / "evaluator" / "task_record.json")
     release_task = resolve_release_task(runtime, record)
     row = item["score_row"]
+    backend = normalize_spectre_backend(config.backend)
+    execution_environment = {
+        "host": (
+            config.sui_host
+            if config.sui_host is not None
+            else default_remote_host(backend)
+        ),
+        "work_root": (
+            config.sui_work_root
+            if config.sui_work_root is not None
+            else default_remote_work_root(backend)
+        ),
+        "cadence_cshrc": (
+            config.cadence_cshrc
+            if config.cadence_cshrc is not None
+            else default_remote_cadence_cshrc(backend)
+        ),
+    }
     signature = {
         "schema_version": "vabench-spectre-cell-input-signature-v1",
         "audit_schema_version": SCHEMA_VERSION,
@@ -1254,10 +1272,13 @@ def _cell_input_signature(
             release_task / "public_contract.json"
         ),
         "spectre_run_config": {
-            "backend": normalize_spectre_backend(config.backend),
+            "backend": backend,
             "mode": normalize_spectre_mode(config.mode),
             "timeout_s": config.timeout_s,
             "runtime_id": config.runtime_id,
+            "execution_environment_sha256": canonical_sha256(
+                execution_environment
+            ),
         },
     }
     return signature, canonical_sha256(signature)
@@ -1458,7 +1479,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--cell-id", action="append", default=[])
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--timeout-s", type=int, default=600)
-    parser.add_argument("--spectre-backend", default="sui-direct")
+    parser.add_argument(
+        "--spectre-backend",
+        required=True,
+        help="explicit Spectre transport backend (bridge, labctl, or sui-direct)",
+    )
     parser.add_argument("--spectre-mode", default="ax")
     parser.add_argument(
         "--spectre-runtime-id",

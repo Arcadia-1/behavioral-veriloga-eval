@@ -719,6 +719,89 @@ def test_run_audit_resumes_a_matching_sidecar_result_without_rerunning_cell(
     assert json.loads(output.read_text(encoding="utf-8")) == second
 
 
+def test_resume_signature_changes_with_spectre_execution_environment(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+    release_task = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "release"
+        / "benchmarkv4-r52"
+        / "tasks"
+        / "501-bang-bang-phase-detector-testbench"
+    )
+    runtime = tmp_path / "campaign" / "v4-501-G0-r00-oneshot"
+    shutil.copytree(release_task / "evaluator", runtime / "evaluator")
+    shutil.copy2(
+        release_task / "task_record.json",
+        runtime / "evaluator" / "task_record.json",
+    )
+    item = {
+        "cell_id": runtime.name,
+        "runtime": runtime,
+        "submission_tree_sha256": "frozen-tree",
+        "score_row": {
+            "cell_id": runtime.name,
+            "family_id": "001",
+            "form": "testbench",
+            "mode": "G0",
+            "experimental_arm": "OneShot",
+            "outcome": "runtime_failure",
+        },
+    }
+    baseline = audit.SpectreConfig(
+        backend="sui-direct",
+        timeout_s=10,
+        sui_host="spectre-a",
+        sui_work_root="/tmp/spectre-a",
+        cadence_cshrc="/opt/cadence/a.cshrc",
+    )
+    _, baseline_sha = audit._cell_input_signature(item, baseline)
+
+    for override in (
+        {"sui_host": "spectre-b"},
+        {"sui_work_root": "/tmp/spectre-b"},
+        {"cadence_cshrc": "/opt/cadence/b.cshrc"},
+    ):
+        changed = audit.SpectreConfig(
+            backend="sui-direct",
+            timeout_s=10,
+            sui_host=override.get("sui_host", baseline.sui_host),
+            sui_work_root=override.get(
+                "sui_work_root", baseline.sui_work_root
+            ),
+            cadence_cshrc=override.get(
+                "cadence_cshrc", baseline.cadence_cshrc
+            ),
+        )
+        _, changed_sha = audit._cell_input_signature(item, changed)
+        assert changed_sha != baseline_sha
+
+
+def test_cli_requires_explicit_spectre_backend(tmp_path: Path) -> None:
+    audit = load_audit()
+
+    with pytest.raises(SystemExit) as exc_info:
+        audit.main(
+            [
+                "--score",
+                str(tmp_path / "score.json"),
+                "--campaign-run",
+                str(tmp_path / "run"),
+                "--freeze-manifest",
+                str(tmp_path / "freeze.json"),
+                "--work-root",
+                str(tmp_path / "work"),
+                "--output",
+                str(tmp_path / "output.json"),
+                "--plan-only",
+            ]
+        )
+
+    assert exc_info.value.code == 2
+
+
 def test_run_audit_allows_up_to_48_workers_for_remote_spectre_throughput(
     tmp_path: Path,
 ) -> None:
