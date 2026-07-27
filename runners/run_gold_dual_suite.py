@@ -14,8 +14,10 @@ import shutil
 import subprocess
 import tarfile
 import tempfile
+import threading
 import time
 import uuid
+from itertools import count
 from pathlib import Path, PurePosixPath
 
 from bridge_preflight import bridge_preflight, resolve_cadence_cshrc
@@ -65,6 +67,8 @@ SPECTRE_MODE_ARGS = {
 }
 AHDL_INCLUDE_LINE_RE = re.compile(r'(?m)^(\s*ahdl_include\s+")([^"]+)(".*)$')
 SPECTRE_SUPPORT_FILE_RE = re.compile(r'"([^"]+\.(?:tbl|txt|csv|dat))"', re.IGNORECASE)
+_SSH_CONTROL_PATH_COUNTER = count()
+_SSH_CONTROL_PATH_LOCK = threading.Lock()
 
 
 def normalize_spectre_backend(value: str | None) -> str:
@@ -2033,6 +2037,35 @@ def run_cmd(cmd: list[str], *, cwd: Path, env: dict[str, str] | None = None, tim
     )
 
 
+def configured_ssh_control_paths() -> tuple[str, ...]:
+    control_paths: list[str] = []
+    for raw_path in os.environ.get("VAEVAS_SSH_CONTROL_PATHS", "").split(","):
+        value = raw_path.strip()
+        if not value:
+            continue
+        if any(character in value for character in ("\x00", "\r", "\n")):
+            raise ValueError(
+                "VAEVAS_SSH_CONTROL_PATHS entries must not contain control characters"
+            )
+        path = Path(value).expanduser()
+        if not path.is_absolute():
+            raise ValueError(
+                "VAEVAS_SSH_CONTROL_PATHS entries must be absolute paths"
+            )
+        if not path.is_socket():
+            raise ValueError(
+                f"VAEVAS_SSH_CONTROL_PATHS entry is not an existing Unix socket: {path}"
+            )
+        control_paths.append(str(path))
+    return tuple(control_paths)
+
+
+def next_ssh_control_path(control_paths: tuple[str, ...]) -> str:
+    with _SSH_CONTROL_PATH_LOCK:
+        index = next(_SSH_CONTROL_PATH_COUNTER)
+    return control_paths[index % len(control_paths)]
+
+
 def ssh_base_cmd(host: str, timeout_s: int) -> list[str]:
     connect_timeout = max(1, min(int(timeout_s), 30))
     cmd = [
@@ -2042,7 +2075,19 @@ def ssh_base_cmd(host: str, timeout_s: int) -> list[str]:
         "-o",
         f"ConnectTimeout={connect_timeout}",
     ]
-    if os.environ.get("VAEVAS_SSH_USE_CONFIG_MULTIPLEX", "").strip() not in {"1", "true", "yes"}:
+    control_paths = configured_ssh_control_paths()
+    if control_paths:
+        cmd.extend(
+            [
+                "-o",
+                "ControlMaster=no",
+                "-S",
+                next_ssh_control_path(control_paths),
+            ]
+        )
+    elif os.environ.get(
+        "VAEVAS_SSH_USE_CONFIG_MULTIPLEX", ""
+    ).strip() not in {"1", "true", "yes"}:
         cmd.extend(["-o", "ControlMaster=no", "-o", "ControlPath=none"])
     proxy_jump = default_sui_proxy_jump()
     if proxy_jump:
