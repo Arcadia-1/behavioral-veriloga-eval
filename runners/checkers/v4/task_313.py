@@ -9,6 +9,8 @@ from ..common.v4_topup import (
     _v4_rising,
 )
 
+RESET_OUTPUT_SETTLE_S = 200e-12
+
 def check_v4_313_dynamic_comparator_kickback_metric(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, "v4_1011 empty_trace"
@@ -39,9 +41,28 @@ def check_v4_313_dynamic_comparator_kickback_metric(rows: list[dict[str, float]]
     decision_seen_since_clear = False
     saw_active = False
     previous = rows[0]
+    reset_asserted_at: float | None = (
+        float(previous["time"])
+        if _v4_topup_logic_high(previous, "rst")
+        else None
+    )
     for row in rows[1:]:
         clk_rise = (not _v4_topup_logic_high(previous, "clk")) and _v4_topup_logic_high(row, "clk")
         rst = _v4_topup_logic_high(row, "rst")
+        previous_rst = _v4_topup_logic_high(previous, "rst")
+        if rst and not previous_rst:
+            previous_value = float(previous["rst"])
+            current_value = float(row["rst"])
+            if current_value != previous_value:
+                alpha = (0.45 - previous_value) / (current_value - previous_value)
+                alpha = max(0.0, min(1.0, alpha))
+                reset_asserted_at = float(previous["time"]) + alpha * (
+                    float(row["time"]) - float(previous["time"])
+                )
+            else:
+                reset_asserted_at = float(row["time"])
+        elif not rst:
+            reset_asserted_at = None
         enabled = _v4_topup_logic_high(row, "enable")
         clear = (
             row["decision"] < 0.15
@@ -49,11 +70,16 @@ def check_v4_313_dynamic_comparator_kickback_metric(rows: list[dict[str, float]]
             and row["valid"] < 0.15
         )
         if rst:
-            if saw_active:
-                late_reset_clear = late_reset_clear or clear
-                late_reset_violation = late_reset_violation or not clear
-            else:
-                reset_clear = reset_clear or clear
+            reset_settled = (
+                reset_asserted_at is not None
+                and float(row["time"]) >= reset_asserted_at + RESET_OUTPUT_SETTLE_S
+            )
+            if reset_settled:
+                if saw_active:
+                    late_reset_clear = late_reset_clear or clear
+                    late_reset_violation = late_reset_violation or not clear
+                else:
+                    reset_clear = reset_clear or clear
             decision_seen_since_clear = False
         elif not enabled:
             if saw_active:
