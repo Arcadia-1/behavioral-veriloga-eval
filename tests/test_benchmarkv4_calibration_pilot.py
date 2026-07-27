@@ -51,6 +51,13 @@ SCORE_CAMPAIGN = (
     / "calibration_pilot"
     / "score_campaign.py"
 )
+TRUSTED_REPLAY_ADAPTER = (
+    ROOT
+    / "benchmark-vabench-release-v4"
+    / "operations"
+    / "calibration_pilot"
+    / "trusted_replay_adapter.py"
+)
 TESTBENCH_SECURITY = ROOT / "benchmark-vabench-release-v4" / "runners" / "testbench_security.py"
 DERIVED_TESTBENCH_ORACLE = (
     ROOT / "benchmark-vabench-release-v4" / "runners" / "derived_testbench_oracle.py"
@@ -121,6 +128,16 @@ def load_run_campaign():
 
 def load_score_campaign():
     spec = importlib.util.spec_from_file_location("score_campaign_test", SCORE_CAMPAIGN)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def load_trusted_replay_adapter():
+    spec = importlib.util.spec_from_file_location(
+        "trusted_replay_adapter_test", TRUSTED_REPLAY_ADAPTER
+    )
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -2116,6 +2133,61 @@ def test_resource_exhaustion_is_not_scored_as_model_zero() -> None:
     )
 
     assert outcome == "agent_resource_exhausted"
+
+
+def test_scorer_uses_six_run_outer_watchdog_for_testbench_replay() -> None:
+    scorer = load_score_campaign()
+
+    assert scorer.trusted_replay_timeout_s(
+        {"form": "testbench"}, scorer.DEFAULT_TRUSTED_REPLAY_TIMEOUT_S, 750
+    ) == 750
+
+
+@pytest.mark.parametrize("form", ["dut", "bugfix"])
+def test_scorer_keeps_single_run_timeout_for_non_testbench_forms(form: str) -> None:
+    scorer = load_score_campaign()
+
+    assert scorer.trusted_replay_timeout_s(
+        {"form": form}, scorer.DEFAULT_TRUSTED_REPLAY_TIMEOUT_S, 750
+    ) == 150
+
+
+@pytest.mark.parametrize(
+    "notes",
+    [
+        ["reference: behavior_eval_timeout>60s"],
+        ["neg_001: behavior_eval_no_result"],
+        ["neg_002: behavior_eval_error=MemoryError"],
+    ],
+)
+def test_testbench_checker_watchdog_is_infrastructure_failure(notes: list[str]) -> None:
+    adapter = load_trusted_replay_adapter()
+    reference = SimpleNamespace(outcome="invalid_run", notes=notes)
+
+    result = adapter.classify_testbench_result(reference, [], [])
+
+    assert result["status"] == "infrastructure_failure"
+    assert result["failure_taxonomy"]["responsibility"] == "system"
+    assert result["failure_taxonomy"]["retryable"] is True
+
+
+@pytest.mark.parametrize(
+    ("outcome", "expected"),
+    [
+        ("reference_pass", True),
+        ("reference_fail", False),
+        ("invalid_run", False),
+    ],
+)
+def test_testbench_mutations_run_only_after_reference_passes(
+    outcome: str,
+    expected: bool,
+) -> None:
+    adapter = load_trusted_replay_adapter()
+
+    assert adapter.reference_requires_mutation_replay(
+        SimpleNamespace(outcome=outcome)
+    ) is expected
 
 
 def test_scorer_accepts_complete_workspace_without_explicit_submit(

@@ -27203,6 +27203,7 @@ def evaluate_behavior_with_timeout(
     *,
     timeout_s: int,
     checks_config: dict[str, object] | None = None,
+    force_subprocess: bool = False,
 ) -> tuple[float, list[str]]:
     """Evaluate behavior with a watchdog separate from EVAS simulation timeout.
 
@@ -27215,7 +27216,7 @@ def evaluate_behavior_with_timeout(
     csv_size_bytes = 0
     try:
         csv_size_bytes = csv_path.stat().st_size
-        if csv_size_bytes <= direct_max_bytes:
+        if not force_subprocess and csv_size_bytes <= direct_max_bytes:
             return evaluate_behavior(task_id, csv_path, checks_config=checks_config)
     except OSError:
         pass

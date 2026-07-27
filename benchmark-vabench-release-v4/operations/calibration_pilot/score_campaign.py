@@ -22,6 +22,8 @@ RUNNER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(RUNNER)
 
 ARTIFACT_READY = {"submitted", "submitted_at_budget", "workspace_ready"}
+DEFAULT_TRUSTED_REPLAY_TIMEOUT_S = 150
+DEFAULT_TESTBENCH_TIMEOUT_S = 750
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -184,12 +186,28 @@ def elapsed_seconds(result: dict[str, Any]) -> float | None:
     return max(0.0, (finished - started).total_seconds())
 
 
+def trusted_replay_timeout_s(
+    cell: dict[str, Any],
+    timeout_s: int,
+    testbench_timeout_s: int,
+) -> int:
+    """Return the outer judge watchdog deadline for one trusted replay.
+
+    Testbench judging runs the reference and five mutations sequentially. The
+    adapter bounds each simulation independently, so its outer process needs a
+    watchdog covering all six runs rather than the single-run DUT/Bug Repair
+    deadline. This is an evaluator fail-safe, not a candidate resource budget.
+    """
+    return testbench_timeout_s if cell.get("form") == "testbench" else timeout_s
+
+
 def evaluate_cell(
     result_path: Path,
     command: str | None,
     timeout_s: int,
     evas_command: str | None = None,
     reuse_existing: bool = False,
+    testbench_timeout_s: int = DEFAULT_TESTBENCH_TIMEOUT_S,
 ) -> dict[str, Any]:
     result = read_json(result_path)
     cell = result["cell"]
@@ -265,8 +283,11 @@ def evaluate_cell(
         if expected_identity:
             RUNNER.validate_pinned_evas_identity(evas_command, expected_identity)
         final_submission = RUNNER.RESULT_PROTOCOL.snapshot_submission(runtime, artifact_gate)
+        replay_timeout_s = trusted_replay_timeout_s(
+            cell, timeout_s, testbench_timeout_s
+        )
         replay = RUNNER.run_trusted_replay(
-            runtime, command, timeout_s, evas_command, final_submission
+            runtime, command, replay_timeout_s, evas_command, final_submission
         )
         checkpoint_path = runtime / "evidence" / "conversation_checkpoint.json"
         checkpoint = read_json(checkpoint_path) if checkpoint_path.is_file() else {}
@@ -513,7 +534,25 @@ def parse_args() -> argparse.Namespace:
         required=True,
     )
     parser.add_argument("--judge-command")
-    parser.add_argument("--timeout-s", type=int, default=120)
+    parser.add_argument(
+        "--timeout-s",
+        type=int,
+        default=DEFAULT_TRUSTED_REPLAY_TIMEOUT_S,
+        help=(
+            "Outer trusted-replay watchdog for DUT and Bug Repair tasks. The "
+            "default leaves process overhead beyond the adapter's 120-second "
+            "inner simulation bound."
+        ),
+    )
+    parser.add_argument(
+        "--testbench-timeout-s",
+        type=int,
+        default=DEFAULT_TESTBENCH_TIMEOUT_S,
+        help=(
+            "Outer trusted-replay watchdog for Testbench tasks. The default "
+            "covers the reference plus five sequential mutation simulations."
+        ),
+    )
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--evas-command")
     parser.add_argument("--output", type=Path)
@@ -532,6 +571,8 @@ def main() -> int:
     args.judge_command = normalize_judge_command(args.judge_command)
     if args.workers < 1:
         raise SystemExit("--workers must be at least 1")
+    if args.timeout_s < 1 or args.testbench_timeout_s < 1:
+        raise SystemExit("replay timeouts must be positive")
     if args.judge_kind in {"final_trusted_replay", "final_spectre"} and not args.judge_command:
         raise SystemExit(f"--judge-kind {args.judge_kind} requires --judge-command")
     if args.judge_command and not args.evas_command:
@@ -547,6 +588,7 @@ def main() -> int:
                 args.timeout_s,
                 args.evas_command,
                 args.resume,
+                args.testbench_timeout_s,
             )
             for path in result_paths
         ]
@@ -559,6 +601,7 @@ def main() -> int:
                     args.timeout_s,
                     args.evas_command,
                     args.resume,
+                    args.testbench_timeout_s,
                 ),
                 result_paths,
             ))

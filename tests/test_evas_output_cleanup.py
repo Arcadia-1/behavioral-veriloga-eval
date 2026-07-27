@@ -10,6 +10,66 @@ sys.path.insert(0, str(ROOT / "runners"))
 import simulate_evas  # noqa: E402
 
 
+def test_behavior_checker_force_subprocess_skips_direct_path(
+    monkeypatch,
+    tmp_path: Path,
+) -> None:
+    csv_path = tmp_path / "tran.csv"
+    csv_path.write_text("time,out\n0,0\n1e-9,1\n", encoding="utf-8")
+    queued_result = ("ok", (1.0, ["subprocess checker result"]))
+    process_started = False
+
+    class FakeQueue:
+        def empty(self) -> bool:
+            return False
+
+        def get(self):
+            return queued_result
+
+    class FakeProcess:
+        def start(self) -> None:
+            nonlocal process_started
+            process_started = True
+
+        def join(self, _timeout_s: float | None = None) -> None:
+            return None
+
+        def is_alive(self) -> bool:
+            return False
+
+    class FakeContext:
+        def Queue(self, *, maxsize: int):
+            assert maxsize == 1
+            return FakeQueue()
+
+        def Process(self, *, target, args):
+            assert target is simulate_evas._behavior_eval_worker
+            assert args[0] == "v4_302_fractional_n_divider_accumulator_flow"
+            assert args[1] == str(csv_path)
+            return FakeProcess()
+
+    def fail_direct_evaluation(*_args, **_kwargs):
+        raise AssertionError("force_subprocess must bypass direct evaluation")
+
+    monkeypatch.setattr(simulate_evas, "evaluate_behavior", fail_direct_evaluation)
+    monkeypatch.setattr(
+        simulate_evas.mp,
+        "get_context",
+        lambda method: FakeContext() if method == "spawn" else None,
+    )
+
+    score, notes = simulate_evas.evaluate_behavior_with_timeout(
+        "v4_302_fractional_n_divider_accumulator_flow",
+        csv_path,
+        timeout_s=60,
+        force_subprocess=True,
+    )
+
+    assert process_started
+    assert score == 1.0
+    assert notes == ["subprocess checker result"]
+
+
 def test_trusted_replay_command_overrides_discovered_evas(monkeypatch) -> None:
     monkeypatch.setenv(
         "VABENCH_EVAS_COMMAND",
