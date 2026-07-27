@@ -6,11 +6,18 @@ from statistics import median
 from ..api import Checker
 
 
+LOGIC_THRESHOLD_EPS = 1e-9
+
+
+def _logic_high(value: float, threshold: float = 0.45) -> bool:
+    return float(value) >= threshold - LOGIC_THRESHOLD_EPS
+
+
 def _rising_times(rows: list[dict[str, float]], col: str, vth: float = 0.45) -> list[float]:
     times: list[float] = []
-    last = rows[0][col] > vth
+    last = _logic_high(rows[0][col], vth)
     for row in rows[1:]:
-        cur = row[col] > vth
+        cur = _logic_high(row[col], vth)
         if not last and cur:
             times.append(row["time"])
         last = cur
@@ -25,9 +32,9 @@ def _event_period(rows: list[dict[str, float]], col: str) -> float:
 
 def _falling_times(rows: list[dict[str, float]], col: str, vth: float = 0.45) -> list[float]:
     times: list[float] = []
-    last = rows[0][col] > vth
+    last = _logic_high(rows[0][col], vth)
     for row in rows[1:]:
-        cur = row[col] > vth
+        cur = _logic_high(row[col], vth)
         if last and not cur:
             times.append(row["time"])
         last = cur
@@ -36,7 +43,7 @@ def _falling_times(rows: list[dict[str, float]], col: str, vth: float = 0.45) ->
 
 def _sample_after(rows: list[dict[str, float]], t: float, delay: float) -> dict[str, float]:
     target = t + max(0.0, delay)
-    return min(rows, key=lambda row: abs(row["time"] - target))
+    return next((row for row in rows if row["time"] >= target), rows[-1])
 
 
 def _v4_missing_columns(rows: list[dict[str, float]], required: set[str]) -> str | None:
@@ -69,7 +76,11 @@ def check_v4_nonoverlap_clock_generator(rows: list[dict[str, float]]) -> tuple[b
         and row["phi2"] <= 0.45
         for row in rows
     )
-    valid_seen = any(row["enable"] > 0.45 and row["valid"] > 0.45 for row in rows)
+    valid_seen = any(
+        row["enable"] > 0.45 + LOGIC_THRESHOLD_EPS
+        and _logic_high(row["valid"])
+        for row in rows
+    )
     inactive_since: float | None = None
     reset_clear = False
     disabled_clear = False
@@ -77,7 +88,10 @@ def check_v4_nonoverlap_clock_generator(rows: list[dict[str, float]]) -> tuple[b
     valid_latched = False
     valid_errors = 0
     for row in rows:
-        inactive = row["rst"] > 0.45 or row["enable"] <= 0.45
+        inactive = (
+            row["rst"] >= 0.45 - LOGIC_THRESHOLD_EPS
+            or row["enable"] <= 0.45 + LOGIC_THRESHOLD_EPS
+        )
         if inactive:
             valid_latched = False
             if inactive_since is None:
@@ -87,14 +101,18 @@ def check_v4_nonoverlap_clock_generator(rows: list[dict[str, float]]) -> tuple[b
                     row[name] <= 0.12
                     for name in ("phi1", "phi2", "deadtime_metric", "valid")
                 )
-                reset_clear = reset_clear or (row["rst"] > 0.45 and clear)
+                reset_clear = reset_clear or (
+                    row["rst"] >= 0.45 - LOGIC_THRESHOLD_EPS and clear
+                )
                 disabled_clear = disabled_clear or (
-                    row["rst"] <= 0.45 and row["enable"] <= 0.45 and clear
+                    row["rst"] < 0.45 - LOGIC_THRESHOLD_EPS
+                    and row["enable"] <= 0.45 + LOGIC_THRESHOLD_EPS
+                    and clear
                 )
                 clear_errors += int(not clear)
             continue
         inactive_since = None
-        if row["valid"] > 0.45:
+        if _logic_high(row["valid"]):
             valid_latched = True
         elif valid_latched:
             valid_errors += 1
@@ -103,8 +121,8 @@ def check_v4_nonoverlap_clock_generator(rows: list[dict[str, float]]) -> tuple[b
         for edge_t in _falling_times(rows, "enable")
     ]
     disable_clears = bool(disable_samples) and all(
-        row["enable"] <= 0.45
-        and row["rst"] <= 0.45
+        row["enable"] <= 0.45 + LOGIC_THRESHOLD_EPS
+        and row["rst"] < 0.45 - LOGIC_THRESHOLD_EPS
         and row["phi1"] <= 0.45
         and row["phi2"] <= 0.45
         and row["valid"] <= 0.45
@@ -116,14 +134,22 @@ def check_v4_nonoverlap_clock_generator(rows: list[dict[str, float]]) -> tuple[b
     for edge_t in _rising_times(rows, "clk_in"):
         edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
         sample = _sample_after(rows, edge_t, rise_delay)
-        if edge_row["rst"] <= 0.45 and edge_row["enable"] > 0.45 and sample["enable"] > 0.45:
+        if (
+            edge_row["rst"] < 0.45 - LOGIC_THRESHOLD_EPS
+            and edge_row["enable"] > 0.45 + LOGIC_THRESHOLD_EPS
+            and sample["enable"] > 0.45 + LOGIC_THRESHOLD_EPS
+        ):
             checked_rise += 1
             if sample["phi1"] <= 0.45 or sample["phi2"] > 0.45:
                 errors += 1
     for edge_t in _falling_times(rows, "clk_in"):
         edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
         sample = _sample_after(rows, edge_t, rise_delay)
-        if edge_row["rst"] <= 0.45 and edge_row["enable"] > 0.45 and sample["enable"] > 0.45:
+        if (
+            edge_row["rst"] < 0.45 - LOGIC_THRESHOLD_EPS
+            and edge_row["enable"] > 0.45 + LOGIC_THRESHOLD_EPS
+            and sample["enable"] > 0.45 + LOGIC_THRESHOLD_EPS
+        ):
             checked_fall += 1
             if sample["phi2"] <= 0.45 or sample["phi1"] > 0.45:
                 errors += 1

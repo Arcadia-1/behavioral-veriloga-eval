@@ -21,6 +21,27 @@ def check_v4_305_capacitive_feedback_amplifier_macro(rows: list[dict[str, float]
     edges = rising_edges(rows, "clk")
     period = event_period(rows, "clk")
     guard = max(period * 0.15, sample_step(rows) * 3.0)
+    step = sample_step(rows)
+
+    def controls_active(row: dict[str, float]) -> bool:
+        return _v4_topup_logic_high(row, "enable") and not _v4_topup_logic_high(row, "rst")
+
+    def controls_inactive_between(start_t: float, stop_t: float) -> bool:
+        return any(
+            start_t <= float(row["time"]) <= stop_t and not controls_active(row)
+            for row in rows
+        )
+
+    controls_settled: dict[int, bool] = {}
+    previous_active = controls_active(rows[0])
+    last_control_change = float(rows[0]["time"])
+    for row in rows:
+        active = controls_active(row)
+        time_s = float(row["time"])
+        if active != previous_active:
+            last_control_change = time_s
+            previous_active = active
+        controls_settled[id(row)] = time_s - last_control_change >= guard
 
     for index, edge in enumerate(edges):
         edge_index = next((i for i, row in enumerate(rows) if float(row["time"]) >= edge), None)
@@ -28,8 +49,11 @@ def check_v4_305_capacitive_feedback_amplifier_macro(rows: list[dict[str, float]
         post = sample_after_event(rows, edge, clock_signal="clk", fraction_of_period=0.15)
         if edge_row is None or post is None:
             continue
-        active = _v4_topup_logic_high(edge_row, "enable") and not _v4_topup_logic_high(edge_row, "rst")
+        active = controls_active(edge_row)
         if active:
+            if controls_inactive_between(max(float(rows[0]["time"]), edge - period), edge - step):
+                settle_count = 0
+                previous_target = 0.45
             code = int(_v4_topup_logic_high(edge_row, "gain_0")) + 2 * int(_v4_topup_logic_high(edge_row, "gain_1"))
             sample_value = float(edge_row["vin"])
             expected_gain = 1.0 + 0.75 * code
@@ -47,19 +71,36 @@ def check_v4_305_capacitive_feedback_amplifier_macro(rows: list[dict[str, float]
             previous_target = expected_vout
             inactive_edges += 1
 
-        if abs(float(post["sampled_metric"]) - sample_value) > 0.08:
+        post_controls_active = controls_active(post)
+        post_sample_value = sample_value if post_controls_active else 0.0
+        post_vout = expected_vout if post_controls_active else 0.45
+        post_settled = expected_settled if post_controls_active else False
+        if abs(float(post["sampled_metric"]) - post_sample_value) > 0.08:
             sample_errors += 1
-        if abs(float(post["vout"]) - expected_vout) > 0.10:
+        if abs(float(post["vout"]) - post_vout) > 0.10:
             gain_errors += 1
         observed_settled = float(post["settled"]) > 0.45
-        if observed_settled != expected_settled:
+        if observed_settled != post_settled:
             settled_errors += 1
         settled_seen = settled_seen or (active and observed_settled)
 
         next_edge = edges[index + 1] if index + 1 < len(edges) else float(rows[-1]["time"])
+        cleared_window = not post_controls_active
         for hold_row in rows:
             hold_time = float(hold_row["time"])
-            if hold_time < edge + guard or hold_time >= next_edge - sample_step(rows) * 2.0:
+            if hold_time < edge + guard or hold_time >= next_edge - step * 2.0:
+                continue
+            if not controls_active(hold_row):
+                cleared_window = True
+                if controls_settled[id(hold_row)] and (
+                    abs(float(hold_row["sampled_metric"])) > 0.08
+                    or abs(float(hold_row["vout"]) - 0.45) > 0.10
+                    or float(hold_row["settled"]) > 0.45
+                ):
+                    hold_checked += 1
+                    hold_errors += 1
+                continue
+            if cleared_window:
                 continue
             hold_checked += 1
             if (

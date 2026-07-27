@@ -5,11 +5,15 @@ from ..api import Checker
 from ..common.relative_events import event_period, sample_step
 
 
+LOGIC_THRESHOLD_EPS = 1e-9
+
+
 def _v4_topup_logic_high(row: dict[str, float], name: str, threshold: float = 0.45) -> bool:
-    return float(row.get(name, 0.0)) > threshold
+    return float(row.get(name, 0.0)) >= threshold - LOGIC_THRESHOLD_EPS
 
 def _v4_rising(prev_v: float, now_v: float, vth: float = 0.45) -> bool:
-    return now_v > vth and prev_v <= vth
+    edge_level = vth - LOGIC_THRESHOLD_EPS
+    return prev_v < edge_level <= now_v
 
 def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
@@ -47,6 +51,9 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
     prev_out = float(rows[0].get("clk_out", 0.0))
     switch_windows: list[dict[str, float | bool]] = []
     metric_high_outside_window_errors = 0
+    valid_missing_active = False
+    valid_early_active = False
+    valid_seen_after_edge = False
     for row in rows:
         t = float(row["time"])
         rst = _v4_topup_logic_high(row, "rst")
@@ -68,6 +75,8 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
                 disabled_clear = True
             if inactive_ready and not clear:
                 clear_errors += 1
+            valid_missing_active = False
+            valid_early_active = False
             prev_out = float(row.get("clk_out", 0.0))
             prev_clk_a = clk_a
             prev_clk_b = clk_b
@@ -75,7 +84,7 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
             continue
         inactive_time = None
         pending = 1 if _v4_topup_logic_high(row, "sel") else 0
-        both_low = float(row["clk_a"]) <= 0.45 and float(row["clk_b"]) <= 0.45
+        both_low = float(row["clk_a"]) <= 0.1 and float(row["clk_b"]) <= 0.1
         if pending != active and both_low:
             active = pending
             switched_at = t
@@ -87,9 +96,12 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
         now_out = float(row["clk_out"])
         if _v4_rising(prev_clk_a, clk_a) or _v4_rising(prev_clk_b, clk_b):
             last_input_rise = t
-        if prev_out <= 0.45 and now_out > 0.45:
+        output_rising = prev_out < 0.45 - LOGIC_THRESHOLD_EPS <= now_out
+        output_falling = prev_out > 0.45 + LOGIC_THRESHOLD_EPS >= now_out
+        if output_rising:
             if last_input_rise < 0 or t - last_input_rise > edge_guard:
                 glitch_errors += 1
+        if output_rising or output_falling:
             first_edge_seen = True
         prev_out = now_out
         prev_clk_a = clk_a
@@ -108,15 +120,31 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
         valid_high = _v4_topup_logic_high(row, "valid")
         valid_transition_grace = switched_at >= 0 and t <= switched_at + settle_guard
         if not first_edge_seen and valid_high and not valid_transition_grace:
-            valid_early_errors += 1
-            valid_errors += 1
+            if not valid_early_active:
+                valid_early_errors += 1
+                valid_errors += 1
+            valid_early_active = True
+        elif first_edge_seen or not valid_high:
+            valid_early_active = False
         if not first_edge_seen or (switched_at >= 0 and t < switched_at + settle_guard):
+            valid_missing_active = False
+            continue
+        if any(
+            0.1 < float(row[name]) < 0.8
+            for name in ("clk_a", "clk_b", "clk_out")
+        ):
+            # Do not score a discrete routing property on an analog transition
+            # point whose presence depends on the simulator's output grid.
             continue
         checked += 1
         if abs(now_out - expected) > 0.14:
             out_errors += 1
-        if first_edge_seen and not valid_high:
+        if valid_high:
+            valid_seen_after_edge = True
+            valid_missing_active = False
+        elif not valid_missing_active:
             valid_errors += 1
+            valid_missing_active = True
     both_sources_seen = len(src_seen) >= 2
     metric_errors = (
         sum(not bool(window["seen"]) for window in switch_windows)
@@ -137,6 +165,7 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
         and glitch_errors <= 1
         and metric_errors == 0
         and valid_early_errors == 0
+        and valid_seen_after_edge
         and valid_errors <= valid_budget
         and clear_errors <= clear_budget
     )
@@ -149,7 +178,7 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
         f"P_ROUTE_CLK_A_WHEN_SEL_IS mismatch_count={max(0, out_errors - out_budget) + int(not both_sources_seen)}; "
         f"P_WHEN_SEL_CHANGES_WAIT_UNTIL_BOTH mismatch_count={max(0, glitch_errors - 1) + int(not switch_seen)}; "
         f"P_EXPOSE_A_SWITCH_EVENT_ON_SWITCH mismatch_count={max(0, metric_errors - metric_budget) + int(not switch_seen)}; "
-        f"P_ASSERT_VALID_AFTER_THE_SELECTED_SOURCE mismatch_count={valid_early_errors + max(0, valid_errors - valid_budget)}"
+        f"P_ASSERT_VALID_AFTER_THE_SELECTED_SOURCE mismatch_count={valid_early_errors + int(not valid_seen_after_edge) + max(0, valid_errors - valid_budget)}"
     )
 
 CHECKER_ID = "v4_322_glitchless_clock_mux_selector"

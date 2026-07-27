@@ -1,15 +1,48 @@
 """Task-specific checker for canonical v4 DUT 302."""
 from __future__ import annotations
 
+from statistics import median
+
 from ..api import Checker
 from ..common.relative_events import (
-    event_period,
-    period_step_anchor,
-    rising_edges,
     rows_between,
+    sample_step,
     trace_bounds,
     weighted_logic_high_fraction,
 )
+
+def _rising_edges(rows: list[dict[str, float]], signal: str, threshold: float = 0.45) -> list[float]:
+    edges: list[float] = []
+    for previous, row in zip(rows, rows[1:]):
+        before = float(previous.get(signal, 0.0))
+        after = float(row.get(signal, 0.0))
+        if before < threshold <= after:
+            edges.append(float(row["time"]))
+    return edges
+
+
+def _event_period(rows: list[dict[str, float]], signal: str) -> float:
+    edges = _rising_edges(rows, signal)
+    periods = [b - a for a, b in zip(edges, edges[1:]) if b > a]
+    if not periods:
+        return max(sample_step(rows), 0.0)
+    return float(median(periods))
+
+
+def _period_step_anchor(rows: list[dict[str, float]], signal: str) -> float | None:
+    edges = _rising_edges(rows, signal)
+    periods = [b - a for a, b in zip(edges, edges[1:]) if b > a]
+    if len(periods) < 4:
+        return None
+    baseline = float(median(periods[: max(2, len(periods) // 4)]))
+    for index, period in enumerate(periods):
+        # Detect a physical period change independently of how densely a
+        # simulator samples the trace.  Using sample_step here let a coarse
+        # Spectre trace hide the declared 2.5% reference-clock step.
+        if abs(period - baseline) > max(1e-15, baseline * 0.02):
+            return edges[index + 1]
+    return None
+
 
 def check_v3_505_fractional_n_divider_accumulator_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ref_clk", "fb_clk", "dco_clk", "lock", "vctrl_mon"}
@@ -17,15 +50,15 @@ def check_v3_505_fractional_n_divider_accumulator_flow(rows: list[dict[str, floa
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
 
-    ref_edges = rising_edges(rows, "ref_clk")
-    fb_edges = rising_edges(rows, "fb_clk")
-    dco_edges = rising_edges(rows, "dco_clk")
+    ref_edges = _rising_edges(rows, "ref_clk")
+    fb_edges = _rising_edges(rows, "fb_clk")
+    dco_edges = _rising_edges(rows, "dco_clk")
     if len(ref_edges) < 5 or len(fb_edges) < 4 or len(dco_edges) < 20:
         return False, f"not_enough_edges ref={len(ref_edges)} fb={len(fb_edges)} dco={len(dco_edges)}"
 
     _, trace_end, _ = trace_bounds(rows)
-    step_anchor = period_step_anchor(rows, "ref_clk")
-    ref_period = event_period(rows, "ref_clk")
+    step_anchor = _period_step_anchor(rows, "ref_clk")
+    ref_period = _event_period(rows, "ref_clk")
     if step_anchor is None:
         step_anchor = ref_edges[len(ref_edges) // 2]
 
@@ -55,7 +88,7 @@ def check_v3_505_fractional_n_divider_accumulator_flow(rows: list[dict[str, floa
     if min(dco_counts) >= 16 or max(dco_counts) <= 15:
         return False, f"fractional_short_count_not_observed counts={dco_counts}"
 
-    lock_edges = rising_edges(rows, "lock")
+    lock_edges = _rising_edges(rows, "lock")
     pre_lock_rows = rows_between(rows, rows[0]["time"], step_anchor)
     disturb_start = step_anchor
     disturb_end = min(trace_end, step_anchor + 3.0 * ref_period)

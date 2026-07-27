@@ -27,13 +27,16 @@ def check_v4_927_tia_limiting_receiver_macro(rows: list[dict[str, float]]) -> tu
     checked = vout_errors = flag_errors = amp_errors = decision_errors = valid_errors = clear_errors = 0
     reset_clear = disabled_clear = limit_seen = decision_high = decision_low = valid_seen = False
     ever_enabled = False
-    stable_samples = 0
+    stable_active_time = 0.0
+    previous_time = float(rows[0]["time"])
+    next_analog_check_time = float(rows[0]["time"])
     last_input_change = float(rows[0]["time"])
     previous_inputs = {
         name: float(rows[0][name]) for name in ("vin_proxy", "rst", "enable")
     }
     for row in rows:
         t = float(row["time"])
+        dt = max(0.0, t - previous_time)
         current_inputs = {
             name: float(row[name]) for name in ("vin_proxy", "rst", "enable")
         }
@@ -56,6 +59,7 @@ def check_v4_927_tia_limiting_receiver_macro(rows: list[dict[str, float]]) -> tu
                 if (rst or disabled) and not clear:
                     clear_errors += 1
             prev_clk = float(row["clk"])
+            previous_time = t
             continue
         ever_enabled = True
         raw = 4.0 * (float(row["vin_proxy"]) - 0.45)
@@ -80,8 +84,8 @@ def check_v4_927_tia_limiting_receiver_macro(rows: list[dict[str, float]]) -> tu
                 if _v4_topup_logic_high(sample, "valid") != expected_valid:
                     valid_errors += 1
         if stable:
-            stable_samples += 1
-        if stable and stable_samples % 6 == 0:
+            stable_active_time += dt
+        if stable and t >= next_analog_check_time:
             if abs(float(row["vout"]) - expected_vout) > 0.10:
                 vout_errors += 1
             if _v4_topup_logic_high(row, "limit_flag") != expected_flag:
@@ -89,10 +93,13 @@ def check_v4_927_tia_limiting_receiver_macro(rows: list[dict[str, float]]) -> tu
             if abs(float(row["amp_metric"]) - expected_amp) > 0.10:
                 amp_errors += 1
             checked += 1
+            next_analog_check_time = t + time_scale * 0.8e-9
             limit_seen = limit_seen or expected_flag
         prev_clk = float(row["clk"])
-    ok = checked >= 40 and reset_clear and disabled_clear and limit_seen and decision_high and decision_low and valid_seen and vout_errors <= 4 and flag_errors <= 4 and amp_errors <= 4 and decision_errors <= 2 and valid_errors == 0 and clear_errors <= 12
-    return ok, f"v4_927 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} limit_seen={limit_seen} decision_high={decision_high} decision_low={decision_low} valid_seen={valid_seen} vout_errors={vout_errors} flag_errors={flag_errors} amp_errors={amp_errors} decision_errors={decision_errors} valid_errors={valid_errors} clear_errors={clear_errors}"
+        previous_time = t
+    coverage_ok = stable_active_time >= time_scale * 4.0e-9
+    ok = coverage_ok and reset_clear and disabled_clear and limit_seen and decision_high and decision_low and valid_seen and vout_errors <= 2 and flag_errors <= 2 and amp_errors <= 2 and decision_errors <= 2 and valid_errors == 0 and clear_errors <= 12
+    return ok, f"v4_927 checked={checked} stable_active_time={stable_active_time:.6g} reset_clear={reset_clear} disabled_clear={disabled_clear} limit_seen={limit_seen} decision_high={decision_high} decision_low={decision_low} valid_seen={valid_seen} vout_errors={vout_errors} flag_errors={flag_errors} amp_errors={amp_errors} decision_errors={decision_errors} valid_errors={valid_errors} clear_errors={clear_errors}"
 
 CHECKER_ID = "v4_368_tia_limiting_receiver_macro"
 CHECKER: Checker = with_property_diagnostics(

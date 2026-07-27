@@ -52,6 +52,7 @@ def check_v4_source_follower_buffer_macro(rows: list[dict[str, float]]) -> tuple
     checked = 0
     clamp_seen = False
     disabled_seen = False
+    stable_regimes: set[str] = set()
     for row in _v4_settled_sparse_samples(rows, {"vin", "vbias", "enable", "rst"}):
         if 0.1 < row["enable"] < 0.8 or 0.1 < row["rst"] < 0.8:
             continue
@@ -61,11 +62,13 @@ def check_v4_source_follower_buffer_macro(rows: list[dict[str, float]]) -> tuple
             expected_metric = 0.0
             expected_valid = 0.0
             disabled_seen = disabled_seen or row["enable"] <= 0.45
+            stable_regimes.add("disabled" if row["enable"] <= 0.45 else "inactive")
         else:
             max_out = row["vbias"] - 0.10
             raw = row["vin"] - 0.12
             expected_out = _v4_clip(raw, 0.0, max_out)
             clamp_seen = clamp_seen or expected_out < raw - 0.04
+            stable_regimes.add("clamp" if expected_out < raw - 0.04 else "linear")
             expected_metric = _v4_clip(row["vbias"] - expected_out)
             expected_valid = 0.9
         if not _v4_close(row["vout"], expected_out, 0.08):
@@ -84,9 +87,10 @@ def check_v4_source_follower_buffer_macro(rows: list[dict[str, float]]) -> tuple
             else:
                 valid_errors += 1
         checked += 1
-    coverage_errors = int(not clamp_seen) + int(not disabled_seen)
+    required_regimes = {"disabled", "linear", "clamp"}
+    coverage_errors = len(required_regimes - stable_regimes)
     ok = (
-        checked >= 20
+        required_regimes.issubset(stable_regimes)
         and clear_errors == 0
         and vout_errors == 0
         and metric_errors == 0
@@ -98,7 +102,7 @@ def check_v4_source_follower_buffer_macro(rows: list[dict[str, float]]) -> tuple
         f"P_SOURCE_FOLLOWER_TRANSFER mismatch_count={vout_errors} expected=vout=clamp(vin-0.12) observed=checked={checked}",
         f"P_HEADROOM_METRIC mismatch_count={metric_errors} expected=vbias-vout observed=checked={checked}",
         f"P_VALID_QUALIFICATION mismatch_count={valid_errors} expected=valid=0.9_when_active observed=checked={checked}",
-        f"P_EXERCISE_COVERAGE mismatch_count={coverage_errors} expected=clamp_and_disable_regions observed=clamp={clamp_seen},disabled={disabled_seen}",
+        f"P_EXERCISE_COVERAGE mismatch_count={coverage_errors} expected=disabled_linear_clamp_regions observed=regions={sorted(stable_regimes)}",
     ]
     return ok, "; ".join(notes)
 

@@ -16,12 +16,12 @@ def check_v4_315_reference_ladder_buffered_taps(rows: list[dict[str, float]]) ->
 
     def settled(index: int) -> bool:
         """Only score after the event-relative settle window and stable outputs."""
-        if index < 2:
+        if index < 2 or index + 1 >= len(ordered):
             return False
         names = (
             "tap0", "tap1", "tap2", "tap3", "monotonic_ok",
         )
-        for current in range(index - 1, index + 1):
+        for current in range(index - 1, index + 2):
             previous = ordered[current - 1]
             row = ordered[current]
             if any(abs(float(row[name]) - float(previous[name])) > 1e-4 for name in names):
@@ -30,6 +30,7 @@ def check_v4_315_reference_ladder_buffered_taps(rows: list[dict[str, float]]) ->
 
     checked = spacing_errors = flag_errors = clear_errors = 0
     normal_seen = reversed_seen = clamp_seen = disabled_clear = reset_clear = False
+    active_windows: set[str] = set()
     saw_active = False
     watched = ("vref_hi", "vref_lo", "enable", "rst")
     previous_event_values = tuple(float(ordered[0][name]) for name in watched)
@@ -65,23 +66,29 @@ def check_v4_315_reference_ladder_buffered_taps(rows: list[dict[str, float]]) ->
         if not stable:
             continue
         checked += 1
-        normal_seen = normal_seen or hi_raw > lo_raw + 0.12
-        reversed_seen = reversed_seen or lo_raw > hi_raw + 0.12
-        clamp_seen = clamp_seen or hi_raw > 0.92 or lo_raw < -0.02
+        if hi_raw > lo_raw + 0.12:
+            normal_seen = True
+            active_windows.add("normal")
+        if lo_raw > hi_raw + 0.12:
+            reversed_seen = True
+            active_windows.add("reversed")
+        if hi_raw > 0.92 or lo_raw < -0.02:
+            clamp_seen = True
+            active_windows.add("clamp")
         if max(abs(taps[i] - expected[i]) for i in range(4)) > 0.08:
             spacing_errors += 1
         monotonic = taps[0] <= taps[1] + 0.02 and taps[1] <= taps[2] + 0.02 and taps[2] <= taps[3] + 0.02
         if (float(row["monotonic_ok"]) > 0.45) != monotonic:
             flag_errors += 1
     ok = (
-        checked >= 40
+        active_windows >= {"normal", "reversed", "clamp"}
         and normal_seen
         and reversed_seen
         and clamp_seen
         and disabled_clear
         and reset_clear
-        and spacing_errors <= max(8, checked // 20)
-        and flag_errors <= max(6, checked // 25)
+        and spacing_errors <= max(1, checked // 50)
+        and flag_errors <= max(1, checked // 50)
         and clear_errors <= 3
     )
     return ok, (
