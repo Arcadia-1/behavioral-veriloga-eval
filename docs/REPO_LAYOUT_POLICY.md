@@ -22,8 +22,8 @@ artifacts. Do not add new v3 tasks there.
 five candidate tasks have been absorbed into v3.
 
 The active benchmarkv4 release package lives at
-`benchmark-vabench-release-v4/release/benchmarkv4-r51/`. It is the immutable,
-EVAS2-certified release used by the operator-facing experiment entrypoints.
+`benchmark-vabench-release-v4/release/benchmarkv4-r52/`. It is the immutable,
+EVAS 0.8.5/EVAS2-certified release used by the operator-facing experiment entrypoints.
 The frozen r44 package remains at
 `benchmark-vabench-release-v4/release/benchmarkv4/`, and the other revisioned
 predecessors remain available only for explicit historical reproduction and

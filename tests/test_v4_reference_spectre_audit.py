@@ -37,7 +37,7 @@ def audit():
 
 
 def test_default_release_and_testbench_index_match_current_package(audit) -> None:
-    assert audit.DEFAULT_RELEASE.name == "benchmarkv4-r51"
+    assert audit.DEFAULT_RELEASE.name == "benchmarkv4-r52"
     rows = audit.resolve_task_rows(HISTORICAL_TEST_RELEASE, [])
 
     assert len(rows) == 400

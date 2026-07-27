@@ -57,6 +57,84 @@ def _without_backend_options(deck: str) -> str:
     )
 
 
+def test_reference_evas_smoke_defaults_to_r52_evas_085() -> None:
+    runner = _load_evas_smoke_runner()
+
+    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r52"
+    assert runner.REQUIRED_EVAS_VERSION == "0.8.5"
+
+
+@pytest.mark.parametrize(
+    ("release_revision", "expected_evas_version"),
+    [("r51", "0.8.3"), ("r52", "0.8.5")],
+)
+def test_reference_evas_smoke_uses_release_pinned_evas_version(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    release_revision: str,
+    expected_evas_version: str,
+) -> None:
+    runner = _load_evas_smoke_runner()
+    release = tmp_path / f"benchmarkv4-{release_revision}"
+    release.mkdir()
+    (release / "MANIFEST.json").write_text(
+        json.dumps({"release_revision": release_revision}) + "\n",
+        encoding="utf-8",
+    )
+    observed: dict[str, str] = {}
+
+    def fake_probe(*, required_evas_version: str) -> dict[str, str]:
+        observed["probe"] = required_evas_version
+        return {
+            "evas_engine": "evas2",
+            "evas_engine_used": "evas2",
+            "evas_version": required_evas_version,
+            "evas_backend": "evas-rust",
+        }
+
+    def fake_run_task(**kwargs) -> dict[str, object]:
+        observed["task"] = kwargs["runtime"]["evas_version"]
+        return {
+            "task_id": kwargs["task_id"],
+            "evas_engine": "evas2",
+            "evas_engine_used": "evas2",
+            "evas_version": kwargs["runtime"]["evas_version"],
+            "evas_backend": "evas-rust",
+            "status": "pass",
+            "reference_pass": True,
+            "reference_failure_count": 0,
+            "infrastructure_error_count": 0,
+            "mutation_kill_count": 0,
+            "mutation_count": 0,
+            "mutation_survivor_count": 0,
+        }
+
+    monkeypatch.setattr(runner, "require_evas2_environment", lambda: None)
+    monkeypatch.setattr(runner, "probe_evas2_runtime", fake_probe)
+    monkeypatch.setattr(runner, "run_task", fake_run_task)
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "run_v4_reference_evas_smoke.py",
+            "--release",
+            str(release),
+            "--task-id",
+            "v4-501",
+            "--output",
+            str(tmp_path / "report.json"),
+            "--work-root",
+            str(tmp_path / "work"),
+        ],
+    )
+
+    assert runner.main() == 0
+    assert observed == {
+        "probe": expected_evas_version,
+        "task": expected_evas_version,
+    }
+
+
 def test_batch35_canonical_specs_have_feedback_score_semantic_parity() -> None:
     for family_id in range(341, 351):
         spec = json.loads((_family_source(family_id) / "evaluator" / "harness_spec.json").read_text())
@@ -187,7 +265,7 @@ def test_batch35_evas_evidence_records_clean_source_revision(
         return subprocess.CompletedProcess(
             command,
             0,
-            json.dumps({"version": "0.8.3", "rust_backend_loaded": True}) + "\n",
+            json.dumps({"version": "0.8.5", "rust_backend_loaded": True}) + "\n",
             "",
         )
 
@@ -244,9 +322,9 @@ def test_batch35_evas_evidence_can_require_a_newer_release_lane_version(
 @pytest.mark.parametrize(
     ("log_text", "valid", "version", "backend"),
     [
-        ("Version 0.8.3 -- Jul 2026\n    evas_engine = evas-rust\n", True, "0.8.3", "evas-rust"),
-        ("Version 0.8.3 -- Jul 2026\n    evas_engine = python\n", False, "0.8.3", "python"),
-        ("Version 0.8.2 -- Jul 2026\n    evas_engine = evas-rust\n", False, "0.8.2", "evas-rust"),
+        ("Version 0.8.5 -- Jul 2026\n    evas_engine = evas-rust\n", True, "0.8.5", "evas-rust"),
+        ("Version 0.8.5 -- Jul 2026\n    evas_engine = python\n", False, "0.8.5", "python"),
+        ("Version 0.8.4 -- Jul 2026\n    evas_engine = evas-rust\n", False, "0.8.4", "evas-rust"),
     ],
 )
 def test_batch35_case_evidence_reads_actual_runtime(

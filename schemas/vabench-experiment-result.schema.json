@@ -13,11 +13,12 @@
     "final_submission",
     "final_trusted_replay",
     "outcome",
+    "failure_taxonomy",
     "score_eligible",
     "score"
   ],
   "properties": {
-    "schema_version": {"const": "vabench-experiment-result-v1"},
+    "schema_version": {"const": "vabench-experiment-result-v2"},
     "recorded_at": {"type": "string", "format": "date-time"},
     "cell_id": {"type": "string", "minLength": 1},
     "task_id": {"type": "string", "minLength": 1},
@@ -82,7 +83,8 @@
         "evas_identity",
         "command",
         "adapter_result",
-        "diagnostics"
+        "diagnostics",
+        "failure_taxonomy"
       ],
       "properties": {
         "status": {
@@ -104,7 +106,8 @@
         "evas_identity": {"type": "object"},
         "command": {"type": ["object", "null"]},
         "adapter_result": {"type": ["object", "null"]},
-        "diagnostics": {"type": "array", "items": {"type": "string"}}
+        "diagnostics": {"type": "array", "items": {"type": "string"}},
+        "failure_taxonomy": {"$ref": "#/definitions/failureTaxonomy"}
       },
       "additionalProperties": false
     },
@@ -121,8 +124,97 @@
         "not_scored"
       ]
     },
+    "failure_taxonomy": {"$ref": "#/definitions/failureTaxonomy"},
     "score_eligible": {"type": "boolean"},
     "score": {"type": ["number", "null"], "minimum": 0, "maximum": 1}
+  },
+  "definitions": {
+    "failureTaxonomy": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "primary_class",
+        "secondary_classes",
+        "stage",
+        "responsibility",
+        "retryable",
+        "case_ids",
+        "property_ids",
+        "mutation_ids"
+      ],
+      "properties": {
+        "schema_version": {"const": "vabench-failure-taxonomy-v1"},
+        "primary_class": {
+          "enum": [
+            null,
+            "invalid",
+            "compile",
+            "runtime",
+            "functional",
+            "mutation_survival",
+            "property",
+            "timeout",
+            "resource_exhaustion",
+            "behavior_unspecified",
+            "infrastructure"
+          ]
+        },
+        "secondary_classes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "invalid",
+              "compile",
+              "runtime",
+              "functional",
+              "mutation_survival",
+              "property",
+              "timeout",
+              "resource_exhaustion",
+              "behavior_unspecified",
+              "infrastructure"
+            ]
+          }
+        },
+        "stage": {
+          "enum": [
+            "not_run",
+            "completed",
+            "model_execution",
+            "artifact_gate",
+            "compilation",
+            "simulation",
+            "functional_check",
+            "mutation_check",
+            "property_check",
+            "behavior_check",
+            "infrastructure",
+            "not_scored"
+          ]
+        },
+        "responsibility": {
+          "enum": ["none", "candidate", "model", "system", "undetermined"]
+        },
+        "retryable": {"type": "boolean"},
+        "case_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "property_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "mutation_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      },
+      "additionalProperties": false
+    }
   },
   "allOf": [
     {

@@ -48,9 +48,10 @@ from score_denominator_registry import score_denominator_registry_sha256  # noqa
 
 
 REQUIRED_EVAS_ENGINE = "evas2"
-REQUIRED_EVAS_VERSION = "0.8.3"
+REQUIRED_EVAS_VERSION = "0.8.5"
+LEGACY_EVAS_VERSION = "0.8.3"
 REQUIRED_EVAS_BACKEND = "evas-rust"
-DEFAULT_RELEASE_REVISION = "r51"
+DEFAULT_RELEASE_REVISION = "r52"
 SUPPORTED_RELEASE_REVISIONS = ("r44", "r45", "r47", "r48", "r49", "r50", "r51", "r52")
 SOURCE_ROOT = ROOT / "benchmark-vabench-release-v4" / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 
@@ -93,7 +94,7 @@ def compact_evidence_identity(release_revision: str) -> tuple[str, str]:
     return release_label, schema_version
 
 def required_evas_version(release_revision: str) -> str:
-    return "0.8.5" if release_revision == "r52" else REQUIRED_EVAS_VERSION
+    return REQUIRED_EVAS_VERSION if release_revision == "r52" else LEGACY_EVAS_VERSION
 
 
 def effective_affine_scale(family_id: str, requested_scale: float) -> float:
@@ -452,7 +453,7 @@ def main() -> int:
         "--release-revision",
         choices=SUPPORTED_RELEASE_REVISIONS,
         default=DEFAULT_RELEASE_REVISION,
-        help="release identity written into evidence (default: r51)",
+        help="release identity written into evidence (default: r52)",
     )
     args = parser.parse_args()
     release_label, compact_schema = compact_evidence_identity(args.release_revision)

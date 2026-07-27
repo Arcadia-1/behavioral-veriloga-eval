@@ -31,6 +31,12 @@ sudo ./verify.sh
 
 `verify.sh` 会实际运行一条 EVAS 仿真，并确认 Agent 能读取 `tran.csv`，而不只是得到 0/1。它还会检查题目只读、提交目录可写、EVAS 0.8.5 Rust core 可加载，以及镜像中没有预设的 evaluator 目录。
 
+`build.sh` 会生成配对的 `vabench-agent-runtime:0.8.5` 与
+`vabench-agent-runtime:0.8.5-no-evas` 镜像。后者保留相同的基础镜像、
+依赖、Bash、mini-SWE 工作区和提交合同，但移除 EVAS 命令与 Python
+模块，用于 `Agent-No-EVAS` 对照。`verify.sh` 同时检查这两个镜像；
+正式实验记录应保存两个镜像 ID。
+
 ## 3. 准备单题公开包
 
 评测组织方为每次运行提供三个目录：

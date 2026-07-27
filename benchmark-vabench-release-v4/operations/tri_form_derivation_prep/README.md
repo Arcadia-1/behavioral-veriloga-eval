@@ -40,7 +40,7 @@ python3 operations/tri_form_derivation_prep/audit_tri_form_release.py \
   --output /tmp/benchmarkv4_audit.json
 ```
 
-The active tracked release is `release/benchmarkv4-r51/`. Historical revisions
+The active tracked release is `release/benchmarkv4-r52/`. Historical revisions
 remain explicitly selectable for reproduction. For example, rebuild the r47
 snapshot into its separate tree with its revision-scoped evidence:
 
@@ -55,11 +55,11 @@ trees are immutable: the materializer/rebuilder fail closed rather than
 overwrite them, and an auditor never falls back to evidence from another
 revision.
 
-The active tracked release package is `release/benchmarkv4-r51/`. Immutable
-predecessors remain available for explicit historical verification. R51 is
-active because its revision-scoped EVAS, profile, metamorphic, release audit,
-and seal evidence is complete; its changed-checker Spectre recertification is
-tracked as supplemental evidence.
+The active tracked release package is `release/benchmarkv4-r52/`. Immutable
+predecessors remain available for explicit historical verification. R52 is
+active because its revision-scoped EVAS 0.8.5 audit, release seal, and public
+agent runtime are complete. R51 and its changed-checker Spectre
+recertification remain tracked as historical evidence.
 The active package root contains the package manifest, task index, prompt
 components, and `tasks/`. There is no
 separate top-level `private_evaluator/` mirror and no top-level
@@ -81,7 +81,7 @@ The construction source package is tracked separately under
 the final distributable package. Build/audit provenance stays there and in the
 materializer/audit scripts, not in every task directory. Per-task public
 contracts live at
-`release/benchmarkv4-r51/tasks/<task>/public_contract.json` as
+`release/benchmarkv4-r52/tasks/<task>/public_contract.json` as
 machine-readable metadata for evaluators and tooling. Runtime export does not
 mount or inline them into model prompts.
 
@@ -110,6 +110,6 @@ certification, or a final score.
 
 The old `formal_derivatives/` front-20 packages are prototypes and are not the
 canonical 800 derivative tasks. The canonical public generated views live under
-`release/benchmarkv4-r51/tasks/`. The historical "tri-form" wording remains an
+`release/benchmarkv4-r52/tasks/`. The historical "tri-form" wording remains an
 internal construction term for DUT/Testbench/Bugfix derivation, not the public
 package name.

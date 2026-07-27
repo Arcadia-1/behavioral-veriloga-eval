@@ -11,7 +11,7 @@ from typing import Any
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4-r51"
+DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4-r52"
 AGENTIC = {"G2", "G3", "G4", "G5"}
 FORM_SKILLS = {
     "dut": "dut_modeling.md",
@@ -569,7 +569,17 @@ def install_public(task_dir: Path, public_root: Path, form: str, mode: str, rele
             runtime_contract = read_json(source_public / "evas_runtime.json")
             commands.append(str(runtime_contract["command"]))
         else:
-            commands.append("use candidate_command_template from public/task/evas_runtime.json")
+            runtime_contract = read_json(source_public / "evas_runtime.json")
+            if (
+                runtime_contract.get("schema_version")
+                == "r52-direct-evas-testbench-reference-v1"
+            ):
+                commands.append(str(runtime_contract["candidate_command"]))
+            else:
+                commands.append(
+                    "use candidate_command_template from "
+                    "public/task/evas_runtime.json"
+                )
         write_json(public_root / "evas_manifest.json", {
             "schema_version": "r45-public-evas-manifest-v1",
             "executable": "evas",

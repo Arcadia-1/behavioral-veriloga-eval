@@ -1391,6 +1391,22 @@ def test_r52_testbench_one_shot_and_agentic_export_identical_task_assets(
             sort_keys=True,
         )
 
+    g2_runtime_contract = json.loads(
+        (
+            runtime_roots["G2"] / "public" / "task" / "evas_runtime.json"
+        ).read_text(encoding="utf-8")
+    )
+    g2_evas_manifest = json.loads(
+        (
+            runtime_roots["G2"] / "public" / "evas_manifest.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert g2_runtime_contract["candidate_command"] in g2_evas_manifest["commands"]
+    assert not any(
+        "candidate_command_template" in command
+        for command in g2_evas_manifest["commands"]
+    )
+
 
 def test_r52_public_evas_runs_reference_only(
     tmp_path: Path,

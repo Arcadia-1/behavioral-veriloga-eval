@@ -18,11 +18,12 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE_ROOT = ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
-DEFAULT_RELEASE = ROOT / "release" / "benchmarkv4-r51"
-DEFAULT_RELEASE_REVISION = "r51"
+DEFAULT_RELEASE = ROOT / "release" / "benchmarkv4-r52"
+DEFAULT_RELEASE_REVISION = "r52"
 FORMS = ("dut", "testbench", "bugfix")
 REQUIRED_EVAS_ENGINE = "evas2"
-REQUIRED_EVAS_VERSION = "0.8.3"
+REQUIRED_EVAS_VERSION = "0.8.5"
+LEGACY_EVAS_VERSION = "0.8.3"
 RUST_EVAS_LOG_ENGINE = "evas-rust"
 SUPPORTED_RELEASE_REVISIONS = ("r44", "r45", "r47", "r48", "r49", "r50", "r51", "r52")
 
@@ -100,7 +101,7 @@ def release_label(revision: str) -> str:
     return f"release/benchmarkv4-{revision}"
 
 def required_evas_version(revision: str) -> str:
-    return "0.8.5" if revision == "r52" else REQUIRED_EVAS_VERSION
+    return REQUIRED_EVAS_VERSION if revision == "r52" else LEGACY_EVAS_VERSION
 
 
 def source_family(family_id: str) -> Path:

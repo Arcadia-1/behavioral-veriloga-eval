@@ -8,6 +8,8 @@ import shutil
 import shlex
 import subprocess
 import sys
+import threading
+import time
 
 import pytest
 
@@ -174,6 +176,49 @@ def test_mini_swe_bash_episode_runs_direct_evas_reads_output_and_submits(
         runtime / "public" / "evas-output" / "tran.csv"
     ).read_text()
     assert (runtime / "evidence" / "trajectory.json").is_file()
+
+
+def test_mini_swe_agent_no_evas_uses_same_scaffold_without_evas(
+    tmp_path: Path,
+) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "task" / "instruction.md").write_text("public task")
+    (runtime / "public" / "submission").mkdir(parents=True)
+    provider = FakeProvider(
+        [
+            "command -v evas || true",
+            "printf 'module model; endmodule\\n' > public/submission/model.va",
+            "vabench-submit",
+        ]
+    )
+
+    result = module.run_mini_swe_episode(
+        runtime=runtime,
+        prompt="Generate model.va.",
+        client=provider,
+        per_turn_max_tokens=4096,
+        agent_timeout_s=30,
+        request_timeout_s=10,
+        tool_timeout_s=10,
+        sandbox_backend="none",
+        evas_command="",
+        executable_feedback=False,
+        submission_gate=artifact_gate,
+        usage_parser=usage_parser,
+        response_metadata=response_metadata,
+        trajectory_path=runtime / "evidence" / "trajectory.json",
+    )
+
+    assert result["submitted"] is True
+    assert result["scaffold"] == module.MINI_SWE_SCAFFOLD_ID
+    assert result["executable_feedback"] is False
+    assert result["evas_invocations"] == []
+    assert "EVAS execution is not available" in json.dumps(result["messages"])
+    first_observation = provider.calls[1]["messages"][-1]["content"]
+    assert "<output>\n\n</output>" in first_observation
+    assert (runtime / "public" / "submission" / "model.va").is_file()
 
 
 def test_mini_swe_exposes_skill_package_lazily_and_records_lookup_command(
@@ -353,6 +398,111 @@ def test_docker_backend_runs_shell_in_shared_environment_and_cleans_up(
     assert "rm -f" in calls
 
 
+def test_docker_preflight_retries_one_timeout_with_configured_deadline(
+    tmp_path: Path,
+) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "task" / "instruction.md").write_text("public task")
+    (runtime / "public" / "submission").mkdir(parents=True)
+    marker = tmp_path / "first-exec"
+    fake_docker = tmp_path / "docker"
+    fake_docker.write_text(
+        "#!/bin/sh\n"
+        "case \"$1 $2\" in\n"
+        "  'image inspect') echo 'sha256:shared-environment' ;;\n"
+        "  'create --name') echo 'vabench-test-container' ;;\n"
+        "  'exec -i')\n"
+        f"    if [ ! -e {shlex.quote(str(marker))} ]; then\n"
+        f"      : > {shlex.quote(str(marker))}\n"
+        "      sleep 1\n"
+        "    fi\n"
+        "    ;;\n"
+        "esac\n",
+        encoding="utf-8",
+    )
+    fake_docker.chmod(0o755)
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=5,
+        sandbox_backend="docker",
+        evas_command="",
+        docker_command=str(fake_docker),
+        docker_image="vabench-agent-runtime:test-commit",
+        preflight_timeout_s=0.1,
+        preflight_attempts=2,
+        submission_gate=artifact_gate,
+    )
+
+    try:
+        environment.preflight()
+        serialized = environment.serialize()["info"]["config"]["environment"]
+    finally:
+        environment.close()
+
+    assert serialized["preflight_timeout_s"] == 0.1
+    assert serialized["preflight_attempts"] == 2
+    assert serialized["preflight_attempts_used"] == 2
+
+
+def test_docker_startup_limiter_serializes_only_preflight(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    module = load_module()
+    limiter = threading.BoundedSemaphore(1)
+    active = 0
+    maximum_active = 0
+    lock = threading.Lock()
+
+    def fake_ensure(_self) -> None:
+        nonlocal active, maximum_active
+        if _self._docker_container is not None:
+            return
+        with lock:
+            active += 1
+            maximum_active = max(maximum_active, active)
+        _self._docker_container = "vabench-test-container"
+        time.sleep(0.03)
+
+    def fake_probe(*_args, **_kwargs):
+        nonlocal active
+        time.sleep(0.03)
+        with lock:
+            active -= 1
+        return subprocess.CompletedProcess([], 0, "")
+
+    monkeypatch.setattr(module.VaBenchBashEnvironment, "_ensure_docker_container", fake_ensure)
+    monkeypatch.setattr(module.subprocess, "run", fake_probe)
+    environments = []
+    for index in range(2):
+        runtime = tmp_path / f"runtime-{index}"
+        (runtime / "public" / "task").mkdir(parents=True)
+        (runtime / "public" / "task" / "instruction.md").write_text("public task")
+        (runtime / "public" / "submission").mkdir(parents=True)
+        environments.append(
+            module.VaBenchBashEnvironment(
+                runtime,
+                timeout_s=5,
+                sandbox_backend="docker",
+                evas_command="",
+                docker_image="vabench-agent-runtime:test-commit",
+                startup_limiter=limiter,
+                submission_gate=artifact_gate,
+            )
+        )
+
+    threads = [threading.Thread(target=environment.preflight) for environment in environments]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+
+    assert maximum_active == 1
+    assert limiter.acquire(blocking=False)
+    limiter.release()
+
+
 def test_public_runtime_mounts_a_spaced_skill_path_as_one_readonly_argument(
     tmp_path: Path,
 ) -> None:
@@ -462,6 +612,7 @@ def test_shared_docker_image_executes_real_adapter_contract(tmp_path: Path) -> N
         docker_image=os.environ.get(
             "VABENCH_TEST_DOCKER_IMAGE", module.DEFAULT_DOCKER_IMAGE
         ),
+        candidate_artifacts=["model.va"],
         submission_gate=artifact_gate,
     )
     try:
@@ -469,8 +620,8 @@ def test_shared_docker_image_executes_real_adapter_contract(tmp_path: Path) -> N
         result = environment.execute(
             {
                 "command": (
-                    "evas --version --format json && "
-                    "printf 'module model; endmodule\\n' > public/submission/model.va"
+                    "printf 'module model; endmodule\\n' > public/submission/model.va "
+                    "&& evas --version --format json"
                 )
             }
         )
@@ -480,6 +631,53 @@ def test_shared_docker_image_executes_real_adapter_contract(tmp_path: Path) -> N
 
     assert result["returncode"] == 0
     assert '"package_version":"0.8.5"' in result["output"].replace(" ", "")
+    assert serialized["image_id"].startswith("sha256:")
+    assert (runtime / "public" / "submission" / "model.va").is_file()
+    assert len(environment.evas_invocations) == 1
+    assert len(environment.evas_invocations[0]["candidate_tree_sha256"]) == 64
+    assert environment.evas_invocations[0][
+        "candidate_tree_schema_version"
+    ] == module.CANDIDATE_TREE_SCHEMA_VERSION
+
+
+def test_shared_no_evas_image_has_no_evas_capability(tmp_path: Path) -> None:
+    if os.environ.get("VABENCH_TEST_DOCKER_RUNTIME") != "1":
+        pytest.skip("real shared-image test is enabled by public-agent-runtime CI")
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "task" / "instruction.md").write_text("public task")
+    (runtime / "public" / "submission").mkdir(parents=True)
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=30,
+        sandbox_backend="docker",
+        evas_command="",
+        executable_feedback=False,
+        docker_image=os.environ.get(
+            "VABENCH_TEST_NO_EVAS_DOCKER_IMAGE",
+            module.DEFAULT_NO_EVAS_DOCKER_IMAGE,
+        ),
+        submission_gate=artifact_gate,
+    )
+    try:
+        environment.preflight()
+        result = environment.execute(
+            {
+                "command": (
+                    "! command -v evas && "
+                    "python3 -c 'import importlib.util; "
+                    "assert importlib.util.find_spec(\"evas\") is None' && "
+                    "printf 'module model; endmodule\\n' > public/submission/model.va"
+                )
+            }
+        )
+        serialized = environment.serialize()["info"]["config"]["environment"]
+    finally:
+        environment.close()
+
+    assert result["returncode"] == 0
+    assert serialized["executable_feedback"] is False
     assert serialized["image_id"].startswith("sha256:")
     assert (runtime / "public" / "submission" / "model.va").is_file()
 
@@ -560,6 +758,326 @@ def test_direct_evas_timeout_is_recorded_without_leaking_control_markers(
     assert len(environment.evas_invocations) == 1
     assert environment.evas_invocations[0]["status"] == "timed_out"
     assert environment.evas_invocations[0]["returncode"] is None
+
+
+def test_consecutive_evas_calls_record_the_same_candidate_tree_hash(
+    tmp_path: Path,
+) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    submission = runtime / "public" / "submission"
+    submission.mkdir(parents=True)
+    (submission / "model.va").write_text(
+        "module model; endmodule\n", encoding="utf-8"
+    )
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=5,
+        sandbox_backend="none",
+        evas_command="/usr/bin/true",
+        candidate_artifacts=["model.va"],
+        submission_gate=artifact_gate,
+    )
+
+    result = environment.execute({"command": "evas --version && evas --version"})
+
+    assert result["returncode"] == 0
+    assert len(environment.evas_invocations) == 2
+    hashes = [
+        invocation["candidate_tree_sha256"]
+        for invocation in environment.evas_invocations
+    ]
+    assert len(hashes[0]) == 64
+    assert hashes == [hashes[0], hashes[0]]
+
+
+def test_compound_command_hashes_candidate_at_each_evas_start(
+    tmp_path: Path,
+) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    (runtime / "public" / "submission").mkdir(parents=True)
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=5,
+        sandbox_backend="none",
+        evas_command="/usr/bin/true",
+        candidate_artifacts=["model.va"],
+        submission_gate=artifact_gate,
+    )
+
+    result = environment.execute(
+        {
+            "command": (
+                "printf A > public/submission/model.va; "
+                "evas --version; "
+                "printf B > public/submission/model.va; "
+                "evas --version"
+            )
+        }
+    )
+
+    assert result["returncode"] == 0
+    hashes = [
+        invocation["candidate_tree_sha256"]
+        for invocation in environment.evas_invocations
+    ]
+    assert len(hashes) == 2
+    assert hashes[0] != hashes[1]
+
+
+def test_multi_file_candidate_hash_changes_when_one_declared_artifact_changes(
+    tmp_path: Path,
+) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    submission = runtime / "public" / "submission"
+    submission.mkdir(parents=True)
+    (submission / "model.va").write_text("model-a", encoding="utf-8")
+    (submission / "support.va").write_text("support-a", encoding="utf-8")
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=5,
+        sandbox_backend="none",
+        evas_command="/usr/bin/true",
+        candidate_artifacts=["support.va", "model.va"],
+        submission_gate=artifact_gate,
+    )
+
+    result = environment.execute(
+        {
+            "command": (
+                "evas --version; "
+                "printf support-b > public/submission/support.va; "
+                "evas --version"
+            )
+        }
+    )
+
+    assert result["returncode"] == 0
+    first, second = environment.evas_invocations
+    assert first["candidate_tree_sha256"] != second["candidate_tree_sha256"]
+
+    mirror_runtime = tmp_path / "mirror-runtime"
+    (mirror_runtime / "public" / "task").mkdir(parents=True)
+    mirror_submission = mirror_runtime / "public" / "submission"
+    mirror_submission.mkdir(parents=True)
+    (mirror_submission / "model.va").write_text("model-a", encoding="utf-8")
+    (mirror_submission / "support.va").write_text(
+        "support-a", encoding="utf-8"
+    )
+    mirror = module.VaBenchBashEnvironment(
+        mirror_runtime,
+        timeout_s=5,
+        sandbox_backend="none",
+        evas_command="/usr/bin/true",
+        candidate_artifacts=["model.va", "support.va"],
+        submission_gate=artifact_gate,
+    )
+    mirror.execute({"command": "evas --version"})
+    assert (
+        first["candidate_tree_sha256"]
+        == mirror.evas_invocations[0]["candidate_tree_sha256"]
+    )
+
+
+def test_rewriting_declared_artifact_with_same_bytes_preserves_candidate_hash(
+    tmp_path: Path,
+) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    submission = runtime / "public" / "submission"
+    submission.mkdir(parents=True)
+    (submission / "model.va").write_bytes(b"same-bytes")
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=5,
+        sandbox_backend="none",
+        evas_command="/usr/bin/true",
+        candidate_artifacts=["model.va"],
+        submission_gate=artifact_gate,
+    )
+
+    result = environment.execute(
+        {
+            "command": (
+                "evas --version; "
+                "printf same-bytes > public/submission/model.va; "
+                "evas --version"
+            )
+        }
+    )
+
+    assert result["returncode"] == 0
+    first, second = environment.evas_invocations
+    assert first["candidate_tree_sha256"] == second["candidate_tree_sha256"]
+
+
+def test_empty_and_missing_declared_artifacts_have_stable_hashes(
+    tmp_path: Path,
+) -> None:
+    module = load_module()
+
+    def run_twice(name: str, artifacts: list[str]) -> list[str]:
+        runtime = tmp_path / name
+        (runtime / "public" / "task").mkdir(parents=True)
+        (runtime / "public" / "submission").mkdir(parents=True)
+        environment = module.VaBenchBashEnvironment(
+            runtime,
+            timeout_s=5,
+            sandbox_backend="none",
+            evas_command="/usr/bin/true",
+            candidate_artifacts=artifacts,
+            submission_gate=artifact_gate,
+        )
+        result = environment.execute(
+            {"command": "evas --version && evas --version"}
+        )
+        assert result["returncode"] == 0
+        return [
+            invocation["candidate_tree_sha256"]
+            for invocation in environment.evas_invocations
+        ]
+
+    missing_hashes = run_twice("missing", ["model.va"])
+    empty_hashes = run_twice("empty", [])
+
+    assert missing_hashes[0] == missing_hashes[1]
+    assert empty_hashes[0] == empty_hashes[1]
+    assert missing_hashes[0] != empty_hashes[0]
+
+
+def test_candidate_hash_excludes_work_evas_output_and_private_assets(
+    tmp_path: Path,
+) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    submission = runtime / "public" / "submission"
+    submission.mkdir(parents=True)
+    (submission / "model.va").write_text("candidate", encoding="utf-8")
+    private = runtime / "evaluator" / "secret.txt"
+    private.parent.mkdir(parents=True)
+    private.write_text("private-a", encoding="utf-8")
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=5,
+        sandbox_backend="none",
+        evas_command="/usr/bin/true",
+        candidate_artifacts=["model.va"],
+        submission_gate=artifact_gate,
+    )
+    work_file = runtime / "public" / "work" / "scratch.txt"
+    output_file = runtime / "public" / "evas-output" / "tran.csv"
+    work_file.write_text("work-a", encoding="utf-8")
+    output_file.write_text("output-a", encoding="utf-8")
+
+    first = environment.execute({"command": "evas --version"})
+    private.write_text("private-b", encoding="utf-8")
+    work_file.write_text("work-b", encoding="utf-8")
+    output_file.write_text("output-b", encoding="utf-8")
+    second = environment.execute({"command": "evas --version"})
+
+    assert first["returncode"] == second["returncode"] == 0
+    first_invocation, second_invocation = environment.evas_invocations
+    assert (
+        first_invocation["candidate_tree_sha256"]
+        == second_invocation["candidate_tree_sha256"]
+    )
+    assert not any(
+        "waveform" in key or "log" in key
+        for key in first_invocation
+    )
+
+
+def test_candidate_hash_does_not_follow_symlinks_into_private_assets(
+    tmp_path: Path,
+) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    submission = runtime / "public" / "submission"
+    submission.mkdir(parents=True)
+    private = runtime / "evaluator" / "secret.txt"
+    private.parent.mkdir(parents=True)
+    private.write_text("private-a", encoding="utf-8")
+    (submission / "model.va").symlink_to(private)
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=5,
+        sandbox_backend="none",
+        evas_command="/usr/bin/true",
+        candidate_artifacts=["model.va"],
+        submission_gate=artifact_gate,
+    )
+
+    environment.execute({"command": "evas --version"})
+    private.write_text("private-b", encoding="utf-8")
+    environment.execute({"command": "evas --version"})
+
+    first, second = environment.evas_invocations
+    assert first["candidate_tree_sha256"] == second["candidate_tree_sha256"]
+
+
+@pytest.mark.parametrize(
+    "candidate_path",
+    ["../evaluator/secret.txt", "/absolute/model.va"],
+)
+def test_candidate_hash_rejects_paths_outside_declared_submission_root(
+    tmp_path: Path,
+    candidate_path: str,
+) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+
+    with pytest.raises(ValueError, match="unsafe candidate artifact path"):
+        module.VaBenchBashEnvironment(
+            runtime,
+            timeout_s=5,
+            sandbox_backend="none",
+            evas_command="/usr/bin/true",
+            candidate_artifacts=[candidate_path],
+            submission_gate=artifact_gate,
+        )
+
+
+def test_waveform_cli_and_agentic_wave_arm_are_not_exposed(
+    tmp_path: Path,
+) -> None:
+    module = load_module()
+    runtime = tmp_path / "runtime"
+    (runtime / "public" / "task").mkdir(parents=True)
+    environment = module.VaBenchBashEnvironment(
+        runtime,
+        timeout_s=5,
+        sandbox_backend="none",
+        evas_command="/usr/bin/true",
+        candidate_artifacts=["model.va"],
+        submission_gate=artifact_gate,
+    )
+    executable_tools = sorted(
+        path.name
+        for path in environment.tools_dir.iterdir()
+        if path.is_file() and os.access(path, os.X_OK)
+    )
+    campaign_sources = "\n".join(
+        path.read_text(encoding="utf-8")
+        for path in (
+            MODULE.parent / "build_campaign.py",
+            MODULE.parent / "run_campaign.py",
+        )
+    )
+
+    assert executable_tools == ["evas", "vabench-submit"]
+    assert "vabench-waveform" not in (
+        module.SYSTEM_PROMPT + module.BASH_CONTRACT + campaign_sources
+    )
+    assert "Agentic-Wave" not in campaign_sources
 
 
 def test_sandbox_profile_allows_only_candidate_and_evas_scratch_writes(

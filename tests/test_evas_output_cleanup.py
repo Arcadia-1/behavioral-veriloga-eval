@@ -10,6 +10,22 @@ sys.path.insert(0, str(ROOT / "runners"))
 import simulate_evas  # noqa: E402
 
 
+def test_trusted_replay_command_overrides_discovered_evas(monkeypatch) -> None:
+    monkeypatch.setenv(
+        "VABENCH_EVAS_COMMAND",
+        "/opt/vabench/evas-0.8.5 --runtime-mode sealed",
+    )
+
+    command, env = simulate_evas.evas_command_and_env()
+
+    assert command == [
+        "/opt/vabench/evas-0.8.5",
+        "--runtime-mode",
+        "sealed",
+    ]
+    assert env is None
+
+
 def test_run_case_removes_stale_tran_csv_before_evas(monkeypatch, tmp_path: Path) -> None:
     monkeypatch.delenv("EVAS_ENGINE", raising=False)
     monkeypatch.delenv("VAEVAS_DEFAULT_EVAS_ENGINE", raising=False)

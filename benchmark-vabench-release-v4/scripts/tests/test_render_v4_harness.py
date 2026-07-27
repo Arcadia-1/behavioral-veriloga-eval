@@ -19,6 +19,7 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(0, str(RELEASE_ROOT / "operations" / "tri_form_derivation_prep"))
 
 import render_v4_harness  # noqa: E402
+import run_v4_metamorphic_smoke as metamorphic_smoke  # noqa: E402
 from run_v4_metamorphic_smoke import transform_deck  # noqa: E402
 from run_v4_reference_evas_smoke import (  # noqa: E402
     engine_evidence_from_log,
@@ -50,6 +51,52 @@ def _without_simulator_options(deck: str) -> str:
         for line in deck.splitlines()
         if line.strip() and not line.startswith("simulatorOptions options ")
     )
+
+
+@pytest.mark.parametrize(
+    ("release_revision", "expected_evas_version"),
+    [("r51", "0.8.3"), ("r52", "0.8.5")],
+)
+def test_metamorphic_smoke_uses_release_pinned_evas_version(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    release_revision: str,
+    expected_evas_version: str,
+) -> None:
+    release = tmp_path / f"benchmarkv4-{release_revision}"
+    release.mkdir()
+    (release / "MANIFEST.json").write_text(
+        json.dumps({"release_revision": release_revision}) + "\n",
+        encoding="utf-8",
+    )
+    observed: dict[str, str] = {}
+
+    def fake_run_task(*_args, **kwargs) -> dict[str, object]:
+        observed["task"] = kwargs["required_evas_version"]
+        return {"status": "pass", "case_count": 0}
+
+    monkeypatch.setattr(metamorphic_smoke, "require_evas2_environment", lambda: None)
+    monkeypatch.setattr(metamorphic_smoke, "run_task", fake_run_task)
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "run_v4_metamorphic_smoke.py",
+            "--release",
+            str(release),
+            "--task-id",
+            "v4-501",
+            "--output",
+            str(tmp_path / "report.json"),
+            "--work-root",
+            str(tmp_path / "work"),
+        ],
+    )
+
+    assert metamorphic_smoke.main() == 0
+    report = json.loads((tmp_path / "report.json").read_text(encoding="utf-8"))
+    assert observed["task"] == expected_evas_version
+    assert report["evas_version"] == expected_evas_version
 
 
 def test_assigned_specs_have_profile_parity() -> None:
@@ -145,7 +192,7 @@ def test_evas2_evidence_requires_explicit_engine_and_rust_log(
     require_evas2_environment()
     log = tmp_path / "evas.log"
     log.write_text(
-        "Version 0.8.3 -- Jul 2026\n    evas_engine = evas-rust\n",
+        "Version 0.8.5 -- Jul 2026\n    evas_engine = evas-rust\n",
         encoding="utf-8",
     )
     evidence = engine_evidence_from_log(log, "")

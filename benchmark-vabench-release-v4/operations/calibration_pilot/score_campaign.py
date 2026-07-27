@@ -84,6 +84,42 @@ def normalize_judge_command(command: str | None) -> str | None:
     return shlex.join(resolve_command_path_token(part) for part in parts)
 
 
+def attach_failure_taxonomy(
+    row: dict[str, Any],
+    experiment: dict[str, Any],
+    *,
+    fallback_model_status: str,
+    artifact_gate: dict[str, Any],
+) -> None:
+    taxonomy = experiment.get("failure_taxonomy")
+    if not isinstance(taxonomy, dict):
+        submission = experiment.get("final_submission")
+        if not isinstance(submission, dict):
+            submission = {
+                "status": (
+                    "available" if artifact_gate.get("passed") else "no_submission"
+                )
+            }
+        replay = experiment.get("final_trusted_replay")
+        if not isinstance(replay, dict):
+            replay = {"status": "not_run", "command": None}
+        model_execution = experiment.get("model_execution")
+        recorded_model_status = (
+            model_execution.get("status")
+            if isinstance(model_execution, dict)
+            else None
+        )
+        model_status = recorded_model_status or fallback_model_status
+        taxonomy = RUNNER.RESULT_PROTOCOL.terminal_failure_taxonomy(
+            str(model_status), submission, replay
+        )
+    row["failure_taxonomy"] = taxonomy
+    row["failure_class"] = taxonomy.get("primary_class")
+    row["failure_stage"] = taxonomy.get("stage")
+    row["failure_responsibility"] = taxonomy.get("responsibility")
+    row["failure_retryable"] = taxonomy.get("retryable")
+
+
 def provider_usage(events: list[dict[str, Any]]) -> dict[str, int]:
     totals: Counter[str] = Counter()
     for event in events:
@@ -153,6 +189,7 @@ def evaluate_cell(
     command: str | None,
     timeout_s: int,
     evas_command: str | None = None,
+    reuse_existing: bool = False,
 ) -> dict[str, Any]:
     result = read_json(result_path)
     cell = result["cell"]
@@ -169,6 +206,7 @@ def evaluate_cell(
         "task_id": cell["task_id"],
         "form": cell["form"],
         "mode": cell["mode"],
+        "experimental_arm": cell.get("experimental_arm"),
         "submission_status": result["status"],
         "termination_reason": result.get("termination_reason"),
         "submission_mode": result.get("submission_mode"),
@@ -183,7 +221,23 @@ def evaluate_cell(
         "episode_elapsed_s": elapsed_seconds(result),
     }
     experiment = result.get("experiment_result") or {}
+    attach_failure_taxonomy(
+        row,
+        experiment,
+        fallback_model_status=str(result["status"]),
+        artifact_gate=artifact_gate,
+    )
+    existing_replay = experiment.get("final_trusted_replay")
     if (
+        reuse_existing
+        and result.get("final_judge") is not None
+        and isinstance(existing_replay, dict)
+        and existing_replay.get("status") not in {None, "not_run"}
+    ):
+        row["judge_status"] = existing_replay["status"]
+        row["outcome"] = experiment.get("outcome", existing_replay["status"])
+        row["trusted_replay"] = existing_replay
+    elif (
         result["status"] not in ARTIFACT_READY or not artifact_gate["passed"]
     ):
         outcome = str(experiment.get("outcome") or "no_submission")
@@ -231,6 +285,12 @@ def evaluate_cell(
         result["experiment_result"] = experiment
         result["final_judge"] = replay["command"]
         write_json(result_path, result)
+        attach_failure_taxonomy(
+            row,
+            experiment,
+            fallback_model_status=model_status,
+            artifact_gate=artifact_gate,
+        )
         row["judge_status"] = replay["status"]
         row["outcome"] = experiment["outcome"]
         row["trusted_replay"] = replay
@@ -239,55 +299,159 @@ def evaluate_cell(
 
 def summarize(rows: list[dict[str, Any]], judge_kind: str) -> dict[str, Any]:
     grouped: dict[str, Counter[str]] = defaultdict(Counter)
+    failure_grouped: dict[str, Counter[str]] = defaultdict(Counter)
+    failure_classes: Counter[str] = Counter()
+    failure_stages: Counter[str] = Counter()
+    failure_responsibilities: Counter[str] = Counter()
+    secondary_failure_classes: Counter[str] = Counter()
+    failed_case_ids: Counter[str] = Counter()
+    failed_property_ids: Counter[str] = Counter()
+    failed_mutation_ids: Counter[str] = Counter()
     for row in rows:
         grouped[f"form:{row['form']}"][row["judge_status"]] += 1
         grouped[f"mode:{row['mode']}"][row["judge_status"]] += 1
-    telemetry_by_mode = {}
-    for mode in sorted({str(row["mode"]) for row in rows}):
-        selected = [row for row in rows if row["mode"] == mode]
-        output = [int(row.get("output_tokens", row.get("working_tokens", 0)) or 0) for row in selected]
-        elapsed = [float(row["episode_elapsed_s"]) for row in selected if row.get("episode_elapsed_s") is not None]
-        telemetry_by_mode[mode] = {
-            "cell_count": len(selected),
-            "output_tokens_total": sum(output),
-            "output_tokens_median": statistics.median(output),
-            "working_tokens_total": sum(output),
-            "working_tokens_median": statistics.median(output),
-            "episode_elapsed_s_median": statistics.median(elapsed) if elapsed else None,
-            "model_calls_total": sum(int(row.get("telemetry", {}).get("model_calls", 0)) for row in selected),
-            "tool_calls_total": sum(int(row.get("telemetry", {}).get("tool_calls_total", 0)) for row in selected),
-            "evas_calls_total": sum(int(row.get("telemetry", {}).get("evas_calls", 0)) for row in selected),
-            "direct_evas_calls_total": sum(
-                int(row.get("evas_usage", {}).get("calls_executed", 0))
+        if row.get("experimental_arm"):
+            grouped[f"arm:{row['experimental_arm']}"][row["judge_status"]] += 1
+        failure_class = row.get("failure_class")
+        if not isinstance(failure_class, str) or not failure_class:
+            continue
+        failure_classes[failure_class] += 1
+        failure_stage = row.get("failure_stage")
+        if isinstance(failure_stage, str) and failure_stage:
+            failure_stages[failure_stage] += 1
+        responsibility = row.get("failure_responsibility")
+        if isinstance(responsibility, str) and responsibility:
+            failure_responsibilities[responsibility] += 1
+        taxonomy = row.get("failure_taxonomy")
+        if isinstance(taxonomy, dict):
+            for field, counter in (
+                ("secondary_classes", secondary_failure_classes),
+                ("case_ids", failed_case_ids),
+                ("property_ids", failed_property_ids),
+                ("mutation_ids", failed_mutation_ids),
+            ):
+                for value in taxonomy.get(field) or []:
+                    if isinstance(value, str) and value:
+                        counter[value] += 1
+        failure_grouped[f"form:{row['form']}"][failure_class] += 1
+        failure_grouped[f"mode:{row['mode']}"][failure_class] += 1
+        if row.get("experimental_arm"):
+            failure_grouped[f"arm:{row['experimental_arm']}"][failure_class] += 1
+
+    def telemetry_by(field: str) -> dict[str, Any]:
+        telemetry = {}
+        values = sorted(
+            {str(row[field]) for row in rows if row.get(field) is not None}
+        )
+        for value in values:
+            selected = [row for row in rows if row.get(field) == value]
+            output = [
+                int(row.get("output_tokens", row.get("working_tokens", 0)) or 0)
                 for row in selected
-            ),
-            "direct_evas_successes_total": sum(
-                int(row.get("evas_usage", {}).get("calls_succeeded", 0))
+            ]
+            elapsed = [
+                float(row["episode_elapsed_s"])
                 for row in selected
-            ),
-            "direct_evas_failures_total": sum(
-                int(row.get("evas_usage", {}).get("calls_failed", 0))
-                for row in selected
-            ),
-            "direct_evas_timeouts_total": sum(
-                int(row.get("evas_usage", {}).get("calls_timed_out", 0))
-                for row in selected
-            ),
-            "legacy_feedback_calls_total": sum(
-                int(row.get("telemetry", {}).get("legacy_feedback_calls", 0))
-                for row in selected
-            ),
-            "provider_reasoning_tokens_total": sum(
-                int(row.get("telemetry", {}).get("provider_reasoning_tokens_total", 0))
-                for row in selected
-            ),
-            "budget_hit_model_calls": sum(
-                int(row.get("telemetry", {}).get("budget_hit_model_calls", 0))
-                for row in selected
-            ),
-        }
+                if row.get("episode_elapsed_s") is not None
+            ]
+            candidate_tree_hash_call_counts: Counter[str] = Counter()
+            for row in selected:
+                raw_counts = row.get("evas_usage", {}).get(
+                    "candidate_tree_hash_call_counts", {}
+                )
+                if not isinstance(raw_counts, dict):
+                    continue
+                for candidate_hash, count in raw_counts.items():
+                    if isinstance(candidate_hash, str) and candidate_hash:
+                        candidate_tree_hash_call_counts[candidate_hash] += int(
+                            count or 0
+                        )
+            telemetry[value] = {
+                "cell_count": len(selected),
+                "output_tokens_total": sum(output),
+                "output_tokens_median": statistics.median(output),
+                "working_tokens_total": sum(output),
+                "working_tokens_median": statistics.median(output),
+                "episode_elapsed_s_median": (
+                    statistics.median(elapsed) if elapsed else None
+                ),
+                "model_calls_total": sum(
+                    int(row.get("telemetry", {}).get("model_calls", 0))
+                    for row in selected
+                ),
+                "tool_calls_total": sum(
+                    int(row.get("telemetry", {}).get("tool_calls_total", 0))
+                    for row in selected
+                ),
+                "evas_calls_total": sum(
+                    int(row.get("telemetry", {}).get("evas_calls", 0))
+                    for row in selected
+                ),
+                "direct_evas_calls_total": sum(
+                    int(row.get("evas_usage", {}).get("calls_executed", 0))
+                    for row in selected
+                ),
+                "direct_evas_successes_total": sum(
+                    int(row.get("evas_usage", {}).get("calls_succeeded", 0))
+                    for row in selected
+                ),
+                "direct_evas_failures_total": sum(
+                    int(row.get("evas_usage", {}).get("calls_failed", 0))
+                    for row in selected
+                ),
+                "direct_evas_timeouts_total": sum(
+                    int(row.get("evas_usage", {}).get("calls_timed_out", 0))
+                    for row in selected
+                ),
+                "direct_evas_unique_candidate_tree_hashes": sorted(
+                    candidate_tree_hash_call_counts
+                ),
+                "direct_evas_candidate_tree_hash_call_counts": dict(
+                    sorted(candidate_tree_hash_call_counts.items())
+                ),
+                "direct_evas_modified_reruns_total": sum(
+                    int(
+                        row.get("evas_usage", {}).get(
+                            "modified_rerun_count", 0
+                        )
+                    )
+                    for row in selected
+                ),
+                "direct_evas_unchanged_repeats_total": sum(
+                    int(
+                        row.get("evas_usage", {}).get(
+                            "unchanged_repeat_count", 0
+                        )
+                    )
+                    for row in selected
+                ),
+                "legacy_feedback_calls_total": sum(
+                    int(row.get("telemetry", {}).get("legacy_feedback_calls", 0))
+                    for row in selected
+                ),
+                "provider_reasoning_tokens_total": sum(
+                    int(
+                        row.get("telemetry", {}).get(
+                            "provider_reasoning_tokens_total", 0
+                        )
+                    )
+                    for row in selected
+                ),
+                "budget_hit_model_calls": sum(
+                    int(
+                        row.get("telemetry", {}).get(
+                            "budget_hit_model_calls", 0
+                        )
+                    )
+                    for row in selected
+                ),
+            }
+        return telemetry
+
+    telemetry_by_mode = telemetry_by("mode")
+    telemetry_by_arm = telemetry_by("experimental_arm")
     return {
-        "schema_version": "v4-calibration-score-report-v1",
+        "schema_version": "v4-calibration-score-report-v2",
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "judge_kind": judge_kind,
         "score_authority": (
@@ -298,6 +462,29 @@ def summarize(rows: list[dict[str, Any]], judge_kind: str) -> dict[str, Any]:
         "cell_count": len(rows),
         "submission_statuses": dict(Counter(row["submission_status"] for row in rows)),
         "judge_statuses": dict(Counter(row["judge_status"] for row in rows)),
+        "failure_classes": dict(sorted(failure_classes.items())),
+        "failure_stages": dict(sorted(failure_stages.items())),
+        "failure_responsibilities": dict(
+            sorted(failure_responsibilities.items())
+        ),
+        "secondary_failure_classes": dict(
+            sorted(secondary_failure_classes.items())
+        ),
+        "failed_case_ids": dict(sorted(failed_case_ids.items())),
+        "failed_property_ids": dict(sorted(failed_property_ids.items())),
+        "failed_mutation_ids": dict(sorted(failed_mutation_ids.items())),
+        "failure_retryability": {
+            "retryable": sum(
+                bool(row.get("failure_retryable"))
+                for row in rows
+                if row.get("failure_class")
+            ),
+            "non_retryable": sum(
+                not bool(row.get("failure_retryable"))
+                for row in rows
+                if row.get("failure_class")
+            ),
+        },
         "incident_categories": dict(
             sorted(
                 Counter(
@@ -308,7 +495,11 @@ def summarize(rows: list[dict[str, Any]], judge_kind: str) -> dict[str, Any]:
             )
         ),
         "breakdown": {key: dict(value) for key, value in sorted(grouped.items())},
+        "failure_breakdown": {
+            key: dict(value) for key, value in sorted(failure_grouped.items())
+        },
         "telemetry_by_mode": telemetry_by_mode,
+        "telemetry_by_arm": telemetry_by_arm,
         "rows": rows,
     }
 
@@ -326,6 +517,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--evas-command")
     parser.add_argument("--output", type=Path)
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Reuse trusted-replay outcomes already persisted in campaign results.",
+    )
     return parser.parse_args()
 
 
@@ -345,14 +541,24 @@ def main() -> int:
         raise SystemExit(f"no campaign results under {args.campaign_output}")
     if args.workers == 1:
         rows = [
-            evaluate_cell(path, args.judge_command, args.timeout_s, args.evas_command)
+            evaluate_cell(
+                path,
+                args.judge_command,
+                args.timeout_s,
+                args.evas_command,
+                args.resume,
+            )
             for path in result_paths
         ]
     else:
         with ThreadPoolExecutor(max_workers=args.workers) as pool:
             rows = list(pool.map(
                 lambda path: evaluate_cell(
-                    path, args.judge_command, args.timeout_s, args.evas_command
+                    path,
+                    args.judge_command,
+                    args.timeout_s,
+                    args.evas_command,
+                    args.resume,
                 ),
                 result_paths,
             ))

@@ -4,6 +4,7 @@ set -eu
 cd "$(dirname "$0")"
 
 IMAGE_TAG="${IMAGE_TAG:-vabench-agent-runtime:0.8.5}"
+NO_EVAS_IMAGE_TAG="${NO_EVAS_IMAGE_TAG:-vabench-agent-runtime:0.8.5-no-evas}"
 DOCKER="${DOCKER:-docker}"
 TMP_ROOT=$(mktemp -d "$PWD/.verify.XXXXXX")
 trap 'rm -rf "$TMP_ROOT"' EXIT INT TERM
@@ -66,4 +67,30 @@ PY
         test ! -e /workspace/evaluator
     '
 
-echo "PASS: image, mounts, EVAS Rust core, and tran.csv access verified"
+"$DOCKER" run --rm \
+    --platform linux/amd64 \
+    --read-only \
+    --cap-drop=ALL \
+    --security-opt=no-new-privileges \
+    --network=none \
+    --tmpfs /tmp:rw,nosuid,nodev,size=256m,mode=1777 \
+    --tmpfs /home/agent:rw,nosuid,nodev,size=64m,mode=0700,uid=10001,gid=10001 \
+    --mount "type=bind,src=$TMP_ROOT/task,dst=/workspace/public/task,readonly" \
+    --mount "type=bind,src=$TMP_ROOT/submission,dst=/workspace/public/submission" \
+    --mount "type=bind,src=$TMP_ROOT/work,dst=/workspace/work" \
+    "$NO_EVAS_IMAGE_TAG" /bin/bash -lc '
+        set -eu
+        test -r public/task/visible_test.scs
+        test ! -w public/task/visible_test.scs
+        test -w public/submission
+        test -w work
+        ! command -v evas >/dev/null
+        python3 - <<"PY"
+import importlib.util
+assert importlib.util.find_spec("evas") is None
+PY
+        test ! -e /opt/benchmark
+        test ! -e /workspace/evaluator
+    '
+
+echo "PASS: matched Agentic and Agent-No-EVAS images verified"

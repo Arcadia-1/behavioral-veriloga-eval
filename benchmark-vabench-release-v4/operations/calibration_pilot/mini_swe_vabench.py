@@ -12,6 +12,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+from pathlib import PurePosixPath
 import re
 import secrets
 import shlex
@@ -27,6 +28,11 @@ from typing import Any, Callable
 MINI_SWE_AGENT_VERSION = "2.4.5"
 MINI_SWE_SCAFFOLD_ID = "mini-swe-agent-2.4.5-vabench-docker-evas-v3"
 DEFAULT_DOCKER_IMAGE = "vabench-agent-runtime:0.8.5"
+DEFAULT_NO_EVAS_DOCKER_IMAGE = "vabench-agent-runtime:0.8.5-no-evas"
+CANDIDATE_TREE_SCHEMA_VERSION = "v4-candidate-tree-sha256-v1"
+CANDIDATE_TREE_HASH_ERROR_SHA256 = hashlib.sha256(
+    b"vabench-candidate-tree-hash-error-v1"
+).hexdigest()
 COMMAND_OUTPUT_CAPTURE_BYTES = 1 * 1024 * 1024
 COMMAND_OUTPUT_HEAD_BYTES = 64 * 1024
 MODEL_OUTPUT_BYTES = 12_000
@@ -88,9 +94,148 @@ The container has no network. Do not create symlinks or modify public/task/.
 </vabench_bash_contract>
 """.strip()
 
+NO_EVAS_SYSTEM_PROMPT = (
+    "You are a behavioral Verilog-A engineer operating in an isolated shell. "
+    "Use the bash tool to inspect the public task, create or edit only declared "
+    "artifacts under public/submission/, reason from the public specification and "
+    "files without executable simulator feedback, and submit."
+)
+
+NO_EVAS_BASH_CONTRACT = r"""
+<vabench_bash_contract>
+This is an interactive bash-only episode. Every assistant turn must contain at
+least one bash tool call.
+
+Workspace:
+- public/task/ is read-only public task material.
+- public/skills/ is read-only and exists only in skill-enabled modes; read
+  public/skills/<id>/SKILL.md before applying a skill.
+- public/submission/ is the only writable candidate-artifact directory.
+- work/ is writable scratch space and is never scored.
+- evaluator, gold implementations, checker source, private mutations, final
+  score cases are not available in this shell.
+- EVAS execution is not available in this experimental arm.
+
+Commands:
+- Use ordinary non-interactive shell commands to inspect public/task/ and edit
+  public/submission/.
+- `vabench-submit` is a real command in PATH. Run it after every declared artifact
+  is complete. A rejected submission returns diagnostics and the episode continues.
+
+The container has no network. Do not create symlinks or modify public/task/.
+</vabench_bash_contract>
+""".strip()
+
 
 class MiniSweAgentUnavailable(RuntimeError):
     """Raised when the pinned mini-SWE-agent package is unavailable or mismatched."""
+
+
+def _candidate_artifact_paths(
+    raw_paths: list[str] | tuple[str, ...],
+) -> tuple[str, ...]:
+    normalized: list[str] = []
+    for raw in raw_paths:
+        path = PurePosixPath(str(raw).replace("\\", "/"))
+        if not path.parts or path.is_absolute() or ".." in path.parts:
+            raise ValueError(f"unsafe candidate artifact path: {raw!r}")
+        normalized.append(path.as_posix())
+    return tuple(sorted(normalized))
+
+
+def _candidate_tree_hasher_source(candidate_artifacts: tuple[str, ...]) -> str:
+    return f"""import errno
+import hashlib
+import os
+from pathlib import PurePosixPath
+import stat
+
+SCHEMA_VERSION = {CANDIDATE_TREE_SCHEMA_VERSION!r}
+CANDIDATE_ROOT = "public/submission"
+CANDIDATE_ARTIFACTS = {candidate_artifacts!r}
+
+
+def frame(digest, value):
+    digest.update(len(value).to_bytes(8, "big"))
+    digest.update(value)
+
+
+def candidate_state(relative):
+    directory_flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
+    try:
+        directory_fd = os.open(CANDIDATE_ROOT, directory_flags)
+    except OSError:
+        return b"missing", None, None
+    try:
+        parts = PurePosixPath(relative).parts
+        for part in parts[:-1]:
+            try:
+                next_fd = os.open(
+                    part,
+                    directory_flags | getattr(os, "O_NOFOLLOW", 0),
+                    dir_fd=directory_fd,
+                )
+            except FileNotFoundError:
+                return b"missing", None, None
+            except OSError as exc:
+                if exc.errno in {{errno.ELOOP, errno.ENOTDIR}}:
+                    return b"unsafe_ancestor", None, None
+                return b"unreadable", None, None
+            os.close(directory_fd)
+            directory_fd = next_fd
+        try:
+            artifact_fd = os.open(
+                parts[-1],
+                os.O_RDONLY
+                | getattr(os, "O_NOFOLLOW", 0)
+                | getattr(os, "O_NONBLOCK", 0),
+                dir_fd=directory_fd,
+            )
+        except FileNotFoundError:
+            return b"missing", None, None
+        except OSError as exc:
+            if exc.errno == errno.ELOOP:
+                return b"symlink", None, None
+            if exc.errno == errno.ENOTDIR:
+                return b"unsafe_ancestor", None, None
+            return b"unreadable", None, None
+        try:
+            metadata = os.fstat(artifact_fd)
+            if not stat.S_ISREG(metadata.st_mode):
+                state = (
+                    b"directory"
+                    if stat.S_ISDIR(metadata.st_mode)
+                    else b"non_regular"
+                )
+                return state, None, None
+            content = hashlib.sha256()
+            size = 0
+            while True:
+                chunk = os.read(artifact_fd, 1024 * 1024)
+                if not chunk:
+                    break
+                size += len(chunk)
+                content.update(chunk)
+            return b"file", size, content.digest()
+        except OSError:
+            return b"unreadable", None, None
+        finally:
+            os.close(artifact_fd)
+    finally:
+        os.close(directory_fd)
+
+
+tree = hashlib.sha256()
+frame(tree, SCHEMA_VERSION.encode())
+for relative in CANDIDATE_ARTIFACTS:
+    frame(tree, relative.encode())
+    state, size, content_sha256 = candidate_state(relative)
+    frame(tree, state)
+    if state == b"file":
+        frame(tree, str(size).encode())
+        frame(tree, content_sha256)
+print(tree.hexdigest())
+"""
 
 
 class _BoundedOutput:
@@ -395,10 +540,15 @@ class VaBenchBashEnvironment:
         timeout_s: float,
         sandbox_backend: str,
         evas_command: str,
+        executable_feedback: bool = True,
         docker_command: str = "docker",
         docker_image: str = "",
+        preflight_timeout_s: float = 60.0,
+        preflight_attempts: int = 2,
+        startup_limiter: threading.Semaphore | None = None,
         deadline_monotonic: float | None = None,
         submission_gate: Callable[[Path], dict[str, Any]],
+        candidate_artifacts: list[str] | tuple[str, ...] = (),
     ) -> None:
         self.runtime = runtime.resolve()
         self.workspace = (self.runtime / "public").resolve()
@@ -421,8 +571,18 @@ class VaBenchBashEnvironment:
             public_alias.symlink_to(".", target_is_directory=True)
         self.submit_sentinel = scratch_root / ".tmp" / "submission-request"
         self.evas_command = evas_command
+        self.executable_feedback = bool(executable_feedback)
         self.docker_command = docker_command
         self.docker_image = docker_image
+        if preflight_timeout_s <= 0:
+            raise ValueError("preflight timeout must be positive")
+        if preflight_attempts < 1:
+            raise ValueError("preflight attempts must be at least 1")
+        self.preflight_timeout_s = float(preflight_timeout_s)
+        self.preflight_attempts = int(preflight_attempts)
+        self.preflight_attempts_used = 0
+        self.startup_limiter = startup_limiter
+        self.candidate_artifacts = _candidate_artifact_paths(candidate_artifacts)
         self.docker_image_id: str | None = None
         self._docker_container: str | None = None
         self._docker_name = (
@@ -438,6 +598,10 @@ class VaBenchBashEnvironment:
         self._submitted_exception: type | None = None
 
     def _install_shell_tools(self) -> None:
+        self.evas_read_roots: list[Path] = []
+        if not self.executable_feedback:
+            self._install_submit_tool()
+            return
         if self.config.sandbox_backend == "docker":
             if not self.docker_image:
                 raise ValueError("Docker backend requires a shared environment image")
@@ -458,6 +622,12 @@ class VaBenchBashEnvironment:
             ):
                 raise ValueError("EVAS executable runtime is inside the private task runtime")
         evas_wrapper = self.tools_dir / "evas"
+        candidate_tree_hasher = self.tools_dir / ".candidate-tree-sha256.py"
+        candidate_tree_hasher.write_text(
+            _candidate_tree_hasher_source(self.candidate_artifacts),
+            encoding="utf-8",
+        )
+        candidate_tree_hasher.chmod(0o444)
         telemetry_prefix = f"VABENCH_EVAS:{self._evas_telemetry_token}"
         output_remap = ""
         if self.config.sandbox_backend != "docker":
@@ -477,12 +647,10 @@ class VaBenchBashEnvironment:
             "set -e\n"
             "invocation_id=\"${BASHPID:-$$}-${RANDOM}\"\n"
             f"telemetry_prefix={shlex.quote(telemetry_prefix)}\n"
-            "printf '\\036%s:%s:START\\n' \"$telemetry_prefix\" \"$invocation_id\" >&9\n"
             "finish_telemetry() {\n"
             "  rc=$?\n"
             "  printf '\\036%s:%s:END:%s\\n' \"$telemetry_prefix\" \"$invocation_id\" \"$rc\" >&9\n"
             "}\n"
-            "trap finish_telemetry EXIT\n"
             "args=()\n"
             "while (($#)); do\n"
             "  if [[ $1 == -o ]]; then\n"
@@ -497,12 +665,31 @@ class VaBenchBashEnvironment:
             "  fi\n"
             "  shift\n"
             "done\n"
+            "candidate_tree_hasher=\"${BASH_SOURCE[0]%/*}/.candidate-tree-sha256.py\"\n"
+            "if [[ -d /Library/Developer/CommandLineTools ]]; then\n"
+            "  candidate_tree_sha256=$(DEVELOPER_DIR=/Library/Developer/CommandLineTools "
+            "python3 \"$candidate_tree_hasher\")"
+            f" || candidate_tree_sha256={CANDIDATE_TREE_HASH_ERROR_SHA256}\n"
+            "else\n"
+            "  candidate_tree_sha256=$(python3 \"$candidate_tree_hasher\")"
+            f" || candidate_tree_sha256={CANDIDATE_TREE_HASH_ERROR_SHA256}\n"
+            "fi\n"
+            "if [[ ! $candidate_tree_sha256 =~ ^[0-9a-f]{64}$ ]]; then\n"
+            f"  candidate_tree_sha256={CANDIDATE_TREE_HASH_ERROR_SHA256}\n"
+            "fi\n"
+            "printf '\\036%s:%s:START:%s\\n' \"$telemetry_prefix\" \"$invocation_id\" "
+            "\"$candidate_tree_sha256\" >&9\n"
+            "trap finish_telemetry EXIT\n"
             "set +e\n"
             f"{shlex.join(base)} \"${{args[@]}}\"\n"
             "exit $?\n",
             encoding="utf-8",
         )
         evas_wrapper.chmod(0o755)
+
+        self._install_submit_tool()
+
+    def _install_submit_tool(self) -> None:
         submit = self.tools_dir / "vabench-submit"
         submit.write_text(
             "#!/bin/bash\n"
@@ -572,6 +759,10 @@ class VaBenchBashEnvironment:
                         "image_id": self.docker_image_id,
                         "network": False,
                         "evaluator_mounted": False,
+                        "executable_feedback": self.executable_feedback,
+                        "preflight_timeout_s": self.preflight_timeout_s,
+                        "preflight_attempts": self.preflight_attempts,
+                        "preflight_attempts_used": self.preflight_attempts_used,
                         "resource_limits": {
                             "command_output_capture_bytes": COMMAND_OUTPUT_CAPTURE_BYTES,
                             "command_file_size_blocks": COMMAND_FILE_SIZE_BLOCKS,
@@ -588,29 +779,50 @@ class VaBenchBashEnvironment:
         """Fail before the first model call if the requested isolation is unusable."""
         if self.config.sandbox_backend == "none":
             return
+        if self.config.sandbox_backend == "docker" and self.startup_limiter is not None:
+            with self.startup_limiter:
+                self._preflight()
+            return
+        self._preflight()
+
+    def _preflight(self) -> None:
         if self.config.sandbox_backend == "docker":
             self._ensure_docker_container()
         # ``test -r`` checks Unix permission bits and can still report a path as
         # readable when sandbox-exec would deny the actual filesystem access.
         # Probe a real directory read so macOS and namespace-based backends are
         # validated against the isolation property we rely on.
+        executable_probe = (
+            "command -v evas >/dev/null && evas --version >/dev/null"
+            if self.executable_feedback
+            else "! command -v evas >/dev/null"
+        )
         argv = self._sandbox_argv(
             "test -r public/task/instruction.md "
             "&& { test ! -d public/skills || test -r public/skills/SNAPSHOT_MANIFEST.json; } "
-            "&& command -v evas >/dev/null "
-            "&& evas --version >/dev/null "
+            f"&& {executable_probe} "
             "&& ! /bin/ls ../evaluator >/dev/null 2>&1"
         )
-        probe = subprocess.run(
-            argv,
-            cwd=self.workspace,
-            env=self._shell_env(),
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            timeout=min(10.0, self._remaining_command_timeout_s()),
-            check=False,
-        )
+        for attempt in range(1, self.preflight_attempts + 1):
+            self.preflight_attempts_used = attempt
+            try:
+                probe = subprocess.run(
+                    argv,
+                    cwd=self.workspace,
+                    env=self._shell_env(),
+                    text=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    timeout=min(
+                        self.preflight_timeout_s,
+                        self._remaining_command_timeout_s(),
+                    ),
+                    check=False,
+                )
+                break
+            except subprocess.TimeoutExpired:
+                if attempt == self.preflight_attempts:
+                    raise
         if probe.returncode != 0:
             diagnostic = probe.stdout.strip()[:2000] or f"returncode={probe.returncode}"
             if "RTM_NEWADDR" in diagnostic or "unprivileged user namespaces" in diagnostic:
@@ -972,7 +1184,8 @@ class VaBenchBashEnvironment:
     ) -> str:
         marker = re.compile(
             rf"\x1eVABENCH_EVAS:{re.escape(self._evas_telemetry_token)}:"
-            r"(?P<invocation_id>[^:\r\n]+):(?P<event>START|END)(?::(?P<returncode>-?\d+))?\r?\n?"
+            r"(?P<invocation_id>[^:\r\n]+):(?P<event>START|END)"
+            r"(?::(?P<payload>[^:\r\n]+))?\r?\n?"
         )
         active: dict[str, dict[str, Any]] = {}
         order: list[str] = []
@@ -984,13 +1197,15 @@ class VaBenchBashEnvironment:
                         "invocation_id": invocation_id,
                         "shell_command": command,
                         "shell_elapsed_s": elapsed_s,
+                        "candidate_tree_schema_version": CANDIDATE_TREE_SCHEMA_VERSION,
+                        "candidate_tree_sha256": match.group("payload"),
                     }
                     order.append(invocation_id)
                 continue
             row = active.get(invocation_id)
             if row is None:
                 continue
-            returncode = int(match.group("returncode") or 0)
+            returncode = int(match.group("payload") or 0)
             row["returncode"] = returncode
             row["status"] = "succeeded" if returncode == 0 else "failed"
         for invocation_id in order:
@@ -1206,8 +1421,13 @@ def run_mini_swe_episode(
     tool_timeout_s: float,
     sandbox_backend: str,
     evas_command: str,
+    executable_feedback: bool = True,
     docker_command: str = "docker",
     docker_image: str = DEFAULT_DOCKER_IMAGE,
+    preflight_timeout_s: float = 60.0,
+    preflight_attempts: int = 2,
+    startup_limiter: threading.Semaphore | None = None,
+    candidate_artifacts: list[str] | tuple[str, ...] = (),
     submission_gate: Callable[[Path], dict[str, Any]],
     usage_parser: Callable[..., dict[str, Any]],
     response_metadata: Callable[[dict[str, Any]], dict[str, Any]],
@@ -1221,10 +1441,15 @@ def run_mini_swe_episode(
         timeout_s=min(float(tool_timeout_s), float(agent_timeout_s)),
         sandbox_backend=sandbox_backend,
         evas_command=evas_command,
+        executable_feedback=executable_feedback,
         docker_command=docker_command,
         docker_image=docker_image,
+        preflight_timeout_s=preflight_timeout_s,
+        preflight_attempts=preflight_attempts,
+        startup_limiter=startup_limiter,
         deadline_monotonic=deadline,
         submission_gate=submission_gate,
+        candidate_artifacts=candidate_artifacts,
     )
     try:
         environment.preflight()
@@ -1238,10 +1463,12 @@ def run_mini_swe_episode(
             response_metadata=response_metadata,
         )
         model.bind_mini_swe_protocol(observation_formatter, FormatError)
+        system_prompt = SYSTEM_PROMPT if executable_feedback else NO_EVAS_SYSTEM_PROMPT
+        bash_contract = BASH_CONTRACT if executable_feedback else NO_EVAS_BASH_CONTRACT
         agent = DefaultAgent(
             model,
             environment,
-            system_template=SYSTEM_PROMPT,
+            system_template=system_prompt,
             instance_template="{{task}}",
             step_limit=0,
             cost_limit=0.0,
@@ -1252,7 +1479,7 @@ def run_mini_swe_episode(
             max_consecutive_format_errors=0,
             output_path=trajectory_path,
         )
-        task = prompt.rstrip() + "\n\n" + BASH_CONTRACT
+        task = prompt.rstrip() + "\n\n" + bash_contract
         outcome = agent.run(task)
         gate = submission_gate(runtime)
         serialized = agent.serialize()
@@ -1260,9 +1487,10 @@ def run_mini_swe_episode(
         return {
             "scaffold": MINI_SWE_SCAFFOLD_ID,
             "scaffold_version": MINI_SWE_AGENT_VERSION,
+            "executable_feedback": executable_feedback,
             "bash_tool_schema_sha256": _json_digest(BASH_TOOL),
-            "system_prompt_sha256": hashlib.sha256(SYSTEM_PROMPT.encode()).hexdigest(),
-            "bash_contract_sha256": hashlib.sha256(BASH_CONTRACT.encode()).hexdigest(),
+            "system_prompt_sha256": hashlib.sha256(system_prompt.encode()).hexdigest(),
+            "bash_contract_sha256": hashlib.sha256(bash_contract.encode()).hexdigest(),
             "exit_status": outcome.get("exit_status"),
             "submission": outcome.get("submission", ""),
             "submitted": bool(explicit_submission and gate.get("passed")),
@@ -1284,6 +1512,9 @@ def run_mini_swe_episode(
             "docker_image_id": environment.docker_image_id,
             "network": False,
             "evaluator_mounted": False,
+            "preflight_timeout_s": environment.preflight_timeout_s,
+            "preflight_attempts": environment.preflight_attempts,
+            "preflight_attempts_used": environment.preflight_attempts_used,
             "resource_limits": {
                 "command_output_capture_bytes": COMMAND_OUTPUT_CAPTURE_BYTES,
                 "command_file_size_blocks": COMMAND_FILE_SIZE_BLOCKS,

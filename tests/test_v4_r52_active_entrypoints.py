@@ -8,6 +8,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE = ROOT / "benchmark-vabench-release-v4"
+RUNNER_SMOKE_WORKFLOW = ROOT / ".github" / "workflows" / "runner-smoke.yml"
 ACTIVE_ENTRYPOINTS = (
     PACKAGE
     / "operations"
@@ -52,13 +53,13 @@ def default_release_literals(path: Path) -> set[str]:
 
 
 @pytest.mark.parametrize("entrypoint", ACTIVE_ENTRYPOINTS, ids=lambda path: path.name)
-def test_active_benchmark_entrypoint_defaults_to_r51(entrypoint: Path) -> None:
+def test_active_benchmark_entrypoint_defaults_to_r52(entrypoint: Path) -> None:
     literals = default_release_literals(entrypoint)
-    assert "benchmarkv4-r51" in literals
+    assert "benchmarkv4-r52" in literals
     assert "benchmarkv4" not in literals
 
 
-def test_operator_docs_name_r51_as_the_active_default() -> None:
+def test_operator_docs_name_r52_as_the_active_default() -> None:
     documents = (
         ROOT / "docs" / "REPO_LAYOUT_POLICY.md",
         PACKAGE / "runners" / "README.md",
@@ -67,10 +68,10 @@ def test_operator_docs_name_r51_as_the_active_default() -> None:
     )
     for document in documents:
         text = document.read_text(encoding="utf-8")
-        assert "benchmarkv4-r51" in text, document
+        assert "benchmarkv4-r52" in text, document
 
 
-def test_active_metamorphic_evidence_defaults_to_r51() -> None:
+def test_active_metamorphic_evidence_defaults_to_r52() -> None:
     path = PACKAGE / "scripts" / "run_v4_stimulus_metamorphic.py"
     tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
     defaults = {
@@ -82,4 +83,13 @@ def test_active_metamorphic_evidence_defaults_to_r51() -> None:
         for target in node.targets
         if isinstance(target, ast.Name)
     }
-    assert defaults["DEFAULT_RELEASE_REVISION"] == "r51"
+    assert defaults["DEFAULT_RELEASE_REVISION"] == "r52"
+
+
+def test_runner_ci_tracks_and_protects_the_active_r52_release() -> None:
+    workflow = RUNNER_SMOKE_WORKFLOW.read_text(encoding="utf-8")
+
+    assert "tests/test_v4_r52_active_entrypoints.py" in workflow
+    assert "tests/test_v4_r51_active_entrypoints.py" not in workflow
+    assert "benchmark-vabench-release-v4/release/benchmarkv4-r52" in workflow
+    assert "benchmark-vabench-release-v4/evidence/r52" in workflow

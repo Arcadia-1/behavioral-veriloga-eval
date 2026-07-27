@@ -14,6 +14,7 @@ import multiprocessing as mp
 import os
 import queue
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -462,6 +463,9 @@ def evas_source_env() -> dict[str, str] | None:
 
 
 def evas_command_and_env() -> tuple[list[str], dict[str, str] | None]:
+    trusted_replay_command = os.environ.get("VABENCH_EVAS_COMMAND", "").strip()
+    if trusted_replay_command:
+        return shlex.split(trusted_replay_command), None
     env = evas_source_env()
     if env is not None:
         return [evas_module_python(), "-m", "evas"], env
