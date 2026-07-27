@@ -271,6 +271,31 @@ def _rows_323(*, drop_last: int = 0) -> list[dict[str, float]]:
     return rows
 
 
+def _rows_323_with_metric_transition_samples() -> list[dict[str, float]]:
+    rows = _rows_323()
+    input_edges = [5.0, 12.0, 19.0, 26.0, 33.0, 40.0]
+    codes = [0, 1, 2, 3, 4, 5]
+    for previous_code, edge_ns, code in zip([0, *codes[:-1]], input_edges, codes):
+        previous_metric = 0.1 * previous_code
+        expected_metric = 0.1 * code
+        for row in rows:
+            t_ns = row["time"] * 1e9
+            if edge_ns <= t_ns < edge_ns + 0.35:
+                fraction = max(0.0, min(1.0, (t_ns - edge_ns) / 0.35))
+                row["delay_metric"] = previous_metric + (expected_metric - previous_metric) * fraction
+    return rows
+
+
+def _rows_323_with_persistent_bad_metric() -> list[dict[str, float]]:
+    rows = _rows_323()
+    for row in rows:
+        if row["enable"] > 0.45 and row["rst"] <= 0.45:
+            code = _code(row, ["skew_0", "skew_1", "skew_2"])
+            if code:
+                row["delay_metric"] = 0.0
+    return rows
+
+
 def _legacy_325_accepts(rows: list[dict[str, float]]) -> bool:
     prev_start = rows[0]["start"]
     prev_stop = rows[0]["stop"]
@@ -597,6 +622,17 @@ def test_task323_rejects_dropped_final_input_edges() -> None:
 def test_task323_accepts_all_delayed_edges() -> None:
     ok, detail = check_v4_1021_programmable_clock_skew_aligner(_rows_323())
     assert ok, detail
+
+
+def test_task323_accepts_metric_transition_row_oversampling() -> None:
+    ok, detail = check_v4_1021_programmable_clock_skew_aligner(_rows_323_with_metric_transition_samples())
+    assert ok, detail
+
+
+def test_task323_rejects_metric_that_remains_wrong_after_settle() -> None:
+    ok, detail = check_v4_1021_programmable_clock_skew_aligner(_rows_323_with_persistent_bad_metric())
+    assert not ok
+    assert "P_EXPOSE_THE_ACTIVE_DELAY_CODE_AS" in detail
 
 
 def test_task325_rejects_valid_while_measurement_is_still_armed() -> None:

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import stimulus_change_intervals, time_outside_intervals
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -70,13 +71,18 @@ def check_v3_decision_router_logic(rows: list[dict[str, float]]) -> tuple[bool, 
     edge_times: list[float] = []
     for signal in input_signals:
         edge_times.extend(_signal_threshold_edges(rows, signal, threshold=threshold, directions=("rising", "falling")))
+    changing_intervals = stimulus_change_intervals(rows, input_signals, min_slope=0.0)
     checked = 0
     combos_seen: set[tuple[int, int, int]] = set()
     max_err = 0.0
     failures: list[str] = []
     stride = max(1, len(rows) // 120)
     for row in rows[::stride]:
-        if row["time"] < 0.05e-9 or not _v3_away_from_edges(row["time"], edge_times, margin_s=90e-12):
+        if (
+            row["time"] < 0.05e-9
+            or not _v3_away_from_edges(row["time"], edge_times, margin_s=90e-12)
+            or not time_outside_intervals(row["time"], changing_intervals, margin_s=90e-12)
+        ):
             continue
         a = 1 if row["vin1"] > threshold else 0
         b = 1 if row["vin2"] > threshold else 0

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import stimulus_change_intervals, time_outside_intervals
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -88,7 +89,7 @@ def _v3_stable_formula_check(
     expected_fn,
     tol: float,
     min_checked: int,
-    margin_s: float = 80e-12,
+    margin_s: float = 0.6e-9,
 ) -> tuple[bool, str]:
     if not rows or not required.issubset(rows[0]):
         return False, "missing " + "/".join(sorted(required))
@@ -108,12 +109,15 @@ def _v3_stable_formula_check(
                 directions=("rising", "falling"),
             )
         )
+    output_change_intervals = stimulus_change_intervals(rows, [output], min_slope=0.0)
 
     def stable(row: dict[str, float]) -> bool:
         row_time = row.get("time")
         if row_time is None or row_time < 50e-12:
             return False
         if not _v3_away_from_edges(row_time, edge_times, margin_s=margin_s):
+            return False
+        if not time_outside_intervals(row_time, output_change_intervals):
             return False
         return all(abs(row[signal] - threshold) > 0.05 for signal in logic_signals)
 

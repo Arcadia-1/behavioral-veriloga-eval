@@ -510,6 +510,13 @@ def test_trusted_replay_passes_pinned_evas_command_to_adapter(tmp_path: Path) ->
             "compile_failure",
             "compile",
         ),
+        (
+            1,
+            "SCORE_EVAS_FAIL\n"
+            "ERROR [rust_lowering]: nested_event_continuation_not_lowered\n",
+            "compile_failure",
+            "compile",
+        ),
         (1, "SCORE_EVAS_FAIL\n", "runtime_failure", "runtime"),
         (
             1,

@@ -17,12 +17,16 @@ def check_v4_1021_programmable_clock_skew_aligner(rows: list[dict[str, float]]) 
     prev_clk_in = float(rows[0].get("clk_in", 0.0))
     prev_clk_out = float(rows[0].get("clk_out", 0.0))
     expected_metric = 0.0
-    checked = metric_errors = timing_errors = valid_errors = clear_errors = 0
+    checked = metric_transition_errors = metric_settle_errors = timing_errors = valid_errors = clear_errors = 0
     input_edges = output_edges = 0
     reset_clear = disabled_clear = valid_seen = False
     ever_enabled = False
     codes_seen: set[int] = set()
     pending_edges: list[tuple[float, int]] = []
+    metric_event_key: tuple[int, int] | None = None
+    metric_event_time = 0.0
+    metric_event_counted = False
+    metric_event_settled = True
     for row in rows:
         t = float(row["time"])
         clk_in = float(row["clk_in"])
@@ -49,6 +53,10 @@ def check_v4_1021_programmable_clock_skew_aligner(rows: list[dict[str, float]]) 
             codes_seen.add(code)
             expected_metric = 0.1 * code
             pending_edges.append((t, code))
+            metric_event_key = (input_edges, code)
+            metric_event_time = t
+            metric_event_counted = False
+            metric_event_settled = False
         if _v4_rising(prev_clk_out, clk_out):
             output_edges += 1
             valid_seen = True
@@ -65,7 +73,14 @@ def check_v4_1021_programmable_clock_skew_aligner(rows: list[dict[str, float]]) 
             continue
         checked += 1
         if abs(float(row["delay_metric"]) - expected_metric) > 0.06:
-            metric_errors += 1
+            if not metric_event_counted:
+                metric_transition_errors += 1
+                metric_event_counted = True
+            if metric_event_key is not None and not metric_event_settled and t >= metric_event_time + 0.35e-9:
+                metric_settle_errors += 1
+                metric_event_settled = True
+        elif metric_event_key is not None and not metric_event_settled and t >= metric_event_time + 0.35e-9:
+            metric_event_settled = True
         if output_edges > 0 and not _v4_topup_logic_high(row, "valid"):
             valid_errors += 1
     metric_budget = max(6, checked // 20)
@@ -82,19 +97,21 @@ def check_v4_1021_programmable_clock_skew_aligner(rows: list[dict[str, float]]) 
         and valid_seen
         and timing_errors == 0
         and completion_errors == 0
-        and metric_errors <= metric_budget
+        and metric_transition_errors <= metric_budget
+        and metric_settle_errors == 0
         and valid_errors <= valid_budget
         and clear_errors <= clear_budget
     )
     return ok, (
         f"v4_1021 checked={checked} codes={sorted(codes_seen)} input_edges={input_edges} "
         f"output_edges={output_edges} reset_clear={reset_clear} disabled_clear={disabled_clear} "
-        f"valid_seen={valid_seen} timing_errors={timing_errors} completion_errors={completion_errors} metric_errors={metric_errors} "
+        f"valid_seen={valid_seen} timing_errors={timing_errors} completion_errors={completion_errors} "
+        f"metric_errors={metric_transition_errors} metric_settle_errors={metric_settle_errors} "
         f"valid_errors={valid_errors} clear_errors={clear_errors}; "
         f"P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count={max(0, clear_errors - clear_budget) + int(not reset_clear) + int(not disabled_clear)}; "
-        f"P_DECODE_SKEW_2_SKEW_0_AS mismatch_count={timing_errors + max(0, metric_errors - metric_budget)}; "
+        f"P_DECODE_SKEW_2_SKEW_0_AS mismatch_count={timing_errors + metric_settle_errors + max(0, metric_transition_errors - metric_budget)}; "
         f"P_FOR_EACH_ACCEPTED_INPUT_CLOCK_EDGE mismatch_count={timing_errors + completion_errors + max(0, input_edges - output_edges)}; "
-        f"P_EXPOSE_THE_ACTIVE_DELAY_CODE_AS mismatch_count={max(0, metric_errors - metric_budget)}; "
+        f"P_EXPOSE_THE_ACTIVE_DELAY_CODE_AS mismatch_count={metric_settle_errors + max(0, metric_transition_errors - metric_budget)}; "
         f"P_ASSERT_VALID_AFTER_THE_FIRST_DELAYED mismatch_count={max(0, valid_errors - valid_budget) + int(not valid_seen)}"
     )
 

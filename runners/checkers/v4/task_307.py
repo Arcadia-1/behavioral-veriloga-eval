@@ -16,10 +16,22 @@ def check_v4_307_switched_capacitor_integrator_phase_pair(
     guard = step * 8.0
     first_phase_event = min(rising_edges(rows, "phi1") + rising_edges(rows, "phi2"), default=float("inf"))
     initial_checked = initial_errors = 0
+    initial_times: list[float] = []
     for row in rows:
-        if float(row["time"]) >= first_phase_event - guard:
+        row_time = float(row["time"])
+        if row_time >= first_phase_event:
             break
+        # Initial-state coverage is defined by the public clear controls, not
+        # by how many adaptive solver rows happen to precede the first phase
+        # edge.  This also avoids subtracting a trace-density-derived guard
+        # from a short but otherwise valid reset interval.
+        if not (
+            _v4_topup_logic_high(row, "rst")
+            or not _v4_topup_logic_high(row, "enable")
+        ):
+            continue
         initial_checked += 1
+        initial_times.append(row_time)
         if not (
             _v4_topup_near(row["vout"], 0.45, 0.08)
             and _v4_topup_near(row["phase_metric"], 0.45, 0.08)
@@ -29,6 +41,12 @@ def check_v4_307_switched_capacitor_integrator_phase_pair(
 
     phi1_edges = rising_edges(rows, "phi1")
     phi2_edges = rising_edges(rows, "phi2")
+    initial_duration = (
+        max(0.0, initial_times[-1] - initial_times[0])
+        if len(initial_times) >= 2
+        else 0.0
+    )
+    initial_covered = initial_checked >= 2 and initial_duration > 0.0
     events = sorted(
         [(event, 0, "phi1") for event in phi1_edges]
         + [(event, 1, "phi2") for event in phi2_edges]
@@ -119,7 +137,7 @@ def check_v4_307_switched_capacitor_integrator_phase_pair(
 
     allowed_hold_errors = max(4, hold_checked // 100)
     ok = (
-        initial_checked >= 8
+        initial_covered
         and initial_errors == 0
         and phi1_captures >= 4
         and accepted_pairs >= 3
@@ -131,7 +149,7 @@ def check_v4_307_switched_capacitor_integrator_phase_pair(
         and hold_errors <= allowed_hold_errors
     )
     diagnostics = {
-        "P_ON_RESET_OR_WHEN_DISABLED_CLEAR": int(initial_checked < 8) + initial_errors,
+        "P_ON_RESET_OR_WHEN_DISABLED_CLEAR": int(not initial_covered) + initial_errors,
         "P_ON_A_RISING_PHI1_CROSSING_SAMPLE": int(phi1_captures < 4),
         "P_ON_THE_FOLLOWING_RISING_PHI2_CROSSING": (
             int(accepted_pairs < 3)
@@ -146,6 +164,7 @@ def check_v4_307_switched_capacitor_integrator_phase_pair(
     }
     return ok, (
         f"v4_307 initial_checked={initial_checked} initial_errors={initial_errors} "
+        f"initial_duration={initial_duration:.6e} initial_covered={initial_covered} "
         f"phi1_captures={phi1_captures} accepted_pairs={accepted_pairs} overlap_events={overlap_events} "
         f"positive_steps={positive_steps} negative_steps={negative_steps} edge_errors={edge_errors} "
         f"hold_checked={hold_checked} hold_errors={hold_errors}; "

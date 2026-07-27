@@ -2,7 +2,10 @@
 from __future__ import annotations
 
 from ..api import Checker
-DEFAULT_EDGE_SETTLE_DELAY_S = 1.2e-10
+
+# Spectre accepted-step traces can expose the transition plateau about 400 ps
+# after the clock edge even when the behavioral transition delay is shorter.
+DEFAULT_EDGE_SETTLE_DELAY_S = 4.0e-10
 
 def mean_in_window(rows: list[dict[str, float]], key: str, start: float, stop: float) -> float | None:
     values = [r[key] for r in rows if start <= r["time"] <= stop and key in r]
