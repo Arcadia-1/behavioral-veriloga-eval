@@ -238,6 +238,45 @@ def test_required_trace_signals_follow_streaming_checker_contract() -> None:
     assert simulate_evas.required_trace_signals_for_checker("unknown_task") == frozenset()
 
 
+def test_v4_thermometer_checker_trace_contract_excludes_scenario_labels() -> None:
+    signals = simulate_evas.required_trace_signals_for_checker(
+        "v4_049_thermometer_to_binary_encoder_8b"
+    )
+
+    assert {"time", "valid", "th0", "th255", "b0", "b7"}.issubset(signals)
+    assert {"0", "1", "255", "invalid"}.isdisjoint(signals)
+
+
+def test_v4_trim_checker_trace_contract_excludes_diagnostic_labels() -> None:
+    signals = simulate_evas.required_trace_signals_for_checker(
+        "v4_189_trim_ctrl_4bit"
+    )
+
+    assert signals == frozenset(
+        {"time", "ain", "dout0", "dout1", "dout2", "dout3"}
+    )
+
+
+def test_large_trace_checker_timeout_budget_scales_beyond_sixty_seconds(
+    monkeypatch,
+) -> None:
+    monkeypatch.setenv("VAEVAS_BEHAVIOR_MIN_BYTES_PER_SECOND", "150000")
+    monkeypatch.setenv("VAEVAS_BEHAVIOR_TIMEOUT_MAX_S", "300")
+
+    assert simulate_evas.behavior_evaluation_timeout_seconds(
+        csv_size_bytes=6_000_000,
+        timeout_s=600,
+    ) == 60
+    assert simulate_evas.behavior_evaluation_timeout_seconds(
+        csv_size_bytes=47_459_643,
+        timeout_s=600,
+    ) == 300
+    assert simulate_evas.behavior_evaluation_timeout_seconds(
+        csv_size_bytes=47_459_643,
+        timeout_s=120,
+    ) == 120
+
+
 def test_spectre_preflight_rejects_reserved_port_names(tmp_path: Path) -> None:
     run_dir = tmp_path / "run"
     run_dir.mkdir()

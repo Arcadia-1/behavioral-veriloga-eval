@@ -3673,6 +3673,12 @@ def required_trace_signals_for_checker(task_id: str) -> frozenset[str]:
         "v3_051_thermometer_to_binary_encoder_8b": formal_utility_trace_signals[
             "thermometer_to_binary_encoder_8b"
         ],
+        "v4_049_thermometer_to_binary_encoder_8b": formal_utility_trace_signals[
+            "thermometer_to_binary_encoder_8b"
+        ],
+        "v4_189_trim_ctrl_4bit": frozenset(
+            {"time", "ain", "dout0", "dout1", "dout2", "dout3"}
+        ),
         "v3_087_lfsr_prbs_generator": frozenset({"time", "clk", "rst_n", "en", "serial_out"})
         | frozenset({f"state_{idx}" for idx in range(7)}),
         "v3_108_reference_startup_enable_flow": frozenset(
@@ -27056,6 +27062,32 @@ def _behavior_eval_worker(
         queue.put(("error", f"{type(exc).__name__}: {str(exc)[:300]}"))
 
 
+def behavior_evaluation_timeout_seconds(
+    *,
+    csv_size_bytes: int,
+    timeout_s: int,
+) -> int:
+    """Return a bounded checker watchdog budget scaled for large CSV traces."""
+    max_timeout_s = max(
+        10,
+        int(os.environ.get("VAEVAS_BEHAVIOR_TIMEOUT_MAX_S", "300")),
+    )
+    min_bytes_per_second = max(
+        1,
+        int(os.environ.get("VAEVAS_BEHAVIOR_MIN_BYTES_PER_SECOND", "150000")),
+    )
+    base_timeout_s = max(10, min(60, max(1, timeout_s // 3)))
+    size_timeout_s = max(
+        10,
+        math.ceil(max(0, csv_size_bytes) / min_bytes_per_second),
+    )
+    return min(
+        max_timeout_s,
+        max(10, timeout_s),
+        max(base_timeout_s, size_timeout_s),
+    )
+
+
 def evaluate_behavior_with_timeout(
     task_id: str,
     csv_path: Path,
@@ -27071,13 +27103,18 @@ def evaluate_behavior_with_timeout(
     pathological waveform becomes a normal task failure instead of a matrix hang.
     """
     direct_max_bytes = int(os.environ.get("VAEVAS_BEHAVIOR_DIRECT_MAX_BYTES", "5000000"))
+    csv_size_bytes = 0
     try:
-        if csv_path.stat().st_size <= direct_max_bytes:
+        csv_size_bytes = csv_path.stat().st_size
+        if csv_size_bytes <= direct_max_bytes:
             return evaluate_behavior(task_id, csv_path, checks_config=checks_config)
     except OSError:
         pass
 
-    eval_timeout_s = max(10, min(60, max(1, timeout_s // 3)))
+    eval_timeout_s = behavior_evaluation_timeout_seconds(
+        csv_size_bytes=csv_size_bytes,
+        timeout_s=timeout_s,
+    )
     ctx = mp.get_context("spawn")
     queue: mp.Queue = ctx.Queue(maxsize=1)
     proc = ctx.Process(
