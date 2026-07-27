@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 from pathlib import Path
 import sys
 
@@ -7,7 +8,10 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "runners"))
 
-from checkers.v4.task_302 import check_v3_505_fractional_n_divider_accumulator_flow
+from checkers.v4.task_302 import (
+    STREAMING_CHECKER as stream_task302_fractional_n_divider_accumulator_flow,
+    check_v3_505_fractional_n_divider_accumulator_flow,
+)
 from checkers.v4.task_322 import check_v4_1020_glitchless_clock_mux_selector
 
 
@@ -139,6 +143,38 @@ def test_task302_rejects_missing_control_correction() -> None:
     ok, note = check_v3_505_fractional_n_divider_accumulator_flow(rows)
     assert not ok
     assert "vctrl_span" in note
+
+
+def test_task302_streaming_checker_matches_row_checker(tmp_path: Path) -> None:
+    cases = {
+        "passing": _fracn_rows(shift_ns=77.0),
+        "wrong_divider": _fracn_rows(counts=[17, 18, 17, 18, 17, 18]),
+        "constant_vctrl": _fracn_rows(constant_vctrl=True),
+    }
+    fieldnames = [
+        "time",
+        "VDD",
+        "VSS",
+        "ref_clk",
+        "fb_clk",
+        "dco_clk",
+        "vctrl_mon",
+        "lock",
+    ]
+    for name, rows in cases.items():
+        csv_path = tmp_path / f"{name}.csv"
+        with csv_path.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
+
+        row_ok, row_note = check_v3_505_fractional_n_divider_accumulator_flow(rows)
+        stream_score, stream_notes = stream_task302_fractional_n_divider_accumulator_flow(
+            csv_path
+        )
+
+        assert stream_score == (1.0 if row_ok else 0.0), name
+        assert stream_notes == [row_note], name
 
 
 def test_task322_accepts_scaled_sparse_event_relative_mux_trace() -> None:
