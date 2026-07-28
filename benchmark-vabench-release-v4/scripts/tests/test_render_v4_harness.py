@@ -55,7 +55,7 @@ def _without_simulator_options(deck: str) -> str:
 
 @pytest.mark.parametrize(
     ("release_revision", "expected_evas_version"),
-    [("r51", "0.8.3"), ("r52", "0.8.5")],
+    [("r51", "0.8.3"), ("r52", "0.8.5"), ("r53", "0.8.7")],
 )
 def test_metamorphic_smoke_uses_release_pinned_evas_version(
     tmp_path: Path,
@@ -192,7 +192,7 @@ def test_evas2_evidence_requires_explicit_engine_and_rust_log(
     require_evas2_environment()
     log = tmp_path / "evas.log"
     log.write_text(
-        "Version 0.8.5 -- Jul 2026\n    evas_engine = evas-rust\n",
+        "Version 0.8.7 -- Jul 2026\n    evas_engine = evas-rust\n",
         encoding="utf-8",
     )
     evidence = engine_evidence_from_log(log, "")

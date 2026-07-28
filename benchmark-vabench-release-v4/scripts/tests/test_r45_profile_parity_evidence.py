@@ -20,12 +20,12 @@ runner = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(runner)
 
 
-def test_profile_evidence_defaults_to_r52_evas_085_rust_runtime() -> None:
-    assert runner.REQUIRED_EVAS_VERSION == "0.8.5"
+def test_profile_evidence_defaults_to_r53_evas_087_rust_runtime() -> None:
+    assert runner.REQUIRED_EVAS_VERSION == "0.8.7"
     assert runner.REQUIRED_EVAS_ENGINE == "evas2"
     assert runner.RUST_EVAS_LOG_ENGINE == "evas-rust"
-    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r52"
-    assert runner.DEFAULT_RELEASE_REVISION == "r52"
+    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r53"
+    assert runner.DEFAULT_RELEASE_REVISION == "r53"
 
 
 def test_profile_evidence_labels_are_revision_scoped() -> None:
@@ -33,8 +33,10 @@ def test_profile_evidence_labels_are_revision_scoped() -> None:
     assert runner.release_label("r45") == "release/benchmarkv4-r45"
     assert runner.release_label("r47") == "release/benchmarkv4-r47"
     assert runner.release_label("r52") == "release/benchmarkv4-r52"
+    assert runner.release_label("r53") == "release/benchmarkv4-r53"
     assert runner.required_evas_version("r51") == "0.8.3"
     assert runner.required_evas_version("r52") == "0.8.5"
+    assert runner.required_evas_version("r53") == "0.8.7"
 
 
 def test_profile_provenance_rejects_revision_mismatch(

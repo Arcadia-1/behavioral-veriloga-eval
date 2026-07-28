@@ -28,8 +28,8 @@ cd benchmark-vabench-release-v4/public-agent-runtime
 
 `environment/requirements.lock` pins EVAS and every Python dependency by
 version and SHA-256. `environment/Dockerfile` pins the base image by digest.
-`build.sh` creates the matched `vabench-agent-runtime:0.8.5` and
-`vabench-agent-runtime:0.8.5-no-evas` images. The latter uses the same base,
+`build.sh` creates the matched `vabench-agent-runtime:0.8.7` and
+`vabench-agent-runtime:0.8.7-no-evas` images. The latter uses the same base,
 lockfile, dependencies, shell, and workspace contract, then removes the EVAS
 package and executable for the `Agent-No-EVAS` control arm. Record both image
 IDs printed by `build.sh`; campaign records should use those immutable
@@ -43,7 +43,7 @@ identities.
 
 The verifier checks:
 
-- EVAS 0.8.5 is installed with a loadable Rust core;
+- EVAS 0.8.7 is installed with a loadable Rust core;
 - the public task mount is readable but not writable;
 - submission and work mounts are writable;
 - strict EVAS simulation produces a readable `tran.csv`;

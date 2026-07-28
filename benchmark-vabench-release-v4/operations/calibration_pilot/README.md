@@ -1,8 +1,8 @@
 # V4 Calibration Pilot
 
 The default release target is
-`benchmark-vabench-release-v4/release/benchmarkv4-r52`, paired with the pinned
-EVAS 0.8.5 public runtime. Tools that support
+`benchmark-vabench-release-v4/release/benchmarkv4-r53`, paired with the pinned
+EVAS 0.8.7 public runtime. Tools that support
 historical inspection require the frozen r44 path explicitly; the active
 direct-EVAS runner never falls back to it.
 Use `--sample-families N --seed S` for reproducible random complete-family
@@ -103,8 +103,8 @@ benchmark-vabench-release-v4/public-agent-runtime/verify.sh
 ```
 
 `auto` selects Docker. Formal results require the matched images built from the
-repository's top-level `environment/`: `vabench-agent-runtime:0.8.5` and
-`vabench-agent-runtime:0.8.5-no-evas`. Other sandbox backends remain
+repository's top-level `environment/`: `vabench-agent-runtime:0.8.7` and
+`vabench-agent-runtime:0.8.7-no-evas`. Other sandbox backends remain
 legacy/test sensitivity paths and are not paper-valid. Record the Git commit,
 image references, and observed image IDs by experimental arm with every
 campaign.

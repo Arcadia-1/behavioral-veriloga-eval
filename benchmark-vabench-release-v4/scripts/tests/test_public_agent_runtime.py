@@ -33,7 +33,7 @@ class PublicAgentRuntimeTest(unittest.TestCase):
         dockerfile = (ENVIRONMENT_DIR / "Dockerfile").read_text(encoding="utf-8")
         self.assertIn("FROM python:3.10.14-slim-bookworm@sha256:", dockerfile)
         self.assertIn("pip install --no-cache-dir --require-hashes", dockerfile)
-        self.assertIn('"package_version"] == "0.8.5"', dockerfile)
+        self.assertIn('"package_version"] == "0.8.7"', dockerfile)
         self.assertIn("USER 10001:10001", dockerfile)
         self.assertNotIn("COPY .", dockerfile)
 
@@ -44,10 +44,10 @@ class PublicAgentRuntimeTest(unittest.TestCase):
 
         self.assertIn("ARG VABENCH_EXECUTABLE_FEEDBACK=1", dockerfile)
         self.assertIn("python3 -m pip uninstall -y evas-sim", dockerfile)
-        self.assertIn("vabench-agent-runtime:0.8.5-no-evas", build)
+        self.assertIn("vabench-agent-runtime:0.8.7-no-evas", build)
         self.assertIn("--build-arg VABENCH_EXECUTABLE_FEEDBACK=0", build)
         self.assertEqual(build.count("--pull"), 2)
-        self.assertIn("vabench-agent-runtime:0.8.5-no-evas", verify)
+        self.assertIn("vabench-agent-runtime:0.8.7-no-evas", verify)
         self.assertIn("! command -v evas >/dev/null", verify)
         self.assertIn('find_spec("evas") is None', verify)
 
@@ -69,7 +69,7 @@ class PublicAgentRuntimeTest(unittest.TestCase):
 
     def test_evas_and_all_dependencies_are_hash_locked(self) -> None:
         lock = (ENVIRONMENT_DIR / "requirements.lock").read_text(encoding="utf-8")
-        self.assertIn("evas-sim==0.8.5", lock)
+        self.assertIn("evas-sim==0.8.7", lock)
         packages = [
             line
             for line in lock.splitlines()
@@ -80,7 +80,7 @@ class PublicAgentRuntimeTest(unittest.TestCase):
             self.assertTrue(package.endswith(" \\"))
 
     def test_runtime_entrypoints_share_the_evas_084_image_lock(self) -> None:
-        expected = "vabench-agent-runtime:0.8.5"
+        expected = "vabench-agent-runtime:0.8.7"
         surfaces = [
             RUNTIME_DIR / "build.sh",
             RUNTIME_DIR / "run.sh",

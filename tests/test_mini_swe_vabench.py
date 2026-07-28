@@ -630,7 +630,7 @@ def test_shared_docker_image_executes_real_adapter_contract(tmp_path: Path) -> N
         environment.close()
 
     assert result["returncode"] == 0
-    assert '"package_version":"0.8.5"' in result["output"].replace(" ", "")
+    assert '"package_version":"0.8.7"' in result["output"].replace(" ", "")
     assert serialized["image_id"].startswith("sha256:")
     assert (runtime / "public" / "submission" / "model.va").is_file()
     assert len(environment.evas_invocations) == 1

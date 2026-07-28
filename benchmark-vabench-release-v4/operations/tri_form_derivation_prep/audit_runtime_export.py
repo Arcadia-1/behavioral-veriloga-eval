@@ -17,6 +17,7 @@ ALLOWED_DUT_RUNTIME_SCHEMAS = {
     "r50": {"r50-direct-evas-runtime-v2"},
     "r51": {"r51-direct-evas-runtime-v2", "r51-direct-evas-runtime-v3"},
     "r52": {"r52-direct-evas-runtime-v2", "r52-direct-evas-runtime-v3"},
+    "r53": {"r53-direct-evas-runtime-v2", "r53-direct-evas-runtime-v3"},
 }
 ALLOWED_TESTBENCH_RUNTIME_SCHEMAS = {
     "r45": {
@@ -32,7 +33,9 @@ ALLOWED_TESTBENCH_RUNTIME_SCHEMAS = {
         "r51-direct-evas-testbench-suite-v3",
     },
     "r52": {"r52-direct-evas-testbench-reference-v1"},
+    "r53": {"r53-direct-evas-testbench-reference-v1"},
 }
+REFERENCE_ONLY_TESTBENCH_REVISIONS = frozenset({"r52", "r53"})
 AUTHORING_ONLY_PUBLIC_MARKERS = (
     "negative_variants/",
     "/evaluator/",
@@ -312,7 +315,10 @@ def main() -> int:
         if mode not in {"G0", "G1"} and visible.is_file() and trusted.is_file():
             if visible.read_bytes() != trusted.read_bytes():
                 problems.append("visible test and trusted replay deck differ")
-        if form == "testbench" and release_revision == "r52":
+        if (
+            form == "testbench"
+            and release_revision in REFERENCE_ONLY_TESTBENCH_REVISIONS
+        ):
             public_task = run / "public" / "task"
             public_runtime = public_task / "evas_runtime.json"
             trusted_suite = evaluator / "trusted_replay_suite.json"
@@ -323,7 +329,7 @@ def main() -> int:
                 runtime_data = read_json(public_runtime)
                 if (
                     runtime_data.get("schema_version")
-                    != "r52-direct-evas-testbench-reference-v1"
+                    != f"{release_revision}-direct-evas-testbench-reference-v1"
                 ):
                     problems.append("reference-only public Testbench schema mismatch")
                 if runtime_data.get("feedback_scope") != "reference_dut_only":
@@ -367,7 +373,7 @@ def main() -> int:
         if (
             form == "testbench"
             and mode not in {"G0", "G1"}
-            and release_revision != "r52"
+            and release_revision not in REFERENCE_ONLY_TESTBENCH_REVISIONS
         ):
             fixtures = run / "public" / "task" / "visible_fixtures"
             fixture_names = sorted(

@@ -31,6 +31,7 @@ DEFAULT_RELEASES = {
     "r50": PACKAGE_ROOT / "release" / "benchmarkv4-r50",
     "r51": PACKAGE_ROOT / "release" / "benchmarkv4-r51",
     "r52": PACKAGE_ROOT / "release" / "benchmarkv4-r52",
+    "r53": PACKAGE_ROOT / "release" / "benchmarkv4-r53",
 }
 DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 FORMS = ("dut", "testbench", "bugfix")
@@ -87,6 +88,11 @@ STANDALONE_EVALUATOR_COMMON = (
 # The name records the revision that introduced this stable profile format;
 # release identity is carried by the task record and public runtime schemas.
 CANONICAL_TEST_PROFILE_SCHEMA = "r45-canonical-test-profile-v1"
+REFERENCE_ONLY_TESTBENCH_REVISIONS = frozenset({"r52", "r53"})
+EVAS_VERSION_BY_REVISION = {
+    "r52": "0.8.5",
+    "r53": "0.8.7",
+}
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -130,13 +136,16 @@ def rust_evas2_runtime(
 
 
 def allowed_runtime_schemas(release_revision: str, form: str) -> set[str]:
-    if release_revision == "r52" and form == "testbench":
-        return {"r52-direct-evas-testbench-reference-v1"}
+    if (
+        release_revision in REFERENCE_ONLY_TESTBENCH_REVISIONS
+        and form == "testbench"
+    ):
+        return {f"{release_revision}-direct-evas-testbench-reference-v1"}
     kind = "direct-evas-testbench-suite" if form == "testbench" else "direct-evas-runtime"
     versions = (
         (1, 2)
         if release_revision == "r45"
-        else ((2, 3) if release_revision in {"r51", "r52"} else (2,))
+        else ((2, 3) if release_revision in {"r51", "r52", "r53"} else (2,))
     )
     return {
         f"{release_revision}-{kind}-v{version}"
@@ -297,36 +306,51 @@ def build_release_seal(
             "cannot seal release; manifest revision does not match selected revision: "
             f"{declared_revision!r} != {release_revision!r}"
         )
-    seal = {
-        "schema_version": "v4-benchmarkv4-release-seal-v1",
-        "release_revision": release_revision,
-        "immutable": not refresh_required,
-        "release_status": (
-            "materialized_certification_refresh_required"
-            if refresh_required
+    release_status = (
+        "materialized_certification_refresh_required"
+        if refresh_required
+        else (
+            "r53_immutable_source_certification_reused"
+            if release_revision == "r53"
             else f"{release_revision}_immutable_rust_evas2_certified"
-        ),
-        "source_score_denominator_registry_sha256": source_registry_sha256,
-        "artifact_sha256": artifact_hashes,
-        "evidence_sha256": evidence_hashes or {},
-        "certification_reuse": certification_reuse,
-        "simulation_claim": (
-            "none; one or more source certifications require Rust EVAS2 refresh"
-            if refresh_required
+        )
+    )
+    simulation_claim = (
+        "none; one or more source certifications require Rust EVAS2 refresh"
+        if refresh_required
+        else (
+            "canonical source certification reused by hash; the EVAS 0.8.7 "
+            "deployment is qualified by pushed-image and Vela smoke"
+            if release_revision == "r53"
             else (
                 "fresh full400 Rust EVAS2 evidence with hash-bound source inputs"
                 if release_revision != "r44"
                 else "canonical DUT gold and exact-five negative Rust EVAS2 certifications reused by hash"
             )
-        ),
+        )
+    )
+    seal = {
+        "schema_version": "v4-benchmarkv4-release-seal-v1",
+        "release_revision": release_revision,
+        "immutable": not refresh_required,
+        "release_status": release_status,
+        "source_score_denominator_registry_sha256": source_registry_sha256,
+        "artifact_sha256": artifact_hashes,
+        "evidence_sha256": evidence_hashes or {},
+        "certification_reuse": certification_reuse,
+        "simulation_claim": simulation_claim,
     }
     if refresh_required:
         seal["certification_problem_count"] = len(certification_problems)
         seal["certification_problems"] = certification_problems
+    if release_revision == "r53":
+        seal["runtime_requirements"] = manifest["runtime_requirements"]
     return seal
 
 
 def evidence_artifacts(release_revision: str) -> tuple[str, ...]:
+    if release_revision == "r53":
+        return ()
     return tuple(
         f"evidence/{release_revision}/{filename}" for filename in EVIDENCE_FILENAMES
     )
@@ -342,6 +366,8 @@ def audit_release_evidence(
     source_definition_sha256: str | None = None,
 ) -> dict[str, str]:
     artifacts = evidence_artifacts(release_revision)
+    if release_revision == "r53":
+        return {}
     expected_release_label = (
         "release/benchmarkv4"
         if release_revision == "r44"
@@ -441,8 +467,10 @@ def audit_release_evidence(
                     f"declared={payload.get('schema_version')!r} expected={expected_schema!r}"
                 )
 
-        require_source_revision = release_revision in {"r51", "r52"}
-        expected_evas_version = "0.8.5" if release_revision == "r52" else "0.8.3"
+        require_source_revision = release_revision in {"r51", "r52", "r53"}
+        expected_evas_version = EVAS_VERSION_BY_REVISION.get(
+            release_revision, "0.8.3"
+        )
         if rust and not rust_evas2_runtime(
             rust.get("runtime"),
             require_source_revision=require_source_revision,
@@ -761,7 +789,7 @@ def audit_task(
                         problems.append(f"{prefix} portable EVAS runtime mode is missing")
                     if "--spectre-strict" in str(runtime_data.get("command") or ""):
                         problems.append(f"{prefix} portable EVAS runtime still requests strict mode")
-        elif release_revision != "r52":
+        elif release_revision not in REFERENCE_ONLY_TESTBENCH_REVISIONS:
             public_suite = task_dir / "public" / "evas_runtime.json"
             trusted_suite = evaluator / "trusted_replay_suite.json"
             public_fixtures = task_dir / "public" / "visible_fixtures"
@@ -823,7 +851,7 @@ def audit_task(
                 runtime_data = read_json(public_runtime)
                 if (
                     runtime_data.get("schema_version")
-                    != "r52-direct-evas-testbench-reference-v1"
+                    != f"{release_revision}-direct-evas-testbench-reference-v1"
                 ):
                     problems.append(f"{prefix} reference-only public runtime schema mismatch")
                 if runtime_data.get("feedback_scope") != "reference_dut_only":
@@ -901,7 +929,7 @@ def audit_task(
         supplied = task_dir / "public" / "supplied_dut"
         if tree_file_hashes(supplied) != expected_solution_file_hashes(source_task):
             problems.append(f"{prefix} supplied DUT differs from canonical gold")
-        if release_revision not in {"r44", "r52"}:
+        if release_revision not in {"r44", *REFERENCE_ONLY_TESTBENCH_REVISIONS}:
             fixture_names = sorted(
                 path.name for path in (task_dir / "public" / "visible_fixtures").iterdir()
                 if path.is_dir()
@@ -910,7 +938,7 @@ def audit_task(
                 "mutation_01", "mutation_02", "mutation_03", "mutation_04", "mutation_05", "reference",
             ]:
                 problems.append(f"{prefix} visible suite is not one reference plus five mutations")
-        if release_revision == "r52":
+        if release_revision in REFERENCE_ONLY_TESTBENCH_REVISIONS:
             public_root = task_dir / "public"
             leaked_paths = [
                 path.relative_to(public_root).as_posix()
@@ -1218,6 +1246,20 @@ def main() -> int:
             "manifest release revision mismatch: "
             f"declared={manifest.get('release_revision')!r} selected={release_revision!r}"
         )
+    if release_revision == "r53":
+        runtime_requirements = manifest.get("runtime_requirements") or {}
+        if (
+            runtime_requirements.get("evas_package") != "evas-sim"
+            or runtime_requirements.get("evas_version") != "0.8.7"
+            or runtime_requirements.get("experiment_policy")
+            != "EXPERIMENT_POLICY.json"
+            or runtime_requirements.get("experiment_policy_sha256")
+            != file_sha(PACKAGE_ROOT / "EXPERIMENT_POLICY.json")
+        ):
+            problems.append(
+                "r53 manifest does not bind EVAS 0.8.7 and the canonical "
+                "experiment policy"
+            )
     if release_revision != "r44":
         expected_manifest_schema = f"{release_revision}-benchmarkv4-release-manifest-v1"
         if manifest.get("schema_version") != expected_manifest_schema:
@@ -1329,7 +1371,11 @@ def main() -> int:
         "certification_status": (
             "refresh_required"
             if certification_reuse.get("simulation_rerun_required_for_materialization")
-            else "rust_evas2_certified"
+            else (
+                "source_certification_reused"
+                if release_revision == "r53"
+                else "rust_evas2_certified"
+            )
         ),
         "certification_problems": certification_problems,
         "input_hashes": {
