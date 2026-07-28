@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import inspect
 import json
 import re
 import shutil
@@ -68,6 +69,7 @@ from trusted_replay_adapter import (  # noqa: E402
 SCHEMA_VERSION = "vabench-spectre-campaign-audit-v1"
 DEFAULT_SPECTRE_RUNTIME_ID = "spectre-21.1.0.509.isr12"
 MAX_SPECTRE_WORKERS = 48
+SPECTRE_TRACE_CACHE_SCHEMA_VERSION = "vabench-spectre-trace-input-signature-v1"
 
 
 @dataclass(frozen=True)
@@ -75,6 +77,7 @@ class SpectreConfig:
     backend: str = "bridge"
     mode: str = "ax"
     timeout_s: int = 600
+    checker_timeout_s: int = 300
     runtime_id: str = DEFAULT_SPECTRE_RUNTIME_ID
     sui_host: str | None = None
     sui_work_root: str | None = None
@@ -285,6 +288,7 @@ def _spectre_failure_kind(result: dict[str, Any]) -> str:
         "connection timed out",
         "no route to host",
         "could not resolve hostname",
+        "connection closed by unknown port",
         "labctl_exception",
         "sui_direct_exception",
     )
@@ -405,6 +409,135 @@ def _spectre_added_ground_gmin(
     )
 
 
+_TIME_UNIT_SECONDS = {
+    "": 1.0,
+    "s": 1.0,
+    "f": 1e-15,
+    "fs": 1e-15,
+    "p": 1e-12,
+    "ps": 1e-12,
+    "n": 1e-9,
+    "ns": 1e-9,
+    "u": 1e-6,
+    "us": 1e-6,
+    "m": 1e-3,
+    "ms": 1e-3,
+}
+
+
+def _time_literal_seconds(value: str, unit: str | None) -> float | None:
+    try:
+        numeric = float(value)
+    except ValueError:
+        return None
+    scale = _TIME_UNIT_SECONDS.get((unit or "").strip().lower())
+    if scale is None:
+        return None
+    return numeric * scale
+
+
+def _requested_tran_maxstep_s(tb_path: Path) -> float | None:
+    try:
+        text = tb_path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return None
+    values: list[float] = []
+    for match in re.finditer(
+        r"(?i)\btran\b[^\n]*\bmaxstep\s*=\s*"
+        r"([0-9]+(?:\.[0-9]*)?(?:[eE][+-]?[0-9]+)?)\s*"
+        r"(fs|ps|ns|us|ms|s|f|p|n|u|m)?\b",
+        text,
+    ):
+        seconds = _time_literal_seconds(match.group(1), match.group(2))
+        if seconds is not None:
+            values.append(seconds)
+    return min(values) if values else None
+
+
+def _spectre_output_text(
+    result: dict[str, Any],
+    output_dir: Path | None = None,
+) -> str:
+    sources = [
+        *(str(item) for item in result.get("errors") or []),
+        *(str(item) for item in result.get("warnings") or []),
+        str(result.get("stdout_tail") or ""),
+    ]
+    if output_dir is not None:
+        spectre_log = output_dir / "spectre.out"
+        if spectre_log.is_file():
+            sources.append(
+                spectre_log.read_text(
+                    encoding="utf-8",
+                    errors="replace",
+                )
+            )
+    return "\n".join(sources)
+
+
+def _effective_spectre_maxstep_s(text: str) -> float | None:
+    values: list[float] = []
+    for match in re.finditer(
+        r"(?i)\bmaxstep\b\s*=?\s*"
+        r"([0-9]+(?:\.[0-9]*)?(?:[eE][+-]?[0-9]+)?)\s*"
+        r"(fs|ps|ns|us|ms|s|f|p|n|u|m)?\b",
+        text,
+    ):
+        seconds = _time_literal_seconds(match.group(1), match.group(2))
+        if seconds is not None:
+            values.append(seconds)
+    return max(values) if values else None
+
+
+def _spectre_oracle_config_issue(
+    tb_path: Path,
+    result: dict[str, Any],
+    output_dir: Path | None = None,
+) -> list[str]:
+    text = _spectre_output_text(result, output_dir)
+    if "SPECTRE-592" not in text:
+        return []
+    requested_s = _requested_tran_maxstep_s(tb_path)
+    effective_s = _effective_spectre_maxstep_s(text)
+    if requested_s is None or effective_s is None:
+        return []
+    if effective_s <= requested_s * (1.0 + 1e-9):
+        return []
+    return [
+        (
+            "Spectre sidecar is not a semantic oracle: SPECTRE-592 changed "
+            f"the effective maxstep from requested <= {requested_s:.6g}s "
+            f"to {effective_s:.6g}s"
+        ),
+        "rerun required under Classic Spectre or an honored maxstep backend",
+    ]
+
+
+def _invalid_oracle_config_case(
+    case_id: str,
+    role: str,
+    spectre: dict[str, Any],
+    notes: list[str],
+) -> tuple[dict[str, Any], CaseResult]:
+    prefixed = [f"{case_id}: {note}" for note in notes]
+    case = {
+        "case_id": case_id,
+        "role": role,
+        "outcome": "invalid_run",
+        "responsibility": "system",
+        "failure_kind": "invalid_oracle_config",
+        "behavior_score": None,
+        "behavior_notes": prefixed,
+        "spectre": spectre,
+    }
+    return case, CaseResult(
+        case_id,
+        role,
+        CaseOutcome.INVALID_RUN,
+        tuple(prefixed),
+    )
+
+
 def _no_ground_case(
     case_id: str,
     role: str,
@@ -500,6 +633,47 @@ def _behavior_evaluation_failure_kind(notes: list[str]) -> str:
     return "infrastructure"
 
 
+def _semantic_eligibility(
+    outcome: str,
+    failure_taxonomy: dict[str, Any] | None,
+) -> tuple[bool, str]:
+    """Return whether a sidecar result belongs in a semantic denominator."""
+    if outcome == "infrastructure_failure":
+        return False, "retryable_infrastructure"
+    if outcome == "runtime_failure":
+        stage = str((failure_taxonomy or {}).get("stage") or "")
+        if stage == "simulation":
+            return False, "unresolved_simulation_runtime"
+    return True, "semantic_result"
+
+
+def _source_outcome_is_semantic(outcome: str) -> bool:
+    return outcome in {"passed", "compile_failure", "behavior_failure"}
+
+
+def _pass_impact(row: dict[str, Any]) -> tuple[int, str]:
+    """Separate Pass changes from provenance/attribution-only transitions."""
+    source = str(row.get("source_outcome") or "")
+    observed = str(row.get("outcome") or "")
+    eligible, _reason = _semantic_eligibility(
+        observed,
+        row.get("failure_taxonomy")
+        if isinstance(row.get("failure_taxonomy"), dict)
+        else None,
+    )
+    if source == observed:
+        return 0, "unchanged"
+    if source == "passed" and eligible:
+        return -1, "confirmed_pass_loss"
+    if observed == "passed" and _source_outcome_is_semantic(source):
+        return 1, "confirmed_pass_gain"
+    if observed == "passed":
+        return 0, "provenance_resolution_to_pass"
+    if source != "passed" and observed != "passed":
+        return 0, "attribution_only_nonpass_reclassification"
+    return 0, "unresolved_nonsemantic_transition"
+
+
 def _default_simulate_case(
     *,
     cell_id: str,
@@ -513,6 +687,13 @@ def _default_simulate_case(
 ) -> dict[str, Any]:
     del required_signals
     backend = normalize_spectre_backend(config.backend)
+    if backend == "bridge":
+        bridge_repo = default_bridge_repo()
+        bridge_python = bridge_repo / ".venv" / "bin" / "python"
+        if not bridge_repo.is_dir() or not bridge_python.is_file():
+            raise FileNotFoundError(
+                f"bridge-lite preflight failed: missing {bridge_python}"
+            )
     return run_spectre_case(
         task_id=f"{cell_id}:{case_id}",
         tb_path=tb_path,
@@ -541,6 +722,106 @@ def _default_simulate_case(
     )
 
 
+def _spectre_trace_implementation_sha256() -> dict[str, str]:
+    """Bind cached traces to trace generation, excluding checker-only code."""
+    return {
+        "default_simulate_case": canonical_sha256(
+            {
+                "trace_cache_schema_version": SPECTRE_TRACE_CACHE_SCHEMA_VERSION,
+                "source": inspect.getsource(_default_simulate_case),
+            }
+        ),
+        "run_gold_dual_suite.py": sha256_file(
+            REPO_RUNNERS / "run_gold_dual_suite.py"
+        ),
+    }
+
+
+def _run_or_reuse_spectre_trace(
+    *,
+    cell_id: str,
+    case_id: str,
+    tb_path: Path,
+    include_paths: list[Path],
+    requested_output_dir: Path,
+    trace_cache_root: Path | None,
+    required_signals: set[str],
+    side_output_files: tuple[str, ...],
+    config: SpectreConfig,
+    simulate_case: Callable[..., dict[str, Any]],
+) -> tuple[dict[str, Any], Path, bool]:
+    """Cache successful simulator evidence independently of checker outcomes."""
+    output_dir = requested_output_dir
+    cache_result_path: Path | None = None
+    if trace_cache_root is not None:
+        backend = normalize_spectre_backend(config.backend)
+        signature = {
+            "schema_version": SPECTRE_TRACE_CACHE_SCHEMA_VERSION,
+            "cell_id": cell_id,
+            "case_id": case_id,
+            "trace_implementation_sha256": (
+                _spectre_trace_implementation_sha256()
+            ),
+            "tb_sha256": sha256_file(tb_path),
+            "include_manifest": [
+                {
+                    "path": path.relative_to(tb_path.parent).as_posix(),
+                    "sha256": sha256_file(path),
+                }
+                for path in sorted(include_paths)
+            ],
+            "required_signals": sorted(required_signals),
+            "side_output_files": list(side_output_files),
+            "spectre_run_config": {
+                "backend": backend,
+                "mode": normalize_spectre_mode(config.mode),
+                "timeout_s": config.timeout_s,
+                "runtime_id": config.runtime_id,
+                "host": config.sui_host or default_remote_host(backend),
+                "work_root": config.sui_work_root or default_remote_work_root(backend),
+                "cadence_cshrc": config.cadence_cshrc
+                or default_remote_cadence_cshrc(backend),
+            },
+        }
+        signature_sha = canonical_sha256(signature)
+        output_dir = trace_cache_root / signature_sha
+        cache_result_path = output_dir / "spectre_trace_result.json"
+        trace_path = output_dir / "tran_spectre.csv"
+        if cache_result_path.is_file() and trace_path.is_file():
+            cached = read_json(cache_result_path)
+            if (
+                cached.get("input_signature") == signature
+                and cached.get("input_signature_sha256") == signature_sha
+                and (cached.get("spectre") or {}).get("ok") is True
+            ):
+                return dict(cached["spectre"]), output_dir, True
+
+    spectre = simulate_case(
+        cell_id=cell_id,
+        case_id=case_id,
+        tb_path=tb_path,
+        include_paths=include_paths,
+        output_dir=output_dir,
+        required_signals=required_signals,
+        side_output_files=side_output_files,
+        config=config,
+    )
+    if (
+        cache_result_path is not None
+        and spectre.get("ok") is True
+        and (output_dir / "tran_spectre.csv").is_file()
+    ):
+        write_json_atomic(
+            cache_result_path,
+            {
+                "input_signature": signature,
+                "input_signature_sha256": signature_sha,
+                "spectre": spectre,
+            },
+        )
+    return spectre, output_dir, False
+
+
 def _testbench_case(
     *,
     runtime: Path,
@@ -554,6 +835,7 @@ def _testbench_case(
     required_signals: set[str],
     case_id: str,
     output_dir: Path,
+    trace_cache_root: Path | None,
     config: SpectreConfig,
     simulate_case: Callable[..., dict[str, Any]],
     behavior_evaluator: Callable[..., tuple[float, list[str]]],
@@ -568,6 +850,7 @@ def _testbench_case(
                 == "vabench-spectre-case-cache-v1"
                 and cached.get("case_id") == case_id
                 and cached.get("role") == role
+                and cached.get("responsibility") != "system"
             ):
                 if _spectre_added_ground_gmin(
                     cached.get("spectre") or {},
@@ -641,15 +924,17 @@ def _testbench_case(
 
         include_paths = sorted(path for path in run_dir.rglob("*.va") if path.is_file())
         try:
-            spectre = simulate_case(
+            spectre, output_dir, trace_reused = _run_or_reuse_spectre_trace(
                 cell_id=cell_id,
                 case_id=case_id,
                 tb_path=tb_dst,
                 include_paths=include_paths,
-                output_dir=output_dir,
+                requested_output_dir=output_dir,
+                trace_cache_root=trace_cache_root,
                 required_signals=required_signals,
                 side_output_files=(),
                 config=config,
+                simulate_case=simulate_case,
             )
         except Exception as exc:
             notes = [
@@ -675,6 +960,19 @@ def _testbench_case(
         if _spectre_added_ground_gmin(compact, tb_dst, output_dir):
             case, oracle = _no_ground_case(case_id, role, compact)
             return finish(case, oracle)
+        oracle_config_notes = _spectre_oracle_config_issue(
+            tb_dst,
+            compact,
+            output_dir,
+        )
+        if oracle_config_notes:
+            case, oracle = _invalid_oracle_config_case(
+                case_id,
+                role,
+                compact,
+                oracle_config_notes,
+            )
+            return finish(case, oracle)
         if not spectre.get("ok"):
             kind = _spectre_failure_kind(spectre)
             notes = _spectre_failure_notes(
@@ -692,6 +990,7 @@ def _testbench_case(
                 "behavior_score": None,
                 "behavior_notes": notes,
                 "spectre": compact,
+                "spectre_trace_reused": trace_reused,
             }
             return finish(
                 case,
@@ -710,6 +1009,7 @@ def _testbench_case(
                 "behavior_score": None,
                 "behavior_notes": notes,
                 "spectre": compact,
+                "spectre_trace_reused": trace_reused,
             }
             return finish(
                 case,
@@ -727,6 +1027,7 @@ def _testbench_case(
                 "behavior_score": None,
                 "behavior_notes": notes,
                 "spectre": compact,
+                "spectre_trace_reused": trace_reused,
             }
             return finish(
                 case,
@@ -736,7 +1037,7 @@ def _testbench_case(
             score, behavior_notes = behavior_evaluator(
                 checker_task_id,
                 csv_path,
-                timeout_s=config.timeout_s,
+                timeout_s=config.checker_timeout_s,
             )
         except Exception as exc:
             score = 0.0
@@ -756,6 +1057,7 @@ def _testbench_case(
                 "behavior_score": score,
                 "behavior_notes": notes,
                 "spectre": compact,
+                "spectre_trace_reused": trace_reused,
             }
             return finish(
                 case,
@@ -785,6 +1087,7 @@ def _testbench_case(
             "behavior_score": score,
             "behavior_notes": notes,
             "spectre": compact,
+            "spectre_trace_reused": trace_reused,
         }
         return finish(case, CaseResult(case_id, role, outcome, tuple(notes)))
 
@@ -795,6 +1098,7 @@ def _audit_testbench_cell(
     score_row: dict[str, Any],
     submission_tree_sha256: str,
     cell_output: Path,
+    trace_cache_root: Path | None,
     config: SpectreConfig,
     simulate_case: Callable[..., dict[str, Any]],
     behavior_evaluator: Callable[..., tuple[float, list[str]]],
@@ -824,6 +1128,7 @@ def _audit_testbench_cell(
         score_row=score_row,
         submission_tree_sha256=submission_tree_sha256,
         cell_output=cell_output,
+        trace_cache_root=trace_cache_root,
         config=config,
         simulate_case=simulate_case,
         behavior_evaluator=behavior_evaluator,
@@ -857,6 +1162,7 @@ def _audit_dut_cell(
     score_row: dict[str, Any],
     submission_tree_sha256: str,
     cell_output: Path,
+    trace_cache_root: Path | None,
     config: SpectreConfig,
     simulate_case: Callable[..., dict[str, Any]],
     behavior_evaluator: Callable[..., tuple[float, list[str]]],
@@ -936,15 +1242,17 @@ def _audit_dut_cell(
         )
         output_dir = cell_output / "cases" / "score"
         try:
-            spectre = simulate_case(
+            spectre, output_dir, trace_reused = _run_or_reuse_spectre_trace(
                 cell_id=cell_id,
                 case_id="score",
                 tb_path=tb_dst,
                 include_paths=include_paths,
-                output_dir=output_dir,
+                requested_output_dir=output_dir,
+                trace_cache_root=trace_cache_root,
                 required_signals=required_signals,
                 side_output_files=behavior_side_output_names(checker_task_id),
                 config=config,
+                simulate_case=simulate_case,
             )
         except Exception as exc:
             diagnostics = [
@@ -976,6 +1284,37 @@ def _audit_dut_cell(
             }
 
         compact = _compact_spectre_result(spectre, output_dir)
+        oracle_config_notes = _spectre_oracle_config_issue(
+            tb_dst,
+            compact,
+            output_dir,
+        )
+        if oracle_config_notes:
+            diagnostics = [f"score: {note}" for note in oracle_config_notes]
+            return {
+                **base,
+                "outcome": "infrastructure_failure",
+                "diagnostics": diagnostics,
+                "failure_taxonomy": taxonomy(
+                    "infrastructure",
+                    "invalid_oracle_config",
+                    case_ids=["score"],
+                    retryable=True,
+                    responsibility="system",
+                ),
+                "checker_task_id": checker_task_id,
+                "cases": [
+                    {
+                        "case_id": "score",
+                        "responsibility": "system",
+                        "failure_kind": "invalid_oracle_config",
+                        "spectre": compact,
+                        "spectre_trace_reused": trace_reused,
+                        "behavior_score": None,
+                        "behavior_notes": diagnostics,
+                    }
+                ],
+            }
         if not spectre.get("ok"):
             kind = _spectre_failure_kind(spectre)
             diagnostics = _spectre_failure_notes(
@@ -1014,6 +1353,7 @@ def _audit_dut_cell(
                         "responsibility": taxonomy_value["responsibility"],
                         "failure_kind": kind,
                         "spectre": compact,
+                        "spectre_trace_reused": trace_reused,
                         "behavior_score": None,
                         "behavior_notes": diagnostics,
                     }
@@ -1041,6 +1381,7 @@ def _audit_dut_cell(
                         "responsibility": "system",
                         "failure_kind": "infrastructure",
                         "spectre": compact,
+                        "spectre_trace_reused": trace_reused,
                         "behavior_score": None,
                         "behavior_notes": diagnostics,
                     }
@@ -1068,6 +1409,7 @@ def _audit_dut_cell(
                         "responsibility": "system",
                         "failure_kind": "required_signal",
                         "spectre": compact,
+                        "spectre_trace_reused": trace_reused,
                         "behavior_score": None,
                         "behavior_notes": diagnostics,
                     }
@@ -1078,7 +1420,7 @@ def _audit_dut_cell(
             score, behavior_notes = behavior_evaluator(
                 checker_task_id,
                 csv_path,
-                timeout_s=config.timeout_s,
+                timeout_s=config.checker_timeout_s,
             )
         except Exception as exc:
             score = 0.0
@@ -1106,6 +1448,7 @@ def _audit_dut_cell(
                         "responsibility": "system",
                         "failure_kind": failure_kind,
                         "spectre": compact,
+                        "spectre_trace_reused": trace_reused,
                         "behavior_score": score,
                         "behavior_notes": diagnostics,
                     }
@@ -1144,6 +1487,7 @@ def _audit_dut_cell(
                     "responsibility": "candidate",
                     "failure_kind": None if passed else "behavior",
                     "spectre": compact,
+                    "spectre_trace_reused": trace_reused,
                     "behavior_score": score,
                     "behavior_notes": diagnostics,
                     "side_effect_ok": side_effect_ok,
@@ -1156,6 +1500,7 @@ def _finish_testbench_audit(
     score_row: dict[str, Any],
     submission_tree_sha256: str,
     cell_output: Path,
+    trace_cache_root: Path | None,
     config: SpectreConfig,
     simulate_case: Callable[..., dict[str, Any]],
     behavior_evaluator: Callable[..., tuple[float, list[str]]],
@@ -1233,6 +1578,7 @@ def _finish_testbench_audit(
             required_signals=required_signals,
             case_id=case_id,
             output_dir=cell_output / "cases" / case_id,
+            trace_cache_root=trace_cache_root,
             config=config,
             simulate_case=simulate_case,
             behavior_evaluator=behavior_evaluator,
@@ -1254,6 +1600,8 @@ def _finish_testbench_audit(
         infrastructure_stage = (
             "checker_timeout"
             if infrastructure_failure_kinds == {"checker_timeout"}
+            else "invalid_oracle_config"
+            if infrastructure_failure_kinds == {"invalid_oracle_config"}
             else "infrastructure"
         )
         classification = {
@@ -1323,6 +1671,7 @@ def audit_cell(
     score_row: dict[str, Any],
     submission_tree_sha256: str,
     cell_output: Path,
+    trace_cache_root: Path | None = None,
     config: SpectreConfig,
     simulate_case: Callable[..., dict[str, Any]] = _default_simulate_case,
     behavior_evaluator: Callable[
@@ -1337,6 +1686,7 @@ def audit_cell(
             score_row=score_row,
             submission_tree_sha256=submission_tree_sha256,
             cell_output=cell_output,
+            trace_cache_root=trace_cache_root,
             config=config,
             simulate_case=simulate_case,
             behavior_evaluator=behavior_evaluator,
@@ -1347,6 +1697,7 @@ def audit_cell(
             score_row=score_row,
             submission_tree_sha256=submission_tree_sha256,
             cell_output=cell_output,
+            trace_cache_root=trace_cache_root,
             config=config,
             simulate_case=simulate_case,
             behavior_evaluator=behavior_evaluator,
@@ -1396,10 +1747,20 @@ def _cell_input_signature(
             else default_remote_cadence_cshrc(backend)
         ),
     }
+    implementation_files = {
+        "score_spectre_campaign.py": Path(__file__),
+        "simulate_evas.py": REPO_RUNNERS / "simulate_evas.py",
+        "derived_testbench_oracle.py": PACKAGE_RUNNERS / "derived_testbench_oracle.py",
+        "trusted_replay_adapter.py": HERE / "trusted_replay_adapter.py",
+        "run_gold_dual_suite.py": REPO_RUNNERS / "run_gold_dual_suite.py",
+    }
     signature = {
-        "schema_version": "vabench-spectre-cell-input-signature-v1",
+        "schema_version": "vabench-spectre-cell-input-signature-v2",
         "audit_schema_version": SCHEMA_VERSION,
-        "audit_implementation_sha256": sha256_file(Path(__file__)),
+        "implementation_sha256": {
+            name: sha256_file(path) for name, path in implementation_files.items()
+        },
+        "frozen_source_row_sha256": canonical_sha256(row),
         "cell": {
             key: row.get(key)
             for key in (
@@ -1422,6 +1783,7 @@ def _cell_input_signature(
             "backend": backend,
             "mode": normalize_spectre_mode(config.mode),
             "timeout_s": config.timeout_s,
+            "checker_timeout_s": config.checker_timeout_s,
             "runtime_id": config.runtime_id,
             "execution_environment_sha256": canonical_sha256(
                 execution_environment
@@ -1443,12 +1805,19 @@ def _run_or_resume_cell(
     if re.fullmatch(r"[A-Za-z0-9._-]+", cell_id) is None:
         raise ValueError(f"unsafe cell ID: {cell_id!r}")
     cell_output = work_root / "cells" / cell_id / signature_sha
+    trace_cache_root = work_root / "cells" / cell_id / "trace_cache"
     result_path = cell_output / "result.json"
     if result_path.is_file():
         existing = read_json(result_path)
+        existing_taxonomy = existing.get("failure_taxonomy")
+        retryable = bool(
+            isinstance(existing_taxonomy, dict)
+            and existing_taxonomy.get("retryable") is True
+        )
         if (
             existing.get("input_signature_sha256") == signature_sha
             and existing.get("input_signature") == signature
+            and not retryable
         ):
             return existing, True
 
@@ -1458,6 +1827,7 @@ def _run_or_resume_cell(
             score_row=item["score_row"],
             submission_tree_sha256=str(item["submission_tree_sha256"]),
             cell_output=cell_output,
+            trace_cache_root=trace_cache_root,
             config=config,
         )
     except Exception as exc:
@@ -1487,6 +1857,23 @@ def _run_or_resume_cell(
         }
     result["input_signature"] = signature
     result["input_signature_sha256"] = signature_sha
+    source_row_sha = str(signature["frozen_source_row_sha256"])
+    result["source_provenance"] = {
+        "authority": "frozen_plan_score_row",
+        "source_outcome": item["score_row"].get("outcome"),
+        "source_row_sha256": source_row_sha,
+    }
+    semantic_eligible, semantic_reason = _semantic_eligibility(
+        str(result.get("outcome") or ""),
+        result.get("failure_taxonomy")
+        if isinstance(result.get("failure_taxonomy"), dict)
+        else None,
+    )
+    pass_delta, pass_reason = _pass_impact(result)
+    result["semantic_eligible"] = semantic_eligible
+    result["semantic_eligibility_reason"] = semantic_reason
+    result["confirmed_pass_delta"] = pass_delta
+    result["pass_impact_reason"] = pass_reason
     result["sidecar_result_path"] = str(result_path)
     write_json_atomic(result_path, result)
     return result, False
@@ -1514,6 +1901,16 @@ def _summarize_audit(
         )
         for row in rows
     )
+    semantic_eligibility = [
+        _semantic_eligibility(
+            str(row.get("outcome") or ""),
+            row.get("failure_taxonomy")
+            if isinstance(row.get("failure_taxonomy"), dict)
+            else None,
+        )
+        for row in rows
+    ]
+    pass_impacts = [_pass_impact(row) for row in rows]
     return {
         "schema_version": SCHEMA_VERSION,
         "generated_at": now_utc(),
@@ -1544,6 +1941,23 @@ def _summarize_audit(
             }
             for (source, observed), count in sorted(transitions.items())
         ],
+        "semantic_denominator": {
+            "eligible_cells": sum(eligible for eligible, _reason in semantic_eligibility),
+            "excluded_cells": sum(not eligible for eligible, _reason in semantic_eligibility),
+            "excluded_by_reason": dict(
+                sorted(
+                    Counter(
+                        reason
+                        for eligible, reason in semantic_eligibility
+                        if not eligible
+                    ).items()
+                )
+            ),
+        },
+        "pass_impact": {
+            "net_confirmed_pass_delta": sum(delta for delta, _reason in pass_impacts),
+            "by_reason": dict(sorted(Counter(reason for _delta, reason in pass_impacts).items())),
+        },
         "mutation_summary": {
             "killed": sum(int(row.get("killed_count") or 0) for row in rows),
             "survived": sum(int(row.get("survived_count") or 0) for row in rows),
@@ -1627,6 +2041,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--timeout-s", type=int, default=600)
     parser.add_argument(
+        "--checker-timeout-s",
+        type=int,
+        default=300,
+        help="per-checker watchdog, separate from each Spectre simulation timeout",
+    )
+    parser.add_argument(
         "--spectre-backend",
         required=True,
         help="explicit Spectre transport backend (bridge, labctl, or sui-direct)",
@@ -1659,8 +2079,8 @@ def main(argv: list[str] | None = None) -> int:
         raise SystemExit(
             f"--workers must be between 1 and {MAX_SPECTRE_WORKERS}"
         )
-    if args.timeout_s <= 0:
-        raise SystemExit("--timeout-s must be positive")
+    if args.timeout_s <= 0 or args.checker_timeout_s <= 0:
+        raise SystemExit("simulation and checker timeouts must be positive")
 
     source_outcomes = (
         set()
@@ -1678,6 +2098,7 @@ def main(argv: list[str] | None = None) -> int:
         backend=normalize_spectre_backend(args.spectre_backend),
         mode=normalize_spectre_mode(args.spectre_mode),
         timeout_s=args.timeout_s,
+        checker_timeout_s=args.checker_timeout_s,
         runtime_id=args.spectre_runtime_id,
         sui_host=args.sui_host,
         sui_work_root=args.sui_work_root,
