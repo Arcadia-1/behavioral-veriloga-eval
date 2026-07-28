@@ -1133,6 +1133,50 @@ def test_trace_cache_binds_trace_implementation_but_not_checker_implementation(
     assert calls == 2
 
 
+def test_trace_cache_binds_relative_include_paths(tmp_path: Path) -> None:
+    audit = load_audit()
+    tb = tmp_path / "tb.scs"
+    tb.write_text("simulator lang=spectre\ntran tran stop=1n\n", encoding="utf-8")
+    dut = tmp_path / "dut.va"
+    dut.write_text("module dut; endmodule\n", encoding="utf-8")
+    calls = 0
+
+    def fake_simulate_case(**kwargs):
+        nonlocal calls
+        calls += 1
+        output_dir = kwargs["output_dir"]
+        output_dir.mkdir(parents=True, exist_ok=True)
+        (output_dir / "tran_spectre.csv").write_text(
+            "time,out\n0,0\n", encoding="utf-8"
+        )
+        return {"ok": True, "status": "success"}
+
+    kwargs = {
+        "cell_id": "trace-cache-path-cell",
+        "case_id": "score",
+        "tb_path": tb,
+        "include_paths": [dut],
+        "requested_output_dir": tmp_path / "uncached",
+        "trace_cache_root": tmp_path / "cache",
+        "required_signals": {"out"},
+        "side_output_files": (),
+        "config": audit.SpectreConfig(timeout_s=10, checker_timeout_s=3),
+        "simulate_case": fake_simulate_case,
+    }
+
+    _first, _path, first_reused = audit._run_or_reuse_spectre_trace(**kwargs)
+    support = tmp_path / "support"
+    support.mkdir()
+    moved = support / "dut.va"
+    moved.write_bytes(dut.read_bytes())
+    kwargs["include_paths"] = [moved]
+    _second, _path, second_reused = audit._run_or_reuse_spectre_trace(**kwargs)
+
+    assert first_reused is False
+    assert second_reused is False
+    assert calls == 2
+
+
 def test_summary_excludes_runtime_and_infrastructure_without_inventing_pass_gain() -> None:
     audit = load_audit()
     rows = [

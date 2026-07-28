@@ -764,7 +764,10 @@ def _run_or_reuse_spectre_trace(
             ),
             "tb_sha256": sha256_file(tb_path),
             "include_manifest": [
-                {"name": path.name, "sha256": sha256_file(path)}
+                {
+                    "path": path.relative_to(tb_path.parent).as_posix(),
+                    "sha256": sha256_file(path),
+                }
                 for path in sorted(include_paths)
             ],
             "required_signals": sorted(required_signals),
