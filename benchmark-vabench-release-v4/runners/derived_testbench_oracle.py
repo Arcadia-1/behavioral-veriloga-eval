@@ -17,7 +17,7 @@ from typing import Any
 DEFAULT_EVAS_PROFILE = "r52"
 EVAS_VERSION_BY_PROFILE = {
     "r52": "0.8.5",
-    "r53test": "0.8.6",
+    "r53test": "0.8.7",
 }
 REQUIRED_EVAS_VERSION = EVAS_VERSION_BY_PROFILE[DEFAULT_EVAS_PROFILE]
 

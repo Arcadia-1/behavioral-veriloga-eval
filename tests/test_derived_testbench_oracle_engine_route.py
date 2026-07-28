@@ -68,19 +68,19 @@ def test_oracle_accepts_only_r53test_evas_version(monkeypatch) -> None:
     monkeypatch.setenv("VABENCH_EVAS_PROFILE", "r53test")
 
     valid, note = oracle._validate_required_evas_engine(
-        "Version 0.8.6 -- Jul 2026\nevas_engine = evas-rust",
+        "Version 0.8.7 -- Jul 2026\nevas_engine = evas-rust",
         "evas2",
     )
     stale, stale_note = oracle._validate_required_evas_engine(
-        "Version 0.8.5 -- Jul 2026\nevas_engine = evas-rust",
+        "Version 0.8.6 -- Jul 2026\nevas_engine = evas-rust",
         "evas2",
     )
 
     assert valid is True
     assert "evas_profile=r53test" in note
-    assert "evas_version=0.8.6" in note
+    assert "evas_version=0.8.7" in note
     assert stale is False
-    assert "required='0.8.6'" in stale_note
+    assert "required='0.8.7'" in stale_note
 
 
 def test_oracle_rejects_unknown_evas_profile(monkeypatch) -> None:
@@ -90,7 +90,7 @@ def test_oracle_rejects_unknown_evas_profile(monkeypatch) -> None:
 
     with pytest.raises(ValueError, match="unsupported VABENCH_EVAS_PROFILE"):
         oracle._validate_required_evas_engine(
-            "Version 0.8.6 -- Jul 2026\nevas_engine = evas-rust",
+            "Version 0.8.7 -- Jul 2026\nevas_engine = evas-rust",
             "evas2",
         )
 
@@ -101,7 +101,7 @@ def test_oracle_accepts_time_dependent_cross_compatibility(monkeypatch) -> None:
     monkeypatch.setenv("VABENCH_EVAS_PROFILE", "r53test")
     report = "\n".join(
         [
-            "Version 0.8.6 -- Jul 2026",
+            "Version 0.8.7 -- Jul 2026",
             "Compatibility engine route: evas-rust -> python for time_dependent_cross_event",
             "evas_engine = python",
         ]
