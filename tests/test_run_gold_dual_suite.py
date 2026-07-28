@@ -459,6 +459,80 @@ VALUE
     assert captured["unlock_scripts"][0].endswith(".lock")
 
 
+def test_direct_sui_timeout_cancels_remote_spectre_process_group(
+    monkeypatch,
+    tmp_path: Path,
+) -> None:
+    output_dir = tmp_path / "out"
+    tb_path = tmp_path / "tb.scs"
+    va_path = tmp_path / "dut.va"
+    tb_path.write_text('simulator lang=spectre\nahdl_include "dut.va"\n', encoding="utf-8")
+    va_path.write_text("// stub dut\n", encoding="utf-8")
+    remote_dir = "/tmp/vaevas-direct-spectre/case.timeout"
+    captured: dict[str, object] = {"text_scripts": []}
+
+    def fake_run_ssh_text(host, script, *, timeout_s, input_data=None):
+        captured["text_scripts"].append(script)
+        if "mktemp" in script:
+            return SimpleNamespace(stdout=f"{remote_dir}\n", stderr="", returncode=0)
+        if "AHDLCMI_CACHE_STATUS" in script:
+            return SimpleNamespace(stdout="", stderr="", returncode=75)
+        if "setsid bash -lc" in script:
+            raise dual.subprocess.TimeoutExpired(
+                cmd=["ssh", host],
+                timeout=timeout_s,
+                output="remote spectre still running\n",
+                stderr="",
+            )
+        if "remote_cancel=" in script:
+            captured["cancel_script"] = script
+            return SimpleNamespace(stdout="remote_cancel=kill pgid=12345\n", stderr="", returncode=0)
+        if "rm -rf" in script:
+            captured["cleanup_script"] = script
+            return SimpleNamespace(stdout="", stderr="", returncode=0)
+        return SimpleNamespace(stdout="", stderr="", returncode=0)
+
+    def fake_run_ssh_bytes(host, script, *, timeout_s, input_data=None):
+        captured.setdefault("byte_scripts", []).append(script)
+        return SimpleNamespace(stdout=b"", stderr=b"", returncode=0)
+
+    monkeypatch.setattr(dual, "run_ssh_text", fake_run_ssh_text)
+    monkeypatch.setattr(dual, "run_ssh_bytes", fake_run_ssh_bytes)
+
+    result = dual.run_spectre_case_sui_direct(
+        task_id="case",
+        tb_path=tb_path,
+        include_paths=[va_path],
+        output_dir=output_dir,
+        cadence_cshrc="/cadence.cshrc",
+        timeout_s=5,
+        sui_host="thu-sui-test",
+        sui_work_root="/tmp/vaevas-direct-spectre",
+    )
+
+    assert result["ok"] is False
+    assert result["errors"] == ["sui_direct_timeout_after_s=600"]
+    assert result["warnings"] == ["remote_ahdlcmi_cache_prepare_failed rc=75"]
+    spectre_script = next(script for script in captured["text_scripts"] if "setsid bash -lc" in script)
+    assert f"{remote_dir}/{dual.DIRECT_SUI_REMOTE_PGID_FILE}" in spectre_script
+    assert "set -e;" in spectre_script
+    assert spectre_script.index("set -e;") < spectre_script.index("printf")
+    assert spectre_script.index("printf") < spectre_script.index("exec tcsh")
+    cancel_script = captured["cancel_script"]
+    assert f"remote_dir={remote_dir}" in cancel_script
+    assert f"pgid_file={remote_dir}/{dual.DIRECT_SUI_REMOTE_PGID_FILE}" in cancel_script
+    assert '[ ! -s "$pgid_file" ] && [ "$wait_i" -lt 50 ]' in cancel_script
+    assert 'IFS= read -r pgid < "$pgid_file" || pgid=""' in cancel_script
+    assert "tr -d" not in cancel_script
+    assert 'case "$pgid" in ""|*[!0-9]*)' in cancel_script
+    assert 'if [ "$pgid" -le 1 ]' in cancel_script
+    assert 'kill -TERM -- "-$pgid"' in cancel_script
+    assert 'kill -KILL -- "-$pgid"' in cancel_script
+    assert captured["text_scripts"].index(cancel_script) < captured["text_scripts"].index(
+        captured["cleanup_script"]
+    )
+
+
 def test_run_spectre_case_can_use_labctl_backend(monkeypatch, tmp_path: Path) -> None:
     output_dir = tmp_path / "out"
     tb_path = tmp_path / "tb.scs"
