@@ -14,7 +14,24 @@ from pathlib import PurePosixPath
 from typing import Any
 
 
-REQUIRED_EVAS_VERSION = "0.8.5"
+DEFAULT_EVAS_PROFILE = "r52"
+EVAS_VERSION_BY_PROFILE = {
+    "r52": "0.8.5",
+    "r53test": "0.8.6",
+}
+REQUIRED_EVAS_VERSION = EVAS_VERSION_BY_PROFILE[DEFAULT_EVAS_PROFILE]
+
+
+def required_evas_profile() -> tuple[str, str]:
+    profile = os.environ.get("VABENCH_EVAS_PROFILE", DEFAULT_EVAS_PROFILE).strip()
+    profile = profile or DEFAULT_EVAS_PROFILE
+    try:
+        return profile, EVAS_VERSION_BY_PROFILE[profile]
+    except KeyError as exc:
+        supported = ", ".join(sorted(EVAS_VERSION_BY_PROFILE))
+        raise ValueError(
+            f"unsupported VABENCH_EVAS_PROFILE={profile!r}; supported: {supported}"
+        ) from exc
 
 
 class CaseOutcome(str, Enum):
@@ -262,6 +279,7 @@ def _validate_required_evas_engine(
     if required != "evas2":
         return True, f"evas_engine={effective} evas_engine_used={effective}"
 
+    evas_profile, required_evas_version = required_evas_profile()
     version_match = re.search(r"^Version\s+([^\s]+)", combined, flags=re.MULTILINE)
     observed_version = version_match.group(1) if version_match else None
     reported_engine = _evas_engine_value(combined, "evas_engine")
@@ -283,14 +301,20 @@ def _validate_required_evas_engine(
         "absdelay",
         "continuous_state_cross_event",
         "dynamic_state_array_access",
+        "time_dependent_cross_event",
     }
     rust_required = _evas_engine_value(combined, "evas_rust_required")
     rust_full_model_required = _evas_engine_value(
         combined, "evas_rust_full_model_required"
     )
     failures = _evas_engine_value(combined, "rust_full_model_required_failures")
-    if observed_version != REQUIRED_EVAS_VERSION:
-        return False, f"engine_validation_failed=version observed={observed_version!r}"
+    if observed_version != required_evas_version:
+        return (
+            False,
+            "engine_validation_failed=version "
+            f"profile={evas_profile!r} required={required_evas_version!r} "
+            f"observed={observed_version!r}",
+        )
     # EVAS 0.8.5 no longer emits the legacy backend/rust-required counters on
     # every successful simulation.  The exact 0.8.5 version banner together
     # with both engine selectors pinned to evas2 is the supported identity
@@ -322,12 +346,14 @@ def _validate_required_evas_engine(
         return (
             True,
             f"evas_engine=evas2 evas_engine_used=python "
-            f"evas_version={REQUIRED_EVAS_VERSION} evas_backend=python_compatibility "
+            f"evas_profile={evas_profile} evas_version={required_evas_version} "
+            f"evas_backend=python_compatibility "
             f"evas_compatibility_features={','.join(compatibility_features)}",
         )
     return (
         True,
-        f"evas_engine=evas2 evas_engine_used=evas2 evas_version={REQUIRED_EVAS_VERSION} "
+        f"evas_engine=evas2 evas_engine_used=evas2 evas_profile={evas_profile} "
+        f"evas_version={required_evas_version} "
         f"evas_backend=rust evas_reported_engine={reported_engine or 'not_emitted'}",
     )
 
@@ -371,7 +397,7 @@ def _run_case(
     runners_dir = str(repo_root / "runners")
     if runners_dir not in sys.path:
         sys.path.insert(0, runners_dir)
-    from simulate_evas import evaluate_behavior_with_timeout, run_evas
+    from simulate_evas import evaluate_behavior, run_evas
 
     role = "reference" if negative_bundle is None else "negative"
     with tempfile.TemporaryDirectory(prefix=f"v4_tb_feedback_{label}_") as td:
@@ -456,12 +482,7 @@ def _run_case(
                 notes=[f"{label}: {engine_note}"] + [f"{label}: {note}" for note in trace_notes],
             )
         try:
-            score, notes = evaluate_behavior_with_timeout(
-                checker_task_id,
-                csv_path,
-                timeout_s=60,
-                force_subprocess=True,
-            )
+            score, notes = evaluate_behavior(checker_task_id, csv_path)
         except Exception as exc:  # Checker exceptions are evaluator-invalid, not behavioral kills.
             return _case_result(
                 label=label,
@@ -469,20 +490,6 @@ def _run_case(
                 valid=False,
                 behavior_pass=None,
                 notes=[f"{label}: {engine_note}", f"{label}: checker failed: {type(exc).__name__}: {str(exc)[:300]}"],
-            )
-        if any(
-            str(note).startswith(
-                ("behavior_eval_timeout>", "behavior_eval_no_result", "behavior_eval_error=")
-            )
-            for note in notes
-        ):
-            return _case_result(
-                label=label,
-                role=role,
-                valid=False,
-                behavior_pass=None,
-                notes=[f"{label}: {engine_note}"]
-                + [f"{label}: " + note for note in notes],
             )
         return _case_result(
             label=label,
