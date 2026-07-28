@@ -18,6 +18,8 @@ The tool can prove that the checked repository revision has consistent:
   profiles;
 - required signals across properties, public observables, checker trace
   declarations, and saved traces;
+- required-trace entries use physical scalar or indexed signal syntax rather
+  than literals, thresholds, checker-derived values, or diagnostic labels;
 - feedback/score stimulus semantics after profile resolution;
 - checker IDs and loadable V4 registry entries;
 - task-record hashes and gold-certification input hashes;
