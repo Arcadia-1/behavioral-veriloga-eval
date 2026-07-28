@@ -4,7 +4,11 @@ from __future__ import annotations
 from ..api import Checker
 from _bisect import bisect_left
 
-SETTLE = 6.5e-10
+# The SAR DUT may publish controller trial bits through transition() and then
+# feed a second transition() in the CDAC monitor.  Sample after both stages have
+# settled; otherwise dense EVAS traces expose the intermediate ramp while sparse
+# Spectre traces can skip directly to the settled point.
+SETTLE = 9.0e-10
 VDD = 0.9
 VTH = 0.45
 

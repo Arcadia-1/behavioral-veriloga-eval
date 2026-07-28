@@ -953,22 +953,76 @@ def spectre_reserved_identifier_failures(filename: str, code: str) -> list[str]:
     return failures
 
 
+def spectre_strict_lint_failures(run_dir: Path, path: Path) -> list[str]:
+    """Return strict Spectre compatibility failures from the active EVAS CLI."""
+    label = path.relative_to(run_dir).as_posix()
+    base_cmd, env = evas_command_and_env()
+    env = _with_default_evas_engine(env)
+    try:
+        proc = subprocess.run(
+            [
+                *base_cmd,
+                "lint",
+                "--format",
+                "json",
+                "--spectre-strict",
+                label,
+            ],
+            cwd=run_dir,
+            capture_output=True,
+            text=True,
+            timeout=30,
+            env=env,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        return [f"{label}:strict_spectre_lint_error={type(exc).__name__}:{exc}"]
+    if proc.returncode == 0:
+        return []
+    try:
+        diagnostics = json.loads(proc.stdout or "[]")
+    except json.JSONDecodeError:
+        detail = ((proc.stdout or "") + "\n" + (proc.stderr or "")).strip()[-500:]
+        return [f"{label}:strict_spectre_lint_failed rc={proc.returncode} {detail}"]
+    failures: list[str] = []
+    for diagnostic in diagnostics if isinstance(diagnostics, list) else []:
+        if not isinstance(diagnostic, dict):
+            continue
+        code = str(diagnostic.get("code") or "")
+        severity = str(diagnostic.get("severity") or "")
+        if severity != "compat-error" and code not in {
+            "EVAS-COMP-ESPECTRESTRICT",
+            "EVAS-COMP-ENETLIST",
+        }:
+            continue
+        message = str(diagnostic.get("message") or "").replace("\n", " ")
+        failures.append(f"{label}:{code}:{message[:500]}")
+    if failures:
+        return failures
+    detail = ((proc.stdout or "") + "\n" + (proc.stderr or "")).strip()[-500:]
+    return [f"{label}:strict_spectre_lint_failed rc={proc.returncode} {detail}"]
+
+
 def spectre_aligned_veriloga_preflight(run_dir: Path) -> list[str]:
     """Reject .va files outside the shared EVAS/Spectre release subset."""
     failures: list[str] = []
-    for path in sorted(run_dir.glob("*.va")):
+    for path in sorted(run_dir.rglob("*.va")):
+        label = path.relative_to(run_dir).as_posix()
+        path_failures: list[str] = []
         try:
             code = _veriloga_code_without_comments(path.read_text(encoding="utf-8", errors="replace"))
         except OSError as exc:
-            failures.append(f"{path.name}:read_error={exc}")
+            failures.append(f"{label}:read_error={exc}")
             continue
         uses_electrical = re.search(r"\belectrical\b", code) is not None
         has_disciplines = re.search(r"`\s*include\s+\"disciplines\.vams\"", code) is not None
         if uses_electrical and not has_disciplines:
-            failures.append(f"{path.name}:missing_disciplines_vams")
+            path_failures.append(f"{label}:missing_disciplines_vams")
         if re.search(r"\bwhile\s*\(\s*(?:1|1\.0|true)\s*\)|\bforever\b", code):
-            failures.append(f"{path.name}:unsupported_unbounded_event_loop")
-        failures.extend(spectre_reserved_identifier_failures(path.name, code))
+            path_failures.append(f"{label}:unsupported_unbounded_event_loop")
+        path_failures.extend(spectre_reserved_identifier_failures(label, code))
+        if not path_failures:
+            path_failures.extend(spectre_strict_lint_failures(run_dir, path))
+        failures.extend(path_failures)
     return failures
 
 
@@ -27185,14 +27239,17 @@ def behavior_evaluation_timeout_seconds(
         1,
         int(os.environ.get("VAEVAS_BEHAVIOR_MIN_BYTES_PER_SECOND", "150000")),
     )
+    safety_factor = max(
+        1.0,
+        float(os.environ.get("VAEVAS_BEHAVIOR_TIMEOUT_SAFETY_FACTOR", "2.0")),
+    )
     base_timeout_s = max(10, min(60, max(1, timeout_s // 3)))
     size_timeout_s = max(
         10,
-        math.ceil(max(0, csv_size_bytes) / min_bytes_per_second),
+        math.ceil((max(0, csv_size_bytes) * safety_factor) / min_bytes_per_second),
     )
     return min(
         max_timeout_s,
-        max(10, timeout_s),
         max(base_timeout_s, size_timeout_s),
     )
 
@@ -27203,19 +27260,21 @@ def evaluate_behavior_with_timeout(
     *,
     timeout_s: int,
     checks_config: dict[str, object] | None = None,
+    force_subprocess: bool = False,
 ) -> tuple[float, list[str]]:
     """Evaluate behavior with a watchdog separate from EVAS simulation timeout.
 
     `evas simulate` can finish successfully while producing a very large CSV.
     Without a second timeout, Python-side checker parsing can block an entire
-    full92 matrix run. Keep this timeout shorter than simulation timeout so one
-    pathological waveform becomes a normal task failure instead of a matrix hang.
+    full92 matrix run. Keep this watchdog independent from simulation timeout,
+    with a global cap, so one pathological waveform becomes a normal task
+    failure instead of a matrix hang.
     """
     direct_max_bytes = int(os.environ.get("VAEVAS_BEHAVIOR_DIRECT_MAX_BYTES", "5000000"))
     csv_size_bytes = 0
     try:
         csv_size_bytes = csv_path.stat().st_size
-        if csv_size_bytes <= direct_max_bytes:
+        if not force_subprocess and csv_size_bytes <= direct_max_bytes:
             return evaluate_behavior(task_id, csv_path, checks_config=checks_config)
     except OSError:
         pass

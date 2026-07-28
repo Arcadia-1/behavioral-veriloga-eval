@@ -201,6 +201,23 @@ def compile_like_failure(notes: list[str]) -> bool:
     )
 
 
+def checker_infrastructure_failure(notes: list[str]) -> bool:
+    return any(
+        marker in note
+        for note in notes
+        for marker in (
+            "behavior_eval_timeout>",
+            "behavior_eval_no_result",
+            "behavior_eval_error=",
+        )
+    )
+
+
+def reference_requires_mutation_replay(reference: Any) -> bool:
+    """Run mutations only after the candidate testbench passes the gold DUT."""
+    return outcome_value(reference) == "reference_pass"
+
+
 def classify_testbench_result(
     reference: Any,
     negatives: list[Any],
@@ -241,6 +258,19 @@ def classify_testbench_result(
             if mutation_id in invalid
             for note in result_notes(result)
         ]
+        if checker_infrastructure_failure(invalid_notes):
+            return {
+                "status": "infrastructure_failure",
+                "diagnostics": diagnostics,
+                "failure_taxonomy": taxonomy(
+                    "infrastructure",
+                    "infrastructure",
+                    case_ids=invalid,
+                    mutation_ids=invalid,
+                    retryable=True,
+                    responsibility="system",
+                ),
+            }
         status = "compile_failure" if compile_like_failure(invalid_notes) else "runtime_failure"
         return {
             "status": status,
@@ -255,6 +285,18 @@ def classify_testbench_result(
 
     notes = result_notes(reference)
     if reference_outcome == "invalid_run":
+        if checker_infrastructure_failure(notes):
+            return {
+                "status": "infrastructure_failure",
+                "diagnostics": diagnostics,
+                "failure_taxonomy": taxonomy(
+                    "infrastructure",
+                    "infrastructure",
+                    case_ids=["reference"],
+                    retryable=True,
+                    responsibility="system",
+                ),
+            }
         status = "compile_failure" if compile_like_failure(notes) else "runtime_failure"
         return {
             "status": status,
@@ -347,6 +389,8 @@ def run_testbench_score(runtime: Path, record: dict[str, Any], release_task: Pat
             public_contract=contract,
             required_evas_engine="evas2",
         )
+        if not reference_requires_mutation_replay(reference):
+            return classify_testbench_result(reference, [], mutation_ids)
         negatives = [
             _run_case(
                 package_root=PACKAGE,

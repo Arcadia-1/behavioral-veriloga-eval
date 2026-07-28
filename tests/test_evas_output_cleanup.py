@@ -10,6 +10,66 @@ sys.path.insert(0, str(ROOT / "runners"))
 import simulate_evas  # noqa: E402
 
 
+def test_behavior_checker_force_subprocess_skips_direct_path(
+    monkeypatch,
+    tmp_path: Path,
+) -> None:
+    csv_path = tmp_path / "tran.csv"
+    csv_path.write_text("time,out\n0,0\n1e-9,1\n", encoding="utf-8")
+    queued_result = ("ok", (1.0, ["subprocess checker result"]))
+    process_started = False
+
+    class FakeQueue:
+        def empty(self) -> bool:
+            return False
+
+        def get(self):
+            return queued_result
+
+    class FakeProcess:
+        def start(self) -> None:
+            nonlocal process_started
+            process_started = True
+
+        def join(self, _timeout_s: float | None = None) -> None:
+            return None
+
+        def is_alive(self) -> bool:
+            return False
+
+    class FakeContext:
+        def Queue(self, *, maxsize: int):
+            assert maxsize == 1
+            return FakeQueue()
+
+        def Process(self, *, target, args):
+            assert target is simulate_evas._behavior_eval_worker
+            assert args[0] == "v4_302_fractional_n_divider_accumulator_flow"
+            assert args[1] == str(csv_path)
+            return FakeProcess()
+
+    def fail_direct_evaluation(*_args, **_kwargs):
+        raise AssertionError("force_subprocess must bypass direct evaluation")
+
+    monkeypatch.setattr(simulate_evas, "evaluate_behavior", fail_direct_evaluation)
+    monkeypatch.setattr(
+        simulate_evas.mp,
+        "get_context",
+        lambda method: FakeContext() if method == "spawn" else None,
+    )
+
+    score, notes = simulate_evas.evaluate_behavior_with_timeout(
+        "v4_302_fractional_n_divider_accumulator_flow",
+        csv_path,
+        timeout_s=60,
+        force_subprocess=True,
+    )
+
+    assert process_started
+    assert score == 1.0
+    assert notes == ["subprocess checker result"]
+
+
 def test_trusted_replay_command_overrides_discovered_evas(monkeypatch) -> None:
     monkeypatch.setenv(
         "VABENCH_EVAS_COMMAND",
@@ -278,11 +338,17 @@ def test_large_trace_checker_timeout_budget_scales_beyond_sixty_seconds(
 ) -> None:
     monkeypatch.setenv("VAEVAS_BEHAVIOR_MIN_BYTES_PER_SECOND", "150000")
     monkeypatch.setenv("VAEVAS_BEHAVIOR_TIMEOUT_MAX_S", "300")
+    monkeypatch.setenv("VAEVAS_BEHAVIOR_TIMEOUT_SAFETY_FACTOR", "2.0")
+
+    assert simulate_evas.behavior_evaluation_timeout_seconds(
+        csv_size_bytes=4_520_755,
+        timeout_s=60,
+    ) == 61
 
     assert simulate_evas.behavior_evaluation_timeout_seconds(
         csv_size_bytes=6_000_000,
         timeout_s=600,
-    ) == 60
+    ) == 80
     assert simulate_evas.behavior_evaluation_timeout_seconds(
         csv_size_bytes=47_459_643,
         timeout_s=600,
@@ -290,7 +356,48 @@ def test_large_trace_checker_timeout_budget_scales_beyond_sixty_seconds(
     assert simulate_evas.behavior_evaluation_timeout_seconds(
         csv_size_bytes=47_459_643,
         timeout_s=120,
-    ) == 120
+    ) == 300
+
+
+def test_spectre_preflight_uses_active_evas_strict_lint(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    run_dir = tmp_path / "run"
+    dut_dir = run_dir / "dut"
+    dut_dir.mkdir(parents=True)
+    (dut_dir / "strict.va").write_text(
+        '`include "disciplines.vams"\n'
+        "module strict(out);\n"
+        "  output out; electrical out;\n"
+        "  parameter real tdel = 0 from (0:inf);\n"
+        "  analog begin V(out) <+ transition(1.0, tdel, 20p, 20p); end\n"
+        "endmodule\n",
+        encoding="utf-8",
+    )
+    fake_lint = tmp_path / "fake_lint.py"
+    fake_lint.write_text(
+        "import json\n"
+        "print(json.dumps([{\n"
+        "  'code': 'EVAS-COMP-ESPECTRESTRICT',\n"
+        "  'severity': 'compat-error',\n"
+        "  'message': 'strict Spectre mode rejects the declaration'\n"
+        "}]))\n"
+        "raise SystemExit(1)\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        simulate_evas,
+        "evas_command_and_env",
+        lambda: ([sys.executable, str(fake_lint)], None),
+    )
+
+    failures = simulate_evas.spectre_aligned_veriloga_preflight(run_dir)
+
+    assert failures == [
+        "dut/strict.va:EVAS-COMP-ESPECTRESTRICT:"
+        "strict Spectre mode rejects the declaration"
+    ]
 
 
 def test_spectre_preflight_rejects_reserved_port_names(tmp_path: Path) -> None:
