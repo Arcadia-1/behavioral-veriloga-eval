@@ -47,10 +47,16 @@ def _settled_rows(
     return settled
 
 
+def _only_short_error_burst(error_times: list[float], *, max_span_s: float = 0.5e-9) -> bool:
+    """Allow one bounded analog-settling burst without making it row-count based."""
+    return not error_times or max(error_times) - min(error_times) <= max_span_s
+
+
 def check_v4_946_lna_gain_compression_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, _property_note("P_TRACE_CONTRACT", 1, "non_empty_trace", "empty_trace")
     checked = vout_errors = gain_errors = flag_errors = clear_errors = 0
+    gain_error_times: list[float] = []
     reset_clear = disabled_clear = compressed_seen = uncompressed_seen = False
     for row in _settled_rows(rows):
         rst = _level(row, "rst")
@@ -79,18 +85,18 @@ def check_v4_946_lna_gain_compression_macro(rows: list[dict[str, float]]) -> tup
             vout_errors += 1
         if abs(float(row["gain_metric"]) - expected_gain) > 0.10:
             gain_errors += 1
+            gain_error_times.append(float(row["time"]))
         if bool(_level(row, "compression_flag")) != expected_flag:
             flag_errors += 1
     coverage_errors = int(not compressed_seen) + int(not uncompressed_seen)
     ok = (
-        checked >= 15
-        and reset_clear
+        reset_clear
         and disabled_clear
         and coverage_errors == 0
-        and vout_errors <= 4
-        and gain_errors <= 4
-        and flag_errors <= 3
-        and clear_errors <= 3
+        and vout_errors == 0
+        and _only_short_error_burst(gain_error_times)
+        and flag_errors == 0
+        and clear_errors == 0
     )
     notes = [
         _property_note(

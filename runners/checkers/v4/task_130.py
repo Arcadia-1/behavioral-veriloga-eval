@@ -10,7 +10,8 @@ def check_v3_differential_gain_driver(rows: list[dict[str, float]]) -> tuple[boo
     checked = 0
     max_err = 0.0
     regions: set[str] = set()
-    for row in rows[::stride]:
+    previous_diff: float | None = None
+    for row in rows:
         diff = row["sigin_p"] - row["sigin_n"]
         if diff < -0.03:
             regions.add("negative")
@@ -18,6 +19,11 @@ def check_v3_differential_gain_driver(rows: list[dict[str, float]]) -> tuple[boo
             regions.add("positive")
         else:
             regions.add("zero")
+        if previous_diff is not None and previous_diff * diff < 0.0:
+            regions.add("zero")
+        previous_diff = diff
+    for row in rows[::stride]:
+        diff = row["sigin_p"] - row["sigin_n"]
         expected_p = row["sigref"] + diff
         expected_n = row["sigref"] - diff
         max_err = max(max_err, abs(row["sigout_p"] - expected_p), abs(row["sigout_n"] - expected_n))
