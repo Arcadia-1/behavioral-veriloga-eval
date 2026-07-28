@@ -88,8 +88,8 @@ def _v3_stable_formula_check(
     threshold: float,
     expected_fn,
     tol: float,
-    min_checked: int,
-    margin_s: float = 0.6e-9,
+    min_stable_states: int,
+    margin_s: float = 0.45e-9,
 ) -> tuple[bool, str]:
     if not rows or not required.issubset(rows[0]):
         return False, "missing " + "/".join(sorted(required))
@@ -110,25 +110,31 @@ def _v3_stable_formula_check(
             )
         )
     output_change_intervals = stimulus_change_intervals(rows, [output], min_slope=0.0)
-
-    def stable(row: dict[str, float]) -> bool:
-        row_time = row.get("time")
-        if row_time is None or row_time < 50e-12:
-            return False
-        if not _v3_away_from_edges(row_time, edge_times, margin_s=margin_s):
-            return False
-        if not time_outside_intervals(row_time, output_change_intervals):
-            return False
-        return all(abs(row[signal] - threshold) > 0.05 for signal in logic_signals)
+    stable_rows = [
+        row
+        for row in rows
+        if row.get("time", 0.0) >= 50e-12
+        and _v3_away_from_edges(row["time"], edge_times, margin_s=margin_s)
+        and time_outside_intervals(row["time"], output_change_intervals)
+        and all(abs(row[signal] - threshold) > 0.05 for signal in logic_signals)
+    ]
+    represented_states = {
+        tuple(row[signal] > threshold for signal in logic_signals)
+        for row in stable_rows
+    }
+    if len(represented_states) < min_stable_states:
+        return False, f"too_few_stable_logic_states={len(represented_states)}"
+    if len(stable_rows) < 2:
+        return False, f"too_few_stable_formula_samples={len(stable_rows)}"
 
     return _v3_formula_check(
-        rows,
+        stable_rows,
         required=required,
         output=output,
         expected_fn=expected_fn,
         tol=tol,
-        min_checked=min_checked,
-        stable_fn=stable,
+        min_checked=2,
+        max_rows=max(1, len(stable_rows)),
     )
 
 def check_v3_lt_readout_sar4(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -149,7 +155,7 @@ def check_v3_lt_readout_sar4(rows: list[dict[str, float]]) -> tuple[bool, str]:
         threshold=vth,
         expected_fn=expected,
         tol=0.035,
-        min_checked=20,
+        min_stable_states=4,
     )
 
 CHECKER_ID = "v4_212_lt_readout_sar4"

@@ -35,6 +35,13 @@ R51_SPECTRE_812 = (
     / "v4-812"
     / "v4-812"
 )
+R53_SPECTRE_CELLS = (
+    ROOT.parents[1]
+    / "_experiment_runs"
+    / "r53test-deepseek-family001-400-threeform-threearm-evas086test-20260727"
+    / "spectre-full-replay-work"
+    / "cells"
+)
 
 NS = 1e-9
 VTH = 0.45
@@ -239,6 +246,157 @@ def test_slow_pwl_settle_samples_are_ignored_without_weakening_sar4_mutation_det
 
     mutation_ok, mutation_note = check_v3_lt_readout_sar4(_slow_sar4_rows(wrong_output=True))
     assert not mutation_ok, mutation_note
+
+
+def _sparse_plateau_rows(rows: list[dict[str, float]]) -> list[dict[str, float]]:
+    """Keep transition breakpoints plus one settled sample per stimulus state."""
+
+    samples_per_state = 20
+    retained_offsets = {0, 1, 2, 3, 4, samples_per_state - 2}
+    return [
+        row
+        for index, row in enumerate(rows)
+        if index % samples_per_state in retained_offsets
+    ]
+
+
+def test_sum5_formula_coverage_is_invariant_to_sparse_plateau_sampling() -> None:
+    rows = _sparse_plateau_rows(_slow_sum5_rows())
+    ok, note = check_v3_sum5_signed_sar_weight(rows)
+    assert ok, note
+
+    mutation_ok, mutation_note = check_v3_sum5_signed_sar_weight(
+        _sparse_plateau_rows(_slow_sum5_rows(wrong_output=True))
+    )
+    assert not mutation_ok, mutation_note
+
+
+def test_sar4_formula_coverage_is_invariant_to_sparse_plateau_sampling() -> None:
+    rows = _sparse_plateau_rows(_slow_sar4_rows())
+    ok, note = check_v3_lt_readout_sar4(rows)
+    assert ok, note
+
+    mutation_ok, mutation_note = check_v3_lt_readout_sar4(
+        _sparse_plateau_rows(_slow_sar4_rows(wrong_output=True))
+    )
+    assert not mutation_ok, mutation_note
+
+
+@pytest.mark.parametrize(
+    "checker,rows_factory,output",
+    [
+        (check_v3_sum5_signed_sar_weight, _slow_sum5_rows, "out"),
+        (check_v3_lt_readout_sar4, _slow_sar4_rows, "vout"),
+    ],
+)
+def test_formula_checker_rejects_a_late_plateau_error_even_when_the_endpoint_is_correct(
+    checker, rows_factory, output: str
+) -> None:
+    rows = rows_factory()
+    for index in range(2 * 20 + 5, 2 * 20 + 18):
+        rows[index][output] += 0.20
+
+    ok, note = checker(rows)
+
+    assert not ok, note
+
+
+def _staggered_sar4_rows() -> list[dict[str, float]]:
+    samples = [
+        (0.00, 0.0, 0.0, 0.0, 0.0),
+        (0.20, 0.0, 0.0, 0.0, 0.0),
+        (0.90, 0.0, 0.0, 0.0, 0.0),
+        (1.00, 0.8, 0.0, 0.0, 0.0),
+        (1.025, 1.0, 0.0, 0.0, 0.0),
+        (1.05, 1.8, 0.8, 0.0, 0.0),
+        (1.075, 1.8, 1.0, 0.0, 0.0),
+        (1.10, 1.8, 1.8, 0.0, 0.0),
+        (1.20, 1.8, 1.8, 0.0, 0.10),
+        (1.30, 1.8, 1.8, 0.0, 3 * 1.8 / 16.0),
+        (2.00, 1.8, 1.8, 0.0, 3 * 1.8 / 16.0),
+        (2.80, 1.8, 1.8, 0.0, 3 * 1.8 / 16.0),
+        (3.00, 1.8, 1.8, 0.8, 3 * 1.8 / 16.0),
+        (3.05, 1.8, 1.8, 1.8, 3 * 1.8 / 16.0),
+        (3.20, 1.8, 1.8, 1.8, 0.55),
+        (3.30, 1.8, 1.8, 1.8, 7 * 1.8 / 16.0),
+        (4.00, 1.8, 1.8, 1.8, 7 * 1.8 / 16.0),
+        (4.80, 1.8, 1.8, 1.8, 7 * 1.8 / 16.0),
+        (5.00, 1.8, 1.8, 1.8, 7 * 1.8 / 16.0),
+        (5.05, 1.8, 1.8, 1.8, 7 * 1.8 / 16.0),
+        (5.20, 1.8, 1.8, 1.8, 1.20),
+        (5.30, 1.8, 1.8, 1.8, 15 * 1.8 / 16.0),
+        (6.00, 1.8, 1.8, 1.8, 15 * 1.8 / 16.0),
+    ]
+    return [
+        {
+            "time": time_ns * NS,
+            "gnd": 0.0,
+            "d0": d0,
+            "d1": d1,
+            "d2": d2,
+            "d3": 1.8 if time_ns >= 5.05 else 0.0,
+            "vout": vout,
+        }
+        for time_ns, d0, d1, d2, vout in samples
+    ]
+
+
+def test_staggered_multibit_transition_is_not_treated_as_a_stable_code() -> None:
+    ok, note = check_v3_lt_readout_sar4(_staggered_sar4_rows())
+
+    assert ok, note
+
+
+@pytest.mark.parametrize(
+    "checker,rows_factory",
+    [
+        (check_v3_sum5_signed_sar_weight, _slow_sum5_rows),
+        (check_v3_lt_readout_sar4, _slow_sar4_rows),
+    ],
+)
+def test_two_stable_decoded_states_are_insufficient_formula_coverage(
+    checker, rows_factory
+) -> None:
+    rows = rows_factory()
+    two_state_rows = rows[:20] + rows[-20:]
+
+    ok, note = checker(two_state_rows)
+
+    assert not ok, note
+    assert "too_few_stable_logic_states=2" in note
+
+
+R53_SAVED_FORMULA_CELLS = (
+    "v4-211-G2-r00-agentic",
+    "v4-211-G2-r00-noevas",
+    "v4-1211-G0-r00-oneshot",
+    "v4-1211-G2-r00-agentic",
+    "v4-1211-G2-r00-noevas",
+    "v4-212-G0-r00-oneshot",
+    "v4-212-G2-r00-agentic",
+    "v4-212-G2-r00-noevas",
+    "v4-1212-G0-r00-oneshot",
+    "v4-1212-G2-r00-agentic",
+    "v4-1212-G2-r00-noevas",
+)
+
+
+@pytest.mark.parametrize("cell_id", R53_SAVED_FORMULA_CELLS)
+def test_r53_saved_spectre_formula_trace_passes(cell_id: str) -> None:
+    cell_dir = R53_SPECTRE_CELLS / cell_id
+    if not cell_dir.is_dir():
+        pytest.skip(f"saved R53 Spectre cell is not available: {cell_dir}")
+    traces = sorted(cell_dir.glob("*/cases/score/tran_spectre.csv"))
+    assert len(traces) == 1, f"expected one frozen trace for {cell_id}, found {traces}"
+    checker = (
+        check_v3_sum5_signed_sar_weight
+        if cell_id.startswith(("v4-211-", "v4-1211-"))
+        else check_v3_lt_readout_sar4
+    )
+
+    ok, note = checker(_load_rows(traces[0]))
+
+    assert ok, f"{cell_id}: {note}"
 
 
 def _sparse_initial_window_rows() -> list[dict[str, float]]:
