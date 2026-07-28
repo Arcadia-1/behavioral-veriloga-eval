@@ -338,11 +338,17 @@ def test_large_trace_checker_timeout_budget_scales_beyond_sixty_seconds(
 ) -> None:
     monkeypatch.setenv("VAEVAS_BEHAVIOR_MIN_BYTES_PER_SECOND", "150000")
     monkeypatch.setenv("VAEVAS_BEHAVIOR_TIMEOUT_MAX_S", "300")
+    monkeypatch.setenv("VAEVAS_BEHAVIOR_TIMEOUT_SAFETY_FACTOR", "2.0")
+
+    assert simulate_evas.behavior_evaluation_timeout_seconds(
+        csv_size_bytes=4_520_755,
+        timeout_s=60,
+    ) == 61
 
     assert simulate_evas.behavior_evaluation_timeout_seconds(
         csv_size_bytes=6_000_000,
         timeout_s=600,
-    ) == 60
+    ) == 80
     assert simulate_evas.behavior_evaluation_timeout_seconds(
         csv_size_bytes=47_459_643,
         timeout_s=600,
@@ -350,7 +356,48 @@ def test_large_trace_checker_timeout_budget_scales_beyond_sixty_seconds(
     assert simulate_evas.behavior_evaluation_timeout_seconds(
         csv_size_bytes=47_459_643,
         timeout_s=120,
-    ) == 120
+    ) == 300
+
+
+def test_spectre_preflight_uses_active_evas_strict_lint(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    run_dir = tmp_path / "run"
+    dut_dir = run_dir / "dut"
+    dut_dir.mkdir(parents=True)
+    (dut_dir / "strict.va").write_text(
+        '`include "disciplines.vams"\n'
+        "module strict(out);\n"
+        "  output out; electrical out;\n"
+        "  parameter real tdel = 0 from (0:inf);\n"
+        "  analog begin V(out) <+ transition(1.0, tdel, 20p, 20p); end\n"
+        "endmodule\n",
+        encoding="utf-8",
+    )
+    fake_lint = tmp_path / "fake_lint.py"
+    fake_lint.write_text(
+        "import json\n"
+        "print(json.dumps([{\n"
+        "  'code': 'EVAS-COMP-ESPECTRESTRICT',\n"
+        "  'severity': 'compat-error',\n"
+        "  'message': 'strict Spectre mode rejects the declaration'\n"
+        "}]))\n"
+        "raise SystemExit(1)\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        simulate_evas,
+        "evas_command_and_env",
+        lambda: ([sys.executable, str(fake_lint)], None),
+    )
+
+    failures = simulate_evas.spectre_aligned_veriloga_preflight(run_dir)
+
+    assert failures == [
+        "dut/strict.va:EVAS-COMP-ESPECTRESTRICT:"
+        "strict Spectre mode rejects the declaration"
+    ]
 
 
 def test_spectre_preflight_rejects_reserved_port_names(tmp_path: Path) -> None:

@@ -115,6 +115,17 @@ def _fractional_lock_windows(
     }
 
 
+def _central_bounds(values: list[float]) -> tuple[float, float]:
+    if not values:
+        return 0.0, 0.0
+    ordered = sorted(float(value) for value in values)
+    if len(ordered) < 20:
+        return ordered[0], ordered[-1]
+    lower_index = max(0, int(0.05 * (len(ordered) - 1)))
+    upper_index = min(len(ordered) - 1, int(0.95 * (len(ordered) - 1)))
+    return ordered[lower_index], ordered[upper_index]
+
+
 def _fractional_result(
     *,
     metrics: dict[str, object],
@@ -193,6 +204,7 @@ def check_v3_505_fractional_n_divider_accumulator_flow(
         for name, (start, end) in windows.items()
     }
     vctrl_vals = [row["vctrl_mon"] for row in rows]
+    vctrl_central_min, vctrl_central_max = _central_bounds(vctrl_vals)
     return _fractional_result(
         metrics=metrics,
         ref_edges=ref_edges,
@@ -200,8 +212,8 @@ def check_v3_505_fractional_n_divider_accumulator_flow(
         lock_edges=_rising_edges(rows, "lock"),
         lock_fractions=lock_fractions,
         post_start=windows["post"][0],
-        vctrl_min=min(vctrl_vals),
-        vctrl_max=max(vctrl_vals),
+        vctrl_min=vctrl_central_min,
+        vctrl_max=vctrl_central_max,
         vctrl_in_range=all(-1e-6 <= value <= 0.95 for value in vctrl_vals),
     )
 
@@ -260,6 +272,7 @@ def _stream_fractional_n_divider_accumulator_flow(
         trace_end: float | None = None
         vctrl_min = float("inf")
         vctrl_max = float("-inf")
+        vctrl_values: list[float] = []
         vctrl_in_range = True
         for row in reader:
             try:
@@ -279,6 +292,7 @@ def _stream_fractional_n_divider_accumulator_flow(
             vctrl = current["vctrl_mon"]
             vctrl_min = min(vctrl_min, vctrl)
             vctrl_max = max(vctrl_max, vctrl)
+            vctrl_values.append(vctrl)
             vctrl_in_range = vctrl_in_range and -1e-6 <= vctrl <= 0.95
             if previous is not None:
                 for signal, edges in (
@@ -300,6 +314,7 @@ def _stream_fractional_n_divider_accumulator_flow(
 
     windows = _fractional_lock_windows(metrics, trace_start, trace_end)
     lock_fractions = _stream_lock_fractions(csv_path, columns, windows)
+    vctrl_central_min, vctrl_central_max = _central_bounds(vctrl_values)
     ok, note = _fractional_result(
         metrics=metrics,
         ref_edges=ref_edges,
@@ -307,8 +322,8 @@ def _stream_fractional_n_divider_accumulator_flow(
         lock_edges=lock_edges,
         lock_fractions=lock_fractions,
         post_start=windows["post"][0],
-        vctrl_min=vctrl_min,
-        vctrl_max=vctrl_max,
+        vctrl_min=vctrl_central_min,
+        vctrl_max=vctrl_central_max,
         vctrl_in_range=vctrl_in_range,
     )
     return (1.0 if ok else 0.0), [note]

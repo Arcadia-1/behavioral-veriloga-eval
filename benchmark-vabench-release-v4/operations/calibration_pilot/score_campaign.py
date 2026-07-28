@@ -6,6 +6,7 @@ import argparse
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -33,6 +34,16 @@ def read_json(path: Path) -> dict[str, Any]:
 def write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def canonical_sha256(value: Any) -> str:
+    encoded = json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
 
 
 def resolve_cli_path(path: Path) -> Path:
@@ -193,12 +204,89 @@ def trusted_replay_timeout_s(
 ) -> int:
     """Return the outer judge watchdog deadline for one trusted replay.
 
-    Testbench judging runs the reference and five mutations sequentially. The
+    Testbench judging runs the reference and five mutations sequentially.  The
     adapter bounds each simulation independently, so its outer process needs a
     watchdog covering all six runs rather than the single-run DUT/Bug Repair
     deadline. This is an evaluator fail-safe, not a candidate resource budget.
     """
     return testbench_timeout_s if cell.get("form") == "testbench" else timeout_s
+
+
+def trusted_replay_input_signature(
+    *,
+    result: dict[str, Any],
+    runtime: Path,
+    command: str,
+    replay_timeout_s: int,
+    evas_command: str,
+    final_submission: dict[str, Any],
+) -> tuple[dict[str, Any], str]:
+    """Bind replay reuse to every frozen input and executable identity."""
+    command_files: list[dict[str, str]] = []
+    for token in shlex.split(command):
+        path = Path(token)
+        if path.is_file():
+            resolved = path.resolve()
+            command_files.append(
+                {
+                    "path": str(resolved),
+                    "sha256": hashlib.sha256(resolved.read_bytes()).hexdigest(),
+                }
+            )
+    signature = {
+        "schema_version": "vabench-trusted-replay-input-signature-v1",
+        "cell": result.get("cell") or {},
+        "submission_tree_sha256": final_submission.get("tree_sha256"),
+        "evaluator_manifest": RUNNER.RESULT_PROTOCOL.hash_test_tree(
+            runtime / "evaluator"
+        ),
+        "judge": {
+            "command": command,
+            "command_files": command_files,
+            "outer_timeout_s": replay_timeout_s,
+        },
+        "evas": {
+            "command": evas_command,
+            "pinned_identity": result.get("evas_identity"),
+        },
+    }
+    return signature, canonical_sha256(signature)
+
+
+def trusted_replay_is_exactly_reusable(
+    replay: dict[str, Any],
+    signature: dict[str, Any],
+    signature_sha256: str,
+) -> bool:
+    taxonomy = replay.get("failure_taxonomy")
+    retryable = bool(
+        isinstance(taxonomy, dict) and taxonomy.get("retryable") is True
+    )
+    return (
+        not retryable
+        and replay.get("input_signature") == signature
+        and replay.get("input_signature_sha256") == signature_sha256
+    )
+
+
+def normalize_trusted_replay_watchdog(replay: dict[str, Any]) -> None:
+    """The outer judge watchdog is evaluator infrastructure, not DUT runtime."""
+    command = replay.get("command")
+    if not isinstance(command, dict) or command.get("execution_status") != "timeout":
+        return
+    replay["status"] = "infrastructure_failure"
+    replay["diagnostics"] = ["trusted_replay_watchdog_timeout"]
+    replay["failure_taxonomy"] = {
+        "schema_version": "vabench-failure-taxonomy-v1",
+        "primary_class": "infrastructure",
+        "secondary_classes": ["timeout"],
+        "stage": "trusted_replay_watchdog",
+        "responsibility": "system",
+        "retryable": True,
+        "case_ids": [],
+        "property_ids": [],
+        "mutation_ids": [],
+    }
 
 
 def evaluate_cell(
@@ -246,11 +334,34 @@ def evaluate_cell(
         artifact_gate=artifact_gate,
     )
     existing_replay = experiment.get("final_trusted_replay")
+    final_submission: dict[str, Any] | None = None
+    replay_signature: dict[str, Any] | None = None
+    replay_signature_sha: str | None = None
+    replay_timeout_s = trusted_replay_timeout_s(
+        cell, timeout_s, testbench_timeout_s
+    )
+    if command and evas_command and artifact_gate["passed"]:
+        final_submission = RUNNER.RESULT_PROTOCOL.snapshot_submission(
+            runtime, artifact_gate
+        )
+        replay_signature, replay_signature_sha = trusted_replay_input_signature(
+            result=result,
+            runtime=runtime,
+            command=command,
+            replay_timeout_s=replay_timeout_s,
+            evas_command=evas_command,
+            final_submission=final_submission,
+        )
     if (
         reuse_existing
         and result.get("final_judge") is not None
         and isinstance(existing_replay, dict)
         and existing_replay.get("status") not in {None, "not_run"}
+        and replay_signature is not None
+        and replay_signature_sha is not None
+        and trusted_replay_is_exactly_reusable(
+            existing_replay, replay_signature, replay_signature_sha
+        )
     ):
         row["judge_status"] = existing_replay["status"]
         row["outcome"] = experiment.get("outcome", existing_replay["status"])
@@ -282,13 +393,16 @@ def evaluate_cell(
         expected_identity = result.get("evas_identity")
         if expected_identity:
             RUNNER.validate_pinned_evas_identity(evas_command, expected_identity)
-        final_submission = RUNNER.RESULT_PROTOCOL.snapshot_submission(runtime, artifact_gate)
-        replay_timeout_s = trusted_replay_timeout_s(
-            cell, timeout_s, testbench_timeout_s
-        )
+        if final_submission is None:
+            final_submission = RUNNER.RESULT_PROTOCOL.snapshot_submission(
+                runtime, artifact_gate
+            )
         replay = RUNNER.run_trusted_replay(
             runtime, command, replay_timeout_s, evas_command, final_submission
         )
+        normalize_trusted_replay_watchdog(replay)
+        replay["input_signature"] = replay_signature
+        replay["input_signature_sha256"] = replay_signature_sha
         checkpoint_path = runtime / "evidence" / "conversation_checkpoint.json"
         checkpoint = read_json(checkpoint_path) if checkpoint_path.is_file() else {}
         model_status = str(
