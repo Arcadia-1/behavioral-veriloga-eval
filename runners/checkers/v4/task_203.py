@@ -57,6 +57,22 @@ def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -
             return v0 + alpha * (v1 - v0)
     return None
 
+def _event_probe_time(
+    rows: list[dict[str, float]],
+    event_time_s: float,
+    *,
+    delay_s: float,
+    max_grid_slop_s: float = 5.0e-9,
+) -> float | None:
+    if not rows:
+        return None
+    probe_time = event_time_s + delay_s
+    last_time = rows[-1].get("time")
+    if last_time is None or probe_time > last_time:
+        return None
+    sample_time = next((row["time"] for row in rows if row.get("time", -1.0) >= probe_time), probe_time)
+    return sample_time if sample_time <= probe_time + max_grid_slop_s else probe_time
+
 def check_v3_cdac_8b_monodown(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clks", "vres", *{f"dctrl{i}" for i in range(0, 8)}}
     if not rows or not required.issubset(rows[0]):
@@ -90,8 +106,8 @@ def check_v3_cdac_8b_monodown(rows: list[dict[str, float]]) -> tuple[bool, str]:
             residue = sampled
         elif bit is not None:
             residue -= 1.0 / (2 ** (8 - bit))
-        sample_t = event_t + 0.12e-9
-        if sample_t > rows[-1]["time"]:
+        sample_t = _event_probe_time(rows, event_t, delay_s=0.12e-9)
+        if sample_t is None:
             continue
         observed = sample_signal_at(rows, "vres", sample_t)
         if observed is None:
