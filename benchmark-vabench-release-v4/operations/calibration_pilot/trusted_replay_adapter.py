@@ -9,7 +9,9 @@ import json
 import os
 from pathlib import Path
 import re
+import shlex
 import shutil
+import subprocess
 import sys
 import tempfile
 from typing import Any
@@ -84,6 +86,76 @@ def taxonomy(
 def compact_diagnostics(text: str, limit: int = 16) -> list[str]:
     lines = [line.strip() for line in text.splitlines() if line.strip()]
     return lines[-limit:]
+
+
+def strict_spectre_lint_submission(submission: Path) -> dict[str, Any] | None:
+    command = os.environ.get("VABENCH_EVAS_COMMAND", "evas").strip() or "evas"
+    evas_argv = shlex.split(command)
+    if not evas_argv:
+        raise ValueError("VABENCH_EVAS_COMMAND resolves to an empty command")
+    candidates = [
+        path
+        for suffix in ("*.va", "*.scs")
+        for path in sorted(submission.glob(suffix))
+        if path.is_file()
+    ]
+    diagnostics: list[str] = []
+    for path in candidates:
+        completed = subprocess.run(
+            [
+                *evas_argv,
+                "lint",
+                str(path),
+                "--spectre-strict",
+                "--format",
+                "json",
+            ],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            timeout=30,
+        )
+        combined = "\n".join(
+            part for part in (completed.stdout, completed.stderr) if part.strip()
+        )
+        if completed.returncode == 0:
+            continue
+        diagnostics.extend(compact_diagnostics(combined))
+    if not diagnostics:
+        return None
+    return {
+        "status": "compile_failure",
+        "diagnostics": diagnostics,
+        "failure_taxonomy": taxonomy("compile", "compilation"),
+    }
+
+
+def strict_spectre_lint_testbench_submission(
+    *,
+    submission: Path,
+    source_eval: Path,
+    target_artifacts: list[str],
+    public_contract: dict[str, Any],
+) -> dict[str, Any] | None:
+    """Lint a candidate deck with its declared read-only DUT tree staged."""
+    runners = PACKAGE / "runners"
+    if str(runners) not in sys.path:
+        sys.path.insert(0, str(runners))
+    from derived_testbench_oracle import _prepare_dut_sources
+
+    with tempfile.TemporaryDirectory(prefix="v4_tb_strict_lint_") as td:
+        staged = Path(td)
+        shutil.copy2(submission / "testbench.scs", staged / "testbench.scs")
+        _prepare_dut_sources(
+            package_root=PACKAGE,
+            source_formal=source_eval,
+            run_dir=staged,
+            target_artifacts=target_artifacts,
+            negative_bundle=None,
+            dut_subdir="dut",
+            public_contract=public_contract,
+        )
+        return strict_spectre_lint_submission(staged)
 
 
 def classify_dut_result(returncode: int, output: str) -> dict[str, Any]:
@@ -366,6 +438,15 @@ def run_testbench_score(runtime: Path, record: dict[str, Any], release_task: Pat
             "failure_taxonomy": taxonomy("compile", "compilation"),
         }
 
+    lint_failure = strict_spectre_lint_testbench_submission(
+        submission=submission,
+        source_eval=source_eval,
+        target_artifacts=target_artifacts,
+        public_contract=contract,
+    )
+    if lint_failure is not None:
+        return lint_failure
+
     previous_engine = os.environ.get("EVAS_ENGINE")
     previous_default_engine = os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE")
     previous_persistent_worker = os.environ.get("VAEVAS_EVAS_PERSISTENT_WORKER")
@@ -444,6 +525,9 @@ def run_dut_score(runtime: Path, record: dict[str, Any], release_task: Path) -> 
     submission = Path(
         os.environ.get("VABENCH_FINAL_SUBMISSION_DIR", runtime / "evidence" / "final_submission")
     ).resolve()
+    lint_failure = strict_spectre_lint_submission(submission)
+    if lint_failure is not None:
+        return lint_failure
     with tempfile.TemporaryDirectory(prefix="v4_trusted_replay_") as td:
         task = staged_score_task(runtime, release_task, Path(td))
         wrapper = task / "test_score" / "run_score.py"

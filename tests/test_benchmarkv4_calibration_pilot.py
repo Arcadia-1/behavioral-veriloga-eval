@@ -2208,6 +2208,103 @@ def test_testbench_mutations_run_only_after_reference_passes(
     assert adapter.reference_requires_mutation_replay(
         SimpleNamespace(outcome=outcome)
     ) is expected
+def test_trusted_replay_strict_lint_preserves_configured_command_arguments(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    adapter = load_trusted_replay_adapter()
+    submission = tmp_path / "submission"
+    submission.mkdir()
+    source = submission / "dut.va"
+    source.write_text("module bad; endmodule\n", encoding="utf-8")
+    monkeypatch.setenv(
+        "VABENCH_EVAS_COMMAND", "/fake/evas --runtime-mode sealed"
+    )
+
+    def fake_run(command, **_kwargs):
+        assert command[:5] == [
+            "/fake/evas",
+            "--runtime-mode",
+            "sealed",
+            "lint",
+            str(source),
+        ]
+        assert "--spectre-strict" in command
+        return SimpleNamespace(returncode=1, stdout="strict lint failed", stderr="")
+
+    monkeypatch.setattr(adapter.subprocess, "run", fake_run)
+
+    result = adapter.strict_spectre_lint_submission(submission)
+
+    assert result is not None
+    assert result["status"] == "compile_failure"
+    assert result["failure_taxonomy"]["primary_class"] == "compile"
+
+
+def test_trusted_replay_strict_lint_allows_clean_submission(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    adapter = load_trusted_replay_adapter()
+    submission = tmp_path / "submission"
+    submission.mkdir()
+    (submission / "dut.va").write_text("module ok; endmodule\n", encoding="utf-8")
+    monkeypatch.setenv("VABENCH_EVAS_COMMAND", "/fake/evas")
+    monkeypatch.setattr(
+        adapter.subprocess,
+        "run",
+        lambda *_args, **_kwargs: SimpleNamespace(
+            returncode=0, stdout="[]", stderr=""
+        ),
+    )
+
+    assert adapter.strict_spectre_lint_submission(submission) is None
+
+
+def test_testbench_strict_lint_stages_supplied_dut_before_resolving_include(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    adapter = load_trusted_replay_adapter()
+    submission = tmp_path / "submission"
+    submission.mkdir()
+    (submission / "testbench.scs").write_text(
+        'ahdl_include "./dut/dut.va"\n', encoding="utf-8"
+    )
+    source_eval = tmp_path / "evaluator"
+    trusted_solution = source_eval / "trusted_solution"
+    trusted_solution.mkdir(parents=True)
+    (trusted_solution / "dut.va").write_text(
+        "module dut; endmodule\n", encoding="utf-8"
+    )
+    contract = {
+        "supplied_inputs": {
+            "read_only_dut_artifacts": [
+                {
+                    "public_input_path": "supplied_dut/dut.va",
+                    "testbench_include_path": "./dut/dut.va",
+                }
+            ]
+        }
+    }
+    monkeypatch.setenv("VABENCH_EVAS_COMMAND", "/fake/evas")
+
+    def fake_run(command, **_kwargs):
+        linted = Path(command[2])
+        assert linted.name == "testbench.scs"
+        assert linted.parent != submission
+        assert (linted.parent / "dut" / "dut.va").is_file()
+        return SimpleNamespace(returncode=0, stdout="[]", stderr="")
+
+    monkeypatch.setattr(adapter.subprocess, "run", fake_run)
+
+    assert (
+        adapter.strict_spectre_lint_testbench_submission(
+            submission=submission,
+            source_eval=source_eval,
+            target_artifacts=["dut.va"],
+            public_contract=contract,
+        )
+        is None
+    )
+    assert not (submission / "dut").exists()
 
 
 def test_scorer_accepts_complete_workspace_without_explicit_submit(
