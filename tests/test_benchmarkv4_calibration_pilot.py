@@ -15,6 +15,12 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
+EXPERIMENT_POLICY = (
+    ROOT / "benchmark-vabench-release-v4" / "EXPERIMENT_POLICY.json"
+)
+AGENT_WALL_TIME_SECONDS = json.loads(
+    EXPERIMENT_POLICY.read_text(encoding="utf-8")
+)["agent_wall_time_seconds"]
 RELEASE = ROOT / "benchmark-vabench-release-v4" / "release" / "benchmarkv4"
 R49_RELEASE = ROOT / "benchmark-vabench-release-v4" / "release" / "benchmarkv4-r49"
 R52_RELEASE = ROOT / "benchmark-vabench-release-v4" / "release" / "benchmarkv4-r52"
@@ -235,7 +241,7 @@ def run_args(output: Path, release: Path = RELEASE) -> SimpleNamespace:
         resume=False,
         dry_run=False,
         final_judge_command=None,
-        agent_timeout_s=5400,
+        agent_timeout_s=AGENT_WALL_TIME_SECONDS,
         setup_timeout_s=1800,
         request_timeout_s=1800,
         tool_timeout_s=30,
@@ -327,6 +333,10 @@ def test_campaign_runner_defaults_to_latest_r52_release() -> None:
 
     assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r52"
     assert wrapper.DEFAULT_RELEASE == runner.DEFAULT_RELEASE
+    assert (
+        "--agent-timeout-s"
+        not in wrapper.build_parser()._option_string_actions
+    )
 
 
 @pytest.mark.parametrize(
@@ -610,6 +620,15 @@ def test_build_campaign_samples_complete_benchmarkv4_families_without_prompt_rec
     assert campaign["schema_version"] == "v4-calibration-campaign-v3"
     assert campaign["termination_policy"] == "wall_time"
     assert campaign["budget_metric"] == "agent_wall_time_seconds"
+    assert campaign["agent_wall_time_seconds"] == 1800
+    assert campaign["experiment_policy_sha256"] == hashlib.sha256(
+        EXPERIMENT_POLICY.read_bytes()
+    ).hexdigest()
+    assert campaign["timeout_finalization"] == {
+        "artifact_source": "latest_complete_declared_submission",
+        "score_complete_artifact": True,
+        "termination_reason": "agent_timeout",
+    }
     assert campaign["token_accounting"] == "telemetry_only"
     assert campaign["per_turn_max_tokens"] == 65536
     assert campaign["release"].endswith("release/benchmarkv4")
@@ -2056,7 +2075,7 @@ def test_mini_swe_time_exceeded_preserves_walltime_reason_with_complete_artifact
             ],
             "model_calls": 1,
             "messages": [{"role": "assistant", "content": "partial answer"}],
-            "agent_elapsed_s": 5400.0,
+            "agent_elapsed_s": float(AGENT_WALL_TIME_SECONDS),
             "trajectory_format": "mini-swe-agent-trajectory-v1",
             "sandbox_backend": "none",
             "network": False,
@@ -2546,8 +2565,8 @@ def test_agentic_resume_does_not_reset_elapsed_wall_time(
                 "events": [],
                 "finalized": False,
                 "termination_policy": "wall_time",
-                "agent_timeout_s": 5400,
-                "agent_elapsed_s": 5400.0,
+                "agent_timeout_s": AGENT_WALL_TIME_SECONDS,
+                "agent_elapsed_s": float(AGENT_WALL_TIME_SECONDS),
             }
         ),
         encoding="utf-8",
@@ -2557,7 +2576,7 @@ def test_agentic_resume_does_not_reset_elapsed_wall_time(
 
     assert result["status"] == "submitted"
     assert result["termination_reason"] == "agent_timeout"
-    assert result["agent_elapsed_s"] >= 5400.0
+    assert result["agent_elapsed_s"] >= float(AGENT_WALL_TIME_SECONDS)
     assert result["artifact_gate"]["passed"] is True
 
 

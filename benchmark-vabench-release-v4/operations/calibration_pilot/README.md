@@ -30,9 +30,12 @@ file by SHA-256 and record the frozen parameters produced by the pilot.
 
 ## Build The Campaign
 
-The calibrated primary episode limit is wall-clock time: by default each agent
-episode gets 5,400 seconds, while setup, model requests, tool calls, and judges
-use 1,800-second infrastructure ceilings. The provider token value is
+The calibrated primary episode limit is wall-clock time. Its only authoritative
+value and timeout-finalization behavior live in
+`benchmark-vabench-release-v4/EXPERIMENT_POLICY.json`; campaign builders and
+runners do not accept an override. The current policy gives every mode one
+30-minute episode. Setup, model requests, tool calls, and judges use separate
+infrastructure ceilings. The provider token value is
 `per_turn_max_tokens`: a per-model-call safety cap passed as `max_tokens`, not a
 cumulative G0-G5 stopping budget. Provider completion, hidden reasoning, visible
 completion, and feedback-delivered text are recorded as telemetry and must be

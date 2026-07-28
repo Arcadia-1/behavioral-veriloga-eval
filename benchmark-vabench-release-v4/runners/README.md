@@ -49,7 +49,6 @@ python3 benchmark-vabench-release-v4/runners/run_benchmarkv4_campaign.py \
   --base-url https://api.deepseek.com/v1 \
   --api-key-file /path/to/key.txt \
   --evas-command "$(pwd)/.venv/bin/evas" \
-  --agent-timeout-s 5400 \
   --per-turn-max-tokens 65536 \
   --workers 12 \
   --output-root /tmp/benchmarkv4-deepseek-campaign
@@ -90,7 +89,6 @@ benchmark-vabench-release-v4/runners/run_benchmarkv4_campaign_detached.sh \
   --base-url https://api.deepseek.com/v1 \
   --api-key-file /path/to/key.txt \
   --evas-command "$(pwd)/.venv/bin/evas" \
-  --agent-timeout-s 5400 \
   --per-turn-max-tokens 65536 \
   --workers 12 \
   --output-root /tmp/benchmarkv4-deepseek-campaign
@@ -107,7 +105,11 @@ version identity in the campaign manifest; the runner refuses a changed
 identity before any API request. Formal runs never fall back to a PATH-derived
 `evas`.
 
-The runner uses wall-clock time as the primary episode stopping rule. The
+The runner uses wall-clock time as the primary episode stopping rule. Its limit
+and deadline-finalization behavior are read only from
+`benchmark-vabench-release-v4/EXPERIMENT_POLICY.json`; no CLI or campaign value
+can override them. At the deadline, a complete declared submission is frozen
+and scored normally while retaining `termination_reason=agent_timeout`. The
 `--per-turn-max-tokens` value is passed to the provider as a per-call
 `max_tokens` cap and is reported as telemetry; accumulated token usage does not
 terminate an episode. Provider context-window failures and single-call output

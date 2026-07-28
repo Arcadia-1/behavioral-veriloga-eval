@@ -7,11 +7,19 @@ import hashlib
 import json
 import random
 from pathlib import Path
+import sys
 from typing import Any
 
 
 HERE = Path(__file__).resolve().parent
 PACKAGE = HERE.parents[1]
+if str(HERE) not in sys.path:
+    sys.path.insert(0, str(HERE))
+from experiment_policy import (  # noqa: E402
+    experiment_policy_sha256,
+    load_experiment_policy,
+)
+
 DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r52"
 MODES = tuple(f"G{i}" for i in range(6))
 FORM_ORDER = {"dut": 0, "testbench": 1, "bugfix": 2}
@@ -141,6 +149,7 @@ def build_campaign(
     modes: list[str] | None = None,
     three_arm_g0_g2: bool = False,
 ) -> dict[str, Any]:
+    experiment_policy = load_experiment_policy()
     if per_turn_max_tokens is None:
         per_turn_max_tokens = max_working_tokens
     if not isinstance(per_turn_max_tokens, int) or per_turn_max_tokens <= 0:
@@ -219,6 +228,9 @@ def build_campaign(
         "model": model,
         "termination_policy": "wall_time",
         "budget_metric": "agent_wall_time_seconds",
+        "agent_wall_time_seconds": experiment_policy["agent_wall_time_seconds"],
+        "experiment_policy_sha256": experiment_policy_sha256(),
+        "timeout_finalization": experiment_policy["timeout_finalization"],
         "token_accounting": "telemetry_only",
         "per_turn_max_tokens": per_turn_max_tokens,
         "max_output_tokens": per_turn_max_tokens,

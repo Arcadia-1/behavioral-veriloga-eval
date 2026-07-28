@@ -27,6 +27,10 @@ REPO = PACKAGE.parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 import result_protocol as RESULT_PROTOCOL  # noqa: E402
+from experiment_policy import (  # noqa: E402
+    experiment_policy_sha256,
+    load_experiment_policy,
+)
 from mini_swe_vabench import (  # noqa: E402
     CANDIDATE_TREE_SCHEMA_VERSION,
     DEFAULT_DOCKER_IMAGE,
@@ -40,7 +44,6 @@ EXPORTER = PACKAGE / "operations" / "tri_form_derivation_prep" / "export_tri_for
 DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r52"
 DEFAULT_BASE_URL = "https://www.cun.ai/v1"
 DEFAULT_API_KEY_ENV = "VAEVAS_API_KEY"
-DEFAULT_AGENT_TIMEOUT_S = 5400
 DEFAULT_SETUP_TIMEOUT_S = 1800
 DEFAULT_REQUEST_TIMEOUT_S = 1800
 DEFAULT_TOOL_TIMEOUT_S = 1800
@@ -3132,7 +3135,6 @@ def main() -> int:
         "--mini-swe-no-evas-image",
         default=DEFAULT_NO_EVAS_DOCKER_IMAGE,
     )
-    parser.add_argument("--agent-timeout-s", type=int, default=DEFAULT_AGENT_TIMEOUT_S)
     parser.add_argument("--setup-timeout-s", type=int, default=DEFAULT_SETUP_TIMEOUT_S)
     parser.add_argument("--request-timeout-s", type=int, default=DEFAULT_REQUEST_TIMEOUT_S)
     parser.add_argument("--tool-timeout-s", type=int, default=DEFAULT_TOOL_TIMEOUT_S)
@@ -3169,6 +3171,24 @@ def main() -> int:
     args.release = args.release.resolve()
     args.output = args.output.resolve()
     campaign = read_json(args.campaign)
+    experiment_policy = load_experiment_policy()
+    observed_policy_hash = experiment_policy_sha256()
+    if campaign.get("experiment_policy_sha256") != observed_policy_hash:
+        raise SystemExit(
+            "campaign experiment policy differs from EXPERIMENT_POLICY.json"
+        )
+    args.agent_timeout_s = int(experiment_policy["agent_wall_time_seconds"])
+    if campaign.get("agent_wall_time_seconds") != args.agent_timeout_s:
+        raise SystemExit(
+            "campaign agent wall time differs from EXPERIMENT_POLICY.json"
+        )
+    if (
+        campaign.get("timeout_finalization")
+        != experiment_policy["timeout_finalization"]
+    ):
+        raise SystemExit(
+            "campaign timeout finalization differs from EXPERIMENT_POLICY.json"
+        )
     expected_mini_swe_image = (campaign.get("execution_config") or {}).get(
         "mini_swe_image"
     )

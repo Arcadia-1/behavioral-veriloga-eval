@@ -28,7 +28,6 @@ PACKAGE = Path(__file__).resolve().parents[1]
 REPO = PACKAGE.parent
 CALIBRATION = PACKAGE / "operations" / "calibration_pilot"
 DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r52"
-DEFAULT_AGENT_TIMEOUT_S = 5400
 DEFAULT_SETUP_TIMEOUT_S = 1800
 DEFAULT_REQUEST_TIMEOUT_S = 1800
 DEFAULT_TOOL_TIMEOUT_S = 1800
@@ -48,6 +47,7 @@ EXECUTABLE_FEEDBACK_ARMS = (
 if str(CALIBRATION) not in sys.path:
     sys.path.insert(0, str(CALIBRATION))
 from build_campaign import build_campaign  # noqa: E402
+from experiment_policy import load_experiment_policy  # noqa: E402
 import result_protocol as RESULT_PROTOCOL  # noqa: E402
 
 
@@ -248,7 +248,6 @@ def build_parser() -> argparse.ArgumentParser:
         "--mini-swe-no-evas-image",
         default=DEFAULT_NO_EVAS_DOCKER_IMAGE,
     )
-    parser.add_argument("--agent-timeout-s", type=int, default=DEFAULT_AGENT_TIMEOUT_S)
     parser.add_argument("--setup-timeout-s", type=int, default=DEFAULT_SETUP_TIMEOUT_S)
     parser.add_argument("--request-timeout-s", type=int, default=DEFAULT_REQUEST_TIMEOUT_S)
     parser.add_argument("--tool-timeout-s", type=int, default=DEFAULT_TOOL_TIMEOUT_S)
@@ -282,6 +281,8 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = build_parser().parse_args()
+    experiment_policy = load_experiment_policy()
+    agent_timeout_s = int(experiment_policy["agent_wall_time_seconds"])
     if args.comparison_profile and args.mode:
         raise SystemExit("--mode cannot be combined with --comparison-profile")
     if args.comparison_profile and args.agent_scaffold != "mini-swe":
@@ -298,7 +299,7 @@ def main() -> int:
     if args.workers <= 0:
         raise SystemExit("--workers must be positive")
     if min(
-        args.agent_timeout_s,
+        agent_timeout_s,
         args.setup_timeout_s,
         args.request_timeout_s,
         args.tool_timeout_s,
@@ -359,7 +360,7 @@ def main() -> int:
     campaign["execution_config"] = {
         "schema_version": "v4-campaign-execution-config-v1",
         "termination_policy": "wall_time",
-        "agent_timeout_s": args.agent_timeout_s,
+        "agent_timeout_s": agent_timeout_s,
         "setup_timeout_s": args.setup_timeout_s,
         "request_timeout_s": args.request_timeout_s,
         "tool_timeout_s": args.tool_timeout_s,
@@ -413,8 +414,6 @@ def main() -> int:
         args.mini_swe_image,
         "--mini-swe-no-evas-image",
         args.mini_swe_no_evas_image,
-        "--agent-timeout-s",
-        str(args.agent_timeout_s),
         "--setup-timeout-s",
         str(args.setup_timeout_s),
         "--request-timeout-s",

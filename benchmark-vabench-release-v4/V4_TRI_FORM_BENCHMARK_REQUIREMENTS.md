@@ -1526,9 +1526,11 @@ functional score unless a future track preregisters that objective separately.
 ### 14.3 Budgets and comparison fairness
 
 The primary experimental ability budget for G0-G5 is agent wall-clock time.
-The default pilot-calibrated value is 5,400 seconds per episode, with setup,
-model-request, tool-call, and judge ceilings treated as infrastructure safety
-limits. The benchmark MUST NOT cap model turns, feedback calls, candidate
+`EXPERIMENT_POLICY.json` is the single normative source for that limit; runners
+and launchers MUST read it and MUST NOT provide a command-line, task-level, or
+mode-level override. The current policy sets one 30-minute episode for every
+mode. Setup, model-request, tool-call, and judge ceilings remain infrastructure
+safety limits. The benchmark MUST NOT cap model turns, feedback calls, candidate
 versions, cache hits, simulator calls, cost, or cumulative tokens as independent
 ability budgets. Those quantities are telemetry. All six modes in one
 comparison stratum receive the same wall-time ceiling and artifact contract;
@@ -1547,9 +1549,13 @@ Per-call simulator, judge, output-token, and provider context-window limits are
 safety and infrastructure controls, not experimental ability budgets. Their
 numerical values MUST be fixed by the pilot, identical where the same
 capability is available, and reported. Reaching the agent wall-time limit
-finalizes and normally scores the latest valid workspace artifact. A provider
-context-window error or single-turn output-limit stop is recorded as a separate
-termination reason. A repeated candidate MAY reuse a content-addressed feedback
+freezes the latest complete set of declared files in `submission/` and sends
+that exact snapshot through the normal private score path once. The timeout
+remains recorded as `agent_timeout`; it does not replace the artifact score. If
+no complete valid artifact exists, the attempt retains its structured
+no-valid-artifact outcome. A provider context-window error or single-turn
+output-limit stop is recorded as a separate termination reason. A repeated
+candidate MAY reuse a content-addressed feedback
 result; cache reuse is logged, and newly delivered result text is token-counted
 as telemetry only.
 
