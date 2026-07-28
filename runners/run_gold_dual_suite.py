@@ -69,6 +69,7 @@ AHDL_INCLUDE_LINE_RE = re.compile(r'(?m)^(\s*ahdl_include\s+")([^"]+)(".*)$')
 SPECTRE_SUPPORT_FILE_RE = re.compile(r'"([^"]+\.(?:tbl|txt|csv|dat))"', re.IGNORECASE)
 _SSH_CONTROL_PATH_COUNTER = count()
 _SSH_CONTROL_PATH_LOCK = threading.Lock()
+DIRECT_SUI_REMOTE_PGID_FILE = "__vaevas_spectre.pgid"
 
 
 def normalize_spectre_backend(value: str | None) -> str:
@@ -2147,6 +2148,58 @@ def run_ssh_bytes(
     )
 
 
+def direct_sui_remote_spectre_script(*, remote_dir: str, run_script: str) -> str:
+    pgid_file = f"{remote_dir}/{DIRECT_SUI_REMOTE_PGID_FILE}"
+    inner = " ".join(
+        [
+            "set -e;",
+            f"printf '%s\\n' \"$$\" > {shlex.quote(pgid_file)};",
+            f"exec tcsh -c {shlex.quote(run_script)}",
+        ]
+    )
+    return " ".join(
+        [
+            "set -e;",
+            f"rm -f {shlex.quote(pgid_file)};",
+            f"setsid bash -lc {shlex.quote(inner)}",
+        ]
+    )
+
+
+def direct_sui_cancel_remote_spectre_script(remote_dir: str) -> str:
+    pgid_file = f"{remote_dir}/{DIRECT_SUI_REMOTE_PGID_FILE}"
+    return " ".join(
+        [
+            "set +e;",
+            f"remote_dir={shlex.quote(remote_dir)};",
+            f"pgid_file={shlex.quote(pgid_file)};",
+            'case "$remote_dir" in /*) ;; *) echo "remote_cancel=refused_relative_dir"; exit 2;; esac;',
+            "wait_i=0;",
+            'while [ ! -s "$pgid_file" ] && [ "$wait_i" -lt 50 ]; do',
+            "sleep 0.1;",
+            "wait_i=$((wait_i + 1));",
+            "done;",
+            'if [ ! -f "$pgid_file" ]; then echo "remote_cancel=no_pgid"; exit 0; fi;',
+            'IFS= read -r pgid < "$pgid_file" || pgid="";',
+            'case "$pgid" in ""|*[!0-9]*) echo "remote_cancel=invalid_pgid"; rm -f "$pgid_file"; exit 0;; esac;',
+            'if [ "$pgid" -le 1 ]; then echo "remote_cancel=unsafe_pgid"; rm -f "$pgid_file"; exit 0; fi;',
+            'if kill -0 -- "-$pgid" 2>/dev/null; then',
+            'echo "remote_cancel=term pgid=$pgid";',
+            'kill -TERM -- "-$pgid" 2>/dev/null;',
+            "sleep 2;",
+            'if kill -0 -- "-$pgid" 2>/dev/null; then',
+            'echo "remote_cancel=kill pgid=$pgid";',
+            'kill -KILL -- "-$pgid" 2>/dev/null;',
+            "fi;",
+            "else",
+            'echo "remote_cancel=no_process pgid=$pgid";',
+            "fi;",
+            'rm -f "$pgid_file";',
+            "exit 0",
+        ]
+    )
+
+
 def _safe_tar_member_parts(member_name: str) -> tuple[str, ...] | None:
     rel = PurePosixPath(member_name)
     parts = tuple(part for part in rel.parts if part not in ("", "."))
@@ -2335,6 +2388,7 @@ def run_spectre_case_sui_direct(
     errors: list[str] = []
     warnings: list[str] = []
     psf_parse: dict[str, object] | None = None
+    cancel_remote_spectre = False
     license_queue_timeout_s = spectre_license_queue_timeout(timeout_s)
     mode = normalize_spectre_mode(spectre_mode)
     command = [
@@ -2462,7 +2516,10 @@ def run_spectre_case_sui_direct(
         run_script = " && ".join(csh_parts)
         run = run_ssh_text(
             host,
-            f"tcsh -c {shlex.quote(run_script)}",
+            direct_sui_remote_spectre_script(
+                remote_dir=remote_dir,
+                run_script=run_script,
+            ),
             timeout_s=max(timeout_s, 600),
         )
         combined_output += "\n" + (run.stdout or "") + "\n" + (run.stderr or "")
@@ -2495,6 +2552,7 @@ def run_spectre_case_sui_direct(
         elif run.returncode == 0:
             errors.append(f"spectre_raw_missing={raw_name}")
     except subprocess.TimeoutExpired as exc:
+        cancel_remote_spectre = True
         errors.append(f"sui_direct_timeout_after_s={exc.timeout}")
         combined_output += "\n" + (
             ((exc.stdout or "") if isinstance(exc.stdout, str) else "")
@@ -2505,6 +2563,18 @@ def run_spectre_case_sui_direct(
         if not errors:
             errors.append(f"sui_direct_exception={type(exc).__name__}: {str(exc)[:300]}")
     finally:
+        if cancel_remote_spectre and remote_dir:
+            try:
+                cancel = run_ssh_text(
+                    host,
+                    direct_sui_cancel_remote_spectre_script(remote_dir),
+                    timeout_s=30,
+                )
+                combined_output += "\n" + (cancel.stdout or "") + "\n" + (cancel.stderr or "")
+                if cancel.returncode != 0:
+                    warnings.append(f"remote_spectre_cancel_failed rc={cancel.returncode}")
+            except Exception as exc:  # pragma: no cover - best-effort cancellation only
+                warnings.append(f"remote_spectre_cancel_exception={type(exc).__name__}: {str(exc)[:200]}")
         if remote_dir:
             try:
                 cleanup = run_ssh_text(host, f"rm -rf {shlex.quote(remote_dir)}", timeout_s=30)
