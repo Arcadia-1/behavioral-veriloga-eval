@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.util
 from pathlib import Path
 import sys
+from types import SimpleNamespace
 
 import pytest
 
@@ -110,3 +111,52 @@ def test_oracle_accepts_time_dependent_cross_compatibility(monkeypatch) -> None:
 
     assert valid is True
     assert "evas_compatibility_features=time_dependent_cross_event" in note
+
+
+def test_compatibility_route_keeps_checker_watchdog_isolation(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    oracle = load_oracle()
+    testbench = tmp_path / "candidate.scs"
+    testbench.write_text("tran tran stop=1n\n", encoding="utf-8")
+
+    def fake_run_evas(_run_dir, _tb_path, output_dir, **_kwargs):
+        output_dir.mkdir()
+        (output_dir / "tran.csv").write_text("time,out\n0,0\n", encoding="utf-8")
+        return SimpleNamespace(returncode=0, stdout="simulation complete", stderr="")
+
+    def fake_evaluate(_task_id, _csv_path, *, timeout_s, force_subprocess):
+        assert timeout_s == 60
+        assert force_subprocess is True
+        return 0.0, ["behavior_eval_timeout>60s"]
+
+    monkeypatch.setitem(
+        sys.modules,
+        "simulate_evas",
+        SimpleNamespace(
+            run_evas=fake_run_evas,
+            evaluate_behavior_with_timeout=fake_evaluate,
+        ),
+    )
+    monkeypatch.setattr(oracle, "_prepare_dut_sources", lambda **_kwargs: None)
+    monkeypatch.setattr(oracle, "_trace_is_valid", lambda *_args: (True, []))
+    monkeypatch.setattr(
+        oracle,
+        "_validate_required_evas_engine",
+        lambda *_args: (True, "evas_engine=evas2"),
+    )
+
+    result = oracle._run_case(
+        package_root=ROOT,
+        tb_source=testbench,
+        source_formal=tmp_path,
+        target_artifacts=[],
+        negative_bundle=None,
+        checker_task_id="v4-test",
+        required_signals={"time", "out"},
+        label="reference",
+    )
+
+    assert result.outcome is oracle.CaseOutcome.INVALID_RUN
+    assert any("behavior_eval_timeout>60s" in note for note in result.notes)

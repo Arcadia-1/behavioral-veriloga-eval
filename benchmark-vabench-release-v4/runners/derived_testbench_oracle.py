@@ -397,7 +397,7 @@ def _run_case(
     runners_dir = str(repo_root / "runners")
     if runners_dir not in sys.path:
         sys.path.insert(0, runners_dir)
-    from simulate_evas import evaluate_behavior, run_evas
+    from simulate_evas import evaluate_behavior_with_timeout, run_evas
 
     role = "reference" if negative_bundle is None else "negative"
     with tempfile.TemporaryDirectory(prefix=f"v4_tb_feedback_{label}_") as td:
@@ -482,7 +482,12 @@ def _run_case(
                 notes=[f"{label}: {engine_note}"] + [f"{label}: {note}" for note in trace_notes],
             )
         try:
-            score, notes = evaluate_behavior(checker_task_id, csv_path)
+            score, notes = evaluate_behavior_with_timeout(
+                checker_task_id,
+                csv_path,
+                timeout_s=60,
+                force_subprocess=True,
+            )
         except Exception as exc:  # Checker exceptions are evaluator-invalid, not behavioral kills.
             return _case_result(
                 label=label,
@@ -490,6 +495,20 @@ def _run_case(
                 valid=False,
                 behavior_pass=None,
                 notes=[f"{label}: {engine_note}", f"{label}: checker failed: {type(exc).__name__}: {str(exc)[:300]}"],
+            )
+        if any(
+            str(note).startswith(
+                ("behavior_eval_timeout>", "behavior_eval_no_result", "behavior_eval_error=")
+            )
+            for note in notes
+        ):
+            return _case_result(
+                label=label,
+                role=role,
+                valid=False,
+                behavior_pass=None,
+                notes=[f"{label}: {engine_note}"]
+                + [f"{label}: " + note for note in notes],
             )
         return _case_result(
             label=label,
