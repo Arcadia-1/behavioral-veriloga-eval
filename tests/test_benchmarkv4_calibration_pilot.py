@@ -2161,11 +2161,11 @@ def test_trusted_replay_signature_binds_evas_profile(
     monkeypatch.setenv("VABENCH_EVAS_PROFILE", "r53test")
 
     signature, _ = scorer.trusted_replay_input_signature(
-        result={"cell": {}, "evas_identity": {"version_output": "evas-sim 0.8.6"}},
+        result={"cell": {}, "evas_identity": {"version_output": "evas-sim 0.8.7"}},
         runtime=tmp_path,
         command="python3",
         replay_timeout_s=150,
-        evas_command="/opt/evas-0.8.6",
+        evas_command="/opt/evas-0.8.7",
         final_submission={"tree_sha256": "a" * 64},
     )
 
