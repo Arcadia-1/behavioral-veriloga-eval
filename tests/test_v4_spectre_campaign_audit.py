@@ -774,6 +774,7 @@ def test_testbench_case_reclassifies_cached_spectre_no_ground_run(
         required_signals=set(),
         case_id="reference",
         output_dir=output_dir,
+        trace_cache_root=tmp_path / "trace-cache",
         config=audit.SpectreConfig(timeout_s=600),
         simulate_case=lambda **_kwargs: pytest.fail("cached case was rerun"),
         behavior_evaluator=lambda *_args, **_kwargs: pytest.fail(
@@ -907,6 +908,303 @@ def test_run_audit_resumes_a_matching_sidecar_result_without_rerunning_cell(
     assert json.loads(output.read_text(encoding="utf-8")) == second
 
 
+def test_run_audit_retries_matching_retryable_infrastructure_result(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+    release_task = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "release"
+        / "benchmarkv4-r52"
+        / "tasks"
+        / "501-bang-bang-phase-detector-testbench"
+    )
+    runtime = tmp_path / "campaign" / "v4-501-G0-r00-oneshot"
+    shutil.copytree(release_task / "evaluator", runtime / "evaluator")
+    shutil.copy2(release_task / "task_record.json", runtime / "evaluator" / "task_record.json")
+    plan = [
+        {
+            "cell_id": runtime.name,
+            "runtime": runtime,
+            "submission_tree_sha256": "frozen-tree",
+            "score_row": {
+                "cell_id": runtime.name,
+                "family_id": "001",
+                "form": "testbench",
+                "mode": "G0",
+                "experimental_arm": "OneShot",
+                "outcome": "runtime_failure",
+            },
+        }
+    ]
+    calls = 0
+
+    def fake_audit_cell(**kwargs):
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            return {
+                "schema_version": audit.SCHEMA_VERSION,
+                "cell_id": kwargs["score_row"]["cell_id"],
+                "source_outcome": "runtime_failure",
+                "outcome": "infrastructure_failure",
+                "failure_taxonomy": audit.taxonomy(
+                    "infrastructure",
+                    "checker_timeout",
+                    retryable=True,
+                    responsibility="system",
+                ),
+            }
+        return {
+            "schema_version": audit.SCHEMA_VERSION,
+            "cell_id": kwargs["score_row"]["cell_id"],
+            "source_outcome": "runtime_failure",
+            "outcome": "behavior_failure",
+            "failure_taxonomy": audit.taxonomy("property", "property_check"),
+        }
+
+    work_root = tmp_path / "spectre-sidecar"
+    output = tmp_path / "SCORE_SPECTRE_AUDIT.json"
+    first = audit.run_audit(
+        plan=plan,
+        work_root=work_root,
+        output=output,
+        config=audit.SpectreConfig(timeout_s=10, checker_timeout_s=3),
+        workers=1,
+        cell_auditor=fake_audit_cell,
+    )
+    second = audit.run_audit(
+        plan=plan,
+        work_root=work_root,
+        output=output,
+        config=audit.SpectreConfig(timeout_s=10, checker_timeout_s=3),
+        workers=1,
+        cell_auditor=fake_audit_cell,
+    )
+
+    assert calls == 2
+    assert first["resumed_cell_count"] == 0
+    assert second["resumed_cell_count"] == 0
+    assert second["rows"][0]["outcome"] == "behavior_failure"
+    assert second["rows"][0]["pass_impact_reason"] == (
+        "attribution_only_nonpass_reclassification"
+    )
+    assert second["pass_impact"]["net_confirmed_pass_delta"] == 0
+
+
+def test_dut_checker_retry_reuses_successful_spectre_trace_and_own_timeout(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+    release_task = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "release"
+        / "benchmarkv4-r52"
+        / "tasks"
+        / "189-trim-ctrl-4bit"
+    )
+    runtime = tmp_path / "v4-189-G2-r00-agentic"
+    shutil.copytree(release_task / "evaluator", runtime / "evaluator")
+    shutil.copy2(release_task / "task_record.json", runtime / "evaluator" / "task_record.json")
+    submission = runtime / "evidence" / "final_submission"
+    submission.mkdir(parents=True)
+    shutil.copy2(
+        release_task / "evaluator" / "solution" / "trim_ctrl_4bit.va",
+        submission / "trim_ctrl_4bit.va",
+    )
+    simulate_calls = 0
+    checker_timeouts: list[int] = []
+
+    def fake_simulate_case(**kwargs):
+        nonlocal simulate_calls
+        simulate_calls += 1
+        output_dir = kwargs["output_dir"]
+        output_dir.mkdir(parents=True, exist_ok=True)
+        required = sorted(kwargs["required_signals"])
+        (output_dir / "tran_spectre.csv").write_text(
+            ",".join(["time", *required])
+            + "\n"
+            + ",".join(["0", *(["0"] * len(required))])
+            + "\n",
+            encoding="utf-8",
+        )
+        return {
+            "ok": True,
+            "status": "success",
+            "errors": [],
+            "warnings": [],
+            "signals": ["time", *required],
+            "rows": 1,
+            "spectre_backend": "sui-direct",
+            "spectre_mode": "ax",
+        }
+
+    checker_calls = 0
+
+    def fake_checker(_checker_id, _csv_path, *, timeout_s):
+        nonlocal checker_calls
+        checker_calls += 1
+        checker_timeouts.append(timeout_s)
+        if checker_calls == 1:
+            return 0.0, [f"behavior_eval_timeout>{timeout_s}s"]
+        return 0.0, ["P_EXPECTED mismatch_count=1"]
+
+    kwargs = {
+        "runtime": runtime,
+        "score_row": {
+            "cell_id": runtime.name,
+            "family_id": "189",
+            "form": "dut",
+            "mode": "G2",
+            "experimental_arm": "Agentic",
+            "outcome": "runtime_failure",
+        },
+        "submission_tree_sha256": "frozen-tree",
+        "cell_output": tmp_path / "audit-dut",
+        "trace_cache_root": tmp_path / "trace-cache",
+        "config": audit.SpectreConfig(timeout_s=600, checker_timeout_s=17),
+        "simulate_case": fake_simulate_case,
+        "behavior_evaluator": fake_checker,
+    }
+    first = audit.audit_cell(**kwargs)
+    second = audit.audit_cell(**kwargs)
+
+    assert first["outcome"] == "infrastructure_failure"
+    assert first["failure_taxonomy"]["stage"] == "checker_timeout"
+    assert second["outcome"] == "behavior_failure"
+    assert simulate_calls == 1
+    assert checker_timeouts == [17, 17]
+
+
+def test_trace_cache_binds_trace_implementation_but_not_checker_implementation(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    audit = load_audit()
+    tb = tmp_path / "tb.scs"
+    tb.write_text("simulator lang=spectre\ntran tran stop=1n\n", encoding="utf-8")
+    dut = tmp_path / "dut.va"
+    dut.write_text("module dut; endmodule\n", encoding="utf-8")
+    calls = 0
+
+    def fake_simulate_case(**kwargs):
+        nonlocal calls
+        calls += 1
+        output_dir = kwargs["output_dir"]
+        output_dir.mkdir(parents=True, exist_ok=True)
+        (output_dir / "tran_spectre.csv").write_text(
+            "time,out\n0,0\n", encoding="utf-8"
+        )
+        return {"ok": True, "status": "success"}
+
+    kwargs = {
+        "cell_id": "trace-cache-cell",
+        "case_id": "score",
+        "tb_path": tb,
+        "include_paths": [dut],
+        "requested_output_dir": tmp_path / "uncached",
+        "trace_cache_root": tmp_path / "cache",
+        "required_signals": {"out"},
+        "side_output_files": (),
+        "config": audit.SpectreConfig(timeout_s=10, checker_timeout_s=3),
+        "simulate_case": fake_simulate_case,
+    }
+    implementation = audit._spectre_trace_implementation_sha256()
+    assert set(implementation) == {
+        "default_simulate_case",
+        "run_gold_dual_suite.py",
+    }
+    assert "simulate_evas.py" not in implementation
+
+    _first, _path, first_reused = audit._run_or_reuse_spectre_trace(**kwargs)
+    _second, _path, second_reused = audit._run_or_reuse_spectre_trace(**kwargs)
+    monkeypatch.setattr(
+        audit,
+        "_spectre_trace_implementation_sha256",
+        lambda: {**implementation, "default_simulate_case": "changed"},
+    )
+    _third, _path, third_reused = audit._run_or_reuse_spectre_trace(**kwargs)
+
+    assert first_reused is False
+    assert second_reused is True
+    assert third_reused is False
+    assert calls == 2
+
+
+def test_summary_excludes_runtime_and_infrastructure_without_inventing_pass_gain() -> None:
+    audit = load_audit()
+    rows = [
+        {
+            "cell_id": "spectre-runtime-a",
+            "form": "dut",
+            "experimental_arm": "Agentic",
+            "source_outcome": "runtime_failure",
+            "outcome": "runtime_failure",
+            "failure_taxonomy": audit.taxonomy("runtime", "simulation"),
+        },
+        {
+            "cell_id": "spectre-runtime-b",
+            "form": "dut",
+            "experimental_arm": "Agentic",
+            "source_outcome": "runtime_failure",
+            "outcome": "runtime_failure",
+            "failure_taxonomy": audit.taxonomy("runtime", "simulation"),
+        },
+        {
+            "cell_id": "checker-timeout",
+            "form": "testbench",
+            "experimental_arm": "Agentic",
+            "source_outcome": "runtime_failure",
+            "outcome": "infrastructure_failure",
+            "failure_taxonomy": audit.taxonomy(
+                "infrastructure",
+                "checker_timeout",
+                retryable=True,
+                responsibility="system",
+            ),
+        },
+        {
+            "cell_id": "stale-score-provenance",
+            "form": "testbench",
+            "experimental_arm": "Agentic",
+            "source_outcome": "runtime_failure",
+            "outcome": "passed",
+            "failure_taxonomy": None,
+        },
+        {
+            "cell_id": "both-nonpass",
+            "form": "testbench",
+            "experimental_arm": "Agentic",
+            "source_outcome": "runtime_failure",
+            "outcome": "behavior_failure",
+            "failure_taxonomy": audit.taxonomy("property", "property_check"),
+        },
+    ]
+
+    summary = audit._summarize_audit(
+        rows,
+        resumed_cell_count=0,
+        config=audit.SpectreConfig(),
+    )
+
+    assert summary["semantic_denominator"] == {
+        "eligible_cells": 2,
+        "excluded_cells": 3,
+        "excluded_by_reason": {
+            "retryable_infrastructure": 1,
+            "unresolved_simulation_runtime": 2,
+        },
+    }
+    assert summary["pass_impact"]["net_confirmed_pass_delta"] == 0
+    assert summary["pass_impact"]["by_reason"] == {
+        "attribution_only_nonpass_reclassification": 2,
+        "provenance_resolution_to_pass": 1,
+        "unchanged": 2,
+    }
+
+
 def test_resume_signature_changes_with_spectre_execution_environment(
     tmp_path: Path,
 ) -> None:
@@ -951,10 +1249,14 @@ def test_resume_signature_changes_with_spectre_execution_environment(
         {"sui_host": "spectre-b"},
         {"sui_work_root": "/tmp/spectre-b"},
         {"cadence_cshrc": "/opt/cadence/b.cshrc"},
+        {"checker_timeout_s": 20},
     ):
         changed = audit.SpectreConfig(
             backend="sui-direct",
             timeout_s=10,
+            checker_timeout_s=override.get(
+                "checker_timeout_s", baseline.checker_timeout_s
+            ),
             sui_host=override.get("sui_host", baseline.sui_host),
             sui_work_root=override.get(
                 "sui_work_root", baseline.sui_work_root
@@ -1067,3 +1369,107 @@ def test_testbench_spectre_compile_error_is_not_reported_as_runtime(
     assert result["outcome"] == "compile_failure"
     assert result["failure_taxonomy"]["primary_class"] == "compile"
     assert {case["failure_kind"] for case in result["cases"]} == {"compile"}
+
+
+def test_spectre_x_maxstep_override_is_invalid_oracle_config(
+    tmp_path: Path,
+) -> None:
+    audit = load_audit()
+    tb = tmp_path / "tb.scs"
+    tb.write_text(
+        "simulator lang=spectre\n"
+        "tran tran stop=10n maxstep=5p\n",
+        encoding="utf-8",
+    )
+    output_dir = tmp_path / "spectre"
+    output_dir.mkdir()
+    (output_dir / "spectre.out").write_text(
+        "WARNING (SPECTRE-592): ax mode changed maxstep settings.\n"
+        "    maxstep = 76 ps\n",
+        encoding="utf-8",
+    )
+
+    notes = audit._spectre_oracle_config_issue(
+        tb,
+        {"ok": True, "status": "success", "stdout_tail": ""},
+        output_dir,
+    )
+
+    assert notes
+    assert "not a semantic oracle" in notes[0]
+    assert "rerun required" in notes[1]
+
+
+def test_spectre_transport_connection_closed_is_retryable_infrastructure() -> None:
+    audit = load_audit()
+
+    kind = audit._spectre_failure_kind(
+        {
+            "ok": False,
+            "errors": ["spectre_failed rc=255"],
+            "stdout_tail": "Connection closed by UNKNOWN port 65535",
+        }
+    )
+
+    assert kind == "infrastructure"
+
+
+def test_bridge_lite_missing_preflight_blocks_before_spectre_launch(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    audit = load_audit()
+    launched = False
+
+    def forbidden_launch(**_kwargs):
+        nonlocal launched
+        launched = True
+        pytest.fail("remote Spectre launch must not run when bridge-lite is missing")
+
+    monkeypatch.setattr(audit, "default_bridge_repo", lambda: tmp_path / "missing-bridge")
+    monkeypatch.setattr(audit, "run_spectre_case", forbidden_launch)
+
+    with pytest.raises(FileNotFoundError, match="bridge-lite preflight failed"):
+        audit._default_simulate_case(
+            cell_id="preflight-cell",
+            case_id="score",
+            tb_path=tmp_path / "tb.scs",
+            include_paths=[],
+            output_dir=tmp_path / "out",
+            required_signals=set(),
+            config=audit.SpectreConfig(backend="bridge", timeout_s=10),
+        )
+
+    assert launched is False
+
+
+def test_summary_preserves_invalid_oracle_config_as_retryable_infrastructure() -> None:
+    audit = load_audit()
+    rows = [
+        {
+            "cell_id": "spectre-x-artifact",
+            "form": "testbench",
+            "experimental_arm": "Agentic",
+            "source_outcome": "behavior_failure",
+            "outcome": "infrastructure_failure",
+            "failure_taxonomy": audit.taxonomy(
+                "infrastructure",
+                "invalid_oracle_config",
+                retryable=True,
+                responsibility="system",
+            ),
+        }
+    ]
+
+    summary = audit._summarize_audit(
+        rows,
+        resumed_cell_count=0,
+        config=audit.SpectreConfig(),
+    )
+
+    assert summary["semantic_denominator"] == {
+        "eligible_cells": 0,
+        "excluded_cells": 1,
+        "excluded_by_reason": {"retryable_infrastructure": 1},
+    }
+    assert summary["infrastructure_cells"] == ["spectre-x-artifact"]
