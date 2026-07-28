@@ -327,11 +327,11 @@ def test_active_agent_tools_expose_restricted_evas_not_feedback() -> None:
     assert names == ["list_files", "read_file", "write_file", "run_evas", "finalize"]
 
 
-def test_campaign_runner_defaults_to_latest_r52_release() -> None:
+def test_campaign_runner_defaults_to_latest_r53_release() -> None:
     runner = load_run_campaign()
     wrapper = load_run_campaign_wrapper()
 
-    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r52"
+    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r53"
     assert wrapper.DEFAULT_RELEASE == runner.DEFAULT_RELEASE
     assert (
         "--agent-timeout-s"
@@ -741,7 +741,7 @@ def test_campaign_wrapper_exposes_agent_no_evas_control_profile(
     assert campaign["cell_count"] == 3
     assert campaign["filters"]["experimental_arms"] == []
     assert campaign["execution_config"]["mini_swe_no_evas_image"] == (
-        "vabench-agent-runtime:0.8.5-no-evas"
+        "vabench-agent-runtime:0.8.7-no-evas"
     )
     assert campaign["execution_config"]["mini_swe_preflight_timeout_s"] == 60
     assert campaign["execution_config"]["mini_swe_preflight_attempts"] == 2
@@ -2177,7 +2177,7 @@ def test_trusted_replay_signature_binds_evas_profile(
 ) -> None:
     scorer = load_score_campaign()
     (tmp_path / "evaluator").mkdir()
-    monkeypatch.setenv("VABENCH_EVAS_PROFILE", "r53test")
+    monkeypatch.setenv("VABENCH_EVAS_PROFILE", "r53")
 
     signature, _ = scorer.trusted_replay_input_signature(
         result={"cell": {}, "evas_identity": {"version_output": "evas-sim 0.8.7"}},
@@ -2188,7 +2188,7 @@ def test_trusted_replay_signature_binds_evas_profile(
         final_submission={"tree_sha256": "a" * 64},
     )
 
-    assert signature["evaluator"]["evas_profile"] == "r53test"
+    assert signature["evaluator"]["evas_profile"] == "r53"
 
 
 @pytest.mark.parametrize(

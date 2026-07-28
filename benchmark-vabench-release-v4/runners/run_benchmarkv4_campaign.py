@@ -2,7 +2,7 @@
 """Build and run a benchmarkv4 model campaign with direct and agentic modes.
 
 This is the operator-facing entry point for API experiments.  It builds a
-campaign from ``release/benchmarkv4-r52`` and delegates execution to the v4
+campaign from ``release/benchmarkv4-r53`` and delegates execution to the v4
 calibration runner:
 
 * G0/G1 use direct one-shot artifact extraction.
@@ -10,7 +10,7 @@ calibration runner:
   workspace exposes task/, submission/, and EVAS diagnostics; evaluator and
   trusted-replay assets stay outside the model shell.
 
-The result is still an experiment runner, not the final Spectre scorer.
+The result is still an experiment runner, not the private final evaluator.
 """
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ from typing import Any
 PACKAGE = Path(__file__).resolve().parents[1]
 REPO = PACKAGE.parent
 CALIBRATION = PACKAGE / "operations" / "calibration_pilot"
-DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r52"
+DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r53"
 DEFAULT_SETUP_TIMEOUT_S = 1800
 DEFAULT_REQUEST_TIMEOUT_S = 1800
 DEFAULT_TOOL_TIMEOUT_S = 1800
@@ -35,8 +35,8 @@ DEFAULT_JUDGE_TIMEOUT_S = 1800
 DEFAULT_MINI_SWE_PREFLIGHT_TIMEOUT_S = 60
 DEFAULT_MINI_SWE_PREFLIGHT_ATTEMPTS = 2
 DEFAULT_MINI_SWE_STARTUP_WORKERS = 8
-DEFAULT_DOCKER_IMAGE = "vabench-agent-runtime:0.8.5"
-DEFAULT_NO_EVAS_DOCKER_IMAGE = "vabench-agent-runtime:0.8.5-no-evas"
+DEFAULT_DOCKER_IMAGE = "vabench-agent-runtime:0.8.7"
+DEFAULT_NO_EVAS_DOCKER_IMAGE = "vabench-agent-runtime:0.8.7-no-evas"
 MODES = tuple(f"G{i}" for i in range(6))
 EXECUTABLE_FEEDBACK_ARMS = (
     ("OneShot", "oneshot", "G0", False),

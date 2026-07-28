@@ -20,7 +20,7 @@ from experiment_policy import (  # noqa: E402
     load_experiment_policy,
 )
 
-DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r52"
+DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r53"
 MODES = tuple(f"G{i}" for i in range(6))
 FORM_ORDER = {"dut": 0, "testbench": 1, "bugfix": 2}
 MODE_RESPONSE_PROTOCOL = {

@@ -78,6 +78,7 @@ from audit_tri_form_release import (  # noqa: E402
     evidence_artifacts,
     expected_buggy_artifact_hashes,
     file_sha,
+    materialized_artifacts_for_revision,
     prompt_component_path,
     release_uses_real_skills,
     rust_evas2_runtime,
@@ -124,6 +125,26 @@ def test_r52_release_plumbing_uses_reference_only_testbench_runtime() -> None:
     }
     assert ALLOWED_TESTBENCH_RUNTIME_SCHEMAS["r52"] == {
         "r52-direct-evas-testbench-reference-v1",
+    }
+
+
+def test_r53_release_plumbing_uses_evas087_reference_only_runtime() -> None:
+    assert DEFAULT_OUTPUTS["r53"].name == "benchmarkv4-r53"
+    assert REBUILD_DEFAULT_RELEASES["r53"].name == "benchmarkv4-r53"
+    assert release_uses_real_skills("r53") is True
+    assert allowed_runtime_schemas("r53", "dut") == {
+        "r53-direct-evas-runtime-v2",
+        "r53-direct-evas-runtime-v3",
+    }
+    assert allowed_runtime_schemas("r53", "testbench") == {
+        "r53-direct-evas-testbench-reference-v1",
+    }
+    assert ALLOWED_DUT_RUNTIME_SCHEMAS["r53"] == {
+        "r53-direct-evas-runtime-v2",
+        "r53-direct-evas-runtime-v3",
+    }
+    assert ALLOWED_TESTBENCH_RUNTIME_SCHEMAS["r53"] == {
+        "r53-direct-evas-testbench-reference-v1",
     }
 
 
@@ -1833,6 +1854,45 @@ def test_post_r44_release_seal_has_independent_revision_identity(
     assert seal["release_revision"] == release_revision
     assert seal["release_status"] == f"{release_revision}_immutable_rust_evas2_certified"
     assert seal["simulation_claim"].startswith("fresh full400")
+
+
+def test_r53_release_seal_declares_source_reuse_and_runtime_qualification(
+    tmp_path: Path,
+) -> None:
+    r53_artifacts = (
+        "MANIFEST.json",
+        *materialized_artifacts_for_revision("r53"),
+        "AUDIT_REPORT.json",
+        "RUNTIME_INGESTION_EVIDENCE.json",
+    )
+    for relative in r53_artifacts:
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        payload = {"artifact": relative}
+        if relative == "MANIFEST.json":
+            payload = {
+                "release_revision": "r53",
+                "runtime_requirements": {
+                    "evas_package": "evas-sim",
+                    "evas_version": "0.8.7",
+                    "experiment_policy": "EXPERIMENT_POLICY.json",
+                    "experiment_policy_sha256": "b" * 64,
+                },
+            }
+        path.write_text(json.dumps(payload) + "\n", encoding="utf-8")
+    reuse = {"simulation_rerun_required_for_materialization": False}
+
+    seal = build_release_seal(
+        tmp_path,
+        "a" * 64,
+        reuse,
+        release_revision="r53",
+    )
+
+    assert seal["release_status"] == "r53_immutable_source_certification_reused"
+    assert "pushed-image and Vela smoke" in seal["simulation_claim"]
+    assert seal["runtime_requirements"]["evas_version"] == "0.8.7"
+    assert evidence_artifacts("r53") == ()
 
 
 def test_r45_evidence_never_falls_back_to_r44(tmp_path: Path) -> None:

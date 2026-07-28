@@ -57,16 +57,16 @@ def _without_backend_options(deck: str) -> str:
     )
 
 
-def test_reference_evas_smoke_defaults_to_r52_evas_085() -> None:
+def test_reference_evas_smoke_defaults_to_r53_evas_087() -> None:
     runner = _load_evas_smoke_runner()
 
-    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r52"
-    assert runner.REQUIRED_EVAS_VERSION == "0.8.5"
+    assert runner.DEFAULT_RELEASE.name == "benchmarkv4-r53"
+    assert runner.REQUIRED_EVAS_VERSION == "0.8.7"
 
 
 @pytest.mark.parametrize(
     ("release_revision", "expected_evas_version"),
-    [("r51", "0.8.3"), ("r52", "0.8.5")],
+    [("r51", "0.8.3"), ("r52", "0.8.5"), ("r53", "0.8.7")],
 )
 def test_reference_evas_smoke_uses_release_pinned_evas_version(
     tmp_path: Path,
@@ -265,7 +265,7 @@ def test_batch35_evas_evidence_records_clean_source_revision(
         return subprocess.CompletedProcess(
             command,
             0,
-            json.dumps({"version": "0.8.5", "rust_backend_loaded": True}) + "\n",
+            json.dumps({"version": "0.8.7", "rust_backend_loaded": True}) + "\n",
             "",
         )
 
@@ -322,9 +322,9 @@ def test_batch35_evas_evidence_can_require_a_newer_release_lane_version(
 @pytest.mark.parametrize(
     ("log_text", "valid", "version", "backend"),
     [
-        ("Version 0.8.5 -- Jul 2026\n    evas_engine = evas-rust\n", True, "0.8.5", "evas-rust"),
-        ("Version 0.8.5 -- Jul 2026\n    evas_engine = python\n", False, "0.8.5", "python"),
-        ("Version 0.8.4 -- Jul 2026\n    evas_engine = evas-rust\n", False, "0.8.4", "evas-rust"),
+        ("Version 0.8.7 -- Jul 2026\n    evas_engine = evas-rust\n", True, "0.8.7", "evas-rust"),
+        ("Version 0.8.7 -- Jul 2026\n    evas_engine = python\n", False, "0.8.7", "python"),
+        ("Version 0.8.6 -- Jul 2026\n    evas_engine = evas-rust\n", False, "0.8.6", "evas-rust"),
     ],
 )
 def test_batch35_case_evidence_reads_actual_runtime(

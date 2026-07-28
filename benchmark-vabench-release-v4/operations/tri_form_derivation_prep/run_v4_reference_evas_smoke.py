@@ -39,11 +39,15 @@ from runners.simulate_evas import (  # noqa: E402
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4-r52"
+DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4-r53"
 REQUIRED_EVAS_ENGINE = "evas2"
-REQUIRED_EVAS_VERSION = "0.8.5"
+REQUIRED_EVAS_VERSION = "0.8.7"
 LEGACY_EVAS_VERSION = "0.8.3"
 RUST_EVAS_LOG_ENGINE = "evas-rust"
+EVAS_VERSION_BY_RELEASE = {
+    "r52": "0.8.5",
+    "r53": REQUIRED_EVAS_VERSION,
+}
 LEGACY_RELEASE_REVISIONS = {"r44", "r45", "r47", "r48", "r49", "r50", "r51"}
 EVAS_VERSION_RE = re.compile(r"^Version\s+(\S+)", re.MULTILINE)
 EVAS_BACKEND_RE = re.compile(r"^\s*evas_engine\s*=\s*(\S+)\s*$", re.MULTILINE)
@@ -69,8 +73,8 @@ def required_evas_version_for_release(release: Path) -> str:
     if not manifest_path.is_file():
         raise SystemExit(f"release manifest is missing: {manifest_path}")
     revision = str(read_json(manifest_path).get("release_revision") or "")
-    if revision == "r52":
-        return REQUIRED_EVAS_VERSION
+    if revision in EVAS_VERSION_BY_RELEASE:
+        return EVAS_VERSION_BY_RELEASE[revision]
     if revision in LEGACY_RELEASE_REVISIONS:
         return LEGACY_EVAS_VERSION
     raise SystemExit(f"unsupported release revision: {revision!r}")

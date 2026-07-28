@@ -48,11 +48,15 @@ from score_denominator_registry import score_denominator_registry_sha256  # noqa
 
 
 REQUIRED_EVAS_ENGINE = "evas2"
-REQUIRED_EVAS_VERSION = "0.8.5"
+REQUIRED_EVAS_VERSION = "0.8.7"
 LEGACY_EVAS_VERSION = "0.8.3"
 REQUIRED_EVAS_BACKEND = "evas-rust"
-DEFAULT_RELEASE_REVISION = "r52"
-SUPPORTED_RELEASE_REVISIONS = ("r44", "r45", "r47", "r48", "r49", "r50", "r51", "r52")
+DEFAULT_RELEASE_REVISION = "r53"
+SUPPORTED_RELEASE_REVISIONS = ("r44", "r45", "r47", "r48", "r49", "r50", "r51", "r52", "r53")
+EVAS_VERSION_BY_RELEASE = {
+    "r52": "0.8.5",
+    "r53": REQUIRED_EVAS_VERSION,
+}
 SOURCE_ROOT = ROOT / "benchmark-vabench-release-v4" / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 
 # Scaling the stimulus changes the physical operating point when the DUT owns
@@ -94,7 +98,7 @@ def compact_evidence_identity(release_revision: str) -> tuple[str, str]:
     return release_label, schema_version
 
 def required_evas_version(release_revision: str) -> str:
-    return REQUIRED_EVAS_VERSION if release_revision == "r52" else LEGACY_EVAS_VERSION
+    return EVAS_VERSION_BY_RELEASE.get(release_revision, LEGACY_EVAS_VERSION)
 
 
 def effective_affine_scale(family_id: str, requested_scale: float) -> float:

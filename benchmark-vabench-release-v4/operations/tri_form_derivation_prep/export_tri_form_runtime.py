@@ -11,7 +11,7 @@ from typing import Any
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4-r52"
+DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4-r53"
 AGENTIC = {"G2", "G3", "G4", "G5"}
 FORM_SKILLS = {
     "dut": "dut_modeling.md",
@@ -60,6 +60,7 @@ def validate_evaluation_binding(record: dict[str, Any], task_dir: Path) -> None:
             "materialize an r45 release first"
         )
     form = str(record.get("form") or "")
+    release_revision = str(record.get("release_revision") or "")
     if form in {"dut", "bugfix"}:
         if binding.get("kind") != "canonical_test_deck":
             raise SystemExit("task lacks canonical test deck binding")
@@ -116,7 +117,10 @@ def validate_evaluation_binding(record: dict[str, Any], task_dir: Path) -> None:
             raise SystemExit("reference-only testbench binding references missing fixtures")
         runtime_payload = read_json(public_runtime)
         trusted_payload = read_json(trusted_suite)
-        if runtime_payload.get("schema_version") != "r52-direct-evas-testbench-reference-v1":
+        if (
+            runtime_payload.get("schema_version")
+            != f"{release_revision}-direct-evas-testbench-reference-v1"
+        ):
             raise SystemExit("reference-only public runtime schema mismatch")
         if runtime_payload.get("feedback_scope") != "reference_dut_only":
             raise SystemExit("reference-only public feedback scope mismatch")
@@ -128,7 +132,10 @@ def validate_evaluation_binding(record: dict[str, Any], task_dir: Path) -> None:
             raise SystemExit("reference-only public runtime is not transport-neutral")
         if "mutation_" in json.dumps(runtime_payload, sort_keys=True):
             raise SystemExit("reference-only public runtime leaks a private mutation")
-        if trusted_payload.get("schema_version") != "r52-trusted-evas-testbench-suite-v1":
+        if (
+            trusted_payload.get("schema_version")
+            != f"{release_revision}-trusted-evas-testbench-suite-v1"
+        ):
             raise SystemExit("trusted replay suite schema mismatch")
         if binding.get("public_runtime_sha256") != file_sha(public_runtime):
             raise SystemExit("reference-only public runtime hash mismatch")
@@ -251,7 +258,9 @@ def serialize_public_artifacts(task_dir: Path, form: str) -> str:
             ])
     if form == "testbench" and (public / "evas_runtime.json").is_file():
         runtime = read_json(public / "evas_runtime.json")
-        if runtime.get("schema_version") == "r52-direct-evas-testbench-reference-v1":
+        if str(runtime.get("schema_version") or "").endswith(
+            "-direct-evas-testbench-reference-v1"
+        ):
             lines.extend([
                 '<<<VABENCH_INPUT_ARTIFACT path="evas_runtime.json">>>',
                 (public / "evas_runtime.json").read_text(encoding="utf-8"),
@@ -554,8 +563,9 @@ def install_public(task_dir: Path, public_root: Path, form: str, mode: str, rele
     reference_only_public_testbench = (
         form == "testbench"
         and runtime_contract_path.is_file()
-        and read_json(runtime_contract_path).get("schema_version")
-        == "r52-direct-evas-testbench-reference-v1"
+        and str(read_json(runtime_contract_path).get("schema_version") or "").endswith(
+            "-direct-evas-testbench-reference-v1"
+        )
     )
     if reference_only_public_testbench:
         shutil.copy2(runtime_contract_path, target / "evas_runtime.json")
@@ -571,8 +581,9 @@ def install_public(task_dir: Path, public_root: Path, form: str, mode: str, rele
         else:
             runtime_contract = read_json(source_public / "evas_runtime.json")
             if (
-                runtime_contract.get("schema_version")
-                == "r52-direct-evas-testbench-reference-v1"
+                str(runtime_contract.get("schema_version") or "").endswith(
+                    "-direct-evas-testbench-reference-v1"
+                )
             ):
                 commands.append(str(runtime_contract["candidate_command"]))
             else:

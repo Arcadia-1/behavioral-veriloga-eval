@@ -47,15 +47,19 @@ DEFAULT_OUTPUTS = {
     "r50": PACKAGE_ROOT / "release" / "benchmarkv4-r50",
     "r51": PACKAGE_ROOT / "release" / "benchmarkv4-r51",
     "r52": PACKAGE_ROOT / "release" / "benchmarkv4-r52",
+    "r53": PACKAGE_ROOT / "release" / "benchmarkv4-r53",
 }
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
-NEXT_RUNTIME_TRANSPORT_WRAPPER_REVISIONS = frozenset({"r52"})
+NEXT_RUNTIME_TRANSPORT_WRAPPER_REVISIONS = frozenset({"r52", "r53"})
 NEXT_RUNTIME_TRANSPORT_WRAPPER = (
     PROMPT_ASSETS / "wrappers" / "direct_wrapper_runtime_transport.md"
 )
 SKILLS_ROOT = PACKAGE_ROOT.parent / "skills"
 SKILL_IDS = ("veriloga", "vabench-feedback")
-REAL_SKILL_REVISIONS = frozenset({"r50", "r51", "r52"})
+REAL_SKILL_REVISIONS = frozenset({"r50", "r51", "r52", "r53"})
+REFERENCE_ONLY_TESTBENCH_REVISIONS = frozenset({"r52", "r53"})
+R53_REQUIRED_EVAS_VERSION = "0.8.7"
+EXPERIMENT_POLICY = PACKAGE_ROOT / "EXPERIMENT_POLICY.json"
 REAL_SKILL_MODES = {
     "G0": {"process": "direct_one_shot", "skills": [], "evas_cli": False},
     "G1": {"process": "direct_one_shot", "skills": ["veriloga"], "evas_cli": False},
@@ -660,7 +664,7 @@ def uses_portable_rdist_runtime(
 ) -> bool:
     """Select the portable EVAS extension mode from the canonical DUT sources."""
 
-    if release_revision not in {"r51", "r52"}:
+    if release_revision not in {"r51", "r52", "r53"}:
         return False
     for file_record in (spec.get("artifact_contract") or {}).get("files") or []:
         source = source_task / "evaluator" / "solution" / str(file_record["path"])
@@ -847,9 +851,11 @@ def install_visible_testbench_runtime(
 ) -> dict[str, Any]:
     public = task_dir / "public"
     evaluator = task_dir / "evaluator"
-    if release_revision == "r52":
+    if release_revision in REFERENCE_ONLY_TESTBENCH_REVISIONS:
         runtime = {
-            "schema_version": "r52-direct-evas-testbench-reference-v1",
+            "schema_version": (
+                f"{release_revision}-direct-evas-testbench-reference-v1"
+            ),
             "candidate": "submission/testbench.scs",
             "candidate_dut_binding": "./dut",
             "reference_dut_root": "task/supplied_dut",
@@ -892,7 +898,9 @@ def install_visible_testbench_runtime(
                 "dut_root": f"trusted_replay_fixtures/{case}/dut",
             })
         trusted_suite = {
-            "schema_version": "r52-trusted-evas-testbench-suite-v1",
+            "schema_version": (
+                f"{release_revision}-trusted-evas-testbench-suite-v1"
+            ),
             "candidate": "public/submission/testbench.scs",
             "candidate_dut_binding": "./dut",
             "cases": trusted_cases,
@@ -1122,7 +1130,7 @@ def build_testbench_view(
                     "visible_feedback": "reference_dut_only",
                     "final_evaluation": "reference_plus_five_hidden_faults",
                 }
-                if release_revision == "r52"
+                if release_revision in REFERENCE_ONLY_TESTBENCH_REVISIONS
                 else {
                     "visible_and_final_suite": "identical_reference_plus_five_mutations",
                 }
@@ -1601,6 +1609,13 @@ def main() -> int:
             output, materialized_artifacts_for_revision(revision)
         ),
     }
+    if revision == "r53":
+        manifest["runtime_requirements"] = {
+            "evas_package": "evas-sim",
+            "evas_version": R53_REQUIRED_EVAS_VERSION,
+            "experiment_policy": "EXPERIMENT_POLICY.json",
+            "experiment_policy_sha256": file_sha(EXPERIMENT_POLICY),
+        }
     write_json(output / "MANIFEST.json", manifest)
     print(json.dumps(manifest, indent=2, sort_keys=True))
     return 0

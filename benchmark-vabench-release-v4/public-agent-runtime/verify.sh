@@ -3,8 +3,8 @@ set -eu
 
 cd "$(dirname "$0")"
 
-IMAGE_TAG="${IMAGE_TAG:-vabench-agent-runtime:0.8.5}"
-NO_EVAS_IMAGE_TAG="${NO_EVAS_IMAGE_TAG:-vabench-agent-runtime:0.8.5-no-evas}"
+IMAGE_TAG="${IMAGE_TAG:-vabench-agent-runtime:0.8.7}"
+NO_EVAS_IMAGE_TAG="${NO_EVAS_IMAGE_TAG:-vabench-agent-runtime:0.8.7-no-evas}"
 DOCKER="${DOCKER:-docker}"
 TMP_ROOT=$(mktemp -d "$PWD/.verify.XXXXXX")
 trap 'rm -rf "$TMP_ROOT"' EXIT INT TERM
@@ -55,7 +55,7 @@ import csv
 import json
 
 identity = json.load(open("work/evas-identity.json", encoding="utf-8"))
-assert identity["package_version"] == "0.8.5"
+assert identity["package_version"] == "0.8.7"
 assert identity["rust_core_present"] is True
 assert identity["rust_core_loadable"] is True
 with open("/tmp/vabench-visible/evas-output/tran.csv", newline="", encoding="utf-8") as handle:

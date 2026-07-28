@@ -27,8 +27,8 @@ from typing import Any, Callable
 
 MINI_SWE_AGENT_VERSION = "2.4.5"
 MINI_SWE_SCAFFOLD_ID = "mini-swe-agent-2.4.5-vabench-docker-evas-v3"
-DEFAULT_DOCKER_IMAGE = "vabench-agent-runtime:0.8.5"
-DEFAULT_NO_EVAS_DOCKER_IMAGE = "vabench-agent-runtime:0.8.5-no-evas"
+DEFAULT_DOCKER_IMAGE = "vabench-agent-runtime:0.8.7"
+DEFAULT_NO_EVAS_DOCKER_IMAGE = "vabench-agent-runtime:0.8.7-no-evas"
 CANDIDATE_TREE_SCHEMA_VERSION = "v4-candidate-tree-sha256-v1"
 CANDIDATE_TREE_HASH_ERROR_SHA256 = hashlib.sha256(
     b"vabench-candidate-tree-hash-error-v1"

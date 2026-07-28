@@ -104,18 +104,18 @@ def test_evas2_evidence_requires_version_and_rust_backend_markers(
     monkeypatch.setenv("EVAS_ENGINE", "evas2")
     monkeypatch.setenv("VAEVAS_DEFAULT_EVAS_ENGINE", "evas2")
     evidence = runner.require_rust_evas2(
-        "Version 0.8.5\n    evas_engine = evas-rust\n"
+        "Version 0.8.7\n    evas_engine = evas-rust\n"
     )
     assert evidence["evas_engine"] == "evas2"
     assert evidence["evas_engine_used"] == "evas2"
-    assert evidence["evas_version"] == "0.8.5"
+    assert evidence["evas_version"] == "0.8.7"
 
 
 def test_evas2_evidence_rejects_python_marker(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("EVAS_ENGINE", "evas2")
     monkeypatch.setenv("VAEVAS_DEFAULT_EVAS_ENGINE", "evas2")
     try:
-        runner.require_rust_evas2("Version 0.8.5\n    evas_engine = python\n")
+        runner.require_rust_evas2("Version 0.8.7\n    evas_engine = python\n")
     except RuntimeError as exc:
         assert "Rust backend marker" in str(exc)
     else:
@@ -147,8 +147,13 @@ def test_compact_evidence_identity_separates_release_revisions() -> None:
         "release/benchmarkv4-r52",
         "v4-r52-stimulus-metamorphic-compact-v1",
     )
+    assert runner.compact_evidence_identity("r53") == (
+        "release/benchmarkv4-r53",
+        "v4-r53-stimulus-metamorphic-compact-v1",
+    )
     assert runner.required_evas_version("r51") == "0.8.3"
     assert runner.required_evas_version("r52") == "0.8.5"
+    assert runner.required_evas_version("r53") == "0.8.7"
 
 
 def test_release_provenance_binds_manifest_and_source_registry(

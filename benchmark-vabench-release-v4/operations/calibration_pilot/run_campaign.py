@@ -41,7 +41,7 @@ from mini_swe_vabench import (  # noqa: E402
 )
 
 EXPORTER = PACKAGE / "operations" / "tri_form_derivation_prep" / "export_tri_form_runtime.py"
-DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r52"
+DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r53"
 DEFAULT_BASE_URL = "https://www.cun.ai/v1"
 DEFAULT_API_KEY_ENV = "VAEVAS_API_KEY"
 DEFAULT_SETUP_TIMEOUT_S = 1800

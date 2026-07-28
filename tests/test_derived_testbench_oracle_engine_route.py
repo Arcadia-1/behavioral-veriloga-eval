@@ -62,10 +62,10 @@ def test_oracle_rejects_unannounced_python_backend(monkeypatch) -> None:
     assert "engine_validation_failed=backend" in note
 
 
-def test_oracle_accepts_only_r53test_evas_version(monkeypatch) -> None:
+def test_oracle_accepts_only_r53_evas_version(monkeypatch) -> None:
     oracle = load_oracle()
     pin_rust_engine(monkeypatch)
-    monkeypatch.setenv("VABENCH_EVAS_PROFILE", "r53test")
+    monkeypatch.setenv("VABENCH_EVAS_PROFILE", "r53")
 
     valid, note = oracle._validate_required_evas_engine(
         "Version 0.8.7 -- Jul 2026\nevas_engine = evas-rust",
@@ -77,7 +77,7 @@ def test_oracle_accepts_only_r53test_evas_version(monkeypatch) -> None:
     )
 
     assert valid is True
-    assert "evas_profile=r53test" in note
+    assert "evas_profile=r53" in note
     assert "evas_version=0.8.7" in note
     assert stale is False
     assert "required='0.8.7'" in stale_note
@@ -98,7 +98,7 @@ def test_oracle_rejects_unknown_evas_profile(monkeypatch) -> None:
 def test_oracle_accepts_time_dependent_cross_compatibility(monkeypatch) -> None:
     oracle = load_oracle()
     pin_rust_engine(monkeypatch)
-    monkeypatch.setenv("VABENCH_EVAS_PROFILE", "r53test")
+    monkeypatch.setenv("VABENCH_EVAS_PROFILE", "r53")
     report = "\n".join(
         [
             "Version 0.8.7 -- Jul 2026",

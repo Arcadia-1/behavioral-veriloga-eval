@@ -1,13 +1,13 @@
 # benchmarkv4 runners
 
 This directory contains public runtime tooling for
-`benchmark-vabench-release-v4/release/benchmarkv4-r52`, pinned to the
-`vabench-agent-runtime:0.8.5` image.
+`benchmark-vabench-release-v4/release/benchmarkv4-r53`, pinned to the
+`vabench-agent-runtime:0.8.7` image.
 
 Implemented:
 
 - `run_benchmarkv4_campaign.py` is the unified experiment entry point for
-  `release/benchmarkv4-r52`: it builds a random or preselected campaign, then
+  `release/benchmarkv4-r53`: it builds a random or preselected campaign, then
   runs `G0`/`G1` through direct one-shot artifact extraction and `G2`-`G5`
   through the pinned mini-SWE-agent scaffold in the shared public Docker
   runtime, where the agent has full Bash and direct access to public EVAS.
@@ -16,7 +16,7 @@ Implemented:
 - `--comparison-profile executable-feedback-control` projects every selected
   task onto three matched main-table arms: `OneShot` (G0),
   `Agent-No-EVAS` (the G2 mini-SWE/Bash scaffold without EVAS), and `Agentic`
-  (G2 with EVAS). The two agent arms use paired `0.8.5` images built from the
+  (G2 with EVAS). The two agent arms use paired `0.8.7` images built from the
   same Dockerfile; score reports group them by `experimental_arm`.
 - Direct one-shot modes receive an output-only `submit_artifacts` function
   whose schema names every required file. The runner accepts only a complete

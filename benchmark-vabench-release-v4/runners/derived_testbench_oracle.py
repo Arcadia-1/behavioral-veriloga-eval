@@ -14,10 +14,9 @@ from pathlib import PurePosixPath
 from typing import Any
 
 
-DEFAULT_EVAS_PROFILE = "r52"
+DEFAULT_EVAS_PROFILE = "r53"
 EVAS_VERSION_BY_PROFILE = {
-    "r52": "0.8.5",
-    "r53test": "0.8.7",
+    "r53": "0.8.7",
 }
 REQUIRED_EVAS_VERSION = EVAS_VERSION_BY_PROFILE[DEFAULT_EVAS_PROFILE]
 
@@ -315,8 +314,8 @@ def _validate_required_evas_engine(
             f"profile={evas_profile!r} required={required_evas_version!r} "
             f"observed={observed_version!r}",
         )
-    # EVAS 0.8.5 no longer emits the legacy backend/rust-required counters on
-    # every successful simulation.  The exact 0.8.5 version banner together
+    # Current EVAS releases no longer emit the legacy backend/rust-required
+    # counters on every successful simulation. The exact pinned version together
     # with both engine selectors pinned to evas2 is the supported identity
     # contract; retain strict validation when the legacy fields are present.
     audited_python_compatibility = (
