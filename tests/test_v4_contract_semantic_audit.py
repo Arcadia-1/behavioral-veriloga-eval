@@ -26,6 +26,18 @@ def test_identifier_visible_supports_scalar_and_bus_notation() -> None:
     assert not audit.identifier_visible(text, "tick")
 
 
+def test_trace_signal_syntax_accepts_only_physical_trace_names() -> None:
+    assert audit.invalid_trace_signal_names(
+        ["time", "VDD", "state_0", "th255", "code[7]", "net$1"]
+    ) == []
+
+
+def test_trace_signal_syntax_rejects_literals_and_derived_labels() -> None:
+    assert audit.invalid_trace_signal_names(
+        ["0", "0.5", "-1", "count=255", "valid errors", "V(out)", ""]
+    ) == ["-1", "0", "0.5", "<empty>", "V(out)", "count=255", "valid errors"]
+
+
 def test_aggregate_is_derived_from_independent_family_shards(tmp_path: Path) -> None:
     for family_id, status, findings in (
         ("001", "pass", []),
@@ -100,3 +112,4 @@ def test_canonical_family_001_has_no_contract_binding_findings() -> None:
     assert shard["status"] == "pass"
     assert shard["findings"] == []
     assert "gold_certification_binding" in shard["checks_completed"]
+    assert "trace_signal_syntax" in shard["checks_completed"]

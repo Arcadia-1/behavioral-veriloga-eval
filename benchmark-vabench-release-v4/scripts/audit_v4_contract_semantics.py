@@ -17,6 +17,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 V4_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SOURCE = V4_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 FAMILY_DIR_RE = re.compile(r"(?P<family>\d{3})-.+")
+TRACE_SIGNAL_RE = re.compile(r"(?:time|[A-Za-z_][A-Za-z0-9_$]*(?:\[\d+\])?)\Z")
 SCHEMA_VERSION = "v4-contract-semantic-audit-shard-v1"
 AGGREGATE_SCHEMA_VERSION = "v4-contract-semantic-audit-aggregate-v1"
 
@@ -82,6 +83,23 @@ def select_families(
 
 def normalized_signals(values: Iterable[Any]) -> set[str]:
     return {str(value).strip().lower() for value in values if str(value).strip()}
+
+
+def invalid_trace_signal_names(values: Iterable[Any]) -> list[str]:
+    """Return entries that cannot name a physical scalar or indexed trace.
+
+    Required-trace metadata is a simulator interface, not a container for
+    checker-derived values, scenario labels, thresholds, or diagnostics.
+    Cross-file trace binding below proves that otherwise-valid identifiers are
+    also public and saved; this lexical gate catches literals before case
+    normalization can make an invalid contract look internally consistent.
+    """
+    invalid: set[str] = set()
+    for value in values:
+        signal = str(value).strip()
+        if not signal or TRACE_SIGNAL_RE.fullmatch(signal) is None:
+            invalid.add(signal or "<empty>")
+    return sorted(invalid)
 
 
 def identifier_visible(text: str, identifier: str) -> bool:
@@ -324,16 +342,45 @@ def audit_family(task: Path) -> dict[str, Any]:
             {"expected": property_ids, "actual": checker_profile["property_ids"]},
         )
 
-    required_signals = normalized_signals(
+    family_required_signal_values = list(
         (family_spec.get("trace_contract") or {}).get("required_signals") or []
     )
+    property_required_signal_values = [
+        value
+        for prop in properties
+        for value in (prop.get("required_signals") or [])
+    ]
+    public_observable_values = list(public_contract.get("public_observables") or [])
+    checker_trace = checker_profile.get("trace_contract") or {}
+    checker_observable_values = list(checker_trace.get("public_observables") or [])
+    checker_extra_values = list(checker_trace.get("extra_trace_signals") or [])
+    saved_values = list((harness.get("deck") or {}).get("save_signals") or [])
+    trace_signal_sources = {
+        "family_trace_contract": family_required_signal_values,
+        "property_required_signals": property_required_signal_values,
+        "public_observables": public_observable_values,
+        "checker_public_observables": checker_observable_values,
+        "checker_extra_trace_signals": checker_extra_values,
+        "harness_save_signals": saved_values,
+    }
+    audit.checked("trace_signal_syntax")
+    for source_name, values in trace_signal_sources.items():
+        invalid_names = invalid_trace_signal_names(values)
+        if invalid_names:
+            audit.finding(
+                "error",
+                "trace_signal_syntax",
+                "trace contracts may contain only physical scalar or indexed signal names",
+                {"source": source_name, "invalid_signal_names": invalid_names},
+            )
+
+    required_signals = normalized_signals(family_required_signal_values)
     for prop in properties:
         required_signals.update(normalized_signals(prop.get("required_signals") or []))
-    public_observables = normalized_signals(public_contract.get("public_observables") or [])
-    checker_trace = checker_profile.get("trace_contract") or {}
-    checker_observables = normalized_signals(checker_trace.get("public_observables") or [])
-    checker_extra = normalized_signals(checker_trace.get("extra_trace_signals") or [])
-    saved = normalized_signals((harness.get("deck") or {}).get("save_signals") or [])
+    public_observables = normalized_signals(public_observable_values)
+    checker_observables = normalized_signals(checker_observable_values)
+    checker_extra = normalized_signals(checker_extra_values)
+    saved = normalized_signals(saved_values)
     for values in (required_signals, public_observables, checker_observables, checker_extra, saved):
         values.discard("time")
     audit.checked("trace_binding")
