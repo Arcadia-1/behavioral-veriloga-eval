@@ -265,6 +265,25 @@ def _validate_required_evas_engine(
     version_match = re.search(r"^Version\s+([^\s]+)", combined, flags=re.MULTILINE)
     observed_version = version_match.group(1) if version_match else None
     reported_engine = _evas_engine_value(combined, "evas_engine")
+    compatibility_match = re.search(
+        r"^Compatibility engine route:\s*(?:evas2|evas-rust)\s*->\s*python\s+for\s+(.+?)\s*$",
+        combined,
+        flags=re.MULTILINE,
+    )
+    compatibility_features = (
+        tuple(
+            feature.strip()
+            for feature in compatibility_match.group(1).split(",")
+            if feature.strip()
+        )
+        if compatibility_match
+        else ()
+    )
+    allowed_compatibility_features = {
+        "absdelay",
+        "continuous_state_cross_event",
+        "dynamic_state_array_access",
+    }
     rust_required = _evas_engine_value(combined, "evas_rust_required")
     rust_full_model_required = _evas_engine_value(
         combined, "evas_rust_full_model_required"
@@ -276,8 +295,17 @@ def _validate_required_evas_engine(
     # every successful simulation.  The exact 0.8.5 version banner together
     # with both engine selectors pinned to evas2 is the supported identity
     # contract; retain strict validation when the legacy fields are present.
-    if reported_engine not in {None, "evas-rust"}:
-        return False, f"engine_validation_failed=backend observed={reported_engine!r}"
+    audited_python_compatibility = (
+        reported_engine == "python"
+        and bool(compatibility_features)
+        and set(compatibility_features) <= allowed_compatibility_features
+    )
+    if reported_engine not in {None, "evas-rust"} and not audited_python_compatibility:
+        return (
+            False,
+            f"engine_validation_failed=backend observed={reported_engine!r} "
+            f"compatibility_features={compatibility_features!r}",
+        )
     if rust_required not in {None, "true"} or rust_full_model_required not in {
         None,
         "true",
@@ -290,6 +318,13 @@ def _validate_required_evas_engine(
         )
     if failures not in {None, "0", "0.0"}:
         return False, f"engine_validation_failed=rust_required_failures observed={failures}"
+    if audited_python_compatibility:
+        return (
+            True,
+            f"evas_engine=evas2 evas_engine_used=python "
+            f"evas_version={REQUIRED_EVAS_VERSION} evas_backend=python_compatibility "
+            f"evas_compatibility_features={','.join(compatibility_features)}",
+        )
     return (
         True,
         f"evas_engine=evas2 evas_engine_used=evas2 evas_version={REQUIRED_EVAS_VERSION} "
