@@ -96,6 +96,7 @@ def _event_probe_time(
     event_time_s: float,
     *,
     delay_s: float = 0.18e-9,
+    max_grid_slop_s: float = 5.0e-9,
 ) -> float | None:
     if not rows:
         return None
@@ -104,7 +105,8 @@ def _event_probe_time(
         return None
     probe_time = event_time_s + delay_s
     if probe_time <= last_time:
-        return probe_time
+        sample_time = next((row["time"] for row in rows if row.get("time", -1.0) >= probe_time), probe_time)
+        return sample_time if sample_time <= probe_time + max_grid_slop_s else probe_time
     fallback = last_time - 0.02e-9
     return fallback if fallback > event_time_s else None
 

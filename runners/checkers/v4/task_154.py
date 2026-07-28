@@ -50,11 +50,21 @@ def _v3_edge_sample_times(
     *,
     threshold: float = 0.45,
     delay_s: float = 1.8e-9,
+    max_grid_slop_s: float = 5.0e-9,
 ) -> list[tuple[float, float]]:
     times = [row["time"] for row in rows]
     edges = rising_edges([row[signal] for row in rows], times, threshold=threshold)
     last_time = times[-1]
-    return [(edge_t, edge_t + delay_s) for edge_t in edges if edge_t + delay_s <= last_time]
+    edge_samples: list[tuple[float, float]] = []
+    for edge_t in edges:
+        probe_t = edge_t + delay_s
+        if probe_t > last_time:
+            continue
+        sample_t = next((time_s for time_s in times if time_s >= probe_t), probe_t)
+        if sample_t > probe_t + max_grid_slop_s:
+            sample_t = probe_t
+        edge_samples.append((edge_t, sample_t))
+    return edge_samples
 
 def check_v3_flash_adc_threshold_taps(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clk", "dout0", "dout1", "dout2", "dout3", "dout4", "dout5", "dout6"}

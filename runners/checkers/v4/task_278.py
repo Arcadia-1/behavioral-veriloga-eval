@@ -16,7 +16,9 @@ PROPERTIES = (
 
 
 def check_v4_278_lane_mask_replication_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return check_continuous(rows, "reduction", TASK_LABEL)
+    # Public tr defaults to 50 ps output smoothing; score only settled
+    # steady-state samples, matching the family 277 guard.
+    return check_continuous(rows, "reduction", TASK_LABEL, settle_time_s=100e-12)
 
 
 CHECKS = {

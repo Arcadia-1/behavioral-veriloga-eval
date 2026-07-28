@@ -260,8 +260,11 @@ def check_continuous(
     )
     change_times = _stimulus_change_times(rows, stimulus_signals)
     change_intervals = stimulus_change_intervals(rows, stimulus_signals)
-    stability_window_s = max(settle_time_s, 2.0e-9)
     start, stop = rows[0]["time"], rows[-1]["time"]
+    stability_window_s = max(
+        settle_time_s,
+        min(2.0e-9, max(120e-12, 0.02 * (stop - start))),
+    )
     checked = 0
     saw_disabled = False
     expected_ranges = {"out": [], "flag": [], "metric": []}

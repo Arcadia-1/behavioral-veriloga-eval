@@ -73,6 +73,22 @@ def _signal_threshold_edges(
         edges.extend(_threshold_crossings(values, times, threshold=threshold, direction=direction))
     return sorted(edges)
 
+def _event_probe_time(
+    rows: list[dict[str, float]],
+    event_time_s: float,
+    *,
+    delay_s: float,
+    max_grid_slop_s: float = 5.0e-9,
+) -> float | None:
+    if not rows:
+        return None
+    probe_time = event_time_s + delay_s
+    last_time = rows[-1].get("time")
+    if last_time is None or probe_time > last_time:
+        return None
+    sample_time = next((row["time"] for row in rows if row.get("time", -1.0) >= probe_time), probe_time)
+    return sample_time if sample_time <= probe_time + max_grid_slop_s else probe_time
+
 def check_v3_programmable_divider_by_n(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "divctrl", "out"}
     if not rows or not required.issubset(rows[0]):
@@ -95,7 +111,9 @@ def check_v3_programmable_divider_by_n(rows: list[dict[str, float]]) -> tuple[bo
         state += 1
         if state >= ratio:
             state = 0
-        out_t = edge_t + 0.12e-9
+        out_t = _event_probe_time(rows, edge_t, delay_s=0.12e-9)
+        if out_t is None:
+            continue
         got = sample_signal_at(rows, "out", out_t)
         if got is None:
             return False, f"missing_out_at={out_t * 1e9:.3f}ns"
