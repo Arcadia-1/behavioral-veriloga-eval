@@ -58,25 +58,45 @@ def _logic(value: float, threshold: float = VTH) -> int:
 def _clip(value: float, lo: float = VSS, hi: float = VDD) -> float:
     return min(max(value, lo), hi)
 
+def _interpolate_row(
+    before: dict[str, float], after: dict[str, float], time_s: float
+) -> dict[str, float]:
+    t0 = _value(before, "time")
+    t1 = _value(after, "time")
+    if t1 <= t0:
+        return dict(after)
+    fraction = min(1.0, max(0.0, (time_s - t0) / (t1 - t0)))
+    return {
+        name: time_s if name == "time" else _value(before, name) + fraction * (_value(after, name) - _value(before, name))
+        for name in before
+        if name in after
+    }
+
 def _clock_samples(
     rows: list[dict[str, float]], clock: str, *, threshold: float = VTH, settle_s: float = 7e-10
 ) -> list[dict[str, float]]:
     if len(rows) < 2:
         return []
     rising_times: list[float] = []
-    previous = _value(rows[0], clock)
+    previous_row = rows[0]
+    previous = _value(previous_row, clock)
     for row in rows[1:]:
         now = _value(row, clock)
         if previous <= threshold < now:
-            rising_times.append(_value(row, "time"))
+            t0, t1 = _value(previous_row, "time"), _value(row, "time")
+            fraction = 0.0 if now == previous else (threshold - previous) / (now - previous)
+            rising_times.append(t0 + fraction * (t1 - t0))
         previous = now
+        previous_row = row
     samples: list[dict[str, float]] = []
     cursor = 0
     for edge_time in rising_times:
         target = edge_time + settle_s
-        while cursor + 1 < len(rows) and _value(rows[cursor], "time") < target:
+        while cursor + 1 < len(rows) and _value(rows[cursor + 1], "time") < target:
             cursor += 1
-        samples.append(rows[cursor])
+        if cursor + 1 >= len(rows):
+            break
+        samples.append(_interpolate_row(rows[cursor], rows[cursor + 1], target))
     return samples
 
 def _finish(results: list[PropertyResult], *, allowance: dict[str, int] | None = None) -> tuple[bool, str]:

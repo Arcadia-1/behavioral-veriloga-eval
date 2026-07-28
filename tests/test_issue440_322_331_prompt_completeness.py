@@ -680,3 +680,15 @@ def test_task331_rejects_wrong_first_enabled_decision_edge() -> None:
 def test_task331_accepts_first_enabled_decision_edge() -> None:
     ok, detail = check_v4_331_dfe_error_proxy_loop(_rows_331())
     assert ok, detail
+
+
+def test_task331_ignores_reset_transient_before_settle_deadline() -> None:
+    rows = _rows_331()
+    for row in rows:
+        if float(row["time"]) < 0.7e-9:
+            row["corrected_out"] = 0.0
+            row["error_metric"] = 0.9
+            row["converged"] = 0.9
+
+    ok, detail = check_v4_331_dfe_error_proxy_loop(rows)
+    assert ok, detail
