@@ -2152,6 +2152,26 @@ def test_scorer_keeps_single_run_timeout_for_non_testbench_forms(form: str) -> N
     ) == 150
 
 
+def test_trusted_replay_signature_binds_evas_profile(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    scorer = load_score_campaign()
+    (tmp_path / "evaluator").mkdir()
+    monkeypatch.setenv("VABENCH_EVAS_PROFILE", "r53test")
+
+    signature, _ = scorer.trusted_replay_input_signature(
+        result={"cell": {}, "evas_identity": {"version_output": "evas-sim 0.8.6"}},
+        runtime=tmp_path,
+        command="python3",
+        replay_timeout_s=150,
+        evas_command="/opt/evas-0.8.6",
+        final_submission={"tree_sha256": "a" * 64},
+    )
+
+    assert signature["evaluator"]["evas_profile"] == "r53test"
+
+
 @pytest.mark.parametrize(
     "notes",
     [

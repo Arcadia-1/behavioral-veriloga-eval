@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import shlex
 import statistics
@@ -240,6 +241,10 @@ def trusted_replay_input_signature(
         "evaluator_manifest": RUNNER.RESULT_PROTOCOL.hash_test_tree(
             runtime / "evaluator"
         ),
+        "evaluator": {
+            "evas_profile": os.environ.get("VABENCH_EVAS_PROFILE", "r52").strip()
+            or "r52",
+        },
         "judge": {
             "command": command,
             "command_files": command_files,
