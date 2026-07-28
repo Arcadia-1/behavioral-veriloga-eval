@@ -29,7 +29,9 @@ def check_v4_331_dfe_error_proxy_loop(rows: list[dict[str, float]]) -> tuple[boo
     prev_clk = float(rows[0]["decision_clk"])
     checked = corr_errors = decision_errors = conv_errors = clear_errors = 0
     reset_clear = disabled_clear = ever_enabled = False
+    reset_time: float | None = None
     disable_time: float | None = None
+    reset_evaluated = disable_evaluated = False
     active_edges = 0
     decisions = 0
     error_max = 0.0
@@ -47,20 +49,37 @@ def check_v4_331_dfe_error_proxy_loop(rows: list[dict[str, float]]) -> tuple[boo
                 and abs(float(row["error_metric"])) < 0.08
                 and not _high(row, "converged")
             )
-            if rst and clear:
-                reset_clear = True
+            if rst and reset_time is None:
+                reset_time = t
+                reset_evaluated = False
+            if not rst:
+                reset_time = None
+                reset_evaluated = False
+            reset_ready = rst and reset_time is not None and t >= reset_time + 0.7e-9
+            if reset_ready and not reset_evaluated:
+                reset_evaluated = True
+                if clear:
+                    reset_clear = True
+                else:
+                    clear_errors += 1
             disabled = ever_enabled and not _high(row, "enable")
             if disabled and disable_time is None:
                 disable_time = t
+                disable_evaluated = False
+            if not disabled:
+                disable_time = None
+                disable_evaluated = False
             disabled_ready = (
                 disabled
                 and disable_time is not None
                 and t >= disable_time + 0.7e-9
             )
-            if disabled_ready and clear:
-                disabled_clear = True
-            if (rst or disabled_ready) and not clear:
-                clear_errors += 1
+            if disabled_ready and not disable_evaluated:
+                disable_evaluated = True
+                if clear:
+                    disabled_clear = True
+                else:
+                    clear_errors += 1
             streak = 0
             history_1 = history_0 = 0
             expected_tap_1 = expected_tap_0 = 0.0
@@ -68,7 +87,10 @@ def check_v4_331_dfe_error_proxy_loop(rows: list[dict[str, float]]) -> tuple[boo
             prev_clk = clk
             continue
         ever_enabled = True
+        reset_time = None
+        reset_evaluated = False
         disable_time = None
+        disable_evaluated = False
         if not _rising(prev_clk, clk):
             prev_clk = clk
             continue

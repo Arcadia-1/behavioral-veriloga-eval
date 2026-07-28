@@ -178,7 +178,10 @@ def check_continuous_factory(rows: list[Row], *, mode: str, task_name: str) -> C
     out_expected: list[float] = []
     flag_expected: list[float] = []
     metric_expected: list[float] = []
-    saw_enable_low = False
+    # Coverage is a property of the observed stimulus trace, not of the
+    # checker probe grid.  A short but explicit disabled plateau can otherwise
+    # fall between every accepted probe after transition guards are applied.
+    saw_enable_low = any(float(row["en"]) <= VTH for row in rows)
     change_intervals = stimulus_change_intervals(
         rows,
         ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"),
@@ -190,8 +193,9 @@ def check_continuous_factory(rows: list[Row], *, mode: str, task_name: str) -> C
         if values is None:
             continue
         expected = _cont_expected(mode, values)
-        before = _values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), max(float(rows[0]["time"]), time_s - 2.0e-9))
-        after = _values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), min(float(rows[-1]["time"]), time_s + 2.0e-9))
+        stability_window_s = 120e-12
+        before = _values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), max(float(rows[0]["time"]), time_s - stability_window_s))
+        after = _values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), min(float(rows[-1]["time"]), time_s + stability_window_s))
         if before is not None and after is not None:
             before_expected = _cont_expected(mode, before)
             after_expected = _cont_expected(mode, after)
@@ -205,7 +209,6 @@ def check_continuous_factory(rows: list[Row], *, mode: str, task_name: str) -> C
         out_expected.append(expected["out"])
         flag_expected.append(expected["flag"])
         metric_expected.append(expected["metric"])
-        saw_enable_low = saw_enable_low or values["en"] <= VTH
         checked += 1
     if checked < 10:
         return False, f"{task_name}: insufficient_samples={checked}"

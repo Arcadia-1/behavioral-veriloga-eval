@@ -368,3 +368,17 @@ def test_250_259_reject_ignore_span_outputs_after_invalid_span_coverage(
     )
     assert not ok, f"task {task_id} accepted ignore-span outputs"
     assert "max_error" in note
+
+
+def test_continuous_factory_coverage_uses_observed_stimulus_not_probe_grid() -> None:
+    rows = _continuous_factory_rows("gain", ignore_supply_span=False, stop_ns=16.0)
+    for row in rows:
+        row["en"] = 0.9
+        row.update(_cont_expected("gain", row))
+
+    disabled = min(rows, key=lambda row: abs(float(row["time"]) - 7.05e-9))
+    disabled["en"] = 0.0
+    disabled.update(_cont_expected("gain", disabled))
+
+    ok, note = CHECKER_250(rows)
+    assert ok, note
