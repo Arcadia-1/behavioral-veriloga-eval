@@ -44,3 +44,44 @@ def test_adc_round_to_nearest_mutation_remains_rejected_on_sparse_sweep() -> Non
 
     assert not ok, note
     assert "property_id=P_3BIT_QUANTIZATION" in note
+
+
+def test_adc_quantization_samples_settled_plateaus_not_ramp_breakpoints() -> None:
+    rows: list[dict[str, float]] = []
+    time_s = 0.0
+    previous_code = 0
+    for code in range(8):
+        vin = (code + 0.5) / 8.0
+        for _ in range(3):
+            rows.append(
+                {
+                    "time": time_s,
+                    "vin": vin,
+                    "d2": 0.9 if code & 4 else 0.0,
+                    "d1": 0.9 if code & 2 else 0.0,
+                    "d0": 0.9 if code & 1 else 0.0,
+                }
+            )
+            time_s += 0.10e-9
+        if code == 7:
+            continue
+        next_vin = (code + 1.5) / 8.0
+        for fraction in (0.33, 0.66):
+            vin_mid = vin + fraction * (next_vin - vin)
+            rows.append(
+                {
+                    "time": time_s,
+                    "vin": vin_mid,
+                    # During the declared input transition, the output may
+                    # still be the previous settled code.
+                    "d2": 0.9 if previous_code & 4 else 0.0,
+                    "d1": 0.9 if previous_code & 2 else 0.0,
+                    "d0": 0.9 if previous_code & 1 else 0.0,
+                }
+            )
+            time_s += 0.05e-9
+        previous_code = code
+
+    ok, note = check_v3_498_dc_aware_adc3bit(rows)
+
+    assert ok, note

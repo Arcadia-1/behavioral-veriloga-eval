@@ -38,14 +38,24 @@ def _sample(rows: list[Row], times: list[float], time_s: float) -> Row | None:
     # with a wide interval; interpolating the outputs there invents behavior.
     if _regime(before) != _regime(after):
         return None
+    before_state = normalized(before)
+    after_state = normalized(after)
+    if max(
+        abs(float(before_state[name]) - float(after_state[name]))
+        for name in ("x0", "x1", "x2", "x3", "c0", "c1", "valid")
+    ) > 0.12:
+        return None
     dt = times[index] - times[index - 1]
     if dt <= 0.0:
         return None
     fraction = (time_s - times[index - 1]) / dt
-    return {
+    sample = {
         name: time_s if name == "time" else before[name] + fraction * (after[name] - before[name])
         for name in _REQUIRED
     }
+    if _regime(sample) != _regime(before):
+        return None
+    return sample
 
 
 def check_window_continuous_physical(rows: list[Row], task_name: str) -> CheckResult:
@@ -98,7 +108,7 @@ def check_window_continuous_physical(rows: list[Row], task_name: str) -> CheckRe
     if worst[0] > 0.085:
         return False, (
             f"{task_name}_mismatch signal={worst[2]} time={worst[1]:.6e} "
-            f"expected={worst[3]:.6g} observed={worst[4]:.6g} mismatch={worst[0]:.6g}"
+            f"expected={worst[3]:.6g} observed={worst[4]:.6g} max_error={worst[0]:.6g}"
         )
     return True, f"{task_name}_samples={checked} max_mismatch={worst[0]:.6g}"
 
