@@ -36,6 +36,22 @@ def _logic_bits(row: Row) -> list[int] | None:
     return bits
 
 
+def _collapse_same_time_input_rows(rows: list[Row]) -> list[Row]:
+    """Keep the settled publication for duplicate samples of the same input point."""
+
+    collapsed: list[Row] = []
+    for row in rows:
+        if (
+            collapsed
+            and row["time"] == collapsed[-1]["time"]
+            and abs(row["vin"] - collapsed[-1]["vin"]) <= VIN_STABLE_TOL
+        ):
+            collapsed[-1] = row
+        else:
+            collapsed.append(row)
+    return collapsed
+
+
 def _samples_from_vin_segments(rows: list[Row], *, require_repeated_vin: bool) -> list[tuple[int, Row, list[int]]]:
     """Pick one settled observable row from each stable input plateau."""
 
@@ -63,6 +79,7 @@ def _samples_from_vin_segments(rows: list[Row], *, require_repeated_vin: bool) -
 
 
 def _stable_code_samples(rows: list[Row]) -> list[tuple[int, Row, list[int]]]:
+    rows = _collapse_same_time_input_rows(rows)
     samples = _samples_from_vin_segments(rows, require_repeated_vin=True)
     if samples:
         return samples

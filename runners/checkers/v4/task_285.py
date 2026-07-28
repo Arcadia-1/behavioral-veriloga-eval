@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from ..api import Checker
-from ..common.issue109_split import check_continuous
+from .task_252 import check_window_continuous_physical
 
 
 TASK_LABEL = "v4_285_configurable_startup_policy"
@@ -15,7 +15,7 @@ PROPERTIES = (
 
 
 def check_v4_285_configurable_startup_policy(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return check_continuous(rows, "window", TASK_LABEL)
+    return check_window_continuous_physical(rows, TASK_LABEL)
 
 
 CHECKS = {

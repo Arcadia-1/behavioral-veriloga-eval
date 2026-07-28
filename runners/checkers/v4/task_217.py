@@ -108,7 +108,12 @@ def check_v3_single_shot_timer_pulse(rows: list[dict[str, float]]) -> tuple[bool
     timer_mismatches = width_errors + high_failures
     one_pulse_mismatches = pulse_count_errors + int(bool(output_edges) and not output_falls)
     low_hold_mismatches = low_failures
-    ok = coverage_errors == 0 and not failures
+    ok = (
+        coverage_errors == 0
+        and not failures
+        and pulse_count_errors == 0
+        and width_errors == 0
+    )
     detail = " ".join(failures[:6]) or "pulse_samples_match"
     return ok, (
         f"{detail} trigger_edges={len(edges)} output_rises={len(output_edges)} output_falls={len(output_falls)} "

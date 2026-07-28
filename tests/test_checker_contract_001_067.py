@@ -40,6 +40,28 @@ def _tdc_trace(*, code_error: int) -> list[dict[str, float]]:
     return rows
 
 
+def _tdc_trace_with_edge_discretization_offsets() -> list[dict[str, float]]:
+    pairs = ((2, 10), (20, 43), (60, 99))
+    offsets = (1, 1, 0)
+    code = 0
+    rows: list[dict[str, float]] = []
+    for time_ns in range(110):
+        start = 0.9 if any(time_ns == begin for begin, _ in pairs) else 0.0
+        stop = 0.9 if any(time_ns == end for _, end in pairs) else 0.0
+        for index, (begin, end) in enumerate(pairs):
+            if time_ns == end:
+                code = end - begin + offsets[index]
+        row = {
+            "time": time_ns * 1e-9,
+            "start": start,
+            "stop": stop,
+            "valid": 0.9 if code else 0.0,
+        }
+        _set_bits(row, "code", 8, code)
+        rows.append(row)
+    return rows
+
+
 def _duty_trace(*, code_error: int) -> list[dict[str, float]]:
     rises = (1, 11, 21, 31)
     falls = (4, 16, 28)
@@ -335,6 +357,18 @@ def test_exact_codes_and_public_output_rails(
 
     adversarial_passed, adversarial_detail = checker(adversarial)
     assert not adversarial_passed, adversarial_detail
+
+
+def test_tdc_allows_sparse_edge_discretization_offsets_without_masking_code_errors() -> None:
+    checker = load_checker("v4_059_edge_interval_tdc_8b")
+    assert checker is not None
+
+    ok, note = checker(_tdc_trace_with_edge_discretization_offsets())
+    assert ok, note
+    assert "quantization_boundary_count=2" in note
+
+    bad_ok, bad_note = checker(_tdc_trace(code_error=1))
+    assert not bad_ok, bad_note
 
 
 @pytest.mark.parametrize(

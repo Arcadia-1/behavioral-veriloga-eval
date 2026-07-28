@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from ..api import Checker
 from .stimulus_relative import (
+    edge_times as threshold_edge_times,
     event_settle_delay,
     finish,
     missing_trace,
@@ -29,8 +30,9 @@ def check_charge_pump_abstraction(rows: list[dict[str, float]]) -> tuple[bool, s
     by_id = {result.property_id: result for result in results}
 
     edges = rising_indices(rows, "clk")
-    edge_times = [float(rows[index]["time"]) for index in edges]
-    settle = event_settle_delay(edge_times)
+    clock_edge_times = [float(rows[index]["time"]) for index in edges]
+    settle = event_settle_delay(clock_edge_times)
+    reset_assertions = threshold_edge_times(rows, "rst", rising=True)
     state = 0.45
 
     for index in edges:
@@ -78,9 +80,14 @@ def check_charge_pump_abstraction(rows: list[dict[str, float]]) -> tuple[bool, s
             gap=max(0.05 - sample["vctrl"], sample["vctrl"] - 0.85, 0.0),
         )
 
-    for left, right in zip(edge_times, edge_times[1:]):
+    for left, right in zip(clock_edge_times, clock_edge_times[1:]):
         spacing = right - left
         if spacing <= 2.5 * settle:
+            continue
+        # An asynchronous reset owns the state change in this interval.  End
+        # the sampled-hold partition at that reset boundary instead of carrying
+        # the pre-reset held value through the valid reset response.
+        if any(left < reset_time <= right for reset_time in reset_assertions):
             continue
         early = row_at_or_after(rows, left + max(settle, 0.30 * spacing))
         late = row_at_or_after(rows, left + 0.78 * spacing)

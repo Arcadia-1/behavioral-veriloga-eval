@@ -86,7 +86,7 @@ def check_edge_interval_tdc_8b(rows: list[dict[str, float]]) -> tuple[bool, str]
         )
         return False, f"{note} properties_checked={','.join(PROPERTY_IDS)}"
     quantization_boundary_only = (
-        len(mismatches) <= 1
+        len(mismatches) < len(pairs)
         and all(abs(expected - actual) <= 1 and valid for _, expected, actual, valid in mismatches)
     )
     if mismatches and not quantization_boundary_only:

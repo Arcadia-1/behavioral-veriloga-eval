@@ -4,7 +4,13 @@ from __future__ import annotations
 import math
 
 from ..api import Checker
-from .stimulus_relative import diagnostic, pass_note, require_signals
+from .stimulus_relative import (
+    diagnostic,
+    pass_note,
+    require_signals,
+    stimulus_change_intervals,
+    time_outside_intervals,
+)
 
 
 PROPERTY_IDS = (
@@ -37,34 +43,44 @@ def _observed_code(row: dict[str, float]) -> int:
 
 
 def _representative_rows(rows: list[dict[str, float]]) -> list[dict[str, float]]:
-    selected: list[dict[str, float]] = []
+    # Partition by semantic input-code regions rather than requiring repeated
+    # raw vin rows.  Spectre may emit only a handful of points on a DC ramp,
+    # while EVAS publishes many rows for the same eight quantization regions.
     ordered = sorted(rows, key=lambda item: item["time"])
-    stable: list[dict[str, float]] = []
-    for index, row in enumerate(ordered):
-        if index == 0 or index == len(ordered) - 1:
-            continue
-        prev_row = ordered[index - 1]
-        next_row = ordered[index + 1]
-        if abs(prev_row["vin"] - row["vin"]) > 1e-5 or abs(next_row["vin"] - row["vin"]) > 1e-5:
-            continue
-        if not _is_stable_quantization_point(row["vin"]):
-            continue
-        stable.append(row)
-    if not stable:
-        stable = [row for row in ordered if _is_stable_quantization_point(row["vin"])]
+    change_intervals = stimulus_change_intervals(ordered, ("vin",))
+    stable = [
+        row
+        for row in ordered
+        if _is_stable_quantization_point(row["vin"])
+        and time_outside_intervals(row["time"], change_intervals, margin_s=40e-12)
+    ]
+    if len(stable) < 6:
+        stable = [
+            row
+            for row in ordered
+            if _is_stable_quantization_point(row["vin"])
+        ]
     if not stable:
         return []
 
+    selected: list[dict[str, float]] = []
     start = 0
-    current = stable[0]["vin"]
-    for index in range(1, len(stable)):
-        vin = stable[index]["vin"]
-        if abs(vin - current) <= 1e-5:
+    for index in range(1, len(stable) + 1):
+        if index < len(stable) and _expected_code(stable[index]["vin"]) == _expected_code(
+            stable[index - 1]["vin"]
+        ):
             continue
-        selected.append(stable[(start + index - 1) // 2])
+        segment = stable[start:index]
+        vin_min = min(row["vin"] for row in segment)
+        vin_max = max(row["vin"] for row in segment)
+        # Two semantic probes per represented code catch half-LSB rounding
+        # faults without making coverage depend on the simulator's row count.
+        for fraction in (0.25, 0.75):
+            target = vin_min + fraction * (vin_max - vin_min)
+            sample = min(segment, key=lambda row: abs(row["vin"] - target))
+            if not selected or sample is not selected[-1]:
+                selected.append(sample)
         start = index
-        current = vin
-    selected.append(stable[(start + len(stable) - 1) // 2])
     return selected
 
 def check_v3_498_dc_aware_adc3bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
